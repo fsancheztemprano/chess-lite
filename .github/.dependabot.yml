@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /apps/chess-backend
+    open-pull-requests-limit: 20
+    schedule:
+      interval: daily
+  - package-ecosystem: maven
+    directory: /
+    open-pull-requests-limit: 50
+    schedule:
+      interval: daily
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
