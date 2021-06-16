@@ -7,8 +7,8 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
     "nx": "nx",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "build": "nx run-many --target=build --all",
+    "test": "nx run-many --target=test --all",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
@@ -26,7 +26,8 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "validate": "nx workspace-lint && ng lint && nx format:check && ng test && ng build --prod"
+    "validate": "nx workspace-lint && ng lint && nx format:check && npm run test && npm run build --prod",
+    "validate:fe": "nx workspace-lint && ng lint && nx format:check && ng test && ng build --prod"
   },
   "private": true,
   "dependencies": {
