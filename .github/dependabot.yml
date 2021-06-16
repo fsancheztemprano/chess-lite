@@ -5,7 +5,7 @@ updates:
     open-pull-requests-limit: 20
     schedule:
       interval: daily
-  - package-ecosystem: maven
+  - package-ecosystem: npm
     directory: /
     open-pull-requests-limit: 50
     schedule:
