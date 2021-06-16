@@ -32,6 +32,12 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: Cache Maven packages
+        uses: actions/cache@v2.1.5
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Yarn Install
         run: yarn install
       - name: Prettier
