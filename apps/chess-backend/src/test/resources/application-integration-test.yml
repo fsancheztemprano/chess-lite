@@ -4,4 +4,4 @@ logging:
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:12://somehostname:someport/somedbname?TC_INITSCRIPT=test-container.sql
+    url: jdbc:tc:postgresql:12://somehostname:someport/somedbname?TC_INITSCRIPT=testcontainers.sql
