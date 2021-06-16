@@ -41,9 +41,7 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/chess-app",
             "index": "apps/chess-app/src/index.html",
@@ -55,9 +53,7 @@
               "apps/chess-app/src/favicon.ico",
               "apps/chess-app/src/assets"
             ],
-            "styles": [
-              "apps/chess-app/src/styles.scss"
-            ],
+            "styles": ["apps/chess-app/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -122,9 +118,7 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/chess-app"
-          ],
+          "outputs": ["coverage/apps/chess-app"],
           "options": {
             "jestConfig": "apps/chess-app/jest.config.js",
             "passWithNoTests": true
@@ -153,9 +147,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/chess-app-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/chess-app-e2e/**/*.{js,ts}"]
           }
         }
       }

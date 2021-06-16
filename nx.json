@@ -24,9 +24,7 @@
     },
     "chess-app-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "chess-app"
-      ]
+      "implicitDependencies": ["chess-app"]
     },
     "chess-backend": {
       "tags": []
