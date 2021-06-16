@@ -189,7 +189,7 @@
             "root": "apps/chess-backend"
           }
         },
-        "build": {
+        "buildJar": {
           "builder": "@nxrocks/nx-spring-boot:buildJar",
           "options": {
             "root": "apps/chess-backend"
@@ -211,6 +211,17 @@
           "builder": "@nxrocks/nx-spring-boot:buildInfo",
           "options": {
             "root": "apps/chess-backend"
+          }
+        },
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/chess-backend",
+            "commands": [
+              {
+                "command": "mvn clean package -DskipTests"
+              }
+            ]
           }
         }
       }
