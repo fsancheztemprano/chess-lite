@@ -19,12 +19,17 @@
     }
   },
   "projects": {
-    "front": {
+    "chess-backend": {
       "tags": []
     },
-    "front-e2e": {
+    "chess-app": {
+      "tags": []
+    },
+    "chess-app-e2e": {
       "tags": [],
-      "implicitDependencies": ["front"]
+      "implicitDependencies": [
+        "chess-app"
+      ]
     }
   }
 }

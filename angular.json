@@ -1,9 +1,10 @@
 {
   "version": 1,
   "cli": {
+    "packageManager": "yarn",
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "front",
+  "defaultProject": "chess-app",
   "schematics": {
     "@nrwl/angular": {
       "application": {
@@ -32,24 +33,86 @@
     }
   },
   "projects": {
-    "front": {
+    "chess-backend": {
+      "root": "apps/chess-backend",
+      "sourceRoot": "apps/chess-backend/src",
       "projectType": "application",
-      "root": "apps/front",
-      "sourceRoot": "apps/front/src",
+      "architect": {
+        "run": {
+          "builder": "@nxrocks/nx-spring-boot:run",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "serve": {
+          "builder": "@nxrocks/nx-spring-boot:serve",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "test": {
+          "builder": "@nxrocks/nx-spring-boot:test",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "clean": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "buildJar": {
+          "builder": "@nxrocks/nx-spring-boot:buildJar",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "buildWar": {
+          "builder": "@nxrocks/nx-spring-boot:buildWar",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "buildImage": {
+          "builder": "@nxrocks/nx-spring-boot:buildImage",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "buildInfo": {
+          "builder": "@nxrocks/nx-spring-boot:buildInfo",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        }
+      }
+    },
+    "chess-app": {
+      "projectType": "application",
+      "root": "apps/chess-app",
+      "sourceRoot": "apps/chess-app/src",
       "prefix": "chess-lite",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
-            "outputPath": "dist/apps/front",
-            "index": "apps/front/src/index.html",
-            "main": "apps/front/src/main.ts",
-            "polyfills": "apps/front/src/polyfills.ts",
-            "tsConfig": "apps/front/tsconfig.app.json",
+            "outputPath": "dist/apps/chess-app",
+            "index": "apps/chess-app/src/index.html",
+            "main": "apps/chess-app/src/main.ts",
+            "polyfills": "apps/chess-app/src/polyfills.ts",
+            "tsConfig": "apps/chess-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/front/src/favicon.ico", "apps/front/src/assets"],
-            "styles": ["apps/front/src/styles.scss"],
+            "assets": [
+              "apps/chess-app/src/favicon.ico",
+              "apps/chess-app/src/assets"
+            ],
+            "styles": [
+              "apps/chess-app/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -68,8 +131,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "apps/front/src/environments/environment.ts",
-                  "with": "apps/front/src/environments/environment.prod.ts"
+                  "replace": "apps/chess-app/src/environments/environment.ts",
+                  "with": "apps/chess-app/src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -89,10 +152,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "front:build:production"
+              "browserTarget": "chess-app:build:production"
             },
             "development": {
-              "browserTarget": "front:build:development"
+              "browserTarget": "chess-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -100,50 +163,54 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "front:build"
+            "browserTarget": "chess-app:build"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/front/src/**/*.ts",
-              "apps/front/src/**/*.html"
+              "apps/chess-app/src/**/*.ts",
+              "apps/chess-app/src/**/*.html"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/front"],
+          "outputs": [
+            "coverage/apps/chess-app"
+          ],
           "options": {
-            "jestConfig": "apps/front/jest.config.js",
+            "jestConfig": "apps/chess-app/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "front-e2e": {
-      "root": "apps/front-e2e",
-      "sourceRoot": "apps/front-e2e/src",
+    "chess-app-e2e": {
+      "root": "apps/chess-app-e2e",
+      "sourceRoot": "apps/chess-app-e2e/src",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@nrwl/cypress:cypress",
           "options": {
-            "cypressConfig": "apps/front-e2e/cypress.json",
-            "tsConfig": "apps/front-e2e/tsconfig.e2e.json",
-            "devServerTarget": "front:serve:development"
+            "cypressConfig": "apps/chess-app-e2e/cypress.json",
+            "tsConfig": "apps/chess-app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "chess-app:serve:development"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "front:serve:production"
+              "devServerTarget": "chess-app:serve:production"
             }
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/front-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/chess-app-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }

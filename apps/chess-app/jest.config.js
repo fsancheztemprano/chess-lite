@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'front',
+  displayName: 'chess-app',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -9,15 +9,15 @@ module.exports = {
       astTransformers: {
         before: [
           'jest-preset-angular/build/InlineFilesTransformer',
-          'jest-preset-angular/build/StripStylesTransformer',
-        ],
-      },
-    },
+          'jest-preset-angular/build/StripStylesTransformer'
+        ]
+      }
+    }
   },
-  coverageDirectory: '../../coverage/apps/front',
+  coverageDirectory: '../../coverage/apps/chess-app',
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
-    'jest-preset-angular/build/serializers/html-comment',
-  ],
+    'jest-preset-angular/build/serializers/html-comment'
+  ]
 };
