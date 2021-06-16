@@ -62,7 +62,7 @@
             "root": "apps/chess-backend"
           }
         },
-        "buildJar": {
+        "build": {
           "builder": "@nxrocks/nx-spring-boot:buildJar",
           "options": {
             "root": "apps/chess-backend"
