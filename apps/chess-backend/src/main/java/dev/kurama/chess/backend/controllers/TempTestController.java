@@ -14,8 +14,8 @@ public class TempTestController extends ExceptionHandlers {
   @GetMapping()
   public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name)
     throws EmailNotFoundException {
-//    return "greetings " + name;
-    throw new EmailNotFoundException("Testsss");
+    return "greetings " + name;
+//    throw new EmailNotFoundException("Testsss");
   }
 
 }
