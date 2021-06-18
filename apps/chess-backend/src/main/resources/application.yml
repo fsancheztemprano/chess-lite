@@ -1,3 +1,7 @@
+chess:
+  jwt:
+    secret: 'ieWCbSL5dcp3HgWkH2RSEdPGje7jjaM1Lt0jtYnHkml1WVcA6bIHKPi6cHEXWFmaECPkYWtlU85qCE2QC2ZrLlxmk29rFGgDrN8FlezGcrSH0V0ilMtuMnhmvJAvGmLlBZ90sikgYZWaZaWirI4TIUrDThJ6nTFEmRfDaE3ISPZVNr24HsxfmrK9rAqczoeKfpbjRGAE'
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/chess
@@ -7,6 +11,11 @@ spring:
   devtools:
     livereload:
       enabled: false
+  flyway:
+    enabled: true
+    # flyway's table schema_version shall be in the same schema as the other tables
+    schemas: ${spring.jpa.properties.hibernate.default_schema}
+    table: flyway_schema_version
   jpa:
     show-sql: true
     hibernate:
@@ -17,3 +26,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   mvc:
     throw-exception-if-no-handler-found: true
+
+server:
+  port:
+    8888
