@@ -2,8 +2,9 @@ package dev.kurama.chess.backend.configuration;
 
 import static dev.kurama.chess.backend.constant.SecurityConstant.PUBLIC_URLS;
 
+import dev.kurama.chess.backend.filter.JWTAccessDeniedHandler;
+import dev.kurama.chess.backend.filter.JWTAuthenticationEntryPoint;
 import dev.kurama.chess.backend.filter.JWTAuthorizationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,14 +25,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final JWTAuthorizationFilter jwtAuthorizationFilter;
+  private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
   private final UserDetailsService userDetailsService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @Autowired
   public SecurityConfiguration(JWTAuthorizationFilter jwtAuthorizationFilter,
+    JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+    JWTAccessDeniedHandler jwtAccessDeniedHandler,
     @Qualifier("userDetailsService") UserDetailsService userDetailsService,
     BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+    this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+    this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
     this.userDetailsService = userDetailsService;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
@@ -49,6 +55,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
       .authorizeRequests().antMatchers(PUBLIC_URLS).permitAll()
       .anyRequest().authenticated().and()
+      .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
+      .authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
       .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
