@@ -5,20 +5,22 @@ import static dev.kurama.chess.backend.constant.SecurityConstant.AUTH_AUDIENCE;
 import static dev.kurama.chess.backend.constant.SecurityConstant.AUTH_ISSUER;
 import static dev.kurama.chess.backend.constant.SecurityConstant.EXPIRATION_TIME;
 import static dev.kurama.chess.backend.constant.SecurityConstant.TOKEN_CANNOT_BE_VERIFIED;
+import static io.micrometer.core.instrument.util.StringUtils.isNotBlank;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import dev.kurama.chess.backend.domain.UserPrincipal;
-import io.micrometer.core.instrument.util.StringUtils;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
@@ -42,20 +44,20 @@ public class JWTTokenProvider {
   }
 
   public List<GrantedAuthority> getAuthorities(String token) {
-    return getJWTVerifier().verify(token).getClaim(AUTHORITIES).asList(GrantedAuthority.class);
+    return getJWTVerifier().verify(token).getClaim(AUTHORITIES).asList(String.class).stream()
+      .map(SimpleGrantedAuthority::new).collect(
+        Collectors.toList());
   }
 
   public Authentication getAuthentication(String username, List<GrantedAuthority> authorities,
     HttpServletRequest request) {
-    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-      username, null,
-      authorities);
+    var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
     return usernamePasswordAuthenticationToken;
   }
 
   public boolean isTokenValid(String username, String token) {
-    return StringUtils.isNotEmpty(username) && !isTokenExpired(token);
+    return isNotBlank(username) && !isTokenExpired(token);
   }
 
   private boolean isTokenExpired(String token) {

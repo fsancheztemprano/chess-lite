@@ -11,8 +11,8 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.chess.backend.domain.DomainResponse;
 import dev.kurama.chess.backend.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.exception.domain.EmailNotFoundException;
+import dev.kurama.chess.backend.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.exception.domain.UsernameExistsException;
-import dev.kurama.chess.backend.exception.domain.UsernameNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 import javax.persistence.NoResultException;
@@ -24,6 +24,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -89,8 +90,8 @@ public abstract class ExceptionHandlers {
     return createDomainResponse(BAD_REQUEST, exception.getMessage());
   }
 
-  @ExceptionHandler(UsernameNotFoundException.class)
-  public ResponseEntity<DomainResponse> usernameNotFoundException(UsernameNotFoundException exception) {
+  @ExceptionHandler({UserNotFoundException.class, UsernameNotFoundException.class})
+  public ResponseEntity<DomainResponse> userNotFoundException(UserNotFoundException exception) {
     log.atWarning().log(exception.getMessage());
     return createDomainResponse(BAD_REQUEST, exception.getMessage());
   }
