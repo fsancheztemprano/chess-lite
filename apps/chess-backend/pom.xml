@@ -131,12 +131,6 @@
           </excludes>
         </configuration>
       </plugin>
-      <plugin><!-- http://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/maven-plugin/ -->
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-
-      </plugin>
     </plugins>
   </build>
-
 </project>

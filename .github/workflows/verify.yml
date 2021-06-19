@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: '14'
-      - name: Cache node modules
+      - name: Cache Node modules
         uses: actions/cache@v2.1.6
         env:
           cache-name: cache-node-modules-v3
