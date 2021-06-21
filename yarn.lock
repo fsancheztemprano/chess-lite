@@ -1958,10 +1958,10 @@
     "@actions/core" "1.4.0"
     "@actions/exec" "1.1.0"
 
-"@nx-tools/docker-meta@1.0.0-rc.1":
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@nx-tools/docker-meta/-/docker-meta-1.0.0-rc.1.tgz#7e0d87fa5ab2b54695493ea376c85343d8cc044b"
-  integrity sha512-8Ffx95+EYqbVJt8s4qKLnFxonAR9zMpbW83vq3rjA/jxL+YRIroFNplQzX6UYKLOf85XJSqrWdhNdJzlghhDJA==
+"@nx-tools/docker-meta@1.0.0-rc.2":
+  version "1.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@nx-tools/docker-meta/-/docker-meta-1.0.0-rc.2.tgz#062de2310354f331e20aae05cb46ea57abc98f37"
+  integrity sha512-DPAjd65/mWC5MS5Uo8qN4lJzdHkrqtYj7oJBWiz66O5notqDuNJam7OjHvJryurqycrcB+9H/sZqqPPre1BuGQ==
   dependencies:
     "@nx-tools/ci-context" "1.0.1"
     "@nx-tools/core" "1.0.0"
@@ -1970,14 +1970,14 @@
     moment "2.29.1"
     semver "7.3.5"
 
-"@nx-tools/nx-docker@1.0.0-rc.3":
-  version "1.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@nx-tools/nx-docker/-/nx-docker-1.0.0-rc.3.tgz#d8e93bcebc15ecf0422fc8079db1d36099b3b1ba"
-  integrity sha512-l06IcSP5gC5Q1VMBCQxVMnEn+cDAr5QYB/5l56Bpd2jnywIigWFQSZmDA8vGfua7xFThD/Qv4envIxFaOjltSg==
+"@nx-tools/nx-docker@1.0.0-rc.4":
+  version "1.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@nx-tools/nx-docker/-/nx-docker-1.0.0-rc.4.tgz#479c9f0617d00a7c1ed9c6f0109dfcc754b7104b"
+  integrity sha512-2syH9WM6IsRc1sY6itckw0eNyNgi26TdMUTK0jwnlIDKqelcm3OklPqxAgXipFT/NVITvsSQu+BKyIc6WgpVPQ==
   dependencies:
     "@nx-tools/ci-context" "1.0.1"
     "@nx-tools/core" "1.0.0"
-    "@nx-tools/docker-meta" "1.0.0-rc.1"
+    "@nx-tools/docker-meta" "1.0.0-rc.2"
     csv-parse "4.16.0"
     dotenv "10.0.0"
     semver "7.3.5"
