@@ -6,11 +6,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
 import dev.kurama.chess.backend.poc.api.domain.AuthorDTO;
-import dev.kurama.chess.backend.poc.api.mapper.AuthorMapper;
-import dev.kurama.chess.backend.poc.domain.Author;
-import dev.kurama.chess.backend.poc.domain.Book;
-import dev.kurama.chess.backend.poc.repository.AuthorRepository;
-import dev.kurama.chess.backend.poc.repository.BookRepository;
+import dev.kurama.chess.backend.poc.facade.AuthorFacade;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -30,47 +26,38 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthorResource {
 
   @NonNull
-  private final AuthorRepository authorRepository;
+  private final AuthorFacade authorFacade;
 
-  @NonNull
-  private final BookRepository bookRepository;
-
-  @NonNull
-  private final AuthorMapper authorMapper;
 
   @GetMapping()
   public ResponseEntity<List<AuthorDTO>> getAll() {
-    return ok().body(authorMapper.authorsToAuthorDTOs(authorRepository.findAll()));
+    return ok().body(authorFacade.findAll());
   }
 
   @PostMapping()
   public ResponseEntity<AuthorDTO> create(@RequestBody AuthorDTO authorDTO) {
-    Author author = authorRepository.save(authorMapper.authorDTOToAuthor(authorDTO));
-    return created(fromCurrentRequestUri().path("/user/{username}").buildAndExpand(author.getId()).toUri())
-      .body(authorMapper.authorToAuthorDTO(author));
+    AuthorDTO authorDto = authorFacade.create(authorDTO);
+    return created(fromCurrentRequestUri()
+      .path("/user/{username}")
+      .buildAndExpand(authorDto.getId()).toUri())
+      .body(authorDto);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<AuthorDTO> get(@PathVariable("id") Long id) {
-    return ok().body(authorMapper.authorToAuthorDTO(authorRepository.findById(id).orElseThrow()));
+    return ok().body(authorFacade.findById(id));
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable("id") String id) {
-    authorRepository.deleteById(Long.parseLong(id));
+    authorFacade.deleteById(Long.parseLong(id));
     return noContent().build();
   }
 
-  @PatchMapping("/{authorId}/book/{bookId}")
-  public ResponseEntity<AuthorDTO> addBook(@PathVariable("authorId") Long authorId,
+  @PatchMapping("/{id}/book/{bookId}")
+  public ResponseEntity<AuthorDTO> addBook(@PathVariable("id") Long id,
     @PathVariable("bookId") Long bookId) {
-    Author author = authorRepository.findById(authorId).orElseThrow();
-    Book book = bookRepository.findById(bookId).orElseThrow();
-    author.getBooks().add(book);
-    book.setAuthor(author);
-    authorRepository.save(author);
-    bookRepository.save(book);
-    return ok().body(authorMapper.authorToAuthorDTO(author));
-
+    return ok().body(authorFacade.addBook(id, bookId));
   }
+
 }
