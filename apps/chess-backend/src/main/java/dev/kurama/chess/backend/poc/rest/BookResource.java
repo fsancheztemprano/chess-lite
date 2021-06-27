@@ -5,12 +5,14 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
+import dev.kurama.chess.backend.poc.api.assembler.BookDtoAssembler;
 import dev.kurama.chess.backend.poc.api.domain.BookDTO;
 import dev.kurama.chess.backend.poc.facade.BookFacade;
-import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,10 +30,13 @@ public class BookResource {
   @NonNull
   private final BookFacade bookFacade;
 
+  @NonNull
+  private final BookDtoAssembler bookDtoAssembler;
+
 
   @GetMapping()
-  public ResponseEntity<List<BookDTO>> getAll() {
-    return ok().body(bookFacade.findAll());
+  public ResponseEntity<CollectionModel<BookDTO>> getAll() {
+    return ok().body(bookDtoAssembler.toCollectionModel(bookFacade.findAll()));
   }
 
   @PostMapping()
@@ -40,22 +45,22 @@ public class BookResource {
     return created(fromCurrentRequestUri()
       .path("/user/{username}")
       .buildAndExpand(bookDto.getId()).toUri())
-      .body(bookDto);
+      .body(bookDtoAssembler.toModel(bookDto));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<BookDTO> get(@PathVariable("id") Long id) {
-    return ok().body(bookFacade.findById(id));
+  public ResponseEntity<BookDTO> get(@PathVariable("id") Long id, Authentication user) {
+    return ok().body(bookDtoAssembler.toModel(bookFacade.findById(id), user.getAuthorities()));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable("id") String id) {
-    bookFacade.deleteById(Long.parseLong(id));
+  public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    bookFacade.deleteById(id);
     return noContent().build();
   }
 
   @PutMapping("/{id}/author/{authorId}")
   public ResponseEntity<BookDTO> setAuthor(@PathVariable("id") Long id, @PathVariable("authorId") Long authorId) {
-    return ok().body(bookFacade.setAuthor(id, authorId));
+    return ok().body(bookDtoAssembler.toModel(bookFacade.setAuthor(id, authorId)));
   }
 }

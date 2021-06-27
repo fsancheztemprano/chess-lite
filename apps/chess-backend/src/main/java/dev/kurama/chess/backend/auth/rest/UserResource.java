@@ -16,6 +16,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,7 +37,7 @@ public class UserResource {
 
   @GetMapping()
   @PreAuthorize("hasAnyAuthority('user:read')")
-  public ResponseEntity<List<User>> getAllUsers() {
+  public ResponseEntity<List<User>> getAllUsers(Authentication user) {
     return ok().body(userFacade.getAllUsers());
   }
 

@@ -5,11 +5,12 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
+import dev.kurama.chess.backend.poc.api.assembler.AuthorDtoAssembler;
 import dev.kurama.chess.backend.poc.api.domain.AuthorDTO;
 import dev.kurama.chess.backend.poc.facade.AuthorFacade;
-import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +29,13 @@ public class AuthorResource {
   @NonNull
   private final AuthorFacade authorFacade;
 
+  @NonNull
+  private final AuthorDtoAssembler authorDtoAssembler;
+
 
   @GetMapping()
-  public ResponseEntity<List<AuthorDTO>> getAll() {
-    return ok().body(authorFacade.findAll());
+  public ResponseEntity<CollectionModel<AuthorDTO>> getAll() {
+    return ok().body(authorDtoAssembler.toCollectionModel(authorFacade.findAll()));
   }
 
   @PostMapping()
@@ -40,24 +44,24 @@ public class AuthorResource {
     return created(fromCurrentRequestUri()
       .path("/user/{username}")
       .buildAndExpand(authorDto.getId()).toUri())
-      .body(authorDto);
+      .body(authorDtoAssembler.toModel(authorDto));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<AuthorDTO> get(@PathVariable("id") Long id) {
-    return ok().body(authorFacade.findById(id));
+    return ok().body(authorDtoAssembler.toModel(authorFacade.findById(id)));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable("id") String id) {
-    authorFacade.deleteById(Long.parseLong(id));
+  public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    authorFacade.deleteById(id);
     return noContent().build();
   }
 
   @PatchMapping("/{id}/book/{bookId}")
   public ResponseEntity<AuthorDTO> addBook(@PathVariable("id") Long id,
     @PathVariable("bookId") Long bookId) {
-    return ok().body(authorFacade.addBook(id, bookId));
+    return ok().body(authorDtoAssembler.toModel(authorFacade.addBook(id, bookId)));
   }
 
 }
