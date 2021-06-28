@@ -39,7 +39,13 @@ public class BookService {
     author.getBooks().add(book);
     book.setAuthor(author);
     authorRepository.save(author);
-    bookRepository.save(book);
-    return book;
+    return bookRepository.save(book);
+  }
+
+  public Book put(Long id, Book newBook) {
+    var book = bookRepository.findById(id).orElseThrow();
+    book.setIsbn(newBook.getIsbn());
+    book.setTitle(newBook.getTitle());
+    return bookRepository.save(book);
   }
 }

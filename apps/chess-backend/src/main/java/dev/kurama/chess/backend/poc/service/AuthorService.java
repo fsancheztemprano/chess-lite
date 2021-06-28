@@ -39,8 +39,14 @@ public class AuthorService {
     var book = bookRepository.findById(bookId).orElseThrow();
     author.getBooks().add(book);
     book.setAuthor(author);
-    authorRepository.save(author);
     bookRepository.save(book);
-    return author;
+    return authorRepository.save(author);
+  }
+
+  public Author put(Long id, Author newAuthor) {
+    var author = authorRepository.findById(id).orElseThrow();
+    author.setName(newAuthor.getName());
+    author.setCity(newAuthor.getCity());
+    return authorRepository.save(author);
   }
 }

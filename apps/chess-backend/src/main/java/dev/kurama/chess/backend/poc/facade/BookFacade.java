@@ -1,6 +1,7 @@
 package dev.kurama.chess.backend.poc.facade;
 
-import dev.kurama.chess.backend.poc.api.domain.BookDTO;
+import dev.kurama.chess.backend.poc.api.domain.input.BookInput;
+import dev.kurama.chess.backend.poc.api.domain.output.BookModel;
 import dev.kurama.chess.backend.poc.api.mapper.BookMapper;
 import dev.kurama.chess.backend.poc.service.BookService;
 import java.util.List;
@@ -18,24 +19,28 @@ public class BookFacade {
   @NonNull
   private final BookMapper bookMapper;
 
-  public List<BookDTO> findAll() {
-    return bookMapper.booksToBookDTOs(bookService.findAll());
+  public List<BookModel> findAll() {
+    return bookMapper.booksToBookModels(bookService.findAll());
   }
 
 
-  public BookDTO create(BookDTO bookDTO) {
-    return bookMapper.bookToBookDTO(bookService.create(bookMapper.bookDTOToBook(bookDTO)));
+  public BookModel create(BookInput bookInput) {
+    return bookMapper.bookToBookModel(bookService.create(bookMapper.bookInputToBook(bookInput)));
   }
 
-  public BookDTO findById(Long id) {
-    return bookMapper.bookToBookDTO(bookService.findById(id));
+  public BookModel findById(Long id) {
+    return bookMapper.bookToBookModel(bookService.findById(id));
   }
 
   public void deleteById(long id) {
     bookService.deleteById(id);
   }
 
-  public BookDTO setAuthor(Long bookId, Long authorId) {
-    return bookMapper.bookToBookDTO(bookService.setAuthor(bookId, authorId));
+  public BookModel setAuthor(Long bookId, Long authorId) {
+    return bookMapper.bookToBookModel(bookService.setAuthor(bookId, authorId));
+  }
+
+  public BookModel put(Long id, BookInput bookInput) {
+    return bookMapper.bookToBookModel(bookService.put(id, bookMapper.bookInputToBook(bookInput)));
   }
 }

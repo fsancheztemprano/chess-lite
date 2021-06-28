@@ -1,6 +1,7 @@
 package dev.kurama.chess.backend.poc.facade;
 
-import dev.kurama.chess.backend.poc.api.domain.AuthorDTO;
+import dev.kurama.chess.backend.poc.api.domain.input.AuthorInput;
+import dev.kurama.chess.backend.poc.api.domain.output.AuthorModel;
 import dev.kurama.chess.backend.poc.api.mapper.AuthorMapper;
 import dev.kurama.chess.backend.poc.service.AuthorService;
 import java.util.List;
@@ -18,24 +19,27 @@ public class AuthorFacade {
   @NonNull
   private final AuthorMapper authorMapper;
 
-  public List<AuthorDTO> findAll() {
-    return authorMapper.authorsToAuthorDTOs(authorService.findAll());
+  public List<AuthorModel> findAll() {
+    return authorMapper.authorsToAuthorModels(authorService.findAll());
   }
 
-  public AuthorDTO create(AuthorDTO authorDTO) {
-    return authorMapper.authorToAuthorDTO(authorService.create(authorMapper.authorDTOToAuthor(authorDTO)));
+  public AuthorModel create(AuthorInput authorModel) {
+    return authorMapper.authorToAuthorModel(authorService.create(authorMapper.authorInputToAuthor(authorModel)));
   }
 
-  public AuthorDTO findById(Long id) {
-    return authorMapper.authorToAuthorDTO(authorService.findById(id));
+  public AuthorModel findById(Long id) {
+    return authorMapper.authorToAuthorModel(authorService.findById(id));
   }
 
   public void deleteById(long id) {
     authorService.deleteById(id);
   }
 
-  public AuthorDTO addBook(Long authorId, Long bookId) {
-    return authorMapper.authorToAuthorDTO(authorService.addBook(authorId, bookId));
+  public AuthorModel addBook(Long authorId, Long bookId) {
+    return authorMapper.authorToAuthorModel(authorService.addBook(authorId, bookId));
   }
 
+  public AuthorModel put(Long id, AuthorInput authorInput) {
+    return authorMapper.authorToAuthorModel(authorService.put(id, authorMapper.authorInputToAuthor(authorInput)));
+  }
 }

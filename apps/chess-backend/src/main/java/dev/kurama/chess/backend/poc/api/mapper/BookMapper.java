@@ -1,6 +1,7 @@
 package dev.kurama.chess.backend.poc.api.mapper;
 
-import dev.kurama.chess.backend.poc.api.domain.BookDTO;
+import dev.kurama.chess.backend.poc.api.domain.input.BookInput;
+import dev.kurama.chess.backend.poc.api.domain.output.BookModel;
 import dev.kurama.chess.backend.poc.domain.Book;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -10,12 +11,12 @@ import org.mapstruct.Mapping;
 public interface BookMapper {
 
   @Mapping(target = "authorId", source = "author.id")
-  BookDTO bookToBookDTO(Book book);
+  BookModel bookToBookModel(Book book);
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "author", ignore = true)
-  Book bookDTOToBook(BookDTO bookDto);
+  //  @Mapping(target = "id", ignore = true)
+//  @Mapping(target = "author", ignore = true)
+  Book bookInputToBook(BookInput bookInput);
 
-  List<BookDTO> booksToBookDTOs(List<Book> books);
+  List<BookModel> booksToBookModels(List<Book> books);
 
 }

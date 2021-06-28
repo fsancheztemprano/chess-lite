@@ -5,14 +5,14 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
-import dev.kurama.chess.backend.poc.api.assembler.BookDtoAssembler;
-import dev.kurama.chess.backend.poc.api.domain.BookDTO;
+import dev.kurama.chess.backend.poc.api.assembler.BookModelAssembler;
+import dev.kurama.chess.backend.poc.api.domain.input.BookInput;
+import dev.kurama.chess.backend.poc.api.domain.output.BookModel;
 import dev.kurama.chess.backend.poc.facade.BookFacade;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,26 +31,26 @@ public class BookResource {
   private final BookFacade bookFacade;
 
   @NonNull
-  private final BookDtoAssembler bookDtoAssembler;
+  private final BookModelAssembler bookModelAssembler;
 
 
   @GetMapping()
-  public ResponseEntity<CollectionModel<BookDTO>> getAll(Authentication user) {
-    return ok().body(bookDtoAssembler.toCollectionModel(bookFacade.findAll()));
+  public ResponseEntity<CollectionModel<BookModel>> getAll() {
+    return ok().body(bookModelAssembler.toCollectionModel(bookFacade.findAll()));
   }
 
   @PostMapping()
-  public ResponseEntity<BookDTO> create(@RequestBody BookDTO bookDTO) {
-    BookDTO bookDto = bookFacade.create(bookDTO);
+  public ResponseEntity<BookModel> create(@RequestBody BookInput bookModel) {
+    BookModel createdBookModel = bookFacade.create(bookModel);
     return created(fromCurrentRequestUri()
       .path("/user/{username}")
-      .buildAndExpand(bookDto.getId()).toUri())
-      .body(bookDtoAssembler.toModel(bookDto));
+      .buildAndExpand(createdBookModel.getId()).toUri())
+      .body(bookModelAssembler.toModel(createdBookModel));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<BookDTO> get(@PathVariable("id") Long id, Authentication user) {
-    return ok().body(bookDtoAssembler.toModel(bookFacade.findById(id)));
+  public ResponseEntity<BookModel> get(@PathVariable("id") Long id) {
+    return ok().body(bookModelAssembler.toModel(bookFacade.findById(id)));
   }
 
   @DeleteMapping("/{id}")
@@ -59,8 +59,14 @@ public class BookResource {
     return noContent().build();
   }
 
+  @PutMapping("/{id}")
+  public ResponseEntity<BookModel> put(@PathVariable("id") Long id, @RequestBody BookInput bookInput) {
+    return ok().body(bookModelAssembler.toModel(bookFacade.put(id, bookInput)));
+  }
+
+
   @PutMapping("/{id}/author/{authorId}")
-  public ResponseEntity<BookDTO> setAuthor(@PathVariable("id") Long id, @PathVariable("authorId") Long authorId) {
-    return ok().body(bookDtoAssembler.toModel(bookFacade.setAuthor(id, authorId)));
+  public ResponseEntity<BookModel> setAuthor(@PathVariable("id") Long id, @PathVariable("authorId") Long authorId) {
+    return ok().body(bookModelAssembler.toModel(bookFacade.setAuthor(id, authorId)));
   }
 }

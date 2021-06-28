@@ -12,7 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public interface RepresentationDtoAssembler<T extends RepresentationModel<T>> extends
+public interface DomainModelAssembler<T extends RepresentationModel<T>> extends
   RepresentationModelAssembler<T, T> {
 
   @Override
