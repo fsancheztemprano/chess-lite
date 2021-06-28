@@ -35,7 +35,7 @@ public class BookResource {
 
 
   @GetMapping()
-  public ResponseEntity<CollectionModel<BookDTO>> getAll() {
+  public ResponseEntity<CollectionModel<BookDTO>> getAll(Authentication user) {
     return ok().body(bookDtoAssembler.toCollectionModel(bookFacade.findAll()));
   }
 
@@ -50,7 +50,7 @@ public class BookResource {
 
   @GetMapping("/{id}")
   public ResponseEntity<BookDTO> get(@PathVariable("id") Long id, Authentication user) {
-    return ok().body(bookDtoAssembler.toModel(bookFacade.findById(id), user.getAuthorities()));
+    return ok().body(bookDtoAssembler.toModel(bookFacade.findById(id)));
   }
 
   @DeleteMapping("/{id}")
