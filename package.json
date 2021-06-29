@@ -63,7 +63,7 @@
     "@nxrocks/nx-spring-boot": "2.1.0",
     "@types/jest": "26.0.23",
     "@types/node": "15.12.4",
-    "@typescript-eslint/eslint-plugin": "4.28.0",
+    "@typescript-eslint/eslint-plugin": "4.28.1",
     "@typescript-eslint/parser": "4.28.0",
     "cypress": "7.6.0",
     "dotenv": "10.0.0",
