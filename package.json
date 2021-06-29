@@ -54,7 +54,7 @@
     "@angular/language-service": "12.1.0",
     "@nrwl/cli": "12.4.0",
     "@nrwl/cypress": "12.4.0",
-    "@nrwl/eslint-plugin-nx": "12.4.0",
+    "@nrwl/eslint-plugin-nx": "12.5.0",
     "@nrwl/jest": "12.4.0",
     "@nrwl/linter": "12.4.0",
     "@nrwl/tao": "12.4.0",
