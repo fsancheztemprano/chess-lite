@@ -1,19 +1,21 @@
 package dev.kurama.chess.backend.core.api.assembler;
 
-import com.google.common.collect.Lists;
-import java.util.Collection;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import dev.kurama.chess.backend.core.service.DomainController;
 import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.mediatype.Affordances;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpMethod;
 
 public interface DomainModelAssembler<T extends RepresentationModel<T>> extends
   RepresentationModelAssembler<T, T> {
+
+  Class<? extends DomainController<T>> getClazz();
 
   @Override
   @NonNull
@@ -21,20 +23,18 @@ public interface DomainModelAssembler<T extends RepresentationModel<T>> extends
     return RepresentationModelAssembler.super.toCollectionModel(entities).add(getCollectionModelSelfLink());
   }
 
-  @NonNull Link getCollectionModelSelfLink();
-
-  @NonNull Link getModelSelfLink(@NonNull Long id);
-
-  default Authentication getPrincipal() {
-    return SecurityContextHolder.getContext().getAuthentication();
+  @NonNull
+  default Link getModelSelfLink(@NonNull Long id) {
+    return Affordances.of(linkTo(methodOn(getClazz()).get(id)).withSelfRel())
+      .afford(HttpMethod.HEAD)
+      .withName("default").toLink();
   }
 
-  default Collection<? extends GrantedAuthority> getAuthorities() {
-    return SecurityContextHolder.getContext().getAuthentication() == null ? Lists.newArrayList()
-      : SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+  @NonNull
+  default Link getCollectionModelSelfLink() {
+    return Affordances.of(linkTo(methodOn(getClazz()).getAll()).withSelfRel())
+      .afford(HttpMethod.HEAD)
+      .withName("default").toLink();
   }
 
-  default boolean hasAuthority(String authority) {
-    return getAuthorities().contains(new SimpleGrantedAuthority(authority));
-  }
 }

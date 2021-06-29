@@ -5,9 +5,10 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
+import dev.kurama.chess.backend.core.service.DomainController;
 import dev.kurama.chess.backend.poc.api.assembler.AuthorModelAssembler;
 import dev.kurama.chess.backend.poc.api.domain.input.AuthorInput;
-import dev.kurama.chess.backend.poc.api.domain.output.AuthorModel;
+import dev.kurama.chess.backend.poc.api.domain.model.AuthorModel;
 import dev.kurama.chess.backend.poc.facade.AuthorFacade;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/author")
 @RequiredArgsConstructor
-public class AuthorResource {
+public class AuthorController implements DomainController<AuthorModel> {
 
   @NonNull
   private final AuthorFacade authorFacade;
@@ -35,6 +36,7 @@ public class AuthorResource {
   private final AuthorModelAssembler authorModelAssembler;
 
 
+  @Override
   @GetMapping()
   public ResponseEntity<CollectionModel<AuthorModel>> getAll() {
     return ok().body(authorModelAssembler.toCollectionModel(authorFacade.findAll()));
@@ -42,13 +44,14 @@ public class AuthorResource {
 
   @PostMapping()
   public ResponseEntity<AuthorModel> create(@RequestBody AuthorInput authorInput) {
-    AuthorModel newAuthorModel = authorFacade.create(authorInput);
+    var newAuthorModel = authorFacade.create(authorInput);
     return created(fromCurrentRequestUri()
       .path("/user/{username}")
       .buildAndExpand(newAuthorModel.getId()).toUri())
       .body(authorModelAssembler.toModel(newAuthorModel));
   }
 
+  @Override
   @GetMapping("/{id}")
   public ResponseEntity<AuthorModel> get(@PathVariable("id") Long id) {
     return ok().body(authorModelAssembler.toModel(authorFacade.findById(id)));
@@ -60,17 +63,14 @@ public class AuthorResource {
     return noContent().build();
   }
 
-
   @PutMapping("/{id}")
   public ResponseEntity<AuthorModel> put(@PathVariable("id") Long id, @RequestBody AuthorInput authorInput) {
     return ok().body(authorModelAssembler.toModel(authorFacade.put(id, authorInput)));
   }
-
 
   @PatchMapping("/{id}/book/{bookId}")
   public ResponseEntity<AuthorModel> addBook(@PathVariable("id") Long id,
     @PathVariable("bookId") Long bookId) {
     return ok().body(authorModelAssembler.toModel(authorFacade.addBook(id, bookId)));
   }
-
 }

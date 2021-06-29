@@ -5,9 +5,10 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
+import dev.kurama.chess.backend.core.service.DomainController;
 import dev.kurama.chess.backend.poc.api.assembler.BookModelAssembler;
 import dev.kurama.chess.backend.poc.api.domain.input.BookInput;
-import dev.kurama.chess.backend.poc.api.domain.output.BookModel;
+import dev.kurama.chess.backend.poc.api.domain.model.BookModel;
 import dev.kurama.chess.backend.poc.facade.BookFacade;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/book")
 @RequiredArgsConstructor
-public class BookResource {
+public class BookController implements DomainController<BookModel> {
 
   @NonNull
   private final BookFacade bookFacade;
@@ -64,8 +66,7 @@ public class BookResource {
     return ok().body(bookModelAssembler.toModel(bookFacade.put(id, bookInput)));
   }
 
-
-  @PutMapping("/{id}/author/{authorId}")
+  @PatchMapping("/{id}/author/{authorId}")
   public ResponseEntity<BookModel> setAuthor(@PathVariable("id") Long id, @PathVariable("authorId") Long authorId) {
     return ok().body(bookModelAssembler.toModel(bookFacade.setAuthor(id, authorId)));
   }

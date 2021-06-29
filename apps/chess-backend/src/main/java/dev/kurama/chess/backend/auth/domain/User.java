@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,7 @@ public class User extends AbstractEntity implements Serializable {
   private Date lastLoginDateDisplay;
   private Date joinDate;
   private String role;
+  @Builder.Default
   @ElementCollection
   private List<String> authorities = Lists.newArrayList();
   private boolean isActive;

@@ -1,7 +1,7 @@
 package dev.kurama.chess.backend.poc.facade;
 
 import dev.kurama.chess.backend.poc.api.domain.input.BookInput;
-import dev.kurama.chess.backend.poc.api.domain.output.BookModel;
+import dev.kurama.chess.backend.poc.api.domain.model.BookModel;
 import dev.kurama.chess.backend.poc.api.mapper.BookMapper;
 import dev.kurama.chess.backend.poc.service.BookService;
 import java.util.List;

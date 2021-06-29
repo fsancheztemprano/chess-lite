@@ -1,7 +1,7 @@
 package dev.kurama.chess.backend.poc.facade;
 
 import dev.kurama.chess.backend.poc.api.domain.input.AuthorInput;
-import dev.kurama.chess.backend.poc.api.domain.output.AuthorModel;
+import dev.kurama.chess.backend.poc.api.domain.model.AuthorModel;
 import dev.kurama.chess.backend.poc.api.mapper.AuthorMapper;
 import dev.kurama.chess.backend.poc.service.AuthorService;
 import java.util.List;
