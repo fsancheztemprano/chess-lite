@@ -56,7 +56,7 @@
     "@nrwl/cypress": "12.4.0",
     "@nrwl/eslint-plugin-nx": "12.4.0",
     "@nrwl/jest": "12.4.0",
-    "@nrwl/linter": "12.4.0",
+    "@nrwl/linter": "12.5.0",
     "@nrwl/tao": "12.4.0",
     "@nrwl/workspace": "12.4.0",
     "@nx-tools/nx-docker": "1.0.0-rc.4",
