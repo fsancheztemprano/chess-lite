@@ -14,9 +14,9 @@ public interface BookMapper {
   BookModel bookToBookModel(Book book);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "tid", ignore = true)
   @Mapping(target = "author", ignore = true)
   Book bookInputToBook(BookInput bookInput);
 
   List<BookModel> booksToBookModels(List<Book> books);
-
 }

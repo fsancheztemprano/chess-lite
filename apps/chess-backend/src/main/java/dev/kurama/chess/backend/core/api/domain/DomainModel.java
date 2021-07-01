@@ -6,5 +6,5 @@ import lombok.NonNull;
 public interface DomainModel {
 
   @NonNull
-  Long getId();
+  String getId();
 }

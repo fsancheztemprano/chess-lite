@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.domain.Role;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
@@ -15,9 +16,9 @@ import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.repository.UserRepository;
-import dev.kurama.chess.backend.auth.rest.input.UserInput;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -71,14 +72,14 @@ public class UserService implements UserDetailsService {
 
   public void deleteUser(String username) {
     var user = userRepository.findUserByUsername(username);
-    userRepository.deleteById(user.getId());
+    userRepository.deleteById(user.getTid());
   }
 
   public User register(String username, String password, String email, String firstName, String lastName)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(EMPTY, username, email);
     var user = User.builder()
-      .userId(randomNumeric(10))
+      .userId(UUID.randomUUID().toString())
       .username(username)
       .password(passwordEncoder.encode(password))
       .email(email)

@@ -27,19 +27,19 @@ public class AuthorFacade {
     return authorMapper.authorToAuthorModel(authorService.create(authorMapper.authorInputToAuthor(authorModel)));
   }
 
-  public AuthorModel findById(Long id) {
+  public AuthorModel findById(String id) {
     return authorMapper.authorToAuthorModel(authorService.findById(id));
   }
 
-  public void deleteById(long id) {
+  public void deleteById(String id) {
     authorService.deleteById(id);
   }
 
-  public AuthorModel addBook(Long authorId, Long bookId) {
+  public AuthorModel addBook(String authorId, String bookId) {
     return authorMapper.authorToAuthorModel(authorService.addBook(authorId, bookId));
   }
 
-  public AuthorModel put(Long id, AuthorInput authorInput) {
+  public AuthorModel put(String id, AuthorInput authorInput) {
     return authorMapper.authorToAuthorModel(authorService.put(id, authorMapper.authorInputToAuthor(authorInput)));
   }
 }

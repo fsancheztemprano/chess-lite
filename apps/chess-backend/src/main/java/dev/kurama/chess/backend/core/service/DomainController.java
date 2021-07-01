@@ -12,5 +12,5 @@ public interface DomainController<T extends RepresentationModel<T>> {
   ResponseEntity<CollectionModel<T>> getAll();
 
   @GetMapping("/{id}")
-  ResponseEntity<T> get(@PathVariable("id") Long id);
+  ResponseEntity<T> get(@PathVariable("id") String id);
 }

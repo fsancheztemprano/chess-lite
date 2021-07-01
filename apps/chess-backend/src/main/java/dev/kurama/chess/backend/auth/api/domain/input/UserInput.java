@@ -1,4 +1,4 @@
-package dev.kurama.chess.backend.auth.rest.input;
+package dev.kurama.chess.backend.auth.api.domain.input;
 
 import dev.kurama.chess.backend.auth.domain.Role;
 import lombok.Builder;

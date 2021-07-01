@@ -15,9 +15,9 @@ import org.springframework.hateoas.RepresentationModel;
 @Builder
 public class BookModel extends RepresentationModel<BookModel> implements DomainModel {
 
-  private Long id;
+  private String id;
   private String isbn;
   private String title;
-  private Long authorId;
+  private String authorId;
 
 }

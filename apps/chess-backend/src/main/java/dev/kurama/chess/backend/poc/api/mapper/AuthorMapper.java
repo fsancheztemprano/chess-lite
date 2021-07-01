@@ -15,10 +15,11 @@ public interface AuthorMapper {
   AuthorModel authorToAuthorModel(Author author);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "tid", ignore = true)
   @Mapping(target = "books", ignore = true)
   Author authorInputToAuthor(AuthorInput authorInput);
 
-  default Long bookToBookId(Book book) {
+  default String bookToBookId(Book book) {
     return book.getId();
   }
 

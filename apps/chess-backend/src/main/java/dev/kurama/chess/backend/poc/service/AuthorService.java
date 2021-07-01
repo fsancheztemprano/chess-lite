@@ -23,28 +23,29 @@ public class AuthorService {
   }
 
   public Author create(Author author) {
+    author.setRandomUUID();
     return authorRepository.save(author);
   }
 
-  public Author findById(Long id) {
-    return authorRepository.findById(id).orElseThrow();
+  public Author findById(String id) {
+    return authorRepository.findOneById(id).orElseThrow();
   }
 
-  public void deleteById(long id) {
-    authorRepository.deleteById(id);
+  public void deleteById(String id) {
+    authorRepository.deleteOneById(id);
   }
 
-  public Author addBook(Long authorId, Long bookId) {
-    var author = authorRepository.findById(authorId).orElseThrow();
-    var book = bookRepository.findById(bookId).orElseThrow();
+  public Author addBook(String authorId, String bookId) {
+    var author = authorRepository.findOneById(authorId).orElseThrow();
+    var book = bookRepository.findOneById(bookId).orElseThrow();
     author.getBooks().add(book);
     book.setAuthor(author);
     bookRepository.save(book);
     return authorRepository.save(author);
   }
 
-  public Author put(Long id, Author newAuthor) {
-    var author = authorRepository.findById(id).orElseThrow();
+  public Author put(String id, Author newAuthor) {
+    var author = authorRepository.findOneById(id).orElseThrow();
     author.setName(newAuthor.getName());
     author.setCity(newAuthor.getCity());
     return authorRepository.save(author);

@@ -2,13 +2,13 @@ package dev.kurama.chess.backend.auth.rest;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import dev.kurama.chess.backend.auth.api.domain.input.LoginInput;
+import dev.kurama.chess.backend.auth.api.domain.input.RegistryInput;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.facade.AuthenticationFacade;
-import dev.kurama.chess.backend.auth.rest.input.LoginInput;
-import dev.kurama.chess.backend.auth.rest.input.RegistryInput;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,10 @@
 package dev.kurama.chess.backend.auth.facade;
 
+import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
-import dev.kurama.chess.backend.auth.rest.input.UserInput;
 import dev.kurama.chess.backend.auth.service.UserService;
 import java.util.List;
 import lombok.NonNull;

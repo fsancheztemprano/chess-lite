@@ -51,23 +51,23 @@ public class BookController implements DomainController<BookModel> {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<BookModel> get(@PathVariable("id") Long id) {
+  public ResponseEntity<BookModel> get(@PathVariable("id") String id) {
     return ok().body(bookModelAssembler.toModel(bookFacade.findById(id)));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+  public ResponseEntity<Void> delete(@PathVariable("id") String id) {
     bookFacade.deleteById(id);
     return noContent().build();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<BookModel> put(@PathVariable("id") Long id, @RequestBody BookInput bookInput) {
+  public ResponseEntity<BookModel> put(@PathVariable("id") String id, @RequestBody BookInput bookInput) {
     return ok().body(bookModelAssembler.toModel(bookFacade.put(id, bookInput)));
   }
 
   @PatchMapping("/{id}/author/{authorId}")
-  public ResponseEntity<BookModel> setAuthor(@PathVariable("id") Long id, @PathVariable("authorId") Long authorId) {
+  public ResponseEntity<BookModel> setAuthor(@PathVariable("id") String id, @PathVariable("authorId") String authorId) {
     return ok().body(bookModelAssembler.toModel(bookFacade.setAuthor(id, authorId)));
   }
 }

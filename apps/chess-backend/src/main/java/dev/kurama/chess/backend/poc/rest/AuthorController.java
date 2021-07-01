@@ -7,9 +7,12 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 
 import dev.kurama.chess.backend.core.service.DomainController;
 import dev.kurama.chess.backend.poc.api.assembler.AuthorModelAssembler;
+import dev.kurama.chess.backend.poc.api.assembler.BookModelAssembler;
 import dev.kurama.chess.backend.poc.api.domain.input.AuthorInput;
 import dev.kurama.chess.backend.poc.api.domain.model.AuthorModel;
+import dev.kurama.chess.backend.poc.api.domain.model.BookModel;
 import dev.kurama.chess.backend.poc.facade.AuthorFacade;
+import dev.kurama.chess.backend.poc.facade.BookFacade;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -35,11 +38,17 @@ public class AuthorController implements DomainController<AuthorModel> {
   @NonNull
   private final AuthorModelAssembler authorModelAssembler;
 
+  @NonNull
+  private final BookFacade bookFacade;
+
+  @NonNull
+  private final BookModelAssembler bookModelAssembler;
+
 
   @Override
   @GetMapping()
   public ResponseEntity<CollectionModel<AuthorModel>> getAll() {
-    return ok().body(authorModelAssembler.toCollectionModel(authorFacade.findAll()));
+    return ok().body(authorModelAssembler.toSelfCollectionModel(authorFacade.findAll()));
   }
 
   @PostMapping()
@@ -53,24 +62,29 @@ public class AuthorController implements DomainController<AuthorModel> {
 
   @Override
   @GetMapping("/{id}")
-  public ResponseEntity<AuthorModel> get(@PathVariable("id") Long id) {
+  public ResponseEntity<AuthorModel> get(@PathVariable("id") String id) {
     return ok().body(authorModelAssembler.toModel(authorFacade.findById(id)));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+  public ResponseEntity<Void> delete(@PathVariable("id") String id) {
     authorFacade.deleteById(id);
     return noContent().build();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<AuthorModel> put(@PathVariable("id") Long id, @RequestBody AuthorInput authorInput) {
+  public ResponseEntity<AuthorModel> put(@PathVariable("id") String id, @RequestBody AuthorInput authorInput) {
     return ok().body(authorModelAssembler.toModel(authorFacade.put(id, authorInput)));
   }
 
   @PatchMapping("/{id}/book/{bookId}")
-  public ResponseEntity<AuthorModel> addBook(@PathVariable("id") Long id,
-    @PathVariable("bookId") Long bookId) {
+  public ResponseEntity<AuthorModel> addBook(@PathVariable("id") String id,
+    @PathVariable("bookId") String bookId) {
     return ok().body(authorModelAssembler.toModel(authorFacade.addBook(id, bookId)));
+  }
+
+  @GetMapping("/{id}/book")
+  public ResponseEntity<CollectionModel<BookModel>> getAuthorBooks(@PathVariable("id") String id) {
+    return ok().body(bookModelAssembler.toAuthorCollectionModel(bookFacade.findAllByAuthorId(id), id));
   }
 }

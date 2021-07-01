@@ -16,15 +16,12 @@ import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
-import org.springframework.hateoas.mediatype.Affordances;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthorModelAssembler implements DomainModelAssembler<AuthorModel> {
+public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
 
-  @Override
-  public Class<AuthorController> getClazz() {
+  protected Class<AuthorController> getClazz() {
     return AuthorController.class;
   }
 
@@ -33,6 +30,7 @@ public class AuthorModelAssembler implements DomainModelAssembler<AuthorModel> {
     return authorModel
       .add(getModelSelfLink(authorModel.getId()))
       .add(getParentLink())
+      .add(getBooksLink(authorModel))
       .mapLinkIf(hasAuthority(AUTHOR_DELETE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getDeleteAffordance(authorModel.getId())))
@@ -46,16 +44,16 @@ public class AuthorModelAssembler implements DomainModelAssembler<AuthorModel> {
   }
 
   @Override
-  public @NonNull CollectionModel<AuthorModel> toCollectionModel(
+  public @NonNull CollectionModel<AuthorModel> toSelfCollectionModel(
     @NonNull Iterable<? extends AuthorModel> entities) {
-    return DomainModelAssembler.super.toCollectionModel(entities)
+    return super.toSelfCollectionModel(entities)
       .mapLinkIf(hasAuthority(AUTHOR_CREATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getCreateAffordance()))
       ;
   }
 
-  private @NonNull Affordance getAddBookAffordance(Long id) {
+  private @NonNull Affordance getAddBookAffordance(String id) {
     return afford(methodOn(getClazz()).addBook(id, null));
   }
 
@@ -63,17 +61,19 @@ public class AuthorModelAssembler implements DomainModelAssembler<AuthorModel> {
     return afford(methodOn(getClazz()).create(null));
   }
 
-  private @NonNull Affordance getDeleteAffordance(Long id) {
+  private @NonNull Affordance getDeleteAffordance(String id) {
     return afford(methodOn(getClazz()).delete(id));
   }
 
-  private @NonNull Affordance getUpdateAffordance(Long id) {
+  private @NonNull Affordance getUpdateAffordance(String id) {
     return afford(methodOn(getClazz()).put(id, null));
   }
 
+  private Link getBooksLink(AuthorModel authorModel) {
+    return linkTo(methodOn(getClazz()).getAuthorBooks(authorModel.getId())).withRel("books");
+  }
+
   private @NonNull Link getParentLink() {
-    return Affordances.of(linkTo(methodOn(getClazz()).getAll()).withRel("authors"))
-      .afford(HttpMethod.HEAD)
-      .withName("wakaa").toLink();
+    return linkTo(methodOn(getClazz()).getAll()).withRel("authors");
   }
 }

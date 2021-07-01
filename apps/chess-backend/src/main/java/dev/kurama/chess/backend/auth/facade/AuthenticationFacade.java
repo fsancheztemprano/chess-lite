@@ -2,13 +2,13 @@ package dev.kurama.chess.backend.auth.facade;
 
 import static dev.kurama.chess.backend.auth.constant.SecurityConstant.JWT_TOKEN_HEADER;
 
+import dev.kurama.chess.backend.auth.api.domain.input.LoginInput;
+import dev.kurama.chess.backend.auth.api.domain.input.RegistryInput;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
-import dev.kurama.chess.backend.auth.rest.input.LoginInput;
-import dev.kurama.chess.backend.auth.rest.input.RegistryInput;
 import dev.kurama.chess.backend.auth.service.UserService;
 import dev.kurama.chess.backend.auth.utility.JWTTokenProvider;
 import lombok.NonNull;

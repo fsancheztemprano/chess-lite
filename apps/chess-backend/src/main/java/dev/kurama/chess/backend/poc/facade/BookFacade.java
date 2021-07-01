@@ -28,19 +28,23 @@ public class BookFacade {
     return bookMapper.bookToBookModel(bookService.create(bookMapper.bookInputToBook(bookInput)));
   }
 
-  public BookModel findById(Long id) {
+  public BookModel findById(String id) {
     return bookMapper.bookToBookModel(bookService.findById(id));
   }
 
-  public void deleteById(long id) {
+  public void deleteById(String id) {
     bookService.deleteById(id);
   }
 
-  public BookModel setAuthor(Long bookId, Long authorId) {
+  public BookModel setAuthor(String bookId, String authorId) {
     return bookMapper.bookToBookModel(bookService.setAuthor(bookId, authorId));
   }
 
-  public BookModel put(Long id, BookInput bookInput) {
+  public BookModel put(String id, BookInput bookInput) {
     return bookMapper.bookToBookModel(bookService.put(id, bookMapper.bookInputToBook(bookInput)));
+  }
+
+  public List<BookModel> findAllByAuthorId(String id) {
+    return bookMapper.booksToBookModels(bookService.findAllByAuthorId(id));
   }
 }
