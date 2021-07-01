@@ -57,7 +57,7 @@
     "@nrwl/eslint-plugin-nx": "12.5.0",
     "@nrwl/jest": "12.5.0",
     "@nrwl/linter": "12.5.0",
-    "@nrwl/tao": "12.5.0",
+    "@nrwl/tao": "12.5.1",
     "@nrwl/workspace": "12.5.0",
     "@nx-tools/nx-docker": "1.0.2",
     "@nxrocks/nx-spring-boot": "2.1.0",
