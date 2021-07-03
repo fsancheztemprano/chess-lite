@@ -1,10 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { DummyComponent } from './shared/components/dummy/dummy.component';
+import { Component } from '@angular/core';
+import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
+import { SidenavComponent } from './core/components/sidenav/sidenav.component';
+
+@Component({ selector: 'chess-lite-toolbar', template: '' })
+export class StubToolbarComponent implements Partial<ToolbarComponent> {}
+
+@Component({ selector: 'chess-lite-sidenav', template: '' })
+export class StubSidenavComponent implements Partial<SidenavComponent> {}
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [
+        AppComponent,
+        DummyComponent,
+        StubToolbarComponent,
+        StubSidenavComponent,
+      ],
     }).compileComponents();
   });
 
@@ -12,20 +27,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'front'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('front');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain(
-      'Welcome to front!'
-    );
   });
 });
