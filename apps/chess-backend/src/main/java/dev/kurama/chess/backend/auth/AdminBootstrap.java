@@ -15,12 +15,14 @@ public class AdminBootstrap implements CommandLineRunner {
   @NonNull
   private final UserService userService;
 
-
   @Override
   public void run(String... args) throws Exception {
     final var ADMIN_USERNAME = "admin";
-    var admin = userService.findUserByUsername(ADMIN_USERNAME);
-    if (admin == null) {
+    try {
+      var admin = userService.findUserByUsername(ADMIN_USERNAME).orElseThrow();
+      admin.setRole(Role.SUPER_ADMIN_ROLE.name());
+      userService.updateUser(ADMIN_USERNAME, admin);
+    } catch (Exception ignored) {
       userService.createUser(
         User.builder()
           .username(ADMIN_USERNAME)
@@ -32,9 +34,6 @@ public class AdminBootstrap implements CommandLineRunner {
           .expired(false)
           .credentialsExpired(false)
           .build());
-    } else {
-      admin.setRole(Role.SUPER_ADMIN_ROLE.name());
-      userService.updateUser(ADMIN_USERNAME, admin);
     }
   }
 }

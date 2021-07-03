@@ -10,6 +10,7 @@ import dev.kurama.chess.backend.auth.service.UserService;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,7 +28,8 @@ public class UserFacade {
   }
 
   public UserModel findByUsername(String username) {
-    return userMapper.userToUserModel(userService.findUserByUsername(username));
+    return userMapper.userToUserModel(
+      userService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username)));
   }
 
   public List<UserModel> getAll() {

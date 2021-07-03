@@ -16,6 +16,7 @@ import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.repository.UserRepository;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -55,12 +56,12 @@ public class UserService implements UserDetailsService {
     }
   }
 
-  public User findUserByUsername(String username) {
-    return userRepository.findUserByUsername(username).orElseThrow();
+  public Optional<User> findUserByUsername(String username) {
+    return userRepository.findUserByUsername(username);
   }
 
-  public User findUserByEmail(String email) {
-    return userRepository.findUserByEmail(email).orElseThrow();
+  public Optional<User> findUserByEmail(String email) {
+    return userRepository.findUserByEmail(email);
   }
 
   public List<User> getAllUsers() {
@@ -140,10 +141,10 @@ public class UserService implements UserDetailsService {
     throws UsernameExistsException, EmailExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
     var userByNewEmail = findUserByEmail(email);
-    if (userByNewUsername != null) {
+    if (userByNewUsername.isPresent()) {
       throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + newUsername);
     }
-    if (userByNewEmail != null) {
+    if (userByNewEmail.isPresent()) {
       throw new EmailExistsException(EMAIL_ALREADY_EXISTS + email);
     }
   }
@@ -154,16 +155,16 @@ public class UserService implements UserDetailsService {
     var userByNewEmail = findUserByEmail(email);
     if (isNotEmpty(currentUsername) && isNotBlank(currentUsername)) {
       var currentUser = findUserByUsername(currentUsername);
-      if (currentUser == null) {
+      if (currentUser.isEmpty()) {
         throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
       }
-      if (userByNewUsername != null && !currentUser.getId().equals(userByNewUsername.getId())) {
+      if (userByNewUsername.isPresent() && !currentUser.get().getId().equals(userByNewUsername.get().getId())) {
         throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + currentUsername);
       }
-      if (userByNewEmail != null && !currentUser.getId().equals(userByNewEmail.getId())) {
+      if (userByNewEmail.isPresent() && !currentUser.get().getId().equals(userByNewEmail.get().getId())) {
         throw new EmailExistsException(EMAIL_ALREADY_EXISTS + email);
       }
-      return currentUser;
+      return currentUser.get();
     } else {
       throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
     }

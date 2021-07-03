@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -44,8 +45,10 @@ public class AuthenticationFacade {
 
   public HttpHeaders login(LoginInput loginInput) {
     authenticate(loginInput.getUsername(), loginInput.getPassword());
-    var user = userService.findUserByUsername(loginInput.getUsername());
-    return getJwtHeader(new UserPrincipal(user));
+    var user = userService.findUserByUsername(loginInput.getUsername())
+      .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
+    return getJwtHeader(
+      new UserPrincipal(user));
   }
 
 
