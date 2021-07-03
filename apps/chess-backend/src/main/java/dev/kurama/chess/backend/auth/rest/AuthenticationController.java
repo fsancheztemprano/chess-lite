@@ -2,11 +2,11 @@ package dev.kurama.chess.backend.auth.rest;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import dev.kurama.chess.backend.auth.api.assembler.UserModelAssembler;
 import dev.kurama.chess.backend.auth.api.domain.input.LoginInput;
 import dev.kurama.chess.backend.auth.api.domain.input.RegistryInput;
-import dev.kurama.chess.backend.auth.domain.User;
+import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
-import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.facade.AuthenticationFacade;
 import lombok.NonNull;
@@ -25,9 +25,12 @@ public class AuthenticationController {
   @NonNull
   private final AuthenticationFacade authenticationFacade;
 
+  @NonNull
+  private final UserModelAssembler userModelAssembler;
+
   @PostMapping("/register")
-  public ResponseEntity<User> register(@RequestBody RegistryInput user)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
+  public ResponseEntity<UserModel> register(@RequestBody RegistryInput user)
+    throws UsernameExistsException, EmailExistsException {
     return ok().body(authenticationFacade.register(user));
   }
 

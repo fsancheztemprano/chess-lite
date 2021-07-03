@@ -1,10 +1,10 @@
 package dev.kurama.chess.backend.poc.api.assembler;
 
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
-import static dev.kurama.chess.backend.core.api.authority.AuthorAuthority.AUTHOR_READ;
-import static dev.kurama.chess.backend.core.api.authority.BookAuthority.BOOK_CREATE;
-import static dev.kurama.chess.backend.core.api.authority.BookAuthority.BOOK_DELETE;
-import static dev.kurama.chess.backend.core.api.authority.BookAuthority.BOOK_UPDATE;
+import static dev.kurama.chess.backend.core.authority.AuthorAuthority.AUTHOR_READ;
+import static dev.kurama.chess.backend.core.authority.BookAuthority.BOOK_CREATE;
+import static dev.kurama.chess.backend.core.authority.BookAuthority.BOOK_DELETE;
+import static dev.kurama.chess.backend.core.authority.BookAuthority.BOOK_UPDATE;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;

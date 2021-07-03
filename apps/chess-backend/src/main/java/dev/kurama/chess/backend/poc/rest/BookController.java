@@ -42,12 +42,12 @@ public class BookController implements DomainController<BookModel> {
   }
 
   @PostMapping()
-  public ResponseEntity<BookModel> create(@RequestBody BookInput bookModel) {
-    BookModel createdBookModel = bookFacade.create(bookModel);
+  public ResponseEntity<BookModel> create(@RequestBody BookInput bookInput) {
+    var bookModel = bookFacade.create(bookInput);
     return created(fromCurrentRequestUri()
       .path("/user/{username}")
-      .buildAndExpand(createdBookModel.getId()).toUri())
-      .body(bookModelAssembler.toModel(createdBookModel));
+      .buildAndExpand(bookModel.getId()).toUri())
+      .body(bookModelAssembler.toModel(bookModel));
   }
 
   @GetMapping("/{id}")

@@ -19,6 +19,11 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
   protected abstract Class<? extends DomainController<T>> getClazz();
 
   @Override
+  public @NonNull T toModel(@NonNull T entity) {
+    return entity;
+  }
+
+  @Override
   @NonNull
   public CollectionModel<T> toCollectionModel(@NonNull Iterable<? extends T> entities) {
     return RepresentationModelAssembler.super.toCollectionModel(entities);

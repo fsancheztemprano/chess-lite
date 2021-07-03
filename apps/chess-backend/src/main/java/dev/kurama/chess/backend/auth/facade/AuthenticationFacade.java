@@ -4,10 +4,10 @@ import static dev.kurama.chess.backend.auth.constant.SecurityConstant.JWT_TOKEN_
 
 import dev.kurama.chess.backend.auth.api.domain.input.LoginInput;
 import dev.kurama.chess.backend.auth.api.domain.input.RegistryInput;
-import dev.kurama.chess.backend.auth.domain.User;
+import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
+import dev.kurama.chess.backend.auth.api.mapper.UserMapper;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
-import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.service.UserService;
 import dev.kurama.chess.backend.auth.utility.JWTTokenProvider;
@@ -26,28 +26,32 @@ public class AuthenticationFacade {
   private final UserService userService;
 
   @NonNull
+  private final UserMapper userMapper;
+
+  @NonNull
   private final AuthenticationManager authenticationManager;
 
   @NonNull
   private final JWTTokenProvider jwtTokenProvider;
 
 
-  public User register(RegistryInput user)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    return userService
-      .register(user.getUsername(), user.getPassword(), user.getEmail(), user.getFirstName(), user.getLastName());
+  public UserModel register(RegistryInput registryInput) throws UsernameExistsException, EmailExistsException {
+    var user = userService
+      .register(registryInput.getUsername(), registryInput.getPassword(), registryInput.getEmail(),
+        registryInput.getFirstName(), registryInput.getLastName());
+    return userMapper.userToUserModel(user);
   }
 
-  public HttpHeaders login(LoginInput user) {
-    authenticate(user.getUsername(), user.getPassword());
-    var loginUser = userService.findUserByUsername(user.getUsername());
-    return getJwtHeader(new UserPrincipal(loginUser));
+  public HttpHeaders login(LoginInput loginInput) {
+    authenticate(loginInput.getUsername(), loginInput.getPassword());
+    var user = userService.findUserByUsername(loginInput.getUsername());
+    return getJwtHeader(new UserPrincipal(user));
   }
 
 
-  private HttpHeaders getJwtHeader(UserPrincipal user) {
+  private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
     var headers = new HttpHeaders();
-    headers.add(JWT_TOKEN_HEADER, jwtTokenProvider.generateJWTToken(user));
+    headers.add(JWT_TOKEN_HEADER, jwtTokenProvider.generateJWTToken(userPrincipal));
     return headers;
   }
 

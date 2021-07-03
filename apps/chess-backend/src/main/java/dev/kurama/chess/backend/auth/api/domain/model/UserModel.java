@@ -1,6 +1,8 @@
 package dev.kurama.chess.backend.auth.api.domain.model;
 
 import dev.kurama.chess.backend.core.api.domain.DomainModel;
+import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +18,17 @@ import org.springframework.hateoas.RepresentationModel;
 public class UserModel extends RepresentationModel<UserModel> implements DomainModel {
 
   private String id;
+  private String firstName;
+  private String lastName;
+  private String username;
+  private String email;
+  private String profileImageUrl;
+  private Date lastLoginDateDisplay;
+  private Date joinDate;
+  private String role;
+  private List<String> authorities;
+  private boolean active;
+  private boolean locked;
+  private boolean expired;
+  private boolean credentialsExpired;
 }

@@ -4,11 +4,9 @@ import static dev.kurama.chess.backend.auth.constant.UserConstant.EMAIL_ALREADY_
 import static dev.kurama.chess.backend.auth.constant.UserConstant.NO_USER_FOUND_BY_USERNAME;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.USERNAME_ALREADY_EXISTS;
 import static dev.kurama.chess.backend.auth.domain.Role.USER_ROLE;
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.domain.Role;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
@@ -18,7 +16,6 @@ import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.repository.UserRepository;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +43,7 @@ public class UserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findUserByUsername(username);
+    var user = userRepository.findUserByUsername(username).orElseThrow();
     if (user == null) {
       throw new UsernameNotFoundException("User not found by username: " + username);
     } else {
@@ -59,11 +56,11 @@ public class UserService implements UserDetailsService {
   }
 
   public User findUserByUsername(String username) {
-    return userRepository.findUserByUsername(username);
+    return userRepository.findUserByUsername(username).orElseThrow();
   }
 
   public User findUserByEmail(String email) {
-    return userRepository.findUserByEmail(email);
+    return userRepository.findUserByEmail(email).orElseThrow();
   }
 
   public List<User> getAllUsers() {
@@ -71,25 +68,25 @@ public class UserService implements UserDetailsService {
   }
 
   public void deleteUser(String username) {
-    var user = userRepository.findUserByUsername(username);
+    var user = userRepository.findUserByUsername(username).orElseThrow();
     userRepository.deleteById(user.getTid());
   }
 
   public User register(String username, String password, String email, String firstName, String lastName)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    validateNewUsernameAndEmail(EMPTY, username, email);
-    var user = User.builder()
-      .userId(UUID.randomUUID().toString())
+    throws UsernameExistsException, EmailExistsException {
+    validateUsernameAndEmailCreate(username, email);
+    User user = User.builder()
+      .setRandomUUID()
       .username(username)
       .password(passwordEncoder.encode(password))
       .email(email)
       .firstName(firstName)
       .lastName(lastName)
       .joinDate(new Date())
-      .isActive(true)
-      .isLocked(false)
-      .isExpired(false)
-      .isCredentialsExpired(false)
+      .active(true)
+      .locked(false)
+      .expired(false)
+      .credentialsExpired(false)
       .role(USER_ROLE.name())
       .authorities(USER_ROLE.getAuthorities()).build();
     userRepository.save(user);
@@ -97,40 +94,40 @@ public class UserService implements UserDetailsService {
     return user;
   }
 
-  public User createUser(UserInput userInput)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    validateNewUsernameAndEmail(EMPTY, userInput.getUsername(), userInput.getEmail());
+  public User createUser(User newUser)
+    throws UsernameExistsException, EmailExistsException {
+    validateUsernameAndEmailCreate(newUser.getUsername(), newUser.getEmail());
     User user = User.builder()
-      .userId(randomNumeric(10))
-      .username(userInput.getUsername())
-      .password(passwordEncoder.encode(userInput.getPassword()))
-      .email(userInput.getEmail())
-      .firstName(userInput.getFirstName())
-      .lastName(userInput.getLastName())
+      .setRandomUUID()
+      .username(newUser.getUsername())
+      .password(passwordEncoder.encode(newUser.getPassword()))
+      .email(newUser.getEmail())
+      .firstName(newUser.getFirstName())
+      .lastName(newUser.getLastName())
       .joinDate(new Date())
-      .isActive(userInput.isActive())
-      .isLocked(userInput.isLocked())
-      .isExpired(userInput.isExpired())
-      .isCredentialsExpired(userInput.isCredentialsExpired())
-      .role(getRoleEnumName(userInput.getRole()).name())
-      .authorities(getRoleEnumName(userInput.getRole()).getAuthorities()).build();
+      .active(newUser.isActive())
+      .locked(newUser.isLocked())
+      .expired(newUser.isExpired())
+      .credentialsExpired(newUser.isCredentialsExpired())
+      .role(getRoleEnumName(newUser.getRole()).name())
+      .authorities(getRoleEnumName(newUser.getRole()).getAuthorities()).build();
     userRepository.save(user);
     log.atInfo().log(String.format("New user registered: %s:%s", user.getUsername(), user.getPassword()));
     return user;
   }
 
-  public User updateUser(String username, UserInput userInput)
+  public User updateUser(String username, User modifiedUser)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    User currentUser = validateNewUsernameAndEmail(username, userInput.getUsername(), userInput.getEmail());
-    currentUser.setEmail(userInput.getEmail());
-    currentUser.setFirstName(userInput.getFirstName());
-    currentUser.setLastName(userInput.getLastName());
-    currentUser.setActive(userInput.isActive());
-    currentUser.setLocked(userInput.isLocked());
-    currentUser.setExpired(userInput.isExpired());
-    currentUser.setCredentialsExpired(userInput.isCredentialsExpired());
-    currentUser.setRole(getRoleEnumName(userInput.getRole()).name());
-    currentUser.setAuthorities(getRoleEnumName(userInput.getRole()).getAuthorities());
+    var currentUser = validateUsernameAndEmailUpdate(username, modifiedUser.getUsername(), modifiedUser.getEmail());
+    currentUser.setEmail(modifiedUser.getEmail());
+    currentUser.setFirstName(modifiedUser.getFirstName());
+    currentUser.setLastName(modifiedUser.getLastName());
+    currentUser.setActive(modifiedUser.isActive());
+    currentUser.setLocked(modifiedUser.isLocked());
+    currentUser.setExpired(modifiedUser.isExpired());
+    currentUser.setCredentialsExpired(modifiedUser.isCredentialsExpired());
+    currentUser.setRole(getRoleEnumName(modifiedUser.getRole()).name());
+    currentUser.setAuthorities(getRoleEnumName(modifiedUser.getRole()).getAuthorities());
     userRepository.save(currentUser);
     return currentUser;
   }
@@ -139,11 +136,23 @@ public class UserService implements UserDetailsService {
     return Role.valueOf(role.toUpperCase());
   }
 
-  private User validateNewUsernameAndEmail(String currentUsername, String newUsername, String email)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
+  private void validateUsernameAndEmailCreate(String newUsername, String email)
+    throws UsernameExistsException, EmailExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
     var userByNewEmail = findUserByEmail(email);
-    if (isNotBlank(currentUsername)) {
+    if (userByNewUsername != null) {
+      throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + newUsername);
+    }
+    if (userByNewEmail != null) {
+      throw new EmailExistsException(EMAIL_ALREADY_EXISTS + email);
+    }
+  }
+
+  private User validateUsernameAndEmailUpdate(String currentUsername, String newUsername, String email)
+    throws UsernameExistsException, EmailExistsException, UserNotFoundException {
+    var userByNewUsername = findUserByUsername(newUsername);
+    var userByNewEmail = findUserByEmail(email);
+    if (isNotEmpty(currentUsername) && isNotBlank(currentUsername)) {
       var currentUser = findUserByUsername(currentUsername);
       if (currentUser == null) {
         throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
@@ -156,13 +165,7 @@ public class UserService implements UserDetailsService {
       }
       return currentUser;
     } else {
-      if (userByNewUsername != null) {
-        throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + currentUsername);
-      }
-      if (userByNewEmail != null) {
-        throw new EmailExistsException(EMAIL_ALREADY_EXISTS + email);
-      }
-      return null;
+      throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
     }
   }
 

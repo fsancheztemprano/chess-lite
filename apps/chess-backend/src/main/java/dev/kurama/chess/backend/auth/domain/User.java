@@ -23,7 +23,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class User extends AbstractEntity implements Serializable {
 
-  private String userId;
   private String firstName;
   private String lastName;
   private String username;
@@ -38,8 +37,8 @@ public class User extends AbstractEntity implements Serializable {
   @Builder.Default
   @ElementCollection
   private List<String> authorities = Lists.newArrayList();
-  private boolean isActive;
-  private boolean isLocked;
-  private boolean isExpired;
-  private boolean isCredentialsExpired;
+  private boolean active;
+  private boolean locked;
+  private boolean expired;
+  private boolean credentialsExpired;
 }

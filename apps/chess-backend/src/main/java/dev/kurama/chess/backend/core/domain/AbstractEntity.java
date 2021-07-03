@@ -36,12 +36,24 @@ public abstract class AbstractEntity {
   @Column(nullable = false, updatable = false, unique = true)
   private String id;
 
-  public String setRandomUUID() {
+  protected AbstractEntity(AbstractEntityBuilder<?, ?> b) {
+    this.tid = b.tid;
+    this.id = b.id;
+  }
+
+  public void setRandomUUID() {
     id = randomUUID();
-    return id;
   }
 
   public static String randomUUID() {
     return UUID.randomUUID().toString();
+  }
+
+  public abstract static class AbstractEntityBuilder<C extends AbstractEntity, B extends AbstractEntityBuilder<C, B>> {
+
+    public B setRandomUUID() {
+      this.id = randomUUID();
+      return self();
+    }
   }
 }

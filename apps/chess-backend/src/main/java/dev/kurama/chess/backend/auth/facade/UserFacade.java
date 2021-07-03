@@ -1,7 +1,8 @@
 package dev.kurama.chess.backend.auth.facade;
 
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
-import dev.kurama.chess.backend.auth.domain.User;
+import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
+import dev.kurama.chess.backend.auth.api.mapper.UserMapper;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
@@ -18,24 +19,27 @@ public class UserFacade {
   @NonNull
   private final UserService userService;
 
-  public User createUser(UserInput user) throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    return userService.createUser(user);
+  @NonNull
+  private final UserMapper userMapper;
+
+  public UserModel create(UserInput userInput) throws UsernameExistsException, EmailExistsException {
+    return userMapper.userToUserModel(userService.createUser(userMapper.userInputToUser(userInput)));
   }
 
-  public User getUser(String username) {
-    return userService.findUserByUsername(username);
+  public UserModel findByUsername(String username) {
+    return userMapper.userToUserModel(userService.findUserByUsername(username));
   }
 
-  public List<User> getAllUsers() {
-    return userService.getAllUsers();
+  public List<UserModel> getAll() {
+    return userMapper.userListToUserModelList(userService.getAllUsers());
   }
 
-  public User updateUser(String username, UserInput user)
+  public UserModel update(String username, UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    return userService.updateUser(username, user);
+    return userMapper.userToUserModel(userService.updateUser(username, userMapper.userInputToUser(userInput)));
   }
 
-  public void deleteUser(String username) {
+  public void deleteByUsername(String username) {
     userService.deleteUser(username);
   }
 }
