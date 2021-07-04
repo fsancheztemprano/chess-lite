@@ -14,12 +14,7 @@ export class StubSidenavComponent implements Partial<SidenavComponent> {}
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        DummyComponent,
-        StubToolbarComponent,
-        StubSidenavComponent,
-      ],
+      declarations: [AppComponent, DummyComponent, StubToolbarComponent, StubSidenavComponent],
     }).compileComponents();
   });
 

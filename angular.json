@@ -41,7 +41,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/chess-app",
             "index": "apps/chess-app/src/index.html",
@@ -94,6 +96,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "chess-app:build",
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "chess-app:build:production"
@@ -121,7 +127,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/chess-app"],
+          "outputs": [
+            "coverage/apps/chess-app"
+          ],
           "options": {
             "jestConfig": "apps/chess-app/jest.config.js",
             "passWithNoTests": true
@@ -150,7 +158,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/chess-app-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/chess-app-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -216,6 +226,33 @@
               {
                 "command": "mvn clean package -DskipTests"
               }
+            ]
+          }
+        }
+      }
+    },
+    "hal-form-client": {
+      "projectType": "library",
+      "root": "libs/hal-form-client",
+      "sourceRoot": "libs/hal-form-client/src",
+      "prefix": "chess-lite",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/hal-form-client"
+          ],
+          "options": {
+            "jestConfig": "libs/hal-form-client/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/hal-form-client/src/**/*.ts",
+              "libs/hal-form-client/src/**/*.html"
             ]
           }
         }

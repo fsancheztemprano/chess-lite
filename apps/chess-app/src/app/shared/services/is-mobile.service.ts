@@ -7,12 +7,10 @@ import { map, shareReplay } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class IsMobileService {
-  private isHandset: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+  private isHandset: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map((result) => result.matches),
+    shareReplay()
+  );
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 

@@ -9,9 +9,7 @@ export class SidenavService {
   private _isOpen$ = new BehaviorSubject(true);
 
   constructor(private readonly isMobileService: IsMobileService) {
-    isMobileService.isMobile$.subscribe((isMobile) =>
-      this._isOpen$.next(!isMobile)
-    );
+    isMobileService.isMobile$.subscribe((isMobile) => this._isOpen$.next(!isMobile));
   }
 
   get isOpen$(): BehaviorSubject<boolean> {

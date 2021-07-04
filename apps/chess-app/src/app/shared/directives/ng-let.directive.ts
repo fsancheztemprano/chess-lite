@@ -6,10 +6,8 @@ export class NgLetContext {
   ngLet: any = null;
 }
 
-@Directive({
-  // eslint-disable-next-line @angular-eslint/directive-selector
-  selector: '[ngLet]'
-})
+// eslint-disable-next-line @angular-eslint/directive-selector
+@Directive({ selector: '[ngLet]' })
 export class NgLetDirective implements OnInit {
   private _context = new NgLetContext();
 
@@ -18,10 +16,7 @@ export class NgLetDirective implements OnInit {
     this._context.$implicit = this._context.ngLet = value;
   }
 
-  constructor(
-    private _vcr: ViewContainerRef,
-    private _templateRef: TemplateRef<NgLetContext>
-  ) {
+  constructor(private _vcr: ViewContainerRef, private _templateRef: TemplateRef<NgLetContext>) {
   }
 
   ngOnInit() {

@@ -14,7 +14,12 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ]
       }
     }
   },
@@ -24,9 +29,14 @@
     },
     "chess-app-e2e": {
       "tags": [],
-      "implicitDependencies": ["chess-app"]
+      "implicitDependencies": [
+        "chess-app"
+      ]
     },
     "chess-backend": {
+      "tags": []
+    },
+    "hal-form-client": {
       "tags": []
     }
   },
