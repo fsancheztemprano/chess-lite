@@ -1945,6 +1945,22 @@
     tslib "^2.0.0"
     yargs-parser "20.0.0"
 
+"@nrwl/tao@12.5.5":
+  version "12.5.5"
+  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-12.5.5.tgz#a60f16bc7fd703d9113b7a73034c285fe6d12603"
+  integrity sha512-iMYiyZTRvOUNBtUYiFZIv0YQ2xZLkLrglSF7vld6DjQdZJEkxdc7EjYVGgotflZC4BDz0EnWV7o8TBCB1z5U3A==
+  dependencies:
+    chalk "4.1.0"
+    enquirer "~2.3.6"
+    fs-extra "^9.1.0"
+    jsonc-parser "3.0.0"
+    rxjs "^6.5.4"
+    rxjs-for-await "0.0.2"
+    semver "7.3.4"
+    tmp "~0.2.1"
+    tslib "^2.0.0"
+    yargs-parser "20.0.0"
+
 "@nrwl/workspace@*":
   version "12.3.6"
   resolved "https://registry.yarnpkg.com/@nrwl/workspace/-/workspace-12.3.6.tgz#4b78e08284312726861a5a50ca2bc50243ea041a"
@@ -2369,7 +2385,7 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
 
-"@types/url-template@^2.0.28":
+"@types/url-template@2.0.28":
   version "2.0.28"
   resolved "https://registry.yarnpkg.com/@types/url-template/-/url-template-2.0.28.tgz#b692f0e72108c0165d541f9ab95e572fc966318b"
   integrity sha512-1i/YtOhvlWDbMDTWhCfvhyUwBS9vNFs78sJOyahoruJCcDbwaSH73AlnuCp7luKPm6qqdCg4VKq/IHUncl6gZA==
