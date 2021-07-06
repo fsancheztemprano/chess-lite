@@ -62,7 +62,7 @@
     "@nrwl/linter": "12.5.2",
     "@nrwl/tao": "12.5.2",
     "@nrwl/workspace": "12.5.2",
-    "@nx-tools/nx-docker": "1.0.2",
+    "@nx-tools/nx-docker": "1.0.3",
     "@nxrocks/nx-spring-boot": "2.1.0",
     "@types/jest": "26.0.23",
     "@types/node": "16.0.0",

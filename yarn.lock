@@ -2030,10 +2030,10 @@
     moment "2.29.1"
     semver "7.3.5"
 
-"@nx-tools/nx-docker@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@nx-tools/nx-docker/-/nx-docker-1.0.2.tgz#43fa4a805419ff251afd8f7dc014b8ac39dab7d6"
-  integrity sha512-987QuMDD1FbBGyiAMR9pHNrNziBHhkGOdUkbmQPJ4krNjx7iD1jFb/OI4VJeKexGKGGg8wITG3FURE8V0ysyxw==
+"@nx-tools/nx-docker@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@nx-tools/nx-docker/-/nx-docker-1.0.3.tgz#22937134296234cb8c8a32690a79072e171d613b"
+  integrity sha512-Q1EclrnRR5zlNI77KN/Z7tIaesyboC3Pnxk2hWbYv/171bWdNeGNo7RUXOfImSwUzQPW8rNBfMjHChDMR8QcYA==
   dependencies:
     "@nx-tools/ci-context" "1.0.2"
     "@nx-tools/core" "^1.0.1"
@@ -2369,7 +2369,7 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
   integrity sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==
 
-"@types/url-template@^2.0.28":
+"@types/url-template@2.0.28":
   version "2.0.28"
   resolved "https://registry.yarnpkg.com/@types/url-template/-/url-template-2.0.28.tgz#b692f0e72108c0165d541f9ab95e572fc966318b"
   integrity sha512-1i/YtOhvlWDbMDTWhCfvhyUwBS9vNFs78sJOyahoruJCcDbwaSH73AlnuCp7luKPm6qqdCg4VKq/IHUncl6gZA==
