@@ -2292,10 +2292,10 @@
     moment "2.29.1"
     semver "7.3.5"
 
-"@nx-tools/nx-docker@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@nx-tools/nx-docker/-/nx-docker-1.0.2.tgz#43fa4a805419ff251afd8f7dc014b8ac39dab7d6"
-  integrity sha512-987QuMDD1FbBGyiAMR9pHNrNziBHhkGOdUkbmQPJ4krNjx7iD1jFb/OI4VJeKexGKGGg8wITG3FURE8V0ysyxw==
+"@nx-tools/nx-docker@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@nx-tools/nx-docker/-/nx-docker-1.0.5.tgz#4281bff39694f470046d4e2973ae78227dd974a0"
+  integrity sha512-I/3n228k9OAJWZVX2ygp+FsW8LszVbn7wJz2uAcEEbWFkm/x8wWs0r/Zg6Gnq3UtPaCKWOQW/DmRDt6MyM0rYQ==
   dependencies:
     "@nx-tools/ci-context" "1.0.2"
     "@nx-tools/core" "^1.0.1"
@@ -8098,7 +8098,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jwt-decode@^3.1.2:
+jwt-decode@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
   integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
