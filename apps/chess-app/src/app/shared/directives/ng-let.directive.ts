@@ -26,7 +26,6 @@ export class NgLetDirective implements OnInit {
 
 @NgModule({
   declarations: [NgLetDirective],
-  exports: [NgLetDirective]
+  exports: [NgLetDirective],
 })
-export class NgLetModule {
-}
+export class NgLetModule {}

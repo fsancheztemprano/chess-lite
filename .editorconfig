@@ -21,3 +21,7 @@ ij_html_do_not_indent_children_of_tags = none
 
 [*.js]
 ij_javascript_enforce_trailing_comma = keep
+
+[*.ts]
+ij_typescript_enforce_trailing_comma = keep
+ij_typescript_keep_simple_blocks_in_one_line = true
