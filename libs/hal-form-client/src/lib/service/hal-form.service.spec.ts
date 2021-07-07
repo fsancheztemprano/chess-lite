@@ -9,7 +9,7 @@ describe('HalFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HalFormClientModule.forRoot('/'), HttpClientTestingModule],
+      imports: [HalFormClientModule.forRoot('/api'), HttpClientTestingModule],
     });
     service = TestBed.inject(HalFormService);
   });

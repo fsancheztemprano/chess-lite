@@ -1,5 +1,9 @@
 package dev.kurama.chess.backend.auth.constant;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserConstant {
 
   public static final String USERNAME_ALREADY_EXISTS = "Username already exists: ";

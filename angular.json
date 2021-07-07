@@ -8,28 +8,18 @@
   "schematics": {
     "@nrwl/angular": {
       "application": {
-        "linter": "eslint"
+        "style": "scss",
+        "spec": true,
+        "linter": "eslint",
+        "unitTestRunner": "jest",
+        "e2eTestRunner": "cypress"
       },
       "library": {
-        "linter": "eslint"
-      },
-      "storybook-configuration": {
-        "linter": "eslint"
+        "style": "scss",
+        "spec": true,
+        "linter": "eslint",
+        "unitTestRunner": "jest"
       }
-    },
-    "@nrwl/angular:application": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:component": {
-      "style": "scss"
     }
   },
   "projects": {

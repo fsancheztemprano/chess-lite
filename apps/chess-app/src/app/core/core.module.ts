@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,22 +7,47 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { NgLetModule } from '../shared/directives/ng-let.directive';
 import { IsMobileModule } from '../shared/pipes/is-mobile.pipe';
+import { AppInitService } from './services/app-init.service';
+import { Observable } from 'rxjs';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HalFormClientModule } from '@chess-lite/hal-form-client';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from '../shared/shared.module';
+import { AuthInterceptor } from '../auth/interceptors/auth.interceptor';
+
+export function initializeApp(appInitService: AppInitService) {
+  return (): Observable<unknown> => {
+    return appInitService.init();
+  };
+}
+
+const MaterialModules = [
+  MatToolbarModule,
+  MatButtonModule,
+  MatSidenavModule,
+  MatIconModule,
+  MatListModule,
+  LayoutModule,
+];
 
 @NgModule({
   declarations: [ToolbarComponent, SidenavComponent],
-  exports: [ToolbarComponent, SidenavComponent],
   imports: [
-    CommonModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    NgLetModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    HalFormClientModule.forRoot('/api'),
+    HttpClientModule,
     IsMobileModule,
+    ...MaterialModules,
+    SharedModule,
+  ],
+  exports: [SharedModule, ToolbarComponent, SidenavComponent],
+  providers: [
+    AppInitService,
+    { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [AppInitService], multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 })
 export class CoreModule {}

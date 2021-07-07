@@ -1,11 +1,11 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { HalFormClientModule } from './hal-form-client.module';
+import { AuthRoutingModule } from './auth-routing.module';
 
-describe('HalFormClientModule', () => {
+describe('AuthRoutingModule', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HalFormClientModule],
+        imports: [AuthRoutingModule],
       }).compileComponents();
     })
   );
@@ -15,10 +15,10 @@ describe('HalFormClientModule', () => {
   // NB: This particular test does not do anything useful.
   //     It does NOT check for correct instantiation of the module.
   it('should have a module definition', () => {
-    expect(HalFormClientModule).toBeDefined();
+    expect(AuthRoutingModule).toBeDefined();
   });
 
   it('should create a module', () => {
-    expect(TestBed.inject(HalFormClientModule)).toBeTruthy();
+    expect(TestBed.inject(AuthRoutingModule)).toBeTruthy();
   });
 });

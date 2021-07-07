@@ -20,6 +20,9 @@
     "paths": {
       "@chess-lite/hal-form-client": [
         "libs/hal-form-client/src/index.ts"
+      ],
+      "@chess-lite/hal-form-client/testing": [
+        "libs/hal-form-client/src/index.testing.ts"
       ]
     }
   },
