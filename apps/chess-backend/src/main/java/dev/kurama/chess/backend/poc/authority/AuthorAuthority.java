@@ -1,4 +1,4 @@
-package dev.kurama.chess.backend.core.authority;
+package dev.kurama.chess.backend.poc.authority;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

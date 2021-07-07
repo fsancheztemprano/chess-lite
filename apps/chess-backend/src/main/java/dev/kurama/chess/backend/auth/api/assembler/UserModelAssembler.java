@@ -3,7 +3,7 @@ package dev.kurama.chess.backend.auth.api.assembler;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_DELETE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_UPDATE;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
-import static dev.kurama.chess.backend.core.authority.AuthorAuthority.AUTHOR_CREATE;
+import static dev.kurama.chess.backend.poc.authority.AuthorAuthority.AUTHOR_CREATE;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

@@ -23,4 +23,8 @@ public class AuthorityUtils {
   public static boolean hasAuthority(String authority) {
     return getAuthorities().contains(new SimpleGrantedAuthority(authority));
   }
+
+  public static boolean isAuthenticated() {
+    return !getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+  }
 }

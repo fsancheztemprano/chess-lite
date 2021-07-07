@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.core.api.assembler;
 
+import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -8,7 +9,6 @@ import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.mediatype.Affordances;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpMethod;
@@ -48,16 +48,12 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
 
   @NonNull
   protected Link getModelSelfLink(@NonNull String id) {
-    return Affordances.of(getSelfLink(id).withSelfRel())
-      .afford(HttpMethod.HEAD)
-      .withName("default").toLink();
+    return of(getSelfLink(id).withSelfRel()).afford(HttpMethod.HEAD).withName("default").toLink();
   }
 
   @NonNull
   protected Link getCollectionModelWithLink(WebMvcLinkBuilder link) {
-    return Affordances.of(link.withSelfRel())
-      .afford(HttpMethod.HEAD)
-      .withName("default").toLink();
+    return of(link.withSelfRel()).afford(HttpMethod.HEAD).withName("default").toLink();
   }
 
   protected WebMvcLinkBuilder getSelfLink(String id) {

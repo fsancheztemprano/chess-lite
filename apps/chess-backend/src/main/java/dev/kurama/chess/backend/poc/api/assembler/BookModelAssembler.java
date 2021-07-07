@@ -1,15 +1,15 @@
 package dev.kurama.chess.backend.poc.api.assembler;
 
-import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
-import static dev.kurama.chess.backend.core.authority.AuthorAuthority.AUTHOR_READ;
-import static dev.kurama.chess.backend.core.authority.BookAuthority.BOOK_CREATE;
-import static dev.kurama.chess.backend.core.authority.BookAuthority.BOOK_DELETE;
-import static dev.kurama.chess.backend.core.authority.BookAuthority.BOOK_UPDATE;
+import static dev.kurama.chess.backend.poc.authority.AuthorAuthority.AUTHOR_READ;
+import static dev.kurama.chess.backend.poc.authority.BookAuthority.BOOK_CREATE;
+import static dev.kurama.chess.backend.poc.authority.BookAuthority.BOOK_DELETE;
+import static dev.kurama.chess.backend.poc.authority.BookAuthority.BOOK_UPDATE;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import dev.kurama.chess.backend.auth.utility.AuthorityUtils;
 import dev.kurama.chess.backend.core.api.assembler.DomainModelAssembler;
 import dev.kurama.chess.backend.poc.api.domain.model.BookModel;
 import dev.kurama.chess.backend.poc.rest.AuthorController;
@@ -34,15 +34,15 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
     return bookModel
       .add(getModelSelfLink(bookModel.getId()))
       .add(getParentLink())
-      .addIf(hasAuthority(AUTHOR_READ) && !isEmpty(bookModel.getAuthorId()),
+      .addIf(AuthorityUtils.hasAuthority(AUTHOR_READ) && !isEmpty(bookModel.getAuthorId()),
         () -> getAuthorLink(bookModel.getAuthorId()))
-      .mapLinkIf(hasAuthority(BOOK_DELETE),
+      .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_DELETE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getDeleteAffordance(bookModel.getId())))
-      .mapLinkIf(hasAuthority(BOOK_UPDATE),
+      .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_UPDATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getUpdateAffordance(bookModel.getId())))
-      .mapLinkIf(hasAuthority(BOOK_UPDATE),
+      .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_UPDATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getSetAuthorAffordance(bookModel.getId())))
       ;
@@ -51,7 +51,7 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
   @Override
   public @NonNull CollectionModel<BookModel> toSelfCollectionModel(@NonNull Iterable<? extends BookModel> entities) {
     return super.toSelfCollectionModel(entities)
-      .mapLinkIf(hasAuthority(BOOK_CREATE),
+      .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_CREATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getCreateAffordance()))
       ;
@@ -60,7 +60,7 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
   public @NonNull CollectionModel<BookModel> toAuthorCollectionModel(@NonNull List<BookModel> entities,
     String authorId) {
     return toLinkedCollectionModel(entities, linkTo(methodOn(AuthorController.class).getAuthorBooks(authorId)))
-      .mapLinkIf(hasAuthority(BOOK_UPDATE),
+      .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_UPDATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getAddAuthorBookAffordance(authorId)));
   }
