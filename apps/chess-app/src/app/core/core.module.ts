@@ -16,6 +16,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/shared.module';
 import { AuthInterceptor } from '../auth/interceptors/auth.interceptor';
+import { ThemeComponent } from './components/theme/theme.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Observable<unknown> => {
@@ -24,16 +27,17 @@ export function initializeApp(appInitService: AppInitService) {
 }
 
 const MaterialModules = [
-  MatToolbarModule,
+  LayoutModule,
   MatButtonModule,
-  MatSidenavModule,
   MatIconModule,
   MatListModule,
-  LayoutModule,
+  MatSidenavModule,
+  MatSlideToggleModule,
+  MatToolbarModule,
 ];
 
 @NgModule({
-  declarations: [ToolbarComponent, SidenavComponent],
+  declarations: [ToolbarComponent, SidenavComponent, ThemeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -41,6 +45,7 @@ const MaterialModules = [
     HttpClientModule,
     IsMobileModule,
     ...MaterialModules,
+    ReactiveFormsModule,
     SharedModule,
   ],
   exports: [SharedModule, ToolbarComponent, SidenavComponent],

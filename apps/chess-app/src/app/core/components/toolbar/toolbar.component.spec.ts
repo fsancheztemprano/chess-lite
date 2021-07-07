@@ -6,8 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
 import { ToolbarComponent } from './toolbar.component';
+import { Component } from '@angular/core';
+import { ThemeComponent } from '../theme/theme.component';
+
+@Component({ selector: 'chess-lite-theme', template: '' })
+export class StubThemeComponent implements Partial<ThemeComponent> {}
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -16,7 +20,7 @@ describe('ToolbarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ToolbarComponent],
+        declarations: [ToolbarComponent, StubThemeComponent],
         imports: [
           NoopAnimationsModule,
           LayoutModule,
