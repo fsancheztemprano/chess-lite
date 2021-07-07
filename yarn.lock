@@ -199,7 +199,7 @@
     ora "5.3.0"
     rxjs "6.6.3"
 
-"@angular-devkit/schematics@12.0.5", "@angular-devkit/schematics@^12.0.0":
+"@angular-devkit/schematics@12.0.5":
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-12.0.5.tgz#db099b6cba1cadf064b87fd675857f6eba167b2a"
   integrity sha512-iW3XuDHScr3TXuunlEjF5O01zBpwpLgfr1oEny8PvseFGDlHK4Nj8zNIoIn3Yg936aiFO4GJAC/UXsT8g5vKxQ==
@@ -208,7 +208,7 @@
     ora "5.4.0"
     rxjs "6.6.7"
 
-"@angular-devkit/schematics@12.1.1":
+"@angular-devkit/schematics@12.1.1", "@angular-devkit/schematics@^12.0.0":
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-12.1.1.tgz#4a5b17325f88752fd7c7cebd8ef0603dc6316a2c"
   integrity sha512-oRsvlhJQLXkGWdJvArOby+G4j8UX2uCHwrN4EC1hXUKs84UsD+UATYOAh4h2auy+I+sdrmELUaHwdI4wdKpqnw==
@@ -1917,7 +1917,18 @@
     tsconfig-paths-webpack-plugin "3.2.0"
     webpack-node-externals "1.7.2"
 
-"@nrwl/devkit@*", "@nrwl/devkit@12.3.6":
+"@nrwl/devkit@*", "@nrwl/devkit@12.5.7":
+  version "12.5.7"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-12.5.7.tgz#9f49ae2b884f0b440bda79ffedfae984c878827f"
+  integrity sha512-zVH8edxO59GeOzmwcw6qBpQVT0yX9aHdhP5/XAUgPOYINdHIDMy1IZHyhb19fefT4Ju6wUil+1L9g9KvUpULcw==
+  dependencies:
+    "@nrwl/tao" "12.5.7"
+    ejs "^3.1.5"
+    ignore "^5.0.4"
+    semver "7.3.4"
+    tslib "^2.0.0"
+
+"@nrwl/devkit@12.3.6":
   version "12.3.6"
   resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-12.3.6.tgz#1b12242f617e3cf3a3fa5345857a6eaaba93c83e"
   integrity sha512-fNA86SSK0+I398QFZBVLRR+EHiWFPruIwyR+qeByCCGINEsxL5Gty0tbmewgTQF5yGSkqPZmKAjtTjh56S0CYw==
@@ -1935,17 +1946,6 @@
   integrity sha512-Fo8nkXiYm7+3ddIMWmdR0+K1ug0lAfAnYu9vhl3ASgL8gyx3TgGXqffR1/LY9+2miSDQ+RkVxdffmxIzoWhyuQ==
   dependencies:
     "@nrwl/tao" "12.5.2"
-    ejs "^3.1.5"
-    ignore "^5.0.4"
-    semver "7.3.4"
-    tslib "^2.0.0"
-
-"@nrwl/devkit@12.5.7":
-  version "12.5.7"
-  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-12.5.7.tgz#9f49ae2b884f0b440bda79ffedfae984c878827f"
-  integrity sha512-zVH8edxO59GeOzmwcw6qBpQVT0yX9aHdhP5/XAUgPOYINdHIDMy1IZHyhb19fefT4Ju6wUil+1L9g9KvUpULcw==
-  dependencies:
-    "@nrwl/tao" "12.5.7"
     ejs "^3.1.5"
     ignore "^5.0.4"
     semver "7.3.4"
@@ -8098,7 +8098,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jwt-decode@^3.1.2:
+jwt-decode@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
   integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
