@@ -29,6 +29,9 @@
     "chess-backend": {
       "tags": []
     },
+    "domain": {
+      "tags": []
+    },
     "hal-form-client": {
       "tags": []
     }

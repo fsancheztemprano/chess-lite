@@ -12,12 +12,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthorityUtils {
 
-  public static Authentication getPrincipal() {
+  public static Authentication getAuthentication() {
     return SecurityContextHolder.getContext().getAuthentication();
   }
 
+  public static String getCurrentUsername() {
+    return (String) getAuthentication().getPrincipal();
+  }
+
   public static Collection<? extends GrantedAuthority> getAuthorities() {
-    return getPrincipal() == null ? Lists.newArrayList() : getPrincipal().getAuthorities();
+    return getAuthentication() == null ? Lists.newArrayList() : getAuthentication().getAuthorities();
   }
 
   public static boolean hasAuthority(String authority) {

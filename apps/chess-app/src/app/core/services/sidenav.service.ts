@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HalFormService } from '@chess-lite/hal-form-client';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IsMobileService } from '../../shared/services/is-mobile.service';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { IsMobileService } from '../../shared/services/is-mobile.service';
 export class SidenavService {
   private _isOpen$ = new BehaviorSubject(true);
 
-  constructor(private readonly isMobileService: IsMobileService) {
+  constructor(private readonly isMobileService: IsMobileService, private readonly halFormService: HalFormService) {
     isMobileService.isMobile$.subscribe((isMobile) => this._isOpen$.next(!isMobile));
   }
 
@@ -18,5 +19,13 @@ export class SidenavService {
 
   public toggle(isOpen = !this._isOpen$.value) {
     this._isOpen$.next(isOpen);
+  }
+
+  public showLoginLink(): Observable<boolean> {
+    return this.halFormService.hasLink('login');
+  }
+
+  public showSignUpLink(): Observable<boolean> {
+    return this.halFormService.hasLink('signup');
   }
 }

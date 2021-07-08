@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Data
 @Builder
-public class RegistryInput {
+public class SignUpInput {
 
   @NonNull
   private String username;

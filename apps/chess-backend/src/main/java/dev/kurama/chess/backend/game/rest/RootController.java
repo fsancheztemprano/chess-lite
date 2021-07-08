@@ -1,6 +1,7 @@
 package dev.kurama.chess.backend.game.rest;
 
 
+import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.getCurrentUsername;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.isAuthenticated;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RootController {
 
   public static final String RELATION_LOGIN = "login";
-  public static final String RELATION_REGISTRY = "registry";
+  public static final String RELATION_SIGNUP = "signup";
   public static final String RELATION_USER = "user";
 
   @GetMapping()
@@ -40,7 +41,7 @@ public class RootController {
     } else {
       rootResource
         .add(getLoginLink())
-        .add(getRegistryLink());
+        .add(getSignUpLink());
     }
     return ok(rootResource);
   }
@@ -56,12 +57,12 @@ public class RootController {
   }
 
   @SneakyThrows
-  private @NonNull Link getRegistryLink() {
-    return linkTo(methodOn(AuthenticationController.class).register(null)).withRel(RELATION_REGISTRY);
+  private @NonNull Link getSignUpLink() {
+    return linkTo(methodOn(AuthenticationController.class).signup(null)).withRel(RELATION_SIGNUP);
   }
 
   private @NonNull Link getUserLink() {
-    return linkTo(methodOn(UserController.class).getAll()).withRel(RELATION_USER);
+    return linkTo(methodOn(UserController.class).get(getCurrentUsername())).withRel(RELATION_USER);
   }
 
   private static class RootResource extends RepresentationModel<RootResource> {

@@ -1,24 +1,25 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { IsMobileModule } from '../shared/pipes/is-mobile.pipe';
-import { AppInitService } from './services/app-init.service';
-import { Observable } from 'rxjs';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { HalFormClientModule } from '@chess-lite/hal-form-client';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedModule } from '../shared/shared.module';
+import { RouterModule } from '@angular/router';
+import { HalFormClientModule } from '@chess-lite/hal-form-client';
+import { Observable } from 'rxjs';
 import { AuthInterceptor } from '../auth/interceptors/auth.interceptor';
+import { IsMobileModule } from '../shared/pipes/is-mobile.pipe';
+import { SharedModule } from '../shared/shared.module';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ThemeComponent } from './components/theme/theme.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { AppInitService } from './services/app-init.service';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Observable<unknown> => {
@@ -47,6 +48,7 @@ const MaterialModules = [
     ...MaterialModules,
     ReactiveFormsModule,
     SharedModule,
+    RouterModule,
   ],
   exports: [SharedModule, ToolbarComponent, SidenavComponent],
   providers: [

@@ -1,8 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { HalFormClientModule } from '@chess-lite/hal-form-client';
 
 import { HalFormService } from './hal-form.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HalFormClientModule } from '@chess-lite/hal-form-client';
 
 describe('HalFormService', () => {
   let service: HalFormService;

@@ -4,7 +4,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import dev.kurama.chess.backend.auth.api.assembler.UserModelAssembler;
 import dev.kurama.chess.backend.auth.api.domain.input.LoginInput;
-import dev.kurama.chess.backend.auth.api.domain.input.RegistryInput;
+import dev.kurama.chess.backend.auth.api.domain.input.SignUpInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -28,14 +28,16 @@ public class AuthenticationController {
   @NonNull
   private final UserModelAssembler userModelAssembler;
 
-  @PostMapping("/register")
-  public ResponseEntity<UserModel> register(@RequestBody RegistryInput user)
+  @PostMapping("/signup")
+  public ResponseEntity<UserModel> signup(@RequestBody SignUpInput user)
     throws UsernameExistsException, EmailExistsException {
-    return ok().body(authenticationFacade.register(user));
+    return ok().body(userModelAssembler.toModel(authenticationFacade.signup(user)));
   }
 
   @PostMapping("/login")
-  public ResponseEntity<Void> login(@RequestBody LoginInput user) {
-    return ok().headers(authenticationFacade.login(user)).build();
+  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) {
+    var authenticatedUser = authenticationFacade.login(user);
+    return ok().headers(authenticatedUser.getHeaders())
+      .body(userModelAssembler.toModel(authenticatedUser.getUserModel()));
   }
 }

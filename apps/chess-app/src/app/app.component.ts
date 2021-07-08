@@ -1,13 +1,14 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ThemeService } from './core/services/theme.service';
+import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ThemeService } from './core/services/theme.service';
 
 @UntilDestroy()
 @Component({
   selector: 'chess-lite-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   @HostBinding('class.dark-mode') darkModeClass = false;

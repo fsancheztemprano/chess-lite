@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { InjectorInstance } from '@chess-lite/hal-form-client';
-import { parse } from 'url-template';
-import { IResource } from './resource';
-import { ContentTypeEnum } from './content-type.enum';
 import { Observable, throwError } from 'rxjs';
-import { last } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
+import * as parser from 'url-template';
+import { InjectorInstance } from '../hal-form-client.module';
+import { ContentTypeEnum } from './content-type.enum';
+import { IResource, Resource } from './resource';
 
 export interface ILink {
   href: string;
@@ -32,14 +32,17 @@ export class Link implements ILink {
     if (this.templated && !params) {
       return null;
     }
-    const template = parse(this.href);
+    const template = parser.parse(this.href);
     return template.expand(params);
   }
 
   get<R = IResource>(params?: any): Observable<R> {
     const url = this.parseUrl(params);
     return url
-      ? this.httpClient.get<R>(url, { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } }).pipe(last())
+      ? this.httpClient.get<R>(url, { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } }).pipe(
+          first(),
+          map((response) => new Resource(response).as())
+        )
       : throwError(() => new Error(`Un-parsable Url ${url}, ${this.href},  ${params}`));
   }
 }

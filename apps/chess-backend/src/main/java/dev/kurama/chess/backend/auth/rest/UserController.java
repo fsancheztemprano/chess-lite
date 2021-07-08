@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController implements DomainController<UserModel> {
 
@@ -40,13 +40,13 @@ public class UserController implements DomainController<UserModel> {
   private final UserModelAssembler userModelAssembler;
 
   @GetMapping()
-  @PreAuthorize("hasAnyAuthority('user:read')")
+  @PreAuthorize("hasAuthority('user:read')")
   public ResponseEntity<CollectionModel<UserModel>> getAll() {
     return ok().body(userModelAssembler.toSelfCollectionModel(userFacade.getAll()));
   }
 
   @PostMapping()
-  @PreAuthorize("hasAnyAuthority('user:create')")
+  @PreAuthorize("hasAuthority('user:create')")
   public ResponseEntity<UserModel> create(@RequestBody UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
     return created(fromCurrentRequestUri().path("/user/{username}").buildAndExpand(userInput.getUsername()).toUri())
@@ -54,27 +54,27 @@ public class UserController implements DomainController<UserModel> {
   }
 
   @GetMapping("/{username}")
-  @PreAuthorize("hasAnyAuthority('user:read')")
+  @PreAuthorize("hasAuthority('user:read') or @userEvaluator.isCurrentUser(#username)")
   public ResponseEntity<UserModel> get(@PathVariable("username") String username) {
     return ok().body(userModelAssembler.toModel(userFacade.findByUsername(username)));
   }
 
   @PatchMapping("/{username}")
-  @PreAuthorize("hasAnyAuthority('user:update')")
+  @PreAuthorize("hasAuthority('user:update')")
   public ResponseEntity<UserModel> patch(@PathVariable("username") String username, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     return ok().body(userModelAssembler.toModel(userFacade.update(username, userInput)));
   }
 
   @PutMapping("/{username}")
-  @PreAuthorize("hasAnyAuthority('user:update')")
+  @PreAuthorize("hasAuthority('user:update')")
   public ResponseEntity<UserModel> update(@PathVariable("username") String username, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     return ok().body(userModelAssembler.toModel(userFacade.update(username, userInput)));
   }
 
   @DeleteMapping("/{username}")
-  @PreAuthorize("hasAnyAuthority('user:delete')")
+  @PreAuthorize("hasAuthority('user:delete')")
   public ResponseEntity<Void> delete(@PathVariable("username") String username) {
     userFacade.deleteByUsername(username);
     return noContent().build();

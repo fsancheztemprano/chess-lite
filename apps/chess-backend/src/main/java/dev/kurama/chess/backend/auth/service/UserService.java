@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
     userRepository.deleteById(user.getTid());
   }
 
-  public User register(String username, String password, String email, String firstName, String lastName)
+  public User signup(String username, String password, String email, String firstName, String lastName)
     throws UsernameExistsException, EmailExistsException {
     validateUsernameAndEmailCreate(username, email);
     User user = User.builder()
@@ -91,7 +91,7 @@ public class UserService implements UserDetailsService {
       .role(USER_ROLE.name())
       .authorities(USER_ROLE.getAuthorities()).build();
     userRepository.save(user);
-    log.atInfo().log(String.format("New user registered: %s:%s", username, password));
+    log.atInfo().log(String.format("New user signed up: %s:%s", username, password));
     return user;
   }
 
@@ -113,7 +113,7 @@ public class UserService implements UserDetailsService {
       .role(getRoleEnumName(newUser.getRole()).name())
       .authorities(getRoleEnumName(newUser.getRole()).getAuthorities()).build();
     userRepository.save(user);
-    log.atInfo().log(String.format("New user registered: %s:%s", user.getUsername(), user.getPassword()));
+    log.atInfo().log(String.format("New user signed up: %s:%s", user.getUsername(), user.getPassword()));
     return user;
   }
 

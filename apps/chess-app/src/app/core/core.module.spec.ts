@@ -17,8 +17,4 @@ describe('CoreModule', () => {
   it('should have a module definition', () => {
     expect(CoreModule).toBeDefined();
   });
-
-  it('should create a module', () => {
-    expect(TestBed.inject(CoreModule)).toBeTruthy();
-  });
 });

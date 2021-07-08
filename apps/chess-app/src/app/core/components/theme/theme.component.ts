@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ThemeService } from '../../services/theme.service';
 
@@ -6,6 +6,7 @@ import { ThemeService } from '../../services/theme.service';
   selector: 'chess-lite-theme',
   templateUrl: './theme.component.html',
   styleUrls: ['./theme.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeComponent implements OnInit {
   darkModeControl = new FormControl(false);

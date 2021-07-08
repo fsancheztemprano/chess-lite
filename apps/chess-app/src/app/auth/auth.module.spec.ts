@@ -1,5 +1,5 @@
-import { AuthModule } from './auth.module';
 import { TestBed, waitForAsync } from '@angular/core/testing';
+import { AuthModule } from './auth.module';
 
 describe('AuthModule', () => {
   beforeEach(

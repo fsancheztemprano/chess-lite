@@ -1,1 +1,35 @@
-<p>login works!</p>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="loginForm">
+      <h2>Log In</h2>
+      <mat-error><span *ngIf="loginError">Invalid username and password</span></mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username" required />
+        <mat-error>
+          <div *ngIf="loginForm.controls.username.errors?.required">Please provide a username</div>
+          <div *ngIf="loginForm.controls.username.errors?.minlength as minlength">
+            Username must be at least {{ minlength.requiredLength }} characters
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password" required />
+        <mat-error>
+          <div *ngIf="loginForm.controls.password.errors?.required">Please provide a password</div>
+          <div *ngIf="loginForm.controls.password.errors?.minlength as minlength">
+            Password must be at least {{ minlength.requiredLength }} characters
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submitLogin()"
+        [disabled]="(authService.canLogin() | async) === false || loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<div class="login-riser"></div>

@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { DummyComponent } from './components/dummy/dummy.component';
 
 import { MainRoutingModule } from './main-routing.module';
-import { DummyComponent } from './components/dummy/dummy.component';
 
 @NgModule({
   declarations: [DummyComponent],

@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 public class Authority {
 
   public static final List<String> USER_AUTHORITIES = Lists.newArrayList(
-    USER_READ,
     BOOK_READ,
     AUTHOR_READ
   );

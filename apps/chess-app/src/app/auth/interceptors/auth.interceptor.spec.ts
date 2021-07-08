@@ -1,11 +1,14 @@
 import { TestBed } from '@angular/core/testing';
+import { stubStubHalFormServiceProvider } from '@chess-lite/hal-form-client/testing';
+import { stubStubAuthServiceProvider } from '../services/auth.service.stub';
 
 import { AuthInterceptor } from './auth.interceptor';
 
 describe('AuthInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      providers: [AuthInterceptor],
+      imports: [],
+      providers: [AuthInterceptor, stubStubHalFormServiceProvider, stubStubAuthServiceProvider],
     })
   );
 

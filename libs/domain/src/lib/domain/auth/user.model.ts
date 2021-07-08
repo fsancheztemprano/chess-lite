@@ -1,0 +1,18 @@
+import { IResource } from '@chess-lite/hal-form-client';
+
+export interface User extends IResource {
+  id: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  profileImageUrl: string;
+  lastLoginDateDisplay: Date;
+  joinDate: Date;
+  role: string;
+  authorities: string[];
+  active: boolean;
+  locked: boolean;
+  expired: boolean;
+  credentialsExpired: boolean;
+}

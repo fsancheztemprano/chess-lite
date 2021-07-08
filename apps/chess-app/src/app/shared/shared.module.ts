@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { IsMobileModule } from './pipes/is-mobile.pipe';
 import { NgLetModule } from './directives/ng-let.directive';
+import { IsMobileModule } from './pipes/is-mobile.pipe';
 
 @NgModule({
   declarations: [],

@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
-import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
-import { SidenavComponent } from './core/components/sidenav/sidenav.component';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from './app.component';
+import { SidenavComponent } from './core/components/sidenav/sidenav.component';
+import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
 
 @Component({ selector: 'chess-lite-toolbar', template: '' })
 export class StubToolbarComponent implements Partial<ToolbarComponent> {}

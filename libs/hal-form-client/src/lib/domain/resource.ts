@@ -1,10 +1,10 @@
-import { ILink, Link } from './link';
-import { ITemplate, Template } from './template';
 import { Observable } from 'rxjs';
 import { HttpMethodEnum } from './http-method.enum';
+import { ILink, Link } from './link';
+import { ITemplate, Template } from './template';
 
 export interface IResource {
-  _links: {
+  _links?: {
     self: ILink;
     [key: string]: ILink;
   };
@@ -19,10 +19,24 @@ export interface IResource {
   };
 
   [key: string]: any;
+
+  as?<T>(): T;
+
+  getLink?(key: string): Link | null;
+
+  hasLink?(key: string): boolean;
+
+  getContent?(key: string): Resource[] | null;
+
+  getTemplate?(key: string): Template | null;
+
+  isAllowedTo?(template: string): boolean;
+
+  submit?(method: HttpMethodEnum, payload: any, params?: any): Observable<any>;
 }
 
 export class Resource implements IResource {
-  _links: {
+  _links?: {
     self: Link;
     [key: string]: Link;
   };
@@ -44,8 +58,10 @@ export class Resource implements IResource {
     }
 
     this._links = {} as any;
-    for (const key of Object.keys(raw._links)) {
-      this._links[key] = new Link(raw._links[key]);
+    for (const key of Object.keys(raw._links || {})) {
+      if (this._links && raw._links) {
+        this._links[key] = new Link(raw._links[key]);
+      }
     }
 
     this._embedded = raw._embedded;
@@ -54,10 +70,14 @@ export class Resource implements IResource {
       this._templates = {} as any;
       for (const key of Object.keys(raw._templates)) {
         if (this._templates) {
-          this._templates[key] = new Template(raw._templates[key], this._links.self);
+          this._templates[key] = new Template(raw._templates[key], this._links?.self);
         }
       }
     }
+  }
+
+  as<T>() {
+    return this as any as T;
   }
 
   getLink(key: string = 'self'): Link | null {
@@ -65,6 +85,14 @@ export class Resource implements IResource {
       return null;
     }
     return this._links[key];
+  }
+
+  getAssuredLink(key: string = 'self'): Link {
+    return this.getLink(key) as any;
+  }
+
+  hasLink(key: string = 'self'): boolean {
+    return !!this.getLink(key)?.href;
   }
 
   getContent(key: string): Resource[] | null {
@@ -88,6 +116,6 @@ export class Resource implements IResource {
   }
 
   submit(method: HttpMethodEnum, payload: any, params?: any): Observable<any> {
-    return new Template({ method }, this._links.self).submit(payload, params);
+    return new Template({ method }, this._links?.self).submit(payload, params);
   }
 }

@@ -10,7 +10,7 @@
     "build": "nx run-many --target=build --all",
     "build:front": "nx run-many --target=build --projects=chess-app",
     "test": "nx run-many --target=test --all",
-    "lint": "nx workspace-lint && ng lint",
+    "lint": "nx workspace-lint && nx run-many --target=lint --all",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",

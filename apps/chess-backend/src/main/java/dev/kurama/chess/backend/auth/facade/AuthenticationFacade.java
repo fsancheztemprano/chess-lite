@@ -3,7 +3,8 @@ package dev.kurama.chess.backend.auth.facade;
 import static dev.kurama.chess.backend.auth.constant.SecurityConstant.JWT_TOKEN_HEADER;
 
 import dev.kurama.chess.backend.auth.api.domain.input.LoginInput;
-import dev.kurama.chess.backend.auth.api.domain.input.RegistryInput;
+import dev.kurama.chess.backend.auth.api.domain.input.SignUpInput;
+import dev.kurama.chess.backend.auth.api.domain.model.AuthenticatedUser;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.api.mapper.UserMapper;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
@@ -36,19 +37,22 @@ public class AuthenticationFacade {
   private final JWTTokenProvider jwtTokenProvider;
 
 
-  public UserModel register(RegistryInput registryInput) throws UsernameExistsException, EmailExistsException {
+  public UserModel signup(SignUpInput signUpInput) throws UsernameExistsException, EmailExistsException {
     var user = userService
-      .register(registryInput.getUsername(), registryInput.getPassword(), registryInput.getEmail(),
-        registryInput.getFirstName(), registryInput.getLastName());
+      .signup(signUpInput.getUsername(), signUpInput.getPassword(), signUpInput.getEmail(),
+        signUpInput.getFirstName(), signUpInput.getLastName());
     return userMapper.userToUserModel(user);
   }
 
-  public HttpHeaders login(LoginInput loginInput) {
+  public AuthenticatedUser login(LoginInput loginInput) {
     authenticate(loginInput.getUsername(), loginInput.getPassword());
     var user = userService.findUserByUsername(loginInput.getUsername())
       .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
-    return getJwtHeader(
-      new UserPrincipal(user));
+    var userModel = userMapper.userToUserModel(user);
+    return AuthenticatedUser.builder()
+      .userModel(userModel)
+      .headers(getJwtHeader(
+        new UserPrincipal(user))).build();
   }
 
 

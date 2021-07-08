@@ -1,5 +1,5 @@
-import { InjectionToken, Injector, ModuleWithProviders, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { InjectionToken, Injector, ModuleWithProviders, NgModule } from '@angular/core';
 
 export const ROOT_RESOURCE_URL = new InjectionToken<string>('Url to Root Resource');
 export let InjectorInstance: Injector;
