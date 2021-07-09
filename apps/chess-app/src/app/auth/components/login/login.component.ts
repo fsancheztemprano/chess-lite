@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { _getPropertyValidators } from '../../../core/utils/form.utils';
-import { AuthService } from '../../services/auth.service';
+import { first } from 'rxjs/operators';
+import { setFormValidatorsPipe } from '../../../core/utils/form.utils';
+import { LoginService } from '../../services/login.service';
 
-@UntilDestroy()
 @Component({
   selector: 'chess-lite-login',
   templateUrl: './login.component.html',
@@ -13,49 +12,39 @@ import { AuthService } from '../../services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
+  public loginForm!: FormGroup;
 
   public loginError = false;
 
   constructor(
-    public readonly authService: AuthService,
+    public readonly loginService: LoginService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.loginForm = new FormGroup({
       username: new FormControl(''),
       password: new FormControl(''),
     });
-    this._subscribeToLoginTemplate();
   }
 
-  private _subscribeToLoginTemplate() {
-    this.authService
-      .getLoginTemplate()
-      .pipe(untilDestroyed(this))
-      .subscribe((template) => {
-        this.loginForm.controls.username.setValidators(_getPropertyValidators(template, 'username'));
-        this.loginForm.controls.password.setValidators(_getPropertyValidators(template, 'password'));
-        this.loginForm.updateValueAndValidity();
-      });
+  ngOnInit(): void {
+    this.loginService.getLoginTemplate().pipe(first(), setFormValidatorsPipe(this.loginForm)).subscribe();
   }
 
   public submitLogin(): void {
-    this.authService.login(this.loginForm.value)?.subscribe({
+    this.loginService.login(this.loginForm.value)?.subscribe({
       next: (user) => {
         if (user) {
           this.router.navigate(['']);
         } else {
-          this.setError(true);
+          this._setError(true);
         }
       },
-      error: () => this.setError(true),
+      error: () => this._setError(true),
     });
   }
 
-  setError(hasError: boolean) {
+  private _setError(hasError: boolean) {
     this.loginError = hasError;
     this.cdr.markForCheck();
   }

@@ -27,8 +27,8 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "validate": "nx workspace-lint && ng lint && nx format:check && npm run test && npm run build --prod",
-    "validate:fe": "nx workspace-lint && ng lint && nx format:check && ng test && ng build --prod"
+    "validate": "npm run lint && nx format:check && npm run test && npm run build",
+    "validate:fe": "nx workspace-lint && ng lint && nx format:check && ng test && ng build"
   },
   "private": true,
   "dependencies": {

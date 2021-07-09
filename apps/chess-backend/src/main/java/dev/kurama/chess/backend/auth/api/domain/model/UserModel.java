@@ -18,8 +18,8 @@ import org.springframework.hateoas.RepresentationModel;
 public class UserModel extends RepresentationModel<UserModel> implements DomainModel {
 
   private String id;
-  private String firstName;
-  private String lastName;
+  private String firstname;
+  private String lastname;
   private String username;
   private String email;
   private String profileImageUrl;

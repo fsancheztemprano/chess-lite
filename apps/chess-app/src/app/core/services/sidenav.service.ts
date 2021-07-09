@@ -13,8 +13,8 @@ export class SidenavService {
     isMobileService.isMobile$.subscribe((isMobile) => this._isOpen$.next(!isMobile));
   }
 
-  get isOpen$(): BehaviorSubject<boolean> {
-    return this._isOpen$;
+  get isOpen$(): Observable<boolean> {
+    return this._isOpen$.asObservable();
   }
 
   public toggle(isOpen = !this._isOpen$.value) {
@@ -25,7 +25,7 @@ export class SidenavService {
     return this.halFormService.hasLink('login');
   }
 
-  public showSignUpLink(): Observable<boolean> {
+  public showSignupLink(): Observable<boolean> {
     return this.halFormService.hasLink('signup');
   }
 }

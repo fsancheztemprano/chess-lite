@@ -1,1 +1,69 @@
-<p>signup works!</p>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="signupForm">
+      <h2>Sign Up</h2>
+      <mat-error><span *ngIf="signupError">Invalid username and password</span></mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Firstname" formControlName="firstname" />
+        <mat-error>
+          <div *ngIf="signupForm.controls.firstname.errors?.required">Please provide a firstname</div>
+          <div *ngIf="signupForm.controls.firstname.errors?.minlength as minlength">
+            Firstname must be at least {{ minlength.requiredLength }} characters
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Lastname" formControlName="lastname" />
+        <mat-error>
+          <div *ngIf="signupForm.controls.lastname.errors?.required">Please provide a lastname</div>
+          <div *ngIf="signupForm.controls.lastname.errors?.minlength as minlength">
+            Lastname must be at least {{ minlength.requiredLength }} characters
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="email" placeholder="Email" formControlName="email" required />
+        <mat-error>
+          <div *ngIf="signupForm.controls.email.errors?.required">Please provide an email</div>
+          <div *ngIf="signupForm.controls.email.errors?.minlength as minlength">
+            Email must be at least {{ minlength.requiredLength }} characters
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username" required />
+        <mat-error>
+          <div *ngIf="signupForm.controls.username.errors?.required">Please provide a username</div>
+          <div *ngIf="signupForm.controls.username.errors?.minlength as minlength">
+            Username must be at least {{ minlength.requiredLength }} characters
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password" required />
+        <mat-error>
+          <div *ngIf="signupForm.controls.password.errors?.required">Please provide a password</div>
+          <div *ngIf="signupForm.controls.password.errors?.minlength as minlength">
+            Password must be at least {{ minlength.requiredLength }} characters
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Repeat Password" formControlName="password2" required />
+        <mat-error>
+          <div *ngIf="signupForm.controls.password2.errors?.required">Please repeat the password</div>
+        </mat-error>
+      </mat-form-field>
+      <div class="mat-error"><span *ngIf="signupForm.errors?.mustMatch">Passwords Must Match</span></div>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submitSignup()"
+        [disabled]="(signupService.canSignup() | async) === false || signupForm.invalid"
+      >
+        Signup
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<div class="spacer"></div>

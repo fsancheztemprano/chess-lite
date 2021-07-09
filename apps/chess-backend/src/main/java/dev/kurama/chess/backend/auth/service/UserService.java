@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
     userRepository.deleteById(user.getTid());
   }
 
-  public User signup(String username, String password, String email, String firstName, String lastName)
+  public User signup(String username, String password, String email, String firstname, String lastname)
     throws UsernameExistsException, EmailExistsException {
     validateUsernameAndEmailCreate(username, email);
     User user = User.builder()
@@ -81,8 +81,8 @@ public class UserService implements UserDetailsService {
       .username(username)
       .password(passwordEncoder.encode(password))
       .email(email)
-      .firstName(firstName)
-      .lastName(lastName)
+      .firstname(firstname)
+      .lastname(lastname)
       .joinDate(new Date())
       .active(true)
       .locked(false)
@@ -103,8 +103,8 @@ public class UserService implements UserDetailsService {
       .username(newUser.getUsername())
       .password(passwordEncoder.encode(newUser.getPassword()))
       .email(newUser.getEmail())
-      .firstName(newUser.getFirstName())
-      .lastName(newUser.getLastName())
+      .firstname(newUser.getFirstname())
+      .lastname(newUser.getLastname())
       .joinDate(new Date())
       .active(newUser.isActive())
       .locked(newUser.isLocked())
@@ -121,8 +121,8 @@ public class UserService implements UserDetailsService {
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     var currentUser = validateUsernameAndEmailUpdate(username, modifiedUser.getUsername(), modifiedUser.getEmail());
     currentUser.setEmail(modifiedUser.getEmail());
-    currentUser.setFirstName(modifiedUser.getFirstName());
-    currentUser.setLastName(modifiedUser.getLastName());
+    currentUser.setFirstname(modifiedUser.getFirstname());
+    currentUser.setLastname(modifiedUser.getLastname());
     currentUser.setActive(modifiedUser.isActive());
     currentUser.setLocked(modifiedUser.isLocked());
     currentUser.setExpired(modifiedUser.isExpired());

@@ -2,8 +2,8 @@ import { IResource } from '@chess-lite/hal-form-client';
 
 export interface User extends IResource {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   username: string;
   email: string;
   profileImageUrl: string;

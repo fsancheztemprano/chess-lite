@@ -7,7 +7,7 @@ export class StubHalFormService implements Partial<HalFormService> {
   hasLink = () => of(true);
 }
 
-export const stubStubHalFormServiceProvider = {
+export const stubHalFormServiceProvider = {
   provide: HalFormService,
   useClass: StubHalFormService,
 };

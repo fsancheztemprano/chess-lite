@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { last } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { InjectorInstance } from '../hal-form-client.module';
 import { ContentTypeEnum } from './content-type.enum';
 import { HTTP_METHODS, HttpMethodEnum } from './http-method.enum';
@@ -98,7 +98,7 @@ export class Template implements ITemplate {
     }
     const url = link.parseUrl(params || {});
     return url
-      ? this.httpClient.request(this.method, url, { headers, body, observe }).pipe(last())
+      ? this.httpClient.request(this.method, url, { headers, body, observe }).pipe(first())
       : throwError(() => new Error(`Un-parsable Url ${link?.href},  ${params}`));
   }
 

@@ -41,7 +41,7 @@ public class RootController {
     } else {
       rootResource
         .add(getLoginLink())
-        .add(getSignUpLink());
+        .add(getSignupLink());
     }
     return ok(rootResource);
   }
@@ -57,7 +57,7 @@ public class RootController {
   }
 
   @SneakyThrows
-  private @NonNull Link getSignUpLink() {
+  private @NonNull Link getSignupLink() {
     return linkTo(methodOn(AuthenticationController.class).signup(null)).withRel(RELATION_SIGNUP);
   }
 

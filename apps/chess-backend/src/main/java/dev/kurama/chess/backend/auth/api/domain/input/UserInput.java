@@ -15,8 +15,8 @@ public class UserInput {
   private String password;
   @NonNull
   private String email;
-  private String firstName;
-  private String lastName;
+  private String firstname;
+  private String lastname;
   @Builder.Default
   private String role = Role.USER_ROLE.name();
   @Builder.Default

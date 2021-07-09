@@ -6,10 +6,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { stubStubHalFormServiceProvider } from '@chess-lite/hal-form-client/testing';
-import { stubStubAuthServiceProvider } from '../../../auth/services/auth.service.stub';
+import { stubAuthServiceProvider } from '../../../auth/services/auth.service.stub';
+import { stubLoginServiceProvider } from '../../../auth/services/login.service.stub';
 import { NgLetModule } from '../../../shared/directives/ng-let.directive';
 import { IsMobileModule } from '../../../shared/pipes/is-mobile.pipe';
+import { stubSidenavServiceProvider } from '../../services/sidenav.service.stub';
 import { SidenavComponent } from './sidenav.component';
 
 describe('SidenavComponent', () => {
@@ -31,7 +32,7 @@ describe('SidenavComponent', () => {
           IsMobileModule,
           NgLetModule,
         ],
-        providers: [stubStubHalFormServiceProvider, stubStubAuthServiceProvider],
+        providers: [stubAuthServiceProvider, stubSidenavServiceProvider, stubLoginServiceProvider],
       }).compileComponents();
     })
   );
