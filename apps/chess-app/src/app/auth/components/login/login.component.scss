@@ -14,8 +14,16 @@
       display: flex;
       flex-flow: column;
 
+      h2 {
+        text-align: center;
+      }
+
       mat-form-field {
         padding-bottom: 16px;
+      }
+
+      > div.mat-error {
+        height: 20px;
       }
 
       button {

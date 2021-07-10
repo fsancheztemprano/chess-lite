@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubHalFormServiceProvider } from '@chess-lite/hal-form-client/testing';
+import { StubFormErrorComponent } from '../../../shared/components/form-error/form-error.component.stub';
 import { stubLoginServiceProvider } from '../../services/login.service.stub';
 import { LoginComponent } from './login.component';
 
@@ -19,7 +20,7 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ReactiveFormsModule, ...MaterialModules, NoopAnimationsModule],
-      declarations: [LoginComponent],
+      declarations: [LoginComponent, StubFormErrorComponent],
       providers: [stubHalFormServiceProvider, stubLoginServiceProvider],
     }).compileComponents();
   });

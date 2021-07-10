@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
 import { setFormValidatorsPipe } from '../../../core/utils/form.utils';
 import { LoginService } from '../../services/login.service';
@@ -10,11 +11,13 @@ import { LoginService } from '../../services/login.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [wobbleAnimation(), bounceOutAnimation()],
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
 
   public loginError = false;
+  public loginSuccess = false;
 
   constructor(
     public readonly loginService: LoginService,
@@ -35,17 +38,23 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.loginForm.value)?.subscribe({
       next: (user) => {
         if (user) {
-          this.router.navigate(['']);
+          this.loginSuccess = true;
         } else {
-          this._setError(true);
+          this.setError(true);
         }
       },
-      error: () => this._setError(true),
+      error: () => this.setError(true),
     });
   }
 
-  private _setError(hasError: boolean) {
+  public setError(hasError: boolean) {
     this.loginError = hasError;
     this.cdr.markForCheck();
+  }
+
+  public onLoginSuccess() {
+    if (this.loginSuccess) {
+      this.router.navigate(['']);
+    }
   }
 }

@@ -1,33 +1,35 @@
-<mat-card>
+<mat-card
+  [@wobble]="loginError === true"
+  (@wobble.start)="setError(false)"
+  [@bounceOut]="loginSuccess === true"
+  (@bounceOut.done)="onLoginSuccess()"
+>
   <mat-card-content>
     <form [formGroup]="loginForm">
       <h2>Log In</h2>
-      <mat-error><span *ngIf="loginError">Invalid username and password</span></mat-error>
+      <mat-error><span *ngIf="loginError"></span></mat-error>
       <mat-form-field>
         <input matInput placeholder="Username" formControlName="username" required />
         <mat-error>
-          <div *ngIf="loginForm.controls.username.errors?.required">Please provide a username</div>
-          <div *ngIf="loginForm.controls.username.errors?.minlength as minlength">
-            Username must be at least {{ minlength.requiredLength }} characters
-          </div>
+          <chess-lite-form-error [control]="loginForm.controls.username" name="username"></chess-lite-form-error>
         </mat-error>
       </mat-form-field>
       <mat-form-field>
         <input matInput type="password" placeholder="Password" formControlName="password" required />
         <mat-error>
-          <div *ngIf="loginForm.controls.password.errors?.required">Please provide a password</div>
-          <div *ngIf="loginForm.controls.password.errors?.minlength as minlength">
-            Password must be at least {{ minlength.requiredLength }} characters
-          </div>
+          <chess-lite-form-error [control]="loginForm.controls.password" name="password"></chess-lite-form-error>
         </mat-error>
       </mat-form-field>
+      <div class="mat-error">
+        <div class *ngIf="loginError">Invalid username and password</div>
+      </div>
       <button
         mat-raised-button
         color="primary"
         (click)="submitLogin()"
         [disabled]="(loginService.canLogin() | async) === false || loginForm.invalid"
       >
-        Login
+        Log In
       </button>
     </form>
   </mat-card-content>
