@@ -28,4 +28,8 @@ export class SidenavService {
   public showSignupLink(): Observable<boolean> {
     return this.halFormService.hasLink('signup');
   }
+
+  public showUserLink(): Observable<boolean> {
+    return this.halFormService.hasLink('user-root');
+  }
 }

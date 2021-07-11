@@ -6,28 +6,15 @@
   width: 100%;
   padding: 24px;
 
-  mat-card {
-    width: 300px;
-    max-width: 100%;
+  form {
+    mat-card {
+      mat-card-content {
+        display: flex;
+        flex-flow: column;
 
-    form {
-      display: flex;
-      flex-flow: column;
-
-      h2 {
-        text-align: center;
-      }
-
-      mat-form-field {
-        padding-bottom: 16px;
-      }
-
-      > div.mat-error {
-        height: 20px;
-      }
-
-      button {
-        margin-top: 8px;
+        mat-form-field {
+          padding-bottom: 16px;
+        }
       }
     }
   }

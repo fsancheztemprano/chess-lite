@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders, User } from '@chess-lite/domain';
 import { IResource, Resource } from '@chess-lite/hal-form-client';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { isTokenExpired } from '../utils/auth.utils';
 
 @Injectable({
@@ -48,20 +48,32 @@ export class AuthService {
     return !isTokenExpired(token);
   }
 
-  public setLocalSessionPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<User | null> {
+  public setTokenPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<Resource | null> {
     return (observable: Observable<HttpResponse<IResource>>) => {
       return observable.pipe(
         map((response) => {
           const token = response?.headers?.get(HttpHeaders.JWT_TOKEN);
-          if (token && response.body) {
+          if (token) {
             this.setToken(token);
-            const user = new Resource(response.body);
-            this.setUser(user.as());
-            return user.as<User>();
           }
-          return null;
+          return response.body ? new Resource(response.body) : null;
         })
       );
+    };
+  }
+
+  public setUserPipe(): (observable: Observable<Resource | null>) => Observable<User | null> {
+    return (observable: Observable<Resource | null>) => {
+      return observable.pipe(
+        map((user) => (user ? user.as<User>() : null)),
+        tap((user) => this.setUser(user))
+      );
+    };
+  }
+
+  public setLocalSessionPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<User | null> {
+    return (observable: Observable<HttpResponse<IResource>>) => {
+      return observable.pipe(this.setTokenPipe(), this.setUserPipe());
     };
   }
 }

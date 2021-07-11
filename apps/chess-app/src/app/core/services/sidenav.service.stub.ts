@@ -7,6 +7,7 @@ export class StubSidenavService implements Partial<SidenavService> {
   isOpen$ = of(true);
   showLoginLink = () => of(true);
   showSignupLink = () => of(true);
+  showUserLink = () => of(true);
 }
 
 export const stubSidenavServiceProvider = {

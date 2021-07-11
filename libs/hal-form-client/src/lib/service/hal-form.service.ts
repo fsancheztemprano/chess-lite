@@ -14,7 +14,7 @@ import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
 export class HalFormService {
   private _rootResource: BehaviorSubject<Resource> = new BehaviorSubject<Resource>(new Resource({}));
 
-  constructor(private readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) private readonly root: string) {}
+  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected root: string) {}
 
   initialize(): Observable<Resource> {
     return this.httpClient
@@ -48,19 +48,19 @@ export class HalFormService {
     return this._rootResource.asObservable();
   }
 
-  hasLink(link: string = 'self'): Observable<boolean> {
+  public hasLink(link: string = 'self'): Observable<boolean> {
     return this.rootResource.pipe(map((resource) => resource.hasLink(link)));
   }
 
-  getLink(link: string = 'self'): Observable<Link | null> {
+  public getLink(link: string = 'self'): Observable<Link | null> {
     return this.rootResource.pipe(map((resource) => resource.getLink(link)));
   }
 
-  getTemplate(template: string = 'self'): Observable<Template | null> {
+  public getTemplate(template: string = 'self'): Observable<Template | null> {
     return this.rootResource.pipe(map((resource) => resource.getTemplate(template)));
   }
 
-  isAllowedTo(template: string = 'self'): Observable<boolean> {
+  public isAllowedTo(template: string = 'self'): Observable<boolean> {
     return this.rootResource.pipe(map((resource) => resource.isAllowedTo(template)));
   }
 }

@@ -17,7 +17,7 @@ spring:
     schemas: ${spring.jpa.properties.hibernate.default_schema}
     table: flyway_schema_version
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:

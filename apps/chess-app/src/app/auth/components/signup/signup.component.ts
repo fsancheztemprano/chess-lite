@@ -14,38 +14,33 @@ import { SignupService } from '../../services/signup.service';
   animations: [wobbleAnimation(), bounceOutAnimation()],
 })
 export class SignupComponent implements OnInit {
-  public signupForm!: FormGroup;
+  public signupForm = new FormGroup(
+    {
+      username: new FormControl(''),
+      password: new FormControl(''),
+      password2: new FormControl('', []),
+      email: new FormControl(''),
+      firstname: new FormControl(''),
+      lastname: new FormControl(''),
+    },
+    [matchingControlsValidators('password', 'password2')]
+  );
 
-  public signupError = false;
   public signupSuccess = false;
+  public signupError = false;
+  public signupErrorAnimation = false;
 
   constructor(
     public readonly signupService: SignupService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
-  ) {
-    this.signupForm = new FormGroup(
-      {
-        username: new FormControl(''),
-        password: new FormControl(''),
-        password2: new FormControl('', []),
-        email: new FormControl(''),
-        firstname: new FormControl(''),
-        lastname: new FormControl(''),
-      },
-      [matchingControlsValidators('password', 'password2')]
-    );
-  }
+  ) {}
 
   ngOnInit(): void {
     this.signupService.getSignupTemplate().pipe(first(), setFormValidatorsPipe(this.signupForm)).subscribe();
-    this.signupForm.controls.password.valueChanges.subscribe(() => {
-      this.signupForm.controls.password.updateValueAndValidity({ emitEvent: false });
-      this.cdr.markForCheck();
-    });
   }
 
-  public submitSignup(): void {
+  public onSubmit(): void {
     this.signupService.signup(this.signupForm.value)?.subscribe({
       next: (user) => {
         if (user) {
@@ -60,6 +55,7 @@ export class SignupComponent implements OnInit {
 
   public setError(hasError: boolean) {
     this.signupError = hasError;
+    this.signupErrorAnimation = hasError;
     this.cdr.markForCheck();
   }
 

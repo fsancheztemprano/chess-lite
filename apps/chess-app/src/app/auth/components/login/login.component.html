@@ -1,13 +1,14 @@
-<mat-card
-  [@wobble]="loginError === true"
-  (@wobble.start)="setError(false)"
-  [@bounceOut]="loginSuccess === true"
-  (@bounceOut.done)="onLoginSuccess()"
->
-  <mat-card-content>
-    <form [formGroup]="loginForm">
-      <h2>Log In</h2>
-      <mat-error><span *ngIf="loginError"></span></mat-error>
+<form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card
+    [@wobble]="loginErrorAnimation === true"
+    (@wobble.start)="loginErrorAnimation = false"
+    [@bounceOut]="loginSuccess === true"
+    (@bounceOut.done)="onLoginSuccess()"
+  >
+    <mat-card-header>
+      <mat-card-title>Log In</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
       <mat-form-field>
         <input matInput placeholder="Username" formControlName="username" required />
         <mat-error>
@@ -21,17 +22,18 @@
         </mat-error>
       </mat-form-field>
       <div class="mat-error">
-        <div class *ngIf="loginError">Invalid username and password</div>
+        <div class *ngIf="loginError">Invalid credentials</div>
       </div>
+    </mat-card-content>
+    <mat-card-actions [align]="'end'">
       <button
         mat-raised-button
         color="primary"
-        (click)="submitLogin()"
-        [disabled]="(loginService.canLogin() | async) === false || loginForm.invalid"
+        [disabled]="loginForm.invalid || (loginService.canLogin() | async) === false"
       >
         Log In
       </button>
-    </form>
-  </mat-card-content>
-</mat-card>
+    </mat-card-actions>
+  </mat-card>
+</form>
 <div class="spacer"></div>

@@ -1,9 +1,9 @@
 package dev.kurama.chess.backend.auth.api.assembler;
 
+import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_DELETE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_UPDATE;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
-import static dev.kurama.chess.backend.poc.authority.AuthorAuthority.AUTHOR_CREATE;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -45,7 +45,7 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
   public @NonNull CollectionModel<UserModel> toSelfCollectionModel(
     @NonNull Iterable<? extends UserModel> entities) {
     return super.toSelfCollectionModel(entities)
-      .mapLinkIf(hasAuthority(AUTHOR_CREATE),
+      .mapLinkIf(hasAuthority(USER_CREATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getCreateAffordance()))
       ;

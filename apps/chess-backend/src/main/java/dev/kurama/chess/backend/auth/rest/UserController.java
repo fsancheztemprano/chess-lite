@@ -60,21 +60,21 @@ public class UserController implements DomainController<UserModel> {
   }
 
   @PatchMapping("/{username}")
-  @PreAuthorize("hasAuthority('user:update')")
+  @PreAuthorize("hasAuthority('user:update') or @userEvaluator.isCurrentUser(#username)")
   public ResponseEntity<UserModel> patch(@PathVariable("username") String username, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     return ok().body(userModelAssembler.toModel(userFacade.update(username, userInput)));
   }
 
   @PutMapping("/{username}")
-  @PreAuthorize("hasAuthority('user:update')")
+  @PreAuthorize("hasAuthority('user:update') or @userEvaluator.isCurrentUser(#username)")
   public ResponseEntity<UserModel> update(@PathVariable("username") String username, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     return ok().body(userModelAssembler.toModel(userFacade.update(username, userInput)));
   }
 
   @DeleteMapping("/{username}")
-  @PreAuthorize("hasAuthority('user:delete')")
+  @PreAuthorize("hasAuthority('user:delete') or @userEvaluator.isCurrentUser(#username)")
   public ResponseEntity<Void> delete(@PathVariable("username") String username) {
     userFacade.deleteByUsername(username);
     return noContent().build();

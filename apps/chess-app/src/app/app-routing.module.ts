@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/guards/auth.guard';
 
-export const loadMainModule = () => import('./main/main.module').then((m) => m.MainModule);
-export const loadAuthModule = () => import('./auth/auth.module').then((m) => m.AuthModule);
+const loadMainModule = () => import('./main/main.module').then((m) => m.MainModule);
+const loadAuthModule = () => import('./auth/auth.module').then((m) => m.AuthModule);
 
 const routes: Routes = [
   {

@@ -1,12 +1,14 @@
-<mat-card
-  [@wobble]="signupError === true"
-  (@wobble.start)="setError(false)"
-  [@bounceOut]="signupSuccess === true"
-  (@bounceOut.done)="onSignupSuccess()"
->
-  <mat-card-content>
-    <form [formGroup]="signupForm">
-      <h2>Sign Up</h2>
+<form [formGroup]="signupForm">
+  <mat-card
+    [@wobble]="signupError === true"
+    (@wobble.start)="signupErrorAnimation = false"
+    [@bounceOut]="signupSuccess === true"
+    (@bounceOut.done)="onSignupSuccess()"
+  >
+    <mat-card-header>
+      <mat-card-title>Sign Up</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
       <mat-form-field>
         <input matInput placeholder="Firstname" formControlName="firstname" />
         <mat-error>
@@ -45,17 +47,19 @@
       </mat-form-field>
       <div class="mat-error">
         <chess-lite-form-error [control]="signupForm" name="password"></chess-lite-form-error>
-        <div class *ngIf="signupError">Signup rejected, do you have an account already?</div>
+        <div class *ngIf="signupError">Sign Up rejected.</div>
       </div>
+    </mat-card-content>
+    <mat-card-actions [align]="'end'">
       <button
         mat-raised-button
         color="primary"
-        (click)="submitSignup()"
-        [disabled]="(signupService.canSignup() | async) === false || signupForm.invalid"
+        (click)="onSubmit()"
+        [disabled]="signupForm.invalid || (signupService.canSignup() | async) === false"
       >
         Sign Up
       </button>
-    </form>
-  </mat-card-content>
-</mat-card>
+    </mat-card-actions>
+  </mat-card>
+</form>
 <div class="spacer"></div>

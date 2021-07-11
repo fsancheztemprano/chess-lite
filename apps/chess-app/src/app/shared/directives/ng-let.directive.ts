@@ -16,11 +16,13 @@ export class NgLetDirective implements OnInit {
     this._context.$implicit = this._context.ngLet = value;
   }
 
-  constructor(private _vcr: ViewContainerRef, private _templateRef: TemplateRef<NgLetContext>) {
-  }
+  constructor(
+    private readonly _viewContainerRef: ViewContainerRef,
+    private readonly _templateRef: TemplateRef<NgLetContext> // @formatter:off
+  ) {} // @formatter:on
 
   ngOnInit() {
-    this._vcr.createEmbeddedView(this._templateRef, this._context);
+    this._viewContainerRef.createEmbeddedView(this._templateRef, this._context);
   }
 }
 

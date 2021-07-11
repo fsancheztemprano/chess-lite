@@ -8,6 +8,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
+    canActivate: [AuthGuard],
   },
   {
     path: 'login',
@@ -22,6 +23,7 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'login',
+    canActivate: [AuthGuard],
   },
 ];
 

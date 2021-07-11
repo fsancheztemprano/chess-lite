@@ -14,27 +14,26 @@ import { LoginService } from '../../services/login.service';
   animations: [wobbleAnimation(), bounceOutAnimation()],
 })
 export class LoginComponent implements OnInit {
-  public loginForm!: FormGroup;
+  public loginForm = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl(''),
+  });
 
-  public loginError = false;
   public loginSuccess = false;
+  public loginError = false;
+  public loginErrorAnimation = false;
 
   constructor(
     public readonly loginService: LoginService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
-  ) {
-    this.loginForm = new FormGroup({
-      username: new FormControl(''),
-      password: new FormControl(''),
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loginService.getLoginTemplate().pipe(first(), setFormValidatorsPipe(this.loginForm)).subscribe();
   }
 
-  public submitLogin(): void {
+  public onSubmit(): void {
     this.loginService.login(this.loginForm.value)?.subscribe({
       next: (user) => {
         if (user) {
@@ -49,6 +48,7 @@ export class LoginComponent implements OnInit {
 
   public setError(hasError: boolean) {
     this.loginError = hasError;
+    this.loginErrorAnimation = hasError;
     this.cdr.markForCheck();
   }
 
