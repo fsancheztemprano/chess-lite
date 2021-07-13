@@ -1,7 +1,7 @@
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Template } from '@chess-lite/hal-form-client';
+import { Resource, Template } from '@chess-lite/hal-form-client';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 export function getPropertyValidators(template: Template | null, propertyName: string): ValidatorFn[] {
   const property = template?.getProperty(propertyName);
@@ -21,12 +21,13 @@ export function getPropertyValidators(template: Template | null, propertyName: s
   return usernameValidators;
 }
 
-export function setFormValidatorsPipe(
+export function setTemplateValidatorsPipe(
   formGroup: FormGroup
-): (observable: Observable<Template | null>) => Observable<null> {
+): (observable: Observable<Template | null>) => Observable<Template | null> {
   return (observable: Observable<Template | null>) => {
     return observable.pipe(
       tap((template) => {
+        console.log(template);
         for (const control in formGroup.controls) {
           const propertyValidators = getPropertyValidators(template, control);
           if (propertyValidators.length) {
@@ -34,8 +35,28 @@ export function setFormValidatorsPipe(
           }
         }
         formGroup.updateValueAndValidity();
-      }),
-      map(() => null)
+      })
+    );
+  };
+}
+
+export function setResourceValidatorsPipe(
+  formGroup: FormGroup,
+  templateName: string
+): (observable: Observable<Resource>) => Observable<Resource> {
+  return (observable: Observable<Resource>) => {
+    return observable.pipe(
+      tap((resource) => {
+        if (resource && resource.isAllowedTo(templateName)) {
+          for (const control in formGroup.controls) {
+            const propertyValidators = getPropertyValidators(resource.getTemplate(templateName), control);
+            if (propertyValidators.length) {
+              formGroup.controls[control]?.setValidators(propertyValidators);
+            }
+          }
+          formGroup.updateValueAndValidity();
+        }
+      })
     );
   };
 }
@@ -49,5 +70,11 @@ export function matchingControlsValidators(
     const matchingControl = formGroup.get(matchingControlName);
 
     return control && matchingControl && control.value === matchingControl.value ? null : { mustMatch: true };
+  };
+}
+
+export function patchFormPipe(formGroup: FormGroup): (observable: Observable<Resource>) => Observable<Resource> {
+  return (observable: Observable<Resource>) => {
+    return observable.pipe(tap((resource) => formGroup.patchValue(resource || {})));
   };
 }

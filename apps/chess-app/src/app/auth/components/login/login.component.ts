@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { setFormValidatorsPipe } from '../../../core/utils/form.utils';
+import { setTemplateValidatorsPipe } from '../../../core/utils/form.utils';
 import { LoginService } from '../../services/login.service';
 
 @Component({
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loginService.getLoginTemplate().pipe(first(), setFormValidatorsPipe(this.loginForm)).subscribe();
+    this.loginService.getLoginTemplate().pipe(first(), setTemplateValidatorsPipe(this.loginForm)).subscribe();
   }
 
   public onSubmit(): void {

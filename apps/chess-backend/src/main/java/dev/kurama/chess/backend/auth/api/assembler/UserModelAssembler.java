@@ -3,6 +3,7 @@ package dev.kurama.chess.backend.auth.api.assembler;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_DELETE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_UPDATE;
+import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.getCurrentUsername;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -38,6 +39,9 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
       .mapLinkIf(hasAuthority(USER_UPDATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getUpdateAffordance(userModel.getUsername())))
+      .mapLinkIf(getCurrentUsername().equals(userModel.getUsername()),
+        LinkRelation.of("self"),
+        link -> link.andAffordance(getUpdateProfileAffordance(userModel.getUsername())))
       ;
   }
 
@@ -67,5 +71,9 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
   @SneakyThrows
   private @NonNull Affordance getUpdateAffordance(String username) {
     return afford(methodOn(getClazz()).update(username, null));
+  }
+
+  private @NonNull Affordance getUpdateProfileAffordance(String username) {
+    return afford(methodOn(getClazz()).updateProfile(username, null));
   }
 }

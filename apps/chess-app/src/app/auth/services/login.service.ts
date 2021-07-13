@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginInput, User } from '@chess-lite/domain';
 import { HalFormService, Template } from '@chess-lite/hal-form-client';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { first, switchMap, tap } from 'rxjs/operators';
+import { notAllowedError } from '../../core/utils/rxjs.utils';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -35,7 +36,7 @@ export class LoginService {
               this.authService.setLocalSessionPipe(),
               tap(() => this.halFormService.initialize().subscribe())
             )
-          : throwError(() => new Error('Not allowed to login!'));
+          : notAllowedError(this.LOGIN_RELATION);
       })
     );
   }

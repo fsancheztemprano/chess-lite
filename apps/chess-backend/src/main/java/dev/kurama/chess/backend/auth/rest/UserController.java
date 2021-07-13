@@ -6,6 +6,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
 import dev.kurama.chess.backend.auth.api.assembler.UserModelAssembler;
+import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
@@ -60,14 +61,14 @@ public class UserController implements DomainController<UserModel> {
   }
 
   @PatchMapping("/{username}")
-  @PreAuthorize("hasAuthority('user:update') or @userEvaluator.isCurrentUser(#username)")
+  @PreAuthorize("hasAuthority('user:update')")
   public ResponseEntity<UserModel> patch(@PathVariable("username") String username, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     return ok().body(userModelAssembler.toModel(userFacade.update(username, userInput)));
   }
 
   @PutMapping("/{username}")
-  @PreAuthorize("hasAuthority('user:update') or @userEvaluator.isCurrentUser(#username)")
+  @PreAuthorize("hasAuthority('user:update')")
   public ResponseEntity<UserModel> update(@PathVariable("username") String username, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     return ok().body(userModelAssembler.toModel(userFacade.update(username, userInput)));
@@ -79,4 +80,12 @@ public class UserController implements DomainController<UserModel> {
     userFacade.deleteByUsername(username);
     return noContent().build();
   }
+
+  @PatchMapping("/{username}/profile")
+  @PreAuthorize("hasAuthority('user:update') or @userEvaluator.isCurrentUser(#username)")
+  public ResponseEntity<UserModel> updateProfile(@PathVariable("username") String username,
+    @RequestBody UpdateUserProfileInput updateUserProfileInput) {
+    return ok().body(userModelAssembler.toModel(userFacade.updateUserProfile(username, updateUserProfileInput)));
+  }
+
 }

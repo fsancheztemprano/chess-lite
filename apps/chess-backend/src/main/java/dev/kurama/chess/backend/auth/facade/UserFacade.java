@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.auth.facade;
 
+import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.api.mapper.UserMapper;
@@ -39,6 +40,11 @@ public class UserFacade {
   public UserModel update(String username, UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     return userMapper.userToUserModel(userService.updateUser(username, userMapper.userInputToUser(userInput)));
+  }
+
+  public UserModel updateUserProfile(String username, UpdateUserProfileInput updateUserProfileInput) {
+    return userMapper.userToUserModel(
+      userService.updateUserProfile(username, userMapper.editUserProfileInputToUser(updateUserProfileInput)));
   }
 
   public void deleteByUsername(String username) {

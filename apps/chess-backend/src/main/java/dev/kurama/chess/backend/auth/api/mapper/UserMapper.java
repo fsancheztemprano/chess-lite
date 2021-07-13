@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.auth.api.mapper;
 
+import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.domain.User;
@@ -12,6 +13,8 @@ public interface UserMapper {
   UserModel userToUserModel(User user);
 
   User userInputToUser(UserInput userInput);
+
+  User editUserProfileInputToUser(UpdateUserProfileInput updateUserProfileInput);
 
   List<UserModel> userListToUserModelList(List<User> users);
 }

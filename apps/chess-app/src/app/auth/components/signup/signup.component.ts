@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { matchingControlsValidators, setFormValidatorsPipe } from '../../../core/utils/form.utils';
+import { matchingControlsValidators, setTemplateValidatorsPipe } from '../../../core/utils/form.utils';
 import { SignupService } from '../../services/signup.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class SignupComponent implements OnInit {
     {
       username: new FormControl(''),
       password: new FormControl(''),
-      password2: new FormControl('', []),
+      password2: new FormControl(''),
       email: new FormControl(''),
       firstname: new FormControl(''),
       lastname: new FormControl(''),
@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.signupService.getSignupTemplate().pipe(first(), setFormValidatorsPipe(this.signupForm)).subscribe();
+    this.signupService.getSignupTemplate().pipe(first(), setTemplateValidatorsPipe(this.signupForm)).subscribe();
   }
 
   public onSubmit(): void {

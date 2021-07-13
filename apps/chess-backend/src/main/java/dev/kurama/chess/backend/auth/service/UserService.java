@@ -133,6 +133,15 @@ public class UserService implements UserDetailsService {
     return currentUser;
   }
 
+  public User updateUserProfile(String username, User modifiedUser) {
+    var currentUser = findUserByUsername(username).orElseThrow();
+    currentUser.setFirstname(modifiedUser.getFirstname());
+    currentUser.setLastname(modifiedUser.getLastname());
+    currentUser.setProfileImageUrl(modifiedUser.getProfileImageUrl());
+    userRepository.save(currentUser);
+    return currentUser;
+  }
+
   private Role getRoleEnumName(String role) {
     return Role.valueOf(role.toUpperCase());
   }

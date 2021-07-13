@@ -88,7 +88,8 @@ export class Resource implements IResource {
   }
 
   getAssuredLink(key: string = 'self'): Link {
-    return this.getLink(key) as any;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.getLink(key)!;
   }
 
   hasLink(key: string = 'self'): boolean {
@@ -109,6 +110,11 @@ export class Resource implements IResource {
       return null;
     }
     return this._templates[key];
+  }
+
+  getAssuredTemplate(key: string = 'self'): Template {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.getTemplate(key)!;
   }
 
   isAllowedTo(template: string = 'default'): boolean {
