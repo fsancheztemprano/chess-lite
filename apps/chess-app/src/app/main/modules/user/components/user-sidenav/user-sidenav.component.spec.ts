@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatListModule } from '@angular/material/list';
 
 import { UserSidenavComponent } from './user-sidenav.component';
 
@@ -8,6 +9,7 @@ describe('UserSidenavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MatListModule],
       declarations: [UserSidenavComponent],
     }).compileComponents();
   });

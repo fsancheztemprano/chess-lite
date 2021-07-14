@@ -7,7 +7,7 @@ describe('AppRoutingModule', () => {
       TestBed.configureTestingModule({
         imports: [AppRoutingModule],
       }).compileComponents();
-    })
+    }),
   );
 
   // TODO: Add real tests here.

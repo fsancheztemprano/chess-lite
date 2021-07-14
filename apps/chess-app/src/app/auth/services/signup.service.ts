@@ -15,14 +15,14 @@ export class SignupService {
   constructor(
     private readonly halFormService: HalFormService,
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   public getSignupTemplate(): Observable<Template | null> {
     return this.halFormService.getTemplate(this.SIGNUP_RELATION);
   }
 
-  public canSignup(): Observable<boolean> {
+  public isAllowedToSignup(): Observable<boolean> {
     return this.halFormService.isAllowedTo(this.SIGNUP_RELATION);
   }
 
@@ -33,10 +33,10 @@ export class SignupService {
         return signupTemplate
           ? signupTemplate.submit(signupInput, null, 'response').pipe(
               this.authService.setLocalSessionPipe(),
-              tap(() => this.halFormService.initialize().subscribe())
+              tap(() => this.halFormService.initialize().subscribe()),
             )
           : throwError(() => new Error('Not allowed to signup!'));
-      })
+      }),
     );
   }
 }

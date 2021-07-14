@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   constructor(
     public readonly loginService: LoginService,
     private readonly router: Router,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {

@@ -33,7 +33,7 @@ describe('ToolbarComponent', () => {
         ],
         providers: [stubHalFormServiceProvider],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {

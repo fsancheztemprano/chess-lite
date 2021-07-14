@@ -84,7 +84,7 @@ export class Template implements ITemplate {
     link: Link,
     body?: any,
     params?: any,
-    observe: 'body' | 'events' | 'response' = 'body'
+    observe: 'body' | 'events' | 'response' = 'body',
   ): Observable<T> {
     if (!link?.href) {
       return throwError(() => new Error('Invalid link'));

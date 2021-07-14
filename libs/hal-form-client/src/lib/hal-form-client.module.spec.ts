@@ -7,7 +7,7 @@ describe('HalFormClientModule', () => {
       TestBed.configureTestingModule({
         imports: [HalFormClientModule],
       }).compileComponents();
-    })
+    }),
   );
 
   // TODO: Add real tests here.

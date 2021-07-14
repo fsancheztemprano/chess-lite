@@ -7,7 +7,7 @@ describe('AppModule', () => {
       TestBed.configureTestingModule({
         imports: [AppModule],
       }).compileComponents();
-    })
+    }),
   );
 
   // TODO: Add real tests here.

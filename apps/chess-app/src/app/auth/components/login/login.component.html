@@ -29,7 +29,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="loginForm.invalid || (loginService.canLogin() | async) === false"
+        [disabled]="loginForm.invalid || (loginService.isAllowedToLogin() | async) === false"
       >
         Log In
       </button>

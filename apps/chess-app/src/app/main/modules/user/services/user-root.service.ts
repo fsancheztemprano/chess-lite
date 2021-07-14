@@ -15,9 +15,11 @@ export class UserRootService extends HalFormService {
   initialize(): Observable<Resource> {
     return this.halFormService.getLink('user-root').pipe(
       switchMap((link) => {
-        this.root = link?.href || '';
-        return this.root ? super.initialize() : throwError(() => new Error('User Root Initialization Error'));
-      })
+        this._rootUrl = link?.href || '';
+        return this._rootUrl?.length
+          ? super.initialize()
+          : throwError(() => new Error('User Root Initialization Error'));
+      }),
     );
   }
 }

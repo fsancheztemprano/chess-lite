@@ -45,7 +45,7 @@ export class Link implements ILink {
     return url
       ? this.httpClient.get<R>(url, { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } }).pipe(
           first(),
-          map((response) => new Resource(response).as())
+          map((response) => new Resource(response).as()),
         )
       : throwError(() => new Error(`Un-parsable Url ${url}, ${this.href},  ${params}`));
   }

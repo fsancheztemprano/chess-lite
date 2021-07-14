@@ -18,7 +18,7 @@ export class NgLetDirective implements OnInit {
 
   constructor(
     private readonly _viewContainerRef: ViewContainerRef,
-    private readonly _templateRef: TemplateRef<NgLetContext> // @formatter:off
+    private readonly _templateRef: TemplateRef<NgLetContext>, // @formatter:off
   ) {} // @formatter:on
 
   ngOnInit() {

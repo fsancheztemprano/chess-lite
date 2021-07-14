@@ -23,7 +23,7 @@ export class SignupComponent implements OnInit {
       firstname: new FormControl(''),
       lastname: new FormControl(''),
     },
-    [matchingControlsValidators('password', 'password2')]
+    [matchingControlsValidators('password', 'password2')],
   );
 
   public signupSuccess = false;
@@ -33,7 +33,7 @@ export class SignupComponent implements OnInit {
   constructor(
     public readonly signupService: SignupService,
     private readonly router: Router,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {

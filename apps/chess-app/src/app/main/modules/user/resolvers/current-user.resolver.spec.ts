@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubUserRootServiceProvider } from '../services/user-root.service.stub';
+import { stubUserServiceProvider } from '../services/user.service.stub';
 
 import { CurrentUserResolver } from './current-user.resolver';
 
@@ -8,7 +8,7 @@ describe('CurrentUserResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubUserRootServiceProvider],
+      providers: [stubUserServiceProvider],
     });
     resolver = TestBed.inject(CurrentUserResolver);
   });

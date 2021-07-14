@@ -7,7 +7,7 @@ describe('AuthRoutingModule', () => {
       TestBed.configureTestingModule({
         imports: [AuthRoutingModule],
       }).compileComponents();
-    })
+    }),
   );
 
   // TODO: Add real tests here.

@@ -3,10 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Resource } from '@chess-lite/hal-form-client';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
-import { iif, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { patchFormPipe, setResourceValidatorsPipe } from '../../../../../../../core/utils/form.utils';
-import { notAllowedError } from '../../../../../../../core/utils/rxjs.utils';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'chess-lite-user-profile',
@@ -16,8 +16,6 @@ import { notAllowedError } from '../../../../../../../core/utils/rxjs.utils';
   animations: [wobbleAnimation(), tadaAnimation()],
 })
 export class UserProfileComponent {
-  public readonly UPDATE_PROFILE = 'updateProfile';
-
   private readonly _user$: Observable<Resource> = this.route.data.pipe(map(({ user }) => user));
 
   public form = new FormGroup({
@@ -40,8 +38,14 @@ export class UserProfileComponent {
   submitSuccessMessage = false;
   submitErrorMessage = false;
 
-  constructor(private readonly route: ActivatedRoute, private readonly cdr: ChangeDetectorRef) {
-    this.user$.pipe(patchFormPipe(this.form), setResourceValidatorsPipe(this.form, this.UPDATE_PROFILE)).subscribe();
+  constructor(
+    public readonly userService: UserService,
+    private readonly route: ActivatedRoute,
+    private readonly cdr: ChangeDetectorRef,
+  ) {
+    this.user$
+      .pipe(patchFormPipe(this.form), setResourceValidatorsPipe(this.form, this.userService.UPDATE_PROFILE_REL))
+      .subscribe();
   }
 
   get user$(): Observable<Resource> {
@@ -49,21 +53,10 @@ export class UserProfileComponent {
   }
 
   onSubmit() {
-    this.user$
-      .pipe(
-        switchMap((user) => {
-          return iif(
-            () => user?.isAllowedTo(this.UPDATE_PROFILE),
-            user.getAssuredTemplate(this.UPDATE_PROFILE).submit({
-              firstname: this.form.value.firstname,
-              lastname: this.form.value.lastname,
-              profileImageUrl: this.form.value.profileImageUrl,
-            }),
-            notAllowedError(this.UPDATE_PROFILE)
-          );
-        })
-      )
-      .subscribe({ next: () => this.setSubmitStatus(true), error: () => this.setSubmitStatus(false) });
+    this.userService.updateProfile(this.user$, this.form.value).subscribe({
+      next: () => this.setSubmitStatus(true),
+      error: () => this.setSubmitStatus(false),
+    });
   }
 
   setSubmitStatus(success: boolean) {

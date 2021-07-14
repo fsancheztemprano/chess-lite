@@ -14,11 +14,11 @@ import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
 export class HalFormService {
   private _rootResource: BehaviorSubject<Resource> = new BehaviorSubject<Resource>(new Resource({}));
 
-  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected root: string) {}
+  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected _rootUrl: string) {}
 
   initialize(): Observable<Resource> {
     return this.httpClient
-      .get<Resource>(this.root, {
+      .get<Resource>(this._rootUrl, {
         headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
         observe: 'response',
       })
@@ -26,9 +26,9 @@ export class HalFormService {
         first(),
         tap((response) => {
           if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS)) {
-            console.warn(`Provided url ${this.root} is not Hal Form Compliant`);
+            console.warn(`Provided url ${this._rootUrl} is not Hal Form Compliant`);
             if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL)) {
-              console.warn(`Provided url ${this.root} is not Hal Compliant`);
+              console.warn(`Provided url ${this._rootUrl} is not Hal Compliant`);
             }
           }
         }),
@@ -40,7 +40,7 @@ export class HalFormService {
         catchError((err) => {
           console.error('Hal Form Client Initialization Error', err);
           return EMPTY;
-        })
+        }),
       );
   }
 

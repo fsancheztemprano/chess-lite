@@ -7,9 +7,15 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
     "nx": "nx",
     "start": "ng serve",
+    "analyze": "webpack-bundle-analyzer dist/apps/chess-app/stats.json",
+    "analyze:bundle": "npm run build:front:stats && npm run analyze",
     "build": "nx run-many --target=build --all",
     "build:front": "nx run-many --target=build --projects=chess-app",
+    "build:front:stats": "nx run-many --target=build --projects=chess-app --statsJson",
+    "build:backend": "nx run-many --target=build --projects=chess-backend",
     "test": "nx run-many --target=test --all",
+    "test:front": "nx run-many --target=test --projects=chess-app",
+    "test:backend": "nx run-many --target=test --projects=chess-backend",
     "lint": "nx workspace-lint && nx run-many --target=lint --all",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
@@ -88,6 +94,7 @@
     "prettier": "2.3.2",
     "ts-jest": "27.0.3",
     "ts-node": "10.0.0",
-    "typescript": "4.2.4"
+    "typescript": "4.2.4",
+    "webpack-bundle-analyzer": "^4.4.2"
   }
 }

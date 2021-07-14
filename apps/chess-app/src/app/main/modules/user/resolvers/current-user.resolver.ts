@@ -11,6 +11,6 @@ export class CurrentUserResolver implements Resolve<User> {
   constructor(private readonly userService: UserService) {}
 
   resolve(): Observable<User> {
-    return this.userService.getCurrentUser();
+    return this.userService.fetchCurrentUser();
   }
 }

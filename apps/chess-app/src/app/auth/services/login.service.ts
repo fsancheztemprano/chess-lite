@@ -16,14 +16,14 @@ export class LoginService {
   constructor(
     private readonly halFormService: HalFormService,
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   public getLoginTemplate(): Observable<Template | null> {
     return this.halFormService.getTemplate(this.LOGIN_RELATION);
   }
 
-  public canLogin(): Observable<boolean> {
+  public isAllowedToLogin(): Observable<boolean> {
     return this.halFormService.isAllowedTo(this.LOGIN_RELATION);
   }
 
@@ -34,17 +34,14 @@ export class LoginService {
         return loginTemplate
           ? loginTemplate.submit(loginInput, null, 'response').pipe(
               this.authService.setLocalSessionPipe(),
-              tap(() => this.halFormService.initialize().subscribe())
+              tap(() => this.halFormService.initialize().subscribe()),
             )
           : notAllowedError(this.LOGIN_RELATION);
-      })
+      }),
     );
   }
 
   public logout(): void {
     this.authService.clearLocalSession();
-    this.halFormService.initialize().subscribe(() => {
-      this.router.navigate(['auth', 'login']);
-    });
   }
 }

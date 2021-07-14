@@ -55,7 +55,7 @@
         mat-raised-button
         color="primary"
         (click)="onSubmit()"
-        [disabled]="signupForm.invalid || (signupService.canSignup() | async) === false"
+        [disabled]="signupForm.invalid || (signupService.isAllowedToSignup() | async) === false"
       >
         Sign Up
       </button>

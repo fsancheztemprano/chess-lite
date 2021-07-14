@@ -7,7 +7,7 @@ describe('MainRoutingModule', () => {
       TestBed.configureTestingModule({
         imports: [MainRoutingModule],
       }).compileComponents();
-    })
+    }),
   );
 
   // TODO: Add real tests here.

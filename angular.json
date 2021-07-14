@@ -161,6 +161,26 @@
       "sourceRoot": "apps/chess-backend/src",
       "projectType": "application",
       "architect": {
+        "clean": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/chess-backend"
+          }
+        },
+        "test": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/chess-backend",
+            "args": ["verify"]
+          }
+        },
+        "build": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/chess-backend",
+            "args": ["verify", "-DskipTests", "-DskipITs"]
+          }
+        },
         "run": {
           "builder": "@nxrocks/nx-spring-boot:run",
           "options": {
@@ -169,18 +189,6 @@
         },
         "serve": {
           "builder": "@nxrocks/nx-spring-boot:serve",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "test": {
-          "builder": "@nxrocks/nx-spring-boot:test",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "clean": {
-          "builder": "@nxrocks/nx-spring-boot:clean",
           "options": {
             "root": "apps/chess-backend"
           }
@@ -207,17 +215,6 @@
           "builder": "@nxrocks/nx-spring-boot:buildInfo",
           "options": {
             "root": "apps/chess-backend"
-          }
-        },
-        "build": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "cwd": "apps/chess-backend",
-            "commands": [
-              {
-                "command": "mvn clean package -DskipTests"
-              }
-            ]
           }
         }
       }

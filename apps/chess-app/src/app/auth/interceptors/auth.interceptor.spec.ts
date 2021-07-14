@@ -9,7 +9,7 @@ describe('AuthInterceptor', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [AuthInterceptor, stubHalFormServiceProvider, stubAuthServiceProvider],
-    })
+    }),
   );
 
   it('should be created', () => {

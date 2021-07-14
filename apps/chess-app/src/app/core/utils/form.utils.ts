@@ -22,12 +22,11 @@ export function getPropertyValidators(template: Template | null, propertyName: s
 }
 
 export function setTemplateValidatorsPipe(
-  formGroup: FormGroup
+  formGroup: FormGroup,
 ): (observable: Observable<Template | null>) => Observable<Template | null> {
   return (observable: Observable<Template | null>) => {
     return observable.pipe(
       tap((template) => {
-        console.log(template);
         for (const control in formGroup.controls) {
           const propertyValidators = getPropertyValidators(template, control);
           if (propertyValidators.length) {
@@ -35,14 +34,14 @@ export function setTemplateValidatorsPipe(
           }
         }
         formGroup.updateValueAndValidity();
-      })
+      }),
     );
   };
 }
 
 export function setResourceValidatorsPipe(
   formGroup: FormGroup,
-  templateName: string
+  templateName: string,
 ): (observable: Observable<Resource>) => Observable<Resource> {
   return (observable: Observable<Resource>) => {
     return observable.pipe(
@@ -56,14 +55,14 @@ export function setResourceValidatorsPipe(
           }
           formGroup.updateValueAndValidity();
         }
-      })
+      }),
     );
   };
 }
 
 export function matchingControlsValidators(
   controlName: string,
-  matchingControlName: string
+  matchingControlName: string,
 ): (control: AbstractControl) => ValidationErrors | null {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const control = formGroup.get(controlName);

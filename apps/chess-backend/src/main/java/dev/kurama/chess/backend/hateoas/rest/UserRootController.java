@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/root/user")
 public class UserRootController {
 
-  private static final String CURRENT_USER_REL = "current-user";
-  private static final String USER_REL = "user";
-  private static final String USERS_REL = "users";
+  public static final String CURRENT_USER_REL = "current-user";
+  public static final String USER_REL = "user";
+  public static final String USERS_REL = "users";
 
   @GetMapping()
   public ResponseEntity<RootResource> root() {

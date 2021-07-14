@@ -7,7 +7,7 @@ describe('SharedModule', () => {
       TestBed.configureTestingModule({
         imports: [SharedModule],
       }).compileComponents();
-    })
+    }),
   );
 
   // TODO: Add real tests here.

@@ -8,9 +8,12 @@
     [opened]="this.sidenavService.isOpen$ | async"
   >
     <mat-toolbar
-      >Welcome <span *ngIf="authService.user | async as user">{{ user.firstname || user.username }}</span></mat-toolbar
-    >
+      ><span
+        >Welcome <span *ngIf="authService.user | async as user">{{ user.firstname || user.username }}</span></span
+      >
+    </mat-toolbar>
     <mat-nav-list>
+      <a mat-list-item (click)="toggleSidenav()" routerLink="/" routerLinkActive="active-link">Home</a>
       <a
         mat-list-item
         *ngIf="sidenavService.showUserLink() | async"

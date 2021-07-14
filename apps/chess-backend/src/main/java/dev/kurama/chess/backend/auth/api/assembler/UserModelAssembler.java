@@ -33,7 +33,7 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
     return userModel
       .add(getModelSelfLink(userModel.getId()))
       .add(getParentLink())
-      .mapLinkIf(hasAuthority(USER_DELETE),
+      .mapLinkIf(hasAuthority(USER_DELETE) || getCurrentUsername().equals(userModel.getUsername()),
         LinkRelation.of("self"),
         link -> link.andAffordance(getDeleteAffordance(userModel.getUsername())))
       .mapLinkIf(hasAuthority(USER_UPDATE),

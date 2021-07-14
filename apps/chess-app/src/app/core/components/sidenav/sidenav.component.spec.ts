@@ -34,7 +34,7 @@ describe('SidenavComponent', () => {
         ],
         providers: [stubAuthServiceProvider, stubSidenavServiceProvider, stubLoginServiceProvider],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {

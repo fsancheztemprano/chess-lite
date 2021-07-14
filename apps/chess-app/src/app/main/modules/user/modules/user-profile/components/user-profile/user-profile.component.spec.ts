@@ -12,6 +12,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Resource } from '@chess-lite/hal-form-client';
 import { of } from 'rxjs';
 import { StubFormErrorComponent } from '../../../../../../../shared/components/form-error/form-error.component.stub';
+import { stubUserServiceProvider } from '../../../../services/user.service.stub';
 import { UserProfileComponent } from './user-profile.component';
 
 const mockRouteData = { data: of({ user: new Resource({}) }) };
@@ -34,7 +35,7 @@ describe('UserProfileComponent', () => {
         MatNativeDateModule,
       ],
       declarations: [UserProfileComponent, StubFormErrorComponent],
-      providers: [MatDatepickerModule, { provide: ActivatedRoute, useValue: mockRouteData }],
+      providers: [MatDatepickerModule, stubUserServiceProvider, { provide: ActivatedRoute, useValue: mockRouteData }],
     }).compileComponents();
   });
 
