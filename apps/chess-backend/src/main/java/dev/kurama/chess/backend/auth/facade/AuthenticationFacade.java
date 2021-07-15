@@ -6,6 +6,7 @@ import dev.kurama.chess.backend.auth.api.domain.input.LoginInput;
 import dev.kurama.chess.backend.auth.api.domain.input.SignupInput;
 import dev.kurama.chess.backend.auth.api.domain.model.AuthenticatedUser;
 import dev.kurama.chess.backend.auth.api.mapper.UserMapper;
+import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
@@ -50,7 +51,7 @@ public class AuthenticationFacade {
     return getAuthenticatedUser(user);
   }
 
-  private AuthenticatedUser getAuthenticatedUser(dev.kurama.chess.backend.auth.domain.User user) {
+  private AuthenticatedUser getAuthenticatedUser(User user) {
     var userModel = userMapper.userToUserModel(user);
     return AuthenticatedUser.builder()
       .userModel(userModel)

@@ -14,7 +14,7 @@ public interface UserMapper {
 
   User userInputToUser(UserInput userInput);
 
-  User editUserProfileInputToUser(UpdateUserProfileInput updateUserProfileInput);
+  User updateProfileInputToUser(UpdateUserProfileInput updateUserProfileInput);
 
   List<UserModel> userListToUserModelList(List<User> users);
 }

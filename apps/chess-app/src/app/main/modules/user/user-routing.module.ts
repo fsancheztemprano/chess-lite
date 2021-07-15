@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
 
-const loadUserProfileModule = () =>
-  import('./modules/user-profile/user-profile.module').then((m) => m.UserProfileModule);
+const loadUserUpdateProfileModule = () =>
+  import('./modules/user-update-profile/user-update-profile.module').then((m) => m.UserUpdateProfileModule);
 
 const loadUserRemoveAccountModule = () =>
   import('./modules/user-remove-account/user-remove-account.module').then((m) => m.UserRemoveAccountModule);
+
+const loadUserChangePasswordModule = () =>
+  import('./modules/user-change-password/user-change-password.module').then((m) => m.UserChangePasswordModule);
 
 const routes: Routes = [
   {
@@ -15,11 +18,15 @@ const routes: Routes = [
     children: [
       {
         path: 'profile',
-        loadChildren: loadUserProfileModule,
+        loadChildren: loadUserUpdateProfileModule,
       },
       {
         path: 'delete',
         loadChildren: loadUserRemoveAccountModule,
+      },
+      {
+        path: 'password',
+        loadChildren: loadUserChangePasswordModule,
       },
     ],
   },

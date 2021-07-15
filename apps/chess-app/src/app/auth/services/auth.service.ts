@@ -2,10 +2,9 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpHeaders, User } from '@chess-lite/domain';
-import { HalFormService, IResource, Resource } from '@chess-lite/hal-form-client';
+import { HalFormService, IResource, noLinkError, Resource } from '@chess-lite/hal-form-client';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
-import { notAllowedError } from '../../core/utils/rxjs.utils';
 import { isTokenExpired } from '../utils/auth.utils';
 
 @Injectable({
@@ -35,7 +34,7 @@ export class AuthService {
     return this.halFormService.getLink(this.CURRENT_USER_REL).pipe(
       first(),
       switchMap((userLink) => {
-        return userLink ? userLink.get<User>() : notAllowedError(this.CURRENT_USER_REL);
+        return userLink ? userLink.get<User>() : noLinkError(this.CURRENT_USER_REL);
       }),
       tap((user) => user && this.setUser(user)),
     );

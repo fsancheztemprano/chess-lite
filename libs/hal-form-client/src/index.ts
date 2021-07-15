@@ -5,3 +5,5 @@ export * from './lib/domain/resource';
 export * from './lib/domain/template';
 export * from './lib/domain/content-type.enum';
 export * from './lib/domain/http-method.enum';
+export * from './lib/utils/rxjs.utils';
+export * from './lib/utils/exceptions.utils';

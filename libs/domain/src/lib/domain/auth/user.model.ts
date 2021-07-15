@@ -17,8 +17,13 @@ export interface User extends IResource {
   credentialsExpired: boolean;
 }
 
-export interface UpdateUserProfileInput {
+export interface UserUpdateProfileInput {
   firstname: string;
   lastname: string;
   profileImageUrl: string;
+}
+
+export interface UserChangePasswordInput {
+  password: string;
+  newPassword: string;
 }

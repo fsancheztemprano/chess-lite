@@ -6,6 +6,6 @@
   {{ name }} must be less than {{ maxLength.requiredLength }} characters
 </div>
 <div class="mat-error">
-  <span *ngIf="control.errors?.mustMatch">{{ name }} must match</span>
+  <span *ngIf="control.errors?.mustMatch?.name">{{ name | titlecase }} must match</span>
 </div>
 <div class="mat-error" *ngIf="control.errors?.email">Please provide a valid email</div>

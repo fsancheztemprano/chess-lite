@@ -1,6 +1,6 @@
 package dev.kurama.chess.backend.auth.api.security;
 
-import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.getCurrentUsername;
+import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.isCurrentUsername;
 
 import org.springframework.stereotype.Component;
 
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 public class UserEvaluator {
 
   public boolean isCurrentUser(String username) {
-    return getCurrentUsername().equals(username);
+    return isCurrentUsername(username);
   }
 }

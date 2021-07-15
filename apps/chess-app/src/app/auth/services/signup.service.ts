@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { SignupInput, User } from '@chess-lite/domain';
-import { HalFormService, Template } from '@chess-lite/hal-form-client';
-import { Observable, throwError } from 'rxjs';
-import { first, switchMap, tap } from 'rxjs/operators';
+import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@chess-lite/hal-form-client';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -27,16 +27,10 @@ export class SignupService {
   }
 
   public signup(signupInput: SignupInput): Observable<User | null> {
-    return this.getSignupTemplate().pipe(
-      first(),
-      switchMap((signupTemplate) => {
-        return signupTemplate
-          ? signupTemplate.submit(signupInput, null, 'response').pipe(
-              this.authService.setLocalSessionPipe(),
-              tap(() => this.halFormService.initialize().subscribe()),
-            )
-          : throwError(() => new Error('Not allowed to signup!'));
-      }),
+    return this.halFormService.rootResource.pipe(
+      submitToTemplateOrThrowPipe(this.SIGNUP_RELATION, signupInput, undefined, 'response'),
+      this.authService.setLocalSessionPipe(),
+      tap(() => this.halFormService.initialize().subscribe()),
     );
   }
 }

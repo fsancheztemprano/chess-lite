@@ -20,6 +20,10 @@ public class AuthorityUtils {
     return (String) getAuthentication().getPrincipal();
   }
 
+  public static boolean isCurrentUsername(String username) {
+    return getCurrentUsername().equals(username);
+  }
+
   public static Collection<? extends GrantedAuthority> getAuthorities() {
     return getAuthentication() == null ? Lists.newArrayList() : getAuthentication().getAuthorities();
   }

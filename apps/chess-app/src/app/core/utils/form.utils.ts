@@ -68,7 +68,9 @@ export function matchingControlsValidators(
     const control = formGroup.get(controlName);
     const matchingControl = formGroup.get(matchingControlName);
 
-    return control && matchingControl && control.value === matchingControl.value ? null : { mustMatch: true };
+    return control && matchingControl && control.value === matchingControl.value
+      ? null
+      : { mustMatch: { [controlName]: true } };
   };
 }
 

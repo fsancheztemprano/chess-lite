@@ -9,13 +9,13 @@ import { patchFormPipe, setResourceValidatorsPipe } from '../../../../../../../c
 import { UserService } from '../../../../services/user.service';
 
 @Component({
-  selector: 'chess-lite-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss'],
+  selector: 'chess-lite-user-update-profile',
+  templateUrl: './user-update-profile.component.html',
+  styleUrls: ['./user-update-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [wobbleAnimation(), tadaAnimation()],
 })
-export class UserProfileComponent {
+export class UserUpdateProfileComponent {
   private readonly _user$: Observable<Resource> = this.route.data.pipe(map(({ user }) => user));
 
   public form = new FormGroup({

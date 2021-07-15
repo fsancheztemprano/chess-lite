@@ -9,15 +9,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorModule } from '../../../../../shared/components/form-error/form-error.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserUpdateProfileComponent } from './components/user-update-profile/user-update-profile.component';
 
-import { UserProfileRoutingModule } from './user-profile-routing.module';
+import { UserUpdateProfileRoutingModule } from './user-update-profile-routing.module';
 
 @NgModule({
-  declarations: [UserProfileComponent],
+  declarations: [UserUpdateProfileComponent],
   imports: [
     CommonModule,
-    UserProfileRoutingModule,
+    UserUpdateProfileRoutingModule,
     FormErrorModule,
     MatCardModule,
     MatFormFieldModule,
@@ -30,4 +30,4 @@ import { UserProfileRoutingModule } from './user-profile-routing.module';
   ],
   providers: [MatDatepickerModule],
 })
-export class UserProfileModule {}
+export class UserUpdateProfileModule {}

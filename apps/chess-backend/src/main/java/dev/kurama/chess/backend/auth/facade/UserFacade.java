@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.auth.facade;
 
+import dev.kurama.chess.backend.auth.api.domain.input.ChangeUserPasswordInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
@@ -11,6 +12,8 @@ import dev.kurama.chess.backend.auth.service.UserService;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +26,10 @@ public class UserFacade {
 
   @NonNull
   private final UserMapper userMapper;
+
+  @NonNull
+  private final AuthenticationManager authenticationManager;
+
 
   public UserModel create(UserInput userInput) throws UsernameExistsException, EmailExistsException {
     return userMapper.userToUserModel(userService.createUser(userMapper.userInputToUser(userInput)));
@@ -42,12 +49,23 @@ public class UserFacade {
     return userMapper.userToUserModel(userService.updateUser(username, userMapper.userInputToUser(userInput)));
   }
 
-  public UserModel updateUserProfile(String username, UpdateUserProfileInput updateUserProfileInput) {
+  public UserModel updateProfile(String username, UpdateUserProfileInput updateUserProfileInput) {
     return userMapper.userToUserModel(
-      userService.updateUserProfile(username, userMapper.editUserProfileInputToUser(updateUserProfileInput)));
+      userService.updateProfile(username, userMapper.updateProfileInputToUser(updateUserProfileInput)));
   }
 
   public void deleteByUsername(String username) {
     userService.deleteUser(username);
+  }
+
+
+  public UserModel changePassword(String username, ChangeUserPasswordInput changeUserPasswordInput) {
+    authenticate(username, changeUserPasswordInput.getPassword());
+    return userMapper.userToUserModel(
+      userService.updatePassword(username, changeUserPasswordInput.getNewPassword()));
+  }
+
+  private void authenticate(String username, String password) {
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
   }
 }

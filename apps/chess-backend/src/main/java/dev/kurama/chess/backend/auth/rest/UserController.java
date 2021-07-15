@@ -6,6 +6,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
 import dev.kurama.chess.backend.auth.api.assembler.UserModelAssembler;
+import dev.kurama.chess.backend.auth.api.domain.input.ChangeUserPasswordInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
@@ -85,7 +86,14 @@ public class UserController implements DomainController<UserModel> {
   @PreAuthorize("hasAuthority('user:update') or @userEvaluator.isCurrentUser(#username)")
   public ResponseEntity<UserModel> updateProfile(@PathVariable("username") String username,
     @RequestBody UpdateUserProfileInput updateUserProfileInput) {
-    return ok().body(userModelAssembler.toModel(userFacade.updateUserProfile(username, updateUserProfileInput)));
+    return ok().body(userModelAssembler.toModel(userFacade.updateProfile(username, updateUserProfileInput)));
+  }
+
+  @PatchMapping("/{username}/password")
+  @PreAuthorize("hasAuthority('user:update') or @userEvaluator.isCurrentUser(#username)")
+  public ResponseEntity<UserModel> changePassword(@PathVariable("username") String username,
+    @RequestBody ChangeUserPasswordInput changeUserPasswordInput) {
+    return ok().body(userModelAssembler.toModel(userFacade.changePassword(username, changeUserPasswordInput)));
   }
 
 }

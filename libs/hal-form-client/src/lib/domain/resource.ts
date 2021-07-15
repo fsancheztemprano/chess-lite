@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { notAllowedError } from '../utils/exceptions.utils';
 import { HttpMethodEnum } from './http-method.enum';
 import { ILink, Link } from './link';
 import { ITemplate, Template } from './template';
@@ -121,7 +122,18 @@ export class Resource implements IResource {
     return !!this.getTemplate(template);
   }
 
-  submit(method: HttpMethodEnum, payload: any, params?: any): Observable<any> {
+  submit(method: HttpMethodEnum, payload?: any, params?: any): Observable<any> {
     return new Template({ method }, this._links?.self).submit(payload, params);
+  }
+
+  submitToTemplateOrThrow(
+    templateName: string,
+    payload?: any,
+    params?: any,
+    observe: 'body' | 'events' | 'response' = 'body',
+  ): Observable<any> {
+    return this.getTemplate(templateName)
+      ? this.getAssuredTemplate(templateName).submit(payload, params, observe || 'body')
+      : notAllowedError(templateName);
   }
 }

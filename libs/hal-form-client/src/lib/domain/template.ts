@@ -77,7 +77,7 @@ export class Template implements ITemplate {
   }
 
   submit<T = any>(payload?: any, params?: any, observe: 'body' | 'events' | 'response' = 'body'): Observable<T> {
-    return this.submitToTarget(this.targetLink as any, payload, params, observe);
+    return this.submitToTarget(this.targetLink as any, payload, params, observe || 'body');
   }
 
   submitToTarget<T = any>(
@@ -98,7 +98,7 @@ export class Template implements ITemplate {
     }
     const url = link.parseUrl(params || {});
     return url
-      ? this.httpClient.request(this.method, url, { headers, body, observe }).pipe(first())
+      ? this.httpClient.request(this.method, url, { headers, body, observe: observe || 'body' }).pipe(first())
       : throwError(() => new Error(`Un-parsable Url ${link?.href},  ${params}`));
   }
 

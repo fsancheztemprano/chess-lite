@@ -133,11 +133,18 @@ public class UserService implements UserDetailsService {
     return currentUser;
   }
 
-  public User updateUserProfile(String username, User modifiedUser) {
+  public User updateProfile(String username, User modifiedUser) {
     var currentUser = findUserByUsername(username).orElseThrow();
     currentUser.setFirstname(modifiedUser.getFirstname());
     currentUser.setLastname(modifiedUser.getLastname());
     currentUser.setProfileImageUrl(modifiedUser.getProfileImageUrl());
+    userRepository.save(currentUser);
+    return currentUser;
+  }
+
+  public User updatePassword(String username, String newPassword) {
+    var currentUser = findUserByUsername(username).orElseThrow();
+    currentUser.setPassword(passwordEncoder.encode(newPassword));
     userRepository.save(currentUser);
     return currentUser;
   }

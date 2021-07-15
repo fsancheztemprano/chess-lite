@@ -13,13 +13,14 @@ import { Resource } from '@chess-lite/hal-form-client';
 import { of } from 'rxjs';
 import { StubFormErrorComponent } from '../../../../../../../shared/components/form-error/form-error.component.stub';
 import { stubUserServiceProvider } from '../../../../services/user.service.stub';
-import { UserProfileComponent } from './user-profile.component';
+
+import { UserUpdateProfileComponent } from './user-update-profile.component';
 
 const mockRouteData = { data: of({ user: new Resource({}) }) };
 
-describe('UserProfileComponent', () => {
-  let component: UserProfileComponent;
-  let fixture: ComponentFixture<UserProfileComponent>;
+describe('UserUpdateProfileComponent', () => {
+  let component: UserUpdateProfileComponent;
+  let fixture: ComponentFixture<UserUpdateProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,13 +35,13 @@ describe('UserProfileComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
       ],
-      declarations: [UserProfileComponent, StubFormErrorComponent],
+      declarations: [UserUpdateProfileComponent, StubFormErrorComponent],
       providers: [MatDatepickerModule, stubUserServiceProvider, { provide: ActivatedRoute, useValue: mockRouteData }],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserProfileComponent);
+    fixture = TestBed.createComponent(UserUpdateProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
