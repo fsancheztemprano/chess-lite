@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 export class StubUserService implements Partial<UserService> {
   isAllowedToUpdateProfile = () => true;
   isAllowedToDeleteAccount = () => true;
+  isAllowedToUploadAvatar = () => true;
   getCurrentUsername = () => of('currentUsername');
 }
 

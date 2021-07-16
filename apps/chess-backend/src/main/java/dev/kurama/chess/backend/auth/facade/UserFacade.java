@@ -9,13 +9,17 @@ import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.service.UserService;
+import java.io.IOException;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
@@ -67,5 +71,13 @@ public class UserFacade {
 
   private void authenticate(String username, String password) {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  }
+
+  public UserModel uploadAvatar(String username, MultipartFile avatar) throws IOException {
+    var sb = new StringBuilder();
+    sb.append("data:image/png;base64,");
+    sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false)));
+    return userMapper.userToUserModel(userService.uploadAvatar(username, sb.toString()));
+
   }
 }

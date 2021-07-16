@@ -248,6 +248,13 @@
   dependencies:
     eslint-scope "^5.1.0"
 
+"@angular-material-components/file-input@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@angular-material-components/file-input/-/file-input-6.0.0.tgz#7ee1859bbd88ea7580d5ede6efd0ee7aa31f93e7"
+  integrity sha512-Bm11jQWYGyHjsGaCjNDzL2p62Ax49NNkrB/8CwRNj6N/r8y162Cj5+QWrl099+kSLJ7HRwxJcXKEH5zxspOU4w==
+  dependencies:
+    tslib "^2.1.0"
+
 "@angular/animations@12.1.2":
   version "12.1.2"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-12.1.2.tgz#38bbb69da11ee0f5fc69c6742f9003243d5ede8c"

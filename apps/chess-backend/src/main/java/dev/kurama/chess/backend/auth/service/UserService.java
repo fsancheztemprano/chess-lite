@@ -193,4 +193,11 @@ public class UserService implements UserDetailsService {
       user.setLocked(loginAttemptService.hasExceededMaxAttempts(user.getUsername()));
     }
   }
+
+  public User uploadAvatar(String username, String avatar) {
+    var currentUser = findUserByUsername(username).orElseThrow();
+    currentUser.setProfileImageUrl(avatar);
+    userRepository.save(currentUser);
+    return currentUser;
+  }
 }

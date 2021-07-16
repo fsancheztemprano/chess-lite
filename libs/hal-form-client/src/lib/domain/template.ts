@@ -93,8 +93,9 @@ export class Template implements ITemplate {
       return throwError(() => new Error(`Method ${this.method} is not supported`));
     }
     let headers = new HttpHeaders({ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS });
-    if (body) {
+    if (body && this.contentType !== ContentTypeEnum.MULTIPART_FILE) {
       headers = headers.append('Content-Type', this.contentType || ContentTypeEnum.APPLICATION_JSON);
+      console.log(headers.get('Content-Type'));
     }
     const url = link.parseUrl(params || {});
     return url

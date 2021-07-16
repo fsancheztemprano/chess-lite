@@ -13,6 +13,7 @@ export class UserService {
   public readonly USER_REL = 'user';
   public readonly UPDATE_PROFILE_REL = 'updateProfile';
   public readonly CHANGE_PASSWORD_REL = 'changePassword';
+  public readonly UPLOAD_AVATAR_REL = 'uploadAvatar';
   public readonly DELETE_ACCOUNT_REL = 'delete';
 
   constructor(private readonly userRootService: UserRootService, private readonly authService: AuthService) {}
@@ -66,5 +67,15 @@ export class UserService {
 
   changePassword(user$: Observable<Resource>, userChangePasswordInput: UserChangePasswordInput): Observable<User> {
     return user$.pipe(submitToTemplateOrThrowPipe(this.CHANGE_PASSWORD_REL, userChangePasswordInput));
+  }
+
+  isAllowedToUploadAvatar(user: Resource): boolean {
+    return user.isAllowedTo(this.UPLOAD_AVATAR_REL);
+  }
+
+  uploadAvatar(user$: Observable<Resource>, file: File): Observable<Resource> {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    return user$.pipe(submitToTemplateOrThrowPipe(this.UPLOAD_AVATAR_REL, formData));
   }
 }

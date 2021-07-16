@@ -45,7 +45,10 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
         link -> link.andAffordance(getUpdateProfileAffordance(userModel.getUsername())))
       .mapLinkIf((isCurrentUsername(userModel.getUsername()) || hasAuthority(USER_UPDATE)),
         LinkRelation.of("self"),
-        link -> link.andAffordance(getPasswordAffordance(userModel.getUsername())))
+        link -> link.andAffordance(getChangePasswordAffordance(userModel.getUsername())))
+      .mapLinkIf((isCurrentUsername(userModel.getUsername()) || hasAuthority(USER_UPDATE)),
+        LinkRelation.of("self"),
+        link -> link.andAffordance(getUploadAvatarAffordance(userModel.getUsername())))
       ;
   }
 
@@ -81,7 +84,12 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
     return afford(methodOn(getClazz()).updateProfile(username, null));
   }
 
-  private @NonNull Affordance getPasswordAffordance(String username) {
+  private @NonNull Affordance getChangePasswordAffordance(String username) {
     return afford(methodOn(getClazz()).changePassword(username, null));
+  }
+
+  @SneakyThrows
+  private @NonNull Affordance getUploadAvatarAffordance(String username) {
+    return afford(methodOn(getClazz()).uploadAvatar(username, null));
   }
 }

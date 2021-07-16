@@ -11,6 +11,9 @@ const loadUserRemoveAccountModule = () =>
 const loadUserChangePasswordModule = () =>
   import('./modules/user-change-password/user-change-password.module').then((m) => m.UserChangePasswordModule);
 
+const loadUserUploadAvatarModule = () =>
+  import('./modules/user-upload-avatar/user-upload-avatar.module').then((m) => m.UserUploadAvatarModule);
+
 const routes: Routes = [
   {
     path: '',
@@ -27,6 +30,10 @@ const routes: Routes = [
       {
         path: 'password',
         loadChildren: loadUserChangePasswordModule,
+      },
+      {
+        path: 'avatar',
+        loadChildren: loadUserUploadAvatarModule,
       },
     ],
   },
