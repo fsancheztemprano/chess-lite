@@ -11,6 +11,8 @@ export class AppInitService {
   constructor(private readonly halFormService: HalFormService, private readonly authService: AuthService) {}
 
   init(): Observable<unknown> {
-    return this.halFormService.initialize().pipe(tap(() => this.authService.fetchCurrentUser().subscribe()));
+    return this.halFormService
+      .initialize()
+      .pipe(tap(() => this.authService.isAuthenticated() && this.authService.fetchCurrentUser().subscribe()));
   }
 }

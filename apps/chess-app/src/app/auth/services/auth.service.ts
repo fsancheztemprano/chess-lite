@@ -70,7 +70,7 @@ export class AuthService {
 
   public isAuthenticated(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
-    return !isTokenExpired(token);
+    return !!token && !isTokenExpired(token);
   }
 
   public setTokenPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<Resource | null> {
