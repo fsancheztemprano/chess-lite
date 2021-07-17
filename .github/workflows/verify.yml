@@ -99,8 +99,8 @@ jobs:
         id: push_build_info_to_jira
         uses: HighwayThree/jira-upload-build-info@master
         with:
-          client-id: '${{ secrets.CLIENT_ID }}'
-          client-secret: '${{ secrets.CLIENT_SECRET }}'
+          client-id: '${{ secrets.JIRA_CLIENT_ID }}'
+          client-secret: '${{ secrets.JIRA_CLIENT_SECRET }}'
           cloud-instance-base-url: '${{ secrets.JIRA_URL }}'
           issue-keys: "${{ steps.jira_keys.outputs.jira-keys }}"
           pipeline-id: '${{ github.repository }} ${{ github.workflow }}'
