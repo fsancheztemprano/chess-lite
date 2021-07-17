@@ -172,14 +172,14 @@
           "builder": "@nxrocks/nx-spring-boot:clean",
           "options": {
             "root": "apps/chess-backend",
-            "args": ["verify"]
+            "args": ["verify", "-U", "-B"]
           }
         },
         "build": {
           "builder": "@nxrocks/nx-spring-boot:clean",
           "options": {
             "root": "apps/chess-backend",
-            "args": ["verify", "-DskipTests", "-DskipITs"]
+            "args": ["verify", "-U", "-B", "-DskipTests", "-DskipITs"]
           }
         },
         "run": {
