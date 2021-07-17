@@ -1,4 +1,3 @@
-import { MaxSizeValidator } from '@angular-material-components/file-input';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +5,7 @@ import { Resource } from '@chess-lite/hal-form-client';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { fileSizeValidator } from '../../../../../../../core/utils/forms/validators/file-size.validator';
 import { UserService } from '../../../../services/user.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class UserUploadAvatarComponent {
   maxSize = 128;
 
   public readonly form = new FormGroup({
-    avatar: new FormControl(null, [MaxSizeValidator(this.maxSize * 1024)]),
+    avatar: new FormControl(null, [fileSizeValidator(this.maxSize * 1024)]),
   });
 
   submitError = false;

@@ -3,7 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { matchingControlsValidators, setTemplateValidatorsPipe } from '../../../core/utils/form.utils';
+import { setTemplateValidatorsPipe } from '../../../core/utils/forms/rxjs/set-template-validators.rxjs.pipe';
+import { matchingControlsValidators } from '../../../core/utils/forms/validators/matching-controls.validator';
 import { SignupService } from '../../services/signup.service';
 
 @Component({

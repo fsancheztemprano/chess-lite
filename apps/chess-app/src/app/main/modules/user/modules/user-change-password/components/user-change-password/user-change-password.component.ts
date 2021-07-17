@@ -5,7 +5,8 @@ import { Resource } from '@chess-lite/hal-form-client';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { matchingControlsValidators, setResourceValidatorsPipe } from '../../../../../../../core/utils/form.utils';
+import { setResourceValidatorsPipe } from '../../../../../../../core/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
+import { matchingControlsValidators } from '../../../../../../../core/utils/forms/validators/matching-controls.validator';
 import { UserService } from '../../../../services/user.service';
 
 @Component({

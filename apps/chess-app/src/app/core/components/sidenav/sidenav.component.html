@@ -7,8 +7,8 @@
     [mode]="isMobile ? 'over' : 'side'"
     [opened]="this.sidenavService.isOpen$ | async"
   >
-    <mat-toolbar
-      ><span
+    <mat-toolbar>
+      <span
         >Welcome <span *ngIf="authService.user | async as user">{{ user.firstname || user.username }}</span></span
       >
     </mat-toolbar>
@@ -20,8 +20,8 @@
         (click)="toggleSidenav()"
         routerLink="/user"
         routerLinkActive="active-link"
-        >User Settings</a
-      >
+        >User Settings
+      </a>
       <a mat-list-item *ngIf="authService.isLoggedIn() | async" (click)="logout()">Logout</a>
       <a
         mat-list-item
@@ -29,16 +29,16 @@
         (click)="toggleSidenav()"
         routerLink="/auth/login"
         routerLinkActive="active-link"
-        >Log In</a
-      >
+        >Log In
+      </a>
       <a
         mat-list-item
         *ngIf="sidenavService.showSignupLink() | async"
         (click)="toggleSidenav()"
         routerLink="/auth/signup"
         routerLinkActive="active-link"
-        >Sign Up</a
-      >
+        >Sign Up
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
