@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
-import { User } from '@chess-lite/domain';
+import { CanLoad } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserResolver implements Resolve<User> {
+export class UserGuard implements CanLoad {
   constructor(private readonly userService: UserService) {}
 
-  resolve(): Observable<User> {
-    return this.userService.getCurrentUser();
+  canLoad(): Observable<boolean> {
+    return this.userService.hasUserLink();
   }
 }

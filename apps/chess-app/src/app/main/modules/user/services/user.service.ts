@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
 import { User, UserChangePasswordInput, UserUpdateProfileInput } from '@chess-lite/domain';
-import { noLinkError, Resource, submitToTemplateOrThrowPipe } from '@chess-lite/hal-form-client';
+import { HalFormService, noLinkError, Resource, submitToTemplateOrThrowPipe } from '@chess-lite/hal-form-client';
 import { Observable } from 'rxjs';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../../../auth/services/auth.service';
-import { UserRootService } from './user-root.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  public readonly USER_REL = 'user';
+  public readonly CURRENT_USER_REL = 'current-user';
   public readonly UPDATE_PROFILE_REL = 'updateProfile';
   public readonly CHANGE_PASSWORD_REL = 'changePassword';
   public readonly UPLOAD_AVATAR_REL = 'uploadAvatar';
   public readonly DELETE_ACCOUNT_REL = 'delete';
 
-  constructor(private readonly userRootService: UserRootService, private readonly authService: AuthService) {}
+  constructor(private readonly halFormsService: HalFormService, private readonly authService: AuthService) {}
 
   public hasUserLink(): Observable<boolean> {
-    return this.userRootService.hasLink(this.USER_REL);
+    return this.halFormsService.hasLink(this.CURRENT_USER_REL);
   }
 
   public fetchCurrentUser(): Observable<User> {
@@ -30,11 +29,11 @@ export class UserService {
     return this.authService.getCurrentUsername();
   }
 
-  public getUser(username: string): Observable<User> {
-    return this.userRootService.getLink(this.USER_REL).pipe(
+  public getCurrentUser(): Observable<User> {
+    return this.halFormsService.getLink(this.CURRENT_USER_REL).pipe(
       first(),
       switchMap((userLink) => {
-        return userLink ? userLink.get<User>({ username }) : noLinkError(this.USER_REL);
+        return userLink ? userLink.get<User>() : noLinkError(this.CURRENT_USER_REL);
       }),
     );
   }

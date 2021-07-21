@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { stubHalFormServiceProvider } from '@chess-lite/hal-form-client/testing';
 import { stubAuthServiceProvider } from '../../../../auth/services/auth.service.stub';
-import { stubUserRootServiceProvider } from './user-root.service.stub';
 
 import { UserService } from './user.service';
 
@@ -9,7 +9,7 @@ describe('UserService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubUserRootServiceProvider, stubAuthServiceProvider],
+      providers: [stubHalFormServiceProvider, stubAuthServiceProvider],
     });
     service = TestBed.inject(UserService);
   });

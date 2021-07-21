@@ -2,17 +2,17 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { stubHalFormServiceProvider } from '@chess-lite/hal-form-client/testing';
 
-import { UserRootService } from './user-root.service';
+import { AdministrationService } from './administration.service';
 
-describe('UserRootService', () => {
-  let service: UserRootService;
+describe('AdministrationService', () => {
+  let service: AdministrationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [stubHalFormServiceProvider],
     });
-    service = TestBed.inject(UserRootService);
+    service = TestBed.inject(AdministrationService);
   });
 
   it('should be created', () => {

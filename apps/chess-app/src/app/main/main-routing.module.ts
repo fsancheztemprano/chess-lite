@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DummyComponent } from './components/dummy/dummy.component';
-import { UserRootGuard } from './modules/user/guards/user-root.guard';
+import { AdministrationGuard } from './modules/administration/guards/administration.guard';
+import { UserGuard } from './modules/user/guards/user.guard';
 
 const loadUserModule = () => import('./modules/user/user.module').then((m) => m.UserModule);
+const loadAdministrationModule = () =>
+  import('./modules/administration/administration.module').then((m) => m.AdministrationModule);
 
 const routes: Routes = [
   {
@@ -13,7 +16,12 @@ const routes: Routes = [
   {
     path: 'user',
     loadChildren: loadUserModule,
-    canLoad: [UserRootGuard],
+    canLoad: [UserGuard],
+  },
+  {
+    path: 'administration',
+    loadChildren: loadAdministrationModule,
+    canLoad: [AdministrationGuard],
   },
 ];
 

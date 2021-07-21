@@ -1,8 +1,9 @@
 package dev.kurama.chess.backend.hateoas.rest;
 
+import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.getCurrentUsername;
+import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.isAuthenticated;
-import static dev.kurama.chess.backend.hateoas.rest.UserRootController.CURRENT_USER_REL;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -14,6 +15,8 @@ import dev.kurama.chess.backend.hateoas.domain.RootResource;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,23 +29,28 @@ public class RootController {
 
   public static final String LOGIN_REL = "login";
   public static final String SIGNUP_REL = "signup";
-  public static final String USER_ROOT_REL = "user-root";
+
+  public static final String CURRENT_USER_REL = "current-user";
+
+  public static final String ADMINISTRATION_REL = "administration";
 
   @GetMapping()
-  public ResponseEntity<RootResource> root() {
-    var rootResource = new RootResource();
-
-    rootResource.add(getSelfLink());
+  public ResponseEntity<RepresentationModel<?>> root() {
+    HalModelBuilder rootModel = HalModelBuilder
+      .halModelOf(new RootResource())
+      .link(getSelfLink());
 
     if (isAuthenticated()) {
-      rootResource.add(getUsersLink());
-      rootResource.add(getCurrentUserLink());
+      if (hasAuthority(ADMIN_ROOT)) {
+        rootModel.link(getAdministrationRootLink());
+      }
+      rootModel.link(getCurrentUserLink());
     } else {
-      rootResource
-        .add(getLoginLink())
-        .add(getSignupLink());
+      rootModel
+        .link(getLoginLink())
+        .link(getSignupLink());
     }
-    return ok(rootResource);
+    return ok(rootModel.build());
   }
 
   private @NonNull Link getSelfLink() {
@@ -63,8 +71,8 @@ public class RootController {
     return linkTo(methodOn(AuthenticationController.class).signup(null)).withRel(SIGNUP_REL);
   }
 
-  private @NonNull Link getUsersLink() {
-    return linkTo(methodOn(UserRootController.class).root()).withRel(USER_ROOT_REL);
+  private @NonNull Link getAdministrationRootLink() {
+    return of(linkTo(methodOn(AdministrationRootController.class).root()).withRel(ADMINISTRATION_REL))
+      .afford(HttpMethod.HEAD).withName("default").toLink();
   }
-
 }

@@ -7,18 +7,18 @@ import { switchMap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class UserRootService extends HalFormService {
+export class AdministrationService extends HalFormService {
   constructor(protected readonly httpClient: HttpClient, private readonly halFormService: HalFormService) {
     super(httpClient, '');
   }
 
   initialize(): Observable<Resource> {
-    return this.halFormService.getLink('user-root').pipe(
+    return this.halFormService.getLink('administration').pipe(
       switchMap((link) => {
         this._rootUrl = link?.href || '';
         return this._rootUrl?.length
           ? super.initialize()
-          : throwError(() => new Error('User Root Initialization Error'));
+          : throwError(() => new Error('Administration Initialization Error'));
       }),
     );
   }

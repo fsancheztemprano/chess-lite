@@ -22,6 +22,14 @@
         routerLinkActive="active-link"
         >User Settings
       </a>
+      <a
+        mat-list-item
+        *ngIf="sidenavService.showAdministrationLink() | async"
+        (click)="toggleSidenav()"
+        routerLink="/administration"
+        routerLinkActive="active-link"
+        >Administration
+      </a>
       <a mat-list-item *ngIf="authService.isLoggedIn() | async" (click)="logout()">Logout</a>
       <a
         mat-list-item

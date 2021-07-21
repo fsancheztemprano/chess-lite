@@ -30,6 +30,10 @@ export class SidenavService {
   }
 
   public showUserLink(): Observable<boolean> {
-    return this.halFormService.hasLink('user-root');
+    return this.halFormService.hasLink('current-user');
+  }
+
+  public showAdministrationLink(): Observable<boolean> {
+    return this.halFormService.hasLink('administration');
   }
 }

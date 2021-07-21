@@ -1,5 +1,7 @@
 package dev.kurama.chess.backend.auth.authority;
 
+import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
+import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_DELETE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_READ;
@@ -56,7 +58,9 @@ public class Authority {
     AUTHOR_READ,
     AUTHOR_UPDATE,
     AUTHOR_DELETE,
-    AUTHOR_CREATE
+    AUTHOR_CREATE,
+    ADMIN_ROOT,
+    ADMIN_USER_MANAGEMENT_ROOT
   );
 
 }
