@@ -18,7 +18,7 @@ export class SidenavComponent {
   constructor(
     public readonly sidenavService: SidenavService,
     public readonly authService: AuthService,
-    public readonly loginService: LoginService,
+    private readonly loginService: LoginService,
   ) {
     this._subscribeToSidenavOpenEvent();
   }

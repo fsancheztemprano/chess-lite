@@ -11,7 +11,7 @@ export interface IResource {
   };
 
   _embedded?: {
-    [key: string]: IResource[];
+    [key: string]: IResource[] | IResource;
   };
 
   _templates?: {
@@ -27,13 +27,31 @@ export interface IResource {
 
   hasLink?(key: string): boolean;
 
-  getContent?(key: string): Resource[] | null;
+  getEmbedded?(key: string): Resource | Resource[] | null;
 
   getTemplate?(key: string): Template | null;
 
   isAllowedTo?(template: string): boolean;
 
   submit?(method: HttpMethodEnum, payload: any, params?: any): Observable<any>;
+
+  getAssuredLink?(key: string): Link;
+
+  hasEmbedded?(key: string): boolean;
+
+  getAssuredEmbedded?(key: string): Resource | Resource[];
+
+  hasEmbeddedCollection?(key: string): boolean;
+
+  getEmbeddedCollection?(key: string): Resource[];
+
+  hasEmbeddedObject?(key: string): boolean;
+
+  getEmbeddedObject?(key: string): Resource;
+
+  getAssuredTemplate?(key: string): Template;
+
+  submitToTemplateOrThrow?(templateName: string, payload?: any, params?: any, observe?: string): Observable<any>;
 }
 
 export class Resource implements IResource {
@@ -43,7 +61,7 @@ export class Resource implements IResource {
   };
 
   _embedded?: {
-    [key: string]: IResource[];
+    [key: string]: IResource[] | IResource;
   };
 
   _templates?: {
@@ -82,40 +100,66 @@ export class Resource implements IResource {
   }
 
   getLink(key: string = 'self'): Link | null {
-    if (!this._links || !this._links[key]) {
+    if (!key || !key.length || !this._links || !this._links[key]) {
       return null;
     }
     return this._links[key];
   }
 
   getAssuredLink(key: string = 'self'): Link {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.getLink(key)!;
+    return this.getLink(key) as Link;
   }
 
   hasLink(key: string = 'self'): boolean {
     return !!this.getLink(key)?.href;
   }
 
-  getContent(key: string): Resource[] | null {
-    if (!this._embedded || !this._embedded[key]) {
+  getEmbedded(key: string): Resource | Resource[] | null {
+    if (!key || !key.length || !this._embedded || !this._embedded[key]) {
       return null;
     }
-    return this._embedded[key].map((element: IResource) => {
-      return new Resource(element);
-    });
+
+    if (Array.isArray(this._embedded[key])) {
+      return this._embedded[key].map((element: IResource) => new Resource(element));
+    }
+    return new Resource(this._embedded[key]);
+  }
+
+  hasEmbedded(key: string): boolean {
+    return !!this.getEmbedded(key);
+  }
+
+  getAssuredEmbedded(key: string): Resource | Resource[] {
+    return this.getEmbedded(key) as Resource | Resource[];
+  }
+
+  hasEmbeddedCollection(key: string): boolean {
+    const embedded = this.getEmbedded(key);
+    return !!embedded && Array.isArray(embedded);
+  }
+
+  getEmbeddedCollection(key: string): Resource[] {
+    return this.getAssuredEmbedded(key) as Resource[];
+  }
+
+  hasEmbeddedObject(key: string): boolean {
+    const embedded = this.getEmbedded(key);
+    return !!embedded && !Array.isArray(embedded);
+  }
+
+  getEmbeddedObject(key: string): Resource {
+    return this.getAssuredEmbedded(key) as Resource;
   }
 
   getTemplate(key: string = 'default'): Template | null {
-    if (!this._templates || !this._templates[key]) {
+    if (!key || !key.length || !this._templates || !this._templates[key]) {
       return null;
     }
     return this._templates[key];
   }
 
   getAssuredTemplate(key: string = 'self'): Template {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.getTemplate(key)!;
+    return this.getTemplate(key) as Template;
   }
 
   isAllowedTo(template: string = 'default'): boolean {

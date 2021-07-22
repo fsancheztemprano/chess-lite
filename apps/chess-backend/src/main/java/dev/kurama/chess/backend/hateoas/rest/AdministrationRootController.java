@@ -30,7 +30,7 @@ public class AdministrationRootController {
   public static final String USER_REL = "user";
   public static final String USERS_REL = "users";
   public static final String ROOT_REL = "root";
-  public static final String USER_MANAGEMENT_ROOT_REL = "userManagementRoot";
+  public static final String USER_MANAGEMENT_ROOT_REL = "user-management";
 
   @GetMapping()
   public ResponseEntity<RepresentationModel<?>> root() {

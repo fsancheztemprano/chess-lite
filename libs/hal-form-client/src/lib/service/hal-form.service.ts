@@ -32,7 +32,6 @@ export class HalFormService {
             }
           }
         }),
-        // tap((response) => ((response as any).body._templates = null)),
         map((response) => {
           this._rootResource.next(new Resource(response.body || {}));
           return this._rootResource.value;
@@ -44,7 +43,11 @@ export class HalFormService {
       );
   }
 
-  get rootResource(): Observable<Resource> {
+  protected setRootResource(resource: Resource) {
+    this._rootResource.next(resource);
+  }
+
+  public get rootResource(): Observable<Resource> {
     return this._rootResource.asObservable();
   }
 
@@ -62,5 +65,29 @@ export class HalFormService {
 
   public isAllowedTo(template: string = 'self'): Observable<boolean> {
     return this.rootResource.pipe(map((resource) => resource.isAllowedTo(template)));
+  }
+
+  public hasEmbedded(embedded: string = 'self'): Observable<boolean> {
+    return this.rootResource.pipe(map((resource) => resource.hasEmbedded(embedded)));
+  }
+
+  public hasEmbeddedObject(embedded: string = 'self'): Observable<boolean> {
+    return this.rootResource.pipe(map((resource) => resource.hasEmbeddedObject(embedded)));
+  }
+
+  public hasEmbeddedCollection(embedded: string = 'self'): Observable<boolean> {
+    return this.rootResource.pipe(map((resource) => resource.hasEmbeddedCollection(embedded)));
+  }
+
+  public getEmbeddedObject(embedded: string = 'self'): Observable<Resource> {
+    return this.rootResource.pipe(map((resource) => resource.getEmbeddedObject(embedded)));
+  }
+
+  public getEmbeddedCollection(embedded: string = 'self'): Observable<Resource[]> {
+    return this.rootResource.pipe(map((resource) => resource.getEmbeddedCollection(embedded)));
+  }
+
+  public getEmbedded(embedded: string = 'self'): Observable<Resource | Resource[] | null> {
+    return this.rootResource.pipe(map((resource) => resource.getEmbedded(embedded)));
   }
 }

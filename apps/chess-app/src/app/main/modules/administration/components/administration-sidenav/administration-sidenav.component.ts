@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AdministrationService } from '../../services/administration.service';
 
 @Component({
   selector: 'chess-lite-administration-sidenav',
@@ -6,4 +8,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./administration-sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdministrationSidenavComponent {}
+export class AdministrationSidenavComponent {
+  constructor(private readonly administrationService: AdministrationService) {}
+
+  showUserManagementLink(): Observable<boolean> {
+    return this.administrationService.hasEmbeddedObject('user-management');
+  }
+}
