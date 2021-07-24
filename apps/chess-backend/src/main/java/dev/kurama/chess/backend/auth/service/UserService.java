@@ -7,6 +7,8 @@ import static dev.kurama.chess.backend.auth.domain.Role.USER_ROLE;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
+import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.domain.Role;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
@@ -15,13 +17,14 @@ import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.repository.UserRepository;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -64,8 +67,8 @@ public class UserService implements UserDetailsService {
     return userRepository.findUserByEmail(email);
   }
 
-  public List<User> getAllUsers() {
-    return userRepository.findAll();
+  public Page<User> getAllUsers(Pageable pageable) {
+    return userRepository.findAll(pageable);
   }
 
   public void deleteUser(String username) {
@@ -95,49 +98,49 @@ public class UserService implements UserDetailsService {
     return user;
   }
 
-  public User createUser(User newUser)
+  public User createUser(UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
-    validateUsernameAndEmailCreate(newUser.getUsername(), newUser.getEmail());
+    validateUsernameAndEmailCreate(userInput.getUsername(), userInput.getEmail());
     User user = User.builder()
       .setRandomUUID()
-      .username(newUser.getUsername())
-      .password(passwordEncoder.encode(newUser.getPassword()))
-      .email(newUser.getEmail())
-      .firstname(newUser.getFirstname())
-      .lastname(newUser.getLastname())
+      .username(userInput.getUsername())
+      .password(passwordEncoder.encode(userInput.getPassword()))
+      .email(userInput.getEmail())
+      .firstname(userInput.getFirstname())
+      .lastname(userInput.getLastname())
       .joinDate(new Date())
-      .active(newUser.isActive())
-      .locked(newUser.isLocked())
-      .expired(newUser.isExpired())
-      .credentialsExpired(newUser.isCredentialsExpired())
-      .role(getRoleEnumName(newUser.getRole()).name())
-      .authorities(getRoleEnumName(newUser.getRole()).getAuthorities()).build();
+      .active(userInput.isActive())
+      .locked(userInput.isLocked())
+      .expired(userInput.isExpired())
+      .credentialsExpired(userInput.isCredentialsExpired())
+      .role(getRoleEnumName(userInput.getRole()).name())
+      .authorities(getRoleEnumName(userInput.getRole()).getAuthorities()).build();
     userRepository.save(user);
     log.atInfo().log(String.format("New user signed up: %s:%s", user.getUsername(), user.getPassword()));
     return user;
   }
 
-  public User updateUser(String username, User modifiedUser)
+  public User updateUser(String username, UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    var currentUser = validateUsernameAndEmailUpdate(username, modifiedUser.getUsername(), modifiedUser.getEmail());
-    currentUser.setEmail(modifiedUser.getEmail());
-    currentUser.setFirstname(modifiedUser.getFirstname());
-    currentUser.setLastname(modifiedUser.getLastname());
-    currentUser.setActive(modifiedUser.isActive());
-    currentUser.setLocked(modifiedUser.isLocked());
-    currentUser.setExpired(modifiedUser.isExpired());
-    currentUser.setCredentialsExpired(modifiedUser.isCredentialsExpired());
-    currentUser.setRole(getRoleEnumName(modifiedUser.getRole()).name());
-    currentUser.setAuthorities(getRoleEnumName(modifiedUser.getRole()).getAuthorities());
+    var currentUser = validateUsernameAndEmailUpdate(username, userInput.getUsername(), userInput.getEmail());
+    currentUser.setEmail(userInput.getEmail());
+    currentUser.setFirstname(userInput.getFirstname());
+    currentUser.setLastname(userInput.getLastname());
+    currentUser.setActive(userInput.isActive());
+    currentUser.setLocked(userInput.isLocked());
+    currentUser.setExpired(userInput.isExpired());
+    currentUser.setCredentialsExpired(userInput.isCredentialsExpired());
+    currentUser.setRole(getRoleEnumName(userInput.getRole()).name());
+    currentUser.setAuthorities(getRoleEnumName(userInput.getRole()).getAuthorities());
     userRepository.save(currentUser);
     return currentUser;
   }
 
-  public User updateProfile(String username, User modifiedUser) {
+  public User updateProfile(String username, UpdateUserProfileInput updateProfileInput) {
     var currentUser = findUserByUsername(username).orElseThrow();
-    currentUser.setFirstname(modifiedUser.getFirstname());
-    currentUser.setLastname(modifiedUser.getLastname());
-    currentUser.setProfileImageUrl(modifiedUser.getProfileImageUrl());
+    currentUser.setFirstname(updateProfileInput.getFirstname());
+    currentUser.setLastname(updateProfileInput.getLastname());
+    currentUser.setProfileImageUrl(updateProfileInput.getProfileImageUrl());
     userRepository.save(currentUser);
     return currentUser;
   }

@@ -16,6 +16,7 @@ import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -51,6 +52,16 @@ public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
         LinkRelation.of("self"),
         link -> link.andAffordance(getCreateAffordance()))
       ;
+  }
+
+  @Override
+  public WebMvcLinkBuilder getSelfLink(String id) {
+    return linkTo(methodOn(getClazz()).get(id));
+  }
+
+  @Override
+  public WebMvcLinkBuilder getAllLink() {
+    return linkTo(methodOn(getClazz()).getAll());
   }
 
   private @NonNull Affordance getAddBookAffordance(String id) {

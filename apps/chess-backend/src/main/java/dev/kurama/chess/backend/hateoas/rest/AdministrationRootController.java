@@ -70,6 +70,6 @@ public class AdministrationRootController {
 
   @SneakyThrows
   private @NonNull Link getUsersLink() {
-    return linkTo(methodOn(UserController.class).getAll()).withRel(USERS_REL);
+    return linkTo(methodOn(UserController.class).getAll(null)).withRel(USERS_REL);
   }
 }

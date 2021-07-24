@@ -20,6 +20,7 @@ import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -55,6 +56,16 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
         LinkRelation.of("self"),
         link -> link.andAffordance(getCreateAffordance()))
       ;
+  }
+
+  @Override
+  public WebMvcLinkBuilder getSelfLink(String id) {
+    return linkTo(methodOn(getClazz()).get(id));
+  }
+
+  @Override
+  public WebMvcLinkBuilder getAllLink() {
+    return linkTo(methodOn(getClazz()).getAll());
   }
 
   public @NonNull CollectionModel<BookModel> toAuthorCollectionModel(@NonNull List<BookModel> entities,

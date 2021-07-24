@@ -1,10 +1,7 @@
 package dev.kurama.chess.backend.core.api.assembler;
 
 import static org.springframework.hateoas.mediatype.Affordances.of;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import dev.kurama.chess.backend.core.service.DomainController;
 import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -16,7 +13,7 @@ import org.springframework.http.HttpMethod;
 public abstract class DomainModelAssembler<T extends RepresentationModel<T>> implements
   RepresentationModelAssembler<T, T> {
 
-  protected abstract Class<? extends DomainController<T>> getClazz();
+  protected abstract Class<?> getClazz();
 
   @Override
   public @NonNull T toModel(@NonNull T entity) {
@@ -56,12 +53,8 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
     return of(link.withSelfRel()).afford(HttpMethod.HEAD).withName("default").toLink();
   }
 
-  protected WebMvcLinkBuilder getSelfLink(String id) {
-    return linkTo(methodOn(getClazz()).get(id));
-  }
+  public abstract WebMvcLinkBuilder getSelfLink(String id);
 
-  protected WebMvcLinkBuilder getAllLink() {
-    return linkTo(methodOn(getClazz()).getAll());
-  }
+  public abstract WebMvcLinkBuilder getAllLink();
 
 }

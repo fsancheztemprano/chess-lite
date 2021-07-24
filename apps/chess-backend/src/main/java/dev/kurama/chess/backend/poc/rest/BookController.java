@@ -5,7 +5,6 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
-import dev.kurama.chess.backend.core.service.DomainController;
 import dev.kurama.chess.backend.poc.api.assembler.BookModelAssembler;
 import dev.kurama.chess.backend.poc.api.domain.input.BookInput;
 import dev.kurama.chess.backend.poc.api.domain.model.BookModel;
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/book")
 @RequiredArgsConstructor
-public class BookController implements DomainController<BookModel> {
+public class BookController {
 
   @NonNull
   private final BookFacade bookFacade;

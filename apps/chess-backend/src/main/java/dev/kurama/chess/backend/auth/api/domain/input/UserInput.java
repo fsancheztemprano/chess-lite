@@ -20,11 +20,11 @@ public class UserInput {
   @Builder.Default
   private String role = Role.USER_ROLE.name();
   @Builder.Default
-  private boolean isActive = true;
+  private boolean active = true;
   @Builder.Default
-  private boolean isLocked = false;
+  private boolean locked = false;
   @Builder.Default
-  private boolean isExpired = false;
+  private boolean expired = false;
   @Builder.Default
-  private boolean isCredentialsExpired = false;
+  private boolean credentialsExpired = false;
 }

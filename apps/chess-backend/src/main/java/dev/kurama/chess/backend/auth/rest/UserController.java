@@ -15,11 +15,11 @@ import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.facade.UserFacade;
-import dev.kurama.chess.backend.core.service.DomainController;
 import java.io.IOException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,8 +36,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
+@PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
-public class UserController implements DomainController<UserModel> {
+public class UserController {
 
   @NonNull
   private final UserFacade userFacade;
@@ -47,8 +48,8 @@ public class UserController implements DomainController<UserModel> {
 
   @GetMapping()
   @PreAuthorize("hasAuthority('user:read')")
-  public ResponseEntity<CollectionModel<UserModel>> getAll() {
-    return ok().body(userModelAssembler.toSelfCollectionModel(userFacade.getAll()));
+  public ResponseEntity<PagedModel<UserModel>> getAll(Pageable pageable) {
+    return ok().body(userModelAssembler.toPagedModel(userFacade.getAll(pageable)));
   }
 
   @PostMapping()

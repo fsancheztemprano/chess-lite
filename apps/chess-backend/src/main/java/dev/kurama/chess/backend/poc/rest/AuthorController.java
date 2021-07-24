@@ -5,7 +5,6 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
-import dev.kurama.chess.backend.core.service.DomainController;
 import dev.kurama.chess.backend.poc.api.assembler.AuthorModelAssembler;
 import dev.kurama.chess.backend.poc.api.assembler.BookModelAssembler;
 import dev.kurama.chess.backend.poc.api.domain.input.AuthorInput;
@@ -30,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/author")
 @RequiredArgsConstructor
-public class AuthorController implements DomainController<AuthorModel> {
+public class AuthorController {
 
   @NonNull
   private final AuthorFacade authorFacade;
@@ -44,8 +43,6 @@ public class AuthorController implements DomainController<AuthorModel> {
   @NonNull
   private final BookModelAssembler bookModelAssembler;
 
-
-  @Override
   @GetMapping()
   public ResponseEntity<CollectionModel<AuthorModel>> getAll() {
     return ok().body(authorModelAssembler.toSelfCollectionModel(authorFacade.findAll()));
@@ -60,7 +57,6 @@ public class AuthorController implements DomainController<AuthorModel> {
       .body(authorModelAssembler.toModel(newAuthorModel));
   }
 
-  @Override
   @GetMapping("/{id}")
   public ResponseEntity<AuthorModel> get(@PathVariable("id") String id) {
     return ok().body(authorModelAssembler.toModel(authorFacade.findById(id)));

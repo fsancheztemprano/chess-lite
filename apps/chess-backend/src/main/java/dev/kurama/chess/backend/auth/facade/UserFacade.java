@@ -10,11 +10,12 @@ import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.service.UserService;
 import java.io.IOException;
-import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.codec.binary.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,9 +35,8 @@ public class UserFacade {
   @NonNull
   private final AuthenticationManager authenticationManager;
 
-
   public UserModel create(UserInput userInput) throws UsernameExistsException, EmailExistsException {
-    return userMapper.userToUserModel(userService.createUser(userMapper.userInputToUser(userInput)));
+    return userMapper.userToUserModel(userService.createUser(userInput));
   }
 
   public UserModel findByUsername(String username) {
@@ -44,18 +44,18 @@ public class UserFacade {
       userService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username)));
   }
 
-  public List<UserModel> getAll() {
-    return userMapper.userListToUserModelList(userService.getAllUsers());
+  public Page<UserModel> getAll(Pageable pageable) {
+    return userMapper.userPageToUserModelPage(userService.getAllUsers(pageable));
   }
 
   public UserModel update(String username, UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    return userMapper.userToUserModel(userService.updateUser(username, userMapper.userInputToUser(userInput)));
+    return userMapper.userToUserModel(userService.updateUser(username, userInput));
   }
 
   public UserModel updateProfile(String username, UpdateUserProfileInput updateUserProfileInput) {
     return userMapper.userToUserModel(
-      userService.updateProfile(username, userMapper.updateProfileInputToUser(updateUserProfileInput)));
+      userService.updateProfile(username, updateUserProfileInput));
   }
 
   public void deleteByUsername(String username) {
