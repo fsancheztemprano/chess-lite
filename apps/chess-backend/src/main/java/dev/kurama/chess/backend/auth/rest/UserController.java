@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.auth.rest;
 
+import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.noContent;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +50,8 @@ public class UserController {
 
   @GetMapping()
   @PreAuthorize("hasAuthority('user:read')")
-  public ResponseEntity<PagedModel<UserModel>> getAll(Pageable pageable) {
+  public ResponseEntity<PagedModel<UserModel>> getAll(
+    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
     return ok().body(userModelAssembler.toPagedModel(userFacade.getAll(pageable)));
   }
 

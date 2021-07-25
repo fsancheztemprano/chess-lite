@@ -114,7 +114,7 @@ export class Resource implements IResource {
     return !!this.getLink(key)?.href;
   }
 
-  getEmbedded(key: string): Resource | Resource[] | null {
+  getEmbedded<T = Resource>(key: string): T | T[] | null {
     if (!key || !key.length || !this._embedded || !this._embedded[key]) {
       return null;
     }
@@ -122,15 +122,15 @@ export class Resource implements IResource {
     if (Array.isArray(this._embedded[key])) {
       return this._embedded[key].map((element: IResource) => new Resource(element));
     }
-    return new Resource(this._embedded[key]);
+    return new Resource(this._embedded[key]) as any as T;
   }
 
   hasEmbedded(key: string): boolean {
     return !!this.getEmbedded(key);
   }
 
-  getAssuredEmbedded(key: string): Resource | Resource[] {
-    return this.getEmbedded(key) as Resource | Resource[];
+  getAssuredEmbedded<T = Resource>(key: string): T | T[] {
+    return this.getEmbedded<T>(key) as T | T[];
   }
 
   hasEmbeddedCollection(key: string): boolean {
@@ -138,8 +138,8 @@ export class Resource implements IResource {
     return !!embedded && Array.isArray(embedded);
   }
 
-  getEmbeddedCollection(key: string): Resource[] {
-    return this.getAssuredEmbedded(key) as Resource[];
+  getEmbeddedCollection<T = Resource>(key: string): T[] {
+    return this.getAssuredEmbedded<T>(key) as T[];
   }
 
   hasEmbeddedObject(key: string): boolean {
@@ -147,8 +147,8 @@ export class Resource implements IResource {
     return !!embedded && !Array.isArray(embedded);
   }
 
-  getEmbeddedObject(key: string): Resource {
-    return this.getAssuredEmbedded(key) as Resource;
+  getEmbeddedObject<T = Resource>(key: string): T {
+    return this.getAssuredEmbedded<T>(key) as T;
   }
 
   getTemplate(key: string = 'default'): Template | null {

@@ -8,22 +8,29 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.web.util.UriComponentsBuilder.fromUri;
 
 import dev.kurama.chess.backend.auth.rest.UserController;
 import dev.kurama.chess.backend.hateoas.domain.RootResource;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController()
+@RequiredArgsConstructor
 @RequestMapping("/api/administration")
 public class AdministrationRootController {
 
@@ -31,6 +38,10 @@ public class AdministrationRootController {
   public static final String USERS_REL = "users";
   public static final String ROOT_REL = "root";
   public static final String USER_MANAGEMENT_ROOT_REL = "user-management";
+
+
+  @NonNull
+  private final HateoasPageableHandlerMethodArgumentResolver pageableResolver;
 
   @GetMapping()
   public ResponseEntity<RepresentationModel<?>> root() {
@@ -70,6 +81,10 @@ public class AdministrationRootController {
 
   @SneakyThrows
   private @NonNull Link getUsersLink() {
-    return linkTo(methodOn(UserController.class).getAll(null)).withRel(USERS_REL);
+    Link link = linkTo(methodOn(UserController.class).getAll(null)).withRel(USERS_REL);
+    UriComponentsBuilder builder = fromUri(link.getTemplate().expand());
+    TemplateVariables templateVariables = pageableResolver.getPaginationTemplateVariables(null, builder.build());
+    UriTemplate template = UriTemplate.of(link.getHref()).with(templateVariables);
+    return Link.of(template, link.getRel());
   }
 }

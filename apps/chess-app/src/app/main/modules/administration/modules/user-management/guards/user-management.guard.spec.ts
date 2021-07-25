@@ -6,7 +6,9 @@ describe('UserManagementGuard', () => {
   let guard: UserManagementGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [stubUserManagementServiceProvider],
+    });
     guard = TestBed.inject(UserManagementGuard);
   });
 
