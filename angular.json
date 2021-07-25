@@ -53,11 +53,7 @@
             "tsConfig": "apps/chess-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/chess-app/src/favicon.ico", "apps/chess-app/src/assets"],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "./node_modules/ngx-toastr/toastr.css",
-              "apps/chess-app/src/styles.scss"
-            ],
+            "styles": ["./node_modules/ngx-toastr/toastr.css", "apps/chess-app/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
