@@ -15,6 +15,7 @@ import { NgLetModule } from '../shared/directives/ng-let.directive';
 import { IsMobileModule } from '../shared/pipes/is-mobile.pipe';
 import { AdministrationSidenavItemComponent } from './components/sidenav/administration-sidenav-item/administration-sidenav-item.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { UserSettingsSidenavItemComponent } from './components/sidenav/user-settings-sidenav-item/user-settings-sidenav-item.component';
 import { ThemeComponent } from './components/theme/theme.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
@@ -29,7 +30,13 @@ const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [ToolbarComponent, SidenavComponent, ThemeComponent, AdministrationSidenavItemComponent],
+  declarations: [
+    ToolbarComponent,
+    SidenavComponent,
+    ThemeComponent,
+    AdministrationSidenavItemComponent,
+    UserSettingsSidenavItemComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

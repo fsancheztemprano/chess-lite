@@ -17,19 +17,14 @@
         <mat-icon aria-hidden="false" aria-label="Home">home</mat-icon>
         Home
       </a>
-      <a
-        mat-list-item
+      <chess-lite-user-settings-sidenav-item
         *ngIf="sidenavService.showUserLink() | async"
-        (click)="toggleSidenav()"
-        routerLink="/user"
-        routerLinkActive="active-link"
-      >
-        <mat-icon aria-hidden="false" aria-label="User Settings">person</mat-icon>
-        User Settings
-      </a>
-      <chess-lite-administration-sidenav-item
         (toggleSidenav)="toggleSidenav()"
+      >
+      </chess-lite-user-settings-sidenav-item>
+      <chess-lite-administration-sidenav-item
         *ngIf="sidenavService.showAdministrationLink() | async"
+        (toggleSidenav)="toggleSidenav()"
       ></chess-lite-administration-sidenav-item>
       <a mat-list-item *ngIf="authService.isLoggedIn() | async" (click)="logout()">
         <mat-icon aria-hidden="false" aria-label="Log Out">logout</mat-icon>

@@ -1,0 +1,24 @@
+:host {
+  .mat-accordion {
+    .mat-expansion-panel {
+      a .mat-icon {
+        padding-right: 8px;
+      }
+
+      .mat-expansion-panel-header {
+        padding-left: 0;
+
+        .disable-overlay {
+          &:hover,
+          &:focus {
+            background: transparent;
+          }
+        }
+      }
+    }
+
+    mat-action-list {
+      padding: 0 0 0 12px;
+    }
+  }
+}

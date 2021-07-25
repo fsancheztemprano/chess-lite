@@ -40,7 +40,7 @@ $dark-theme: mat.define-dark-theme(
   @include mat.all-component-colors($dark-theme);
 }
 
-.administration-sidenav .mat-expansion-panel-body {
+.sidenav-expansion .mat-expansion-panel-body {
   padding: 0;
   padding-bottom: 8px;
 }

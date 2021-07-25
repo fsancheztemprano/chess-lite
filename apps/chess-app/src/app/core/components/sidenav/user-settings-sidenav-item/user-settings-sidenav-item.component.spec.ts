@@ -4,21 +4,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { AdministrationSidenavItemComponent } from './administration-sidenav-item.component';
+import { UserSettingsSidenavItemComponent } from './user-settings-sidenav-item.component';
 
-describe('AdministrationSidenavItemComponent', () => {
-  let component: AdministrationSidenavItemComponent;
-  let fixture: ComponentFixture<AdministrationSidenavItemComponent>;
+describe('UserSettingsSidenavItemComponent', () => {
+  let component: UserSettingsSidenavItemComponent;
+  let fixture: ComponentFixture<UserSettingsSidenavItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatExpansionModule, MatIconModule, NoopAnimationsModule],
-      declarations: [AdministrationSidenavItemComponent],
+      declarations: [UserSettingsSidenavItemComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdministrationSidenavItemComponent);
+    fixture = TestBed.createComponent(UserSettingsSidenavItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

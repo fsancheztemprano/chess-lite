@@ -4,17 +4,18 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { SidenavComponent } from './core/components/sidenav/sidenav.component';
 import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
+import { IsMobileModule } from './shared/pipes/is-mobile.pipe';
 
 @Component({ selector: 'chess-lite-toolbar', template: '' })
-export class StubToolbarComponent implements Partial<ToolbarComponent> {}
+class StubToolbarComponent implements Partial<ToolbarComponent> {}
 
 @Component({ selector: 'chess-lite-sidenav', template: '' })
-export class StubSidenavComponent implements Partial<SidenavComponent> {}
+class StubSidenavComponent implements Partial<SidenavComponent> {}
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, IsMobileModule],
       declarations: [AppComponent, StubToolbarComponent, StubSidenavComponent],
     }).compileComponents();
   });

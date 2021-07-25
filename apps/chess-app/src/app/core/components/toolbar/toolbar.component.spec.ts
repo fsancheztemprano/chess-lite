@@ -12,7 +12,7 @@ import { ThemeComponent } from '../theme/theme.component';
 import { ToolbarComponent } from './toolbar.component';
 
 @Component({ selector: 'chess-lite-theme', template: '' })
-export class StubThemeComponent implements Partial<ThemeComponent> {}
+class StubThemeComponent implements Partial<ThemeComponent> {}
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;

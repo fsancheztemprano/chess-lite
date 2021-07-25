@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AdministrationHomeComponent } from './administration-home.component';
 
 @Component({ selector: 'chess-lite-administration-sidenav', template: '' })
-export class StubAdministrationSidenavComponent {}
+class StubAdministrationSidenavComponent {}
 
 describe('AdministrationHomeComponent', () => {
   let component: AdministrationHomeComponent;

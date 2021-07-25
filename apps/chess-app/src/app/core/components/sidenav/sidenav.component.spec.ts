@@ -1,4 +1,5 @@
 import { LayoutModule } from '@angular/cdk/layout';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +12,15 @@ import { stubLoginServiceProvider } from '../../../auth/services/login.service.s
 import { NgLetModule } from '../../../shared/directives/ng-let.directive';
 import { IsMobileModule } from '../../../shared/pipes/is-mobile.pipe';
 import { stubSidenavServiceProvider } from '../../services/sidenav.service.stub';
+import { AdministrationSidenavItemComponent } from './administration-sidenav-item/administration-sidenav-item.component';
 import { SidenavComponent } from './sidenav.component';
+import { UserSettingsSidenavItemComponent } from './user-settings-sidenav-item/user-settings-sidenav-item.component';
+
+@Component({ selector: 'chess-lite-user-settings-sidenav-item', template: '' })
+class StubUserSettingsSidenavItemComponent implements Partial<UserSettingsSidenavItemComponent> {}
+
+@Component({ selector: 'chess-lite-administration-sidenav-item', template: '' })
+class StubAdministrationSidenavItemComponent implements Partial<AdministrationSidenavItemComponent> {}
 
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
@@ -20,7 +29,7 @@ describe('SidenavComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidenavComponent],
+        declarations: [SidenavComponent, StubUserSettingsSidenavItemComponent, StubAdministrationSidenavItemComponent],
         imports: [
           NoopAnimationsModule,
           LayoutModule,

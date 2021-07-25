@@ -1,6 +1,10 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { UserManagementTableComponent } from '../user-management-table/user-management-table.component';
 import { UserManagementHomeComponent } from './user-management-home.component';
+
+@Component({ selector: 'chess-lite-user-management-table', template: '' })
+class StubUserManagementTableComponent implements Partial<UserManagementTableComponent> {}
 
 describe('UserManagementHomeComponent', () => {
   let component: UserManagementHomeComponent;
@@ -8,7 +12,7 @@ describe('UserManagementHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserManagementHomeComponent],
+      declarations: [UserManagementHomeComponent, StubUserManagementTableComponent],
     }).compileComponents();
   });
 
