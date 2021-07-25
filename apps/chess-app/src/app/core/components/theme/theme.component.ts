@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
@@ -9,16 +9,17 @@ import { ThemeService } from '../../services/theme.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeComponent implements OnInit {
-  darkModeControl = new FormControl(false);
+  darkMode = false;
 
   constructor(private readonly themeService: ThemeService) {}
 
   ngOnInit(): void {
     this.themeService.getDarkMode().subscribe((darkMode) => {
-      this.darkModeControl.setValue(darkMode, { emitEvent: false });
+      this.darkMode = darkMode;
     });
-    this.darkModeControl.valueChanges.subscribe((darkMode) => {
-      this.themeService.setDarkMode(darkMode);
-    });
+  }
+
+  onToggle($event: MatSlideToggleChange) {
+    this.themeService.setDarkMode($event.checked);
   }
 }
