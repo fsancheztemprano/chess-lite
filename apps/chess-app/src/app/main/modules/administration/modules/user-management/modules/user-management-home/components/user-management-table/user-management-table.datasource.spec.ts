@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-
-import { UserManagementTableDatasource } from './user-management.service';
+import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
+import { UserManagementTableDatasource } from './user-management-table.datasource';
 
 describe('UserManagementTableDatasource', () => {
   let service: UserManagementTableDatasource;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [stubUserManagementServiceProvider],
+    });
     service = TestBed.inject(UserManagementTableDatasource);
   });
 
