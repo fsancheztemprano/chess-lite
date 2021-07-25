@@ -5,12 +5,6 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { LoginService } from '../../../auth/services/login.service';
 import { SidenavService } from '../../services/sidenav.service';
 
-interface SidenavEntry {
-  route: string;
-  icon: string;
-  label: string;
-}
-
 @UntilDestroy()
 @Component({
   selector: 'chess-lite-sidenav',

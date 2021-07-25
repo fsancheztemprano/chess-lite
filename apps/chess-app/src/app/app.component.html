@@ -1,6 +1,6 @@
 <chess-lite-toolbar></chess-lite-toolbar>
 <chess-lite-sidenav>
-  <main>
+  <main [ngClass]="{ 'is-mobile': '' | isMobile | async }">
     <router-outlet></router-outlet>
   </main>
 </chess-lite-sidenav>

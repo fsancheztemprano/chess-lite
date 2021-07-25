@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
@@ -10,6 +11,7 @@ import { CoreModule } from './core/core.module';
 import { GlobalErrorHandler } from './core/errors/global-error-handler.service';
 import { HttpErrorInterceptor } from './core/errors/http-error.interceptor';
 import { AppInitService } from './core/services/app-init.service';
+import { IsMobileModule } from './shared/pipes/is-mobile.pipe';
 
 function initializeApp(appInitService: AppInitService) {
   return (): Observable<unknown> => {
@@ -19,7 +21,7 @@ function initializeApp(appInitService: AppInitService) {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [CoreModule, AppRoutingModule, ToastrModule.forRoot()],
+  imports: [CoreModule, AppRoutingModule, ToastrModule.forRoot(), IsMobileModule, CommonModule],
   providers: [
     AuthGuard,
     AppInitService,
