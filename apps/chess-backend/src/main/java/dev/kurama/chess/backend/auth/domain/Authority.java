@@ -6,10 +6,7 @@ import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class Role extends AbstractEntity implements Serializable {
+public class Authority extends AbstractEntity implements Serializable {
 
   @NonNull
   private String name;
@@ -35,17 +32,12 @@ public class Role extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
   private Set<User> users = Sets.newHashSet();
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
+  @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
   @Builder.Default
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "role_authorities",
-    joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
-  )
-  private Set<Authority> authorities = Sets.newHashSet();
+  private Set<Role> roles = Sets.newHashSet();
 }

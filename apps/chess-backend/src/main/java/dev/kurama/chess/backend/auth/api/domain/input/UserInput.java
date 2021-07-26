@@ -1,6 +1,6 @@
 package dev.kurama.chess.backend.auth.api.domain.input;
 
-import dev.kurama.chess.backend.auth.domain.Role;
+import dev.kurama.chess.backend.auth.authority.DefaultAuthority;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -18,7 +18,7 @@ public class UserInput {
   private String firstname;
   private String lastname;
   @Builder.Default
-  private String role = Role.USER_ROLE.name();
+  private String role = DefaultAuthority.DEFAULT_ROLE;
   @Builder.Default
   private boolean active = true;
   @Builder.Default

@@ -3,13 +3,11 @@ package dev.kurama.chess.backend.auth.service;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.EMAIL_ALREADY_EXISTS;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.NO_USER_FOUND_BY_USERNAME;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.USERNAME_ALREADY_EXISTS;
-import static dev.kurama.chess.backend.auth.domain.Role.USER_ROLE;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
-import dev.kurama.chess.backend.auth.domain.Role;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
@@ -40,23 +38,25 @@ public class UserService implements UserDetailsService {
 
   @NonNull
   private final UserRepository userRepository;
+
   @NonNull
   private final BCryptPasswordEncoder passwordEncoder;
+
   @NonNull
   private final LoginAttemptService loginAttemptService;
 
+  @NonNull
+  private final RoleService roleService;
+
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    var user = userRepository.findUserByUsername(username).orElseThrow();
-    if (user == null) {
-      throw new UsernameNotFoundException("User not found by username: " + username);
-    } else {
-      validateLoginAttempt(user);
-      user.setLastLoginDateDisplay(user.getLastLoginDate());
-      user.setLastLoginDate(new Date());
-      userRepository.save(user);
-      return new UserPrincipal(user);
-    }
+    var user = userRepository.findUserByUsername(username)
+      .orElseThrow(() -> new UsernameNotFoundException("User not found by username: " + username));
+    validateLoginAttempt(user);
+    user.setLastLoginDateDisplay(user.getLastLoginDate());
+    user.setLastLoginDate(new Date());
+    userRepository.save(user);
+    return new UserPrincipal(user);
   }
 
   public Optional<User> findUserByUsername(String username) {
@@ -79,6 +79,7 @@ public class UserService implements UserDetailsService {
   public User signup(String username, String password, String email, String firstname, String lastname)
     throws UsernameExistsException, EmailExistsException {
     validateUsernameAndEmailCreate(username, email);
+    var role = roleService.getDefaultRole().orElseThrow();
     User user = User.builder()
       .setRandomUUID()
       .username(username)
@@ -91,8 +92,9 @@ public class UserService implements UserDetailsService {
       .locked(false)
       .expired(false)
       .credentialsExpired(false)
-      .role(USER_ROLE.name())
-      .authorities(USER_ROLE.getAuthorities()).build();
+      .role(role)
+      .authorities(role.getAuthorities())
+      .build();
     userRepository.save(user);
     log.atInfo().log(String.format("New user signed up: %s:%s", username, password));
     return user;
@@ -101,6 +103,7 @@ public class UserService implements UserDetailsService {
   public User createUser(UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
     validateUsernameAndEmailCreate(userInput.getUsername(), userInput.getEmail());
+    var role = roleService.findByName(userInput.getRole()).orElseThrow();
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())
@@ -113,8 +116,9 @@ public class UserService implements UserDetailsService {
       .locked(userInput.isLocked())
       .expired(userInput.isExpired())
       .credentialsExpired(userInput.isCredentialsExpired())
-      .role(getRoleEnumName(userInput.getRole()).name())
-      .authorities(getRoleEnumName(userInput.getRole()).getAuthorities()).build();
+      .role(role)
+      .authorities(role.getAuthorities())
+      .build();
     userRepository.save(user);
     log.atInfo().log(String.format("New user signed up: %s:%s", user.getUsername(), user.getPassword()));
     return user;
@@ -123,6 +127,7 @@ public class UserService implements UserDetailsService {
   public User updateUser(String username, UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
     var currentUser = validateUsernameAndEmailUpdate(username, userInput.getUsername(), userInput.getEmail());
+    var role = roleService.findByName(userInput.getRole()).orElseThrow();
     currentUser.setEmail(userInput.getEmail());
     currentUser.setFirstname(userInput.getFirstname());
     currentUser.setLastname(userInput.getLastname());
@@ -130,8 +135,8 @@ public class UserService implements UserDetailsService {
     currentUser.setLocked(userInput.isLocked());
     currentUser.setExpired(userInput.isExpired());
     currentUser.setCredentialsExpired(userInput.isCredentialsExpired());
-    currentUser.setRole(getRoleEnumName(userInput.getRole()).name());
-    currentUser.setAuthorities(getRoleEnumName(userInput.getRole()).getAuthorities());
+    currentUser.setRole(role);
+    currentUser.setAuthorities(role.getAuthorities());
     userRepository.save(currentUser);
     return currentUser;
   }
@@ -150,10 +155,6 @@ public class UserService implements UserDetailsService {
     currentUser.setPassword(passwordEncoder.encode(newPassword));
     userRepository.save(currentUser);
     return currentUser;
-  }
-
-  private Role getRoleEnumName(String role) {
-    return Role.valueOf(role.toUpperCase());
   }
 
   private void validateUsernameAndEmailCreate(String newUsername, String email)
