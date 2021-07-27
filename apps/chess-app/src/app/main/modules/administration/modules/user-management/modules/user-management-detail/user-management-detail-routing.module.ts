@@ -1,7 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserManagementDetailComponent } from './components/user-management-detail/user-management-detail.component';
 
-const routes: Routes = [];
+const loadUserManagementProfileModule = () =>
+  import('./modules/user-management-profile/user-management-profile.module').then((m) => m.UserManagementProfileModule);
+
+const loadUserManagementAuthorityModule = () =>
+  import('./modules/user-management-authority/user-management-authority.module').then(
+    (m) => m.UserManagementAuthorityModule,
+  );
+
+const routes: Routes = [
+  {
+    path: '',
+    component: UserManagementDetailComponent,
+    children: [
+      {
+        path: 'profile',
+        loadChildren: loadUserManagementProfileModule,
+      },
+      {
+        path: 'authority',
+        loadChildren: loadUserManagementAuthorityModule,
+      },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      { path: '**', redirectTo: 'profile' },
+    ],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

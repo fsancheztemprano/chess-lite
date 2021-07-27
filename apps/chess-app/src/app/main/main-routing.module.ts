@@ -23,6 +23,7 @@ const routes: Routes = [
     loadChildren: loadAdministrationModule,
     canLoad: [AdministrationGuard],
   },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

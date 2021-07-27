@@ -35,6 +35,8 @@ const routes: Routes = [
         path: 'avatar',
         loadChildren: loadUserUploadAvatarModule,
       },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      { path: '**', redirectTo: 'profile' },
     ],
   },
 ];
