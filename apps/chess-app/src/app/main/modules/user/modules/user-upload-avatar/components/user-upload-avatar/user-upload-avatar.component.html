@@ -37,8 +37,8 @@
         color="primary"
         aria-label="Upload Avatar"
         (click)="imageInput.click()"
-        [disabled]="!this.userService.isAllowedToUploadAvatar(user)"
-        *ngIf="user$ | async as user"
+        [disabled]="!user || !user.isAllowedTo(userService.UPLOAD_AVATAR_REL)"
+        *ngLet="user$ | async as user"
       >
         <mat-icon>file_upload</mat-icon>
       </button>

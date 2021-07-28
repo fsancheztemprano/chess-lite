@@ -23,7 +23,7 @@ public class UserModel extends RepresentationModel<UserModel> implements DomainM
   private String lastname;
   private String username;
   private String email;
-  @Column(columnDefinition = "TEXT")
+  @Column(length = 32768)
   private String profileImageUrl;
   private Date lastLoginDateDisplay;
   private Date joinDate;

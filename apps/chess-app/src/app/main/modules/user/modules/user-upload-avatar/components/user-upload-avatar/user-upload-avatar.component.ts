@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Resource } from '@chess-lite/hal-form-client';
+import { User } from '@chess-lite/domain';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { fileSizeValidator } from '../../../../../../../core/utils/forms/validators/file-size.validator';
 import { UserService } from '../../../../services/user.service';
 
@@ -16,26 +14,22 @@ import { UserService } from '../../../../services/user.service';
   animations: [wobbleAnimation(), tadaAnimation()],
 })
 export class UserUploadAvatarComponent {
-  private _user$: Observable<Resource> = this.route.data.pipe(map(({ user }) => user));
+  private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
 
   maxSize = 128;
 
   public readonly form = new FormGroup({
     avatar: new FormControl(null, [fileSizeValidator(this.maxSize * 1024)]),
   });
-
   submitError = false;
   submitSuccess = false;
   submitSuccessMessage = false;
+
   submitErrorMessage = false;
 
-  constructor(
-    public readonly userService: UserService,
-    private readonly route: ActivatedRoute,
-    private readonly cdr: ChangeDetectorRef,
-  ) {}
+  constructor(public readonly userService: UserService, private readonly cdr: ChangeDetectorRef) {}
 
-  get user$(): Observable<Resource> {
+  get user$(): Observable<User> {
     return this._user$;
   }
 
@@ -43,12 +37,7 @@ export class UserUploadAvatarComponent {
   onSubmit(event: any) {
     if (event?.target?.files && event?.target?.files[0]) {
       this.userService.uploadAvatar(this.user$, event.target.files[0]).subscribe({
-        next: () => {
-          this._user$ = this.userService
-            .fetchCurrentUser()
-            .pipe(map((user) => (user.as && user.as<Resource>()) || new Resource({})));
-          this.setSubmitStatus(true);
-        },
+        next: () => this.setSubmitStatus(true),
         error: () => this.setSubmitStatus(false),
       });
     } else this.setSubmitStatus(false);

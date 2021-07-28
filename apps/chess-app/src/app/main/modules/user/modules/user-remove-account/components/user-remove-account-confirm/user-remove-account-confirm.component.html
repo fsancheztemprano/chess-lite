@@ -15,9 +15,9 @@
   <button
     mat-raised-button
     color="warn"
-    *ngIf="userService.getCurrentUsername() | async as currentUsername"
-    [disabled]="!currentUsername || !currentUsername.length || currentUsername !== usernameInput.value"
-    [mat-dialog-close]="currentUsername"
+    *ngLet="userService.getCurrentUser() | async as user"
+    [disabled]="!user || !usernameInput.value.length || user.username !== usernameInput.value"
+    [mat-dialog-close]="user"
   >
     Delete
   </button>

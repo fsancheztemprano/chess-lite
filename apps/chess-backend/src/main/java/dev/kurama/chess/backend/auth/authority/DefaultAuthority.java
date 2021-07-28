@@ -3,9 +3,12 @@ package dev.kurama.chess.backend.auth.authority;
 import com.google.common.collect.Lists;
 import dev.kurama.chess.backend.poc.authority.AuthorAuthority;
 import dev.kurama.chess.backend.poc.authority.BookAuthority;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -28,10 +31,6 @@ public class DefaultAuthority {
 
 
   public static final List<String> AUTHORITIES = Lists.newArrayList(
-    UserAuthority.USER_READ,
-    UserAuthority.USER_CREATE,
-    UserAuthority.USER_UPDATE,
-    UserAuthority.USER_DELETE,
     BookAuthority.BOOK_READ,
     BookAuthority.BOOK_UPDATE,
     BookAuthority.BOOK_DELETE,
@@ -40,38 +39,37 @@ public class DefaultAuthority {
     AuthorAuthority.AUTHOR_UPDATE,
     AuthorAuthority.AUTHOR_DELETE,
     AuthorAuthority.AUTHOR_CREATE,
+
+    UserAuthority.PROFILE_UPDATE,
+    UserAuthority.PROFILE_READ,
+    UserAuthority.PROFILE_DELETE,
+
+    UserAuthority.USER_READ,
+    UserAuthority.USER_CREATE,
+    UserAuthority.USER_UPDATE,
+    UserAuthority.USER_DELETE,
+
     AdminAuthority.ADMIN_ROOT,
     AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT
   );
 
 
   public static final List<String> USER_AUTHORITIES = Lists.newArrayList(
-    BookAuthority.BOOK_READ,
-    AuthorAuthority.AUTHOR_READ
+    UserAuthority.PROFILE_UPDATE,
+    UserAuthority.PROFILE_READ,
+    UserAuthority.PROFILE_DELETE
   );
 
-
-  public static final List<String> MOD_AUTHORITIES = Lists.newArrayList(
-    UserAuthority.USER_READ,
-    UserAuthority.USER_UPDATE,
-    BookAuthority.BOOK_READ,
-    BookAuthority.BOOK_UPDATE,
-    AuthorAuthority.AUTHOR_READ,
-    AuthorAuthority.AUTHOR_UPDATE
-  );
+  public static final List<String> MOD_AUTHORITIES =
+    Stream.of(USER_AUTHORITIES, Lists.newArrayList(UserAuthority.USER_READ, UserAuthority.USER_UPDATE))
+      .flatMap(Collection::stream)
+      .collect(Collectors.toList());
 
 
-  public static final List<String> ADMIN_AUTHORITIES = Lists.newArrayList(
-    UserAuthority.USER_READ,
-    UserAuthority.USER_CREATE,
-    UserAuthority.USER_UPDATE,
-    BookAuthority.BOOK_READ,
-    BookAuthority.BOOK_UPDATE,
-    BookAuthority.BOOK_CREATE,
-    AuthorAuthority.AUTHOR_READ,
-    AuthorAuthority.AUTHOR_UPDATE,
-    AuthorAuthority.AUTHOR_CREATE
-  );
+  public static final List<String> ADMIN_AUTHORITIES =
+    Stream.of(MOD_AUTHORITIES, Lists.newArrayList(UserAuthority.USER_CREATE))
+      .flatMap(Collection::stream)
+      .collect(Collectors.toList());
 
   public static final Map<String, List<String>> ROLE_AUTHORITIES = new HashMap<String, List<String>>() {
     {

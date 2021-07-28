@@ -3,6 +3,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NgLetModule } from '../../../../../../../shared/directives/ng-let.directive';
 import { stubUserServiceProvider } from '../../../../services/user.service.stub';
 
 import { UserRemoveAccountConfirmComponent } from './user-remove-account-confirm.component';
@@ -13,7 +14,7 @@ describe('UserRemoveAccountConfirmComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule],
+      imports: [MatDialogModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule, NgLetModule],
       declarations: [UserRemoveAccountConfirmComponent],
       providers: [stubUserServiceProvider],
     }).compileComponents();

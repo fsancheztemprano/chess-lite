@@ -41,12 +41,6 @@
     <mat-datepicker-toggle matSuffix [for]="joinDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #joinDatePicker></mat-datepicker>
   </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Role" formControlName="role" />
-    <mat-error>
-      <chess-lite-form-error [control]="form.controls.role" name="role"></chess-lite-form-error>
-    </mat-error>
-  </mat-form-field>
   <mat-checkbox formControlName="active">Active</mat-checkbox>
   <mat-checkbox formControlName="locked">Locked</mat-checkbox>
   <mat-checkbox formControlName="expired">Expired</mat-checkbox>

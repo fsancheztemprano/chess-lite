@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { Resource } from '@chess-lite/hal-form-client';
+import { User } from '@chess-lite/domain';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { EMPTY, iif, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { UserService } from '../../../../services/user.service';
 import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confirm/user-remove-account-confirm.component';
 
+@UntilDestroy()
 @Component({
   selector: 'chess-lite-user-remove-account',
   templateUrl: './user-remove-account.component.html',
@@ -14,15 +15,11 @@ import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confir
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRemoveAccountComponent {
-  private readonly _user$: Observable<Resource> = this.route.data.pipe(map(({ user }) => user));
+  private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly dialogService: MatDialog,
-    public readonly userService: UserService,
-  ) {}
+  constructor(private readonly dialogService: MatDialog, public readonly userService: UserService) {}
 
-  get user$(): Observable<Resource> {
+  get user$(): Observable<User> {
     return this._user$;
   }
 
@@ -32,7 +29,10 @@ export class UserRemoveAccountComponent {
     });
     matDialogRef
       .afterClosed()
-      .pipe(switchMap((username) => iif(() => !!username?.length, this.userService.deleteAccount(this.user$), EMPTY)))
+      .pipe(
+        first(),
+        switchMap((username) => iif(() => !!username?.length, this.userService.deleteAccount(this.user$), EMPTY)),
+      )
       .subscribe();
   }
 }

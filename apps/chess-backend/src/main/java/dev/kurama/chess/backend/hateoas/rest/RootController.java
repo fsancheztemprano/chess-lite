@@ -1,7 +1,6 @@
 package dev.kurama.chess.backend.hateoas.rest;
 
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
-import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.getCurrentUsername;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.isAuthenticated;
 import static org.springframework.hateoas.mediatype.Affordances.of;
@@ -10,7 +9,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.ResponseEntity.ok;
 
 import dev.kurama.chess.backend.auth.rest.AuthenticationController;
-import dev.kurama.chess.backend.auth.rest.UserController;
+import dev.kurama.chess.backend.auth.rest.UserProfileController;
 import dev.kurama.chess.backend.hateoas.domain.RootResource;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -59,7 +58,7 @@ public class RootController {
   }
 
   private @NonNull Link getCurrentUserLink() {
-    return linkTo(methodOn(UserController.class).get(getCurrentUsername())).withRel(CURRENT_USER_REL);
+    return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
   }
 
   private @NonNull Link getLoginLink() {

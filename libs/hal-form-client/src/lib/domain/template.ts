@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { InjectorInstance } from '../hal-form-client.module';
 import { ContentTypeEnum } from './content-type.enum';
 import { HTTP_METHODS, HttpMethodEnum } from './http-method.enum';
 import { ILink, Link } from './link';
+import { Resource } from './resource';
 
 export interface ITemplateProperty {
   name: string;
@@ -95,11 +96,19 @@ export class Template implements ITemplate {
     let headers = new HttpHeaders({ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS });
     if (body && this.contentType !== ContentTypeEnum.MULTIPART_FILE) {
       headers = headers.append('Content-Type', this.contentType || ContentTypeEnum.APPLICATION_JSON);
-      console.log(headers.get('Content-Type'));
     }
     const url = link.parseUrl(params || {});
     return url
-      ? this.httpClient.request(this.method, url, { headers, body, observe: observe || 'body' }).pipe(first())
+      ? this.httpClient
+          .request(this.method, url, {
+            headers,
+            body,
+            observe: observe || 'body',
+          })
+          .pipe(
+            first(),
+            map((response) => new Resource(response) as any),
+          )
       : throwError(() => new Error(`Un-parsable Url ${link?.href},  ${params}`));
   }
 

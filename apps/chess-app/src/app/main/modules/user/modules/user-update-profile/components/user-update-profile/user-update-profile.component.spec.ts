@@ -7,16 +7,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Resource } from '@chess-lite/hal-form-client';
-import { of } from 'rxjs';
 import { StubFormErrorComponent } from '../../../../../../../shared/components/form-error/form-error.component.stub';
+import { NgLetModule } from '../../../../../../../shared/directives/ng-let.directive';
 import { stubUserServiceProvider } from '../../../../services/user.service.stub';
 
 import { UserUpdateProfileComponent } from './user-update-profile.component';
-
-const mockRouteData = { data: of({ user: new Resource({}) }) };
 
 describe('UserUpdateProfileComponent', () => {
   let component: UserUpdateProfileComponent;
@@ -25,7 +20,6 @@ describe('UserUpdateProfileComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
         NoopAnimationsModule,
         ReactiveFormsModule,
         MatCardModule,
@@ -34,9 +28,10 @@ describe('UserUpdateProfileComponent', () => {
         MatCheckboxModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        NgLetModule,
       ],
       declarations: [UserUpdateProfileComponent, StubFormErrorComponent],
-      providers: [MatDatepickerModule, stubUserServiceProvider, { provide: ActivatedRoute, useValue: mockRouteData }],
+      providers: [MatDatepickerModule, stubUserServiceProvider],
     }).compileComponents();
   });
 

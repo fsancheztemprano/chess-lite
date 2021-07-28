@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Resource } from '@chess-lite/hal-form-client';
+import { User } from '@chess-lite/domain';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { setResourceValidatorsPipe } from '../../../../../../../core/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
 import { matchingControlsValidators } from '../../../../../../../core/utils/forms/validators/matching-controls.validator';
 import { UserService } from '../../../../services/user.service';
 
+@UntilDestroy()
 @Component({
   selector: 'chess-lite-user-change-password',
   templateUrl: './user-change-password.component.html',
@@ -17,7 +17,7 @@ import { UserService } from '../../../../services/user.service';
   animations: [wobbleAnimation(), tadaAnimation()],
 })
 export class UserChangePasswordComponent {
-  private readonly _user$: Observable<Resource> = this.route.data.pipe(map(({ user }) => user));
+  private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
 
   public form = new FormGroup(
     {
@@ -34,15 +34,13 @@ export class UserChangePasswordComponent {
   submitSuccessMessage = false;
   submitErrorMessage = false;
 
-  constructor(
-    public readonly userService: UserService,
-    private readonly route: ActivatedRoute,
-    private readonly cdr: ChangeDetectorRef,
-  ) {
-    this.user$.pipe(setResourceValidatorsPipe(this.form, this.userService.CHANGE_PASSWORD_REL)).subscribe();
+  constructor(public readonly userService: UserService, private readonly cdr: ChangeDetectorRef) {
+    this.user$
+      .pipe(untilDestroyed(this), setResourceValidatorsPipe(this.form, this.userService.CHANGE_PASSWORD_REL))
+      .subscribe();
   }
 
-  get user$(): Observable<Resource> {
+  get user$(): Observable<User> {
     return this._user$;
   }
 

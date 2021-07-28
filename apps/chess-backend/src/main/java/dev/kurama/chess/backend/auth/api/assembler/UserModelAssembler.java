@@ -1,9 +1,10 @@
 package dev.kurama.chess.backend.auth.api.assembler;
 
+import static dev.kurama.chess.backend.auth.authority.UserAuthority.PROFILE_DELETE;
+import static dev.kurama.chess.backend.auth.authority.UserAuthority.PROFILE_UPDATE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_DELETE;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_UPDATE;
-import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.getCurrentUsername;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.isCurrentUsername;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
@@ -12,6 +13,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.rest.UserController;
+import dev.kurama.chess.backend.auth.rest.UserProfileController;
 import dev.kurama.chess.backend.core.api.assembler.DomainModelAssembler;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -42,25 +44,30 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
 
   @Override
   public @NonNull UserModel toModel(@NonNull UserModel userModel) {
-
+    boolean isCurrentUser = isCurrentUsername(userModel.getUsername());
+    boolean canUpdateOwnProfile = hasAuthority(PROFILE_UPDATE);
     return userModel
       .add(getModelSelfLink(userModel.getId()))
       .add(getParentLink())
-      .mapLinkIf(hasAuthority(USER_DELETE) || getCurrentUsername().equals(userModel.getUsername()),
+      .mapLinkIf(hasAuthority(USER_DELETE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getDeleteAffordance(userModel.getUsername())))
       .mapLinkIf(hasAuthority(USER_UPDATE),
         LinkRelation.of("self"),
         link -> link.andAffordance(getUpdateAffordance(userModel.getUsername())))
-      .mapLinkIf((isCurrentUsername(userModel.getUsername()) || hasAuthority(USER_UPDATE)),
+
+      .mapLinkIf((isCurrentUser && canUpdateOwnProfile),
         LinkRelation.of("self"),
-        link -> link.andAffordance(getUpdateProfileAffordance(userModel.getUsername())))
-      .mapLinkIf((isCurrentUsername(userModel.getUsername()) || hasAuthority(USER_UPDATE)),
+        link -> link.andAffordance(getUpdateProfileAffordance()))
+      .mapLinkIf((isCurrentUser && canUpdateOwnProfile),
         LinkRelation.of("self"),
-        link -> link.andAffordance(getChangePasswordAffordance(userModel.getUsername())))
-      .mapLinkIf((isCurrentUsername(userModel.getUsername()) || hasAuthority(USER_UPDATE)),
+        link -> link.andAffordance(getChangePasswordAffordance()))
+      .mapLinkIf((isCurrentUser && canUpdateOwnProfile),
         LinkRelation.of("self"),
-        link -> link.andAffordance(getUploadAvatarAffordance(userModel.getUsername())))
+        link -> link.andAffordance(getUploadAvatarAffordance()))
+      .mapLinkIf((isCurrentUser && hasAuthority(PROFILE_DELETE)),
+        LinkRelation.of("self"),
+        link -> link.andAffordance(getDeleteProfileAffordance()))
       ;
   }
 
@@ -106,16 +113,20 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
     return afford(methodOn(getClazz()).update(username, null));
   }
 
-  private @NonNull Affordance getUpdateProfileAffordance(String username) {
-    return afford(methodOn(getClazz()).updateProfile(username, null));
+  private @NonNull Affordance getUpdateProfileAffordance() {
+    return afford(methodOn(UserProfileController.class).updateProfile(null));
   }
 
-  private @NonNull Affordance getChangePasswordAffordance(String username) {
-    return afford(methodOn(getClazz()).changePassword(username, null));
+  private @NonNull Affordance getChangePasswordAffordance() {
+    return afford(methodOn(UserProfileController.class).changePassword(null));
   }
 
   @SneakyThrows
-  private @NonNull Affordance getUploadAvatarAffordance(String username) {
-    return afford(methodOn(getClazz()).uploadAvatar(username, null));
+  private @NonNull Affordance getUploadAvatarAffordance() {
+    return afford(methodOn(UserProfileController.class).uploadAvatar(null));
+  }
+
+  private @NonNull Affordance getDeleteProfileAffordance() {
+    return afford(methodOn(UserProfileController.class).delete());
   }
 }

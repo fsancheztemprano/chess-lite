@@ -74,8 +74,8 @@
         mat-raised-button
         color="primary"
         type="submit"
-        *ngIf="user$ | async as user"
-        [disabled]="form.invalid || !this.userService.isAllowedToUpdateProfile(user)"
+        *ngLet="user$ | async as user"
+        [disabled]="form.invalid || !user || !user.isAllowedTo(userService.UPDATE_PROFILE_REL)"
       >
         Save
       </button>

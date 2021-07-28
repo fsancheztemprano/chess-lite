@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Resource } from '@chess-lite/hal-form-client';
+import { User } from '@chess-lite/domain';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { patchFormPipe } from '../../../../../../../core/utils/forms/rxjs/patch-form.rxjs.pipe';
 import { setResourceValidatorsPipe } from '../../../../../../../core/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
 import { UserService } from '../../../../services/user.service';
 
+@UntilDestroy()
 @Component({
   selector: 'chess-lite-user-update-profile',
   templateUrl: './user-update-profile.component.html',
@@ -17,7 +17,7 @@ import { UserService } from '../../../../services/user.service';
   animations: [wobbleAnimation(), tadaAnimation()],
 })
 export class UserUpdateProfileComponent {
-  private readonly _user$: Observable<Resource> = this.route.data.pipe(map(({ user }) => user));
+  private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
 
   public form = new FormGroup({
     username: new FormControl({ value: '', disabled: true }),
@@ -39,17 +39,17 @@ export class UserUpdateProfileComponent {
   submitSuccessMessage = false;
   submitErrorMessage = false;
 
-  constructor(
-    public readonly userService: UserService,
-    private readonly route: ActivatedRoute,
-    private readonly cdr: ChangeDetectorRef,
-  ) {
+  constructor(public readonly userService: UserService, private readonly cdr: ChangeDetectorRef) {
     this.user$
-      .pipe(patchFormPipe(this.form), setResourceValidatorsPipe(this.form, this.userService.UPDATE_PROFILE_REL))
+      .pipe(
+        untilDestroyed(this),
+        patchFormPipe(this.form),
+        setResourceValidatorsPipe(this.form, this.userService.UPDATE_PROFILE_REL),
+      )
       .subscribe();
   }
 
-  get user$(): Observable<Resource> {
+  get user$(): Observable<User> {
     return this._user$;
   }
 
