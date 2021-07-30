@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { RolesResolver } from './resolvers/roles.resolver';
 
 const loadUserManagementHomeModule = () =>
-  import('./modules/user-management-home/user-management-home.module').then((m) => m.UserManagementHomeModule);
+  import('./modules/home/user-management-home.module').then((m) => m.UserManagementHomeModule);
 
 const loadUserManagementDetailModule = () =>
-  import('./modules/user-management-detail/user-management-detail.module').then((m) => m.UserManagementDetailModule);
+  import('./modules/detail/user-management-detail.module').then((m) => m.UserManagementDetailModule);
 
 const loadUserManagementCreateModule = () =>
-  import('./modules/user-management-create/user-management-create.module').then((m) => m.UserManagementCreateModule);
+  import('./modules/create/user-management-create.module').then((m) => m.UserManagementCreateModule);
 
 const routes: Routes = [
   {
