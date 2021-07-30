@@ -3,5 +3,5 @@ export enum DomainRelations {
   UPDATE_PROFILE_REL = 'updateProfile',
   CHANGE_PASSWORD_REL = 'changePassword',
   UPLOAD_AVATAR_REL = 'uploadAvatar',
-  DELETE_ACCOUNT_REL = 'delete',
+  DELETE_ACCOUNT_REL = 'deleteProfile',
 }

@@ -12,6 +12,7 @@ import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.repository.AuthorityRepository;
 import dev.kurama.chess.backend.auth.repository.RoleRepository;
 import dev.kurama.chess.backend.auth.repository.UserRepository;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.NonNull;
@@ -70,6 +71,7 @@ public class AdminBootstrap implements CommandLineRunner {
           .password(passwordEncoder.encode("123456"))
           .role(superAdminRole)
           .authorities(superAdminRole.getAuthorities())
+          .joinDate(new Date())
           .active(true)
           .locked(false)
           .expired(false)

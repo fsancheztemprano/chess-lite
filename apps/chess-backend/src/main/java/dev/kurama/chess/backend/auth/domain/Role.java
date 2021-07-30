@@ -14,8 +14,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -25,11 +23,9 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Entity
 public class Role extends AbstractEntity implements Serializable {
 
-  @NonNull
   private String name;
 
   @ToString.Exclude

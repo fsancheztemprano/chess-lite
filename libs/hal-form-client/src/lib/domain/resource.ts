@@ -103,7 +103,7 @@ export class Resource implements IResource {
   }
 
   getEmbeddedCollection<T = Resource>(key: string): T[] {
-    return this.getAssuredEmbedded<T>(key) as T[];
+    return (this.getAssuredEmbedded<T>(key) as T[]) || [];
   }
 
   hasEmbeddedObject(key: string): boolean {

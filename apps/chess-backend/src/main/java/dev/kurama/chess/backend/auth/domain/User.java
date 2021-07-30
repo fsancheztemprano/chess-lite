@@ -6,6 +6,7 @@ import dev.kurama.chess.backend.core.domain.AbstractEntity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -34,6 +35,7 @@ public class User extends AbstractEntity implements Serializable {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
   private String email;
+  @Column(length = 32768)
   private String profileImageUrl;
   private Date lastLoginDate;
   private Date lastLoginDateDisplay;

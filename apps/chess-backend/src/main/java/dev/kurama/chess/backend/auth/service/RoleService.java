@@ -6,6 +6,8 @@ import dev.kurama.chess.backend.auth.repository.RoleRepository;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -22,4 +24,13 @@ public class RoleService {
   public Optional<Role> findByName(String roleName) {
     return roleRepository.findByName(roleName);
   }
+
+  public Page<Role> getAllRoles(Pageable pageable) {
+    return roleRepository.findAll(pageable);
+  }
+
+  public Optional<Role> findRoleById(String id) {
+    return roleRepository.findRoleById(id);
+  }
+
 }

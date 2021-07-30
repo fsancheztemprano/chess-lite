@@ -65,7 +65,7 @@ public class UserProfileController {
 
   @DeleteMapping()
   @PreAuthorize("hasAuthority('profile:delete')")
-  public ResponseEntity<Void> delete() {
+  public ResponseEntity<Void> deleteProfile() {
     userFacade.deleteByUsername(getCurrentUsername());
     return noContent().build();
   }

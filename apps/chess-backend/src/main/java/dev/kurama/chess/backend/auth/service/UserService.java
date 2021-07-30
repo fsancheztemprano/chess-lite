@@ -1,9 +1,9 @@
 package dev.kurama.chess.backend.auth.service;
 
 import static dev.kurama.chess.backend.auth.constant.UserConstant.EMAIL_ALREADY_EXISTS;
+import static dev.kurama.chess.backend.auth.constant.UserConstant.NO_USER_FOUND_BY_ID;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.NO_USER_FOUND_BY_USERNAME;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.USERNAME_ALREADY_EXISTS;
-import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
@@ -59,6 +59,10 @@ public class UserService implements UserDetailsService {
     return new UserPrincipal(user);
   }
 
+  public Optional<User> findUserById(String id) {
+    return userRepository.findUserById(id);
+  }
+
   public Optional<User> findUserByUsername(String username) {
     return userRepository.findUserByUsername(username);
   }
@@ -71,8 +75,13 @@ public class UserService implements UserDetailsService {
     return userRepository.findAll(pageable);
   }
 
-  public void deleteUser(String username) {
+  public void deleteUserByUsername(String username) {
     var user = userRepository.findUserByUsername(username).orElseThrow();
+    userRepository.deleteById(user.getTid());
+  }
+
+  public void deleteUserById(String id) {
+    var user = userRepository.findUserById(id).orElseThrow();
     userRepository.deleteById(user.getTid());
   }
 
@@ -124,9 +133,9 @@ public class UserService implements UserDetailsService {
     return user;
   }
 
-  public User updateUser(String username, UserInput userInput)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    var currentUser = validateUsernameAndEmailUpdate(username, userInput.getUsername(), userInput.getEmail());
+  public User updateUser(String id, UserInput userInput)
+    throws UsernameExistsException, EmailExistsException, UserNotFoundException {
+    var currentUser = validateUsernameAndEmailUpdate(id, userInput.getUsername(), userInput.getEmail());
     var role = roleService.findByName(userInput.getRole()).orElseThrow();
     currentUser.setEmail(userInput.getEmail());
     currentUser.setFirstname(userInput.getFirstname());
@@ -169,24 +178,24 @@ public class UserService implements UserDetailsService {
     }
   }
 
-  private User validateUsernameAndEmailUpdate(String currentUsername, String newUsername, String email)
+  private User validateUsernameAndEmailUpdate(String id, String newUsername, String email)
     throws UsernameExistsException, EmailExistsException, UserNotFoundException {
-    var userByNewUsername = findUserByUsername(newUsername);
-    var userByNewEmail = findUserByEmail(email);
-    if (isNotEmpty(currentUsername) && isNotBlank(currentUsername)) {
-      var currentUser = findUserByUsername(currentUsername);
+    var userByNewUsername = findUserById(newUsername);
+    if (userByNewUsername.isPresent() && isNotBlank(id)) {
+      var currentUser = findUserById(id);
       if (currentUser.isEmpty()) {
-        throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
+        throw new UserNotFoundException(NO_USER_FOUND_BY_ID + id);
       }
-      if (userByNewUsername.isPresent() && !currentUser.get().getId().equals(userByNewUsername.get().getId())) {
-        throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + currentUsername);
+      if (!currentUser.get().getId().equals(userByNewUsername.get().getId())) {
+        throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + newUsername);
       }
+      var userByNewEmail = findUserByEmail(email);
       if (userByNewEmail.isPresent() && !currentUser.get().getId().equals(userByNewEmail.get().getId())) {
         throw new EmailExistsException(EMAIL_ALREADY_EXISTS + email);
       }
       return currentUser.get();
     } else {
-      throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + currentUsername);
+      throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + id);
     }
   }
 

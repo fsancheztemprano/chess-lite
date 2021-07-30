@@ -1,6 +1,5 @@
 package dev.kurama.chess.backend.poc.api.domain.model;
 
-import dev.kurama.chess.backend.core.api.domain.DomainModel;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +13,7 @@ import org.springframework.hateoas.RepresentationModel;
 @Builder
 @Data
 @NoArgsConstructor
-public class AuthorModel extends RepresentationModel<AuthorModel> implements DomainModel {
+public class AuthorModel extends RepresentationModel<AuthorModel> {
 
   private String id;
   private String name;

@@ -82,7 +82,12 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
   }
 
   public @NonNull PagedModel<UserModel> toPagedModel(Page<UserModel> entities) {
-    return pagedResourcesAssembler.toModel(entities, this);
+    return (PagedModel<UserModel>) pagedResourcesAssembler.toModel(entities, this)
+      .add(getCollectionModelWithLink(getAllLink()).withSelfRel())
+      .mapLinkIf(hasAuthority(USER_CREATE),
+        LinkRelation.of("self"),
+        link -> link.andAffordance(getCreateAffordance()))
+      ;
   }
 
   @Override
@@ -104,13 +109,13 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
     return afford(methodOn(getClazz()).create(null));
   }
 
-  private @NonNull Affordance getDeleteAffordance(String username) {
-    return afford(methodOn(getClazz()).delete(username));
-  }
-
   @SneakyThrows
   private @NonNull Affordance getUpdateAffordance(String username) {
     return afford(methodOn(getClazz()).update(username, null));
+  }
+
+  private @NonNull Affordance getDeleteAffordance(String username) {
+    return afford(methodOn(getClazz()).delete(username));
   }
 
   private @NonNull Affordance getUpdateProfileAffordance() {
@@ -127,6 +132,6 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
   }
 
   private @NonNull Affordance getDeleteProfileAffordance() {
-    return afford(methodOn(UserProfileController.class).delete());
+    return afford(methodOn(UserProfileController.class).deleteProfile());
   }
 }

@@ -34,22 +34,9 @@
         <input matInput placeholder="Profile Image" formControlName="profileImageUrl" />
         <mat-error>
           <chess-lite-form-error
-            [control]="form.controls.profileImageUrl"
-            name="profileImageUrl"
+            [control]="form.controls.profileImageUrl" name="profileImageUrl"
           ></chess-lite-form-error>
         </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Last Login</mat-label>
-        <input matInput formControlName="lastLoginDateDisplay" [matDatepicker]="lastLoginDatePicker" />
-        <mat-datepicker-toggle matSuffix [for]="lastLoginDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #lastLoginDatePicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Member Since</mat-label>
-        <input matInput formControlName="joinDate" [matDatepicker]="joinDatePicker" />
-        <mat-datepicker-toggle matSuffix [for]="joinDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #joinDatePicker></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Role" formControlName="role" />
@@ -67,16 +54,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions [align]="'end'">
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        *ngLet="user$ | async as user"
-        [disabled]="form.invalid || !user || !user.isAllowedTo(userService.UPDATE_PROFILE_REL)"
-      >
-        Save
-      </button>
+      <button mat-raised-button color="primary" type="submit">Save</button>
     </mat-card-actions>
   </mat-card>
 </form>
-<div class="spacer"></div>

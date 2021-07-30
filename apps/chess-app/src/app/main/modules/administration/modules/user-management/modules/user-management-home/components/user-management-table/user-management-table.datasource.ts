@@ -2,8 +2,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { Page, User, UserPage } from '@chess-lite/domain';
-import { combineLatest, Observable, startWith, tap, throwError } from 'rxjs';
+import { User, UserPage } from '@chess-lite/domain';
+import { BehaviorSubject, combineLatest, Observable, startWith, tap, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { UserManagementService } from '../../../../services/user-management.service';
 
@@ -13,7 +13,7 @@ import { UserManagementService } from '../../../../services/user-management.serv
 export class UserManagementTableDatasource extends DataSource<User> {
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
-  page: Page | undefined;
+  private _userPage$: BehaviorSubject<UserPage> = new BehaviorSubject<UserPage>(new UserPage({}));
 
   constructor(private readonly userManagementService: UserManagementService) {
     super();
@@ -42,10 +42,14 @@ export class UserManagementTableDatasource extends DataSource<User> {
               sort: `${sort.active},${sort.direction}`,
             });
           }),
-          tap((userPage: UserPage) => (this.page = userPage.page)),
-          map((userPage: UserPage) => userPage.userModelList),
+          tap((userPage: UserPage) => this._userPage$.next(userPage)),
+          map((userPage: UserPage) => userPage.getEmbeddedCollection('userModelList') || []),
         )
       : throwError(() => 'Please set the paginator and sort on the data source before connecting.');
+  }
+
+  get userPage$(): Observable<UserPage> {
+    return this._userPage$.asObservable();
   }
 
   disconnect(): void {

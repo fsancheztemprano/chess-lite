@@ -1,4 +1,4 @@
-package dev.kurama.chess.backend.poc.api.domain.model;
+package dev.kurama.chess.backend.auth.api.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,11 +12,8 @@ import org.springframework.hateoas.RepresentationModel;
 @NoArgsConstructor
 @Data
 @Builder
-public class BookModel extends RepresentationModel<BookModel> {
+public class RoleModel extends RepresentationModel<RoleModel> {
 
   private String id;
-  private String isbn;
-  private String title;
-  private String authorId;
-
+  private String name;
 }

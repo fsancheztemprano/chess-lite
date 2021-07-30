@@ -44,13 +44,18 @@ public class UserFacade {
       userService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username)));
   }
 
+  public UserModel findByUserId(String userId) {
+    return userMapper.userToUserModel(
+      userService.findUserById(userId).orElseThrow());
+  }
+
   public Page<UserModel> getAll(Pageable pageable) {
     return userMapper.userPageToUserModelPage(userService.getAllUsers(pageable));
   }
 
-  public UserModel update(String username, UserInput userInput)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    return userMapper.userToUserModel(userService.updateUser(username, userInput));
+  public UserModel update(String id, UserInput userInput)
+    throws UsernameExistsException, EmailExistsException, UserNotFoundException {
+    return userMapper.userToUserModel(userService.updateUser(id, userInput));
   }
 
   public UserModel updateProfile(String username, UpdateUserProfileInput updateUserProfileInput) {
@@ -59,9 +64,12 @@ public class UserFacade {
   }
 
   public void deleteByUsername(String username) {
-    userService.deleteUser(username);
+    userService.deleteUserByUsername(username);
   }
 
+  public void deleteById(String id) {
+    userService.deleteUserById(id);
+  }
 
   public UserModel changePassword(String username, ChangeUserPasswordInput changeUserPasswordInput) {
     authenticate(username, changeUserPasswordInput.getPassword());

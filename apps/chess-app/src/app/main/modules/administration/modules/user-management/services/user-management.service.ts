@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Pageable, UserPage } from '@chess-lite/domain';
 import { HalFormService, Link, noLinkError, Resource } from '@chess-lite/hal-form-client';
 import { iif, Observable, of, throwError } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { first, switchMap, tap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
@@ -37,13 +37,7 @@ export class UserManagementService extends HalFormService {
   public findUsers(pageable?: Pageable): Observable<UserPage> {
     return this.getLink(this.USERS_REL).pipe(
       first(),
-      switchMap((link: Link | null) => {
-        return link ? link.get(pageable) : noLinkError(this.USERS_REL);
-      }),
-      map((resource: Resource) => ({
-        userModelList: resource.getEmbeddedCollection(this.USER_MODEL_LIST_REL),
-        page: resource.page,
-      })),
+      switchMap((link: Link | null) => (link ? link.get(pageable) : noLinkError(this.USERS_REL))),
     );
   }
 }

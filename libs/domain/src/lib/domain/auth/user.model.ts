@@ -29,7 +29,7 @@ export interface UserChangePasswordInput {
   newPassword: string;
 }
 
-export interface UserPage {
-  userModelList: User[];
-  page: Page;
+export class UserPage extends Resource implements IResource {
+  userModelList?: User[];
+  page?: Page;
 }
