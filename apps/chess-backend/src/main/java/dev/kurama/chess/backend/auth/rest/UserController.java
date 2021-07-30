@@ -6,7 +6,6 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
-import dev.kurama.chess.backend.auth.api.assembler.UserModelAssembler;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,43 +37,33 @@ public class UserController {
   @NonNull
   private final UserFacade userFacade;
 
-  @NonNull
-  private final UserModelAssembler userModelAssembler;
-
   @GetMapping("/{userId}")
   @PreAuthorize("hasAuthority('user:read')")
   public ResponseEntity<UserModel> get(@PathVariable("userId") String userId) {
-    return ok().body(userModelAssembler.toModel(userFacade.findByUserId(userId)));
+    return ok().body(userFacade.findByUserId(userId));
   }
 
   @GetMapping()
   @PreAuthorize("hasAuthority('user:read')")
   public ResponseEntity<PagedModel<UserModel>> getAll(
     @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
-    return ok().body(userModelAssembler.toPagedModel(userFacade.getAll(pageable)));
+    return ok().body(userFacade.getAll(pageable));
   }
 
   @PostMapping()
   @PreAuthorize("hasAuthority('user:create')")
   public ResponseEntity<UserModel> create(@RequestBody UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
-    UserModel newUser = userModelAssembler.toModel(userFacade.create(userInput));
+    UserModel newUser = userFacade.create(userInput);
     return created(fromCurrentRequestUri().path("/user/{userId}").buildAndExpand(newUser.getId()).toUri())
       .body(newUser);
-  }
-
-  @PatchMapping("/{userId}")
-  @PreAuthorize("hasAuthority('user:update')")
-  public ResponseEntity<UserModel> patch(@PathVariable("userId") String userId, @RequestBody UserInput userInput)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    return ok().body(userModelAssembler.toModel(userFacade.update(userId, userInput)));
   }
 
   @PutMapping("/{userId}")
   @PreAuthorize("hasAuthority('user:update')")
   public ResponseEntity<UserModel> update(@PathVariable("userId") String userId, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException {
-    return ok().body(userModelAssembler.toModel(userFacade.update(userId, userInput)));
+    return ok().body(userFacade.update(userId, userInput));
   }
 
   @DeleteMapping("/{userId}")

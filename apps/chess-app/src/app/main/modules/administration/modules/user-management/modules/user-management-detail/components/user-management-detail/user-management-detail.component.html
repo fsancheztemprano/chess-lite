@@ -18,6 +18,15 @@
     >
       {{ 'Authority' }}
     </a>
+    <a
+      mat-tab-link
+      routerLink="./delete"
+      routerLinkActive="active-link"
+      #authorityTab="routerLinkActive"
+      [active]="authorityTab.isActive"
+    >
+      {{ 'Danger Zone' }}
+    </a>
   </nav>
   <mat-card-content>
     <router-outlet></router-outlet>

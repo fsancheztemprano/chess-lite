@@ -49,7 +49,7 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
       showOptionsButton: true,
       options: [this.createUserMenuOption],
     });
-    this.dataSource.userPage$.subscribe((userPage: UserPage) =>
+    this.dataSource.userPage$?.subscribe((userPage: UserPage) =>
       this.createUserMenuOption.disabled?.next(!userPage.isAllowedTo('create')),
     );
   }
@@ -62,5 +62,6 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.headerService.resetHeader();
+    this.createUserMenuOption.disabled?.complete();
   }
 }

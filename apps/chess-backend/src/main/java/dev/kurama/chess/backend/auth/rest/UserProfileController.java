@@ -5,7 +5,6 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
-import dev.kurama.chess.backend.auth.api.assembler.UserModelAssembler;
 import dev.kurama.chess.backend.auth.api.domain.input.ChangeUserPasswordInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.model.UserModel;
@@ -33,35 +32,31 @@ public class UserProfileController {
   @NonNull
   private final UserFacade userFacade;
 
-  @NonNull
-  private final UserModelAssembler userModelAssembler;
-
   @GetMapping()
   @PreAuthorize("hasAuthority('profile:read')")
   public ResponseEntity<UserModel> get() {
-    return ok().body(userModelAssembler.toModel(userFacade.findByUsername(getCurrentUsername())));
+    return ok().body(userFacade.findByUsername(getCurrentUsername()));
   }
 
   @PatchMapping()
   @PreAuthorize("hasAuthority('profile:update') ")
   public ResponseEntity<UserModel> updateProfile(@RequestBody UpdateUserProfileInput updateUserProfileInput) {
     return ok()
-      .body(userModelAssembler.toModel(userFacade.updateProfile(getCurrentUsername(), updateUserProfileInput)));
+      .body(userFacade.updateProfile(getCurrentUsername(), updateUserProfileInput));
   }
 
   @PatchMapping("/password")
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserModel> changePassword(@RequestBody ChangeUserPasswordInput changeUserPasswordInput) {
     return ok()
-      .body(userModelAssembler.toModel(userFacade.changePassword(getCurrentUsername(), changeUserPasswordInput)));
+      .body(userFacade.changePassword(getCurrentUsername(), changeUserPasswordInput));
   }
 
   @PatchMapping(value = "/avatar", consumes = MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<Object> uploadAvatar(@RequestPart("avatar") MultipartFile avatar) throws IOException {
-    return ok().body(userModelAssembler.toModel(userFacade.uploadAvatar(getCurrentUsername(), avatar)));
+    return ok().body(userFacade.uploadAvatar(getCurrentUsername(), avatar));
   }
-
 
   @DeleteMapping()
   @PreAuthorize("hasAuthority('profile:delete')")
@@ -69,5 +64,4 @@ public class UserProfileController {
     userFacade.deleteByUsername(getCurrentUsername());
     return noContent().build();
   }
-
 }

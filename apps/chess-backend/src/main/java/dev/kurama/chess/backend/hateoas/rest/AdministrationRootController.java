@@ -2,6 +2,7 @@ package dev.kurama.chess.backend.hateoas.rest;
 
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
+import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
@@ -10,6 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.util.UriComponentsBuilder.fromUri;
 
+import dev.kurama.chess.backend.auth.rest.RoleController;
 import dev.kurama.chess.backend.auth.rest.UserController;
 import dev.kurama.chess.backend.hateoas.domain.RootResource;
 import lombok.NonNull;
@@ -36,6 +38,7 @@ public class AdministrationRootController {
 
   public static final String USER_REL = "user";
   public static final String USERS_REL = "users";
+  public static final String ROLES_REL = "roles";
   public static final String ROOT_REL = "root";
   public static final String USER_MANAGEMENT_ROOT_REL = "user-management";
 
@@ -60,8 +63,9 @@ public class AdministrationRootController {
     return HalModelBuilder.halModelOf(new RootResource())
       .link(getSelfLink())
       .link(getUserLink())
-      .link(getUsersLink()
-      ).build();
+      .link(getUsersLink())
+      .link(getRolesLink())
+      .build();
   }
 
   private @NonNull Link getSelfLink() {
@@ -76,7 +80,7 @@ public class AdministrationRootController {
 
   private @NonNull Link getUserLink() {
     return linkTo(methodOn(UserController.class).get(null)).withRel(USER_REL)
-      .andAffordance(afford(methodOn(UserController.class).delete(null)));
+      .andAffordance(afford(methodOn(UserController.class).get(null)));
   }
 
   @SneakyThrows
@@ -85,6 +89,15 @@ public class AdministrationRootController {
     UriComponentsBuilder builder = fromUri(link.getTemplate().expand());
     TemplateVariables templateVariables = pageableResolver.getPaginationTemplateVariables(null, builder.build());
     UriTemplate template = UriTemplate.of(link.getHref()).with(templateVariables);
-    return Link.of(template, link.getRel());
+    Link usersLink = Link.of(template, link.getRel());
+    if (hasAuthority(USER_CREATE)) {
+      usersLink = usersLink.andAffordance(afford(methodOn(UserController.class).create(null)));
+    }
+    return usersLink;
+  }
+
+  @SneakyThrows
+  private @NonNull Link getRolesLink() {
+    return linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL);
   }
 }

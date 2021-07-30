@@ -1,7 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Pageable, UserPage } from '@chess-lite/domain';
-import { HalFormService, Link, noLinkError, Resource } from '@chess-lite/hal-form-client';
+import { Pageable, User, UserPage } from '@chess-lite/domain';
+import {
+  HalFormService,
+  Link,
+  noLinkError,
+  Resource,
+  submitToTemplateOrThrowPipe,
+  Template,
+} from '@chess-lite/hal-form-client';
 import { iif, Observable, of, throwError } from 'rxjs';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';
@@ -13,6 +20,7 @@ export class UserManagementService extends HalFormService {
   public readonly USER_MANAGEMENT_REL = 'user-management';
   public readonly USERS_REL = 'users';
   public readonly USER_MODEL_LIST_REL = 'userModelList';
+  public readonly USER_CREATE_REL = 'create';
 
   constructor(
     protected readonly httpClient: HttpClient,
@@ -39,5 +47,13 @@ export class UserManagementService extends HalFormService {
       first(),
       switchMap((link: Link | null) => (link ? link.get(pageable) : noLinkError(this.USERS_REL))),
     );
+  }
+
+  getCreateTemplate(): Observable<Template | null> {
+    return this.getTemplate(this.USER_CREATE_REL);
+  }
+
+  createUser(user: User) {
+    return this.rootResource.pipe(submitToTemplateOrThrowPipe(this.USER_CREATE_REL, user));
   }
 }

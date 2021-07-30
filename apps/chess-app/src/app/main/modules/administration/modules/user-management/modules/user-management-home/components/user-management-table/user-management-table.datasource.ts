@@ -43,7 +43,10 @@ export class UserManagementTableDatasource extends DataSource<User> {
             });
           }),
           tap((userPage: UserPage) => this._userPage$.next(userPage)),
-          map((userPage: UserPage) => userPage.getEmbeddedCollection('userModelList') || []),
+          map(
+            (userPage: UserPage) =>
+              userPage.getEmbeddedCollection(this.userManagementService.USER_MODEL_LIST_REL) || [],
+          ),
         )
       : throwError(() => 'Please set the paginator and sort on the data source before connecting.');
   }

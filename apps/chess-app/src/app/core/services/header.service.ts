@@ -15,7 +15,7 @@ export interface MenuOption {
 }
 
 export interface HeaderConfig {
-  navigationLink?: string;
+  navigationLink?: string[];
   title?: string;
   titleRation?: number;
   tabs?: TabLink[];
@@ -29,7 +29,7 @@ export interface HeaderConfig {
 })
 export class HeaderService {
   private readonly defaultConfig = {
-    navigationLink: '',
+    navigationLink: [''],
     options: [],
     showOptionsButton: false,
     tabs: [],
@@ -38,7 +38,7 @@ export class HeaderService {
     titleRatio: 1,
   };
 
-  private _navigationLink: BehaviorSubject<string> = new BehaviorSubject<string>('/');
+  private _navigationLink: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['']);
 
   private _title: BehaviorSubject<string> = new BehaviorSubject<string>('App');
   private _titleRatio: BehaviorSubject<number> = new BehaviorSubject<number>(1);
@@ -53,7 +53,7 @@ export class HeaderService {
 
   private _options: BehaviorSubject<MenuOption[]> = new BehaviorSubject<MenuOption[]>([]);
 
-  get navigationLink(): Observable<string> {
+  get navigationLink(): Observable<string[]> {
     return this._navigationLink.asObservable();
   }
 

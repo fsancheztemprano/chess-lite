@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RolesResolver } from './resolvers/roles.resolver';
 
 const loadUserManagementHomeModule = () =>
   import('./modules/user-management-home/user-management-home.module').then((m) => m.UserManagementHomeModule);
@@ -18,6 +19,7 @@ const routes: Routes = [
   {
     path: 'create',
     loadChildren: loadUserManagementCreateModule,
+    resolve: { roles: RolesResolver },
   },
   {
     path: 'edit/:username',

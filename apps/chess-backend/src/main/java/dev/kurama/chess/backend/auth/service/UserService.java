@@ -6,6 +6,7 @@ import static dev.kurama.chess.backend.auth.constant.UserConstant.NO_USER_FOUND_
 import static dev.kurama.chess.backend.auth.constant.UserConstant.USERNAME_ALREADY_EXISTS;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import com.google.common.collect.Sets;
 import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
 import dev.kurama.chess.backend.auth.domain.User;
@@ -112,7 +113,7 @@ public class UserService implements UserDetailsService {
   public User createUser(UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
     validateUsernameAndEmailCreate(userInput.getUsername(), userInput.getEmail());
-    var role = roleService.findByName(userInput.getRole()).orElseThrow();
+    var role = roleService.findRoleById(userInput.getRoleId()).orElseThrow();
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())
@@ -126,7 +127,7 @@ public class UserService implements UserDetailsService {
       .expired(userInput.isExpired())
       .credentialsExpired(userInput.isCredentialsExpired())
       .role(role)
-      .authorities(role.getAuthorities())
+      .authorities(Sets.newHashSet(role.getAuthorities()))
       .build();
     userRepository.save(user);
     log.atInfo().log(String.format("New user signed up: %s:%s", user.getUsername(), user.getPassword()));
@@ -136,7 +137,7 @@ public class UserService implements UserDetailsService {
   public User updateUser(String id, UserInput userInput)
     throws UsernameExistsException, EmailExistsException, UserNotFoundException {
     var currentUser = validateUsernameAndEmailUpdate(id, userInput.getUsername(), userInput.getEmail());
-    var role = roleService.findByName(userInput.getRole()).orElseThrow();
+    var role = roleService.findRoleById(userInput.getRoleId()).orElseThrow();
     currentUser.setEmail(userInput.getEmail());
     currentUser.setFirstname(userInput.getFirstname());
     currentUser.setLastname(userInput.getLastname());
