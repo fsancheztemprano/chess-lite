@@ -17,7 +17,7 @@
         <a
           *ngFor="let tab of tabs"
           mat-tab-link
-          routerLink="user"
+          [routerLink]="tab.target"
           routerLinkActive="active-link"
           #rla="routerLinkActive"
           [active]="rla.isActive"

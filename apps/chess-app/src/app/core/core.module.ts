@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
 import { HalFormClientModule } from '@chess-lite/hal-form-client';
 import { NgLetModule } from '../shared/directives/ng-let.directive';
 import { IsMobileModule } from '../shared/pipes/is-mobile.pipe';
-import { MainContainerComponent } from './components/main-container/main-container.component';
+import { HeaderComponent } from './components/main-container/header.component';
 import { AdministrationSidenavItemComponent } from './components/sidenav/administration-sidenav-item/administration-sidenav-item.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { UserSettingsSidenavItemComponent } from './components/sidenav/user-settings-sidenav-item/user-settings-sidenav-item.component';
@@ -40,7 +40,7 @@ const MaterialModules = [
     ThemeComponent,
     AdministrationSidenavItemComponent,
     UserSettingsSidenavItemComponent,
-    MainContainerComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +55,7 @@ const MaterialModules = [
     MatTabsModule,
     MatMenuModule,
   ],
-  exports: [ToolbarComponent, SidenavComponent, MainContainerComponent],
+  exports: [ToolbarComponent, SidenavComponent, HeaderComponent],
   providers: [],
 })
 export class CoreModule {}

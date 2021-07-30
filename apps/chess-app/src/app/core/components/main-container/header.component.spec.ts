@@ -5,21 +5,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MainContainerComponent } from './main-container.component';
+import { HeaderComponent } from './header.component';
 
 describe('MainContainerComponent', () => {
-  let component: MainContainerComponent;
-  let fixture: ComponentFixture<MainContainerComponent>;
+  let component: HeaderComponent;
+  let fixture: ComponentFixture<HeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatMenuModule, MatCardModule, MatIconModule, MatButtonModule, RouterTestingModule],
-      declarations: [MainContainerComponent],
+      declarations: [HeaderComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainContainerComponent);
+    fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

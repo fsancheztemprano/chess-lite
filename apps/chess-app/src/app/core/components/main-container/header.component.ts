@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HeaderService } from '../../services/header.service';
 
 @Component({
-  selector: 'chess-lite-main-container',
-  templateUrl: './main-container.component.html',
-  styleUrls: ['./main-container.component.scss'],
+  selector: 'chess-lite-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainContainerComponent {
+export class HeaderComponent {
   constructor(public readonly headerService: HeaderService) {}
 }

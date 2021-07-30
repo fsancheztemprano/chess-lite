@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export interface TabLink {
-  target: string;
+  target: string[];
   label: string;
 }
 
@@ -38,20 +38,15 @@ export class HeaderService {
     titleRatio: 1,
   };
 
-  private _navigationLink: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['']);
-
-  private _title: BehaviorSubject<string> = new BehaviorSubject<string>('App');
-  private _titleRatio: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-
-  private _tabs: BehaviorSubject<TabLink[]> = new BehaviorSubject<TabLink[]>([
-    // { target: '/profile', label: 'Profile' },
-    // { target: './authority', label: 'Authority' },
-  ]);
-  private _tabsRatio: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-
-  private _showOptionsButton: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-
-  private _options: BehaviorSubject<MenuOption[]> = new BehaviorSubject<MenuOption[]>([]);
+  private _navigationLink: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(this.defaultConfig.navigationLink);
+  private _title: BehaviorSubject<string> = new BehaviorSubject<string>(this.defaultConfig.title);
+  private _titleRatio: BehaviorSubject<number> = new BehaviorSubject<number>(this.defaultConfig.titleRatio);
+  private _tabs: BehaviorSubject<TabLink[]> = new BehaviorSubject<TabLink[]>(this.defaultConfig.tabs);
+  private _tabsRatio: BehaviorSubject<number> = new BehaviorSubject<number>(this.defaultConfig.tabsRatio);
+  private _showOptionsButton: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    this.defaultConfig.showOptionsButton,
+  );
+  private _options: BehaviorSubject<MenuOption[]> = new BehaviorSubject<MenuOption[]>(this.defaultConfig.options);
 
   get navigationLink(): Observable<string[]> {
     return this._navigationLink.asObservable();
