@@ -108,7 +108,7 @@ public class UserService implements UserDetailsService {
       .expired(false)
       .credentialsExpired(false)
       .role(role)
-      .authorities(role.getAuthorities())
+      .authorities(Sets.newHashSet(role.getAuthorities()))
       .build();
     userRepository.save(user);
     return user;

@@ -27,7 +27,10 @@ export class UserUpdateProfileComponent {
     profileImageUrl: new FormControl(''),
     lastLoginDateDisplay: new FormControl({ value: '', disabled: true }),
     joinDate: new FormControl({ value: '', disabled: true }),
-    role: new FormControl({ value: '', disabled: true }),
+    role: new FormGroup({
+      id: new FormControl({ value: '', disabled: true }),
+      name: new FormControl({ value: '', disabled: true }),
+    }),
     active: new FormControl({ value: false, disabled: true }),
     locked: new FormControl({ value: false, disabled: true }),
     expired: new FormControl({ value: false, disabled: true }),

@@ -5,7 +5,6 @@ import static dev.kurama.chess.backend.auth.api.domain.relations.AuthorityRelati
 import static dev.kurama.chess.backend.auth.api.domain.relations.RoleRelations.ROLES_REL;
 import static dev.kurama.chess.backend.auth.api.domain.relations.UserRelations.USERS_REL;
 import static dev.kurama.chess.backend.auth.api.domain.relations.UserRelations.USER_REL;
-import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
@@ -34,11 +33,13 @@ import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@PreAuthorize("hasAuthority('admin:root')")
 @RestController()
 @RequiredArgsConstructor
 @RequestMapping("/api/administration")
@@ -53,7 +54,7 @@ public class AdministrationRootController {
       .link(getSelfLink())
       .link(getParentLink());
 
-    if (hasAuthority(ADMIN_ROOT) && hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
+    if (hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
       rootModel.embed(getUserManagementResource(), LinkRelation.of(USER_MANAGEMENT_ROOT_REL));
     }
 

@@ -1,6 +1,15 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UserManagementAccountDeleteComponent } from '../user-management-account-delete/user-management-account-delete.component';
+import { UserManagementAccountPasswordComponent } from '../user-management-account-password/user-management-account-password.component';
 
 import { UserManagementAccountComponent } from './user-management-account.component';
+
+@Component({ selector: 'chess-lite-user-management-account-delete', template: '' })
+export class StubUserManagementAccountDeleteComponent implements Partial<UserManagementAccountDeleteComponent> {}
+
+@Component({ selector: 'chess-lite-user-management-account-password', template: '' })
+export class StubUserManagementAccountPasswordComponent implements Partial<UserManagementAccountPasswordComponent> {}
 
 describe('UserManagementAccountComponent', () => {
   let component: UserManagementAccountComponent;
@@ -8,7 +17,11 @@ describe('UserManagementAccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserManagementAccountComponent],
+      declarations: [
+        UserManagementAccountComponent,
+        StubUserManagementAccountDeleteComponent,
+        StubUserManagementAccountPasswordComponent,
+      ],
     }).compileComponents();
   });
 

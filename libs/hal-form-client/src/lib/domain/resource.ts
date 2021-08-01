@@ -40,6 +40,9 @@ export class Resource implements IResource {
   [key: string]: any;
 
   constructor(raw: IResource) {
+    if (!raw) {
+      raw = {};
+    }
     for (const property of Object.keys(raw)) {
       this[property] = raw[property];
     }

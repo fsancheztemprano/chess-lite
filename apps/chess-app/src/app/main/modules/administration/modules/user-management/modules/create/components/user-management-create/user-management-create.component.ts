@@ -65,7 +65,13 @@ export class UserManagementCreateComponent implements OnDestroy {
 
   onSubmit() {
     this.userManagementService.createUser(this.form.value).subscribe({
-      next: () => this.setSubmitStatus(true),
+      next: (user) => {
+        console.log(user);
+        this.setSubmitStatus(true);
+        setTimeout(() => {
+          this.router.navigate([...this.routeUp, 'edit', user.id]);
+        }, 2000);
+      },
       error: () => this.setSubmitStatus(false),
     });
   }
@@ -76,10 +82,5 @@ export class UserManagementCreateComponent implements OnDestroy {
     this.submitError = !success;
     this.submitErrorMessage = !success;
     this.cdr.markForCheck();
-    if (success) {
-      setTimeout(() => {
-        this.router.navigate(this.routeUp);
-      }, 2000);
-    }
   }
 }
