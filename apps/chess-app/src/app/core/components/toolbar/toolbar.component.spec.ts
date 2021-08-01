@@ -7,7 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { stubHalFormServiceProvider } from '@chess-lite/hal-form-client/testing';
+import { stubSidenavServiceProvider } from '../../services/sidenav.service.stub';
 import { ThemeComponent } from '../theme/theme.component';
 import { ToolbarComponent } from './toolbar.component';
 
@@ -31,7 +31,7 @@ describe('ToolbarComponent', () => {
           MatSidenavModule,
           MatToolbarModule,
         ],
-        providers: [stubHalFormServiceProvider],
+        providers: [stubSidenavServiceProvider],
       }).compileComponents();
     }),
   );
