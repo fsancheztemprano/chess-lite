@@ -12,40 +12,40 @@ import { isTokenExpired } from '../utils/auth.utils';
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'token';
-  private readonly _user = new BehaviorSubject<User | null>(null);
+  private readonly _user$ = new BehaviorSubject<User | null>(null);
 
   public readonly CURRENT_USER_REL = 'current-user';
 
   constructor(private readonly halFormService: HalFormService, private readonly router: Router) {}
 
-  get user(): Observable<User | null> {
-    return this._user.asObservable();
+  get user$(): Observable<User | null> {
+    return this._user$.asObservable();
   }
 
-  getCurrentUsername(): Observable<string | null> {
-    return this.user.pipe(
+  public getCurrentUsername(): Observable<string | null> {
+    return this.user$.pipe(
       map((user) => {
         return user?.username || null;
       }),
     );
   }
 
+  public setUser(user: User | null): void {
+    this._user$.next(user);
+  }
+
   public fetchCurrentUser(): Observable<User> {
     return this.halFormService.getLink(this.CURRENT_USER_REL).pipe(
       first(),
       switchMap((userLink) => {
-        return userLink ? userLink.get<User>() : noLinkError(this.CURRENT_USER_REL);
+        return userLink ? userLink.get() : noLinkError(this.CURRENT_USER_REL);
       }),
       tap((user) => user && this.setUser(user)),
     );
   }
 
-  public setUser(user: User | null): void {
-    this._user.next(user);
-  }
-
   public isLoggedIn(): Observable<boolean> {
-    return this.user.pipe(map((user) => !!user));
+    return this.user$.pipe(map((user) => !!user));
   }
 
   public getToken(): string | null {
@@ -73,7 +73,19 @@ export class AuthService {
     return !!token && !isTokenExpired(token);
   }
 
-  public setTokenPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<Resource | null> {
+  public setUserPipe(): (observable: Observable<User>) => Observable<User> {
+    return (observable: Observable<User>) => {
+      return observable.pipe(tap((user) => this.setUser(user)));
+    };
+  }
+
+  public setLocalSessionPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<User | null> {
+    return (observable: Observable<HttpResponse<IResource>>) => {
+      return observable.pipe(this._setTokenPipe(), this._setUserOrNullPipe());
+    };
+  }
+
+  private _setTokenPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<User | null> {
     return (observable: Observable<HttpResponse<IResource>>) => {
       return observable.pipe(
         map((response) => {
@@ -87,18 +99,9 @@ export class AuthService {
     };
   }
 
-  public setUserPipe(): (observable: Observable<Resource | null>) => Observable<User | null> {
-    return (observable: Observable<Resource | null>) => {
-      return observable.pipe(
-        map((user) => (user ? user.as<User>() : null)),
-        tap((user) => this.setUser(user)),
-      );
-    };
-  }
-
-  public setLocalSessionPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<User | null> {
-    return (observable: Observable<HttpResponse<IResource>>) => {
-      return observable.pipe(this.setTokenPipe(), this.setUserPipe());
+  private _setUserOrNullPipe(): (observable: Observable<User | null>) => Observable<User | null> {
+    return (observable: Observable<User | null>) => {
+      return observable.pipe(tap((user) => this.setUser(user)));
     };
   }
 }

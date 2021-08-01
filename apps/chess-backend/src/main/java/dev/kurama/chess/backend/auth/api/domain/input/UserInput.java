@@ -1,30 +1,27 @@
 package dev.kurama.chess.backend.auth.api.domain.input;
 
-import dev.kurama.chess.backend.auth.domain.Role;
+import java.util.Set;
+import javax.validation.constraints.Email;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
+import org.hibernate.validator.constraints.Length;
 
 @Builder
 @Data
 public class UserInput {
 
-  @NonNull
+  @Length(min = 5, max = 128)
   private String username;
-  @NonNull
+  @Length(min = 6, max = 128)
   private String password;
-  @NonNull
+  @Email
   private String email;
   private String firstname;
   private String lastname;
-  @Builder.Default
-  private String role = Role.USER_ROLE.name();
-  @Builder.Default
-  private boolean active = true;
-  @Builder.Default
-  private boolean locked = false;
-  @Builder.Default
-  private boolean expired = false;
-  @Builder.Default
-  private boolean credentialsExpired = false;
+  private String roleId;
+  private Boolean active;
+  private Boolean locked;
+  private Boolean expired;
+  private Boolean credentialsExpired;
+  private Set<String> authorityIds;
 }

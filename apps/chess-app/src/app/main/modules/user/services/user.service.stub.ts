@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { User } from '@chess-lite/domain';
 import { of } from 'rxjs';
 import { UserService } from './user.service';
 
@@ -8,6 +9,7 @@ export class StubUserService implements Partial<UserService> {
   isAllowedToDeleteAccount = () => true;
   isAllowedToUploadAvatar = () => true;
   getCurrentUsername = () => of('currentUsername');
+  getCurrentUser = () => of(new User({}));
 }
 
 export const stubUserServiceProvider = {

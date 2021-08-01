@@ -1,0 +1,21 @@
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <div formArrayName="authorities">
+    <ul>
+      <li *ngFor="let control of formArray.controls">
+        <form [formGroup]="$any(control)">
+          <mat-checkbox formControlName="active">
+            {{ control.value.name }}
+          </mat-checkbox>
+        </form>
+      </li>
+    </ul>
+  </div>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!user$ || !(user$ | async)?.isAllowedTo('update')"
+  >
+    Save Authorities
+  </button>
+</form>

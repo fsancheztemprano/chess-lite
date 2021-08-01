@@ -9,7 +9,7 @@
   >
     <mat-toolbar>
       <span
-        >Welcome <span *ngIf="authService.user | async as user">{{ user.firstname || user.username }}</span></span
+        >Welcome <span *ngIf="authService.user$ | async as user">{{ user.firstname || user.username }}</span></span
       >
     </mat-toolbar>
     <mat-nav-list>

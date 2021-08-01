@@ -11,22 +11,26 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Setter(AccessLevel.PROTECTED)
 @SuperBuilder
-@Data
+@Setter(AccessLevel.PROTECTED)
+@Getter
+@ToString
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
 public abstract class AbstractEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false, updatable = false)
   @JsonProperty(access = Access.READ_WRITE)
   private Long tid;

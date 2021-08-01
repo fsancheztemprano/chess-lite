@@ -1,24 +1,47 @@
 package dev.kurama.chess.backend.auth.domain;
 
-import static dev.kurama.chess.backend.auth.authority.Authority.ADMIN_AUTHORITIES;
-import static dev.kurama.chess.backend.auth.authority.Authority.MOD_AUTHORITIES;
-import static dev.kurama.chess.backend.auth.authority.Authority.SUPER_ADMIN_AUTHORITIES;
-import static dev.kurama.chess.backend.auth.authority.Authority.USER_AUTHORITIES;
-
-import java.util.List;
+import com.google.common.collect.Sets;
+import dev.kurama.chess.backend.core.domain.AbstractEntity;
+import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @Getter
-@RequiredArgsConstructor
-public enum Role {
-  USER_ROLE(USER_AUTHORITIES),
-  MOD_ROLE(MOD_AUTHORITIES),
-  ADMIN_ROLE(ADMIN_AUTHORITIES),
-  SUPER_ADMIN_ROLE(SUPER_ADMIN_AUTHORITIES);
+@Setter
+@ToString
+@NoArgsConstructor
+@Entity
+public class Role extends AbstractEntity implements Serializable {
 
-  @NonNull
-  private final List<String> authorities;
+  private String name;
 
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @Builder.Default
+  @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+  private Set<User> users = Sets.newHashSet();
+
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @Builder.Default
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+    name = "role_authorities",
+    joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
+  )
+  private Set<Authority> authorities = Sets.newHashSet();
 }

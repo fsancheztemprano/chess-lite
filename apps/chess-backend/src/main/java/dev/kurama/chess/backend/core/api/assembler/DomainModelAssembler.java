@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.core.api.assembler;
 
+import static dev.kurama.chess.backend.hateoas.domain.HateoasRelations.DEFAULT;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 
 import lombok.NonNull;
@@ -32,25 +33,30 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
   }
 
   @NonNull
-  protected CollectionModel<T> toLinkedCollectionModel(@NonNull Iterable<? extends T> entities,
+  protected CollectionModel<T> toLinkedCollectionModelWithRel(@NonNull Iterable<? extends T> entities,
     WebMvcLinkBuilder link, String relationship) {
-    return toCollectionModel(entities).add(getCollectionModelWithLink(link).withRel(relationship));
+    return toCollectionModel(entities).add(getCollectionModelSelfLinkWithRel(link, relationship).withRel(relationship));
   }
 
   @NonNull
   protected CollectionModel<T> toLinkedCollectionModel(@NonNull Iterable<? extends T> entities,
     WebMvcLinkBuilder link) {
-    return toCollectionModel(entities).add(getCollectionModelWithLink(link).withSelfRel());
+    return toCollectionModel(entities).add(getCollectionModelSelfLink(link).withSelfRel());
   }
 
   @NonNull
   protected Link getModelSelfLink(@NonNull String id) {
-    return of(getSelfLink(id).withSelfRel()).afford(HttpMethod.HEAD).withName("default").toLink();
+    return of(getSelfLink(id).withSelfRel()).afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
   @NonNull
-  protected Link getCollectionModelWithLink(WebMvcLinkBuilder link) {
-    return of(link.withSelfRel()).afford(HttpMethod.HEAD).withName("default").toLink();
+  protected Link getCollectionModelSelfLink(WebMvcLinkBuilder link) {
+    return of(link.withSelfRel()).afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
+  }
+
+  @NonNull
+  protected Link getCollectionModelSelfLinkWithRel(WebMvcLinkBuilder link, String relation) {
+    return of(link.withRel(relation)).afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
   public abstract WebMvcLinkBuilder getSelfLink(String id);

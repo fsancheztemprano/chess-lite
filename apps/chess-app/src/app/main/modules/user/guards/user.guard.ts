@@ -10,6 +10,6 @@ export class UserGuard implements CanLoad {
   constructor(private readonly userService: UserService) {}
 
   canLoad(): Observable<boolean> {
-    return this.userService.hasUserLink();
+    return this.userService.hasCurrentUserLink();
   }
 }

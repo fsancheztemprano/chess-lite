@@ -16,6 +16,8 @@ const routes: Routes = [
         loadChildren: loadUserManagementModule,
         canLoad: [UserManagementGuard],
       },
+      { path: '', redirectTo: 'user-management', pathMatch: 'full' },
+      { path: '**', redirectTo: 'user-management' },
     ],
   },
 ];

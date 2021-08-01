@@ -20,38 +20,6 @@ export interface IResource {
   };
 
   [key: string]: any;
-
-  as?<T>(): T;
-
-  getLink?(key: string): Link | null;
-
-  hasLink?(key: string): boolean;
-
-  getEmbedded?(key: string): Resource | Resource[] | null;
-
-  getTemplate?(key: string): Template | null;
-
-  isAllowedTo?(template: string): boolean;
-
-  submit?(method: HttpMethodEnum, payload: any, params?: any): Observable<any>;
-
-  getAssuredLink?(key: string): Link;
-
-  hasEmbedded?(key: string): boolean;
-
-  getAssuredEmbedded?(key: string): Resource | Resource[];
-
-  hasEmbeddedCollection?(key: string): boolean;
-
-  getEmbeddedCollection?(key: string): Resource[];
-
-  hasEmbeddedObject?(key: string): boolean;
-
-  getEmbeddedObject?(key: string): Resource;
-
-  getAssuredTemplate?(key: string): Template;
-
-  submitToTemplateOrThrow?(templateName: string, payload?: any, params?: any, observe?: string): Observable<any>;
 }
 
 export class Resource implements IResource {
@@ -72,6 +40,9 @@ export class Resource implements IResource {
   [key: string]: any;
 
   constructor(raw: IResource) {
+    if (!raw) {
+      raw = {};
+    }
     for (const property of Object.keys(raw)) {
       this[property] = raw[property];
     }
@@ -93,10 +64,6 @@ export class Resource implements IResource {
         }
       }
     }
-  }
-
-  as<T>() {
-    return this as any as T;
   }
 
   getLink(key: string = 'self'): Link | null {
@@ -139,7 +106,7 @@ export class Resource implements IResource {
   }
 
   getEmbeddedCollection<T = Resource>(key: string): T[] {
-    return this.getAssuredEmbedded<T>(key) as T[];
+    return (this.getAssuredEmbedded<T>(key) as T[]) || [];
   }
 
   hasEmbeddedObject(key: string): boolean {
@@ -175,7 +142,7 @@ export class Resource implements IResource {
     payload?: any,
     params?: any,
     observe: 'body' | 'events' | 'response' = 'body',
-  ): Observable<any> {
+  ): Observable<Resource> {
     return this.getTemplate(templateName)
       ? this.getAssuredTemplate(templateName).submit(payload, params, observe || 'body')
       : notAllowedError(templateName);

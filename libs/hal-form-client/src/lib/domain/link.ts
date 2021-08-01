@@ -4,7 +4,7 @@ import { first, map } from 'rxjs/operators';
 import * as parser from 'url-template';
 import { InjectorInstance } from '../hal-form-client.module';
 import { ContentTypeEnum } from './content-type.enum';
-import { Resource } from './resource';
+import { IResource, Resource } from './resource';
 
 export interface ILink {
   href: string;
@@ -28,10 +28,6 @@ export class Link implements ILink {
     this.name = raw.name;
   }
 
-  public as<T>(): T {
-    return this as any as T;
-  }
-
   parseUrl(params: any): string | null {
     if (this.templated && !params) {
       return null;
@@ -40,12 +36,12 @@ export class Link implements ILink {
     return template.expand(params);
   }
 
-  get<R = Resource>(params?: any): Observable<R> {
+  get(params?: any): Observable<Resource> {
     const url = this.parseUrl(params);
     return url
-      ? this.httpClient.get<R>(url, { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } }).pipe(
+      ? this.httpClient.get<Resource>(url, { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } }).pipe(
           first(),
-          map((response) => new Resource(response).as()),
+          map((res: IResource) => new Resource(res || {})),
         )
       : throwError(() => new Error(`Un-parsable Url ${url}, ${this.href},  ${params}`));
   }

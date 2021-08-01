@@ -1,16 +1,17 @@
-import { IResource } from '@chess-lite/hal-form-client';
+import { IResource, Resource } from '@chess-lite/hal-form-client';
 import { Page } from '../hateoas/pageable.model';
+import { Role } from './role.model';
 
-export interface User extends IResource {
-  id: string;
-  email: string;
+export class User extends Resource implements IResource {
+  id?: string;
+  email?: string;
   firstname?: string;
   lastname?: string;
   username?: string;
   profileImageUrl?: string;
   lastLoginDateDisplay?: Date;
   joinDate?: Date;
-  role?: string;
+  role?: Role;
   authorities?: string[];
   active?: boolean;
   locked?: boolean;
@@ -29,7 +30,7 @@ export interface UserChangePasswordInput {
   newPassword: string;
 }
 
-export interface UserPage extends IResource {
-  userModelList: User[];
-  page: Page;
+export class UserPage extends Resource implements IResource {
+  userModelList?: User[];
+  page?: Page;
 }
