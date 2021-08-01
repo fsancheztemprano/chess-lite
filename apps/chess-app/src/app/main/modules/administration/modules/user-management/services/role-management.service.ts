@@ -19,7 +19,7 @@ export class RoleManagementService {
       first(),
       switchMap((link: Link | null) =>
         link
-          ? link.get().pipe(map((resource) => resource.getEmbeddedCollection(this.ROLE_MODEL_LIST_REL)))
+          ? link.get({ size: 1000 }).pipe(map((resource) => resource.getEmbeddedCollection(this.ROLE_MODEL_LIST_REL)))
           : noLinkError(this.ROLES_REL),
       ),
     );

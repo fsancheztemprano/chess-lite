@@ -6,6 +6,7 @@ import static dev.kurama.chess.backend.auth.authority.DefaultAuthority.ROLES;
 import static dev.kurama.chess.backend.auth.authority.DefaultAuthority.ROLE_AUTHORITIES;
 import static dev.kurama.chess.backend.auth.authority.DefaultAuthority.SUPER_ADMIN_ROLE;
 
+import com.google.common.collect.Sets;
 import dev.kurama.chess.backend.auth.domain.Authority;
 import dev.kurama.chess.backend.auth.domain.Role;
 import dev.kurama.chess.backend.auth.domain.User;
@@ -70,7 +71,7 @@ public class AdminBootstrap implements CommandLineRunner {
           .email("admin@example.com")
           .password(passwordEncoder.encode("123456"))
           .role(superAdminRole)
-          .authorities(superAdminRole.getAuthorities())
+          .authorities(Sets.newHashSet(superAdminRole.getAuthorities()))
           .joinDate(new Date())
           .active(true)
           .locked(false)

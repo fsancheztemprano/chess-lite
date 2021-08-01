@@ -1,8 +1,13 @@
 package dev.kurama.chess.backend.hateoas.rest;
 
+import static dev.kurama.chess.backend.auth.api.domain.relations.AdministrationRelations.ADMINISTRATION_REL;
+import static dev.kurama.chess.backend.auth.api.domain.relations.AuthenticationRelations.LOGIN_REL;
+import static dev.kurama.chess.backend.auth.api.domain.relations.AuthenticationRelations.SIGNUP_REL;
+import static dev.kurama.chess.backend.auth.api.domain.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.isAuthenticated;
+import static dev.kurama.chess.backend.hateoas.domain.HateoasRelations.DEFAULT;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -26,13 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping({"/api", "/api/root"})
 public class RootController {
 
-  public static final String LOGIN_REL = "login";
-  public static final String SIGNUP_REL = "signup";
-
-  public static final String CURRENT_USER_REL = "current-user";
-
-  public static final String ADMINISTRATION_REL = "administration";
-
   @GetMapping()
   public ResponseEntity<RepresentationModel<?>> root() {
     HalModelBuilder rootModel = HalModelBuilder
@@ -54,7 +52,7 @@ public class RootController {
 
   private @NonNull Link getSelfLink() {
     return of(linkTo(methodOn(RootController.class).root()).withSelfRel())
-      .afford(HttpMethod.HEAD).withName("default").toLink();
+      .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
   private @NonNull Link getCurrentUserLink() {
@@ -72,6 +70,6 @@ public class RootController {
 
   private @NonNull Link getAdministrationRootLink() {
     return of(linkTo(methodOn(AdministrationRootController.class).root()).withRel(ADMINISTRATION_REL))
-      .afford(HttpMethod.HEAD).withName("default").toLink();
+      .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 }

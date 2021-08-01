@@ -1,55 +1,57 @@
 <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
-  <mat-form-field>
-    <input matInput placeholder="Username" formControlName="username" required readonly />
-    <mat-error>
-      <chess-lite-form-error [control]="form.controls.username" name="username"></chess-lite-form-error>
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput type="email" placeholder="Email" formControlName="email" required readonly />
-    <mat-error>
-      <chess-lite-form-error [control]="form.controls.email" name="email"></chess-lite-form-error>
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Firstname" formControlName="firstname" />
-    <mat-error>
-      <chess-lite-form-error [control]="form.controls.firstname" name="firstname"></chess-lite-form-error>
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Lastname" formControlName="lastname" />
-    <mat-error>
-      <chess-lite-form-error [control]="form.controls.lastname" name="lastname"></chess-lite-form-error>
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="Profile Image" formControlName="profileImageUrl" />
-    <mat-error>
-      <chess-lite-form-error [control]="form.controls.profileImageUrl" name="profileImageUrl"></chess-lite-form-error>
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Last Login</mat-label>
-    <input matInput formControlName="lastLoginDateDisplay" [matDatepicker]="lastLoginDatePicker" />
-    <mat-datepicker-toggle matSuffix [for]="lastLoginDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #lastLoginDatePicker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Member Since</mat-label>
-    <input matInput formControlName="joinDate" [matDatepicker]="joinDatePicker" />
-    <mat-datepicker-toggle matSuffix [for]="joinDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker #joinDatePicker></mat-datepicker>
-  </mat-form-field>
-  <mat-checkbox formControlName="active">Active</mat-checkbox>
-  <mat-checkbox formControlName="locked">Locked</mat-checkbox>
-  <mat-checkbox formControlName="expired">Expired</mat-checkbox>
-  <mat-checkbox formControlName="credentialsExpired">Expired Credentials</mat-checkbox>
-  <div class="submit-message">
-    <div class="mat-error" *ngIf="true">Invalid Data</div>
-    <div class="mat-accent" *ngIf="true">Profile Saved</div>
-  </div>
-  <mat-card-actions [align]="'end'">
-    <button mat-raised-button color="primary" type="submit">Save</button>
-  </mat-card-actions>
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username" required />
+        <mat-error>
+          <chess-lite-form-error [control]="form.controls.username" name="username"></chess-lite-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="email" placeholder="Email" formControlName="email" required />
+        <mat-error>
+          <chess-lite-form-error [control]="form.controls.email" name="email"></chess-lite-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Firstname" formControlName="firstname" />
+        <mat-error>
+          <chess-lite-form-error [control]="form.controls.firstname" name="firstname"></chess-lite-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Lastname" formControlName="lastname" />
+        <mat-error>
+          <chess-lite-form-error [control]="form.controls.lastname" name="lastname"></chess-lite-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Profile Image" formControlName="profileImageUrl" />
+        <mat-error>
+          <chess-lite-form-error
+            [control]="form.controls.profileImageUrl"
+            name="profileImageUrl"
+          ></chess-lite-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="active">Active</mat-checkbox>
+      <mat-checkbox formControlName="locked">Locked</mat-checkbox>
+      <mat-checkbox formControlName="expired">Expired</mat-checkbox>
+      <mat-checkbox formControlName="credentialsExpired">Expired Credentials</mat-checkbox>
+      <div class="submit-message">
+        <div class="mat-error" *ngIf="submitErrorMessage">Invalid Data</div>
+        <div class="mat-accent" *ngIf="submitSuccessMessage">Profile Saved</div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions [align]="'end'">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid || !user || !user.isAllowedTo('update')"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </form>

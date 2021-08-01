@@ -24,7 +24,7 @@ public class UserModel extends RepresentationModel<UserModel> {
   private String profileImageUrl;
   private Date lastLoginDateDisplay;
   private Date joinDate;
-  private String role;
+  private RoleModel role;
   private List<String> authorities;
   private boolean active;
   private boolean locked;

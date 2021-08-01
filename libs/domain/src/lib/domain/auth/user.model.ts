@@ -1,5 +1,6 @@
 import { IResource, Resource } from '@chess-lite/hal-form-client';
 import { Page } from '../hateoas/pageable.model';
+import { Role } from './role.model';
 
 export class User extends Resource implements IResource {
   id?: string;
@@ -10,7 +11,7 @@ export class User extends Resource implements IResource {
   profileImageUrl?: string;
   lastLoginDateDisplay?: Date;
   joinDate?: Date;
-  role?: string;
+  role?: Role;
   authorities?: string[];
   active?: boolean;
   locked?: boolean;

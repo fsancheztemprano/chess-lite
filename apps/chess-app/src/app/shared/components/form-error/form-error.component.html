@@ -1,11 +1,13 @@
-<div class="mat-error" *ngIf="control.errors?.required">Please provide a {{ name }}</div>
-<div class="mat-error" *ngIf="control.errors?.minlength as minlength">
-  {{ name }} must be at least {{ minlength.requiredLength }} characters
-</div>
-<div class="mat-error" *ngIf="control.errors?.maxLength as maxLength">
-  {{ name }} must be less than {{ maxLength.requiredLength }} characters
-</div>
-<div class="mat-error">
-  <span *ngIf="control.errors?.mustMatch?.name">{{ name | titlecase }} must match</span>
-</div>
-<div class="mat-error" *ngIf="control.errors?.email">Please provide a valid email</div>
+<ng-container *ngIf="control">
+  <div class="mat-error" *ngIf="control.errors?.required">Please provide a {{ name }}</div>
+  <div class="mat-error" *ngIf="control.errors?.minlength as minlength">
+    {{ name }} must be at least {{ minlength.requiredLength }} characters
+  </div>
+  <div class="mat-error" *ngIf="control.errors?.maxLength as maxLength">
+    {{ name }} must be less than {{ maxLength.requiredLength }} characters
+  </div>
+  <div class="mat-error">
+    <span *ngIf="control.errors?.mustMatch?.name">{{ name | titlecase }} must match</span>
+  </div>
+  <div class="mat-error" *ngIf="control.errors?.email">Please provide a valid email</div>
+</ng-container>

@@ -1,6 +1,7 @@
 package dev.kurama.chess.backend.poc.api.assembler;
 
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
+import static dev.kurama.chess.backend.hateoas.domain.HateoasRelations.SELF;
 import static dev.kurama.chess.backend.poc.authority.AuthorAuthority.AUTHOR_CREATE;
 import static dev.kurama.chess.backend.poc.authority.AuthorAuthority.AUTHOR_DELETE;
 import static dev.kurama.chess.backend.poc.authority.AuthorAuthority.AUTHOR_UPDATE;
@@ -33,13 +34,13 @@ public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
       .add(getParentLink())
       .add(getBooksLink(authorModel))
       .mapLinkIf(hasAuthority(AUTHOR_DELETE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getDeleteAffordance(authorModel.getId())))
       .mapLinkIf(hasAuthority(AUTHOR_UPDATE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(authorModel.getId())))
       .mapLinkIf(hasAuthority(AUTHOR_UPDATE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getAddBookAffordance(authorModel.getId())))
       ;
   }
@@ -49,7 +50,7 @@ public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
     @NonNull Iterable<? extends AuthorModel> entities) {
     return super.toSelfCollectionModel(entities)
       .mapLinkIf(hasAuthority(AUTHOR_CREATE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getCreateAffordance()))
       ;
   }

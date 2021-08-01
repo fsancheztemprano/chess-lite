@@ -37,7 +37,7 @@ public class Role extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
     name = "role_authorities",
     joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),

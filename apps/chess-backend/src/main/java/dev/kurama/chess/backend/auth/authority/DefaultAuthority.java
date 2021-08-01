@@ -54,6 +54,11 @@ public class DefaultAuthority {
     RoleAuthority.ROLE_UPDATE,
     RoleAuthority.ROLE_DELETE,
 
+    AuthorityAuthority.AUTHORITY_CREATE,
+    AuthorityAuthority.AUTHORITY_READ,
+    AuthorityAuthority.AUTHORITY_UPDATE,
+    AuthorityAuthority.AUTHORITY_DELETE,
+
     AdminAuthority.ADMIN_ROOT,
     AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT
   );

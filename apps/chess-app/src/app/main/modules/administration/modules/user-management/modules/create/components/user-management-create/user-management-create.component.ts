@@ -3,9 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Role } from '@chess-lite/domain';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, startWith } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { HeaderService } from '../../../../../../../../../core/services/header.service';
+import { setTemplateValidatorsPipe } from '../../../../../../../../../core/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 import { matchingControlsValidators } from '../../../../../../../../../core/utils/forms/validators/matching-controls.validator';
 import { UserManagementService } from '../../../../services/user-management.service';
 
@@ -17,7 +18,10 @@ import { UserManagementService } from '../../../../services/user-management.serv
   animations: [wobbleAnimation(), tadaAnimation()],
 })
 export class UserManagementCreateComponent implements OnDestroy {
-  roles: Observable<Role[]> = this.activatedRoute.data.pipe(map((data) => data.roles));
+  roles: Observable<Role[]> = this.activatedRoute.data.pipe(
+    startWith({ roles: [] }),
+    map((data) => data.roles),
+  );
 
   public form = new FormGroup(
     {
@@ -45,13 +49,14 @@ export class UserManagementCreateComponent implements OnDestroy {
   private readonly routeUp = ['administration', 'user-management'];
 
   constructor(
+    public readonly userManagementService: UserManagementService,
     private readonly headerService: HeaderService,
-    private readonly userManagementService: UserManagementService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly cdr: ChangeDetectorRef,
     private readonly router: Router,
   ) {
     this.headerService.setHeader({ title: 'New User', navigationLink: this.routeUp });
+    this.userManagementService.getTemplate('create').pipe(first(), setTemplateValidatorsPipe(this.form)).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -71,8 +76,10 @@ export class UserManagementCreateComponent implements OnDestroy {
     this.submitError = !success;
     this.submitErrorMessage = !success;
     this.cdr.markForCheck();
-    setTimeout(() => {
-      this.router.navigate(this.routeUp);
-    }, 2000);
+    if (success) {
+      setTimeout(() => {
+        this.router.navigate(this.routeUp);
+      }, 2000);
+    }
   }
 }

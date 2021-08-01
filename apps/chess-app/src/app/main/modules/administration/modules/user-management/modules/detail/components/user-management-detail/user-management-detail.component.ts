@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HeaderService } from '../../../../../../../../../core/services/header.service';
 
 @Component({
@@ -8,24 +9,23 @@ import { HeaderService } from '../../../../../../../../../core/services/header.s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementDetailComponent implements OnDestroy {
-  baseRoute = ['administration', 'user-management', 'edit', 'id-asdasda'];
-
-  constructor(private readonly headerService: HeaderService) {
+  constructor(private readonly headerService: HeaderService, private readonly route: ActivatedRoute) {
+    const baseRoute = ['administration', 'user-management', 'edit', route.snapshot?.params?.userId];
     this.headerService.setHeader({
       title: 'Edit User',
-      navigationLink: [this.baseRoute[0], this.baseRoute[1]],
+      navigationLink: [baseRoute[0], baseRoute[1]],
       tabs: [
         {
           label: 'Profile',
-          target: [...this.baseRoute, 'profile'],
+          target: [...baseRoute, 'profile'],
         },
         {
           label: 'Authority',
-          target: [...this.baseRoute, 'authority'],
+          target: [...baseRoute, 'authority'],
         },
         {
-          label: 'Danger',
-          target: [...this.baseRoute, 'delete'],
+          label: 'Account',
+          target: [...baseRoute, 'account'],
         },
       ],
     });

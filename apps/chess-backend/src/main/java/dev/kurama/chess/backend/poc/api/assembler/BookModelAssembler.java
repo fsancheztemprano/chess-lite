@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.poc.api.assembler;
 
+import static dev.kurama.chess.backend.hateoas.domain.HateoasRelations.SELF;
 import static dev.kurama.chess.backend.poc.authority.AuthorAuthority.AUTHOR_READ;
 import static dev.kurama.chess.backend.poc.authority.BookAuthority.BOOK_CREATE;
 import static dev.kurama.chess.backend.poc.authority.BookAuthority.BOOK_DELETE;
@@ -38,13 +39,13 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
       .addIf(AuthorityUtils.hasAuthority(AUTHOR_READ) && !isEmpty(bookModel.getAuthorId()),
         () -> getAuthorLink(bookModel.getAuthorId()))
       .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_DELETE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getDeleteAffordance(bookModel.getId())))
       .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_UPDATE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(bookModel.getId())))
       .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_UPDATE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getSetAuthorAffordance(bookModel.getId())))
       ;
   }
@@ -53,7 +54,7 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
   public @NonNull CollectionModel<BookModel> toSelfCollectionModel(@NonNull Iterable<? extends BookModel> entities) {
     return super.toSelfCollectionModel(entities)
       .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_CREATE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getCreateAffordance()))
       ;
   }
@@ -72,7 +73,7 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
     String authorId) {
     return toLinkedCollectionModel(entities, linkTo(methodOn(AuthorController.class).getAuthorBooks(authorId)))
       .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_UPDATE),
-        LinkRelation.of("self"),
+        LinkRelation.of(SELF),
         link -> link.andAffordance(getAddAuthorBookAffordance(authorId)));
   }
 

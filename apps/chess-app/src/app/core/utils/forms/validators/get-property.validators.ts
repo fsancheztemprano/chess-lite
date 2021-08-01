@@ -1,7 +1,7 @@
 import { ValidatorFn, Validators } from '@angular/forms';
 import { Template } from '@chess-lite/hal-form-client';
 
-export function getPropertyValidators(template: Template | null, propertyName: string): ValidatorFn[] {
+export function getPropertyValidators(template: Template | null | undefined, propertyName: string): ValidatorFn[] {
   const property = template?.getProperty(propertyName);
   const usernameValidators = [];
   if (property?.minLength) {

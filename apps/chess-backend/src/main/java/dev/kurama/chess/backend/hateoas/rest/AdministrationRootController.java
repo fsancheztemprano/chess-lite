@@ -1,9 +1,16 @@
 package dev.kurama.chess.backend.hateoas.rest;
 
+import static dev.kurama.chess.backend.auth.api.domain.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
+import static dev.kurama.chess.backend.auth.api.domain.relations.AuthorityRelations.AUTHORITIES_REL;
+import static dev.kurama.chess.backend.auth.api.domain.relations.RoleRelations.ROLES_REL;
+import static dev.kurama.chess.backend.auth.api.domain.relations.UserRelations.USERS_REL;
+import static dev.kurama.chess.backend.auth.api.domain.relations.UserRelations.USER_REL;
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
 import static dev.kurama.chess.backend.auth.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
+import static dev.kurama.chess.backend.hateoas.domain.HateoasRelations.DEFAULT;
+import static dev.kurama.chess.backend.hateoas.domain.HateoasRelations.ROOT_REL;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -11,6 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.util.UriComponentsBuilder.fromUri;
 
+import dev.kurama.chess.backend.auth.rest.AuthorityController;
 import dev.kurama.chess.backend.auth.rest.RoleController;
 import dev.kurama.chess.backend.auth.rest.UserController;
 import dev.kurama.chess.backend.hateoas.domain.RootResource;
@@ -36,13 +44,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/api/administration")
 public class AdministrationRootController {
 
-  public static final String USER_REL = "user";
-  public static final String USERS_REL = "users";
-  public static final String ROLES_REL = "roles";
-  public static final String ROOT_REL = "root";
-  public static final String USER_MANAGEMENT_ROOT_REL = "user-management";
-
-
   @NonNull
   private final HateoasPageableHandlerMethodArgumentResolver pageableResolver;
 
@@ -65,17 +66,18 @@ public class AdministrationRootController {
       .link(getUserLink())
       .link(getUsersLink())
       .link(getRolesLink())
+      .link(getAuthoritiesLink())
       .build();
   }
 
   private @NonNull Link getSelfLink() {
     return of(linkTo(methodOn(AdministrationRootController.class).root()).withSelfRel())
-      .afford(HttpMethod.HEAD).withName("default").toLink();
+      .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
   private @NonNull Link getParentLink() {
     return of(linkTo(methodOn(RootController.class).root()).withRel(ROOT_REL))
-      .afford(HttpMethod.HEAD).withName("default").toLink();
+      .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
   private @NonNull Link getUserLink() {
@@ -86,10 +88,7 @@ public class AdministrationRootController {
   @SneakyThrows
   private @NonNull Link getUsersLink() {
     Link link = linkTo(methodOn(UserController.class).getAll(null)).withRel(USERS_REL);
-    UriComponentsBuilder builder = fromUri(link.getTemplate().expand());
-    TemplateVariables templateVariables = pageableResolver.getPaginationTemplateVariables(null, builder.build());
-    UriTemplate template = UriTemplate.of(link.getHref()).with(templateVariables);
-    Link usersLink = Link.of(template, link.getRel());
+    Link usersLink = getExpandedLink(link);
     if (hasAuthority(USER_CREATE)) {
       usersLink = usersLink.andAffordance(afford(methodOn(UserController.class).create(null)));
     }
@@ -98,6 +97,19 @@ public class AdministrationRootController {
 
   @SneakyThrows
   private @NonNull Link getRolesLink() {
-    return linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL);
+    return getExpandedLink(linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL));
+  }
+
+  @SneakyThrows
+  private @NonNull Link getAuthoritiesLink() {
+    return getExpandedLink(linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL));
+  }
+
+
+  private Link getExpandedLink(Link link) {
+    UriComponentsBuilder builder = fromUri(link.getTemplate().expand());
+    TemplateVariables templateVariables = pageableResolver.getPaginationTemplateVariables(null, builder.build());
+    UriTemplate template = UriTemplate.of(link.getHref()).with(templateVariables);
+    return Link.of(template, link.getRel());
   }
 }

@@ -6,7 +6,7 @@ const loadUserManagementProfileModule = () =>
   import('./modules/profile/user-management-profile.module').then((m) => m.UserManagementProfileModule);
 
 const loadUserManagementDeleteModule = () =>
-  import('./modules/delete/user-management-delete.module').then((m) => m.UserManagementDeleteModule);
+  import('./modules/account/user-management-account.module').then((m) => m.UserManagementAccountModule);
 
 const loadUserManagementAuthorityModule = () =>
   import('./modules/authority/user-management-authority.module').then((m) => m.UserManagementAuthorityModule);
@@ -25,7 +25,7 @@ const routes: Routes = [
         loadChildren: loadUserManagementAuthorityModule,
       },
       {
-        path: 'delete',
+        path: 'account',
         loadChildren: loadUserManagementDeleteModule,
       },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },

@@ -1,1 +1,5 @@
-<p>user-management-authority works!</p>
+<chess-lite-user-management-role [user$]="user$" (userChange)="userChange($event)"></chess-lite-user-management-role>
+<chess-lite-user-management-authorities
+  [user$]="user$"
+  (userChange)="userChange($event)"
+></chess-lite-user-management-authorities>

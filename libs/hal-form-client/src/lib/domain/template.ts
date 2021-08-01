@@ -38,7 +38,7 @@ export interface ITemplatePropertyOption {
 }
 
 export interface ITemplate {
-  method: HttpMethodEnum;
+  method?: HttpMethodEnum;
   title?: string;
   contentType?: ContentTypeEnum;
   properties?: ITemplateProperty[];
@@ -56,7 +56,7 @@ export class Template implements ITemplate {
   targetLink?: Link;
 
   constructor(raw: ITemplate, link?: Link) {
-    this.method = raw.method;
+    this.method = raw.method || HttpMethodEnum.GET;
     this.properties = raw.properties;
     if (raw.contentType) {
       this.contentType = raw.contentType;
@@ -87,7 +87,7 @@ export class Template implements ITemplate {
     params?: any,
     observe: 'body' | 'events' | 'response' = 'body',
   ): Observable<T> {
-    if (!link?.href) {
+    if (!link?.href?.length) {
       return throwError(() => new Error('Invalid link'));
     }
     if (!HTTP_METHODS.includes(this.method.toUpperCase())) {

@@ -2,21 +2,23 @@ package dev.kurama.chess.backend.auth.service;
 
 import static dev.kurama.chess.backend.auth.constant.UserConstant.EMAIL_ALREADY_EXISTS;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.NO_USER_FOUND_BY_ID;
-import static dev.kurama.chess.backend.auth.constant.UserConstant.NO_USER_FOUND_BY_USERNAME;
 import static dev.kurama.chess.backend.auth.constant.UserConstant.USERNAME_ALREADY_EXISTS;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static java.util.Optional.ofNullable;
 
 import com.google.common.collect.Sets;
 import dev.kurama.chess.backend.auth.api.domain.input.UpdateUserProfileInput;
 import dev.kurama.chess.backend.auth.api.domain.input.UserInput;
+import dev.kurama.chess.backend.auth.domain.Authority;
 import dev.kurama.chess.backend.auth.domain.User;
 import dev.kurama.chess.backend.auth.domain.UserPrincipal;
 import dev.kurama.chess.backend.auth.exception.domain.EmailExistsException;
+import dev.kurama.chess.backend.auth.exception.domain.RoleNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UserNotFoundException;
 import dev.kurama.chess.backend.auth.exception.domain.UsernameExistsException;
 import dev.kurama.chess.backend.auth.repository.UserRepository;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,9 @@ public class UserService implements UserDetailsService {
 
   @NonNull
   private final RoleService roleService;
+
+  @NonNull
+  private final AuthorityService authorityService;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -106,14 +111,14 @@ public class UserService implements UserDetailsService {
       .authorities(role.getAuthorities())
       .build();
     userRepository.save(user);
-    log.atInfo().log(String.format("New user signed up: %s:%s", username, password));
     return user;
   }
 
   public User createUser(UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
     validateUsernameAndEmailCreate(userInput.getUsername(), userInput.getEmail());
-    var role = roleService.findRoleById(userInput.getRoleId()).orElseThrow();
+    var role = roleService.findRoleById(userInput.getRoleId())
+      .orElseGet(() -> roleService.getDefaultRole().orElseThrow());
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())
@@ -122,31 +127,65 @@ public class UserService implements UserDetailsService {
       .firstname(userInput.getFirstname())
       .lastname(userInput.getLastname())
       .joinDate(new Date())
-      .active(userInput.isActive())
-      .locked(userInput.isLocked())
-      .expired(userInput.isExpired())
-      .credentialsExpired(userInput.isCredentialsExpired())
+      .active(userInput.getActive())
+      .locked(userInput.getLocked())
+      .expired(userInput.getExpired())
+      .credentialsExpired(userInput.getCredentialsExpired())
       .role(role)
       .authorities(Sets.newHashSet(role.getAuthorities()))
       .build();
     userRepository.save(user);
-    log.atInfo().log(String.format("New user signed up: %s:%s", user.getUsername(), user.getPassword()));
     return user;
   }
 
   public User updateUser(String id, UserInput userInput)
-    throws UsernameExistsException, EmailExistsException, UserNotFoundException {
-    var currentUser = validateUsernameAndEmailUpdate(id, userInput.getUsername(), userInput.getEmail());
-    var role = roleService.findRoleById(userInput.getRoleId()).orElseThrow();
-    currentUser.setEmail(userInput.getEmail());
-    currentUser.setFirstname(userInput.getFirstname());
-    currentUser.setLastname(userInput.getLastname());
-    currentUser.setActive(userInput.isActive());
-    currentUser.setLocked(userInput.isLocked());
-    currentUser.setExpired(userInput.isExpired());
-    currentUser.setCredentialsExpired(userInput.isCredentialsExpired());
-    currentUser.setRole(role);
-    currentUser.setAuthorities(role.getAuthorities());
+    throws EmailExistsException, UsernameExistsException, UserNotFoundException, RoleNotFoundException {
+    var currentUser = findUserById(id).orElseThrow(() -> new UserNotFoundException(NO_USER_FOUND_BY_ID + id));
+    if (ofNullable(userInput.getEmail()).isPresent() && !currentUser.getEmail()
+      .equalsIgnoreCase(userInput.getEmail())) {
+      if (findUserByEmail(userInput.getEmail()).isPresent()) {
+        throw new EmailExistsException(EMAIL_ALREADY_EXISTS + userInput.getEmail());
+      }
+      currentUser.setEmail(userInput.getEmail());
+    }
+    if (ofNullable(userInput.getUsername()).isPresent() && !currentUser.getUsername()
+      .equalsIgnoreCase(userInput.getUsername())) {
+      if (findUserByUsername(userInput.getUsername()).isPresent()) {
+        throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + userInput.getUsername());
+      }
+      currentUser.setUsername(userInput.getUsername());
+    }
+    if (ofNullable(userInput.getPassword()).isPresent()) {
+      currentUser.setPassword(passwordEncoder.encode(userInput.getPassword()));
+    }
+    if (ofNullable(userInput.getFirstname()).isPresent()) {
+      currentUser.setFirstname(userInput.getFirstname());
+    }
+    if (ofNullable(userInput.getLastname()).isPresent()) {
+      currentUser.setLastname(userInput.getLastname());
+    }
+    if (ofNullable(userInput.getActive()).isPresent()) {
+      currentUser.setActive(userInput.getActive());
+    }
+    if (ofNullable(userInput.getLocked()).isPresent()) {
+      currentUser.setLocked(userInput.getLocked());
+    }
+    if (ofNullable(userInput.getExpired()).isPresent()) {
+      currentUser.setExpired(userInput.getExpired());
+    }
+    if (ofNullable(userInput.getCredentialsExpired()).isPresent()) {
+      currentUser.setCredentialsExpired(userInput.getCredentialsExpired());
+    }
+    if (ofNullable(userInput.getRoleId()).isPresent()) {
+      var role = roleService.findRoleById(userInput.getRoleId())
+        .orElseThrow(() -> new RoleNotFoundException(userInput.getRoleId()));
+      currentUser.setRole(role);
+      currentUser.setAuthorities(Sets.newHashSet(role.getAuthorities()));
+    }
+    if (ofNullable(userInput.getAuthorityIds()).isPresent()) {
+      Set<Authority> authorities = authorityService.findAllById(userInput.getAuthorityIds());
+      currentUser.getAuthorities().addAll(authorities);
+    }
     userRepository.save(currentUser);
     return currentUser;
   }
@@ -167,6 +206,13 @@ public class UserService implements UserDetailsService {
     return currentUser;
   }
 
+  public User uploadAvatar(String username, String avatar) {
+    var currentUser = findUserByUsername(username).orElseThrow();
+    currentUser.setProfileImageUrl(avatar);
+    userRepository.save(currentUser);
+    return currentUser;
+  }
+
   private void validateUsernameAndEmailCreate(String newUsername, String email)
     throws UsernameExistsException, EmailExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
@@ -179,39 +225,11 @@ public class UserService implements UserDetailsService {
     }
   }
 
-  private User validateUsernameAndEmailUpdate(String id, String newUsername, String email)
-    throws UsernameExistsException, EmailExistsException, UserNotFoundException {
-    var userByNewUsername = findUserById(newUsername);
-    if (userByNewUsername.isPresent() && isNotBlank(id)) {
-      var currentUser = findUserById(id);
-      if (currentUser.isEmpty()) {
-        throw new UserNotFoundException(NO_USER_FOUND_BY_ID + id);
-      }
-      if (!currentUser.get().getId().equals(userByNewUsername.get().getId())) {
-        throw new UsernameExistsException(USERNAME_ALREADY_EXISTS + newUsername);
-      }
-      var userByNewEmail = findUserByEmail(email);
-      if (userByNewEmail.isPresent() && !currentUser.get().getId().equals(userByNewEmail.get().getId())) {
-        throw new EmailExistsException(EMAIL_ALREADY_EXISTS + email);
-      }
-      return currentUser.get();
-    } else {
-      throw new UserNotFoundException(NO_USER_FOUND_BY_USERNAME + id);
-    }
-  }
-
   private void validateLoginAttempt(User user) {
     if (user.isLocked()) {
       loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
     } else {
       user.setLocked(loginAttemptService.hasExceededMaxAttempts(user.getUsername()));
     }
-  }
-
-  public User uploadAvatar(String username, String avatar) {
-    var currentUser = findUserByUsername(username).orElseThrow();
-    currentUser.setProfileImageUrl(avatar);
-    userRepository.save(currentUser);
-    return currentUser;
   }
 }

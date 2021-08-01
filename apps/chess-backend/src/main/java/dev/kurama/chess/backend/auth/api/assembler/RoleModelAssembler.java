@@ -1,5 +1,6 @@
 package dev.kurama.chess.backend.auth.api.assembler;
 
+import static dev.kurama.chess.backend.auth.api.domain.relations.RoleRelations.ROLES_REL;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -47,11 +48,11 @@ public class RoleModelAssembler extends DomainModelAssembler<RoleModel> {
 
   public @NonNull PagedModel<RoleModel> toPagedModel(Page<RoleModel> entities) {
     return (PagedModel<RoleModel>) pagedResourcesAssembler.toModel(entities, this)
-      .add(getCollectionModelWithLink(getAllLink()).withSelfRel())
+      .add(getCollectionModelSelfLinkWithRel(getAllLink(), ROLES_REL))
       ;
   }
 
   private @NonNull Link getParentLink() {
-    return linkTo(methodOn(getClazz()).getAll(null)).withRel("roles");
+    return linkTo(methodOn(getClazz()).getAll(null)).withRel(ROLES_REL);
   }
 }

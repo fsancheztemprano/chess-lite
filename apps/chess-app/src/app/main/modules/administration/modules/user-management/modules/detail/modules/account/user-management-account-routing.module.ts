@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserManagementDeleteComponent } from './components/user-management-delete/user-management-delete.component';
+import { UserManagementAccountComponent } from './components/user-management-account/user-management-account.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserManagementDeleteComponent,
+    component: UserManagementAccountComponent,
   },
   { path: '**', redirectTo: '' },
 ];
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class UserManagementDeleteRoutingModule {}
+export class UserManagementAccountRoutingModule {}

@@ -1,14 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pageable, User, UserPage } from '@chess-lite/domain';
-import {
-  HalFormService,
-  Link,
-  noLinkError,
-  Resource,
-  submitToTemplateOrThrowPipe,
-  Template,
-} from '@chess-lite/hal-form-client';
+import { HalFormService, Link, noLinkError, Resource, submitToTemplateOrThrowPipe } from '@chess-lite/hal-form-client';
 import { iif, Observable, of, throwError } from 'rxjs';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';
@@ -18,9 +11,11 @@ import { AdministrationService } from '../../../services/administration.service'
 })
 export class UserManagementService extends HalFormService {
   public readonly USER_MANAGEMENT_REL = 'user-management';
+  public readonly USER_REL = 'user';
   public readonly USERS_REL = 'users';
   public readonly USER_MODEL_LIST_REL = 'userModelList';
   public readonly USER_CREATE_REL = 'create';
+  public readonly UPDATE_REL = 'update';
 
   constructor(
     protected readonly httpClient: HttpClient,
@@ -49,11 +44,14 @@ export class UserManagementService extends HalFormService {
     );
   }
 
-  getCreateTemplate(): Observable<Template | null> {
-    return this.getTemplate(this.USER_CREATE_REL);
+  public createUser(user: User) {
+    return this.rootResource.pipe(submitToTemplateOrThrowPipe(this.USER_CREATE_REL, user));
   }
 
-  createUser(user: User) {
-    return this.rootResource.pipe(submitToTemplateOrThrowPipe(this.USER_CREATE_REL, user));
+  public findUser(userId: string): Observable<User> {
+    return this.getLink(this.USER_REL).pipe(
+      first(),
+      switchMap((userLink) => (userLink ? userLink.get({ userId }) : noLinkError(this.USER_REL))),
+    );
   }
 }
