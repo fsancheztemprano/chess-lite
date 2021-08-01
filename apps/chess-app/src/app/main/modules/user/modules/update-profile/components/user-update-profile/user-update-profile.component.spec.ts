@@ -7,8 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { StubFormErrorComponent } from '../../../../../../../shared/components/form-error/form-error.component.stub';
-import { NgLetModule } from '../../../../../../../shared/directives/ng-let.directive';
+import { NgLetModule, StubFormErrorComponent } from '@app/shared';
 import { stubUserServiceProvider } from '../../../../services/user.service.stub';
 
 import { UserUpdateProfileComponent } from './user-update-profile.component';

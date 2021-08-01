@@ -8,7 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormErrorModule } from '../../../../../../../../../shared/components/form-error/form-error.component';
+import { FormErrorModule } from '@app/shared';
 import { UserManagementProfileComponent } from './components/user-management-profile/user-management-profile.component';
 
 import { UserManagementProfileRoutingModule } from './user-management-profile-routing.module';

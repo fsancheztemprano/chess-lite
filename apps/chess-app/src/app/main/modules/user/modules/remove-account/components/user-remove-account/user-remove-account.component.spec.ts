@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
-import { NgLetModule } from '../../../../../../../shared/directives/ng-let.directive';
+import { NgLetModule } from '@app/shared';
 import { stubUserServiceProvider } from '../../../../services/user.service.stub';
 import { UserRemoveAccountComponent } from './user-remove-account.component';
 

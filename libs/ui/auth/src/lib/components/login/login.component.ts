@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { setTemplateValidatorsPipe } from '@app/shared';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { setTemplateValidatorsPipe } from '../../../core/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 import { LoginService } from '../../services/login.service';
 
 @Component({

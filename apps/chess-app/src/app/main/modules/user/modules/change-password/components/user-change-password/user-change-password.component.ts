@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { matchingControlsValidators, setResourceValidatorsPipe } from '@app/shared';
 import { User } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { setResourceValidatorsPipe } from '../../../../../../../core/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
-import { matchingControlsValidators } from '../../../../../../../core/utils/forms/validators/matching-controls.validator';
 import { UserService } from '../../../../services/user.service';
 
 @UntilDestroy()

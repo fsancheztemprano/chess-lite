@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StubFormErrorComponent } from '../../../../../../../../../../../shared/components/form-error/form-error.component.stub';
+import { StubFormErrorComponent } from '@app/shared';
 
 import { UserManagementProfileComponent } from './user-management-profile.component';
 

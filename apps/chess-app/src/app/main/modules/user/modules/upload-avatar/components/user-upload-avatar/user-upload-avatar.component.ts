@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { fileSizeValidator } from '@app/shared';
 import { User } from '@chess-lite/domain';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { fileSizeValidator } from '../../../../../../../core/utils/forms/validators/file-size.validator';
 import { UserService } from '../../../../services/user.service';
 
 @Component({

@@ -6,26 +6,33 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StubFormErrorComponent } from '../../../shared/components/form-error/form-error.component.stub';
-import { stubSignupServiceProvider } from '../../services/signup.service.stub';
-import { SignupComponent } from './signup.component';
+import { StubFormErrorComponent } from '@app/shared';
+import { HalFormClientTestingModule } from '@chess-lite/hal-form-client/testing';
+import { stubLoginServiceProvider } from '../../services/login.service.stub';
+import { LoginComponent } from './login.component';
 
 const MaterialModules = [MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule];
 
-describe('SignupComponent', () => {
-  let component: SignupComponent;
-  let fixture: ComponentFixture<SignupComponent>;
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ...MaterialModules, NoopAnimationsModule, ReactiveFormsModule],
-      declarations: [SignupComponent, StubFormErrorComponent],
-      providers: [stubSignupServiceProvider],
+      imports: [
+        RouterTestingModule,
+        ReactiveFormsModule,
+        ...MaterialModules,
+        NoopAnimationsModule,
+        HalFormClientTestingModule,
+      ],
+      declarations: [LoginComponent, StubFormErrorComponent],
+      providers: [stubLoginServiceProvider],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SignupComponent);
+    fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,8 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormErrorModule } from '../../../../../shared/components/form-error/form-error.component';
-import { NgLetModule } from '../../../../../shared/directives/ng-let.directive';
+import { FormErrorModule, NgLetModule } from '@app/shared';
 import { UserChangePasswordComponent } from './components/user-change-password/user-change-password.component';
 
 import { UserChangePasswordRoutingModule } from './user-change-password-routing.module';

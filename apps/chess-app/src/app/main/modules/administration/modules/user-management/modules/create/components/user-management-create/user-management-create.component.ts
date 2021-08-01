@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { matchingControlsValidators, setTemplateValidatorsPipe } from '@app/shared';
 import { Role } from '@chess-lite/domain';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { HeaderService } from '../../../../../../../../../core/services/header.service';
-import { setTemplateValidatorsPipe } from '../../../../../../../../../core/utils/forms/rxjs/set-template-validators.rxjs.pipe';
-import { matchingControlsValidators } from '../../../../../../../../../core/utils/forms/validators/matching-controls.validator';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Component({

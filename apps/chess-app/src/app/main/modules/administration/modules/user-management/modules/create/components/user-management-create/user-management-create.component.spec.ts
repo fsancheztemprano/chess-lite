@@ -8,8 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FormErrorModule } from '@app/shared';
 import { stubHeaderServiceProvider } from '../../../../../../../../../core/services/header.service.stub';
-import { FormErrorModule } from '../../../../../../../../../shared/components/form-error/form-error.component';
 import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
 
 import { UserManagementCreateComponent } from './user-management-create.component';

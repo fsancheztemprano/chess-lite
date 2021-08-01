@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { matchingControlsValidators } from '@app/shared';
 import { User } from '@chess-lite/domain';
-import { matchingControlsValidators } from '../../../../../../../../../../../core/utils/forms/validators/matching-controls.validator';
 
 @Component({
   selector: 'chess-lite-user-management-account-password',
