@@ -4,7 +4,6 @@ import { NgLetModule } from './directives/ng-let.directive';
 import { IsMobileModule } from './pipes/is-mobile.pipe';
 
 @NgModule({
-  declarations: [],
   imports: [IsMobileModule, NgLetModule, FormErrorModule],
   exports: [IsMobileModule, NgLetModule, FormErrorModule],
 })

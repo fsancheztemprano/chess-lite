@@ -171,6 +171,18 @@
     rxjs "6.6.7"
     source-map "0.7.3"
 
+"@angular-devkit/schematics-cli@12.1.4":
+  version "12.1.4"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-12.1.4.tgz#812e663cf7247821e817ac3a1869b9b66aae612f"
+  integrity sha512-BJiyZu7TaOJUnH4XH4OKz1LjW1364BLAhpwCBAueu11YkI7hghlsx/ogvvd5RYX9JmQL70iVOVkBsoYA7XVreg==
+  dependencies:
+    "@angular-devkit/core" "12.1.4"
+    "@angular-devkit/schematics" "12.1.4"
+    ansi-colors "4.1.1"
+    inquirer "8.1.1"
+    minimist "1.2.5"
+    symbol-observable "4.0.0"
+
 "@angular-devkit/schematics@11.2.12":
   version "11.2.12"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-11.2.12.tgz#a2b7b02f6677a2fa9f4f6716f0aaa87347d41509"
@@ -8289,7 +8301,7 @@ minimatch@3.0.4, minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.2.0, minimist@^1.2.5:
+minimist@1.2.5, minimist@^1.2.0, minimist@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==

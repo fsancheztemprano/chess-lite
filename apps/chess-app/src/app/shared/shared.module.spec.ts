@@ -1,14 +1,12 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { SharedModule } from './shared.module';
 
 describe('SharedModule', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [SharedModule],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [SharedModule],
+    }).compileComponents();
+  }));
 
   // TODO: Add real tests here.
   //
@@ -16,9 +14,5 @@ describe('SharedModule', () => {
   //     It does NOT check for correct instantiation of the module.
   it('should have a module definition', () => {
     expect(SharedModule).toBeDefined();
-  });
-
-  it('should create a module', () => {
-    expect(TestBed.inject(SharedModule)).toBeTruthy();
   });
 });
