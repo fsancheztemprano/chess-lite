@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HalFormService } from '@chess-lite/hal-form-client';
-import { AuthService } from '@ui/auth';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root',

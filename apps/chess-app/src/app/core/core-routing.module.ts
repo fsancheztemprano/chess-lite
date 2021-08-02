@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@ui/auth';
-import { AdministrationGuard } from '../main/modules/administration/guards/administration.guard';
-import { UserGuard } from '../main/modules/user/guards/user.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { AdministrationGuard } from '../modules/administration/guards/administration.guard';
+import { UserGuard } from '../modules/user/guards/user.guard';
 import { CoreComponent } from './components/core/core.component';
 
-const loadUserModule = () => import('./../main/modules/user/user.module').then((m) => m.UserModule);
+const loadUserModule = () => import('../modules/user/user.module').then((m) => m.UserModule);
 
 const loadAdministrationModule = () =>
-  import('./../main/modules/administration/administration.module').then((m) => m.AdministrationModule);
+  import('../modules/administration/administration.module').then((m) => m.AdministrationModule);
 
-const loadAuthModule = () => import('@ui/auth').then((m) => m.AuthModule);
+const loadAuthModule = () => import('../auth/auth.module').then((m) => m.AuthModule);
 
 const routes: Routes = [
   {

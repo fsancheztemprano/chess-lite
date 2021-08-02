@@ -15,12 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@app/shared": ["libs/shared/src/index.ts"],
       "@chess-lite/domain": ["libs/domain/src/index.ts"],
       "@chess-lite/hal-form-client": ["libs/hal-form-client/src/index.ts"],
-      "@chess-lite/hal-form-client/testing": ["libs/hal-form-client/src/index.testing.ts"],
-      "@ui/auth": ["libs/ui/auth/src/index.ts"],
-      "@ui/auth/stub": ["libs/ui/auth/src/index.stub.ts"]
+      "@chess-lite/hal-form-client/testing": ["libs/hal-form-client/src/index.testing.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

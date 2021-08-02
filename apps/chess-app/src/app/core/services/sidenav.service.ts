@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { IsMobileService } from '@app/shared';
 import { HalFormService } from '@chess-lite/hal-form-client';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { IsMobileService } from '../../shared/services/is-mobile.service';
 
 @Injectable({
   providedIn: 'root',

@@ -34,12 +34,6 @@
     },
     "hal-form-client": {
       "tags": []
-    },
-    "shared": {
-      "tags": []
-    },
-    "ui-auth": {
-      "tags": []
     }
   },
   "targetDependencies": {

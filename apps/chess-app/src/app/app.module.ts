@@ -3,11 +3,11 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HalFormClientModule } from '@chess-lite/hal-form-client';
-import { AuthInterceptor } from '@ui/auth';
 import { ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
 import { AppInitService } from './core/services/app-init.service';
 
 function initializeApp(appInitService: AppInitService) {
