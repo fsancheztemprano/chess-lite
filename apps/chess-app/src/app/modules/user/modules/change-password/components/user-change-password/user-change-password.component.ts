@@ -4,8 +4,8 @@ import { User } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { setResourceValidatorsPipe } from '../../../../../../shared/utils/forms/rxjs';
-import { matchingControlsValidators } from '../../../../../../shared/utils/forms/validators';
+import { setResourceValidatorsPipe } from '../../../../../../shared/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
+import { matchingControlsValidators } from '../../../../../../shared/utils/forms/validators/matching-controls.validator';
 import { UserService } from '../../../../services/user.service';
 
 @UntilDestroy()

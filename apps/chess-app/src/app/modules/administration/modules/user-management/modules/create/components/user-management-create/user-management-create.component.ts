@@ -6,8 +6,8 @@ import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { HeaderService } from '../../../../../../../../core/services/header.service';
-import { setTemplateValidatorsPipe } from '../../../../../../../../shared/utils/forms/rxjs';
-import { matchingControlsValidators } from '../../../../../../../../shared/utils/forms/validators';
+import { setTemplateValidatorsPipe } from '../../../../../../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
+import { matchingControlsValidators } from '../../../../../../../../shared/utils/forms/validators/matching-controls.validator';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Component({

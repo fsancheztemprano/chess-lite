@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { setTemplateValidatorsPipe } from '../../../shared/utils/forms/rxjs';
+import { setTemplateValidatorsPipe } from '../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 import { LoginService } from '../../services/login.service';
 
 @Component({

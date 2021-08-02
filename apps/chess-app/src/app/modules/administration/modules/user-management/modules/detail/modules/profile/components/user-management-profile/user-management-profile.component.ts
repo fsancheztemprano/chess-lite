@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@chess-lite/domain';
-import { setTemplateValidators } from '../../../../../../../../../../shared/utils/forms/validators';
+import { setTemplateValidators } from '../../../../../../../../../../shared/utils/forms/validators/set-template.validators';
 
 @Component({
   selector: 'chess-lite-user-management-profile',

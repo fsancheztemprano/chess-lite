@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { User } from '@chess-lite/domain';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { fileSizeValidator } from '../../../../../../shared/utils/forms/validators';
+import { fileSizeValidator } from '../../../../../../shared/utils/forms/validators/file-size.validator';
 import { UserService } from '../../../../services/user.service';
 
 @Component({
