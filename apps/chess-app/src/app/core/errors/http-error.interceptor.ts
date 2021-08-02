@@ -2,8 +2,8 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable, NgZone } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ToasterService } from '../services/toaster.service';
-import { ToastType } from '../services/toaster.service.model';
+import { ToasterService } from '../../shared/services/toaster.service';
+import { ToastType } from '../../shared/services/toaster.service.model';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {

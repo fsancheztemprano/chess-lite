@@ -44,7 +44,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/chess-app",
             "index": "apps/chess-app/src/index.html",
@@ -52,8 +54,14 @@
             "polyfills": "apps/chess-app/src/polyfills.ts",
             "tsConfig": "apps/chess-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/chess-app/src/favicon.ico", "apps/chess-app/src/assets"],
-            "styles": ["./node_modules/ngx-toastr/toastr.css", "apps/chess-app/src/styles.scss"],
+            "assets": [
+              "apps/chess-app/src/favicon.ico",
+              "apps/chess-app/src/assets"
+            ],
+            "styles": [
+              "./node_modules/ngx-toastr/toastr.css",
+              "apps/chess-app/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -61,8 +69,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1mb",
-                  "maximumError": "2mb"
+                  "maximumWarning": "570kb",
+                  "maximumError": "600kb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -114,12 +122,17 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/chess-app/src/**/*.ts", "apps/chess-app/src/**/*.html"]
+            "lintFilePatterns": [
+              "apps/chess-app/src/**/*.ts",
+              "apps/chess-app/src/**/*.html"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/chess-app"],
+          "outputs": [
+            "coverage/apps/chess-app"
+          ],
           "options": {
             "jestConfig": "apps/chess-app/jest.config.js",
             "passWithNoTests": true
@@ -148,7 +161,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/chess-app-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/chess-app-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
@@ -168,14 +183,24 @@
           "builder": "@nxrocks/nx-spring-boot:clean",
           "options": {
             "root": "apps/chess-backend",
-            "args": ["verify", "-U", "-B"]
+            "args": [
+              "verify",
+              "-U",
+              "-B"
+            ]
           }
         },
         "build": {
           "builder": "@nxrocks/nx-spring-boot:clean",
           "options": {
             "root": "apps/chess-backend",
-            "args": ["verify", "-U", "-B", "-DskipTests", "-DskipITs"]
+            "args": [
+              "verify",
+              "-U",
+              "-B",
+              "-DskipTests",
+              "-DskipITs"
+            ]
           }
         },
         "run": {
@@ -224,7 +249,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/domain"],
+          "outputs": [
+            "coverage/libs/domain"
+          ],
           "options": {
             "jestConfig": "libs/domain/jest.config.js",
             "passWithNoTests": true
@@ -233,7 +260,10 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/domain/src/**/*.ts", "libs/domain/src/**/*.html"]
+            "lintFilePatterns": [
+              "libs/domain/src/**/*.ts",
+              "libs/domain/src/**/*.html"
+            ]
           }
         }
       }
@@ -246,7 +276,9 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/hal-form-client"],
+          "outputs": [
+            "coverage/libs/hal-form-client"
+          ],
           "options": {
             "jestConfig": "libs/hal-form-client/jest.config.js",
             "passWithNoTests": true
@@ -255,7 +287,10 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/hal-form-client/src/**/*.ts", "libs/hal-form-client/src/**/*.html"]
+            "lintFilePatterns": [
+              "libs/hal-form-client/src/**/*.ts",
+              "libs/hal-form-client/src/**/*.html"
+            ]
           }
         }
       }

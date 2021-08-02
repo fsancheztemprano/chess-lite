@@ -2,21 +2,27 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AdministrationGuard } from '../modules/administration/guards/administration.guard';
-import { UserGuard } from '../modules/user/guards/user.guard';
+import { UserSettingsGuard } from '../modules/user-settings/guards/user-settings.guard';
 import { CoreComponent } from './components/core/core.component';
 
-const loadUserModule = () => import('../modules/user/user.module').then((m) => m.UserModule);
+const loadUserModule = () => import('../modules/user-settings/user-settings.module').then((m) => m.UserSettingsModule);
 
 const loadAdministrationModule = () =>
   import('../modules/administration/administration.module').then((m) => m.AdministrationModule);
 
 const loadAuthModule = () => import('../auth/auth.module').then((m) => m.AuthModule);
 
+const loadHomeModule = () => import('../modules/home/home.module').then((m) => m.HomeModule);
+
 const routes: Routes = [
   {
     path: '',
     component: CoreComponent,
     children: [
+      {
+        path: 'home',
+        loadChildren: loadHomeModule,
+      },
       {
         path: 'auth',
         loadChildren: loadAuthModule,
@@ -25,13 +31,15 @@ const routes: Routes = [
       {
         path: 'user',
         loadChildren: loadUserModule,
-        canLoad: [UserGuard],
+        canLoad: [UserSettingsGuard],
       },
       {
         path: 'administration',
         loadChildren: loadAdministrationModule,
         canLoad: [AdministrationGuard],
       },
+      { path: '', redirectTo: 'home' },
+      { path: '**', redirectTo: '' },
     ],
   },
 ];
