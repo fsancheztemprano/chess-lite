@@ -10,6 +10,7 @@
 
 # IDEs and editors
 /.idea
+/.run
 .project
 .classpath
 .c9/
