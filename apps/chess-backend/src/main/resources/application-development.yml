@@ -2,3 +2,6 @@ spring:
   devtools:
     livereload:
       enabled: true
+springfox:
+  documentation:
+    enabled: true

@@ -1,6 +1,6 @@
 package dev.kurama.chess.backend.auth.configuration;
 
-import static dev.kurama.chess.backend.auth.constant.SecurityConstant.PUBLIC_URLS;
+import static dev.kurama.chess.backend.auth.constant.SecurityConstant.DEVELOPMENT_PUBLIC_URLS;
 
 import dev.kurama.chess.backend.auth.filter.JWTAccessDeniedHandler;
 import dev.kurama.chess.backend.auth.filter.JWTAuthenticationEntryPoint;
@@ -20,11 +20,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Profile({"!development"})
+@Profile({"development"})
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final JWTAuthorizationFilter jwtAuthorizationFilter;
   private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private final UserDetailsService userDetailsService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  public SecurityConfiguration(JWTAuthorizationFilter jwtAuthorizationFilter,
+  public DevelopmentSecurityConfiguration(JWTAuthorizationFilter jwtAuthorizationFilter,
     JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint,
     JWTAccessDeniedHandler jwtAccessDeniedHandler,
     @Qualifier("userDetailsService") UserDetailsService userDetailsService,
@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .csrf().disable()
       .cors().and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeRequests().antMatchers(PUBLIC_URLS).permitAll()
+      .authorizeRequests().antMatchers(DEVELOPMENT_PUBLIC_URLS).permitAll()
       .anyRequest().authenticated().and()
       .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
       .authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
