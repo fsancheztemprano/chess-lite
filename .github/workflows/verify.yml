@@ -28,7 +28,7 @@ jobs:
           check-latest: true
 
       - name: Use Node 14
-        uses: actions/setup-node@v2.3.0
+        uses: actions/setup-node@v2.3.2
         with:
           node-version: '14'
 
