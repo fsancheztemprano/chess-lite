@@ -2,13 +2,9 @@ package dev.kurama.chess.backend.auth.configuration.development.swagger;
 
 import java.util.Collections;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -21,19 +17,8 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Profile({"development"})
-@Order(3)
 @Configuration
-@RequiredArgsConstructor
-public class SwaggerConfiguration extends WebSecurityConfigurerAdapter {
-
-  public static final String[] SWAGGER_PATHS = {"/swagger-ui/**", "/swagger-resources/**", "/v*/api-docs/**"};
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-      .csrf().disable()
-      .authorizeRequests().antMatchers(SWAGGER_PATHS).permitAll();
-  }
+public class SwaggerConfiguration {
 
   private ApiKey apiKey() {
     return new ApiKey("JWT", "Authorization", "header");
@@ -42,7 +27,6 @@ public class SwaggerConfiguration extends WebSecurityConfigurerAdapter {
   private SecurityContext securityContext() {
     return SecurityContext.builder().securityReferences(defaultAuth()).build();
   }
-
 
   private List<SecurityReference> defaultAuth() {
     AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");

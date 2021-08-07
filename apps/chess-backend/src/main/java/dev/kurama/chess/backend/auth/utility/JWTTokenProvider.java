@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JWTTokenProvider {
 
-  @Value("${chess.jwt.secret}")
+  @Value("${application.jwt.secret}")
   private String secret;
 
   public String generateJWTToken(UserPrincipal userPrincipal) {

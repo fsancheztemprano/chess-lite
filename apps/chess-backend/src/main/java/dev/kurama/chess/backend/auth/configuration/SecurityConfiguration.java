@@ -1,11 +1,13 @@
 package dev.kurama.chess.backend.auth.configuration;
 
-import static dev.kurama.chess.backend.auth.constant.SecurityConstant.PUBLIC_URLS;
-
 import dev.kurama.chess.backend.auth.filter.JWTAccessDeniedHandler;
 import dev.kurama.chess.backend.auth.filter.JWTAuthenticationEntryPoint;
 import dev.kurama.chess.backend.auth.filter.JWTAuthorizationFilter;
+import dev.kurama.chess.backend.auth.properties.ApplicationProperties;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,27 +22,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableConfigurationProperties(ApplicationProperties.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  private final JWTAuthorizationFilter jwtAuthorizationFilter;
-  private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-  private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
+  @NonNull
+  @Qualifier("userDetailsService")
   private final UserDetailsService userDetailsService;
+
+  @NonNull
+  private final JWTAuthorizationFilter jwtAuthorizationFilter;
+
+  @NonNull
+  private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+  @NonNull
+  private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
+
+  @NonNull
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  public SecurityConfiguration(JWTAuthorizationFilter jwtAuthorizationFilter,
-    JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-    JWTAccessDeniedHandler jwtAccessDeniedHandler,
-    @Qualifier("userDetailsService") UserDetailsService userDetailsService,
-    BCryptPasswordEncoder bCryptPasswordEncoder) {
-    this.jwtAuthorizationFilter = jwtAuthorizationFilter;
-    this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-    this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-    this.userDetailsService = userDetailsService;
-    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-  }
+  @NonNull
+  private final ApplicationProperties applicationProperties;
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -53,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .csrf().disable()
       .cors().and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeRequests().antMatchers(PUBLIC_URLS).permitAll()
+      .authorizeRequests().antMatchers(applicationProperties.getPublicUrls()).permitAll()
       .anyRequest().authenticated().and()
       .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
       .authenticationEntryPoint(jwtAuthenticationEntryPoint).and()

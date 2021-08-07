@@ -1,4 +1,8 @@
-chess:
+application:
+  public_urls:
+    - /api
+    - /api/auth/login
+    - /api/auth/signup
   jwt:
     secret: 'ieWCbSL5dcp3HgWkH2RSEdPGje7jjaM1Lt0jtYnHkml1WVcA6bIHKPi6cHEXWFmaECPkYWtlU85qCE2QC2ZrLlxmk29rFGgDrN8FlezGcrSH0V0ilMtuMnhmvJAvGmLlBZ90sikgYZWaZaWirI4TIUrDThJ6nTFEmRfDaE3ISPZVNr24HsxfmrK9rAqczoeKfpbjRGAE'
 

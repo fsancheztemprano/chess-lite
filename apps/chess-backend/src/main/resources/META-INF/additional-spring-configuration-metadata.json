@@ -1,9 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "chess.jwt.secret",
-      "type": "java.lang.String",
-      "description": "Description for chess.jwt.secret."
-    }
-  ]
-}
