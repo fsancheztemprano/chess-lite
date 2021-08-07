@@ -5,6 +5,7 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.web.filter.ForwardedHeaderFilter;
@@ -15,6 +16,7 @@ import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 public class HateoasConfiguration {
 
   @Bean
+  @Primary
   public PagedResourcesAssembler<?> configure(PagedResourcesAssembler<?> pagedResourcesAssembler) {
     pagedResourcesAssembler.setForceFirstAndLastRels(false);
     return pagedResourcesAssembler;

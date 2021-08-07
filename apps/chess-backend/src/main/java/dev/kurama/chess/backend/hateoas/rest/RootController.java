@@ -5,6 +5,7 @@ import static dev.kurama.chess.backend.auth.api.domain.relations.AuthenticationR
 import static dev.kurama.chess.backend.auth.api.domain.relations.AuthenticationRelations.SIGNUP_REL;
 import static dev.kurama.chess.backend.auth.api.domain.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.chess.backend.auth.authority.AdminAuthority.ADMIN_ROOT;
+import static dev.kurama.chess.backend.auth.authority.UserAuthority.PROFILE_READ;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.chess.backend.auth.utility.AuthorityUtils.isAuthenticated;
 import static dev.kurama.chess.backend.hateoas.domain.HateoasRelations.DEFAULT;
@@ -41,7 +42,9 @@ public class RootController {
       if (hasAuthority(ADMIN_ROOT)) {
         rootModel.link(getAdministrationRootLink());
       }
-      rootModel.link(getCurrentUserLink());
+      if (hasAuthority(PROFILE_READ)) {
+        rootModel.link(getCurrentUserLink());
+      }
     } else {
       rootModel
         .link(getLoginLink())
