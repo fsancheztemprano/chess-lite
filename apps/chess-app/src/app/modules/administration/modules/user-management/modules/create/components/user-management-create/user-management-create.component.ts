@@ -66,7 +66,6 @@ export class UserManagementCreateComponent implements OnDestroy {
   onSubmit() {
     this.userManagementService.createUser(this.form.value).subscribe({
       next: (user) => {
-        console.log(user);
         this.setSubmitStatus(true);
         setTimeout(() => {
           this.router.navigate([...this.routeUp, 'edit', user.id]);

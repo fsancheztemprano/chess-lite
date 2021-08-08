@@ -13,7 +13,7 @@ export class UserManagementService extends HalFormService {
   public readonly USER_MANAGEMENT_REL = 'user-management';
   public readonly USER_REL = 'user';
   public readonly USERS_REL = 'users';
-  public readonly USER_MODEL_LIST_REL = 'userModelList';
+  public readonly USER_MODEL_LIST_REL = 'userModels';
   public readonly USER_CREATE_REL = 'create';
   public readonly UPDATE_REL = 'update';
 

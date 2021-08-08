@@ -31,6 +31,6 @@ export interface UserChangePasswordInput {
 }
 
 export class UserPage extends Resource implements IResource {
-  userModelList?: User[];
+  userModels?: User[];
   page?: Page;
 }

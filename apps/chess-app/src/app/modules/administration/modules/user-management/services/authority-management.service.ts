@@ -10,7 +10,7 @@ import { UserManagementService } from './user-management.service';
 })
 export class AuthorityManagementService {
   private readonly AUTHORITIES_REL = 'authorities';
-  private readonly AUTHORITY_MODEL_LIST_REL = 'authorityModelList';
+  private readonly AUTHORITY_MODEL_LIST_REL = 'authorityModels';
 
   constructor(private readonly userManagementService: UserManagementService) {}
 
