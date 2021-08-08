@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Objects;
 import javax.persistence.NoResultException;
 import lombok.extern.flogger.Flogger;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,16 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Flogger
+@RestController
 @RestControllerAdvice
-public abstract class ExceptionHandlers {
+public class ExceptionHandlers implements ErrorController {
+
+  public static final String ERROR_PATH = "/error";
 
   private static final String ACCOUNT_LOCKED = "Your account has been locked. Please contact administration";
   private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please send a '%s' request";
@@ -96,11 +101,11 @@ public abstract class ExceptionHandlers {
     return createDomainResponse(BAD_REQUEST, exception.getMessage());
   }
 
-  @ExceptionHandler(NoHandlerFoundException.class)
-  public ResponseEntity<DomainResponse> noHandlerFoundException(NoHandlerFoundException exception) {
-    log.atWarning().log(exception.getMessage());
-    return createDomainResponse(BAD_REQUEST, "There is no mapping for this URL");
-  }
+//  @ExceptionHandler(NoHandlerFoundException.class)
+//  public ResponseEntity<DomainResponse> noHandlerFoundException(NoHandlerFoundException exception) {
+//    log.atWarning().log(exception.getMessage());
+//    return createDomainResponse(BAD_REQUEST, "There is no mapping for this URL");
+//  }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<DomainResponse> methodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
@@ -128,7 +133,20 @@ public abstract class ExceptionHandlers {
   }
 
   private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String message) {
-    return new ResponseEntity<>(DomainResponse.builder().status(status).code(status.value()).message(message).build(),
+    return new ResponseEntity<>(DomainResponse.builder()
+      .status(status)
+      .code(status.value())
+      .message(message)
+      .build(),
       status);
+  }
+
+  @RequestMapping(ERROR_PATH)
+  public ResponseEntity<DomainResponse> notFound404() {
+    return createDomainResponse(NOT_FOUND, "There is no mapping for this URL");
+  }
+
+  public String getErrorPath() {
+    return ERROR_PATH;
   }
 }

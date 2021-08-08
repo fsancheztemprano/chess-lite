@@ -11,6 +11,7 @@
     "analyze:bundle": "npm run build:front:stats && npm run analyze",
     "build": "nx run-many --target=build --all",
     "build:front": "nx run-many --target=build --projects=chess-app",
+    "build:front:deploy": "nx run-many --target=build --projects=chess-app --skip-nx-cache --output-path=apps/chess-backend/target/classes/static/app --deploy-url=/app/ --base-href=/app/",
     "build:front:stats": "nx run-many --target=build --projects=chess-app --statsJson",
     "build:backend": "nx run-many --target=build --projects=chess-backend",
     "test": "nx run-many --target=test --all",
