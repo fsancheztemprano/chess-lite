@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpHeaders, User } from '@chess-lite/domain';
+import { CurrentUserRelations, HttpHeaders, User } from '@chess-lite/domain';
 import { HalFormService, IResource, noLinkError, Resource } from '@chess-lite/hal-form-client';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
@@ -13,8 +13,6 @@ import { isTokenExpired } from '../utils/auth.utils';
 export class AuthService {
   private readonly TOKEN_KEY = 'token';
   private readonly _user$ = new BehaviorSubject<User | null>(null);
-
-  public readonly CURRENT_USER_REL = 'current-user';
 
   constructor(private readonly halFormService: HalFormService, private readonly router: Router) {}
 
@@ -35,10 +33,10 @@ export class AuthService {
   }
 
   public fetchCurrentUser(): Observable<User> {
-    return this.halFormService.getLink(this.CURRENT_USER_REL).pipe(
+    return this.halFormService.getLink(CurrentUserRelations.CURRENT_USER_REL).pipe(
       first(),
       switchMap((userLink) => {
-        return userLink ? userLink.get() : noLinkError(this.CURRENT_USER_REL);
+        return userLink ? userLink.get() : noLinkError(CurrentUserRelations.CURRENT_USER_REL);
       }),
       tap((user) => user && this.setUser(user)),
     );

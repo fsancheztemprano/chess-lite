@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { User } from '@chess-lite/domain';
+import { CurrentUserRelations, User } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
@@ -29,6 +29,8 @@ export class UserChangePasswordComponent {
     [matchingControlsValidators('password', 'password2'), matchingControlsValidators('newPassword', 'newPassword2')],
   );
 
+  CHANGE_PASSWORD_REL = CurrentUserRelations.CHANGE_PASSWORD_REL;
+
   submitError = false;
   submitSuccess = false;
   submitSuccessMessage = false;
@@ -36,7 +38,7 @@ export class UserChangePasswordComponent {
 
   constructor(public readonly userService: CurrentUserService, private readonly cdr: ChangeDetectorRef) {
     this.user$
-      .pipe(untilDestroyed(this), setResourceValidatorsPipe(this.form, this.userService.CHANGE_PASSWORD_REL))
+      .pipe(untilDestroyed(this), setResourceValidatorsPipe(this.form, CurrentUserRelations.CHANGE_PASSWORD_REL))
       .subscribe();
   }
 

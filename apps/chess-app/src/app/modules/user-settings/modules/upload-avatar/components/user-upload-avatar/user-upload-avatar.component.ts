@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { User } from '@chess-lite/domain';
+import { CurrentUserRelations, User } from '@chess-lite/domain';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
 import { fileSizeValidator } from '../../../../../../shared/utils/forms/validators/file-size.validator';
@@ -21,10 +21,12 @@ export class UserUploadAvatarComponent {
   public readonly form = new FormGroup({
     avatar: new FormControl(null, [fileSizeValidator(this.maxSize * 1024)]),
   });
+
+  UPLOAD_AVATAR_REL = CurrentUserRelations.UPLOAD_AVATAR_REL;
+
   submitError = false;
   submitSuccess = false;
   submitSuccessMessage = false;
-
   submitErrorMessage = false;
 
   constructor(public readonly userService: CurrentUserService, private readonly cdr: ChangeDetectorRef) {}

@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { User, UserPage } from '@chess-lite/domain';
+import { User, UserManagementRelations, UserPage } from '@chess-lite/domain';
 import { Subject } from 'rxjs';
 import { HeaderService, MenuOption } from '../../../../../../../../core/services/header.service';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
@@ -50,7 +50,7 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
       options: [this.createUserMenuOption],
     });
     this.dataSource.userPage$?.subscribe((userPage: UserPage) =>
-      this.createUserMenuOption.disabled?.next(!userPage.isAllowedTo('create')),
+      this.createUserMenuOption.disabled?.next(!userPage.isAllowedTo(UserManagementRelations.USER_CREATE_REL)),
     );
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginInput, User } from '@chess-lite/domain';
+import { AuthRelations, LoginInput, User } from '@chess-lite/domain';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@chess-lite/hal-form-client';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -10,8 +10,6 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class LoginService {
-  private readonly LOGIN_RELATION = 'login';
-
   constructor(
     private readonly halFormService: HalFormService,
     private readonly router: Router,
@@ -19,16 +17,16 @@ export class LoginService {
   ) {}
 
   public getLoginTemplate(): Observable<Template | null> {
-    return this.halFormService.getTemplate(this.LOGIN_RELATION);
+    return this.halFormService.getTemplate(AuthRelations.LOGIN_RELATION);
   }
 
   public isAllowedToLogin(): Observable<boolean> {
-    return this.halFormService.isAllowedTo(this.LOGIN_RELATION);
+    return this.halFormService.isAllowedTo(AuthRelations.LOGIN_RELATION);
   }
 
   public login(loginInput: LoginInput): Observable<User | null> {
     return this.halFormService.rootResource.pipe(
-      submitToTemplateOrThrowPipe(this.LOGIN_RELATION, loginInput, undefined, 'response'),
+      submitToTemplateOrThrowPipe(AuthRelations.LOGIN_RELATION, loginInput, undefined, 'response'),
       this.authService.setLocalSessionPipe(),
       tap(() => this.halFormService.initialize().subscribe()),
     );

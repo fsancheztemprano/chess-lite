@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '@chess-lite/domain';
+import { User, UserManagementRelations } from '@chess-lite/domain';
 import { matchingControlsValidators } from '../../../../../../../../../../shared/utils/forms/validators/matching-controls.validator';
 
 @Component({
@@ -30,7 +30,7 @@ export class UserManagementAccountPasswordComponent {
   }
 
   onSubmit() {
-    this.user?.submitToTemplateOrThrow('update', this.form.value).subscribe({
+    this.user?.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, this.form.value).subscribe({
       next: () => this.setSubmitStatus(true),
       error: () => this.setSubmitStatus(false),
     });

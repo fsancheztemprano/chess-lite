@@ -9,7 +9,7 @@
       color="warn"
       (click)="openDialog()"
       *ngLet="user$ | async as user"
-      [disabled]="!user || !user.isAllowedTo(userService.DELETE_ACCOUNT_REL)"
+      [disabled]="!user || !user.isAllowedTo(DELETE_ACCOUNT_REL)"
     >
       Delete this account
     </button>

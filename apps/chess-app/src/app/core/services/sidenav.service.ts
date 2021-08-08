@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AdministrationRelations, AuthRelations, CurrentUserRelations } from '@chess-lite/domain';
 import { HalFormService } from '@chess-lite/hal-form-client';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IsMobileService } from '../../shared/services/is-mobile.service';
@@ -22,18 +23,18 @@ export class SidenavService {
   }
 
   public showLoginLink(): Observable<boolean> {
-    return this.halFormService.hasLink('login');
+    return this.halFormService.hasLink(AuthRelations.LOGIN_RELATION);
   }
 
   public showSignupLink(): Observable<boolean> {
-    return this.halFormService.hasLink('signup');
+    return this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION);
   }
 
   public showUserLink(): Observable<boolean> {
-    return this.halFormService.hasLink('current-user');
+    return this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL);
   }
 
   public showAdministrationLink(): Observable<boolean> {
-    return this.halFormService.hasLink('administration');
+    return this.halFormService.hasLink(AdministrationRelations.ADMINISTRATION_REL);
   }
 }

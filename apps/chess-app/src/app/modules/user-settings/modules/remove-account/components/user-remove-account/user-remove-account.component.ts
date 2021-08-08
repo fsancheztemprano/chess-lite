@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from '@chess-lite/domain';
+import { CurrentUserRelations, User } from '@chess-lite/domain';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { EMPTY, iif, Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
@@ -18,6 +18,8 @@ export class UserRemoveAccountComponent {
   private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
 
   constructor(private readonly dialogService: MatDialog, public readonly userService: CurrentUserService) {}
+
+  DELETE_ACCOUNT_REL = CurrentUserRelations.DELETE_ACCOUNT_REL;
 
   get user$(): Observable<User> {
     return this._user$;

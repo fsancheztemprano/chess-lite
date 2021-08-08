@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Role } from '@chess-lite/domain';
+import { Role, UserManagementRelations } from '@chess-lite/domain';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
@@ -56,7 +56,10 @@ export class UserManagementCreateComponent implements OnDestroy {
     private readonly router: Router,
   ) {
     this.headerService.setHeader({ title: 'New User', navigationLink: this.routeUp });
-    this.userManagementService.getTemplate('create').pipe(first(), setTemplateValidatorsPipe(this.form)).subscribe();
+    this.userManagementService
+      .getTemplate(UserManagementRelations.USER_CREATE_REL)
+      .pipe(first(), setTemplateValidatorsPipe(this.form))
+      .subscribe();
   }
 
   ngOnDestroy(): void {

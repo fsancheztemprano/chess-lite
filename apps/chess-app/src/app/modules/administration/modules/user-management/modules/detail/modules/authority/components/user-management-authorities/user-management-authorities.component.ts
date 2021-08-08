@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Authority, User } from '@chess-lite/domain';
+import { Authority, User, UserManagementRelations } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
@@ -68,7 +68,7 @@ export class UserManagementAuthoritiesComponent implements OnInit {
       ?.pipe(
         first(),
         switchMap((user) =>
-          user.submitToTemplateOrThrow('update', {
+          user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, {
             authorityIds: this.formArray.value
               .filter((authority: { active: boolean }) => authority.active)
               .map((authority: { id: string }) => authority.id),

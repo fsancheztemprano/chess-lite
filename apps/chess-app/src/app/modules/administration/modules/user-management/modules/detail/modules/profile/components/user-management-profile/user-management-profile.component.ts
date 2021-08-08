@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '@chess-lite/domain';
+import { User, UserManagementRelations } from '@chess-lite/domain';
 import { setTemplateValidators } from '../../../../../../../../../../shared/utils/forms/validators/set-template.validators';
 
 @Component({
@@ -29,13 +29,13 @@ export class UserManagementProfileComponent {
   constructor(private readonly route: ActivatedRoute, private readonly cdr: ChangeDetectorRef) {
     this.route.parent?.parent?.data.subscribe((data) => {
       this.user = data.user;
-      setTemplateValidators(this.form, data.user.getTemplate('update'));
+      setTemplateValidators(this.form, data.user.getTemplate(UserManagementRelations.USER_UPDATE_REL));
       this.form.patchValue(data.user);
     });
   }
 
   onSubmit() {
-    this.user?.submitToTemplateOrThrow('update', this.form.value).subscribe({
+    this.user?.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, this.form.value).subscribe({
       next: () => this.setSubmitStatus(true),
       error: () => this.setSubmitStatus(false),
     });

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { User } from '@chess-lite/domain';
+import { CurrentUserRelations, User } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { tadaAnimation, wobbleAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
@@ -42,12 +42,14 @@ export class UserUpdateProfileComponent {
   submitSuccessMessage = false;
   submitErrorMessage = false;
 
+  UPDATE_PROFILE_REL = CurrentUserRelations.UPDATE_PROFILE_REL;
+
   constructor(public readonly userService: CurrentUserService, private readonly cdr: ChangeDetectorRef) {
     this.user$
       .pipe(
         untilDestroyed(this),
         patchFormPipe(this.form),
-        setResourceValidatorsPipe(this.form, this.userService.UPDATE_PROFILE_REL),
+        setResourceValidatorsPipe(this.form, CurrentUserRelations.UPDATE_PROFILE_REL),
       )
       .subscribe();
   }

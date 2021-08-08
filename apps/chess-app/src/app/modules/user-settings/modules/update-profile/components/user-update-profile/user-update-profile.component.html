@@ -69,7 +69,7 @@
         color="primary"
         type="submit"
         *ngLet="user$ | async as user"
-        [disabled]="form.invalid || !user || !user.isAllowedTo(userService.UPDATE_PROFILE_REL)"
+        [disabled]="form.invalid || !user || !user.isAllowedTo(UPDATE_PROFILE_REL)"
       >
         Save
       </button>

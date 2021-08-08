@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Role, User } from '@chess-lite/domain';
+import { Role, User, UserManagementRelations } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
@@ -46,7 +46,9 @@ export class UserManagementRoleComponent implements OnInit {
     this.user$
       ?.pipe(
         first(),
-        switchMap((user) => user.submitToTemplateOrThrow('update', { roleId: this.form.value.id })),
+        switchMap((user) =>
+          user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { roleId: this.form.value.id }),
+        ),
       )
       .subscribe({
         next: (user) => {
