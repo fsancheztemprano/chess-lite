@@ -1,6 +1,7 @@
 application:
   public_urls:
-    - /**
+    - /
+    - /index.html
     - /app/**
     - /api
     - /api/auth/login
