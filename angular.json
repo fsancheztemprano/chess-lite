@@ -178,6 +178,13 @@
             "args": ["verify", "-U", "-B", "-DskipTests", "-DskipITs"]
           }
         },
+        "deploy": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/chess-backend",
+            "args": ["deploy", "-U", "-B", "-DskipTests", "-DskipITs", "-P frontend,herokudev"]
+          }
+        },
         "run": {
           "builder": "@nxrocks/nx-spring-boot:run",
           "options": {
