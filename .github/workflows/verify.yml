@@ -89,6 +89,8 @@ jobs:
       - name: Deploy to Heroku Dev
         uses: MansaGroup/nrwl-nx-action@v2.1.0
         if: ${{ github.ref == 'refs/heads/development' && github.event_name == 'push' }}
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         with:
           targets: deploy
           all: 'true'
