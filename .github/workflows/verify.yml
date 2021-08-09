@@ -85,3 +85,12 @@ jobs:
           all: 'true'
           parallel: 'true'
           affected: 'false'
+
+      - name: Deploy to Heroku Dev
+        uses: MansaGroup/nrwl-nx-action@v2.1.0
+        if: ${{ github.ref == 'refs/heads/development' && github.event_name == 'push' }}
+        with:
+          targets: deploy
+          all: 'true'
+          parallel: 'false'
+          affected: 'false'
