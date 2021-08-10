@@ -5,6 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormErrorModule } from '../../../../../../../../../../shared/components/form-error/form-error.component';
+import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
 
 import { UserManagementRoleComponent } from './user-management-role.component';
 
@@ -23,6 +24,7 @@ describe('UserManagementRoleComponent', () => {
         NoopAnimationsModule,
       ],
       declarations: [UserManagementRoleComponent],
+      providers: [stubToasterServiceProvider],
     }).compileComponents();
   });
 

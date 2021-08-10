@@ -7,8 +7,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { stubHeaderServiceProvider } from '../../../../../../core/services/header.service.stub';
 import { StubFormErrorComponent } from '../../../../../../shared/components/form-error/form-error.component.stub';
 import { NgLetModule } from '../../../../../../shared/directives/ng-let.directive';
+import { stubToasterServiceProvider } from '../../../../../../shared/services/toaster.service.stub';
 import { stubCurrentUserServiceProvider } from '../../../../services/current-user.service.stub';
 
 import { UserUpdateProfileComponent } from './user-update-profile.component';
@@ -31,7 +33,12 @@ describe('UserUpdateProfileComponent', () => {
         NgLetModule,
       ],
       declarations: [UserUpdateProfileComponent, StubFormErrorComponent],
-      providers: [MatDatepickerModule, stubCurrentUserServiceProvider],
+      providers: [
+        MatDatepickerModule,
+        stubCurrentUserServiceProvider,
+        stubHeaderServiceProvider,
+        stubToasterServiceProvider,
+      ],
     }).compileComponents();
   });
 

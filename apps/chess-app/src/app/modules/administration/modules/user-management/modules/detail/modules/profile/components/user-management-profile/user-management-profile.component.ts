@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User, UserManagementRelations } from '@chess-lite/domain';
+import { noop } from 'rxjs';
+import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
 import { setTemplateValidators } from '../../../../../../../../../../shared/utils/forms/validators/set-template.validators';
 
 @Component({
@@ -23,10 +25,8 @@ export class UserManagementProfileComponent {
     expired: new FormControl(false),
     credentialsExpired: new FormControl(false),
   });
-  submitSuccessMessage = false;
-  submitErrorMessage = false;
 
-  constructor(private readonly route: ActivatedRoute, private readonly cdr: ChangeDetectorRef) {
+  constructor(private readonly route: ActivatedRoute, private readonly toasterService: ToasterService) {
     this.route.parent?.parent?.data.subscribe((data) => {
       this.user = data.user;
       setTemplateValidators(this.form, data.user.getTemplate(UserManagementRelations.USER_UPDATE_REL));
@@ -36,14 +36,8 @@ export class UserManagementProfileComponent {
 
   onSubmit() {
     this.user?.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, this.form.value).subscribe({
-      next: () => this.setSubmitStatus(true),
-      error: () => this.setSubmitStatus(false),
+      next: () => this.toasterService.showToast({ message: 'User Profile Updated Successfully' }),
+      error: () => noop,
     });
-  }
-
-  setSubmitStatus(success: boolean) {
-    this.submitSuccessMessage = success;
-    this.submitErrorMessage = !success;
-    this.cdr.markForCheck();
   }
 }

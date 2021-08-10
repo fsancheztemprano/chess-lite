@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User, UserManagementRelations } from '@chess-lite/domain';
+import { noop } from 'rxjs';
+import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
 import { matchingControlsValidators } from '../../../../../../../../../../shared/utils/forms/validators/matching-controls.validator';
 
 @Component({
@@ -20,10 +22,8 @@ export class UserManagementAccountPasswordComponent {
     },
     [matchingControlsValidators('password', 'password2')],
   );
-  submitSuccessMessage = false;
-  submitErrorMessage = false;
 
-  constructor(private readonly route: ActivatedRoute, private readonly cdr: ChangeDetectorRef) {
+  constructor(private readonly route: ActivatedRoute, private readonly toasterService: ToasterService) {
     this.route.parent?.parent?.data.subscribe((data) => {
       this.user = data.user;
     });
@@ -31,14 +31,11 @@ export class UserManagementAccountPasswordComponent {
 
   onSubmit() {
     this.user?.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, this.form.value).subscribe({
-      next: () => this.setSubmitStatus(true),
-      error: () => this.setSubmitStatus(false),
+      next: () => {
+        this.toasterService.showToast({ message: 'Password updated successfully' });
+        this.form.reset();
+      },
+      error: () => noop,
     });
-  }
-
-  setSubmitStatus(success: boolean) {
-    this.submitSuccessMessage = success;
-    this.submitErrorMessage = !success;
-    this.cdr.markForCheck();
   }
 }

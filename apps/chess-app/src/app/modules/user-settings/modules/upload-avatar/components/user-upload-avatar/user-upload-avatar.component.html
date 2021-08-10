@@ -1,15 +1,7 @@
 <form [formGroup]="form" novalidate>
-  <mat-card
-    [@wobble]="submitError"
-    (@wobble.start)="submitError = false"
-    [@tada]="submitSuccess"
-    (@tada.start)="submitSuccess = false"
-  >
-    <mat-card-header>
-      <mat-card-title>Upload Avatar</mat-card-title>
-    </mat-card-header>
+  <mat-card class="mat-elevation-z10">
     <mat-card-content>
-      <mat-card>
+      <mat-card class="mat-elevation-z10">
         <mat-card-content>
           <img width="100%" alt="Upload Avatar" *ngIf="user$ | async as user" src="{{ user.profileImageUrl }}" />
         </mat-card-content>
@@ -24,11 +16,6 @@
           (change)="onSubmit($event)"
         />
         <chess-lite-form-error [control]="form" name="avatar"></chess-lite-form-error>
-      </div>
-
-      <div class="submit-message">
-        <div class="mat-error" *ngIf="submitErrorMessage">Invalid File</div>
-        <div class="mat-accent" *ngIf="submitSuccessMessage">File Uploaded Successfully</div>
       </div>
     </mat-card-content>
     <mat-card-actions>

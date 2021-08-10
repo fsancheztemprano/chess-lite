@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthRelations, SignupInput, User } from '@chess-lite/domain';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@chess-lite/hal-form-client';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, switchMapTo } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -28,7 +27,8 @@ export class SignupService {
     return this.halFormService.rootResource.pipe(
       submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, signupInput, undefined, 'response'),
       this.authService.setLocalSessionPipe(),
-      tap(() => this.halFormService.initialize().subscribe()),
+      switchMapTo(this.halFormService.initialize()),
+      switchMapTo(this.authService.fetchCurrentUser()),
     );
   }
 }

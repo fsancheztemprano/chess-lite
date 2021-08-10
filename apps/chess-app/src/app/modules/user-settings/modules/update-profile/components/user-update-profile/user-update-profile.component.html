@@ -1,10 +1,5 @@
 <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
-  <mat-card
-    [@wobble]="submitError"
-    (@wobble.start)="submitError = false"
-    [@tada]="submitSuccess"
-    (@tada.start)="submitSuccess = false"
-  >
+  <mat-card>
     <mat-card-content>
       <mat-form-field>
         <input matInput placeholder="Username" formControlName="username" required readonly />
@@ -58,10 +53,6 @@
       <mat-checkbox formControlName="locked">Locked</mat-checkbox>
       <mat-checkbox formControlName="expired">Expired</mat-checkbox>
       <mat-checkbox formControlName="credentialsExpired">Expired Credentials</mat-checkbox>
-      <div class="submit-message">
-        <div class="mat-error" *ngIf="submitErrorMessage">Invalid Data</div>
-        <div class="mat-accent" *ngIf="submitSuccessMessage">Profile Saved</div>
-      </div>
     </mat-card-content>
     <mat-card-actions [align]="'end'">
       <button

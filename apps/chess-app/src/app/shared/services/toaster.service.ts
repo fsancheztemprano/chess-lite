@@ -16,6 +16,8 @@ export class ToasterService {
   constructor(private readonly toastrService: ToastrService) {}
 
   showToast(toast: IToastModel): ActiveToast<unknown> {
+    toast = toast || {};
+    toast.type = toast.type || ToastType.INFO;
     switch (toast?.type) {
       case ToastType.ERROR:
       case ToastType.INFO:

@@ -1,18 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Role, User, UserManagementRelations } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, startWith } from 'rxjs';
+import { noop, Observable, startWith } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
+import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
 
 @UntilDestroy()
 @Component({
@@ -33,10 +26,7 @@ export class UserManagementRoleComponent implements OnInit {
 
   public form = new FormGroup({ id: new FormControl('') });
 
-  submitSuccessMessage = false;
-  submitErrorMessage = false;
-
-  constructor(private readonly route: ActivatedRoute, private readonly cdr: ChangeDetectorRef) {}
+  constructor(private readonly route: ActivatedRoute, private readonly toasterService: ToasterService) {}
 
   ngOnInit(): void {
     this.user$?.pipe(untilDestroyed(this)).subscribe((user) => this.form.patchValue(user?.role || {}));
@@ -53,15 +43,9 @@ export class UserManagementRoleComponent implements OnInit {
       .subscribe({
         next: (user) => {
           this.userChange.emit(user);
-          this.setSubmitStatus(true);
+          this.toasterService.showToast({ message: 'Role updated successfully' });
         },
-        error: () => this.setSubmitStatus(false),
+        error: () => noop,
       });
-  }
-
-  setSubmitStatus(success: boolean) {
-    this.submitSuccessMessage = success;
-    this.submitErrorMessage = !success;
-    this.cdr.markForCheck();
   }
 }

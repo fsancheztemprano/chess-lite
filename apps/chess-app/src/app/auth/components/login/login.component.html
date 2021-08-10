@@ -1,12 +1,13 @@
 <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card
-    [@wobble]="loginErrorAnimation === true"
-    (@wobble.start)="loginErrorAnimation = false"
+    class="mat-elevation-z24"
+    [@wobble]="loginError === true"
+    (@wobble.start)="loginError = false"
     [@bounceOut]="loginSuccess === true"
     (@bounceOut.done)="onLoginSuccess()"
   >
     <mat-card-header>
-      <mat-card-title>Log In</mat-card-title>
+      <mat-card-title>Enter your Credentials</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-form-field>
@@ -21,9 +22,6 @@
           <chess-lite-form-error [control]="loginForm.controls.password" name="password"></chess-lite-form-error>
         </mat-error>
       </mat-form-field>
-      <div class="mat-error">
-        <div class *ngIf="loginError">Invalid credentials</div>
-      </div>
     </mat-card-content>
     <mat-card-actions [align]="'end'">
       <button

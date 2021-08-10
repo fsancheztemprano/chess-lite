@@ -17,9 +17,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             console.warn(error);
           }
           this.toasterService.showToast({
-            title: error.status + ' | ' + error.statusText,
-            message:
-              error.status === 504 ? error.message : JSON.stringify({ url: error.url, ...error.error }, null, '<br>'),
+            title: `${error.statusText} [${error.status}]`,
+            message: `${error.error.message} <br> ${error.error.time}`,
             type: ToastType.ERROR,
             override: { enableHtml: true },
           });

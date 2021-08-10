@@ -10,6 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubHeaderServiceProvider } from '../../../../../../../../core/services/header.service.stub';
 import { FormErrorModule } from '../../../../../../../../shared/components/form-error/form-error.component';
+import { stubToasterServiceProvider } from '../../../../../../../../shared/services/toaster.service.stub';
 import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
 
 import { UserManagementCreateComponent } from './user-management-create.component';
@@ -33,7 +34,7 @@ describe('UserManagementCreateComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [UserManagementCreateComponent],
-      providers: [stubUserManagementServiceProvider, stubHeaderServiceProvider],
+      providers: [stubUserManagementServiceProvider, stubHeaderServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

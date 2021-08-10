@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormErrorModule } from '../../../../../../../../../../shared/components/form-error/form-error.component';
+import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
 
 import { UserManagementAccountPasswordComponent } from './user-management-account-password.component';
 
@@ -25,6 +26,7 @@ describe('UserManagementAccountPasswordComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [UserManagementAccountPasswordComponent],
+      providers: [stubToasterServiceProvider],
     }).compileComponents();
   });
 

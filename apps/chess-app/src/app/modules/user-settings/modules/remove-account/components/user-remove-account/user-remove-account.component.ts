@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CurrentUserRelations, User } from '@chess-lite/domain';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { EMPTY, iif, Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
+import { HeaderService } from '../../../../../../core/services/header.service';
 import { CurrentUserService } from '../../../../services/current-user.service';
 import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confirm/user-remove-account-confirm.component';
 
@@ -14,12 +15,22 @@ import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confir
   styleUrls: ['./user-remove-account.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserRemoveAccountComponent {
+export class UserRemoveAccountComponent implements OnDestroy {
   private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
 
-  constructor(private readonly dialogService: MatDialog, public readonly userService: CurrentUserService) {}
-
   DELETE_ACCOUNT_REL = CurrentUserRelations.DELETE_ACCOUNT_REL;
+
+  constructor(
+    private readonly dialogService: MatDialog,
+    public readonly userService: CurrentUserService,
+    private readonly headerService: HeaderService,
+  ) {
+    this.headerService.setHeader({ title: 'Remove Account' });
+  }
+
+  ngOnDestroy(): void {
+    this.headerService.resetHeader();
+  }
 
   get user$(): Observable<User> {
     return this._user$;

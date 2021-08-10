@@ -1,12 +1,13 @@
 <form [formGroup]="signupForm" novalidate (ngSubmit)="onSubmit()">
   <mat-card
+    class="mat-elevation-z24"
     [@wobble]="signupError === true"
-    (@wobble.start)="signupErrorAnimation = false"
+    (@wobble.start)="signupError = false"
     [@bounceOut]="signupSuccess === true"
     (@bounceOut.done)="onSignupSuccess()"
   >
     <mat-card-header>
-      <mat-card-title>Sign Up</mat-card-title>
+      <mat-card-title>New Account Details</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-form-field>
@@ -47,7 +48,6 @@
       </mat-form-field>
       <div class="mat-error">
         <chess-lite-form-error [control]="signupForm" name="password"></chess-lite-form-error>
-        <div class *ngIf="signupError">Sign Up rejected.</div>
       </div>
     </mat-card-content>
     <mat-card-actions [align]="'end'">

@@ -62,7 +62,7 @@ export class AuthService {
     this.removeToken();
     this.setUser(null);
     this.halFormService.initialize().subscribe(() => {
-      this.router.navigate(['auth', 'login']);
+      this.router.navigate(['auth', 'signup']);
     });
   }
 

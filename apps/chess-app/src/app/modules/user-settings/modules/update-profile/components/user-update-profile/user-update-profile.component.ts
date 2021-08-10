@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CurrentUserRelations, User } from '@chess-lite/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { tadaAnimation, wobbleAnimation } from 'angular-animations';
-import { Observable } from 'rxjs';
+import { noop, Observable } from 'rxjs';
+import { HeaderService } from '../../../../../../core/services/header.service';
+import { ToasterService } from '../../../../../../shared/services/toaster.service';
 import { patchFormPipe } from '../../../../../../shared/utils/forms/rxjs/patch-form.rxjs.pipe';
 import { setResourceValidatorsPipe } from '../../../../../../shared/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
 import { CurrentUserService } from '../../../../services/current-user.service';
@@ -14,9 +15,8 @@ import { CurrentUserService } from '../../../../services/current-user.service';
   templateUrl: './user-update-profile.component.html',
   styleUrls: ['./user-update-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [wobbleAnimation(), tadaAnimation()],
 })
-export class UserUpdateProfileComponent {
+export class UserUpdateProfileComponent implements OnDestroy {
   private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
 
   public form = new FormGroup({
@@ -37,14 +37,13 @@ export class UserUpdateProfileComponent {
     credentialsExpired: new FormControl({ value: false, disabled: true }),
   });
 
-  submitError = false;
-  submitSuccess = false;
-  submitSuccessMessage = false;
-  submitErrorMessage = false;
-
   UPDATE_PROFILE_REL = CurrentUserRelations.UPDATE_PROFILE_REL;
 
-  constructor(public readonly userService: CurrentUserService, private readonly cdr: ChangeDetectorRef) {
+  constructor(
+    public readonly userService: CurrentUserService,
+    private readonly headerService: HeaderService,
+    private readonly toasterService: ToasterService,
+  ) {
     this.user$
       .pipe(
         untilDestroyed(this),
@@ -52,6 +51,11 @@ export class UserUpdateProfileComponent {
         setResourceValidatorsPipe(this.form, CurrentUserRelations.UPDATE_PROFILE_REL),
       )
       .subscribe();
+    this.headerService.setHeader({ title: 'User Profile' });
+  }
+
+  ngOnDestroy(): void {
+    this.headerService.resetHeader();
   }
 
   get user$(): Observable<User> {
@@ -60,16 +64,8 @@ export class UserUpdateProfileComponent {
 
   onSubmit() {
     this.userService.updateProfile(this.user$, this.form.value).subscribe({
-      next: () => this.setSubmitStatus(true),
-      error: () => this.setSubmitStatus(false),
+      next: () => this.toasterService.showToast({ message: 'User Profile Saved Successfully' }),
+      error: () => noop,
     });
-  }
-
-  setSubmitStatus(success: boolean) {
-    this.submitSuccess = success;
-    this.submitSuccessMessage = success;
-    this.submitError = !success;
-    this.submitErrorMessage = !success;
-    this.cdr.markForCheck();
   }
 }

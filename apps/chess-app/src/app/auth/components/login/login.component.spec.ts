@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HalFormClientTestingModule } from '@chess-lite/hal-form-client/testing';
+import { stubHeaderServiceProvider } from '../../../core/services/header.service.stub';
 import { StubFormErrorComponent } from '../../../shared/components/form-error/form-error.component.stub';
 import { stubLoginServiceProvider } from '../../services/login.service.stub';
 import { LoginComponent } from './login.component';
@@ -27,7 +28,7 @@ describe('LoginComponent', () => {
         HalFormClientTestingModule,
       ],
       declarations: [LoginComponent, StubFormErrorComponent],
-      providers: [stubLoginServiceProvider],
+      providers: [stubLoginServiceProvider, stubHeaderServiceProvider],
     }).compileComponents();
   });
 
