@@ -1,0 +1,46 @@
+application:
+  public_urls:
+    - /
+    - /index.html
+    - /app/**
+    - /api
+    - /api/auth/login
+    - /api/auth/signup
+  jwt:
+    secret: 'ieWCbSL5dcp3HgWkH2RSEdPGje7jjaM1Lt0jtYnHkml1WVcA6bIHKPi6cHEXWFmaECPkYWtlU85qCE2QC2ZrLlxmk29rFGgDrN8FlezGcrSH0V0ilMtuMnhmvJAvGmLlBZ90sikgYZWaZaWirI4TIUrDThJ6nTFEmRfDaE3ISPZVNr24HsxfmrK9rAqczoeKfpbjRGAE'
+server:
+  port: 8888
+  error:
+    whitelabel:
+      enabled: true
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: p@ssw0rd
+    username: master
+    driver-class-name: org.postgresql.Driver
+  devtools:
+    livereload:
+      enabled: false
+  flyway:
+    enabled: true
+    # flyway's table schema_version shall be in the same schema as the other tables
+    schemas: ${spring.jpa.properties.hibernate.default_schema}
+    table: flyway_schema_version
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: application
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true
+
+springfox:
+  documentation:
+    enabled: false

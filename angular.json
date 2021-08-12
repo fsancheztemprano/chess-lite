@@ -36,6 +36,76 @@
     }
   },
   "projects": {
+    "api": {
+      "root": "apps/api",
+      "sourceRoot": "apps/api/src",
+      "projectType": "application",
+      "architect": {
+        "clean": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/api"
+          }
+        },
+        "test": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/api",
+            "args": ["verify", "-U", "-B"]
+          }
+        },
+        "build": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/api",
+            "args": ["verify", "-U", "-B", "-DskipTests", "-DskipITs"]
+          }
+        },
+        "deploy": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/api",
+            "args": ["deploy", "-U", "-B", "-DskipTests", "-DskipITs", "-P frontend,herokudev"]
+          }
+        },
+        "run": {
+          "builder": "@nxrocks/nx-spring-boot:run",
+          "options": {
+            "root": "apps/api"
+          }
+        },
+        "serve": {
+          "builder": "@nxrocks/nx-spring-boot:serve",
+          "options": {
+            "root": "apps/api"
+          }
+        },
+        "buildJar": {
+          "builder": "@nxrocks/nx-spring-boot:buildJar",
+          "options": {
+            "root": "apps/api"
+          }
+        },
+        "buildWar": {
+          "builder": "@nxrocks/nx-spring-boot:buildWar",
+          "options": {
+            "root": "apps/api"
+          }
+        },
+        "buildImage": {
+          "builder": "@nxrocks/nx-spring-boot:buildImage",
+          "options": {
+            "root": "apps/api"
+          }
+        },
+        "buildInfo": {
+          "builder": "@nxrocks/nx-spring-boot:buildInfo",
+          "options": {
+            "root": "apps/api"
+          }
+        }
+      }
+    },
     "chess-app": {
       "projectType": "application",
       "root": "apps/chess-app",
@@ -149,76 +219,6 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/chess-app-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
-    "chess-backend": {
-      "root": "apps/chess-backend",
-      "sourceRoot": "apps/chess-backend/src",
-      "projectType": "application",
-      "architect": {
-        "clean": {
-          "builder": "@nxrocks/nx-spring-boot:clean",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "test": {
-          "builder": "@nxrocks/nx-spring-boot:clean",
-          "options": {
-            "root": "apps/chess-backend",
-            "args": ["verify", "-U", "-B"]
-          }
-        },
-        "build": {
-          "builder": "@nxrocks/nx-spring-boot:clean",
-          "options": {
-            "root": "apps/chess-backend",
-            "args": ["verify", "-U", "-B", "-DskipTests", "-DskipITs"]
-          }
-        },
-        "deploy": {
-          "builder": "@nxrocks/nx-spring-boot:clean",
-          "options": {
-            "root": "apps/chess-backend",
-            "args": ["deploy", "-U", "-B", "-DskipTests", "-DskipITs", "-P frontend,herokudev"]
-          }
-        },
-        "run": {
-          "builder": "@nxrocks/nx-spring-boot:run",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "serve": {
-          "builder": "@nxrocks/nx-spring-boot:serve",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "buildJar": {
-          "builder": "@nxrocks/nx-spring-boot:buildJar",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "buildWar": {
-          "builder": "@nxrocks/nx-spring-boot:buildWar",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "buildImage": {
-          "builder": "@nxrocks/nx-spring-boot:buildImage",
-          "options": {
-            "root": "apps/chess-backend"
-          }
-        },
-        "buildInfo": {
-          "builder": "@nxrocks/nx-spring-boot:buildInfo",
-          "options": {
-            "root": "apps/chess-backend"
           }
         }
       }

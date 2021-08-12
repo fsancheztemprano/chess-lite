@@ -6,4 +6,4 @@
 /.idea
 /node
 /node_modules
-/apps/chess-backend
+/apps/api
