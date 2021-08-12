@@ -1,7 +1,7 @@
 package dev.kurama.api.poc.api.assembler;
 
-import static dev.kurama.api.auth.utility.AuthorityUtils.hasAuthority;
-import static dev.kurama.api.hateoas.domain.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.domain.HateoasRelations.SELF;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.poc.authority.AuthorAuthority.AUTHOR_CREATE;
 import static dev.kurama.api.poc.authority.AuthorAuthority.AUTHOR_DELETE;
 import static dev.kurama.api.poc.authority.AuthorAuthority.AUTHOR_UPDATE;
@@ -28,7 +28,8 @@ public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
   }
 
   @Override
-  public @NonNull AuthorModel toModel(@NonNull AuthorModel authorModel) {
+  public @NonNull
+  AuthorModel toModel(@NonNull AuthorModel authorModel) {
     return authorModel
       .add(getModelSelfLink(authorModel.getId()))
       .add(getParentLink())
@@ -46,7 +47,8 @@ public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
   }
 
   @Override
-  public @NonNull CollectionModel<AuthorModel> toSelfCollectionModel(
+  public @NonNull
+  CollectionModel<AuthorModel> toSelfCollectionModel(
     @NonNull Iterable<? extends AuthorModel> entities) {
     return super.toSelfCollectionModel(entities)
       .mapLinkIf(hasAuthority(AUTHOR_CREATE),
@@ -65,19 +67,23 @@ public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
     return linkTo(methodOn(getClazz()).getAll());
   }
 
-  private @NonNull Affordance getAddBookAffordance(String id) {
+  private @NonNull
+  Affordance getAddBookAffordance(String id) {
     return afford(methodOn(getClazz()).addBook(id, null));
   }
 
-  private @NonNull Affordance getCreateAffordance() {
+  private @NonNull
+  Affordance getCreateAffordance() {
     return afford(methodOn(getClazz()).create(null));
   }
 
-  private @NonNull Affordance getDeleteAffordance(String id) {
+  private @NonNull
+  Affordance getDeleteAffordance(String id) {
     return afford(methodOn(getClazz()).delete(id));
   }
 
-  private @NonNull Affordance getUpdateAffordance(String id) {
+  private @NonNull
+  Affordance getUpdateAffordance(String id) {
     return afford(methodOn(getClazz()).put(id, null));
   }
 
@@ -85,7 +91,8 @@ public class AuthorModelAssembler extends DomainModelAssembler<AuthorModel> {
     return linkTo(methodOn(getClazz()).getAuthorBooks(authorModel.getId())).withRel("books");
   }
 
-  private @NonNull Link getParentLink() {
+  private @NonNull
+  Link getParentLink() {
     return linkTo(methodOn(getClazz()).getAll()).withRel("authors");
   }
 }

@@ -1,6 +1,6 @@
 package dev.kurama.api.poc.api.assembler;
 
-import static dev.kurama.api.hateoas.domain.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.domain.HateoasRelations.SELF;
 import static dev.kurama.api.poc.authority.AuthorAuthority.AUTHOR_READ;
 import static dev.kurama.api.poc.authority.BookAuthority.BOOK_CREATE;
 import static dev.kurama.api.poc.authority.BookAuthority.BOOK_DELETE;
@@ -10,8 +10,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import dev.kurama.api.auth.utility.AuthorityUtils;
 import dev.kurama.api.core.api.assembler.DomainModelAssembler;
+import dev.kurama.api.core.utility.AuthorityUtils;
 import dev.kurama.api.poc.api.domain.model.BookModel;
 import dev.kurama.api.poc.rest.AuthorController;
 import dev.kurama.api.poc.rest.BookController;
@@ -32,7 +32,8 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
   }
 
   @Override
-  public @NonNull BookModel toModel(@NonNull BookModel bookModel) {
+  public @NonNull
+  BookModel toModel(@NonNull BookModel bookModel) {
     return bookModel
       .add(getModelSelfLink(bookModel.getId()))
       .add(getParentLink())
@@ -51,7 +52,8 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
   }
 
   @Override
-  public @NonNull CollectionModel<BookModel> toSelfCollectionModel(@NonNull Iterable<? extends BookModel> entities) {
+  public @NonNull
+  CollectionModel<BookModel> toSelfCollectionModel(@NonNull Iterable<? extends BookModel> entities) {
     return super.toSelfCollectionModel(entities)
       .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_CREATE),
         LinkRelation.of(SELF),
@@ -69,7 +71,8 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
     return linkTo(methodOn(getClazz()).getAll());
   }
 
-  public @NonNull CollectionModel<BookModel> toAuthorCollectionModel(@NonNull List<BookModel> entities,
+  public @NonNull
+  CollectionModel<BookModel> toAuthorCollectionModel(@NonNull List<BookModel> entities,
     String authorId) {
     return toLinkedCollectionModel(entities, linkTo(methodOn(AuthorController.class).getAuthorBooks(authorId)))
       .mapLinkIf(AuthorityUtils.hasAuthority(BOOK_UPDATE),
@@ -77,31 +80,38 @@ public class BookModelAssembler extends DomainModelAssembler<BookModel> {
         link -> link.andAffordance(getAddAuthorBookAffordance(authorId)));
   }
 
-  private @NonNull Link getAuthorLink(@NonNull String authorId) {
+  private @NonNull
+  Link getAuthorLink(@NonNull String authorId) {
     return linkTo(methodOn(AuthorController.class).get(authorId)).withRel("author");
   }
 
-  private @NonNull Affordance getAddAuthorBookAffordance(@NonNull String authorId) {
+  private @NonNull
+  Affordance getAddAuthorBookAffordance(@NonNull String authorId) {
     return afford(methodOn(AuthorController.class).addBook(authorId, null));
   }
 
-  private @NonNull Affordance getCreateAffordance() {
+  private @NonNull
+  Affordance getCreateAffordance() {
     return afford(methodOn(getClazz()).create(null));
   }
 
-  private @NonNull Affordance getSetAuthorAffordance(@NonNull String id) {
+  private @NonNull
+  Affordance getSetAuthorAffordance(@NonNull String id) {
     return afford(methodOn(getClazz()).setAuthor(id, null));
   }
 
-  private @NonNull Affordance getDeleteAffordance(@NonNull String id) {
+  private @NonNull
+  Affordance getDeleteAffordance(@NonNull String id) {
     return afford(methodOn(getClazz()).delete(id));
   }
 
-  private @NonNull Affordance getUpdateAffordance(@NonNull String id) {
+  private @NonNull
+  Affordance getUpdateAffordance(@NonNull String id) {
     return afford(methodOn(getClazz()).put(id, null));
   }
 
-  private @NonNull Link getParentLink() {
+  private @NonNull
+  Link getParentLink() {
     return linkTo(methodOn(getClazz()).getAll()).withRel("books");
   }
 }

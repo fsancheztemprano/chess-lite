@@ -2,7 +2,7 @@ package dev.kurama.api.core.api.assembler;
 
 import static org.springframework.hateoas.mediatype.Affordances.of;
 
-import dev.kurama.api.hateoas.domain.HateoasRelations;
+import dev.kurama.api.core.hateoas.domain.HateoasRelations;
 import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -17,7 +17,8 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
   protected abstract Class<?> getClazz();
 
   @Override
-  public @NonNull T toModel(@NonNull T entity) {
+  public @NonNull
+  T toModel(@NonNull T entity) {
     return entity;
   }
 
