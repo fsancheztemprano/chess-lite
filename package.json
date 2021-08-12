@@ -84,7 +84,7 @@
     "@nxrocks/nx-spring-boot": "2.1.0",
     "@schematics/angular": "12.2.0",
     "@schematics/schematics": "0.1102.12",
-    "@types/jest": "26.0.24",
+    "@types/jest": "27.0.1",
     "@types/node": "16.4.13",
     "@types/url-template": "2.0.28",
     "@typescript-eslint/eslint-plugin": "4.29.1",
