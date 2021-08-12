@@ -1,4 +1,4 @@
-import { IResource, Resource } from '@chess-lite/hal-form-client';
+import { IResource, Resource } from '@hal-form-client';
 import { Page } from '../hateoas/pageable.model';
 import { Role } from './role.model';
 

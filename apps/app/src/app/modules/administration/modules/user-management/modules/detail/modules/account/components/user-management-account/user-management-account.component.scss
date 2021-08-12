@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  flex-flow: column;
+
+  app-user-management-account-password,
+  app-user-management-account-delete {
+    margin: 8px;
+  }
+}

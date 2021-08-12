@@ -1,4 +1,4 @@
-import { IResource, Resource } from '@chess-lite/hal-form-client';
+import { IResource, Resource } from '@hal-form-client';
 
 export class Role extends Resource implements IResource {
   id?: string;

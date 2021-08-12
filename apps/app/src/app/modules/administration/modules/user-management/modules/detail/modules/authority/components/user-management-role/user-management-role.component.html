@@ -1,0 +1,14 @@
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Role</mat-label>
+    <mat-select formControlName="id">
+      <mat-option *ngFor="let role of roles | async" [value]="role.id">
+        {{ role.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error>
+      <app-form-error [control]="form.controls.id" name="id"></app-form-error>
+    </mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" [disabled]="!user$ || !(user$ | async)?.isAllowedTo('update')">Save</button>
+</form>

@@ -1,0 +1,73 @@
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.username" name="username"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="email" placeholder="Email" formControlName="email" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.email" name="email"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Firstname" formControlName="firstname" />
+        <mat-error>
+          <app-form-error [control]="form.controls.firstname" name="firstname"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Lastname" formControlName="lastname" />
+        <mat-error>
+          <app-form-error [control]="form.controls.lastname" name="lastname"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Profile Image" formControlName="profileImageUrl" />
+        <mat-error>
+          <app-form-error [control]="form.controls.profileImageUrl" name="profileImageUrl"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="roleId">
+          <mat-option *ngFor="let role of roles | async" [value]="role.id">
+            {{ role.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          <app-form-error [control]="form.controls.roleId" name="roleId"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.password" name="password"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Repeat Password" formControlName="password2" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.password2" name="password"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="active">Active</mat-checkbox>
+      <mat-checkbox formControlName="locked">Locked</mat-checkbox>
+      <mat-checkbox formControlName="expired">Expired</mat-checkbox>
+      <mat-checkbox formControlName="credentialsExpired">Expired Credentials</mat-checkbox>
+    </mat-card-content>
+    <mat-card-actions [align]="'end'">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid || !!!(userManagementService.isAllowedTo('create') | async)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -1,0 +1,55 @@
+<mat-sidenav-container class="sidenav-container" *ngLet="'' | isMobile | async as isMobile">
+  <mat-sidenav
+    #sidenav
+    class="sidenav"
+    [fixedInViewport]="false"
+    [attr.role]="isMobile ? 'dialog' : 'navigation'"
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="this.sidenavService.isOpen$ | async"
+  >
+    <mat-toolbar>
+      <span
+        >Welcome <span *ngIf="authService.user$ | async as user">{{ user.firstname || user.username }}</span></span
+      >
+    </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item (click)="toggleSidenav()" routerLink="/" routerLinkActive="active-link">
+        <mat-icon aria-hidden="false" aria-label="Home">home</mat-icon>
+        Home
+      </a>
+      <app-user-settings-sidenav-item *ngIf="sidenavService.showUserLink() | async" (toggleSidenav)="toggleSidenav()">
+      </app-user-settings-sidenav-item>
+      <app-administration-sidenav-item
+        *ngIf="sidenavService.showAdministrationLink() | async"
+        (toggleSidenav)="toggleSidenav()"
+      ></app-administration-sidenav-item>
+      <a mat-list-item *ngIf="authService.isLoggedIn() | async" (click)="logout()">
+        <mat-icon aria-hidden="false" aria-label="Log Out">logout</mat-icon>
+        Log Out
+      </a>
+      <a
+        mat-list-item
+        *ngIf="sidenavService.showLoginLink() | async"
+        (click)="toggleSidenav()"
+        routerLink="/auth/login"
+        routerLinkActive="active-link"
+      >
+        <mat-icon aria-hidden="false" aria-label="Log In">login</mat-icon>
+        Log In
+      </a>
+      <a
+        mat-list-item
+        *ngIf="sidenavService.showSignupLink() | async"
+        (click)="toggleSidenav()"
+        routerLink="/auth/signup"
+        routerLinkActive="active-link"
+      >
+        <mat-icon aria-hidden="false" aria-label="Sign Up">assignment_ind</mat-icon>
+        Sign Up
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

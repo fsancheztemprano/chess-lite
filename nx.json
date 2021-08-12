@@ -9,7 +9,7 @@
   "affected": {
     "defaultBase": "development"
   },
-  "npmScope": "chess-lite",
+  "npmScope": "app",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
@@ -22,12 +22,12 @@
     "api": {
       "tags": []
     },
-    "chess-app": {
+    "app": {
       "tags": []
     },
-    "chess-app-e2e": {
+    "app-e2e": {
       "tags": [],
-      "implicitDependencies": ["chess-app"]
+      "implicitDependencies": ["app"]
     },
     "domain": {
       "tags": []

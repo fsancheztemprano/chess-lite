@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-header>
+    <a [routerLink]="headerService.navigationLink | async" mat-icon-button aria-label="Options">
+      <mat-icon>chevron_left</mat-icon>
+    </a>
+    <div class="header-title" [style]="'flex-grow:' + (headerService.titleRatio | async)">
+      {{ headerService.title | async }}
+    </div>
+    <ng-container *ngIf="headerService.tabs | async as tabs">
+      <nav
+        *ngIf="tabs.length"
+        mat-tab-nav-bar
+        mat-align-tabs="end"
+        mat-stretch-tabs
+        [style]="'flex-grow:' + (headerService.tabsRatio | async)"
+      >
+        <a
+          *ngFor="let tab of tabs"
+          mat-tab-link
+          [routerLink]="tab.target"
+          routerLinkActive="active-link"
+          #rla="routerLinkActive"
+          [active]="rla.isActive"
+        >
+          {{ tab.label }}
+        </a>
+      </nav>
+    </ng-container>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="Options"
+      *ngIf="headerService.showOptionsButton | async"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button
+        mat-menu-item
+        *ngFor="let option of headerService.options | async"
+        (click)="option.onClick()"
+        [disabled]="option?.disabled | async"
+      >
+        <mat-icon *ngIf="option.icon">{{ option.icon }}</mat-icon>
+        <span>{{ option.label }}</span>
+      </button>
+    </mat-menu>
+  </mat-card-header>
+
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+</mat-card>

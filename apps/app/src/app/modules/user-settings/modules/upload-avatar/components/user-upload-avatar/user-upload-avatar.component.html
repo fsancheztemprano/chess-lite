@@ -1,0 +1,34 @@
+<form [formGroup]="form" novalidate>
+  <mat-card class="mat-elevation-z10">
+    <mat-card-content>
+      <mat-card class="mat-elevation-z10">
+        <mat-card-content>
+          <img width="100%" alt="Upload Avatar" *ngIf="user$ | async as user" src="{{ user.profileImageUrl }}" />
+        </mat-card-content>
+      </mat-card>
+      <div>
+        <input
+          #imageInput
+          style="display: none"
+          type="file"
+          accept="image/*"
+          formControlName="avatar"
+          (change)="onSubmit($event)"
+        />
+        <app-form-error [control]="form" name="avatar"></app-form-error>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-fab
+        color="primary"
+        aria-label="Upload Avatar"
+        (click)="imageInput.click()"
+        [disabled]="!user || !user.isAllowedTo(UPLOAD_AVATAR_REL)"
+        *ngLet="user$ | async as user"
+      >
+        <mat-icon>file_upload</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
