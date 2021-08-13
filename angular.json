@@ -61,6 +61,13 @@
             "args": ["verify", "-U", "-B", "-DskipTests", "-DskipITs"]
           }
         },
+        "package": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "options": {
+            "root": "apps/api",
+            "args": ["package", "-U", "-B", "-DskipTests", "-DskipITs", "-P frontend"]
+          }
+        },
         "deploy": {
           "builder": "@nxrocks/nx-spring-boot:clean",
           "options": {
