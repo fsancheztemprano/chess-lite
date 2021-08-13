@@ -129,7 +129,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: start deployment
+      - name: Set Deployment Status In Progress
         uses: bobheadxi/deployments@v0.4.3
         id: deployment
         with:
@@ -147,7 +147,7 @@ jobs:
           parallel: 'false'
           affected: 'false'
 
-      - name: update deployment status
+      - name: Update Deployment Status
         uses: bobheadxi/deployments@v0.4.3
         if: always()
         with:
@@ -156,3 +156,57 @@ jobs:
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           env_url: https://boiling-shore-06894.herokuapp.com/
+
+      - name: Failed Deployment
+        if: failure()
+        run: echo "DEPLOY_STATE=failed" >> $GITHUB_ENV
+
+      - name: Successfull Deployment
+        if: success()
+        run: echo "DEPLOY_STATE=successful" >> $GITHUB_ENV
+
+      - name: Parse Jira Keys from All Commits
+        id: jira_keys
+        if: always()
+        uses: HighwayThree/jira-extract-issue-keys@master
+        with:
+          is-pull-request: ${{ github.event_name == 'pull_request' }}
+          parse-all-commits: ${{ github.event_name == 'push' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Confirm Deploy State and Jira Key Values
+        if: always()
+        run: |
+          echo "DEPLOY_STATE: ${{env.DEPLOY_STATE}}"
+          echo "Jira Keys: ${{steps.jira_keys.outputs.jira-keys}}"
+
+      - name: Push Deployment Info to Jira
+        id: push_deployment_info_to_jira
+        uses: HighwayThree/jira-upload-deployment-info@master
+        with:
+          #cloud-id: '${{ secrets.CLOUD_ID }}'
+          cloud-instance-base-url: '${{ secrets.JIRA_URL }}'
+          client-id: '${{ secrets.JIRA_CLIENT_ID }}'
+          client-secret: '${{ secrets.JIRA_CLIENT_SECRET }}'
+          deployment-sequence-number: '${{ github.run_id }}'
+          update-sequence-number: '${{ github.run_id }}'
+          issue-keys: "UM-61"
+          #issue-keys: "${{ steps.jira_keys.outputs.jira-keys }}"
+          display-name: "Development"
+          url: https://boiling-shore-06894.herokuapp.com/
+          description: "Test Development"
+          last-updated: '${{github.event.head_commit.timestamp}}'
+          label: 'Test Development'
+          state: '${{env.DEPLOY_STATE}}'
+          pipeline-id: '${{ github.repository }} ${{ github.workflow }}'
+          pipeline-display-name: 'Workflow: ${{ github.workflow }} (#${{ github.run_number }})'
+          pipeline-url: '${{github.event.repository.url}}/actions/runs/${{github.run_id}}'
+          environment-id: 'development'
+          environment-display-name: 'Development'
+          environment-type: 'testing'
+
+      - name: Confirm Jira Deploy Output
+        if: success()
+        run: |
+          echo "Jira Upload Deploy Info response: ${{steps.push_deployment_info_to_jira.outputs.response}}"
