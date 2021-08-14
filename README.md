@@ -7,8 +7,9 @@
 <p align="center">
   <a href="https://github.com/kurama-dev/fullstack-template">
 
-[comment]: <> (    <img src="./images/logo.png" alt="Logo" width="80" height="80">)
-  </a>
+[comment]: <> ( <img src="./images/logo.png" alt="Logo" width="80" height="80">)
+</a>
+
 </p>
 
 <h3 align="center">Fullstack Template</h3>
@@ -252,29 +253,16 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=linkedin&colorB=555
-
 [linkedin-contact-url]: https://www.linkedin.com/in/fsancheztemprano/
-
 [github-contact-shield]: https://img.shields.io/badge/-Github-black?style=for-the-badge&logo=github&colorB=555
-
 [github-contact-url]: https://github.com/fsancheztemprano
-
 [email-contact-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
-
 [email-contact-url]: mailto:frango9000@gmail.com
-
 [linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555
-
 [linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kurama-dev/fullstack-template
-
 [facebook-share-shield]: https://img.shields.io/badge/Share-Facebook?style=for-the-badge&logo=facebook&colorB=555
-
 [facebook-share-url]: https://www.facebook.com/sharer/sharer.php?u=https://github.com/kurama-dev/fullstack-template
-
 [twitter-share-shield]: https://img.shields.io/badge/Share-Twitter?style=for-the-badge&logo=twitter&colorB=555
-
 [twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/kurama-dev/fullstack-template&text=Check%20this%20project%20out
-
 [email-share-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
-
 [email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/kurama-dev/fullstack-template
