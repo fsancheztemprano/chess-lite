@@ -1,11 +1,5 @@
 <!-- PROJECT SHIELDS -->
-[![Build][build-shield]][build-url]
-[![Deployment][deployment-shield]][deployment-url]
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+![Development](https://github.com/kurama-dev/fullstack-template/actions/workflows/verify.yml/badge.svg)
 
 
 
@@ -68,8 +62,6 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project ⌨️
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 ### Built With 🛠️
 
@@ -215,35 +207,6 @@ Project Link: [https://github.com/kurama-dev/fullstack-template](https://github.
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[product-screenshot]: images/screenshot.png
-
-[build-shield]: https://img.shields.io/github/checks-status/kurama-dev/fullstack-template/development?style=for-the-badge&logo=github&label=build
-
-[build-url]: https://github.com/kurama-dev/fullstack-template/graphs/build
-
-[deployment-shield]: https://img.shields.io/github/deployments/kurama-dev/fullstack-template/development?style=for-the-badge&logo=github&label=deploy
-
-[deployment-url]: https://github.com/kurama-dev/fullstack-template/graphs/deployment
-
-[contributors-shield]: https://img.shields.io/github/contributors/kurama-dev/fullstack-template?style=for-the-badge&logo=github
-
-[contributors-url]: https://github.com/kurama-dev/fullstack-template/graphs/contributors
-
-[forks-shield]: https://img.shields.io/github/forks/kurama-dev/fullstack-template?style=for-the-badge&logo=github
-
-[forks-url]: https://github.com/kurama-dev/fullstack-template/network/members
-
-[stars-shield]: https://img.shields.io/github/stars/kurama-dev/fullstack-template?style=for-the-badge&logo=github
-
-[stars-url]: https://github.com/kurama-dev/fullstack-template/stargazers
-
-[issues-shield]: https://img.shields.io/github/issues/kurama-dev/fullstack-template?style=for-the-badge&logo=github
-
-[issues-url]: https://github.com/kurama-dev/fullstack-template/issues
-
-[license-shield]: https://img.shields.io/github/license/kurama-dev/fullstack-template?style=for-the-badge&logo=github
-
-[license-url]: https://github.com/kurama-dev/fullstack-template/blob/master/LICENSE.txt
 
 [linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
