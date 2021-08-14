@@ -1,13 +1,13 @@
 <!-- PROJECT SHIELDS -->
+
 ![Development](https://github.com/kurama-dev/fullstack-template/actions/workflows/verify.yml/badge.svg)
-
-
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/kurama-dev/fullstack-template">
-    <img src="./images/logo.png" alt="Logo" width="80" height="80">
+
+[comment]: <> (    <img src="./images/logo.png" alt="Logo" width="80" height="80">)
   </a>
 </p>
 
@@ -25,8 +25,6 @@
   ·
   <a href="https://github.com/kurama-dev/fullstack-template/issues">Request Feature</a>
 </p>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -57,23 +55,18 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project ⌨️
 
 ### Built With 🛠️
 
-* [OpenJDK 11](https://adoptopenjdk.net/) - Open Java
-* [Maven](https://maven.apache.org/) - Dependencies Management
-* [Spring](https://spring.io/) - Framework
-* [Node.js](http://nodejs.org/) - Runtime Environment
-
+- [OpenJDK 11](https://adoptopenjdk.net/) - Open Java
+- [Maven](https://maven.apache.org/) - Dependencies Management
+- [Spring](https://spring.io/) - Framework
+- [Node.js](http://nodejs.org/) - Runtime Environment
 - [Yarn](https://yarnpkg.com/) - NodeJS Package Manager
-
-* [Angular](https://angular.io/) - Framework
-
+- [Angular](https://angular.io/) - Framework
 - [Nx](https://nx.dev/angular) - Nx Workspace
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/) - IDE
 
@@ -85,9 +78,9 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites 📋
 
-* Java 11
-* Node 14
-* Docker
+- Java 11
+- Node 14
+- Docker
 
 ### Installation 🔧
 
@@ -108,7 +101,6 @@ Use this space to show useful examples of how a project can be used. Additional 
 work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
-
 
 <!-- TESTING -->
 
@@ -212,8 +204,6 @@ cd apps/api
 See the [open issues](https://github.com/kurama-dev/fullstack-template/issues) for a list of proposed features (and
 known issues).
 
-
-
 <!-- CONTRIBUTING -->
 
 ## Contributing 🖇️
@@ -231,12 +221,9 @@ contributions you make are **greatly appreciated**.
 
 ## License 📄
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
 ## Wiki 📖
 
 More info on the project can be found in our [Wiki](https://github.com/kurama-dev/fullstack-template/wiki)
-
 
 <!-- CONTACT -->
 
@@ -248,7 +235,6 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 [![Github][github-contact-shield]][github-contact-url]
 [![LinkedIn][linkedin-contact-shield]][linkedin-contact-url]
 
-
 <!-- SHARE -->
 
 ## Share 🔗
@@ -258,14 +244,12 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 [![Facebook][facebook-share-shield]][facebook-share-url]
 [![Twitter][twitter-share-shield]][twitter-share-url]
 
-
 <!-- ACKNOWLEDGEMENTS -->
 
 ## Acknowledgements 🎁
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
 
 [linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=linkedin&colorB=555
 
@@ -281,7 +265,7 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 
 [linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555
 
-[linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true\&url=https://github.com/kurama-dev/fullstack-template
+[linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kurama-dev/fullstack-template
 
 [facebook-share-shield]: https://img.shields.io/badge/Share-Facebook?style=for-the-badge&logo=facebook&colorB=555
 
@@ -289,8 +273,8 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 
 [twitter-share-shield]: https://img.shields.io/badge/Share-Twitter?style=for-the-badge&logo=twitter&colorB=555
 
-[twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/kurama-dev/fullstack-template\&text=Check%20this%20project%20out
+[twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/kurama-dev/fullstack-template&text=Check%20this%20project%20out
 
 [email-share-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
 
-[email-share-url]: mailto:info@example.com?\&subject=\&cc=\&bcc=\&body=Check%20this%20project%20out%20https://github.com/kurama-dev/fullstack-template
+[email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/kurama-dev/fullstack-template
