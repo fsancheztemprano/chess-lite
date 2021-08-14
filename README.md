@@ -19,7 +19,7 @@
   <a href="https://github.com/kurama-dev/fullstack-template"><strong>Explore the docs »</strong></a>
   <br />
   <br />
-  <a href="https://github.com/kurama-dev/fullstack-template">View Demo</a>
+  <a href="https://boiling-shore-06894.herokuapp.com/app/home">View Demo</a>
   ·
   <a href="https://github.com/kurama-dev/fullstack-template/issues">Report Bug</a>
   ·
@@ -65,9 +65,17 @@
 
 ### Built With 🛠️
 
-* []()
-* []()
-* []()
+* [OpenJDK 11](https://adoptopenjdk.net/) - Open Java
+* [Maven](https://maven.apache.org/) - Dependencies Management
+* [Spring](https://spring.io/) - Framework
+* [Node.js](http://nodejs.org/) - Runtime Environment
+
+- [Yarn](https://yarnpkg.com/) - NodeJS Package Manager
+
+* [Angular](https://angular.io/) - Framework
+
+- [Nx](https://nx.dev/angular) - Nx Workspace
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) - IDE
 
 <!-- GETTING STARTED -->
 
@@ -77,12 +85,9 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites 📋
 
-This is an example of how to list things you need to use the software and how to install them.
-
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* Java 11
+* Node 14
+* Docker
 
 ### Installation 🔧
 
@@ -111,32 +116,94 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 Explain how to run the automated tests for this system
 
-### Break down into end to end tests
-
-Explain what these tests test and why
+Test Backend
 
 ```
-Give an example
+npm run test:backend
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
+or
 
 ```
-Give an example
+cd apps/api
+.\mvn test
+```
+
+Test Frontend
+
+```
+npm run test:frontend
+```
+
+Test All
+
+```
+npm run test
+```
+
+E2E
+
+```
+npm run e2e
+```
+
+And coding style tests
+
+```
+npm run lint
+npm run format:check
 ```
 
 <!-- BUILDING -->
 
 ## Building 🛠️
 
+Build Backend
+
+```
+npm run build:build
+```
+
+Build Frontend
+
+```
+npm run build:front
+```
+
+Create Jar Package (Front+Back)
+
+```
+npm run package
+```
+
+or
+
+```
+cd apps/api
+.\mvn clean package -P frontend
+```
+
 <!-- DEPLOYING -->
 
 ## Deploying 📦
 
-Add additional notes about how to deploy this on a live system
+### Deploying to heroku:
 
+Branch development automatically deploys to heroku on success ci build.
+
+Manual Deployment:
+You'll need to set HEROKU_API_KEY environment variable or user Heroku CLI to login first.
+
+```
+npm run deploy
+```
+
+or
+
+```
+cd apps/api
+.\mvn clean deploy -P frontend,herokudev
+```
 
 <!-- ROADMAP -->
 
@@ -175,15 +242,11 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 
 ## Contact ✒️
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
-
-Project Link: [https://github.com/kurama-dev/fullstack-template](https://github.com/kurama-dev/fullstack-template)
+- **[Francisco Sanchez](https://fsancheztemprano.github.io/)**
 
 [![Email][email-contact-shield]][email-contact-url]
+[![Github][github-contact-shield]][github-contact-url]
 [![LinkedIn][linkedin-contact-shield]][linkedin-contact-url]
-[![Facebook][facebook-contact-shield]][facebook-contact-url]
-[![Twitter][twitter-contact-shield]][twitter-contact-url]
-
 
 
 <!-- SHARE -->
@@ -200,29 +263,21 @@ Project Link: [https://github.com/kurama-dev/fullstack-template](https://github.
 
 ## Acknowledgements 🎁
 
-* []()
-* []()
-* []()
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 
-[linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=linkedin&colorB=555
 
-[linkedin-contact-url]: https://linkedin.com/in/kurama-dev
+[linkedin-contact-url]: https://www.linkedin.com/in/fsancheztemprano/
 
-[facebook-contact-shield]: https://img.shields.io/badge/-facebook-black.svg?style=for-the-badge&logo=facebook&colorB=555
+[github-contact-shield]: https://img.shields.io/badge/-Github-black?style=for-the-badge&logo=github&colorB=555
 
-[facebook-contact-url]: https://facebook.com/facebook_username
-
-[twitter-contact-shield]: https://img.shields.io/badge/-twitter-black.svg?style=for-the-badge&logo=twitter&colorB=555
-
-[twitter-contact-url]: https://twitter.com/twitter_username
+[github-contact-url]: https://github.com/fsancheztemprano
 
 [email-contact-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
 
-[email-contact-url]: mailto:info@example.com
+[email-contact-url]: mailto:frango9000@gmail.com
 
 [linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555
 

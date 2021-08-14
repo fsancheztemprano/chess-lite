@@ -16,7 +16,7 @@
     "build:backend": "nx run-many --target=build --projects=api -P frontend",
     "package": "nx run-many --target=package --projects=api",
     "test": "nx run-many --target=test --all",
-    "test:front": "nx run-many --target=test --projects=app",
+    "test:frontend": "nx run-many --target=test --projects=app",
     "test:backend": "nx run-many --target=test --projects=api",
     "lint": "nx workspace-lint && nx run-many --target=lint --all",
     "e2e": "ng e2e",
