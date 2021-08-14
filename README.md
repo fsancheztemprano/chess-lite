@@ -217,31 +217,31 @@ Project Link: [https://github.com/kurama-dev/fullstack-template](https://github.
 
 [product-screenshot]: images/screenshot.png
 
-[build-shield]: https://img.shields.io/github/checks-status/kurama-dev/repo/development?style=for-the-badge&logo=github&label=build
+[build-shield]: https://img.shields.io/github/checks-status/kurama-dev/fullstack-template/development?style=for-the-badge&logo=github&label=build
 
 [build-url]: https://github.com/kurama-dev/fullstack-template/graphs/build
 
-[deployment-shield]: https://img.shields.io/github/deployments/kurama-dev/repo/development?style=for-the-badge&logo=github&label=deploy
+[deployment-shield]: https://img.shields.io/github/deployments/kurama-dev/fullstack-template/development?style=for-the-badge&logo=github&label=deploy
 
 [deployment-url]: https://github.com/kurama-dev/fullstack-template/graphs/deployment
 
-[contributors-shield]: https://img.shields.io/github/contributors/kurama-dev/repo.svg?style=for-the-badge&logo=github
+[contributors-shield]: https://img.shields.io/github/contributors/kurama-dev/fullstack-template?style=for-the-badge&logo=github
 
 [contributors-url]: https://github.com/kurama-dev/fullstack-template/graphs/contributors
 
-[forks-shield]: https://img.shields.io/github/forks/kurama-dev/repo.svg?style=for-the-badge&logo=github
+[forks-shield]: https://img.shields.io/github/forks/kurama-dev/fullstack-template?style=for-the-badge&logo=github
 
 [forks-url]: https://github.com/kurama-dev/fullstack-template/network/members
 
-[stars-shield]: https://img.shields.io/github/stars/kurama-dev/repo.svg?style=for-the-badge&logo=github
+[stars-shield]: https://img.shields.io/github/stars/kurama-dev/fullstack-template?style=for-the-badge&logo=github
 
 [stars-url]: https://github.com/kurama-dev/fullstack-template/stargazers
 
-[issues-shield]: https://img.shields.io/github/issues/kurama-dev/repo.svg?style=for-the-badge&logo=github
+[issues-shield]: https://img.shields.io/github/issues/kurama-dev/fullstack-template?style=for-the-badge&logo=github
 
 [issues-url]: https://github.com/kurama-dev/fullstack-template/issues
 
-[license-shield]: https://img.shields.io/github/license/kurama-dev/repo.svg?style=for-the-badge&logo=github
+[license-shield]: https://img.shields.io/github/license/kurama-dev/fullstack-template?style=for-the-badge&logo=github
 
 [license-url]: https://github.com/kurama-dev/fullstack-template/blob/master/LICENSE.txt
 
