@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Injector } from '@angular/core';
 import { ActiveToast, ToastrService } from 'ngx-toastr';
 import { IndividualConfig } from 'ngx-toastr/toastr/toastr-config';
 import { IToastModel, ToastType } from './toaster.service.model';
@@ -12,8 +12,16 @@ export class ToasterService {
     enableHtml: false,
     tapToDismiss: true,
   };
+  private _toastrService: ToastrService | undefined;
 
-  constructor(private readonly toastrService: ToastrService) {}
+  constructor(@Inject(Injector) private readonly injector: Injector) {}
+
+  private get toastrService(): ToastrService {
+    if (!this._toastrService) {
+      this._toastrService = this.injector.get(ToastrService);
+    }
+    return this._toastrService;
+  }
 
   showToast(toast: IToastModel): ActiveToast<unknown> {
     toast = toast || {};

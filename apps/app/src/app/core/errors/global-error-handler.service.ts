@@ -1,4 +1,4 @@
-import { ErrorHandler, Inject, Injectable, Injector, NgZone } from '@angular/core';
+import { ErrorHandler, Injectable, NgZone } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ToasterService } from '../../shared/services/toaster.service';
 import { ToastType } from '../../shared/services/toaster.service.model';
@@ -7,7 +7,7 @@ import { ToastType } from '../../shared/services/toaster.service.model';
   providedIn: 'root',
 })
 export class GlobalErrorHandler implements ErrorHandler {
-  constructor(private readonly ngZone: NgZone, @Inject(Injector) private readonly injector: Injector) {}
+  constructor(private readonly ngZone: NgZone, private readonly toasterService: ToasterService) {}
 
   handleError(error: Error): void {
     this.ngZone.run(() => {
@@ -16,9 +16,5 @@ export class GlobalErrorHandler implements ErrorHandler {
       }
       this.toasterService.showToast({ title: error.name, message: error.message, type: ToastType.ERROR });
     });
-  }
-
-  private get toasterService(): ToasterService {
-    return this.injector.get(ToasterService);
   }
 }

@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 import { stubAuthServiceProvider } from '../../../auth/services/auth.service.stub';
 import { stubLoginServiceProvider } from '../../../auth/services/login.service.stub';
 import { NgLetModule } from '../../../shared/directives/ng-let.directive';
@@ -40,6 +41,7 @@ describe('SidenavComponent', () => {
           MatToolbarModule,
           IsMobileModule,
           NgLetModule,
+          TranslateModule.forRoot(),
         ],
         providers: [stubAuthServiceProvider, stubSidenavServiceProvider, stubLoginServiceProvider],
       }).compileComponents();

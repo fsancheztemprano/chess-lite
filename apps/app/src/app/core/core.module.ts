@@ -11,8 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ToastrModule } from 'ngx-toastr';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { TranslateModule } from '@ngx-translate/core';
 import { NgLetModule } from '../shared/directives/ng-let.directive';
 import { IsMobileModule } from '../shared/pipes/is-mobile.pipe';
 import { CoreComponent } from './components/core/core.component';
@@ -48,8 +47,13 @@ const MaterialModules = [
     UserSettingsSidenavItemComponent,
     HeaderComponent,
   ],
-  imports: [CommonModule, CoreRoutingModule, IsMobileModule, NgLetModule, ...MaterialModules, ToastrModule.forRoot()],
-  exports: [],
-  providers: [AuthGuard],
+  imports: [
+    CommonModule,
+    CoreRoutingModule,
+    TranslateModule.forChild(),
+    IsMobileModule,
+    NgLetModule,
+    ...MaterialModules,
+  ],
 })
 export class CoreModule {}
