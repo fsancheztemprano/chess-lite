@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { RouterTestingModule } from '@angular/router/testing';
+import { IsMobileModule } from '../../../shared/pipes/is-mobile.pipe';
+import { StubContextMenuComponent } from '../context-menu/context-menu.component.stub';
 
 import { HeaderComponent } from './header.component';
 
-describe('MainContainerComponent', () => {
+describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatMenuModule, MatCardModule, MatIconModule, MatButtonModule, RouterTestingModule],
-      declarations: [HeaderComponent],
+      imports: [MatIconModule, MatButtonModule, RouterTestingModule, IsMobileModule],
+      declarations: [HeaderComponent, StubContextMenuComponent],
     }).compileComponents();
   });
 
