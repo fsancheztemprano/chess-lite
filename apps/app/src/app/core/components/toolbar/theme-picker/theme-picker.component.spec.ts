@@ -3,21 +3,21 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-import { ThemeComponent } from './theme.component';
+import { ThemePickerComponent } from './theme-picker.component';
 
 describe('ThemeComponent', () => {
-  let component: ThemeComponent;
-  let fixture: ComponentFixture<ThemeComponent>;
+  let component: ThemePickerComponent;
+  let fixture: ComponentFixture<ThemePickerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatIconModule, MatSlideToggleModule, ReactiveFormsModule],
-      declarations: [ThemeComponent],
+      declarations: [ThemePickerComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ThemeComponent);
+    fixture = TestBed.createComponent(ThemePickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

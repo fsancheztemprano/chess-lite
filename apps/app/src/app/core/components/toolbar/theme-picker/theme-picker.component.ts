@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { ThemeService } from '../../services/theme.service';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
-  selector: 'app-theme',
-  templateUrl: './theme.component.html',
-  styleUrls: ['./theme.component.scss'],
+  selector: 'app-theme-picker',
+  templateUrl: './theme-picker.component.html',
+  styleUrls: ['./theme-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ThemeComponent implements OnInit {
+export class ThemePickerComponent implements OnInit {
   darkMode = false;
 
   constructor(private readonly themeService: ThemeService) {}

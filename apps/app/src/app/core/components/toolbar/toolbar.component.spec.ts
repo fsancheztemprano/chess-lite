@@ -8,11 +8,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { stubSidenavServiceProvider } from '../../services/sidenav.service.stub';
-import { ThemeComponent } from '../theme/theme.component';
+import { LocalePickerComponent } from './locale-picker/locale-picker.component';
+import { ThemePickerComponent } from './theme-picker/theme-picker.component';
 import { ToolbarComponent } from './toolbar.component';
 
-@Component({ selector: 'app-theme', template: '' })
-class StubThemeComponent implements Partial<ThemeComponent> {}
+@Component({ selector: 'app-theme-picker', template: '' })
+class StubThemePickerComponent implements Partial<ThemePickerComponent> {}
+
+@Component({ selector: 'app-locale-picker', template: '' })
+class StubLocalePickerComponent implements Partial<LocalePickerComponent> {}
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -21,7 +25,7 @@ describe('ToolbarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ToolbarComponent, StubThemeComponent],
+        declarations: [ToolbarComponent, StubThemePickerComponent, StubLocalePickerComponent],
         imports: [
           NoopAnimationsModule,
           LayoutModule,
