@@ -293,7 +293,7 @@
                   <goal>yarn</goal>
                 </goals>
                 <configuration>
-                  <arguments>run build:front:deploy</arguments>
+                  <arguments>run build:frontend:prod</arguments>
                 </configuration>
               </execution>
             </executions>
