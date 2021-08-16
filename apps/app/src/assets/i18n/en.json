@@ -1,11 +1,7 @@
 {
   "WELCOME": "Welcome",
   "LOCALE": {
-    "en": {
-      "NAME": "English"
-    },
-    "es": {
-      "NAME": "Spanish"
-    }
+    "en": "English",
+    "es": "Spanish"
   }
 }

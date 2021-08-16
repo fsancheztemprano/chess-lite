@@ -12,11 +12,11 @@ public class ApplicationForwardController {
 
   static final String ROOT_URL = "/*";
   static final String APP_URL = "/app";
-  static final String REDIRECT_ROUTES_TO_INDEX_REGEX = "/app/{path:(?!index\\.html$|favicon\\.ico$|main\\..+\\.js$|polyfills\\..+\\.js$|runtime\\..+\\.js$|styles\\..+\\.css$|common\\..+\\.js$|[0-9]{1,4}\\..+\\.js$).+}/**";
 
   static final String INDEX_URL = "/app/index.html";
 
-  @RequestMapping(path = {ROOT_URL, APP_URL, REDIRECT_ROUTES_TO_INDEX_REGEX})
+  @RequestMapping(path = {ROOT_URL, APP_URL,
+    "/app/{path:(?!index\\.html$|favicon\\.ico$|main\\..+\\.js$|polyfills\\..+\\.js$|runtime\\..+\\.js$|styles\\..+\\.css$|common\\..+\\.js$|[0-9]{1,4}\\..+\\.js$|assets).+}/**"})
   public ModelAndView forwardApp() {
     return new ModelAndView("forward:" + INDEX_URL);
   }
