@@ -1,13 +1,13 @@
-import { LayoutModule } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { IsMobileModule } from '../../../shared/pipes/is-mobile.pipe';
 import { stubSidenavServiceProvider } from '../../services/sidenav.service.stub';
+import { stubToolbarServiceProvider } from '../../services/toolbar.service.stub';
+import { StubContextMenuComponent } from '../context-menu/context-menu.component.stub';
 import { LocalePickerComponent } from './locale-picker/locale-picker.component';
 import { ThemePickerComponent } from './theme-picker/theme-picker.component';
 import { ToolbarComponent } from './toolbar.component';
@@ -25,17 +25,9 @@ describe('ToolbarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ToolbarComponent, StubThemePickerComponent, StubLocalePickerComponent],
-        imports: [
-          NoopAnimationsModule,
-          LayoutModule,
-          MatButtonModule,
-          MatIconModule,
-          MatListModule,
-          MatSidenavModule,
-          MatToolbarModule,
-        ],
-        providers: [stubSidenavServiceProvider],
+        declarations: [ToolbarComponent, StubThemePickerComponent, StubLocalePickerComponent, StubContextMenuComponent],
+        imports: [NoopAnimationsModule, MatButtonModule, MatIconModule, MatToolbarModule, IsMobileModule],
+        providers: [stubToolbarServiceProvider, stubSidenavServiceProvider],
       }).compileComponents();
     }),
   );

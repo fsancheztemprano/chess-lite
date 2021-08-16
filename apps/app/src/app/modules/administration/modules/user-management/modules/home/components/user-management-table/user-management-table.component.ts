@@ -5,7 +5,8 @@ import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { User, UserManagementRelations, UserPage } from '@app/domain';
 import { Subject } from 'rxjs';
-import { HeaderService, MenuOption } from '../../../../../../../../core/services/header.service';
+import { MenuOption } from '../../../../../../../../core/services/context-menu.service.model';
+import { CoreService } from '../../../../../../../../core/services/core.service';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 
 @Component({
@@ -41,14 +42,12 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     public readonly dataSource: UserManagementTableDatasource,
-    private readonly headerService: HeaderService,
+    private readonly coreService: CoreService,
     private readonly router: Router,
   ) {
-    this.headerService.setHeader({
-      title: 'User Management',
-      showOptionsButton: true,
-      options: [this.createUserMenuOption],
-    });
+    this.coreService.setHeader({ title: 'User Management' });
+    this.coreService.setShowContextMenu(true);
+    this.coreService.setContextMenuOptions([this.createUserMenuOption]);
     this.dataSource.userPage$?.subscribe((userPage: UserPage) =>
       this.createUserMenuOption.disabled?.next(!userPage.isAllowedTo(UserManagementRelations.USER_CREATE_REL)),
     );
@@ -61,7 +60,7 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.headerService.resetHeader();
+    this.coreService.reset();
     this.createUserMenuOption.disabled?.complete();
   }
 }

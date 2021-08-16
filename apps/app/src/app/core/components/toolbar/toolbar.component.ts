@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SidenavService } from '../../services/sidenav.service';
+import { ToolbarService } from '../../services/toolbar.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -8,9 +9,5 @@ import { SidenavService } from '../../services/sidenav.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  constructor(private readonly sidenavService: SidenavService) {}
-
-  sidenavToggle() {
-    this.sidenavService.toggle();
-  }
+  constructor(public readonly toolbarService: ToolbarService, public readonly sidenavService: SidenavService) {}
 }

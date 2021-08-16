@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IsMobileModule } from '../../../shared/pipes/is-mobile.pipe';
+import { stubThemeServiceProvider } from '../../services/theme.service.stub';
 import { HeaderComponent } from '../header/header.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
@@ -23,8 +25,9 @@ describe('CoreComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, IsMobileModule],
+      imports: [RouterTestingModule, IsMobileModule, MatCardModule],
       declarations: [CoreComponent, StubToolbarComponent, StubSidenavComponent, StubHeaderComponent],
+      providers: [stubThemeServiceProvider],
     }).compileComponents();
   });
 

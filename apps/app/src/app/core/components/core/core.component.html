@@ -1,8 +1,13 @@
 <app-toolbar></app-toolbar>
 <app-sidenav>
   <main [ngClass]="{ 'is-mobile': '' | isMobile | async }">
-    <app-header>
-      <router-outlet></router-outlet>
-    </app-header>
+    <mat-card>
+      <mat-card-header>
+        <app-header></app-header>
+      </mat-card-header>
+      <mat-card-content>
+        <router-outlet></router-outlet>
+      </mat-card-content>
+    </mat-card>
   </main>
 </app-sidenav>

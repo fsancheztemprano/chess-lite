@@ -14,6 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgLetModule } from '../shared/directives/ng-let.directive';
 import { IsMobileModule } from '../shared/pipes/is-mobile.pipe';
+import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { CoreComponent } from './components/core/core.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AdministrationSidenavItemComponent } from './components/sidenav/administration-sidenav-item/administration-sidenav-item.component';
@@ -48,6 +49,7 @@ const MaterialModules = [
     UserSettingsSidenavItemComponent,
     HeaderComponent,
     LocalePickerComponent,
+    ContextMenuComponent,
   ],
   imports: [
     CommonModule,

@@ -13,6 +13,25 @@
       &.is-mobile {
         padding: 0;
       }
+
+      mat-card {
+        padding: 0;
+
+        ::ng-deep.mat-card-header-text {
+          margin: 0;
+        }
+
+        mat-card-header {
+          max-height: 50px;
+          border-bottom: solid 1px;
+          height: 50px;
+          padding: 0 5px;
+        }
+
+        mat-card-content {
+          padding: 16px;
+        }
+      }
     }
   }
 }
