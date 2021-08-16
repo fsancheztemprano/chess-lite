@@ -1,0 +1,18 @@
+<button
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  aria-label="Example icon-button with a menu"
+  *ngIf="this.translationService.activeLanguage | async as activeLanguage"
+>
+  <img alt="{{ activeLanguage.name }}" src="https://www.countryflags.io/{{ activeLanguage.iso3166 }}/shiny/24.png" />
+</button>
+<mat-menu #menu="matMenu" classList="locale-picker-menu">
+  <button
+    mat-menu-item
+    *ngFor="let language of translationService.availableLanguages"
+    (click)="translationService.setActiveLanguage(language.name)"
+  >
+    <img alt="{{ language.name }}" src="https://www.countryflags.io/{{ language.iso3166 }}/shiny/24.png" />
+    <span>{{ 'LOCALE.' + language.name | translate }}</span>
+  </button>
+</mat-menu>

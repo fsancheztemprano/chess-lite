@@ -19,7 +19,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { AdministrationSidenavItemComponent } from './components/sidenav/administration-sidenav-item/administration-sidenav-item.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { UserSettingsSidenavItemComponent } from './components/sidenav/user-settings-sidenav-item/user-settings-sidenav-item.component';
-import { ThemeComponent } from './components/theme/theme.component';
+import { LocalePickerComponent } from './components/toolbar/locale-picker/locale-picker.component';
+import { ThemePickerComponent } from './components/toolbar/theme-picker/theme-picker.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { CoreRoutingModule } from './core-routing.module';
 
@@ -42,10 +43,11 @@ const MaterialModules = [
     CoreComponent,
     ToolbarComponent,
     SidenavComponent,
-    ThemeComponent,
+    ThemePickerComponent,
     AdministrationSidenavItemComponent,
     UserSettingsSidenavItemComponent,
     HeaderComponent,
+    LocalePickerComponent,
   ],
   imports: [
     CommonModule,

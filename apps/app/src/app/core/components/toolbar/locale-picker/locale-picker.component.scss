@@ -1,0 +1,11 @@
+.locale-picker-menu .mat-menu-content {
+  button {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+
+    span {
+      padding-left: 12px;
+    }
+  }
+}

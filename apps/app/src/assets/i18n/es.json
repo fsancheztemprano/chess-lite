@@ -1,3 +1,7 @@
 {
-  "WELCOME": "Bienvenido"
+  "WELCOME": "Bienvenido",
+  "LOCALE": {
+    "en": "Inglés",
+    "es": "Castellano"
+  }
 }
