@@ -5,9 +5,9 @@ import { CurrentUserService } from './current-user.service';
 
 @Injectable({ providedIn: 'root' })
 export class StubCurrentUserService implements Partial<CurrentUserService> {
-  isAllowedToUpdateProfile = () => true;
-  isAllowedToDeleteAccount = () => true;
-  isAllowedToUploadAvatar = () => true;
+  isAllowedToUpdateProfile = () => of(true);
+  isAllowedToDeleteAccount = () => of(true);
+  isAllowedToUploadAvatar = () => of(true);
   getCurrentUsername = () => of('currentUsername');
   getCurrentUser = () => of(new User({}));
 }

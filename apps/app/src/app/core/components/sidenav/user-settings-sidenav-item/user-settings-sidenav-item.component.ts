@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { CurrentUserService } from '../../../../modules/user-settings/services/current-user.service';
 
 @Component({
   selector: 'app-user-settings-sidenav-item',
@@ -10,5 +11,5 @@ import { Router } from '@angular/router';
 export class UserSettingsSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
 
-  constructor(public readonly router: Router) {}
+  constructor(public readonly router: Router, public readonly currentUserService: CurrentUserService) {}
 }

@@ -3,6 +3,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { stubCurrentUserServiceProvider } from '../../../../modules/user-settings/services/current-user.service.stub';
 import { stubToasterServiceProvider } from '../../../../shared/services/toaster.service.stub';
 
 import { UserSettingsSidenavItemComponent } from './user-settings-sidenav-item.component';
@@ -15,7 +16,7 @@ describe('UserSettingsSidenavItemComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatExpansionModule, MatIconModule, NoopAnimationsModule],
       declarations: [UserSettingsSidenavItemComponent],
-      providers: [stubToasterServiceProvider],
+      providers: [stubToasterServiceProvider, stubCurrentUserServiceProvider],
     }).compileComponents();
   });
 
