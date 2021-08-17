@@ -17,6 +17,7 @@
           (click)="toggleSidenav.emit()"
           routerLink="/administration/user-management"
           routerLinkActive="active-link"
+          *ngIf="administrationService.hasUserManagementLink() | async"
         >
           <mat-icon aria-hidden="false" aria-label="User Management">manage_accounts</mat-icon>
           User Management
