@@ -89,7 +89,7 @@
     "@schematics/angular": "12.2.1",
     "@schematics/schematics": "0.1102.12",
     "@types/jest": "27.0.1",
-    "@types/node": "16.6.1",
+    "@types/node": "16.7.1",
     "@types/url-template": "2.0.28",
     "@typescript-eslint/eslint-plugin": "4.29.1",
     "@typescript-eslint/parser": "4.29.1",
