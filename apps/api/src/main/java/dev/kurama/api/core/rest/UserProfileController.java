@@ -4,10 +4,13 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
-import dev.kurama.api.core.api.domain.input.ChangeUserPasswordInput;
-import dev.kurama.api.core.api.domain.input.UpdateUserProfileInput;
-import dev.kurama.api.core.api.domain.model.UserModel;
 import dev.kurama.api.core.facade.UserFacade;
+import dev.kurama.api.core.facade.UserPreferencesFacade;
+import dev.kurama.api.core.hateoas.input.ChangeUserPasswordInput;
+import dev.kurama.api.core.hateoas.input.UpdateUserProfileInput;
+import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
+import dev.kurama.api.core.hateoas.model.UserModel;
+import dev.kurama.api.core.hateoas.model.UserPreferencesModel;
 import dev.kurama.api.core.utility.AuthorityUtils;
 import java.io.IOException;
 import lombok.NonNull;
@@ -31,6 +34,9 @@ public class UserProfileController {
 
   @NonNull
   private final UserFacade userFacade;
+
+  @NonNull
+  private final UserPreferencesFacade userPreferencesFacade;
 
   @GetMapping()
   @PreAuthorize("hasAuthority('profile:read')")
@@ -63,5 +69,20 @@ public class UserProfileController {
   public ResponseEntity<Void> deleteProfile() {
     userFacade.deleteByUsername(AuthorityUtils.getCurrentUsername());
     return noContent().build();
+  }
+
+  @GetMapping("/preferences")
+  @PreAuthorize("hasAuthority('profile:update')")
+  public ResponseEntity<UserPreferencesModel> getPreferences() {
+    return ok().body(userPreferencesFacade.findByUsername(AuthorityUtils.getCurrentUsername()));
+  }
+
+
+  @PatchMapping("/preferences")
+  @PreAuthorize("hasAuthority('profile:update')")
+  public ResponseEntity<UserPreferencesModel> updatePreferences(
+    @RequestBody UserPreferencesInput userPreferencesInput) {
+    return ResponseEntity.ok()
+      .body(userPreferencesFacade.updateByUsername(AuthorityUtils.getCurrentUsername(), userPreferencesInput));
   }
 }

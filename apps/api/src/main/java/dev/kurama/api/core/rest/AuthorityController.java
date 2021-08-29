@@ -3,8 +3,8 @@ package dev.kurama.api.core.rest;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 import static org.springframework.http.ResponseEntity.ok;
 
-import dev.kurama.api.core.api.domain.model.AuthorityModel;
 import dev.kurama.api.core.facade.AuthorityFacade;
+import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

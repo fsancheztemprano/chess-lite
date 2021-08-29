@@ -49,6 +49,9 @@ public class DefaultAuthority {
     UserAuthority.USER_UPDATE,
     UserAuthority.USER_DELETE,
 
+    UserPreferencesAuthority.USER_PREFERENCES_READ,
+    UserPreferencesAuthority.USER_PREFERENCES_UPDATE,
+
     RoleAuthority.ROLE_READ,
     RoleAuthority.ROLE_CREATE,
     RoleAuthority.ROLE_UPDATE,

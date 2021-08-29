@@ -1,14 +1,14 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.api.domain.input.LoginInput;
-import dev.kurama.api.core.api.domain.input.SignupInput;
-import dev.kurama.api.core.api.domain.model.AuthenticatedUser;
-import dev.kurama.api.core.api.mapper.UserMapper;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
+import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.hateoas.input.LoginInput;
+import dev.kurama.api.core.hateoas.input.SignupInput;
+import dev.kurama.api.core.mapper.UserMapper;
 import dev.kurama.api.core.service.UserService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import lombok.NonNull;
@@ -36,23 +36,23 @@ public class AuthenticationFacade {
   private final JWTTokenProvider jwtTokenProvider;
 
 
-  public AuthenticatedUser signup(SignupInput signupInput) throws UsernameExistsException, EmailExistsException {
+  public AuthenticatedUserExcerpt signup(SignupInput signupInput) throws UsernameExistsException, EmailExistsException {
     var user = userService
       .signup(signupInput.getUsername(), signupInput.getPassword(), signupInput.getEmail(),
         signupInput.getFirstname(), signupInput.getLastname());
     return getAuthenticatedUser(user);
   }
 
-  public AuthenticatedUser login(LoginInput loginInput) {
+  public AuthenticatedUserExcerpt login(LoginInput loginInput) {
     authenticate(loginInput.getUsername(), loginInput.getPassword());
     var user = userService.findUserByUsername(loginInput.getUsername())
       .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
     return getAuthenticatedUser(user);
   }
 
-  private AuthenticatedUser getAuthenticatedUser(User user) {
+  private AuthenticatedUserExcerpt getAuthenticatedUser(User user) {
     var userModel = userMapper.userToUserModel(user);
-    return AuthenticatedUser.builder()
+    return AuthenticatedUserExcerpt.builder()
       .userModel(userModel)
       .headers(getJwtHeader(
         new UserPrincipal(user))).build();

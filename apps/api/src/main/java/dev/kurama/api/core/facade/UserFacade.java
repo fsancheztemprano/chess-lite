@@ -1,15 +1,15 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.api.assembler.UserModelAssembler;
-import dev.kurama.api.core.api.domain.input.ChangeUserPasswordInput;
-import dev.kurama.api.core.api.domain.input.UpdateUserProfileInput;
-import dev.kurama.api.core.api.domain.input.UserInput;
-import dev.kurama.api.core.api.domain.model.UserModel;
-import dev.kurama.api.core.api.mapper.UserMapper;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.UserNotFoundException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
+import dev.kurama.api.core.hateoas.input.ChangeUserPasswordInput;
+import dev.kurama.api.core.hateoas.input.UpdateUserProfileInput;
+import dev.kurama.api.core.hateoas.input.UserInput;
+import dev.kurama.api.core.hateoas.model.UserModel;
+import dev.kurama.api.core.mapper.UserMapper;
 import dev.kurama.api.core.service.UserService;
 import java.io.IOException;
 import lombok.NonNull;

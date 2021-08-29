@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -59,4 +60,7 @@ public class User extends AbstractEntity implements Serializable {
   private boolean locked;
   private boolean expired;
   private boolean credentialsExpired;
+
+  @OneToOne(mappedBy = "user")
+  private UserPreferences userPreferences;
 }

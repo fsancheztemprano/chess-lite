@@ -3,8 +3,6 @@ package dev.kurama.api.core.service;
 import static java.util.Optional.ofNullable;
 
 import com.google.common.collect.Sets;
-import dev.kurama.api.core.api.domain.input.UpdateUserProfileInput;
-import dev.kurama.api.core.api.domain.input.UserInput;
 import dev.kurama.api.core.constant.UserConstant;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.User;
@@ -13,6 +11,8 @@ import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.UserNotFoundException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.hateoas.input.UpdateUserProfileInput;
+import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
 import java.util.Date;
 import java.util.Optional;
@@ -51,6 +51,9 @@ public class UserService implements UserDetailsService {
 
   @NonNull
   private final AuthorityService authorityService;
+
+  @NonNull
+  private final UserPreferencesService userPreferencesService;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -108,7 +111,9 @@ public class UserService implements UserDetailsService {
       .role(role)
       .authorities(Sets.newHashSet(role.getAuthorities()))
       .build();
-    userRepository.save(user);
+    user = userRepository.save(user);
+
+    userPreferencesService.createUserPreferences(user);
     return user;
   }
 
@@ -132,7 +137,9 @@ public class UserService implements UserDetailsService {
       .role(role)
       .authorities(Sets.newHashSet(role.getAuthorities()))
       .build();
-    userRepository.save(user);
+    user = userRepository.save(user);
+
+    userPreferencesService.createUserPreferences(user);
     return user;
   }
 
@@ -185,8 +192,7 @@ public class UserService implements UserDetailsService {
       Set<Authority> authorities = authorityService.findAllById(userInput.getAuthorityIds());
       currentUser.getAuthorities().addAll(authorities);
     }
-    userRepository.save(currentUser);
-    return currentUser;
+    return userRepository.save(currentUser);
   }
 
   public User updateProfile(String username, UpdateUserProfileInput updateProfileInput) {
@@ -194,22 +200,19 @@ public class UserService implements UserDetailsService {
     currentUser.setFirstname(updateProfileInput.getFirstname());
     currentUser.setLastname(updateProfileInput.getLastname());
     currentUser.setProfileImageUrl(updateProfileInput.getProfileImageUrl());
-    userRepository.save(currentUser);
-    return currentUser;
+    return userRepository.save(currentUser);
   }
 
   public User updatePassword(String username, String newPassword) {
     var currentUser = findUserByUsername(username).orElseThrow();
     currentUser.setPassword(passwordEncoder.encode(newPassword));
-    userRepository.save(currentUser);
-    return currentUser;
+    return userRepository.save(currentUser);
   }
 
   public User uploadAvatar(String username, String avatar) {
     var currentUser = findUserByUsername(username).orElseThrow();
     currentUser.setProfileImageUrl(avatar);
-    userRepository.save(currentUser);
-    return currentUser;
+    return userRepository.save(currentUser);
   }
 
   private void validateUsernameAndEmailCreate(String newUsername, String email)

@@ -1,8 +1,8 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.api.assembler.AuthorityModelAssembler;
-import dev.kurama.api.core.api.domain.model.AuthorityModel;
-import dev.kurama.api.core.api.mapper.AuthorityMapper;
+import dev.kurama.api.core.hateoas.assembler.AuthorityModelAssembler;
+import dev.kurama.api.core.hateoas.model.AuthorityModel;
+import dev.kurama.api.core.mapper.AuthorityMapper;
 import dev.kurama.api.core.service.AuthorityService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

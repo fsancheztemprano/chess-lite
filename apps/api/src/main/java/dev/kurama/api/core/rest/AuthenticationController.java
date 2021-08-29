@@ -2,13 +2,13 @@ package dev.kurama.api.core.rest;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import dev.kurama.api.core.api.assembler.UserModelAssembler;
-import dev.kurama.api.core.api.domain.input.LoginInput;
-import dev.kurama.api.core.api.domain.input.SignupInput;
-import dev.kurama.api.core.api.domain.model.UserModel;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
 import dev.kurama.api.core.facade.AuthenticationFacade;
+import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
+import dev.kurama.api.core.hateoas.input.LoginInput;
+import dev.kurama.api.core.hateoas.input.SignupInput;
+import dev.kurama.api.core.hateoas.model.UserModel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -6,13 +6,13 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
-import dev.kurama.api.core.api.domain.input.UserInput;
-import dev.kurama.api.core.api.domain.model.UserModel;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.UserNotFoundException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
 import dev.kurama.api.core.facade.UserFacade;
+import dev.kurama.api.core.hateoas.input.UserInput;
+import dev.kurama.api.core.hateoas.model.UserModel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +29,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/user")
 @PreAuthorize("isAuthenticated()")
-@RequiredArgsConstructor
 public class UserController {
 
   @NonNull

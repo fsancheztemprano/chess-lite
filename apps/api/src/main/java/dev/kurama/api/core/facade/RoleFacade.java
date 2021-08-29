@@ -1,8 +1,8 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.api.assembler.RoleModelAssembler;
-import dev.kurama.api.core.api.domain.model.RoleModel;
-import dev.kurama.api.core.api.mapper.RoleMapper;
+import dev.kurama.api.core.hateoas.assembler.RoleModelAssembler;
+import dev.kurama.api.core.hateoas.model.RoleModel;
+import dev.kurama.api.core.mapper.RoleMapper;
 import dev.kurama.api.core.service.RoleService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

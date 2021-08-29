@@ -1,6 +1,6 @@
 package dev.kurama.api.poc.api.assembler;
 
-import static dev.kurama.api.core.hateoas.domain.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.poc.authority.AuthorAuthority.AUTHOR_CREATE;
 import static dev.kurama.api.poc.authority.AuthorAuthority.AUTHOR_DELETE;
@@ -9,7 +9,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import dev.kurama.api.core.api.assembler.DomainModelAssembler;
+import dev.kurama.api.core.hateoas.assembler.DomainModelAssembler;
 import dev.kurama.api.poc.api.domain.model.AuthorModel;
 import dev.kurama.api.poc.rest.AuthorController;
 import lombok.NonNull;
