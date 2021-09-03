@@ -1,0 +1,24 @@
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <span>Theme</span>
+  <div>
+    <mat-icon>brightness_5</mat-icon>
+    <mat-slide-toggle formControlName="darkMode"></mat-slide-toggle>
+    <mat-icon>bedtime</mat-icon>
+  </div>
+  <div class="separator"></div>
+  <span>Content Language</span>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Content Language</mat-label>
+      <mat-select formControlName="contentLanguage">
+        <mat-option *ngFor="let language of translationService.availableLanguages" [value]="language.id">
+          {{ 'LOCALE.' + language.id | translate }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <app-form-error [control]="form.controls.roleId" name="roleId"></app-form-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" type="submit">Save and Apply</button>
+</form>

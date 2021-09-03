@@ -14,6 +14,9 @@ const loadUserChangePasswordModule = () =>
 const loadUserUploadAvatarModule = () =>
   import('./modules/upload-avatar/user-upload-avatar.module').then((m) => m.UserUploadAvatarModule);
 
+const loadUserPreferencesModule = () =>
+  import('./modules/preferences/current-user-preferences.module').then((m) => m.CurrentUserPreferencesModule);
+
 const routes: Routes = [
   {
     path: '',
@@ -34,6 +37,10 @@ const routes: Routes = [
       {
         path: 'avatar',
         loadChildren: loadUserUploadAvatarModule,
+      },
+      {
+        path: 'preferences',
+        loadChildren: loadUserPreferencesModule,
       },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: '**', redirectTo: 'profile' },

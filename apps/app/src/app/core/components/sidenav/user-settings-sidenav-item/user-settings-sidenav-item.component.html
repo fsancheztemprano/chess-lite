@@ -9,7 +9,7 @@
     <ng-template matExpansionPanelContent>
       <mat-action-list>
         <a mat-list-item (click)="toggleSidenav.emit()" routerLink="/user" routerLinkActive="active-link">
-          <mat-icon aria-hidden="false" aria-label="Dashboard">manage_accounts</mat-icon>
+          <mat-icon aria-hidden="false" aria-label="Dashboard">settings_applications</mat-icon>
           Dashboard
         </a>
         <a
@@ -51,6 +51,16 @@
         >
           <mat-icon aria-hidden="false" aria-label="Delete Account">delete_forever</mat-icon>
           Delete Account
+        </a>
+        <a
+          mat-list-item
+          (click)="toggleSidenav.emit()"
+          routerLink="/user/preferences"
+          routerLinkActive="active-link"
+          *ngIf="currentUserService.hasLinkToUserPreferences() | async"
+        >
+          <mat-icon aria-hidden="false" aria-label="Preferences">manage_accounts</mat-icon>
+          Preferences
         </a>
       </mat-action-list>
     </ng-template>

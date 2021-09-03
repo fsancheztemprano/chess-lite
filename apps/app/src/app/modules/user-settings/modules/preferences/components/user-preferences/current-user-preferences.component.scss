@@ -1,0 +1,10 @@
+:host {
+  form {
+    display: flex;
+    flex-flow: column;
+
+    .separator {
+      margin-top: 24px;
+    }
+  }
+}

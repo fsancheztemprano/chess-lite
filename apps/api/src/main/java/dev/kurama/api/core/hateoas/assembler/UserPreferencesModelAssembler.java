@@ -57,7 +57,7 @@ public class UserPreferencesModelAssembler extends DomainModelAssembler<UserPref
       .mapLinkIf(hasAuthority(USER_PREFERENCES_UPDATE),
         LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(userPreferencesModel.getId())))
-      .mapLinkIf(isCurrentUser && !hasAuthority(USER_PREFERENCES_UPDATE) && hasAuthority(PROFILE_UPDATE),
+      .mapLinkIf(isCurrentUser && hasAuthority(PROFILE_UPDATE),
         LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateCurrentUserPreferencesAffordance()))
       ;

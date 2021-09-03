@@ -42,7 +42,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserModelAssembler extends DomainModelAssembler<UserModel> {
 
-
   @Autowired
   private PagedResourcesAssembler<UserModel> pagedResourcesAssembler;
 

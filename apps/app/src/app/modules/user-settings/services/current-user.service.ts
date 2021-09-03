@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CurrentUserRelations, User, UserChangePasswordInput, UserUpdateProfileInput } from '@app/domain';
-import { HalFormService, submitToTemplateOrThrowPipe } from '@hal-form-client';
+import { HalFormService, Link, submitToTemplateOrThrowPipe } from '@hal-form-client';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 import { AuthService } from '../../../auth/services/auth.service';
 
 @Injectable({
@@ -71,6 +71,19 @@ export class CurrentUserService {
     return user$.pipe(
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, formData),
       this.authService.setUserPipe(),
+    );
+  }
+
+  public hasLinkToUserPreferences(): Observable<boolean> {
+    return this.getCurrentUser().pipe(
+      map((user: User | null) => !!user?.hasLink(CurrentUserRelations.USER_PREFERENCES_REL)),
+    );
+  }
+
+  public getLinkToUserPreferences(): Observable<Link | null> {
+    return this.getCurrentUser().pipe(
+      first(),
+      map((user) => user?.getLink(CurrentUserRelations.USER_PREFERENCES_REL) || null),
     );
   }
 }

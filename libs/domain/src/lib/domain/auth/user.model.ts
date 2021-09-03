@@ -34,3 +34,8 @@ export class UserPage extends Resource implements IResource {
   userModels?: User[];
   page?: Page;
 }
+
+export class UserPreferences extends Resource implements IResource {
+  darkMode?: boolean;
+  contentLanguage?: string;
+}

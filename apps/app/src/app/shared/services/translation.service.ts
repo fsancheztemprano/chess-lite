@@ -8,8 +8,8 @@ import { Language } from './translation.service.model';
 })
 export class TranslationService {
   private readonly AVAILABLE_LANGUAGES: Language[] = [
-    { name: 'en', iso3166: 'gb' },
-    { name: 'es', iso3166: 'es' },
+    { id: 'en', iso3166: 'gb' },
+    { id: 'es', iso3166: 'es' },
   ];
   private readonly DEFAULT_LANGUAGE = this.AVAILABLE_LANGUAGES[0];
   private readonly _activeLanguage$ = new BehaviorSubject<Language>(this.DEFAULT_LANGUAGE);
@@ -17,7 +17,7 @@ export class TranslationService {
   constructor(private readonly translateService: TranslateService) {}
 
   initialize() {
-    this.translateService.setDefaultLang(this.DEFAULT_LANGUAGE.name);
+    this.translateService.setDefaultLang(this.DEFAULT_LANGUAGE.id);
     return this.setActiveLanguage(this.translateService.getBrowserLang());
   }
 
@@ -33,9 +33,10 @@ export class TranslationService {
     return this._activeLanguage$.asObservable();
   }
 
-  setActiveLanguage(language: string): Observable<unknown> {
-    const validLanguage = this.availableLanguages.find((lang) => lang.name === language) || this.defaultLanguage;
+  setActiveLanguage(language: string | undefined): Observable<unknown> {
+    const validLanguage =
+      (language && this.availableLanguages.find((lang) => lang.id === language)) || this.defaultLanguage;
     this._activeLanguage$.next(validLanguage);
-    return this.translateService.use(validLanguage.name);
+    return this.translateService.use(validLanguage.id);
   }
 }

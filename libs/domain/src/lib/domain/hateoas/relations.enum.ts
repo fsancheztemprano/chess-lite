@@ -4,6 +4,8 @@ export enum CurrentUserRelations {
   CHANGE_PASSWORD_REL = 'changePassword',
   UPLOAD_AVATAR_REL = 'uploadAvatar',
   DELETE_ACCOUNT_REL = 'deleteProfile',
+  USER_PREFERENCES_REL = 'user-preferences',
+  UPDATE_PREFERENCES_REL = 'updatePreferences',
 }
 
 export enum UserManagementRelations {
