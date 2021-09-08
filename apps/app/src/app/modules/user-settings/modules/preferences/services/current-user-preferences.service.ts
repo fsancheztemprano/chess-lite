@@ -16,7 +16,10 @@ export class CurrentUserPreferencesService {
       .pipe(switchMap((link) => (link ? link.get() : noLinkError(CurrentUserRelations.USER_PREFERENCES_REL))));
   }
 
-  updatePreferences(userPreferences: UserPreferences, changes: UserPreferences): Observable<UserPreferences> {
+  updateCurrentUserPreferences(
+    userPreferences: UserPreferences,
+    changes: UserPreferences,
+  ): Observable<UserPreferences> {
     return userPreferences.submitToTemplateOrThrow(CurrentUserRelations.UPDATE_PREFERENCES_REL, changes);
   }
 }

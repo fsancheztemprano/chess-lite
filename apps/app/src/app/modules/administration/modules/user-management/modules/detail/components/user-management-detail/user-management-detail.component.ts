@@ -20,6 +20,10 @@ export class UserManagementDetailComponent implements OnDestroy {
           target: [...baseRoute, 'profile'],
         },
         {
+          label: 'Preferences',
+          target: [...baseRoute, 'preferences'],
+        },
+        {
           label: 'Authority',
           target: [...baseRoute, 'authority'],
         },

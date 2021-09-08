@@ -32,7 +32,7 @@ export class CurrentUserService {
   public updateProfile(user$: Observable<User>, updateUserProfileInput: UserUpdateProfileInput): Observable<User> {
     return user$.pipe(
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, updateUserProfileInput),
-      this.authService.setUserPipe(),
+      tap((user) => this.authService.setUser(user)),
     );
   }
 
@@ -70,7 +70,7 @@ export class CurrentUserService {
     formData.append('avatar', file);
     return user$.pipe(
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, formData),
-      this.authService.setUserPipe(),
+      tap((user) => this.authService.setUser(user)),
     );
   }
 

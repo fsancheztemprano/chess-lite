@@ -12,6 +12,7 @@ export enum UserManagementRelations {
   USER_MANAGEMENT_REL = 'user-management',
   USER_REL = 'user',
   USERS_REL = 'users',
+  USER_PREFERENCES_REL = 'user-preferences',
   USER_MODEL_LIST_REL = 'userModels',
   USER_CREATE_REL = 'create',
   USER_UPDATE_REL = 'update',

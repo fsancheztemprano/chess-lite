@@ -73,6 +73,26 @@ export class Resource implements IResource {
     return this._links[key];
   }
 
+  getLinkOrThrow(key: string = 'self', errorMessage?: string | Error): Link {
+    const link = this.getLink(key);
+    console.log(this);
+    if (link) {
+      return link;
+    } else {
+      let error;
+      if (errorMessage) {
+        if (typeof errorMessage === 'string') {
+          error = Error(errorMessage);
+        } else {
+          error = errorMessage;
+        }
+      } else {
+        error = Error(`Can not find link: ${key}`);
+      }
+      throw error;
+    }
+  }
+
   getAssuredLink(key: string = 'self'): Link {
     return this.getLink(key) as Link;
   }

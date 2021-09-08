@@ -37,7 +37,7 @@ export class CurrentUserPreferencesComponent {
   }
 
   onSubmit() {
-    this.userPreferencesService.updatePreferences(this.userPreferences, this.form.value).subscribe({
+    this.userPreferencesService.updateCurrentUserPreferences(this.userPreferences, this.form.value).subscribe({
       next: (userPreferences) => {
         this.themeService.setDarkMode(!!userPreferences.darkMode);
         this.translationService.setActiveLanguage(userPreferences.contentLanguage);

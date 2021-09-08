@@ -59,6 +59,10 @@ export class HalFormService {
     return this.rootResource.pipe(map((resource) => resource.getLink(link)));
   }
 
+  public getLinkOrThrow(link: string = 'self', errorMessage?: string | Error): Observable<Link> {
+    return this.rootResource.pipe(map((resource) => resource.getLinkOrThrow(link, errorMessage)));
+  }
+
   public getTemplate(template: string = 'self'): Observable<Template | null> {
     return this.rootResource.pipe(map((resource) => resource.getTemplate(template)));
   }

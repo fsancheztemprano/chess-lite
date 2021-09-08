@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HalFormService } from '@hal-form-client';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { forkJoin, Observable, switchMapTo } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
 import { TranslationService } from '../../shared/services/translation.service';
 
@@ -18,9 +17,7 @@ export class AppInitializationService {
   initialize(): Observable<unknown> {
     return forkJoin([
       this.translationService.initialize(),
-      this.halFormService
-        .initialize()
-        .pipe(tap(() => this.authService.isAuthenticated() && this.authService.fetchCurrentUser().subscribe())),
+      this.halFormService.initialize().pipe(switchMapTo(this.authService.initialize())),
     ]);
   }
 }

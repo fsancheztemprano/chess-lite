@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { PreferencesService } from '../../core/services/preferences.service';
 import { Language } from './translation.service.model';
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -14,7 +17,14 @@ export class TranslationService {
   private readonly DEFAULT_LANGUAGE = this.AVAILABLE_LANGUAGES[0];
   private readonly _activeLanguage$ = new BehaviorSubject<Language>(this.DEFAULT_LANGUAGE);
 
-  constructor(private readonly translateService: TranslateService) {}
+  constructor(
+    private readonly translateService: TranslateService,
+    private readonly preferencesService: PreferencesService,
+  ) {
+    this.preferencesService.contentLanguage
+      .pipe(untilDestroyed(this))
+      .subscribe((language) => this.setActiveLanguage(language));
+  }
 
   initialize() {
     this.translateService.setDefaultLang(this.DEFAULT_LANGUAGE.id);

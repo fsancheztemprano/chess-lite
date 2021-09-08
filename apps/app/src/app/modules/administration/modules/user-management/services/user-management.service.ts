@@ -42,6 +42,7 @@ export class UserManagementService extends HalFormService {
   }
 
   public findUser(userId: string): Observable<User> {
+    userId = userId || '0';
     return this.getLink(UserManagementRelations.USER_REL).pipe(
       first(),
       switchMap((userLink) => (userLink ? userLink.get({ userId }) : noLinkError(UserManagementRelations.USER_REL))),
