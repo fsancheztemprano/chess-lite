@@ -93,6 +93,9 @@ jobs:
           node-version: '14'
           cache: 'npm'
 
+      - name: Yarn Install
+        run: yarn install
+
       - name: Set Deployment Status In Progress
         uses: bobheadxi/deployments@v0.6.0
         id: deployment
