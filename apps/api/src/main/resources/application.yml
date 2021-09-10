@@ -44,3 +44,10 @@ spring:
 springfox:
   documentation:
     enabled: false
+
+logging:
+  file:
+    name: logs/logs.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1MB

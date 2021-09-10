@@ -192,7 +192,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/app/src/**/*.ts", "apps/app/src/**/*.html"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -226,7 +227,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/app-e2e/**/*.{js,ts}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
       }
     },
@@ -248,7 +250,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/domain/src/**/*.ts", "libs/domain/src/**/*.html"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
       }
     },
@@ -270,7 +273,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/hal-form-client/src/**/*.ts", "libs/hal-form-client/src/**/*.html"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         }
       }
     }
