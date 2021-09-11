@@ -75,7 +75,6 @@ export class Resource implements IResource {
 
   getLinkOrThrow(key: string = 'self', errorMessage?: string | Error): Link {
     const link = this.getLink(key);
-    console.log(this);
     if (link) {
       return link;
     } else {

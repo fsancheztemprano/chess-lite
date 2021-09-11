@@ -2,6 +2,7 @@ package dev.kurama.api.core.rest.hateoas;
 
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.SERVICE_LOGS_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
@@ -17,6 +18,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.util.UriComponentsBuilder.fromUri;
 
 import dev.kurama.api.core.hateoas.model.RootResource;
+import dev.kurama.api.core.rest.AdministrationController;
 import dev.kurama.api.core.rest.AuthorityController;
 import dev.kurama.api.core.rest.RoleController;
 import dev.kurama.api.core.rest.UserController;
@@ -52,7 +54,8 @@ public class AdministrationRootController {
   public ResponseEntity<RepresentationModel<?>> root() {
     HalModelBuilder rootModel = HalModelBuilder.emptyHalModel()
       .link(getSelfLink())
-      .link(getParentLink());
+      .link(getParentLink())
+      .link(getServiceLogsLink());
 
     if (AuthorityUtils.hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
       rootModel.embed(getUserManagementResource(), LinkRelation.of(USER_MANAGEMENT_ROOT_REL));
@@ -80,6 +83,11 @@ public class AdministrationRootController {
   private @NonNull
   Link getParentLink() {
     return of(linkTo(methodOn(RootController.class).root()).withRel(ROOT_REL))
+      .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
+  }
+
+  private Link getServiceLogsLink() {
+    return of(linkTo(methodOn(AdministrationController.class).getServiceLogs()).withRel(SERVICE_LOGS_REL))
       .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 

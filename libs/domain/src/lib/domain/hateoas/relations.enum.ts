@@ -30,6 +30,7 @@ export enum AuthorityManagementRelations {
 
 export enum AdministrationRelations {
   ADMINISTRATION_REL = 'administration',
+  SERVICE_LOGS_REL = 'service-logs',
 }
 
 export enum AuthRelations {

@@ -83,12 +83,6 @@ public class UserPreferencesModelAssembler extends DomainModelAssembler<UserPref
       .withName(HateoasRelations.DEFAULT).toLink();
   }
 
-
-  @Override
-  public WebMvcLinkBuilder getAllLink() {
-    return null;
-  }
-
   @SneakyThrows
   private @NonNull
   Affordance getUpdateAffordance(String username) {

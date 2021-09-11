@@ -62,6 +62,8 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
 
   public abstract WebMvcLinkBuilder getSelfLink(String id);
 
-  public abstract WebMvcLinkBuilder getAllLink();
+  public WebMvcLinkBuilder getAllLink() {
+    return null;
+  }
 
 }

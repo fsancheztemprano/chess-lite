@@ -34,6 +34,9 @@ export class CoreService {
 
   setHeader(header?: HeaderConfig): void {
     this._headerService.setHeader(header);
+    if (header?.options?.length) {
+      this._contextMenuService.setOptions(header?.options);
+    }
   }
 
   setContextMenuOptions(options?: MenuOption[]): void {
