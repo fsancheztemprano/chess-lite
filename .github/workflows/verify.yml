@@ -34,7 +34,7 @@ jobs:
         uses: actions/setup-node@v2.4.0
         with:
           node-version: '14'
-          cache: 'npm'
+          cache: 'yarn'
 
       - name: Yarn Install
         run: yarn install
@@ -91,7 +91,7 @@ jobs:
         uses: actions/setup-node@v2.4.0
         with:
           node-version: '14'
-          cache: 'npm'
+          cache: 'yarn'
 
       - name: Yarn Install
         run: yarn install
