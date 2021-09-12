@@ -15,6 +15,7 @@ export class AppInitializationService {
   ) {}
 
   initialize(): Observable<unknown> {
+    this.authService.preInitialize();
     return forkJoin([
       this.translationService.initialize(),
       this.halFormService.initialize().pipe(switchMapTo(this.authService.initialize())),

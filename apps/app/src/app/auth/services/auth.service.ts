@@ -67,15 +67,22 @@ export class AuthService {
   public clearLocalSession(): void {
     this.removeToken();
     this.setUser(null);
+    this.preferencesService.clearPreferences();
     this.halFormService.initialize().subscribe(() => {
       this.router.navigate(['auth', 'signup']);
     });
-    this.preferencesService.clearPreferences();
   }
 
   public isAuthenticated(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
     return !!token && !isTokenExpired(token);
+  }
+
+  public preInitialize(): void {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!!token && isTokenExpired(token)) {
+      this.removeToken();
+    }
   }
 
   public initialize(): Observable<unknown> {

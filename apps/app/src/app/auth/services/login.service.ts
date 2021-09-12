@@ -29,8 +29,4 @@ export class LoginService {
       this.authService.setLocalSessionPipe(),
     );
   }
-
-  public logout(): void {
-    this.authService.clearLocalSession();
-  }
 }

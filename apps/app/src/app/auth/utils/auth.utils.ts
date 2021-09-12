@@ -5,7 +5,7 @@ export function isTokenExpired(token: string | null): boolean {
     return false;
   }
   const decoded: { exp: number } = jwt_decode(token);
-  return token ? Date.now() < Number(decoded.exp) : false;
+  return token ? Date.now() > Number(decoded.exp) * 1000 : false;
 }
 
 export function decodeToken(token: string | null): Token | null {
