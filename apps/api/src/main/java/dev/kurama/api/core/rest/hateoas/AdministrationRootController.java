@@ -18,9 +18,9 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.util.UriComponentsBuilder.fromUri;
 
 import dev.kurama.api.core.hateoas.model.RootResource;
-import dev.kurama.api.core.rest.AdministrationController;
 import dev.kurama.api.core.rest.AuthorityController;
 import dev.kurama.api.core.rest.RoleController;
+import dev.kurama.api.core.rest.ServiceLogsController;
 import dev.kurama.api.core.rest.UserController;
 import dev.kurama.api.core.utility.AuthorityUtils;
 import lombok.NonNull;
@@ -87,7 +87,7 @@ public class AdministrationRootController {
   }
 
   private Link getServiceLogsLink() {
-    return of(linkTo(methodOn(AdministrationController.class).getServiceLogs()).withRel(SERVICE_LOGS_REL))
+    return of(linkTo(methodOn(ServiceLogsController.class).getServiceLogs()).withRel(SERVICE_LOGS_REL))
       .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 

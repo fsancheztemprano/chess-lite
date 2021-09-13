@@ -1,6 +1,7 @@
 package dev.kurama.api.core.utility;
 
 import com.google.common.collect.Lists;
+import dev.kurama.api.core.filter.ContextUser;
 import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,20 @@ public class AuthorityUtils {
     return SecurityContextHolder.getContext().getAuthentication();
   }
 
+  private static ContextUser getContextUser() {
+    return (ContextUser) getAuthentication().getPrincipal();
+  }
+
+  public static String getCurrentUserId() {
+    return getContextUser().getId();
+  }
+
+  public static boolean isCurrentUserId(String id) {
+    return getCurrentUserId().equals(id);
+  }
+
   public static String getCurrentUsername() {
-    return (String) getAuthentication().getPrincipal();
+    return isAuthenticated() ? getContextUser().getUsername() : "anonymousUser";
   }
 
   public static boolean isCurrentUsername(String username) {

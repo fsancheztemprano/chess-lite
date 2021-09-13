@@ -119,7 +119,6 @@ export class AuthService {
   }
 
   private _initializeUser(user: User) {
-    this.halFormService.initialize().subscribe();
     this.setUser(user);
     this.initializeUserPreferences(user);
   }

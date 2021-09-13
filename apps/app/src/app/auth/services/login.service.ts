@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthRelations, LoginInput, User } from '@app/domain';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -27,6 +27,7 @@ export class LoginService {
     return this.halFormService.rootResource.pipe(
       submitToTemplateOrThrowPipe(AuthRelations.LOGIN_RELATION, loginInput, undefined, 'response'),
       this.authService.setLocalSessionPipe(),
+      tap(() => this.halFormService.initialize().subscribe()),
     );
   }
 }

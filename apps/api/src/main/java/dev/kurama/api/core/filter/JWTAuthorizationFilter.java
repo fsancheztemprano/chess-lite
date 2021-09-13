@@ -8,7 +8,6 @@ import com.google.common.net.HttpHeaders;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -44,8 +43,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
       var token = authorizationHeader.substring(SecurityConstant.TOKEN_PREFIX.length());
       String username = jwtTokenProvider.getSubject(token);
       if (jwtTokenProvider.isTokenValid(username, token)) {
-        List<GrantedAuthority> authorities = jwtTokenProvider.getAuthorities(token);
-        var authentication = jwtTokenProvider.getAuthentication(username, authorities, request);
+        Authentication authentication = jwtTokenProvider.getAuthentication(token, request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
       } else {
         SecurityContextHolder.clearContext();

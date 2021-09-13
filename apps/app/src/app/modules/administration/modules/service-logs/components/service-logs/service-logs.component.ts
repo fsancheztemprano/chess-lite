@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceLogs } from '@app/domain';
+import { AdministrationRelations, ServiceLogs } from '@app/domain';
+import { BehaviorSubject } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
 import { CoreService } from '../../../../../../core/services/core.service';
 import { ServiceLogsService } from '../../services/service-logs.service';
 
@@ -10,19 +12,27 @@ import { ServiceLogsService } from '../../services/service-logs.service';
   styleUrls: ['./service-logs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServiceLogsComponent {
-  public serviceLogs?: ServiceLogs;
+export class ServiceLogsComponent implements OnDestroy {
+  public serviceLogs: BehaviorSubject<ServiceLogs> = new BehaviorSubject<ServiceLogs>({} as ServiceLogs);
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly serviceLogsService: ServiceLogsService,
     private readonly coreService: CoreService,
-    private readonly cdr: ChangeDetectorRef,
   ) {
     this.route.data.subscribe((data) => {
-      this.serviceLogs = data.serviceLogs;
+      this.serviceLogs.next(data.serviceLogs);
     });
     this.setHeader();
+  }
+
+  setServiceLogs(serviceLogs: ServiceLogs) {
+    this.serviceLogs.next(serviceLogs);
+  }
+
+  ngOnDestroy(): void {
+    this.coreService.reset();
+    this.serviceLogs.complete();
   }
 
   private setHeader() {
@@ -35,14 +45,34 @@ export class ServiceLogsComponent {
           label: 'Refresh',
           onClick: () => this.refreshServiceLogs(),
         },
+        {
+          icon: 'delete',
+          label: 'Delete',
+          onClick: () => this.deleteServiceLogs(),
+          disabled: this.serviceLogs.pipe(
+            map((serviceLogs) => !serviceLogs.isAllowedTo(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
+          ),
+        },
       ],
     });
   }
 
   private refreshServiceLogs() {
     return this.serviceLogsService.getServiceLogs().subscribe((serviceLogs) => {
-      this.serviceLogs = serviceLogs;
-      this.cdr.markForCheck();
+      this.serviceLogs.next(serviceLogs);
     });
+  }
+
+  private deleteServiceLogs() {
+    return this.serviceLogs
+      .pipe(
+        first(),
+        switchMap((serviceLogs: ServiceLogs) =>
+          serviceLogs.submitToTemplateOrThrow(AdministrationRelations.DELETE_SERVICE_LOGS_REL),
+        ),
+      )
+      .subscribe((serviceLogs) => {
+        this.serviceLogs.next(serviceLogs);
+      });
   }
 }

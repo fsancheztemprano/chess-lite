@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -40,22 +41,25 @@ public class AuthenticationFacade {
     var user = userService
       .signup(signupInput.getUsername(), signupInput.getPassword(), signupInput.getEmail(),
         signupInput.getFirstname(), signupInput.getLastname());
-    return getAuthenticatedUser(user);
+    return authenticateUser(user);
   }
 
   public AuthenticatedUserExcerpt login(LoginInput loginInput) {
     authenticate(loginInput.getUsername(), loginInput.getPassword());
     var user = userService.findUserByUsername(loginInput.getUsername())
       .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
-    return getAuthenticatedUser(user);
+    return authenticateUser(user);
   }
 
-  private AuthenticatedUserExcerpt getAuthenticatedUser(User user) {
-    var userModel = userMapper.userToUserModel(user);
+  private AuthenticatedUserExcerpt authenticateUser(User user) {
+    UserPrincipal userPrincipal = new UserPrincipal(user);
+    var token = jwtTokenProvider.generateJWTToken(userPrincipal);
+    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(token, null));
+
     return AuthenticatedUserExcerpt.builder()
-      .userModel(userModel)
-      .headers(getJwtHeader(
-        new UserPrincipal(user))).build();
+      .userModel(userMapper.userToUserModel(user))
+      .headers(getJwtHeader(new UserPrincipal(user)))
+      .build();
   }
 
 

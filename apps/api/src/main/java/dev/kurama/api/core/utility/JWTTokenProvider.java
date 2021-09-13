@@ -8,8 +8,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.UserPrincipal;
+import dev.kurama.api.core.filter.ContextUser;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,35 +38,37 @@ public class JWTTokenProvider {
       .withIssuedAt(new Date())
       .withSubject(userPrincipal.getUsername())
       .withArrayClaim(SecurityConstant.AUTHORITIES, authorities)
+      .withClaim("user", new HashMap<String, String>() {{
+        put("id", userPrincipal.getUser().getId());
+        put("username", userPrincipal.getUser().getUsername());
+      }})
       .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstant.EXPIRATION_TIME))
       .sign(getAlgorithm());
-  }
-
-  public List<GrantedAuthority> getAuthorities(String token) {
-    return getJWTVerifier().verify(token).getClaim(SecurityConstant.AUTHORITIES).asList(String.class).stream()
-      .map(SimpleGrantedAuthority::new).collect(
-        Collectors.toList());
-  }
-
-  public Authentication getAuthentication(String username, List<GrantedAuthority> authorities,
-    HttpServletRequest request) {
-    var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-    return usernamePasswordAuthenticationToken;
   }
 
   public boolean isTokenValid(String username, String token) {
     return isNotBlank(username) && !isTokenExpired(token);
   }
 
-  private boolean isTokenExpired(String token) {
-    return getJWTVerifier().verify(token).getExpiresAt().before(new Date());
-  }
-
   public String getSubject(String token) {
     return getJWTVerifier().verify(token).getSubject();
   }
 
+  public Authentication getAuthentication(String token, HttpServletRequest request) {
+    List<GrantedAuthority> authorities = getAuthorities(token);
+    ContextUser contextUser = getContextUser(token);
+
+    var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(contextUser, null, authorities);
+    if (request != null) {
+      usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    }
+    return usernamePasswordAuthenticationToken;
+  }
+
+  private ContextUser getContextUser(String token) {
+    Map<String, Object> user = getJWTVerifier().verify(token).getClaim("user").asMap();
+    return ContextUser.builder().id((String) user.get("id")).username((String) user.get("username")).build();
+  }
 
   private JWTVerifier getJWTVerifier() {
     JWTVerifier verifier;
@@ -73,6 +78,16 @@ public class JWTTokenProvider {
       throw new JWTVerificationException(SecurityConstant.TOKEN_CANNOT_BE_VERIFIED);
     }
     return verifier;
+  }
+
+  private boolean isTokenExpired(String token) {
+    return getJWTVerifier().verify(token).getExpiresAt().before(new Date());
+  }
+
+  private List<GrantedAuthority> getAuthorities(String token) {
+    return getJWTVerifier().verify(token).getClaim(SecurityConstant.AUTHORITIES).asList(String.class).stream()
+      .map(SimpleGrantedAuthority::new).collect(
+        Collectors.toList());
   }
 
   private Algorithm getAlgorithm() {

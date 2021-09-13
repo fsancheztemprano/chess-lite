@@ -2,11 +2,12 @@ package dev.kurama.api.core.rest;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-import dev.kurama.api.core.facade.AdministrationFacade;
+import dev.kurama.api.core.facade.ServiceLogsFacade;
 import dev.kurama.api.core.hateoas.model.ServiceLogsModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,13 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/administration/service-logs")
 @PreAuthorize("isAuthenticated()")
-public class AdministrationController {
+public class ServiceLogsController {
 
-  private final AdministrationFacade administrationFacade;
+  private final ServiceLogsFacade serviceLogsFacade;
 
   @GetMapping()
-  @PreAuthorize("hasAuthority('admin:service-logs:read')")
+  @PreAuthorize("hasAuthority('service-logs:read')")
   public ResponseEntity<ServiceLogsModel> getServiceLogs() {
-    return ok().body(administrationFacade.getServiceLogs());
+    return ok().body(serviceLogsFacade.getServiceLogs());
+  }
+
+  @DeleteMapping()
+  @PreAuthorize("hasAuthority('service-logs:delete')")
+  public ResponseEntity<ServiceLogsModel> deleteServiceLogs() {
+    return ok().body(serviceLogsFacade.deleteServiceLogs());
   }
 }

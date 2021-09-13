@@ -64,7 +64,9 @@ public class DefaultAuthority {
 
     AdminAuthority.ADMIN_ROOT,
     AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
-    AdminAuthority.ADMIN_SERVICE_LOGS_READ
+
+    ServiceLogsAuthority.SERVICE_LOGS_READ,
+    ServiceLogsAuthority.SERVICE_LOGS_DELETE
   );
 
 
@@ -81,7 +83,10 @@ public class DefaultAuthority {
 
 
   public static final List<String> ADMIN_AUTHORITIES =
-    Stream.of(MOD_AUTHORITIES, Lists.newArrayList(UserAuthority.USER_CREATE, AdminAuthority.ADMIN_SERVICE_LOGS_READ))
+    Stream.of(MOD_AUTHORITIES,
+        Lists.newArrayList(UserAuthority.USER_CREATE,
+          ServiceLogsAuthority.SERVICE_LOGS_READ,
+          ServiceLogsAuthority.SERVICE_LOGS_DELETE))
       .flatMap(Collection::stream)
       .collect(Collectors.toList());
 

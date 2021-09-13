@@ -31,6 +31,7 @@ export enum AuthorityManagementRelations {
 export enum AdministrationRelations {
   ADMINISTRATION_REL = 'administration',
   SERVICE_LOGS_REL = 'service-logs',
+  DELETE_SERVICE_LOGS_REL = 'deleteServiceLogs',
 }
 
 export enum AuthRelations {

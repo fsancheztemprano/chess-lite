@@ -61,6 +61,8 @@ public class User extends AbstractEntity implements Serializable {
   private boolean expired;
   private boolean credentialsExpired;
 
-  @OneToOne(mappedBy = "user")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
   private UserPreferences userPreferences;
 }

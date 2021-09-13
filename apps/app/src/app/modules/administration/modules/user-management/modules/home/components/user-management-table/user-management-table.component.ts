@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { User, UserManagementRelations, UserPage } from '@app/domain';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { MenuOption } from '../../../../../../../../core/services/context-menu.service.model';
 import { CoreService } from '../../../../../../../../core/services/core.service';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
@@ -33,11 +33,12 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
     'edit',
   ];
 
+  private canCreateUserSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private createUserMenuOption: MenuOption = {
     label: 'New User',
     icon: 'person_add',
     onClick: () => this.router.navigate(['administration', 'user-management', 'create']),
-    disabled: new Subject<boolean>(),
+    disabled: this.canCreateUserSubject.asObservable(),
   };
 
   constructor(
@@ -49,7 +50,7 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
     this.coreService.setShowContextMenu(true);
     this.coreService.setContextMenuOptions([this.createUserMenuOption]);
     this.dataSource.userPage$?.subscribe((userPage: UserPage) =>
-      this.createUserMenuOption.disabled?.next(!userPage.isAllowedTo(UserManagementRelations.USER_CREATE_REL)),
+      this.canCreateUserSubject.next(!userPage.isAllowedTo(UserManagementRelations.USER_CREATE_REL)),
     );
   }
 
@@ -61,6 +62,6 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.coreService.reset();
-    this.createUserMenuOption.disabled?.complete();
+    this.canCreateUserSubject.complete();
   }
 }
