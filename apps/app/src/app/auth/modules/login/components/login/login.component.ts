@@ -3,9 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { HeaderService } from '../../../core/services/header.service';
-import { setTemplateValidatorsPipe } from '../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
-import { LoginService } from '../../services/login.service';
+import { HeaderService } from '../../../../../core/services/header.service';
+import { setTemplateValidatorsPipe } from '../../../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
+import { LoginService } from '../../../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +38,7 @@ export class LoginComponent implements OnDestroy {
   }
 
   public onSubmit(): void {
-    this.loginService.login(this.loginForm.value)?.subscribe({
+    this.loginService.login(this.loginForm.value).subscribe({
       next: (user) => this.setStatus(!!user),
       error: () => this.setStatus(false),
     });

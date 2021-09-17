@@ -1,0 +1,31 @@
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <mat-card
+    class="mat-elevation-z24"
+    [@wobble]="error === true"
+    (@wobble.start)="error = false"
+    [@bounceOut]="success === true"
+    (@bounceOut.done)="onSuccess()"
+  >
+    <mat-card-header>
+      <mat-card-title>Enter your Email</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="email" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.email" name="email"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions [align]="'end'">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="form.invalid || (activationTokenService.isAllowedToRequestToken() | async) === false"
+      >
+        Request Token
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+<div class="spacer"></div>

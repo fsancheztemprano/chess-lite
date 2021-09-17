@@ -1,0 +1,52 @@
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+  <mat-card
+    class="mat-elevation-z24"
+    [@wobble]="error === true"
+    (@wobble.start)="error = false"
+    [@bounceOut]="success === true"
+    (@bounceOut.done)="onSuccess()"
+  >
+    <mat-card-header>
+      <mat-card-title>Activate your Account</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="Token" formControlName="token" />
+        <mat-error>
+          <app-form-error [control]="form.controls.token" name="token"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName="email" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.email" name="email"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.password" name="password"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Repeat Password" formControlName="password2" required />
+        <mat-error>
+          <app-form-error [control]="form.controls.password2" name="password"></app-form-error>
+        </mat-error>
+      </mat-form-field>
+      <div class="mat-error">
+        <app-form-error [control]="form" name="password"></app-form-error>
+      </div>
+    </mat-card-content>
+    <mat-card-actions [align]="'end'">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="form.invalid || (activationTokenService.isAllowedToActivateAccount() | async) === false"
+      >
+        Activate Account
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+<div class="spacer"></div>

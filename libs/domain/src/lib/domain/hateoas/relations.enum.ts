@@ -38,3 +38,8 @@ export enum AuthRelations {
   LOGIN_RELATION = 'login',
   SIGNUP_RELATION = 'signup',
 }
+
+export enum ActivationTokenRelations {
+  REQUEST_ACTIVATION_TOKEN_REL = 'requestActivationToken',
+  ACTIVATE_ACCOUNT_REL = 'activateAccount',
+}

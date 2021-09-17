@@ -5,7 +5,9 @@ import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
+import dev.kurama.api.core.exception.domain.UserLockedException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.mapper.UserMapper;
@@ -31,6 +33,9 @@ public class AuthenticationFacade {
   private final UserMapper userMapper;
 
   @NonNull
+  private final UserModelAssembler userModelAssembler;
+
+  @NonNull
   private final AuthenticationManager authenticationManager;
 
   @NonNull
@@ -44,10 +49,13 @@ public class AuthenticationFacade {
     return authenticateUser(user);
   }
 
-  public AuthenticatedUserExcerpt login(LoginInput loginInput) {
+  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws UserLockedException {
     authenticate(loginInput.getUsername(), loginInput.getPassword());
     var user = userService.findUserByUsername(loginInput.getUsername())
       .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
+    if (user.isLocked()) {
+      throw new UserLockedException(loginInput.getUsername());
+    }
     return authenticateUser(user);
   }
 
@@ -57,7 +65,7 @@ public class AuthenticationFacade {
     SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(token, null));
 
     return AuthenticatedUserExcerpt.builder()
-      .userModel(userMapper.userToUserModel(user))
+      .userModel(userModelAssembler.toModel(userMapper.userToUserModel(user)))
       .headers(getJwtHeader(new UserPrincipal(user)))
       .build();
   }
