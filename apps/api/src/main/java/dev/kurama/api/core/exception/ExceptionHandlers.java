@@ -134,11 +134,11 @@ public class ExceptionHandlers implements ErrorController {
     return createDomainResponse(INTERNAL_SERVER_ERROR, ERROR_PROCESSING_FILE);
   }
 
-//  @ExceptionHandler(Exception.class)
-//  public ResponseEntity<DomainResponse> internalServerErrorException(Exception exception) {
-//    log.atWarning().log(exception.getMessage());
-//    return createDomainResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
-//  }
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<DomainResponse> internalServerErrorException(Exception exception) {
+    log.atWarning().log(exception.getMessage());
+    return createDomainResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
+  }
 
   private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String message) {
     return new ResponseEntity<>(DomainResponse.builder()
