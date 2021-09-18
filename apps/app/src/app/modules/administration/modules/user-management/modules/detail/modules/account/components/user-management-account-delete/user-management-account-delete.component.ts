@@ -13,7 +13,7 @@ import { UserManagementAccountDeleteConfirmComponent } from '../user-management-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAccountDeleteComponent {
-  public user: User | undefined;
+  public user!: User;
 
   constructor(
     private readonly dialogService: MatDialog,

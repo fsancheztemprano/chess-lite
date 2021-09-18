@@ -63,7 +63,7 @@ public class AuthenticationFacade {
   }
 
   public void requestActivationToken(String email) throws EmailNotFoundException, ActivationTokenRecentException {
-    userService.requestActivationToken(email);
+    userService.requestActivationTokenByEmail(email);
   }
 
   public void activateAccount(AccountActivationInput accountActivationInput)

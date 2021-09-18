@@ -44,6 +44,22 @@ export class ToasterService {
     }
   }
 
+  showErrorToast(toast: IToastModel): ActiveToast<unknown> {
+    return this.showToast({ ...toast, type: ToastType.ERROR });
+  }
+
+  showInfoToast(toast: IToastModel): ActiveToast<unknown> {
+    return this.showToast({ ...toast, type: ToastType.INFO });
+  }
+
+  showWarningToast(toast: IToastModel): ActiveToast<unknown> {
+    return this.showToast({ ...toast, type: ToastType.WARNING });
+  }
+
+  showSuccessToast(toast: IToastModel): ActiveToast<unknown> {
+    return this.showToast({ ...toast, type: ToastType.SUCCESS });
+  }
+
   private showLinkToast(toast: IToastModel) {
     const message = `<a download href='${toast.link}' target='_blank'>${toast.linkCaption}</a>`;
     return this.toastrService.show(message, toast.title, toast.override, toast.type);

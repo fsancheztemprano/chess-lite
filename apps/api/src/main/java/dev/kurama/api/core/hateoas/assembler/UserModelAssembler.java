@@ -74,6 +74,9 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
       .mapLinkIf(hasAuthority(USER_UPDATE),
         LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(userModel.getId())))
+      .mapLinkIf(hasAuthority(USER_UPDATE),
+        LinkRelation.of(SELF),
+        link -> link.andAffordance(getSendActivationTokenAffordance(userModel.getId())))
 
       .mapLinkIf((isCurrentUser && canUpdateOwnProfile),
         LinkRelation.of(SELF),
@@ -155,6 +158,12 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
   private @NonNull
   Affordance getDeleteAffordance(String userId) {
     return afford(methodOn(getClazz()).delete(userId));
+  }
+
+  @SneakyThrows
+  private @NonNull
+  Affordance getSendActivationTokenAffordance(String userId) {
+    return afford(methodOn(getClazz()).requestActivationToken(userId));
   }
 
   private @NonNull

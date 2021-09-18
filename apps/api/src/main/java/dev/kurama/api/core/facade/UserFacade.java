@@ -1,5 +1,6 @@
 package dev.kurama.api.core.facade;
 
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.UserNotFoundException;
@@ -93,11 +94,14 @@ public class UserFacade {
   }
 
   public UserModel uploadAvatar(String username, MultipartFile avatar) throws IOException {
-    var sb = new StringBuilder();
-    sb.append("data:image/png;base64,");
-    sb.append(StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false)));
-    return userModelAssembler.toModel(userMapper.userToUserModel(userService.uploadAvatar(username, sb.toString())));
+    String sb = "data:image/png;base64,"
+      + StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false));
+    return userModelAssembler.toModel(userMapper.userToUserModel(userService.uploadAvatar(username, sb)));
 
+  }
+
+  public void requestActivationToken(String id) throws UserNotFoundException, ActivationTokenRecentException {
+    userService.requestActivationTokenById(id);
   }
 
   private void authenticate(String username, String password) {

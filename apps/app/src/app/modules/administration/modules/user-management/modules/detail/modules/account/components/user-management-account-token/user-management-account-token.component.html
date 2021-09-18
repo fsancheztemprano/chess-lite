@@ -1,0 +1,16 @@
+<mat-card class="mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Remove Account</mat-card-title>
+  </mat-card-header>
+  <mat-card-content> Once you delete an account, it can't be recovered. Please be sure.</mat-card-content>
+  <mat-card-actions align="end">
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="sendActivationToken()"
+      [disabled]="!user || !user.isAllowedTo('requestActivationToken')"
+    >
+      Delete this account
+    </button>
+  </mat-card-actions>
+</mat-card>

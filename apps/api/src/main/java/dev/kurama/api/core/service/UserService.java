@@ -238,16 +238,15 @@ public class UserService implements UserDetailsService {
     return userRepository.save(currentUser);
   }
 
-  public void requestActivationToken(String email) throws EmailNotFoundException, ActivationTokenRecentException {
+  public void requestActivationTokenById(String id) throws UserNotFoundException, ActivationTokenRecentException {
+    var user = findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+    requestActivationToken(user);
+  }
+
+  public void requestActivationTokenByEmail(String email)
+    throws EmailNotFoundException, ActivationTokenRecentException {
     var user = findUserByEmail(email).orElseThrow(() -> new EmailNotFoundException(email));
-
-    var newToken = activationTokenService.createActivationToken(user);
-
-    user.setLocked(true);
-    user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-    userRepository.saveAndFlush(user);
-
-    sendActivationTokenEmail(user, newToken.getId());
+    requestActivationToken(user);
   }
 
   public void activateAccount(AccountActivationInput accountActivationInput)
@@ -270,6 +269,16 @@ public class UserService implements UserDetailsService {
         .subject(ACTIVATION_EMAIL_SUBJECT)
         .text("Your Account has just been Activated.")
         .build());
+  }
+
+  private void requestActivationToken(User user) throws ActivationTokenRecentException {
+    var newToken = activationTokenService.createActivationToken(user);
+
+    user.setLocked(true);
+    user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+    userRepository.saveAndFlush(user);
+
+    sendActivationTokenEmail(user, newToken.getId());
   }
 
   private void validateNewUsernameAndEmail(String newUsername, String email)

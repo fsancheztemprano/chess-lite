@@ -6,6 +6,7 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.UserNotFoundException;
@@ -71,6 +72,14 @@ public class UserController {
   @PreAuthorize("hasAuthority('user:delete')")
   public ResponseEntity<Void> delete(@PathVariable("userId") String userId) throws UserNotFoundException {
     userFacade.deleteById(userId);
+    return noContent().build();
+  }
+
+  @PostMapping("/{userId}")
+  @PreAuthorize("hasAuthority('user:update')")
+  public ResponseEntity<Void> requestActivationToken(@PathVariable("userId") String userId)
+    throws UserNotFoundException, ActivationTokenRecentException {
+    userFacade.requestActivationToken(userId);
     return noContent().build();
   }
 }
