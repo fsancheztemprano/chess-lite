@@ -1,3 +1,5 @@
+application:
+  host_url: 'https://boiling-shore-06894.herokuapp.com'
 spring:
   datasource:
     url: ${JDBC_DATABASE_URL}

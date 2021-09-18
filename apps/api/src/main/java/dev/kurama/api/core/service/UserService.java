@@ -1,7 +1,6 @@
 package dev.kurama.api.core.service;
 
 import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
-import static dev.kurama.api.core.constant.ActivationTokenConstant.getActivationEmailText;
 import static java.util.Optional.ofNullable;
 
 import com.google.common.collect.Sets;
@@ -34,6 +33,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -72,6 +72,9 @@ public class UserService implements UserDetailsService {
 
   @NonNull
   private final EmailService emailService;
+
+  @Value("${application.host_url}")
+  private String host;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -302,11 +305,18 @@ public class UserService implements UserDetailsService {
   }
 
   private void sendActivationTokenEmail(User user, String token) {
+    String activationEmailText = String.format(
+      "Here is the token to activate your account:<br><br>%s<br><br>"
+        + "It is valid for 24 hours, you can follow this link to reset your password:<br><br>"
+        + "<a href =\"%s/app/auth/activation?token=%s&email=%s\"> Click Here </a><br><br><br>"
+        + "Thank You", token, host, token, user.getEmail());
+
     emailService.sendEmail(
       EmailTemplate.builder()
         .to(user.getEmail())
         .subject(ACTIVATION_EMAIL_SUBJECT)
-        .text(getActivationEmailText(token, user.getEmail()))
+        .text(activationEmailText)
         .build());
   }
+
 }
