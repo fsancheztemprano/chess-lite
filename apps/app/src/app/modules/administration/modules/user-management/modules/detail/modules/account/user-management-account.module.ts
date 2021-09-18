@@ -10,8 +10,8 @@ import { FormErrorModule } from '../../../../../../../../shared/components/form-
 import { UserManagementAccountDeleteConfirmComponent } from './components/user-management-account-delete-confirm/user-management-account-delete-confirm.component';
 import { UserManagementAccountDeleteComponent } from './components/user-management-account-delete/user-management-account-delete.component';
 import { UserManagementAccountPasswordComponent } from './components/user-management-account-password/user-management-account-password.component';
+import { UserManagementAccountTokenComponent } from './components/user-management-account-token/user-management-account-token.component';
 import { UserManagementAccountComponent } from './components/user-management-account/user-management-account.component';
-
 import { UserManagementAccountRoutingModule } from './user-management-account-routing.module';
 
 @NgModule({
@@ -20,6 +20,7 @@ import { UserManagementAccountRoutingModule } from './user-management-account-ro
     UserManagementAccountDeleteConfirmComponent,
     UserManagementAccountDeleteComponent,
     UserManagementAccountPasswordComponent,
+    UserManagementAccountTokenComponent,
   ],
   imports: [
     CommonModule,

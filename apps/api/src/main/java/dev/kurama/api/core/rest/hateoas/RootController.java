@@ -3,6 +3,8 @@ package dev.kurama.api.core.rest.hateoas;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.SIGNUP_REL;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
@@ -47,7 +49,9 @@ public class RootController {
     } else {
       rootModel
         .link(getLoginLink())
-        .link(getSignupLink());
+        .link(getSignupLink())
+        .link(getActivationTokenLink())
+        .link(getAccountActivationLink());
     }
     return ok(rootModel.build());
   }
@@ -63,6 +67,7 @@ public class RootController {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
   }
 
+  @SneakyThrows
   private @NonNull
   Link getLoginLink() {
     return linkTo(methodOn(AuthenticationController.class).login(null)).withRel(LOGIN_REL);
@@ -72,6 +77,18 @@ public class RootController {
   private @NonNull
   Link getSignupLink() {
     return linkTo(methodOn(AuthenticationController.class).signup(null)).withRel(SIGNUP_REL);
+  }
+
+  @SneakyThrows
+  private @NonNull
+  Link getActivationTokenLink() {
+    return linkTo(methodOn(AuthenticationController.class).requestActivationToken(null)).withRel(ACTIVATION_TOKEN_REL);
+  }
+
+  @SneakyThrows
+  private @NonNull
+  Link getAccountActivationLink() {
+    return linkTo(methodOn(AuthenticationController.class).activateAccount(null)).withRel(ACTIVATE_ACCOUNT_REL);
   }
 
   private @NonNull

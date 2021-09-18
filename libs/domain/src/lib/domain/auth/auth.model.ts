@@ -14,3 +14,9 @@ export interface SignupInput {
 export enum HttpHeaders {
   'JWT_TOKEN' = 'Jwt-Token',
 }
+
+export interface AccountActivationInput {
+  token: string;
+  email: string;
+  password: string;
+}

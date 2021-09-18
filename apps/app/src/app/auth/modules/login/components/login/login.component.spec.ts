@@ -7,9 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HalFormClientTestingModule } from '@hal-form-client/testing';
-import { stubHeaderServiceProvider } from '../../../core/services/header.service.stub';
-import { StubFormErrorComponent } from '../../../shared/components/form-error/form-error.component.stub';
-import { stubLoginServiceProvider } from '../../services/login.service.stub';
+import { stubHeaderServiceProvider } from '../../../../../core/services/header.service.stub';
+import { StubFormErrorComponent } from '../../../../../shared/components/form-error/form-error.component.stub';
+import { stubLoginServiceProvider } from '../../../../services/login.service.stub';
 import { LoginComponent } from './login.component';
 
 const MaterialModules = [MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule];

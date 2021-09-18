@@ -3,11 +3,11 @@
   flex-flow: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 24px;
 
   form {
     mat-card {
+      min-width: 350px;
+
       mat-card-content {
         display: flex;
         flex-flow: column;

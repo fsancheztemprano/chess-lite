@@ -6,11 +6,18 @@ application:
     - /api
     - /api/auth/login
     - /api/auth/signup
+    - /api/auth/token
+    - /api/auth/activate
     - /explorer/**
     - /swagger-ui/**
     - /swagger-resources/**
     - /v*/api-docs/**
 spring:
+  mail:
+    host: localhost
+    port: 1025
+    properties.mail.smtp.auth: false
+    properties.mail.smtp.starttls.enable: false
   devtools:
     livereload:
       enabled: true

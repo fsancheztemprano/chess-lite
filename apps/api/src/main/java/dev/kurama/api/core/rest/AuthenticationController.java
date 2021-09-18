@@ -2,11 +2,18 @@ package dev.kurama.api.core.rest;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
+import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
+import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
+import dev.kurama.api.core.exception.domain.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.UserLockedException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
 import dev.kurama.api.core.facade.AuthenticationFacade;
-import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
+import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
+import dev.kurama.api.core.hateoas.input.RequestActivationTokenInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import lombok.NonNull;
@@ -27,21 +34,33 @@ public class AuthenticationController {
   @NonNull
   private final AuthenticationFacade authenticationFacade;
 
-  @NonNull
-  private final UserModelAssembler userModelAssembler;
 
   @PostMapping("/signup")
-  public ResponseEntity<UserModel> signup(@RequestBody SignupInput user)
-    throws UsernameExistsException, EmailExistsException {
-    var authenticatedUser = authenticationFacade.signup(user);
-    return ok().headers(authenticatedUser.getHeaders())
-      .body(userModelAssembler.toModel(authenticatedUser.getUserModel()));
+  public ResponseEntity<?> signup(@RequestBody SignupInput user)
+    throws EmailExistsException, UsernameExistsException {
+    authenticationFacade.signup(user);
+    return ok().build();
   }
 
   @PostMapping("/login")
-  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) {
+  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) throws UserLockedException {
     var authenticatedUser = authenticationFacade.login(user);
     return ok().headers(authenticatedUser.getHeaders())
-      .body(userModelAssembler.toModel(authenticatedUser.getUserModel()));
+      .body(authenticatedUser.getUserModel());
+  }
+
+
+  @PostMapping("/token")
+  public ResponseEntity<?> requestActivationToken(@RequestBody RequestActivationTokenInput requestActivationTokenInput)
+    throws EmailNotFoundException, ActivationTokenRecentException {
+    authenticationFacade.requestActivationToken(requestActivationTokenInput.getEmail());
+    return ok().build();
+  }
+
+  @PostMapping("/activate")
+  public ResponseEntity<?> activateAccount(@RequestBody AccountActivationInput accountActivationInput)
+    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException {
+    authenticationFacade.activateAccount(accountActivationInput);
+    return ok().build();
   }
 }
