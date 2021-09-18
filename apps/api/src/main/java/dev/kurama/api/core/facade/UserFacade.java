@@ -81,7 +81,7 @@ public class UserFacade {
     userService.deleteUserByUsername(username);
   }
 
-  public void deleteById(String id) {
+  public void deleteById(String id) throws UserNotFoundException {
     userService.deleteUserById(id);
   }
 

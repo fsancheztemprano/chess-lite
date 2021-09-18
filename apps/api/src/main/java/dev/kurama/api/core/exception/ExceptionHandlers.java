@@ -11,6 +11,8 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.api.core.domain.DomainResponse;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.RoleNotFoundException;
+import dev.kurama.api.core.exception.domain.UserLockedException;
 import dev.kurama.api.core.exception.domain.UserNotFoundException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
 import java.io.IOException;
@@ -107,6 +109,12 @@ public class ExceptionHandlers implements ErrorController {
 //    return createDomainResponse(BAD_REQUEST, "There is no mapping for this URL");
 //  }
 
+  @ExceptionHandler(UserLockedException.class)
+  public ResponseEntity<DomainResponse> userLockedException(UserLockedException exception) {
+    log.atWarning().log(exception.getMessage());
+    return createDomainResponse(BAD_REQUEST, String.format("User %s is locked", exception.getMessage()));
+  }
+
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<DomainResponse> methodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
     HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods()).iterator().next();
@@ -114,7 +122,7 @@ public class ExceptionHandlers implements ErrorController {
     return createDomainResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOWED, supportedMethod));
   }
 
-  @ExceptionHandler(NoResultException.class)
+  @ExceptionHandler({NoResultException.class, RoleNotFoundException.class})
   public ResponseEntity<DomainResponse> notFoundException(NoResultException exception) {
     log.atWarning().log(exception.getMessage());
     return createDomainResponse(NOT_FOUND, exception.getMessage());
@@ -126,11 +134,11 @@ public class ExceptionHandlers implements ErrorController {
     return createDomainResponse(INTERNAL_SERVER_ERROR, ERROR_PROCESSING_FILE);
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<DomainResponse> internalServerErrorException(Exception exception) {
-    log.atWarning().log(exception.getMessage());
-    return createDomainResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MSG);
-  }
+//  @ExceptionHandler(Exception.class)
+//  public ResponseEntity<DomainResponse> internalServerErrorException(Exception exception) {
+//    log.atWarning().log(exception.getMessage());
+//    return createDomainResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
+//  }
 
   private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String message) {
     return new ResponseEntity<>(DomainResponse.builder()

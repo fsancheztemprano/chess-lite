@@ -2,7 +2,6 @@ package dev.kurama.api.core.domain;
 
 import java.io.Serializable;
 import java.util.Locale;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
@@ -24,7 +23,7 @@ public class UserPreferences extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY)
   private User user;
 
   @Builder.Default

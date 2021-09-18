@@ -15,7 +15,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.ResponseEntity.ok;
 
 import dev.kurama.api.core.hateoas.model.RootResource;
-import dev.kurama.api.core.rest.ActivationTokenController;
 import dev.kurama.api.core.rest.AuthenticationController;
 import dev.kurama.api.core.rest.UserProfileController;
 import dev.kurama.api.core.utility.AuthorityUtils;
@@ -83,13 +82,13 @@ public class RootController {
   @SneakyThrows
   private @NonNull
   Link getActivationTokenLink() {
-    return linkTo(methodOn(ActivationTokenController.class).requestActivationToken(null)).withRel(ACTIVATION_TOKEN_REL);
+    return linkTo(methodOn(AuthenticationController.class).requestActivationToken(null)).withRel(ACTIVATION_TOKEN_REL);
   }
 
   @SneakyThrows
   private @NonNull
   Link getAccountActivationLink() {
-    return linkTo(methodOn(ActivationTokenController.class).activateAccount(null)).withRel(ACTIVATE_ACCOUNT_REL);
+    return linkTo(methodOn(AuthenticationController.class).activateAccount(null)).withRel(ACTIVATE_ACCOUNT_REL);
   }
 
   private @NonNull

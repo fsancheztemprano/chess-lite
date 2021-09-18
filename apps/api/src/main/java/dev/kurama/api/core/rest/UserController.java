@@ -69,7 +69,7 @@ public class UserController {
 
   @DeleteMapping("/{userId}")
   @PreAuthorize("hasAuthority('user:delete')")
-  public ResponseEntity<Void> delete(@PathVariable("userId") String userId) {
+  public ResponseEntity<Void> delete(@PathVariable("userId") String userId) throws UserNotFoundException {
     userFacade.deleteById(userId);
     return noContent().build();
   }

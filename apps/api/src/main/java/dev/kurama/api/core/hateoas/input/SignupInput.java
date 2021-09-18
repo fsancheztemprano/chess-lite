@@ -17,11 +17,6 @@ public class SignupInput {
   private String username;
 
   @NonNull
-  @NotNull
-  @Length(min = 8, max = 128)
-  private String password;
-
-  @NonNull
   @Email
   private String email;
 

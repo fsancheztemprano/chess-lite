@@ -34,21 +34,6 @@
           <app-form-error [control]="signupForm.controls.username" name="username"></app-form-error>
         </mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Password" formControlName="password" required />
-        <mat-error>
-          <app-form-error [control]="signupForm.controls.password" name="password"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Repeat Password" formControlName="password2" required />
-        <mat-error>
-          <app-form-error [control]="signupForm.controls.password2" name="password"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <div class="mat-error">
-        <app-form-error [control]="signupForm" name="password"></app-form-error>
-      </div>
     </mat-card-content>
     <mat-card-actions [align]="'end'">
       <button

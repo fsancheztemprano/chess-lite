@@ -52,7 +52,7 @@ export class TokenRequestComponent implements OnDestroy {
     if (status) {
       this.toasterService.showToast({
         title: 'Activation Token Sent',
-        message: 'Please check your email and follow the link to activate your account.',
+        message: 'Please check your email and follow the link to activate your account so you can login again',
       });
     } else {
       this.toasterService.showToast({

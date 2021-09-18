@@ -1,22 +1,34 @@
 package dev.kurama.api.core.service;
 
+import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
+import static dev.kurama.api.core.constant.ActivationTokenConstant.getActivationEmailText;
 import static java.util.Optional.ofNullable;
 
 import com.google.common.collect.Sets;
 import dev.kurama.api.core.constant.UserConstant;
+import dev.kurama.api.core.domain.ActivationToken;
 import dev.kurama.api.core.domain.Authority;
+import dev.kurama.api.core.domain.EmailTemplate;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
+import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
+import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
+import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
+import dev.kurama.api.core.exception.domain.EmailNotFoundException;
 import dev.kurama.api.core.exception.domain.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.UserNotFoundException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.hateoas.input.AccountActivationInput;
+import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UpdateUserProfileInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +67,12 @@ public class UserService implements UserDetailsService {
   @NonNull
   private final UserPreferencesService userPreferencesService;
 
+  @NonNull
+  private final ActivationTokenService activationTokenService;
+
+  @NonNull
+  private final EmailService emailService;
+
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     var user = userRepository.findUserByUsername(username)
@@ -83,29 +101,29 @@ public class UserService implements UserDetailsService {
   }
 
   public void deleteUserByUsername(String username) {
-    var user = userRepository.findUserByUsername(username).orElseThrow();
+    var user = findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    userRepository.delete(user);
+  }
+
+  public void deleteUserById(String id) throws UserNotFoundException {
+    var user = userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
     userRepository.deleteById(user.getTid());
   }
 
-  public void deleteUserById(String id) {
-    var user = userRepository.findUserById(id).orElseThrow();
-    userRepository.deleteById(user.getTid());
-  }
-
-  public User signup(String username, String password, String email, String firstname, String lastname)
+  public void signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException {
-    validateUsernameAndEmailCreate(username, email);
+    validateNewUsernameAndEmail(signupInput.getUsername(), signupInput.getEmail());
     var role = roleService.getDefaultRole().orElseThrow();
     User user = User.builder()
       .setRandomUUID()
-      .username(username)
-      .password(passwordEncoder.encode(password))
-      .email(email)
-      .firstname(firstname)
-      .lastname(lastname)
+      .username(signupInput.getUsername())
+      .password(passwordEncoder.encode(UUID.randomUUID().toString()))
+      .email(signupInput.getEmail())
+      .firstname(signupInput.getFirstname())
+      .lastname(signupInput.getLastname())
       .joinDate(new Date())
       .active(true)
-      .locked(false)
+      .locked(true)
       .expired(false)
       .credentialsExpired(false)
       .role(role)
@@ -114,12 +132,17 @@ public class UserService implements UserDetailsService {
     user = userRepository.save(user);
 
     userPreferencesService.createUserPreferences(user);
-    return user;
+
+    try {
+      ActivationToken newToken = activationTokenService.createActivationToken(user);
+      sendActivationTokenEmail(user, newToken.getId());
+    } catch (ActivationTokenRecentException ignored) {
+    }
   }
 
   public User createUser(UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
-    validateUsernameAndEmailCreate(userInput.getUsername(), userInput.getEmail());
+    validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = roleService.findRoleById(userInput.getRoleId())
       .orElseGet(() -> roleService.getDefaultRole().orElseThrow());
     User user = User.builder()
@@ -196,7 +219,7 @@ public class UserService implements UserDetailsService {
   }
 
   public User updateProfile(String username, UpdateUserProfileInput updateProfileInput) {
-    var currentUser = findUserByUsername(username).orElseThrow();
+    var currentUser = findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     currentUser.setFirstname(updateProfileInput.getFirstname());
     currentUser.setLastname(updateProfileInput.getLastname());
     currentUser.setProfileImageUrl(updateProfileInput.getProfileImageUrl());
@@ -215,7 +238,41 @@ public class UserService implements UserDetailsService {
     return userRepository.save(currentUser);
   }
 
-  private void validateUsernameAndEmailCreate(String newUsername, String email)
+  public void requestActivationToken(String email) throws EmailNotFoundException, ActivationTokenRecentException {
+    var user = findUserByEmail(email).orElseThrow(() -> new EmailNotFoundException(email));
+
+    var newToken = activationTokenService.createActivationToken(user);
+
+    user.setLocked(true);
+    user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+    userRepository.saveAndFlush(user);
+
+    sendActivationTokenEmail(user, newToken.getId());
+  }
+
+  public void activateAccount(AccountActivationInput accountActivationInput)
+    throws ActivationTokenExpiredException, ActivationTokenNotFoundException, EmailNotFoundException, ActivationTokenUserMismatchException {
+    var activationToken = activationTokenService.findActivationToken(accountActivationInput.getToken());
+
+    var user = findUserByEmail(accountActivationInput.getEmail())
+      .orElseThrow(() -> new EmailNotFoundException(accountActivationInput.getEmail()));
+
+    activationTokenService.verifyActivationTokenMatch(activationToken, user);
+
+    user.setLocked(false);
+    user.setPassword(passwordEncoder.encode(accountActivationInput.getPassword()));
+    user.setActivationToken(null);
+    userRepository.saveAndFlush(user);
+
+    emailService.sendEmail(
+      EmailTemplate.builder()
+        .to(user.getEmail())
+        .subject(ACTIVATION_EMAIL_SUBJECT)
+        .text("Your Account has just been Activated.")
+        .build());
+  }
+
+  private void validateNewUsernameAndEmail(String newUsername, String email)
     throws UsernameExistsException, EmailExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
     var userByNewEmail = findUserByEmail(email);
@@ -233,5 +290,14 @@ public class UserService implements UserDetailsService {
     } else {
       user.setLocked(loginAttemptService.hasExceededMaxAttempts(user.getUsername()));
     }
+  }
+
+  private void sendActivationTokenEmail(User user, String token) {
+    emailService.sendEmail(
+      EmailTemplate.builder()
+        .to(user.getEmail())
+        .subject(ACTIVATION_EMAIL_SUBJECT)
+        .text(getActivationEmailText(token, user.getEmail()))
+        .build());
   }
 }

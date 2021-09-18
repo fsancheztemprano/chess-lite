@@ -13,5 +13,9 @@ public interface ActivationTokenRepository extends JpaRepository<ActivationToken
 
   Optional<ActivationToken> findActivationTokenByUser(@NonNull User user);
 
+  void deleteAllByUser(@NonNull User user);
+
+  Integer countActivationTokenByUser(@NonNull User user);
+
 
 }

@@ -4,10 +4,16 @@ import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
+import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
+import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
+import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
+import dev.kurama.api.core.exception.domain.EmailNotFoundException;
 import dev.kurama.api.core.exception.domain.UserLockedException;
 import dev.kurama.api.core.exception.domain.UsernameExistsException;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
+import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.mapper.UserMapper;
@@ -41,12 +47,9 @@ public class AuthenticationFacade {
   @NonNull
   private final JWTTokenProvider jwtTokenProvider;
 
-
-  public AuthenticatedUserExcerpt signup(SignupInput signupInput) throws UsernameExistsException, EmailExistsException {
-    var user = userService
-      .signup(signupInput.getUsername(), signupInput.getPassword(), signupInput.getEmail(),
-        signupInput.getFirstname(), signupInput.getLastname());
-    return authenticateUser(user);
+  public void signup(SignupInput signupInput)
+    throws UsernameExistsException, EmailExistsException {
+    userService.signup(signupInput);
   }
 
   public AuthenticatedUserExcerpt login(LoginInput loginInput) throws UserLockedException {
@@ -57,6 +60,15 @@ public class AuthenticationFacade {
       throw new UserLockedException(loginInput.getUsername());
     }
     return authenticateUser(user);
+  }
+
+  public void requestActivationToken(String email) throws EmailNotFoundException, ActivationTokenRecentException {
+    userService.requestActivationToken(email);
+  }
+
+  public void activateAccount(AccountActivationInput accountActivationInput)
+    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException {
+    userService.activateAccount(accountActivationInput);
   }
 
   private AuthenticatedUserExcerpt authenticateUser(User user) {

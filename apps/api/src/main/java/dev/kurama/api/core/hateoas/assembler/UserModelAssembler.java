@@ -151,6 +151,7 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
     return afford(methodOn(getClazz()).update(username, null));
   }
 
+  @SneakyThrows
   private @NonNull
   Affordance getDeleteAffordance(String userId) {
     return afford(methodOn(getClazz()).delete(userId));
@@ -172,6 +173,7 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
     return afford(methodOn(UserProfileController.class).uploadAvatar(null));
   }
 
+  @SneakyThrows
   private @NonNull
   Affordance getDeleteProfileAffordance() {
     return afford(methodOn(UserProfileController.class).deleteProfile());
