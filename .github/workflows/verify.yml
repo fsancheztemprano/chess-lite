@@ -28,13 +28,31 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
           check-latest: true
-          cache: 'maven'
 
       - name: Use Node 14
         uses: actions/setup-node@v2.4.0
         with:
           node-version: '14'
-          cache: 'yarn'
+
+      - name: Cache Node modules
+        uses: fsancheztemprano/cache@main
+        env:
+          cache-name: cache-node-modules-v3
+        with:
+          path: |
+            ~/.npm
+            ./node_modules
+            ./node
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache Maven packages
+        uses: fsancheztemprano/cache@main
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
       - name: Yarn Install
         run: yarn install
@@ -85,13 +103,31 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
           check-latest: true
-          cache: 'maven'
 
       - name: Use Node 14
         uses: actions/setup-node@v2.4.0
         with:
           node-version: '14'
-          cache: 'yarn'
+
+      - name: Cache Node modules
+        uses: fsancheztemprano/cache@main
+        env:
+          cache-name: cache-node-modules-v3
+        with:
+          path: |
+            ~/.npm
+            ./node_modules
+            ./node
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache Maven packages
+        uses: fsancheztemprano/cache@main
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
       - name: Yarn Install
         run: yarn install
