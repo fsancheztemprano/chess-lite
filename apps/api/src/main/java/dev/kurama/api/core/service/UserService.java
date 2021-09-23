@@ -103,9 +103,11 @@ public class UserService implements UserDetailsService {
     return userRepository.findAll(pageable);
   }
 
-  public void deleteUserByUsername(String username) {
+  public String deleteUserByUsername(String username) {
     var user = findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    String id = user.getId();
     userRepository.delete(user);
+    return id;
   }
 
   public void deleteUserById(String id) throws UserNotFoundException {
@@ -113,7 +115,7 @@ public class UserService implements UserDetailsService {
     userRepository.deleteById(user.getTid());
   }
 
-  public void signup(SignupInput signupInput)
+  public String signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(signupInput.getUsername(), signupInput.getEmail());
     var role = roleService.getDefaultRole().orElseThrow();
@@ -141,6 +143,7 @@ public class UserService implements UserDetailsService {
       sendActivationTokenEmail(user, newToken.getId());
     } catch (ActivationTokenRecentException ignored) {
     }
+    return user.getId();
   }
 
   public User createUser(UserInput userInput)

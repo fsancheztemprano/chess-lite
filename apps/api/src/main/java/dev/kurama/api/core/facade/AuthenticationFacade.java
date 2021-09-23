@@ -1,9 +1,12 @@
 package dev.kurama.api.core.facade;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
+import dev.kurama.api.core.event.domain.UserModelEvent;
+import dev.kurama.api.core.event.domain.UserModelEvent.UserModelEventAction;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
@@ -21,6 +24,7 @@ import dev.kurama.api.core.service.UserService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,9 +51,13 @@ public class AuthenticationFacade {
   @NonNull
   private final JWTTokenProvider jwtTokenProvider;
 
+  @NonNull
+  private final ApplicationEventPublisher applicationEventPublisher;
+
   public void signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException {
-    userService.signup(signupInput);
+    String userId = userService.signup(signupInput);
+    sendUserModelEvent(userId, UserModelEventAction.CREATED);
   }
 
   public AuthenticatedUserExcerpt login(LoginInput loginInput) throws UserLockedException {
@@ -74,7 +82,8 @@ public class AuthenticationFacade {
   private AuthenticatedUserExcerpt authenticateUser(User user) {
     UserPrincipal userPrincipal = new UserPrincipal(user);
     var token = jwtTokenProvider.generateJWTToken(userPrincipal);
-    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(token, null));
+    DecodedJWT decodedToken = jwtTokenProvider.getDecodedJWT(token);
+    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(decodedToken, null));
 
     return AuthenticatedUserExcerpt.builder()
       .userModel(userModelAssembler.toModel(userMapper.userToUserModel(user)))
@@ -91,5 +100,14 @@ public class AuthenticationFacade {
 
   private void authenticate(String username, String password) {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  }
+
+
+  private void sendUserModelEvent(String userId, UserModelEventAction action) {
+    applicationEventPublisher.publishEvent(
+      UserModelEvent.builder()
+        .userId(userId)
+        .action(action)
+        .build());
   }
 }

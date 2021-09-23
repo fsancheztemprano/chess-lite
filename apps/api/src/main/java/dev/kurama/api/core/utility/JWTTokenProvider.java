@@ -6,6 +6,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.filter.ContextUser;
@@ -46,27 +47,32 @@ public class JWTTokenProvider {
       .sign(getAlgorithm());
   }
 
-  public boolean isTokenValid(String username, String token) {
-    return isNotBlank(username) && !isTokenExpired(token);
+  public boolean isTokenValid(DecodedJWT token) {
+    return isNotBlank(token.getSubject()) && !isTokenExpired(token);
   }
 
-  public String getSubject(String token) {
-    return getJWTVerifier().verify(token).getSubject();
+  public DecodedJWT getDecodedJWT(String token) {
+    return getJWTVerifier().verify(token);
   }
 
-  public Authentication getAuthentication(String token, HttpServletRequest request) {
+  public Authentication getAuthentication(DecodedJWT token, HttpServletRequest request) {
+    UsernamePasswordAuthenticationToken authenticationToken = getUsernamePasswordAuthenticationToken(
+      token);
+    if (request != null) {
+      authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    }
+    return authenticationToken;
+  }
+
+  public UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(DecodedJWT token) {
     List<GrantedAuthority> authorities = getAuthorities(token);
     ContextUser contextUser = getContextUser(token);
 
-    var usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(contextUser, null, authorities);
-    if (request != null) {
-      usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-    }
-    return usernamePasswordAuthenticationToken;
+    return new UsernamePasswordAuthenticationToken(contextUser, null, authorities);
   }
 
-  private ContextUser getContextUser(String token) {
-    Map<String, Object> user = getJWTVerifier().verify(token).getClaim("user").asMap();
+  private ContextUser getContextUser(DecodedJWT token) {
+    Map<String, Object> user = token.getClaim("user").asMap();
     return ContextUser.builder().id((String) user.get("id")).username((String) user.get("username")).build();
   }
 
@@ -80,12 +86,12 @@ public class JWTTokenProvider {
     return verifier;
   }
 
-  private boolean isTokenExpired(String token) {
-    return getJWTVerifier().verify(token).getExpiresAt().before(new Date());
+  private boolean isTokenExpired(DecodedJWT token) {
+    return token.getExpiresAt().before(new Date());
   }
 
-  private List<GrantedAuthority> getAuthorities(String token) {
-    return getJWTVerifier().verify(token).getClaim(SecurityConstant.AUTHORITIES).asList(String.class).stream()
+  private List<GrantedAuthority> getAuthorities(DecodedJWT token) {
+    return token.getClaim(SecurityConstant.AUTHORITIES).asList(String.class).stream()
       .map(SimpleGrantedAuthority::new).collect(
         Collectors.toList());
   }

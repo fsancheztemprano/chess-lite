@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
 import { ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +15,7 @@ import { AuthService } from './auth/services/auth.service';
 import { GlobalErrorHandler } from './core/errors/global-error-handler.service';
 import { HttpErrorInterceptor } from './core/errors/http-error.interceptor';
 import { AppInitializationService } from './core/services/app-initialization.service';
+import { myRxStompConfig } from './core/services/message.service';
 import { TranslationService } from './shared/services/translation.service';
 
 export function initializeApp(appInitService: AppInitializationService) {
@@ -55,6 +57,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    { provide: InjectableRxStompConfig, useValue: myRxStompConfig },
+    { provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] },
   ],
   bootstrap: [AppComponent],
 })

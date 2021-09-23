@@ -8,4 +8,7 @@ export * from './lib/domain/auth/user.model';
 export * from './lib/domain/hateoas/pageable.model';
 export * from './lib/domain/hateoas/relations.enum';
 
+export * from './lib/domain/message/message.model';
+export * from './lib/domain/message/user.model.message';
+
 export * from './lib/domain/administration/administration.model';

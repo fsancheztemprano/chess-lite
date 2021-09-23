@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.http.HttpStatus.OK;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.common.net.HttpHeaders;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.utility.JWTTokenProvider;
@@ -41,9 +42,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         return;
       }
       var token = authorizationHeader.substring(SecurityConstant.TOKEN_PREFIX.length());
-      String username = jwtTokenProvider.getSubject(token);
-      if (jwtTokenProvider.isTokenValid(username, token)) {
-        Authentication authentication = jwtTokenProvider.getAuthentication(token, request);
+      DecodedJWT decodedToken = jwtTokenProvider.getDecodedJWT(token);
+      if (jwtTokenProvider.isTokenValid(decodedToken)) {
+        Authentication authentication = jwtTokenProvider.getAuthentication(decodedToken, request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
       } else {
         SecurityContextHolder.clearContext();

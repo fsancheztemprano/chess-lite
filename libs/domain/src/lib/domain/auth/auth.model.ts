@@ -20,3 +20,5 @@ export interface AccountActivationInput {
   email: string;
   password: string;
 }
+
+export const TOKEN_KEY = 'token';

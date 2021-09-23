@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class ApplicationForwardController {
 
-  static final String ROOT_URL = "/*";
+  static final String ROOT_URL = "/";
   static final String APP_URL = "/app";
 
   static final String INDEX_URL = "/app/index.html";

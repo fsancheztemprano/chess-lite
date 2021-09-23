@@ -1,7 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { CurrentUserRelations, HttpHeaders, User, UserPreferences } from '@app/domain';
+import { CurrentUserRelations, HttpHeaders, TOKEN_KEY, User, UserPreferences } from '@app/domain';
 import { HalFormService, IResource, Resource } from '@hal-form-client';
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
@@ -12,7 +12,6 @@ import { isTokenExpired } from '../utils/auth.utils';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'token';
   private readonly _user$ = new BehaviorSubject<User | null>(null);
 
   constructor(
@@ -53,15 +52,15 @@ export class AuthService {
   }
 
   public getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return localStorage.getItem(TOKEN_KEY);
   }
 
   public setToken(token: string) {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem(TOKEN_KEY, token);
   }
 
   public removeToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
   }
 
   public clearLocalSession(): void {
@@ -74,12 +73,12 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    const token = localStorage.getItem(this.TOKEN_KEY);
+    const token = localStorage.getItem(TOKEN_KEY);
     return !!token && !isTokenExpired(token);
   }
 
   public preInitialize(): void {
-    const token = localStorage.getItem(this.TOKEN_KEY);
+    const token = localStorage.getItem(TOKEN_KEY);
     if (!!token && isTokenExpired(token)) {
       this.removeToken();
     }
