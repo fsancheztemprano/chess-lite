@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from '../../../auth/services/auth.service';
 import { SidenavService } from '../../services/sidenav.service';
@@ -14,7 +15,11 @@ import { SidenavService } from '../../services/sidenav.service';
 export class SidenavComponent {
   @ViewChild('sidenav') sidenav: MatSidenav | undefined;
 
-  constructor(public readonly sidenavService: SidenavService, public readonly authService: AuthService) {
+  constructor(
+    public readonly sidenavService: SidenavService,
+    public readonly authService: AuthService,
+    private readonly router: Router,
+  ) {
     this._subscribeToSidenavOpenEvent();
   }
 
@@ -29,6 +34,6 @@ export class SidenavComponent {
   }
 
   public logout(): void {
-    this.authService.clearLocalSession();
+    this.authService.clearLocalSession().subscribe(() => this.router.navigate(['auth', 'signup']));
   }
 }

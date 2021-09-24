@@ -1,10 +1,10 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { CurrentUserRelations, HttpHeaders, TOKEN_KEY, User, UserPreferences } from '@app/domain';
 import { HalFormService, IResource, Resource } from '@hal-form-client';
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
+import { MessageService } from '../../core/services/message.service';
 import { PreferencesService } from '../../core/services/preferences.service';
 import { isTokenExpired } from '../utils/auth.utils';
 
@@ -17,7 +17,7 @@ export class AuthService {
   constructor(
     private readonly halFormService: HalFormService,
     private readonly preferencesService: PreferencesService,
-    private readonly router: Router,
+    private readonly messageService: MessageService,
   ) {}
 
   get user$(): Observable<User | null> {
@@ -63,18 +63,12 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
   }
 
-  public clearLocalSession(): void {
+  public clearLocalSession(): Observable<Resource> {
+    this.messageService.disconnect();
     this.removeToken();
     this.setUser(null);
     this.preferencesService.clearPreferences();
-    this.halFormService.initialize().subscribe(() => {
-      this.router.navigate(['auth', 'signup']);
-    });
-  }
-
-  public isAuthenticated(): boolean {
-    const token = localStorage.getItem(TOKEN_KEY);
-    return !!token && !isTokenExpired(token);
+    return this.halFormService.initialize();
   }
 
   public preInitialize(): void {
@@ -85,40 +79,36 @@ export class AuthService {
   }
 
   public initialize(): Observable<unknown> {
-    return this.isAuthenticated() ? this.fetchCurrentUser().pipe(tap((user) => this._initializeUser(user))) : EMPTY;
+    return this._isAuthenticated() ? this.fetchCurrentUser().pipe(tap((user) => this._initializeUser(user))) : EMPTY;
   }
 
   public setLocalSessionPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<User | null> {
     return (observable: Observable<HttpResponse<IResource>>) => {
       return observable.pipe(
-        this._setTokenPipe(),
-        tap((user) => this._initializeUser(user)),
-      );
-    };
-  }
-
-  private initializeUserPreferences(user: User) {
-    return this.fetchCurrentUserPreferences(user).subscribe((userPreferences) =>
-      this.preferencesService.setPreferences(userPreferences),
-    );
-  }
-
-  private _setTokenPipe(): (observable: Observable<HttpResponse<unknown>>) => Observable<User> {
-    return (observable: Observable<HttpResponse<unknown>>) => {
-      return observable.pipe(
         map((response) => {
           const token = response?.headers?.get(HttpHeaders.JWT_TOKEN);
           if (token) {
             this.setToken(token);
+            this.halFormService.initialize().subscribe();
           }
-          return new Resource(response.body as IResource);
+          const user = new Resource(response.body as IResource);
+          this._initializeUser(user);
+          return user;
         }),
       );
     };
   }
 
+  private _isAuthenticated(): boolean {
+    const token = localStorage.getItem(TOKEN_KEY);
+    return !!token && !isTokenExpired(token);
+  }
+
   private _initializeUser(user: User) {
+    this.messageService.connect();
     this.setUser(user);
-    this.initializeUserPreferences(user);
+    this.fetchCurrentUserPreferences(user).subscribe((userPreferences) =>
+      this.preferencesService.setPreferences(userPreferences),
+    );
   }
 }

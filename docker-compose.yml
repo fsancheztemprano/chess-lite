@@ -11,8 +11,8 @@ services:
   mailhog:
     image: mailhog/mailhog
     ports:
-      - '1025:1025'
-      - '18025:8025'
+      - '8825:1025'
+      - '8826:8025'
     restart: 'unless-stopped'
 volumes:
   data:

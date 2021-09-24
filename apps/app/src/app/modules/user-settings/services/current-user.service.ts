@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CurrentUserRelations, User, UserChangePasswordInput, UserUpdateProfileInput } from '@app/domain';
-import { HalFormService, Link, submitToTemplateOrThrowPipe } from '@hal-form-client';
-import { Observable } from 'rxjs';
+import { HalFormService, Link, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
+import { Observable, switchMapTo } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { AuthService } from '../../../auth/services/auth.service';
 
@@ -42,10 +42,10 @@ export class CurrentUserService {
     );
   }
 
-  public deleteAccount(user$: Observable<User>): Observable<void> {
+  public deleteAccount(user$: Observable<User>): Observable<Resource> {
     return user$.pipe(
       submitToTemplateOrThrowPipe(CurrentUserRelations.DELETE_ACCOUNT_REL),
-      tap(() => this.authService.clearLocalSession()),
+      switchMapTo(this.authService.clearLocalSession()),
     );
   }
 

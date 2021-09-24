@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgLetModule } from '../../../../../../shared/directives/ng-let.directive';
 import { stubCurrentUserServiceProvider } from '../../../../services/current-user.service.stub';
 import { UserRemoveAccountComponent } from './user-remove-account.component';
@@ -11,7 +12,7 @@ describe('UserRemoveAccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatCardModule, NgLetModule],
+      imports: [MatDialogModule, MatCardModule, NgLetModule, RouterTestingModule],
       declarations: [UserRemoveAccountComponent],
       providers: [stubCurrentUserServiceProvider],
     }).compileComponents();

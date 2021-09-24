@@ -1,11 +1,11 @@
 import { ApplicationMessage, MessageDestination } from './message.model';
 
-export interface UserModelMessage extends ApplicationMessage {
+export interface UserChangedMessage extends ApplicationMessage {
   userId: string;
-  action: UserModelMessageAction;
+  action: UserChangedMessageAction;
 }
 
-export enum UserModelMessageAction {
+export enum UserChangedMessageAction {
   CREATED = 'CREATED',
   UPDATED = 'UPDATED',
   DELETED = 'DELETED',
@@ -17,7 +17,7 @@ export class UsersListChangedMessageDestination implements MessageDestination {
   }
 }
 
-export class UserModelMessageDestination implements MessageDestination {
+export class UserChangedMessageDestination implements MessageDestination {
   constructor(private readonly userId: string) {}
 
   getDestination(): string {

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { CurrentUserRelations, User } from '@app/domain';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
@@ -24,6 +25,7 @@ export class UserRemoveAccountComponent implements OnDestroy {
     private readonly dialogService: MatDialog,
     public readonly userService: CurrentUserService,
     private readonly headerService: HeaderService,
+    private readonly router: Router,
   ) {
     this.headerService.setHeader({ title: 'Remove Account' });
   }
@@ -46,6 +48,6 @@ export class UserRemoveAccountComponent implements OnDestroy {
         first(),
         switchMap(() => this.userService.deleteAccount(this.user$)),
       )
-      .subscribe();
+      .subscribe(() => this.router.navigate(['auth', 'signup']));
   }
 }

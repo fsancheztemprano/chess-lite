@@ -5,8 +5,7 @@ import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
-import dev.kurama.api.core.event.domain.UserModelEvent;
-import dev.kurama.api.core.event.domain.UserModelEvent.UserModelEventAction;
+import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
@@ -24,7 +23,6 @@ import dev.kurama.api.core.service.UserService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,12 +50,12 @@ public class AuthenticationFacade {
   private final JWTTokenProvider jwtTokenProvider;
 
   @NonNull
-  private final ApplicationEventPublisher applicationEventPublisher;
+  private final UserChangedEventEmitter userChangedEventEmitter;
 
   public void signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException {
     String userId = userService.signup(signupInput);
-    sendUserModelEvent(userId, UserModelEventAction.CREATED);
+    userChangedEventEmitter.emitUserCreatedEvent(userId);
   }
 
   public AuthenticatedUserExcerpt login(LoginInput loginInput) throws UserLockedException {
@@ -102,12 +100,4 @@ public class AuthenticationFacade {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
   }
 
-
-  private void sendUserModelEvent(String userId, UserModelEventAction action) {
-    applicationEventPublisher.publishEvent(
-      UserModelEvent.builder()
-        .userId(userId)
-        .action(action)
-        .build());
-  }
 }

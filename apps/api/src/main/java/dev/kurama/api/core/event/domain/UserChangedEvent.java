@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserModelEvent implements ApplicationEvent {
+public class UserChangedEvent implements ApplicationEvent {
 
   private String userId;
 
-  private UserModelEventAction action;
+  private UserChangedEventAction action;
 
-  public enum UserModelEventAction {
+  public enum UserChangedEventAction {
     CREATED,
     UPDATED,
     DELETED,

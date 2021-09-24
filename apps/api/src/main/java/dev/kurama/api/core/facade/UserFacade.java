@@ -1,7 +1,6 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.event.domain.UserModelEvent;
-import dev.kurama.api.core.event.domain.UserModelEvent.UserModelEventAction;
+import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.EmailExistsException;
 import dev.kurama.api.core.exception.domain.RoleNotFoundException;
@@ -19,7 +18,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.codec.binary.StringUtils;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,14 +43,14 @@ public class UserFacade {
   private final AuthenticationManager authenticationManager;
 
   @NonNull
-  private final ApplicationEventPublisher applicationEventPublisher;
+  private final UserChangedEventEmitter userChangedEventEmitter;
 
 
   public UserModel create(UserInput userInput) throws UsernameExistsException, EmailExistsException {
     UserModel userModel = userModelAssembler.toModel(
       userMapper.userToUserModel(
         userService.createUser(userInput)));
-    sendUserModelEvent(userModel.getId(), UserModelEventAction.CREATED);
+    userChangedEventEmitter.emitUserCreatedEvent(userModel.getId());
     return userModel;
   }
 
@@ -79,7 +77,7 @@ public class UserFacade {
     UserModel userModel = userModelAssembler.toModel(
       userMapper.userToUserModel(
         userService.updateUser(id, userInput)));
-    sendUserModelEvent(userModel.getId(), UserModelEventAction.UPDATED);
+    userChangedEventEmitter.emitUserUpdatedEvent(userModel.getId());
     return userModel;
   }
 
@@ -87,18 +85,18 @@ public class UserFacade {
     UserModel userModel = userModelAssembler.toModel(
       userMapper.userToUserModel(
         userService.updateProfile(username, updateUserProfileInput)));
-    sendUserModelEvent(userModel.getId(), UserModelEventAction.UPDATED);
+    userChangedEventEmitter.emitUserUpdatedEvent(userModel.getId());
     return userModel;
   }
 
   public void deleteByUsername(String username) {
     String userId = userService.deleteUserByUsername(username);
-    sendUserModelEvent(userId, UserModelEventAction.DELETED);
+    userChangedEventEmitter.emitUserDeletedEvent(userId);
   }
 
-  public void deleteById(String id) throws UserNotFoundException {
-    userService.deleteUserById(id);
-    sendUserModelEvent(id, UserModelEventAction.DELETED);
+  public void deleteById(String userId) throws UserNotFoundException {
+    userService.deleteUserById(userId);
+    userChangedEventEmitter.emitUserDeletedEvent(userId);
   }
 
   public UserModel changePassword(String username, ChangeUserPasswordInput changeUserPasswordInput) {
@@ -113,7 +111,7 @@ public class UserFacade {
       + StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false));
     UserModel userModel = userModelAssembler.toModel(
       userMapper.userToUserModel(userService.uploadAvatar(username, sb)));
-    sendUserModelEvent(userModel.getId(), UserModelEventAction.UPDATED);
+    userChangedEventEmitter.emitUserUpdatedEvent(userModel.getId());
     return userModel;
   }
 
@@ -123,13 +121,5 @@ public class UserFacade {
 
   private void authenticate(String username, String password) {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-  }
-
-  private void sendUserModelEvent(String userId, UserModelEventAction action) {
-    applicationEventPublisher.publishEvent(
-      UserModelEvent.builder()
-        .userId(userId)
-        .action(action)
-        .build());
   }
 }

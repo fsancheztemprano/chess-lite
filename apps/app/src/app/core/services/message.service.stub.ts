@@ -1,11 +1,11 @@
-import { ApplicationMessage, MessageDestination, UserModelMessage } from '@app/domain';
+import { ApplicationMessage, MessageDestination, UserChangedMessage } from '@app/domain';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { MessageService } from './message.service';
 
 export class StubMessageService implements Partial<MessageService> {
-  public userChangedMessageSubject = new Subject<UserModelMessage>();
-  public userListChangedMessageSubject = new Subject<UserModelMessage>();
+  public userChangedMessageSubject = new Subject<UserChangedMessage>();
+  public userListChangedMessageSubject = new Subject<UserChangedMessage>();
 
   subscribeToMessages<T extends ApplicationMessage>(destination: string | MessageDestination): Observable<T> {
     return this.handleDestination(destination) as Observable<T>;
