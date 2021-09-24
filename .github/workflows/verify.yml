@@ -50,9 +50,8 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
@@ -64,10 +63,9 @@ jobs:
           cache-key: ${{ runner.os }}-maven-v2
         with:
           path: ~/.m2
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
           save-on-hit: ${{ env.not-pr }}
@@ -143,9 +141,8 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
@@ -157,10 +154,9 @@ jobs:
           cache-key: ${{ runner.os }}-maven-v2
         with:
           path: ~/.m2
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
           save-on-hit: ${{ env.not-pr }}
