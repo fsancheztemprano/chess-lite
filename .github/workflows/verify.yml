@@ -5,6 +5,9 @@ on: [ push, pull_request ]
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      not-pr: |
+        ${{ github.event_name != 'pull_request' }}
     steps:
       - name: test echo
         run: echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
@@ -41,7 +44,7 @@ jobs:
       - name: Cache Node modules
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-yarn-v1-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-yarn-v2-${{ steps.branch-name.outputs.current_branch }}
         with:
           path: |
             ~/.npm
@@ -49,17 +52,17 @@ jobs:
             ./node
           key: ${{ env.cache-key }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ env.cache-key }}-
-          save-on-hit: 'true'
+          save-on-hit: ${{ env.not-pr }}
 
       - name: Cache Maven packages
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-maven-v1-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-maven-v2-${{ steps.branch-name.outputs.current_branch }}
         with:
           path: ~/.m2
           key: ${{ env.cache-key }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ env.cache-key }}-
-          save-on-hit: 'true'
+          save-on-hit: ${{ env.not-pr }}
 
       - name: Yarn Install
         run: yarn install
@@ -99,6 +102,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: verify
+    env:
+      not-pr: |
+        ${{ github.event_name != 'pull_request' }}
     if: github.ref == 'refs/heads/development' && github.event_name == 'push'
     steps:
       - name: Checkout
@@ -123,7 +129,7 @@ jobs:
       - name: Cache Node modules
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-yarn-v1-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-yarn-v2-${{ steps.branch-name.outputs.current_branch }}
         with:
           path: |
             ~/.npm
@@ -131,17 +137,17 @@ jobs:
             ./node
           key: ${{ env.cache-key }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ env.cache-key }}-
-          save-on-hit: 'true'
+          save-on-hit: ${{ env.not-pr }}
 
       - name: Cache Maven packages
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-maven-v1-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-maven-v2-${{ steps.branch-name.outputs.current_branch }}
         with:
           path: ~/.m2
           key: ${{ env.cache-key }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ env.cache-key }}-
-          save-on-hit: 'true'
+          save-on-hit: ${{ env.not-pr }}
 
       - name: Yarn Install
         run: yarn install
