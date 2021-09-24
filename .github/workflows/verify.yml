@@ -49,6 +49,7 @@ jobs:
             ./node
           key: ${{ env.cache-key }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ env.cache-key }}-
+          save-on-hit: 'true'
 
       - name: Cache Maven packages
         uses: fsancheztemprano/cache@main
@@ -58,6 +59,7 @@ jobs:
           path: ~/.m2
           key: ${{ env.cache-key }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ env.cache-key }}-
+          save-on-hit: 'true'
 
       - name: Yarn Install
         run: yarn install
@@ -129,6 +131,7 @@ jobs:
             ./node
           key: ${{ env.cache-key }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ env.cache-key }}-
+          save-on-hit: 'true'
 
       - name: Cache Maven packages
         uses: fsancheztemprano/cache@main
@@ -138,6 +141,7 @@ jobs:
           path: ~/.m2
           key: ${{ env.cache-key }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ env.cache-key }}-
+          save-on-hit: 'true'
 
       - name: Yarn Install
         run: yarn install
