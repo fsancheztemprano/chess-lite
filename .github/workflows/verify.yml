@@ -44,24 +44,32 @@ jobs:
       - name: Cache Node modules
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-yarn-v2-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-yarn-v2
         with:
           path: |
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ env.cache-key }}-
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
+            ${{ env.cache-key }}-
           save-on-hit: ${{ env.not-pr }}
 
       - name: Cache Maven packages
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-maven-v2-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-maven-v2
         with:
           path: ~/.m2
-          key: ${{ env.cache-key }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ env.cache-key }}-
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
+            ${{ env.cache-key }}-
           save-on-hit: ${{ env.not-pr }}
 
       - name: Yarn Install
@@ -129,24 +137,32 @@ jobs:
       - name: Cache Node modules
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-yarn-v2-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-yarn-v2
         with:
           path: |
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: ${{ env.cache-key }}-
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.sha }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
+            ${{ env.cache-key }}-
           save-on-hit: ${{ env.not-pr }}
 
       - name: Cache Maven packages
         uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-maven-v2-${{ steps.branch-name.outputs.current_branch }}
+          cache-key: ${{ runner.os }}-maven-v2
         with:
           path: ~/.m2
-          key: ${{ env.cache-key }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ env.cache-key }}-
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
+            ${{ env.cache-key }}-
           save-on-hit: ${{ env.not-pr }}
 
       - name: Yarn Install
