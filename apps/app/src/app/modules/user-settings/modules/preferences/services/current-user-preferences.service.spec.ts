@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubCurrentUserServiceProvider } from '../../../services/current-user.service.stub';
+import { stubUserSettingsServiceProvider } from '../../../services/user-settings.service.stub';
 
 import { CurrentUserPreferencesService } from './current-user-preferences.service';
 
@@ -8,7 +8,7 @@ describe('UserPreferencesService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubCurrentUserServiceProvider],
+      providers: [stubUserSettingsServiceProvider],
     });
     service = TestBed.inject(CurrentUserPreferencesService);
   });

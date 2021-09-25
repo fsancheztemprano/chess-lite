@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CurrentUserRelations, User } from '@app/domain';
+import { CurrentUserRelations } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { noop, Observable } from 'rxjs';
 import { HeaderService } from '../../../../../../core/services/header.service';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { filterNulls } from '../../../../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 import { patchFormPipe } from '../../../../../../shared/utils/forms/rxjs/patch-form.rxjs.pipe';
 import { setResourceValidatorsPipe } from '../../../../../../shared/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
-import { CurrentUserService } from '../../../../services/current-user.service';
+import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @UntilDestroy()
 @Component({
@@ -17,8 +17,6 @@ import { CurrentUserService } from '../../../../services/current-user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserUpdateProfileComponent implements OnDestroy {
-  private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
-
   public form = new FormGroup({
     username: new FormControl({ value: '', disabled: true }),
     email: new FormControl({ value: '', disabled: true }),
@@ -37,16 +35,16 @@ export class UserUpdateProfileComponent implements OnDestroy {
     credentialsExpired: new FormControl({ value: false, disabled: true }),
   });
 
-  UPDATE_PROFILE_REL = CurrentUserRelations.UPDATE_PROFILE_REL;
-
   constructor(
-    public readonly userService: CurrentUserService,
+    public readonly userSettingsService: UserSettingsService,
     private readonly headerService: HeaderService,
     private readonly toasterService: ToasterService,
   ) {
-    this.user$
+    this.userSettingsService
+      .getCurrentUser()
       .pipe(
         untilDestroyed(this),
+        filterNulls(),
         patchFormPipe(this.form),
         setResourceValidatorsPipe(this.form, CurrentUserRelations.UPDATE_PROFILE_REL),
       )
@@ -58,14 +56,10 @@ export class UserUpdateProfileComponent implements OnDestroy {
     this.headerService.resetHeader();
   }
 
-  get user$(): Observable<User> {
-    return this._user$;
-  }
-
   onSubmit() {
-    this.userService.updateProfile(this.user$, this.form.value).subscribe({
+    this.userSettingsService.updateProfile(this.form.value).subscribe({
       next: () => this.toasterService.showToast({ message: 'User Profile Saved Successfully' }),
-      error: () => noop,
+      error: () => this.toasterService.showErrorToast({ message: 'An Error Occurred' }),
     });
   }
 }

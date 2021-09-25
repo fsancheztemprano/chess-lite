@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { CurrentUserRelations, UserPreferences } from '@app/domain';
 import { noLinkError } from '@hal-form-client';
 import { Observable, switchMap } from 'rxjs';
-import { CurrentUserService } from '../../../services/current-user.service';
+import { UserSettingsService } from '../../../services/user-settings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CurrentUserPreferencesService {
-  constructor(private readonly currentUserService: CurrentUserService) {}
+  constructor(private readonly currentUserService: UserSettingsService) {}
 
   getCurrentUserPreferences(): Observable<UserPreferences> {
     return this.currentUserService

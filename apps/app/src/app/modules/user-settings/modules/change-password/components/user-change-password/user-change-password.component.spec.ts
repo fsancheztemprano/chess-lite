@@ -7,7 +7,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StubFormErrorComponent } from '../../../../../../shared/components/form-error/form-error.component.stub';
 import { NgLetModule } from '../../../../../../shared/directives/ng-let.directive';
 import { stubToasterServiceProvider } from '../../../../../../shared/services/toaster.service.stub';
-import { stubCurrentUserServiceProvider } from '../../../../services/current-user.service.stub';
+import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 
 import { UserChangePasswordComponent } from './user-change-password.component';
 
@@ -26,7 +26,7 @@ describe('UserChangePasswordComponent', () => {
         NgLetModule,
       ],
       declarations: [UserChangePasswordComponent, StubFormErrorComponent],
-      providers: [stubCurrentUserServiceProvider, stubToasterServiceProvider],
+      providers: [stubUserSettingsServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

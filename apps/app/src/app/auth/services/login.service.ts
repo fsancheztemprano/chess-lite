@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthRelations, LoginInput, User } from '@app/domain';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
@@ -9,11 +8,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(
-    private readonly halFormService: HalFormService,
-    private readonly router: Router,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly halFormService: HalFormService, private readonly authService: AuthService) {}
 
   public getLoginTemplate(): Observable<Template | null> {
     return this.halFormService.getTemplate(AuthRelations.LOGIN_RELATION);

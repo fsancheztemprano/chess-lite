@@ -311,7 +311,7 @@ public class UserService implements UserDetailsService {
     String activationEmailText = String.format(
       "Here is the token to activate your account:<br><br>%s<br><br>"
         + "It is valid for 24 hours, you can follow this link to reset your password:<br><br>"
-        + "<a href =\"%s/app/auth/activation?token=%s&email=%s\"> Click Here </a><br><br><br>"
+        + "<a href =\"%s/auth/activation?token=%s&email=%s\"> Click Here </a><br><br><br>"
         + "Thank You", token, host, token, user.getEmail());
 
     emailService.sendEmail(

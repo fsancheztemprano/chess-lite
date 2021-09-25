@@ -56,8 +56,8 @@
         mat-raised-button
         color="primary"
         type="submit"
-        *ngLet="user$ | async as user"
-        [disabled]="form.invalid || !user || !user.isAllowedTo(UPDATE_PROFILE_REL)"
+        *ngLet="this.userSettingsService.isAllowedToUpdateProfile() | async as canUpdateProfile"
+        [disabled]="!canUpdateProfile"
       >
         Save
       </button>

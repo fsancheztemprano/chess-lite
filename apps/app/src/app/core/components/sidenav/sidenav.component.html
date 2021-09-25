@@ -9,7 +9,7 @@
   >
     <mat-toolbar>
       {{ 'WELCOME' | translate }}&nbsp;
-      <span *ngIf="authService.user$ | async as user">{{ user.firstname || user.username }}</span>
+      <span *ngIf="authService.getCurrentUser() | async as user">{{ user.firstname || user.username }}</span>
     </mat-toolbar>
     <mat-nav-list>
       <a mat-list-item (click)="toggleSidenav()" routerLink="/" routerLinkActive="active-link">

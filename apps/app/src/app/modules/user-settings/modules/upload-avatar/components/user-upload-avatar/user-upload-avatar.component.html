@@ -3,7 +3,12 @@
     <mat-card-content>
       <mat-card class="mat-elevation-z10">
         <mat-card-content>
-          <img width="100%" alt="Upload Avatar" *ngIf="user$ | async as user" src="{{ user.profileImageUrl }}" />
+          <img
+            width="100%"
+            alt="Upload Avatar"
+            *ngIf="this.userService.getCurrentUser() | async as user"
+            src="{{ user.profileImageUrl }}"
+          />
         </mat-card-content>
       </mat-card>
       <div>
@@ -24,8 +29,8 @@
         color="primary"
         aria-label="Upload Avatar"
         (click)="imageInput.click()"
-        [disabled]="!user || !user.isAllowedTo(UPLOAD_AVATAR_REL)"
-        *ngLet="user$ | async as user"
+        *ngLet="this.userService.isAllowedToUploadAvatar() | async as canUploadAvatar"
+        [disabled]="!canUploadAvatar"
       >
         <mat-icon>file_upload</mat-icon>
       </button>

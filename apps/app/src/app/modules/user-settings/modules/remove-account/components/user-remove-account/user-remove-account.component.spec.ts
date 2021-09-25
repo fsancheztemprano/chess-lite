@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
+import { stubHeaderServiceProvider } from '../../../../../../core/services/header.service.stub';
 import { NgLetModule } from '../../../../../../shared/directives/ng-let.directive';
-import { stubCurrentUserServiceProvider } from '../../../../services/current-user.service.stub';
+import { stubToasterServiceProvider } from '../../../../../../shared/services/toaster.service.stub';
+import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserRemoveAccountComponent } from './user-remove-account.component';
 
 describe('UserRemoveAccountComponent', () => {
@@ -14,7 +16,7 @@ describe('UserRemoveAccountComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatCardModule, NgLetModule, RouterTestingModule],
       declarations: [UserRemoveAccountComponent],
-      providers: [stubCurrentUserServiceProvider],
+      providers: [stubUserSettingsServiceProvider, stubHeaderServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

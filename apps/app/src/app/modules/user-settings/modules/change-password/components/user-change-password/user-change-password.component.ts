@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CurrentUserRelations, User } from '@app/domain';
+import { CurrentUserRelations } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { noop, Observable } from 'rxjs';
 import { HeaderService } from '../../../../../../core/services/header.service';
 import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { filterNulls } from '../../../../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 import { setResourceValidatorsPipe } from '../../../../../../shared/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
 import { matchingControlsValidators } from '../../../../../../shared/utils/forms/validators/matching-controls.validator';
-import { CurrentUserService } from '../../../../services/current-user.service';
+import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @UntilDestroy()
 @Component({
@@ -17,8 +17,6 @@ import { CurrentUserService } from '../../../../services/current-user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserChangePasswordComponent implements OnDestroy {
-  private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
-
   public form = new FormGroup(
     {
       password: new FormControl(''),
@@ -29,15 +27,18 @@ export class UserChangePasswordComponent implements OnDestroy {
     [matchingControlsValidators('password', 'password2'), matchingControlsValidators('newPassword', 'newPassword2')],
   );
 
-  CHANGE_PASSWORD_REL = CurrentUserRelations.CHANGE_PASSWORD_REL;
-
   constructor(
-    public readonly userService: CurrentUserService,
+    public readonly userSettingsService: UserSettingsService,
     private readonly toasterService: ToasterService,
     private readonly headerService: HeaderService,
   ) {
-    this.user$
-      .pipe(untilDestroyed(this), setResourceValidatorsPipe(this.form, CurrentUserRelations.CHANGE_PASSWORD_REL))
+    this.userSettingsService
+      .getCurrentUser()
+      .pipe(
+        untilDestroyed(this),
+        filterNulls(),
+        setResourceValidatorsPipe(this.form, CurrentUserRelations.CHANGE_PASSWORD_REL),
+      )
       .subscribe();
     this.headerService.setHeader({ title: 'Change Password' });
   }
@@ -46,14 +47,14 @@ export class UserChangePasswordComponent implements OnDestroy {
     this.headerService.resetHeader();
   }
 
-  get user$(): Observable<User> {
-    return this._user$;
-  }
-
   onSubmit() {
-    this.userService.changePassword(this.user$, this.form.value).subscribe({
+    this.userSettingsService.changePassword(this.form.value).subscribe({
       next: () => this.toasterService.showToast({ title: 'Password Changed Successfully' }),
-      error: () => noop,
+      error: () =>
+        this.toasterService.showErrorToast({
+          title: 'An Error Occurred',
+          message: 'Password was not changed.',
+        }),
     });
   }
 }

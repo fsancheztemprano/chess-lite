@@ -5,6 +5,14 @@ import { IMessage } from '@stomp/stompjs';
 import { filter, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as SockJS from 'sockjs-client';
+import { filterNulls } from '../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
+
+enum RxStompState {
+  CONNECTING = 0,
+  OPEN = 1,
+  CLOSING = 2,
+  CLOSED = 3,
+}
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +60,7 @@ export class MessageService {
     return this._subscribeToDestination(destination).pipe(
       filter((message) => !!message?.body),
       map((message) => JSON.parse(message.body)),
-      filter((message) => !!message),
+      filterNulls(),
     );
   }
 
@@ -68,6 +76,14 @@ export class MessageService {
 
   public disconnect() {
     from(this.rxStompService.deactivate()).subscribe(() => this._removeAuthenticationHeaders());
+  }
+
+  public state$(): Observable<RxStompState> {
+    return this.rxStompService.connectionState$;
+  }
+
+  public connected$(): Observable<RxStompState> {
+    return this.rxStompService.connected$;
   }
 
   private _removeAuthenticationHeaders() {

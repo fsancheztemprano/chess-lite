@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CurrentUserRelations, User, UserChangePasswordInput, UserUpdateProfileInput } from '@app/domain';
 import { HalFormService, Link, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
-import { Observable, switchMapTo } from 'rxjs';
+import { filter, Observable, switchMap } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { AuthService } from '../../../auth/services/auth.service';
+import { filterNulls } from '../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
+import { isNonNull } from '../../../shared/utils/misc/is-non-null';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CurrentUserService {
+export class UserSettingsService {
   constructor(private readonly halFormsService: HalFormService, private readonly authService: AuthService) {}
 
   public hasCurrentUserLink(): Observable<boolean> {
@@ -16,11 +18,7 @@ export class CurrentUserService {
   }
 
   public getCurrentUser(): Observable<User | null> {
-    return this.authService.user$;
-  }
-
-  public getCurrentUsername(): Observable<string | null> {
-    return this.authService.getCurrentUsername();
+    return this.authService.getCurrentUser();
   }
 
   public isAllowedToUpdateProfile(): Observable<boolean> {
@@ -29,10 +27,12 @@ export class CurrentUserService {
     );
   }
 
-  public updateProfile(user$: Observable<User>, updateUserProfileInput: UserUpdateProfileInput): Observable<User> {
-    return user$.pipe(
+  public updateProfile(updateUserProfileInput: UserUpdateProfileInput): Observable<User> {
+    return this.getCurrentUser().pipe(
+      first(),
+      filterNulls(),
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, updateUserProfileInput),
-      tap((user) => this.authService.setUser(user)),
+      tap((user) => this.authService.setCurrentUser(user)),
     );
   }
 
@@ -42,10 +42,12 @@ export class CurrentUserService {
     );
   }
 
-  public deleteAccount(user$: Observable<User>): Observable<Resource> {
-    return user$.pipe(
-      submitToTemplateOrThrowPipe(CurrentUserRelations.DELETE_ACCOUNT_REL),
-      switchMapTo(this.authService.clearLocalSession()),
+  public deleteAccount(): Observable<Resource> {
+    return this.getCurrentUser().pipe(
+      first(),
+      filterNulls(),
+      switchMap((user) => user.submitToTemplateOrThrow(CurrentUserRelations.DELETE_ACCOUNT_REL)),
+      switchMap(() => this.authService.clearLocalSession()),
     );
   }
 
@@ -55,8 +57,14 @@ export class CurrentUserService {
     );
   }
 
-  changePassword(user$: Observable<User>, userChangePasswordInput: UserChangePasswordInput): Observable<User> {
-    return user$.pipe(submitToTemplateOrThrowPipe(CurrentUserRelations.CHANGE_PASSWORD_REL, userChangePasswordInput));
+  changePassword(userChangePasswordInput: UserChangePasswordInput): Observable<User> {
+    return this.getCurrentUser().pipe(
+      first(),
+      filterNulls(),
+      switchMap((user) =>
+        user.submitToTemplateOrThrow(CurrentUserRelations.CHANGE_PASSWORD_REL, userChangePasswordInput),
+      ),
+    );
   }
 
   isAllowedToUploadAvatar(): Observable<boolean> {
@@ -65,12 +73,15 @@ export class CurrentUserService {
     );
   }
 
-  uploadAvatar(user$: Observable<User>, file: File): Observable<User> {
+  uploadAvatar(file: File): Observable<User> {
     const formData = new FormData();
     formData.append('avatar', file);
-    return user$.pipe(
-      submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, formData),
-      tap((user) => this.authService.setUser(user)),
+
+    return this.getCurrentUser().pipe(
+      first(),
+      filter(isNonNull),
+      switchMap((user) => user.submitToTemplateOrThrow(CurrentUserRelations.UPLOAD_AVATAR_REL, formData)),
+      tap((user) => this.authService.setCurrentUser(user)),
     );
   }
 

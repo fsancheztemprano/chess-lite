@@ -1,8 +1,16 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CurrentUserRelations, HttpHeaders, TOKEN_KEY, User, UserPreferences } from '@app/domain';
+import {
+  CurrentUserRelations,
+  HttpHeaders,
+  TOKEN_KEY,
+  User,
+  UserChangedMessage,
+  UserChangedMessageDestination,
+  UserPreferences,
+} from '@app/domain';
 import { HalFormService, IResource, Resource } from '@hal-form-client';
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, filter, Observable, Subscription } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { MessageService } from '../../core/services/message.service';
 import { PreferencesService } from '../../core/services/preferences.service';
@@ -12,7 +20,9 @@ import { isTokenExpired } from '../utils/auth.utils';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly _user$ = new BehaviorSubject<User | null>(null);
+  private readonly _user = new BehaviorSubject<User | null>(null);
+
+  private _userChanges = new Subscription();
 
   constructor(
     private readonly halFormService: HalFormService,
@@ -20,20 +30,20 @@ export class AuthService {
     private readonly messageService: MessageService,
   ) {}
 
-  get user$(): Observable<User | null> {
-    return this._user$.asObservable();
+  public setCurrentUser(user: User | null): void {
+    this._user.next(user);
+  }
+
+  public getCurrentUser(): Observable<User | null> {
+    return this._user.asObservable();
   }
 
   public getCurrentUsername(): Observable<string | null> {
-    return this.user$.pipe(
+    return this.getCurrentUser().pipe(
       map((user) => {
         return user?.username || null;
       }),
     );
-  }
-
-  public setUser(user: User | null): void {
-    this._user$.next(user);
   }
 
   public fetchCurrentUser(): Observable<User> {
@@ -48,7 +58,7 @@ export class AuthService {
   }
 
   public isLoggedIn(): Observable<boolean> {
-    return this.user$.pipe(map((user) => !!user));
+    return this.getCurrentUser().pipe(map((user) => !!user));
   }
 
   public getToken(): string | null {
@@ -64,9 +74,10 @@ export class AuthService {
   }
 
   public clearLocalSession(): Observable<Resource> {
+    this._userChanges.unsubscribe();
     this.messageService.disconnect();
     this.removeToken();
-    this.setUser(null);
+    this.setCurrentUser(null);
     this.preferencesService.clearPreferences();
     return this.halFormService.initialize();
   }
@@ -79,7 +90,7 @@ export class AuthService {
   }
 
   public initialize(): Observable<unknown> {
-    return this._isAuthenticated() ? this.fetchCurrentUser().pipe(tap((user) => this._initializeUser(user))) : EMPTY;
+    return this._isTokenValid() ? this.fetchCurrentUser().pipe(tap((user) => this._initializeUser(user))) : EMPTY;
   }
 
   public setLocalSessionPipe(): (observable: Observable<HttpResponse<IResource>>) => Observable<User | null> {
@@ -99,16 +110,30 @@ export class AuthService {
     };
   }
 
-  private _isAuthenticated(): boolean {
+  private _isTokenValid(): boolean {
     const token = localStorage.getItem(TOKEN_KEY);
     return !!token && !isTokenExpired(token);
   }
 
   private _initializeUser(user: User) {
     this.messageService.connect();
-    this.setUser(user);
+    this.setCurrentUser(user);
+    this._subscribeToCurrentUserChanges(user.id as string);
     this.fetchCurrentUserPreferences(user).subscribe((userPreferences) =>
       this.preferencesService.setPreferences(userPreferences),
     );
+  }
+
+  private _subscribeToCurrentUserChanges(userId: string) {
+    this._userChanges = this.messageService
+      .connected$()
+      .pipe(
+        switchMap(() =>
+          this.messageService.subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(userId)),
+        ),
+        filter((message) => !!message.userId && message.userId === this._user.value?.id),
+        switchMap(() => this.fetchCurrentUser()),
+      )
+      .subscribe((user: User) => this.setCurrentUser(user));
   }
 }

@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthRelations, SignupInput, User } from '@app/domain';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignupService {
-  constructor(
-    private readonly halFormService: HalFormService,
-    private readonly router: Router,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly halFormService: HalFormService) {}
 
   public getSignupTemplate(): Observable<Template | null> {
     return this.halFormService.getTemplate(AuthRelations.SIGNUP_RELATION);
