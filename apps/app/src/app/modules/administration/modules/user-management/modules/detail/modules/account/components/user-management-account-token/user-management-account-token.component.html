@@ -1,16 +1,19 @@
 <mat-card class="mat-elevation-z8">
   <mat-card-header>
-    <mat-card-title>Remove Account</mat-card-title>
+    <mat-card-title>Send Activation Token</mat-card-title>
   </mat-card-header>
-  <mat-card-content> Once you delete an account, it can't be recovered. Please be sure.</mat-card-content>
+  <mat-card-content
+  >Send the token to the user's email so he/she can reset the account password and unlock the account
+  </mat-card-content>
   <mat-card-actions align="end">
     <button
       mat-stroked-button
       color="warn"
       (click)="sendActivationToken()"
-      [disabled]="!user || !user.isAllowedTo('requestActivationToken')"
+      *ngLet="userManagementDetailService.canSendActivationToken() | async as canSendActivationToken"
+      [disabled]="!canSendActivationToken"
     >
-      Delete this account
+      Send Token
     </button>
   </mat-card-actions>
 </mat-card>

@@ -7,6 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorModule } from '../../../../../../../../shared/components/form-error/form-error.component';
+import { NgLetModule } from '../../../../../../../../shared/directives/ng-let.directive';
 import { UserManagementAccountDeleteConfirmComponent } from './components/user-management-account-delete-confirm/user-management-account-delete-confirm.component';
 import { UserManagementAccountDeleteComponent } from './components/user-management-account-delete/user-management-account-delete.component';
 import { UserManagementAccountPasswordComponent } from './components/user-management-account-password/user-management-account-password.component';
@@ -32,6 +33,7 @@ import { UserManagementAccountRoutingModule } from './user-management-account-ro
     MatCardModule,
     ReactiveFormsModule,
     FormErrorModule,
+    NgLetModule,
   ],
 })
 export class UserManagementAccountModule {}

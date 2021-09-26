@@ -7,9 +7,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { StubFormErrorComponent } from '../../../../../../../../../../shared/components/form-error/form-error.component.stub';
+import { NgLetModule } from '../../../../../../../../../../shared/directives/ng-let.directive';
 import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
+import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 
 import { UserManagementProfileComponent } from './user-management-profile.component';
 
@@ -28,10 +29,10 @@ describe('UserManagementProfileComponent', () => {
         MatCheckboxModule,
         MatCardModule,
         ReactiveFormsModule,
-        RouterTestingModule,
+        NgLetModule,
       ],
       declarations: [UserManagementProfileComponent, StubFormErrorComponent],
-      providers: [MatDatepickerModule, stubToasterServiceProvider],
+      providers: [MatDatepickerModule, stubToasterServiceProvider, stubUserManagementDetailServiceProvider],
     }).compileComponents();
   });
 

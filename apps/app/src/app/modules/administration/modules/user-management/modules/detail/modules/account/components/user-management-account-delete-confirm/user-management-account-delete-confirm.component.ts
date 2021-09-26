@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @Component({
   selector: 'app-user-management-account-delete-confirm',
@@ -8,5 +8,5 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAccountDeleteConfirmComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { username: string }) {}
+  constructor(public readonly userManagementDetailService: UserManagementDetailService) {}
 }

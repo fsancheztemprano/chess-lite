@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
+import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementAccountTokenComponent } from './user-management-account-token.component';
 
 describe('UserManagementAccountTokenComponent', () => {
@@ -11,9 +11,9 @@ describe('UserManagementAccountTokenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatCardModule, MatButtonModule],
+      imports: [MatCardModule, MatButtonModule],
       declarations: [UserManagementAccountTokenComponent],
-      providers: [stubToasterServiceProvider],
+      providers: [stubToasterServiceProvider, stubUserManagementDetailServiceProvider],
     }).compileComponents();
   });
 

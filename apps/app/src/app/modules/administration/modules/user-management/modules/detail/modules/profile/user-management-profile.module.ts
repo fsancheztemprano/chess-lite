@@ -9,6 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorModule } from '../../../../../../../../shared/components/form-error/form-error.component';
+import { NgLetModule } from '../../../../../../../../shared/directives/ng-let.directive';
 import { UserManagementProfileComponent } from './components/user-management-profile/user-management-profile.component';
 
 import { UserManagementProfileRoutingModule } from './user-management-profile-routing.module';
@@ -27,6 +28,7 @@ import { UserManagementProfileRoutingModule } from './user-management-profile-ro
     MatNativeDateModule,
     MatCheckboxModule,
     MatButtonModule,
+    NgLetModule,
   ],
   providers: [MatDatepickerModule],
 })

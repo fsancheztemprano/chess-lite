@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserResolver } from './modules/detail/resolvers/user.resolver';
 import { RolesResolver } from './resolvers/roles.resolver';
 
 const loadUserManagementHomeModule = () =>
@@ -32,7 +31,6 @@ const routes: Routes = [
   {
     path: 'edit/:userId',
     loadChildren: loadUserManagementDetailModule,
-    resolve: { user: UserResolver },
   },
   { path: '**', redirectTo: '' },
 ];

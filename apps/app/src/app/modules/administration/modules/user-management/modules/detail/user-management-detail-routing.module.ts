@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserManagementDetailComponent } from './components/user-management-detail/user-management-detail.component';
+import { UserManagementDetailGuard } from './guards/user-management-detail.guard';
 
 const loadUserManagementProfileModule = () =>
   import('./modules/profile/user-management-profile.module').then((m) => m.UserManagementProfileModule);
@@ -18,6 +19,8 @@ const routes: Routes = [
   {
     path: '',
     component: UserManagementDetailComponent,
+    canActivate: [UserManagementDetailGuard],
+    canDeactivate: [UserManagementDetailGuard],
     children: [
       {
         path: 'profile',

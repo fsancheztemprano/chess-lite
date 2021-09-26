@@ -1,24 +1,16 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { User } from '@app/domain';
-import { Observable } from 'rxjs';
 import { UserManagementAuthoritiesComponent } from '../user-management-authorities/user-management-authorities.component';
 import { UserManagementRoleComponent } from '../user-management-role/user-management-role.component';
 
 import { UserManagementAuthorityComponent } from './user-management-authority.component';
 
 @Component({ selector: 'app-user-management-role', template: '' })
-export class StubUserManagementRoleComponent implements Partial<UserManagementRoleComponent> {
-  @Input() user$: Observable<User> | undefined;
-  @Output() userChange = new EventEmitter<User>();
-}
+export class StubUserManagementRoleComponent implements Partial<UserManagementRoleComponent> {}
 
 @Component({ selector: 'app-user-management-authorities', template: '' })
-export class StubUserManagementAuthoritiesComponent implements Partial<UserManagementAuthoritiesComponent> {
-  @Input() user$: Observable<User> | undefined;
-  @Output() userChange = new EventEmitter<User>();
-}
+export class StubUserManagementAuthoritiesComponent implements Partial<UserManagementAuthoritiesComponent> {}
 
 describe('UserManagementAuthorityComponent', () => {
   let component: UserManagementAuthorityComponent;

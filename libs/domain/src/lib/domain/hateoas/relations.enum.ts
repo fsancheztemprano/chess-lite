@@ -16,6 +16,7 @@ export enum UserManagementRelations {
   USER_MODEL_LIST_REL = 'userModels',
   USER_CREATE_REL = 'create',
   USER_UPDATE_REL = 'update',
+  USER_DELETE_REL = 'delete',
 }
 
 export enum RoleManagementRelations {

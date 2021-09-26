@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '@app/domain';
-import { EMPTY } from 'rxjs';
+import { Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
+import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
+import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 import { UserManagementAccountDeleteConfirmComponent } from '../user-management-account-delete-confirm/user-management-account-delete-confirm.component';
 
 @Component({
@@ -13,35 +14,30 @@ import { UserManagementAccountDeleteConfirmComponent } from '../user-management-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAccountDeleteComponent {
-  public user!: User;
-
   constructor(
+    public readonly userManagementDetailService: UserManagementDetailService,
     private readonly dialogService: MatDialog,
-    private readonly route: ActivatedRoute,
     private readonly router: Router,
-  ) {
-    this.route.parent?.parent?.data.subscribe((data) => {
-      this.user = data.user;
-    });
-  }
+    private readonly toasterService: ToasterService,
+  ) {}
 
   openDialog(): void {
-    if (this.user?.username?.length) {
-      const matDialogRef = this.dialogService.open(UserManagementAccountDeleteConfirmComponent, {
-        data: { username: this.user.username },
-        width: '350px',
+    const matDialogRef = this.dialogService.open(UserManagementAccountDeleteConfirmComponent, {
+      width: '350px',
+    });
+    matDialogRef
+      .afterClosed()
+      .pipe(
+        first(),
+        filter((username) => !!username?.length),
+        switchMap(() => this.userManagementDetailService.deleteProfile()),
+      )
+      .subscribe({
+        next: () => {
+          this.toasterService.showToast({ message: 'Account Removed Successfully' });
+          this.router.navigate(['administration', 'user-management']);
+        },
+        error: () => this.toasterService.showToast({ message: 'An Error has occurred' }),
       });
-      matDialogRef
-        .afterClosed()
-        .pipe(
-          first(),
-          switchMap((username) =>
-            !!username?.length && this.user ? this.user.submitToTemplateOrThrow('delete') : EMPTY,
-          ),
-        )
-        .subscribe({
-          next: () => this.router.navigate(['administration', 'user-management']),
-        });
-    }
   }
 }

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementAccountDeleteConfirmComponent } from './user-management-account-delete-confirm.component';
 
 describe('UserManagementAccountDeleteConfirmComponent', () => {
@@ -14,7 +14,7 @@ describe('UserManagementAccountDeleteConfirmComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule],
       declarations: [UserManagementAccountDeleteConfirmComponent],
-      providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],
+      providers: [stubUserManagementDetailServiceProvider],
     }).compileComponents();
   });
 

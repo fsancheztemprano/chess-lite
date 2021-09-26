@@ -5,7 +5,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormErrorModule } from '../../../../../../../../../../shared/components/form-error/form-error.component';
+import { NgLetModule } from '../../../../../../../../../../shared/directives/ng-let.directive';
 import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
+import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 
 import { UserManagementRoleComponent } from './user-management-role.component';
 
@@ -22,9 +24,10 @@ describe('UserManagementRoleComponent', () => {
         FormErrorModule,
         ReactiveFormsModule,
         NoopAnimationsModule,
+        NgLetModule,
       ],
       declarations: [UserManagementRoleComponent],
-      providers: [stubToasterServiceProvider],
+      providers: [stubToasterServiceProvider, stubUserManagementDetailServiceProvider],
     }).compileComponents();
   });
 

@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { User, UserManagementRelations } from '@app/domain';
-import { noop } from 'rxjs';
+import { UserManagementRelations } from '@app/domain';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
 import { setTemplateValidators } from '../../../../../../../../../../shared/utils/forms/validators/set-template.validators';
+import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-user-management-profile',
   templateUrl: './user-management-profile.component.html',
@@ -13,7 +14,6 @@ import { setTemplateValidators } from '../../../../../../../../../../shared/util
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementProfileComponent {
-  public user: User | undefined;
   public form = new FormGroup({
     username: new FormControl(''),
     email: new FormControl(''),
@@ -26,18 +26,23 @@ export class UserManagementProfileComponent {
     credentialsExpired: new FormControl(false),
   });
 
-  constructor(private readonly route: ActivatedRoute, private readonly toasterService: ToasterService) {
-    this.route.parent?.parent?.data.subscribe((data) => {
-      this.user = data.user;
-      setTemplateValidators(this.form, data.user.getTemplate(UserManagementRelations.USER_UPDATE_REL));
-      this.form.patchValue(data.user);
-    });
+  constructor(
+    public readonly userManagementDetailService: UserManagementDetailService,
+    private readonly toasterService: ToasterService,
+  ) {
+    this.userManagementDetailService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => {
+        setTemplateValidators(this.form, user.getTemplate(UserManagementRelations.USER_UPDATE_REL));
+        this.form.patchValue(user);
+      });
   }
 
   onSubmit() {
-    this.user?.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, this.form.value).subscribe({
+    this.userManagementDetailService.updateProfile(this.form.value).subscribe({
       next: () => this.toasterService.showToast({ message: 'User Profile Updated Successfully' }),
-      error: () => noop,
+      error: () => this.toasterService.showErrorToast({ message: 'An error occurred' }),
     });
   }
 }
