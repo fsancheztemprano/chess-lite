@@ -30,7 +30,7 @@ ij_typescript_import_use_node_resolution = true
 ij_typescript_import_sort_members = true
 
 [*.scss]
-ij_continuation_indent_size = 2
+ij_scss_continuation_indent_size = 2
 
 [pom.xml]
 max_line_length = 990

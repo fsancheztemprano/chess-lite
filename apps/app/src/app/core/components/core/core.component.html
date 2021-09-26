@@ -1,13 +1,21 @@
 <app-toolbar></app-toolbar>
 <app-sidenav>
   <main [ngClass]="{ 'is-mobile': '' | isMobile | async }">
-    <mat-card>
-      <mat-card-header>
-        <app-header></app-header>
-      </mat-card-header>
-      <mat-card-content>
-        <router-outlet></router-outlet>
-      </mat-card-content>
-    </mat-card>
+    <ng-container *ngTemplateOutlet="style === 'card' ? card : raw"></ng-container>
   </main>
 </app-sidenav>
+
+<ng-template #card>
+  <mat-card>
+    <mat-card-header>
+      <app-header></app-header>
+    </mat-card-header>
+    <mat-card-content>
+      <router-outlet></router-outlet>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
+
+<ng-template #raw>
+  <router-outlet></router-outlet>
+</ng-template>

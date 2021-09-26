@@ -1,11 +1,8 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
+import { stubCoreServiceProvider } from '../../../../../../core/services/core.service.stub';
+import { StubTiledMenuModule } from '../../../../../../shared/modules/tiled-menu/components/tiled-menu/tiled-menu.component.stub';
 import { AdministrationHomeComponent } from './administration-home.component';
-
-@Component({ selector: 'app-administration-sidenav', template: '' })
-class StubAdministrationSidenavComponent {}
 
 describe('AdministrationHomeComponent', () => {
   let component: AdministrationHomeComponent;
@@ -13,8 +10,9 @@ describe('AdministrationHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AdministrationHomeComponent, StubAdministrationSidenavComponent],
+      imports: [RouterTestingModule, StubTiledMenuModule],
+      declarations: [AdministrationHomeComponent],
+      providers: [stubCoreServiceProvider],
     }).compileComponents();
   });
 

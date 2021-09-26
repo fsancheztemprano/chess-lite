@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserMenuComponent } from './components/user-menu/user-menu.component';
+
+const loadUserUserSettingsHomeModule = () =>
+  import('./modules/home/user-settings-home.module').then((m) => m.UserSettingsHomeModule);
 
 const loadUserUpdateProfileModule = () =>
   import('./modules/update-profile/user-update-profile.module').then((m) => m.UserUpdateProfileModule);
@@ -20,32 +22,30 @@ const loadUserPreferencesModule = () =>
 const routes: Routes = [
   {
     path: '',
-    component: UserMenuComponent,
-    children: [
-      {
-        path: 'profile',
-        loadChildren: loadUserUpdateProfileModule,
-      },
-      {
-        path: 'delete',
-        loadChildren: loadUserRemoveAccountModule,
-      },
-      {
-        path: 'password',
-        loadChildren: loadUserChangePasswordModule,
-      },
-      {
-        path: 'avatar',
-        loadChildren: loadUserUploadAvatarModule,
-      },
-      {
-        path: 'preferences',
-        loadChildren: loadUserPreferencesModule,
-      },
-      { path: '', redirectTo: 'profile', pathMatch: 'full' },
-      { path: '**', redirectTo: 'profile' },
-    ],
+    loadChildren: loadUserUserSettingsHomeModule,
+    pathMatch: 'full',
   },
+  {
+    path: 'profile',
+    loadChildren: loadUserUpdateProfileModule,
+  },
+  {
+    path: 'delete',
+    loadChildren: loadUserRemoveAccountModule,
+  },
+  {
+    path: 'password',
+    loadChildren: loadUserChangePasswordModule,
+  },
+  {
+    path: 'avatar',
+    loadChildren: loadUserUploadAvatarModule,
+  },
+  {
+    path: 'preferences',
+    loadChildren: loadUserPreferencesModule,
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

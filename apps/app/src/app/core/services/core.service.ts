@@ -1,19 +1,33 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ContextMenuService } from './context-menu.service';
 import { MenuOption } from './context-menu.service.model';
 import { HeaderService } from './header.service';
 import { HeaderConfig } from './header.service.model';
 import { ToolbarService } from './toolbar.service';
 
+export type CoreComponentStyle = 'raw' | 'card';
+export const DEFAULT_STYLE: CoreComponentStyle = 'card';
+
 @Injectable({
   providedIn: 'root',
 })
 export class CoreService {
+  private _coreStyle: BehaviorSubject<CoreComponentStyle> = new BehaviorSubject<CoreComponentStyle>('card');
+
   constructor(
     private readonly _toolbarService: ToolbarService,
     private readonly _headerService: HeaderService,
     private readonly _contextMenuService: ContextMenuService,
   ) {}
+
+  getCoreStyle(): Observable<CoreComponentStyle> {
+    return this._coreStyle.asObservable();
+  }
+
+  setCoreStyle(value: CoreComponentStyle) {
+    this._coreStyle.next(value);
+  }
 
   get toolbarService(): ToolbarService {
     return this._toolbarService;
@@ -47,5 +61,6 @@ export class CoreService {
     this._headerService.resetHeader();
     this._contextMenuService.resetOptions();
     this._toolbarService.resetToolbar();
+    this.setCoreStyle(DEFAULT_STYLE);
   }
 }

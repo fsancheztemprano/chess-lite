@@ -6,6 +6,9 @@ import { RolesResolver } from './resolvers/roles.resolver';
 const loadUserManagementHomeModule = () =>
   import('./modules/home/user-management-home.module').then((m) => m.UserManagementHomeModule);
 
+const loadUserManagementListModule = () =>
+  import('./modules/list/user-management-list.module').then((m) => m.UserManagementListModule);
+
 const loadUserManagementDetailModule = () =>
   import('./modules/detail/user-management-detail.module').then((m) => m.UserManagementDetailModule);
 
@@ -16,6 +19,10 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: loadUserManagementHomeModule,
+  },
+  {
+    path: 'list',
+    loadChildren: loadUserManagementListModule,
   },
   {
     path: 'create',
