@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormErrorModule } from '../../../../../../../../../../shared/components/form-error/form-error.component';
 import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
 import { stubTranslationServiceProvider } from '../../../../../../../../../../shared/services/translation.service.stub';
-import { stubUserPreferencesServiceProvider } from '../../services/user-preferences.service.stub';
+import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementPreferencesComponent } from './user-management-preferences.component';
 
 describe('UserManagementPreferencesComponent', () => {
@@ -29,7 +29,7 @@ describe('UserManagementPreferencesComponent', () => {
         FormErrorModule,
       ],
       declarations: [UserManagementPreferencesComponent],
-      providers: [stubUserPreferencesServiceProvider, stubTranslationServiceProvider, stubToasterServiceProvider],
+      providers: [stubUserManagementDetailServiceProvider, stubTranslationServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

@@ -1,4 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { stubMessageServiceProvider } from '../../../../../../../core/services/message.service.stub';
+import { stubToasterServiceProvider } from '../../../../../../../shared/services/toaster.service.stub';
 import { stubUserManagementServiceProvider } from '../../../services/user-management.service.stub';
 
 import { UserManagementDetailService } from './user-management-detail.service';
@@ -8,7 +11,8 @@ describe('UserManagementDetailService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubUserManagementServiceProvider],
+      imports: [RouterTestingModule],
+      providers: [stubUserManagementServiceProvider, stubMessageServiceProvider, stubToasterServiceProvider],
     });
     service = TestBed.inject(UserManagementDetailService);
   });
