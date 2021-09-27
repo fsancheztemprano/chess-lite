@@ -31,8 +31,10 @@ export interface UserChangePasswordInput {
 }
 
 export class UserPage extends Resource implements IResource {
-  userModels?: User[];
   page?: Page;
+  _embedded!: {
+    userModels?: User[];
+  };
 }
 
 export class UserPreferences extends Resource implements IResource {

@@ -2,9 +2,28 @@ import { DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { User, UserManagementRelations, UserPage } from '@app/domain';
-import { BehaviorSubject, combineLatest, Observable, startWith, tap, throwError } from 'rxjs';
+import {
+  User,
+  UserChangedMessage,
+  UserChangedMessageAction,
+  UserManagementRelations,
+  UserPage,
+  UsersListChangedMessageDestination,
+} from '@app/domain';
+import {
+  BehaviorSubject,
+  combineLatest,
+  filter,
+  Observable,
+  startWith,
+  Subject,
+  Subscription,
+  tap,
+  throwError,
+} from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { MessageService } from '../../../../../../../../core/services/message.service';
+import { ToasterService } from '../../../../../../../../shared/services/toaster.service';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Injectable({
@@ -14,12 +33,20 @@ export class UserManagementTableDatasource extends DataSource<User> {
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
   private _userPage$: BehaviorSubject<UserPage> = new BehaviorSubject<UserPage>(new UserPage({}));
+  private _userListChanges: Subject<void> = new Subject();
 
-  constructor(private readonly userManagementService: UserManagementService) {
+  private _userListMessagesSubscription: Subscription = new Subscription();
+
+  constructor(
+    private readonly userManagementService: UserManagementService,
+    private readonly messageService: MessageService,
+    private readonly toasterService: ToasterService,
+  ) {
     super();
   }
 
   connect(): Observable<User[]> {
+    this._subscribeToUserListChanges();
     return this.paginator && this.sort
       ? combineLatest([
           this.paginator.page.pipe(
@@ -34,8 +61,9 @@ export class UserManagementTableDatasource extends DataSource<User> {
               direction: 'asc',
             } as Sort),
           ),
+          this._userListChanges.asObservable().pipe(startWith(null)),
         ]).pipe(
-          switchMap(([page, sort]: [PageEvent, Sort]) => {
+          switchMap(([page, sort]: [PageEvent, Sort, unknown]) => {
             return this.userManagementService.findUsers({
               page: page.pageIndex,
               size: page.pageSize,
@@ -55,6 +83,26 @@ export class UserManagementTableDatasource extends DataSource<User> {
   }
 
   disconnect(): void {
-    //noop
+    this._userPage$.complete();
+    this._userListMessagesSubscription.unsubscribe();
+  }
+
+  private _subscribeToUserListChanges() {
+    this._userListMessagesSubscription.unsubscribe();
+    this._userListMessagesSubscription = this.messageService
+      .subscribeToMessages<UserChangedMessage>(new UsersListChangedMessageDestination())
+      .pipe(
+        filter((userChangedEvent) => userChangedEvent.action !== UserChangedMessageAction.CREATED),
+        filter(
+          (userChangedEvent) =>
+            this._userPage$.value._embedded.userModels?.some((user) => userChangedEvent.userId === user.id) || false,
+        ),
+      )
+      .subscribe({
+        next: () => {
+          this.toasterService.showToast({ message: 'An update was received from the service.' });
+          this._userListChanges.next();
+        },
+      });
   }
 }

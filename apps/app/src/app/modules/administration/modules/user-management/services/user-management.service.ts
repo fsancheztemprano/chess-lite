@@ -33,7 +33,9 @@ export class UserManagementService extends HalFormService {
   public findUsers(pageable?: Pageable): Observable<UserPage> {
     return this.getLink(UserManagementRelations.USERS_REL).pipe(
       first(),
-      switchMap((link: Link | null) => (link ? link.get(pageable) : noLinkError(UserManagementRelations.USERS_REL))),
+      switchMap((link: Link | null) =>
+        link ? (link.get(pageable) as Observable<UserPage>) : noLinkError(UserManagementRelations.USERS_REL),
+      ),
     );
   }
 

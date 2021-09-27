@@ -13,7 +13,7 @@ export class UserManagementDetailComponent implements OnDestroy {
     const baseRoute = ['administration', 'user-management', 'edit', route.snapshot?.params?.userId];
     this.headerService.setHeader({
       title: 'Edit User',
-      navigationLink: [baseRoute[0], baseRoute[1]],
+      navigationLink: [baseRoute[0], baseRoute[1], 'list'],
       tabs: [
         {
           label: 'Profile',
