@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { stubCardViewHeaderServiceProvider } from '../../../../../core/modules/card-view/services/card-view-header.service.stub';
 import { stubToasterServiceProvider } from '../../../../../core/services/toaster.service.stub';
 import { StubFormErrorComponent } from '../../../../../shared/modules/form-error/components/form-error.component.stub';
-import { stubSignupServiceProvider } from '../../../../services/signup.service.stub';
+import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
 import { SignupComponent } from './signup.component';
 
 const MaterialModules = [MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule];
@@ -22,7 +22,7 @@ describe('SignupComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, ...MaterialModules, NoopAnimationsModule, ReactiveFormsModule],
       declarations: [SignupComponent, StubFormErrorComponent],
-      providers: [stubSignupServiceProvider, stubCardViewHeaderServiceProvider, stubToasterServiceProvider],
+      providers: [stubAuthServiceProvider, stubCardViewHeaderServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

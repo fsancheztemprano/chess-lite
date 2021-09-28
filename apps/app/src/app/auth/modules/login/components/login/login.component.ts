@@ -5,7 +5,7 @@ import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
 import { CardViewHeaderService } from '../../../../../core/modules/card-view/services/card-view-header.service';
 import { setTemplateValidatorsPipe } from '../../../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
-import { LoginService } from '../../../../services/login.service';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -24,13 +24,13 @@ export class LoginComponent implements OnDestroy {
   public loginError = false;
 
   constructor(
-    public readonly loginService: LoginService,
+    public readonly authService: AuthService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
     private readonly headerService: CardViewHeaderService,
   ) {
     this.headerService.setHeader({ title: 'Login' });
-    this.loginService.getLoginTemplate().pipe(first(), setTemplateValidatorsPipe(this.loginForm)).subscribe();
+    this.authService.getLoginTemplate().pipe(first(), setTemplateValidatorsPipe(this.loginForm)).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -38,7 +38,7 @@ export class LoginComponent implements OnDestroy {
   }
 
   public onSubmit(): void {
-    this.loginService.login(this.loginForm.value).subscribe({
+    this.authService.login(this.loginForm.value).subscribe({
       next: (user) => this.setStatus(!!user),
       error: () => this.setStatus(false),
     });

@@ -9,7 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HalFormClientTestingModule } from '@hal-form-client/testing';
 import { stubCardViewHeaderServiceProvider } from '../../../../../core/modules/card-view/services/card-view-header.service.stub';
 import { StubFormErrorComponent } from '../../../../../shared/modules/form-error/components/form-error.component.stub';
-import { stubLoginServiceProvider } from '../../../../services/login.service.stub';
+import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
 import { LoginComponent } from './login.component';
 
 const MaterialModules = [MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule];
@@ -28,7 +28,7 @@ describe('LoginComponent', () => {
         HalFormClientTestingModule,
       ],
       declarations: [LoginComponent, StubFormErrorComponent],
-      providers: [stubLoginServiceProvider, stubCardViewHeaderServiceProvider],
+      providers: [stubAuthServiceProvider, stubCardViewHeaderServiceProvider],
     }).compileComponents();
   });
 

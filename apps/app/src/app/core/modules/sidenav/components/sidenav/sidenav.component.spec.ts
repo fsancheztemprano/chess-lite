@@ -9,11 +9,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { stubAuthServiceProvider } from '../../../../../auth/services/auth.service.stub';
-import { stubLoginServiceProvider } from '../../../../../auth/services/login.service.stub';
 import { IsMobileModule } from '../../../../../shared/modules/is-mobile/is-mobile.module';
 import { NgLetModule } from '../../../../../shared/modules/ng-let/ng-let.module';
+import { stubSessionServiceProvider } from '../../../../services/session.service.stub';
 import { stubSidenavServiceProvider } from '../../../../services/sidenav.service.stub';
+import { stubUserServiceProvider } from '../../../../services/user.service.stub';
 import { AdministrationSidenavItemComponent } from '../administration-sidenav-item/administration-sidenav-item.component';
 import { UserSettingsSidenavItemComponent } from '../user-settings-sidenav-item/user-settings-sidenav-item.component';
 import { SidenavComponent } from './sidenav.component';
@@ -45,7 +45,7 @@ describe('SidenavComponent', () => {
           TranslateModule.forRoot(),
           RouterTestingModule,
         ],
-        providers: [stubAuthServiceProvider, stubSidenavServiceProvider, stubLoginServiceProvider],
+        providers: [stubSidenavServiceProvider, stubUserServiceProvider, stubSessionServiceProvider],
       }).compileComponents();
     }),
   );

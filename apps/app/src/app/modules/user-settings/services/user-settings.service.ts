@@ -3,7 +3,8 @@ import { CurrentUserRelations, User, UserChangePasswordInput, UserUpdateProfileI
 import { HalFormService, Link, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
 import { filter, Observable, switchMap } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
-import { AuthService } from '../../../auth/services/auth.service';
+import { SessionService } from '../../../core/services/session.service';
+import { UserService } from '../../../core/services/user.service';
 import { filterNulls } from '../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 import { isNonNull } from '../../../shared/utils/misc/is-non-null';
 
@@ -11,14 +12,18 @@ import { isNonNull } from '../../../shared/utils/misc/is-non-null';
   providedIn: 'root',
 })
 export class UserSettingsService {
-  constructor(private readonly halFormsService: HalFormService, private readonly authService: AuthService) {}
+  constructor(
+    private readonly halFormsService: HalFormService,
+    private readonly userService: UserService,
+    private readonly sessionService: SessionService,
+  ) {}
 
   public hasCurrentUserLink(): Observable<boolean> {
     return this.halFormsService.hasLink(CurrentUserRelations.CURRENT_USER_REL);
   }
 
   public getCurrentUser(): Observable<User | null> {
-    return this.authService.getCurrentUser();
+    return this.userService.getCurrentUser();
   }
 
   public isAllowedToUpdateProfile(): Observable<boolean> {
@@ -32,7 +37,7 @@ export class UserSettingsService {
       first(),
       filterNulls(),
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, updateUserProfileInput),
-      tap((user) => this.authService.setCurrentUser(user)),
+      tap((user) => this.userService.setCurrentUser(user)),
     );
   }
 
@@ -47,7 +52,7 @@ export class UserSettingsService {
       first(),
       filterNulls(),
       switchMap((user) => user.submitToTemplateOrThrow(CurrentUserRelations.DELETE_ACCOUNT_REL)),
-      switchMap(() => this.authService.clearLocalSession()),
+      switchMap(() => this.sessionService.clearSession()),
     );
   }
 
@@ -81,7 +86,7 @@ export class UserSettingsService {
       first(),
       filter(isNonNull),
       switchMap((user) => user.submitToTemplateOrThrow(CurrentUserRelations.UPLOAD_AVATAR_REL, formData)),
-      tap((user) => this.authService.setCurrentUser(user)),
+      tap((user) => this.userService.setCurrentUser(user)),
     );
   }
 
