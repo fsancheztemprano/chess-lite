@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserPreferences } from '@app/domain';
-import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
-import { TranslationService } from '../../../../../../../../../../shared/services/translation.service';
+import { ToasterService } from '../../../../../../../../../../core/services/toaster.service';
+import { TranslationService } from '../../../../../../../../../../core/services/translation.service';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @Component({

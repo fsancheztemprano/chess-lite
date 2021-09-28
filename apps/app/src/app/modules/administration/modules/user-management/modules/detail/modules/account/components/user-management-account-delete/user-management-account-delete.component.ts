@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
-import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
+import { ToasterService } from '../../../../../../../../../../core/services/toaster.service';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 import { UserManagementAccountDeleteConfirmComponent } from '../user-management-account-delete-confirm/user-management-account-delete-confirm.component';
 

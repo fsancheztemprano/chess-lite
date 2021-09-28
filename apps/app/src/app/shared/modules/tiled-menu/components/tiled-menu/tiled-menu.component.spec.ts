@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgLetModule } from '../../../../directives/ng-let.directive';
-import { IsMobileModule } from '../../../../pipes/is-mobile.pipe';
+import { IsMobileModule } from '../../../is-mobile/is-mobile.module';
+import { NgLetModule } from '../../../ng-let/ng-let.module';
 import { TiledMenuComponent } from './tiled-menu.component';
 import { StubTiledMenuTileComponent } from './tiled-menu.component.stub';
 

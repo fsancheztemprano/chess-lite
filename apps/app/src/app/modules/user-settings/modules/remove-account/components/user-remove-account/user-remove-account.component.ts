@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { first, switchMap } from 'rxjs/operators';
-import { HeaderService } from '../../../../../../core/services/header.service';
-import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { CardViewHeaderService } from '../../../../../../core/modules/card-view/services/card-view-header.service';
+import { ToasterService } from '../../../../../../core/services/toaster.service';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confirm/user-remove-account-confirm.component';
 
@@ -16,7 +16,7 @@ import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confir
 export class UserRemoveAccountComponent implements OnDestroy {
   constructor(
     public readonly userSettingsService: UserSettingsService,
-    private readonly headerService: HeaderService,
+    private readonly headerService: CardViewHeaderService,
     private readonly toasterService: ToasterService,
     private readonly dialogService: MatDialog,
     private readonly router: Router,

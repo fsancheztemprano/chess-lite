@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientTestingModule } from '@hal-form-client/testing';
-
 import { SignupService } from './signup.service';
 
 describe('SignupService', () => {

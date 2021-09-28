@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HeaderService } from '../../../../../../../../core/services/header.service';
+import { CardViewHeaderService } from '../../../../../../../../core/modules/card-view/services/card-view-header.service';
 
 @Component({
   selector: 'app-user-management-detail',
@@ -9,7 +9,7 @@ import { HeaderService } from '../../../../../../../../core/services/header.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementDetailComponent implements OnDestroy {
-  constructor(private readonly headerService: HeaderService, private readonly route: ActivatedRoute) {
+  constructor(private readonly headerService: CardViewHeaderService, private readonly route: ActivatedRoute) {
     const baseRoute = ['administration', 'user-management', 'edit', route.snapshot?.params?.userId];
     this.headerService.setHeader({
       title: 'Edit User',

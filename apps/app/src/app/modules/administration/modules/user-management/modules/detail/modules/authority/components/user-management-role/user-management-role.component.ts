@@ -5,7 +5,7 @@ import { Role } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
+import { ToasterService } from '../../../../../../../../../../core/services/toaster.service';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @UntilDestroy()

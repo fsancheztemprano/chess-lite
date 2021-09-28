@@ -5,7 +5,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubCoreServiceProvider } from '../../../../../../core/services/core.service.stub';
 import { stubServiceLogsServiceProvider } from '../../services/service-logs.service.stub';
-
 import { ServiceLogsComponent } from './service-logs.component';
 
 describe('ServiceLogsComponent', () => {

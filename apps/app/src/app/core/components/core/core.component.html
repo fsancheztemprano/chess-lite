@@ -6,14 +6,9 @@
 </app-sidenav>
 
 <ng-template #card>
-  <mat-card>
-    <mat-card-header>
-      <app-header></app-header>
-    </mat-card-header>
-    <mat-card-content>
-      <router-outlet></router-outlet>
-    </mat-card-content>
-  </mat-card>
+  <app-card-view>
+    <router-outlet></router-outlet>
+  </app-card-view>
 </ng-template>
 
 <ng-template #raw>

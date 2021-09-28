@@ -1,16 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { stubContextMenuServiceProvider } from './context-menu.service.stub';
-
+import { stubCardViewHeaderServiceProvider } from '../modules/card-view/services/card-view-header.service.stub';
+import { stubContextMenuServiceProvider } from '../modules/context-menu/services/context-menu.service.stub';
+import { stubToolbarServiceProvider } from '../modules/toolbar/services/toolbar.service.stub';
 import { CoreService } from './core.service';
-import { stubHeaderServiceProvider } from './header.service.stub';
-import { stubToolbarServiceProvider } from './toolbar.service.stub';
 
 describe('CoreService', () => {
   let service: CoreService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubToolbarServiceProvider, stubHeaderServiceProvider, stubContextMenuServiceProvider],
+      providers: [stubToolbarServiceProvider, stubCardViewHeaderServiceProvider, stubContextMenuServiceProvider],
     });
     service = TestBed.inject(CoreService);
   });

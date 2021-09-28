@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HalFormService } from '@hal-form-client';
 import { forkJoin, Observable, switchMapTo } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
-import { TranslationService } from '../../shared/services/translation.service';
+import { TranslationService } from './translation.service';
 
 @Injectable({
   providedIn: 'root',

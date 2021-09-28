@@ -15,7 +15,7 @@ import { AuthService } from './auth/services/auth.service';
 import { GlobalErrorHandler } from './core/errors/global-error-handler.service';
 import { HttpErrorInterceptor } from './core/errors/http-error.interceptor';
 import { AppInitializationService } from './core/services/app-initialization.service';
-import { TranslationService } from './shared/services/translation.service';
+import { TranslationService } from './core/services/translation.service';
 
 export function initializeApp(appInitService: AppInitializationService) {
   return (): Observable<unknown> => {

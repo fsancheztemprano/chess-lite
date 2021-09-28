@@ -6,9 +6,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormErrorModule } from '../../../../../../../../../../shared/components/form-error/form-error.component';
-import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
-import { stubTranslationServiceProvider } from '../../../../../../../../../../shared/services/translation.service.stub';
+import { stubToasterServiceProvider } from '../../../../../../../../../../core/services/toaster.service.stub';
+import { stubTranslationServiceProvider } from '../../../../../../../../../../core/services/translation.service.stub';
+import { FormErrorModule } from '../../../../../../../../../../shared/modules/form-error/form-error.module';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementPreferencesComponent } from './user-management-preferences.component';
 

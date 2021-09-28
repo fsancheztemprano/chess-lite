@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { FormErrorModule } from './components/form-error/form-error.component';
-import { NgLetModule } from './directives/ng-let.directive';
+import { FormErrorModule } from './modules/form-error/form-error.module';
+import { IsMobileModule } from './modules/is-mobile/is-mobile.module';
+import { NgLetModule } from './modules/ng-let/ng-let.module';
 import { TiledMenuModule } from './modules/tiled-menu/tiled-menu.module';
-import { IsMobileModule } from './pipes/is-mobile.pipe';
 
 @NgModule({
   imports: [IsMobileModule, NgLetModule, FormErrorModule, TiledMenuModule],

@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Role, UserManagementRelations } from '@app/domain';
 import { noop, Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { HeaderService } from '../../../../../../../../core/services/header.service';
-import { ToasterService } from '../../../../../../../../shared/services/toaster.service';
+import { CardViewHeaderService } from '../../../../../../../../core/modules/card-view/services/card-view-header.service';
+import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { setTemplateValidatorsPipe } from '../../../../../../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 import { matchingControlsValidators } from '../../../../../../../../shared/utils/forms/validators/matching-controls.validator';
 import { UserManagementService } from '../../../../services/user-management.service';
@@ -44,7 +44,7 @@ export class UserManagementCreateComponent implements OnDestroy {
 
   constructor(
     public readonly userManagementService: UserManagementService,
-    private readonly headerService: HeaderService,
+    private readonly headerService: CardViewHeaderService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly toaster: ToasterService,

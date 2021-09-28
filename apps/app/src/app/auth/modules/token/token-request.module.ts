@@ -5,9 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormErrorModule } from '../../../shared/components/form-error/form-error.component';
+import { FormErrorModule } from '../../../shared/modules/form-error/form-error.module';
 import { TokenRequestComponent } from './components/token-request/token-request.component';
-
 import { TokenRequestRoutingModule } from './token-request-routing.module';
 
 @NgModule({

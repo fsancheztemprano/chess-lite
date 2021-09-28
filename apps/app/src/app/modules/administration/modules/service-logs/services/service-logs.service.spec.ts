@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
-
 import { ServiceLogsService } from './service-logs.service';
 
 describe('ServiceLogsService', () => {

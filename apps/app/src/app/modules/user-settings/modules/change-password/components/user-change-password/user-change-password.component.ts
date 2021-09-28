@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CurrentUserRelations } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { HeaderService } from '../../../../../../core/services/header.service';
-import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { CardViewHeaderService } from '../../../../../../core/modules/card-view/services/card-view-header.service';
+import { ToasterService } from '../../../../../../core/services/toaster.service';
 import { filterNulls } from '../../../../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 import { setResourceValidatorsPipe } from '../../../../../../shared/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
 import { matchingControlsValidators } from '../../../../../../shared/utils/forms/validators/matching-controls.validator';
@@ -30,7 +30,7 @@ export class UserChangePasswordComponent implements OnDestroy {
   constructor(
     public readonly userSettingsService: UserSettingsService,
     private readonly toasterService: ToasterService,
-    private readonly headerService: HeaderService,
+    private readonly headerService: CardViewHeaderService,
   ) {
     this.userSettingsService
       .getCurrentUser()

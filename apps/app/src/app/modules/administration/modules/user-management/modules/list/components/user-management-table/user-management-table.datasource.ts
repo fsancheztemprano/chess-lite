@@ -23,7 +23,7 @@ import {
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { MessageService } from '../../../../../../../../core/services/message.service';
-import { ToasterService } from '../../../../../../../../shared/services/toaster.service';
+import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Injectable({

@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserManagementAccountDeleteComponent } from '../user-management-account-delete/user-management-account-delete.component';
 import { UserManagementAccountPasswordComponent } from '../user-management-account-password/user-management-account-password.component';
 import { UserManagementAccountTokenComponent } from '../user-management-account-token/user-management-account-token.component';
-
 import { UserManagementAccountComponent } from './user-management-account.component';
 
 @Component({ selector: 'app-user-management-account-delete', template: '' })

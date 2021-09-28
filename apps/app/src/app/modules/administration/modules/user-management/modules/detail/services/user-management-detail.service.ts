@@ -13,7 +13,7 @@ import {
 import { BehaviorSubject, EMPTY, first, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MessageService } from '../../../../../../../core/services/message.service';
-import { ToasterService } from '../../../../../../../shared/services/toaster.service';
+import { ToasterService } from '../../../../../../../core/services/toaster.service';
 import { filterNulls } from '../../../../../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 import { UserManagementService } from '../../../services/user-management.service';
 

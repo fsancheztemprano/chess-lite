@@ -3,7 +3,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NgLetModule } from '../../../../../../shared/directives/ng-let.directive';
+import { NgLetModule } from '../../../../../../shared/modules/ng-let/ng-let.module';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserRemoveAccountConfirmComponent } from './user-remove-account-confirm.component';
 

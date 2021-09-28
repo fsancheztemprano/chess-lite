@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { HeaderService } from '../../../../../core/services/header.service';
+import { CardViewHeaderService } from '../../../../../core/modules/card-view/services/card-view-header.service';
 import { setTemplateValidatorsPipe } from '../../../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 import { LoginService } from '../../../../services/login.service';
 
@@ -27,7 +27,7 @@ export class LoginComponent implements OnDestroy {
     public readonly loginService: LoginService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
-    private readonly headerService: HeaderService,
+    private readonly headerService: CardViewHeaderService,
   ) {
     this.headerService.setHeader({ title: 'Login' });
     this.loginService.getLoginTemplate().pipe(first(), setTemplateValidatorsPipe(this.loginForm)).subscribe();

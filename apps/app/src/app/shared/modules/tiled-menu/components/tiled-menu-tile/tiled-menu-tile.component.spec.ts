@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { TiledMenuTileComponent } from './tiled-menu-tile.component';
 
 describe('TiledMenuTileComponent', () => {

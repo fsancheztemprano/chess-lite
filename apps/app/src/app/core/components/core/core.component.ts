@@ -24,7 +24,7 @@ export class CoreComponent implements OnInit {
 
   ngOnInit(): void {
     this._subscribeToThemeChanges();
-    this._subscribeToComponentStyle();
+    this._subscribeToCoreStyle();
   }
 
   private _subscribeToThemeChanges(): void {
@@ -42,7 +42,7 @@ export class CoreComponent implements OnInit {
       });
   }
 
-  private _subscribeToComponentStyle() {
+  private _subscribeToCoreStyle() {
     this.coreService
       .getCoreStyle()
       .pipe(untilDestroyed(this))

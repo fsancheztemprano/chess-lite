@@ -5,12 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { FormErrorModule } from '../../../../../../../../shared/components/form-error/form-error.component';
-import { NgLetModule } from '../../../../../../../../shared/directives/ng-let.directive';
+import { FormErrorModule } from '../../../../../../../../shared/modules/form-error/form-error.module';
+import { NgLetModule } from '../../../../../../../../shared/modules/ng-let/ng-let.module';
 import { UserManagementAuthoritiesComponent } from './components/user-management-authorities/user-management-authorities.component';
 import { UserManagementAuthorityComponent } from './components/user-management-authority/user-management-authority.component';
 import { UserManagementRoleComponent } from './components/user-management-role/user-management-role.component';
-
 import { UserManagementAuthorityRoutingModule } from './user-management-authority-routing.module';
 
 @NgModule({

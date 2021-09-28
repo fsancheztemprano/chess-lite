@@ -5,7 +5,7 @@ import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { User, UserManagementRelations, UserPage } from '@app/domain';
 import { BehaviorSubject } from 'rxjs';
-import { MenuOption } from '../../../../../../../../core/services/context-menu.service.model';
+import { MenuOption } from '../../../../../../../../core/modules/context-menu/services/context-menu.service.model';
 import { CoreService } from '../../../../../../../../core/services/core.service';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 
@@ -46,7 +46,7 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
     private readonly coreService: CoreService,
     private readonly router: Router,
   ) {
-    this.coreService.setHeader({ title: 'User Management' });
+    this.coreService.setCardViewHeader({ title: 'User Management' });
     this.coreService.setShowContextMenu(true);
     this.coreService.setContextMenuOptions([this.createUserMenuOption]);
     this.dataSource.userPage$?.subscribe((userPage: UserPage) =>

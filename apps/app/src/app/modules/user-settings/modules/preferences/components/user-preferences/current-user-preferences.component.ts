@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CurrentUserRelations, UserPreferences } from '@app/domain';
 import { noop } from 'rxjs';
 import { ThemeService } from '../../../../../../core/services/theme.service';
-import { ToasterService } from '../../../../../../shared/services/toaster.service';
-import { TranslationService } from '../../../../../../shared/services/translation.service';
+import { ToasterService } from '../../../../../../core/services/toaster.service';
+import { TranslationService } from '../../../../../../core/services/translation.service';
 import { setTemplateValidators } from '../../../../../../shared/utils/forms/validators/set-template.validators';
 import { CurrentUserPreferencesService } from '../../services/current-user-preferences.service';
 

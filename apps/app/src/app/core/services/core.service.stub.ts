@@ -4,7 +4,7 @@ import { CoreComponentStyle, CoreService } from './core.service';
 
 @Injectable({ providedIn: 'root' })
 export class StubCoreService implements Partial<CoreService> {
-  setHeader = noop;
+  setCardViewHeader = noop;
   setShowContextMenu = noop;
   setContextMenuOptions = noop;
   reset = noop;

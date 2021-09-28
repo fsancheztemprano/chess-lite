@@ -5,7 +5,7 @@ import { Authority } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
+import { ToasterService } from '../../../../../../../../../../core/services/toaster.service';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @UntilDestroy()

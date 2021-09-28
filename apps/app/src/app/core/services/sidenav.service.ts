@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AdministrationRelations, AuthRelations, CurrentUserRelations } from '@app/domain';
 import { HalFormService } from '@hal-form-client';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IsMobileService } from '../../shared/services/is-mobile.service';
+import { IsMobileService } from '../../shared/modules/is-mobile/services/is-mobile.service';
 
 @Injectable({
   providedIn: 'root',

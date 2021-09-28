@@ -1,7 +1,7 @@
 import { ErrorHandler, Injectable, NgZone } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { ToasterService } from '../../shared/services/toaster.service';
-import { ToastType } from '../../shared/services/toaster.service.model';
+import { ToasterService } from '../services/toaster.service';
+import { ToastType } from '../services/toaster.service.model';
 
 @Injectable({
   providedIn: 'root',

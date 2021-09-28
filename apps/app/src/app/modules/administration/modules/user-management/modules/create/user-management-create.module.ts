@@ -6,9 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormErrorModule } from '../../../../../../shared/components/form-error/form-error.component';
+import { FormErrorModule } from '../../../../../../shared/modules/form-error/form-error.module';
 import { UserManagementCreateComponent } from './components/user-management-create/user-management-create.component';
-
 import { UserManagementCreateRoutingModule } from './user-management-create-routing.module';
 
 @NgModule({

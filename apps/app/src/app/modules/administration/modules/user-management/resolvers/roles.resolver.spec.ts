@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { stubRoleManagementServiceProvider } from '../services/role-management.service.stub';
-
 import { RolesResolver } from './roles.resolver';
 
 describe('RolesResolver', () => {

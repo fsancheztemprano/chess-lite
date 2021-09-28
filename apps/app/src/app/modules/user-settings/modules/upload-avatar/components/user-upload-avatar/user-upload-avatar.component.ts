@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { HeaderService } from '../../../../../../core/services/header.service';
-import { ToasterService } from '../../../../../../shared/services/toaster.service';
+import { CardViewHeaderService } from '../../../../../../core/modules/card-view/services/card-view-header.service';
+import { ToasterService } from '../../../../../../core/services/toaster.service';
 import { fileSizeValidator } from '../../../../../../shared/utils/forms/validators/file-size.validator';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
@@ -20,7 +20,7 @@ export class UserUploadAvatarComponent implements OnDestroy {
 
   constructor(
     public readonly userService: UserSettingsService,
-    private readonly headerService: HeaderService,
+    private readonly headerService: CardViewHeaderService,
     private readonly toasterService: ToasterService,
   ) {
     this.headerService.setHeader({ title: 'User Avatar' });

@@ -8,11 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubHeaderServiceProvider } from '../../../../../../../../core/services/header.service.stub';
-import { FormErrorModule } from '../../../../../../../../shared/components/form-error/form-error.component';
-import { stubToasterServiceProvider } from '../../../../../../../../shared/services/toaster.service.stub';
+import { stubCardViewHeaderServiceProvider } from '../../../../../../../../core/modules/card-view/services/card-view-header.service.stub';
+import { stubToasterServiceProvider } from '../../../../../../../../core/services/toaster.service.stub';
+import { FormErrorModule } from '../../../../../../../../shared/modules/form-error/form-error.module';
 import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
-
 import { UserManagementCreateComponent } from './user-management-create.component';
 
 describe('UserManagementCreateComponent', () => {
@@ -34,7 +33,7 @@ describe('UserManagementCreateComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [UserManagementCreateComponent],
-      providers: [stubUserManagementServiceProvider, stubHeaderServiceProvider, stubToasterServiceProvider],
+      providers: [stubUserManagementServiceProvider, stubCardViewHeaderServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

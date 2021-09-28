@@ -3,8 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
-import { HeaderService } from '../../../../../core/services/header.service';
-import { ToasterService } from '../../../../../shared/services/toaster.service';
+import { CardViewHeaderService } from '../../../../../core/modules/card-view/services/card-view-header.service';
+import { ToasterService } from '../../../../../core/services/toaster.service';
 import { setTemplateValidatorsPipe } from '../../../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
 
@@ -25,7 +25,7 @@ export class TokenRequestComponent implements OnDestroy {
 
   constructor(
     public readonly activationTokenService: ActivationTokenService,
-    private readonly headerService: HeaderService,
+    private readonly headerService: CardViewHeaderService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
     private readonly toasterService: ToasterService,
