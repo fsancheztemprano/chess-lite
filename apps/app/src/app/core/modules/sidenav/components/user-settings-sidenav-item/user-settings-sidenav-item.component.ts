@@ -11,5 +11,5 @@ import { UserSettingsService } from '../../../../../modules/user-settings/servic
 export class UserSettingsSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
 
-  constructor(public readonly router: Router, public readonly currentUserService: UserSettingsService) {}
+  constructor(public readonly router: Router, public readonly userSettingsService: UserSettingsService) {}
 }

@@ -8,10 +8,10 @@ import { UserSettingsService } from '../../../services/user-settings.service';
   providedIn: 'root',
 })
 export class CurrentUserPreferencesService {
-  constructor(private readonly currentUserService: UserSettingsService) {}
+  constructor(private readonly userSettingsService: UserSettingsService) {}
 
   getCurrentUserPreferences(): Observable<UserPreferences> {
-    return this.currentUserService
+    return this.userSettingsService
       .getLinkToUserPreferences()
       .pipe(switchMap((link) => (link ? link.get() : noLinkError(CurrentUserRelations.USER_PREFERENCES_REL))));
   }

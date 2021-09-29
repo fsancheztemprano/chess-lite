@@ -21,9 +21,7 @@ export class SessionService {
     private readonly halFormService: HalFormService,
     private readonly userService: UserService,
   ) {
-    if (isTokenExpired(localStorage.getItem(TOKEN_KEY))) {
-      this._removeToken();
-    }
+    this._validateToken(localStorage.getItem(TOKEN_KEY));
   }
 
   public initialize(options?: Session): Observable<User> {
@@ -45,18 +43,14 @@ export class SessionService {
   public clearSession(): Observable<Resource> {
     this.userService.clearUser();
     this.messageService.disconnect();
-    this._removeToken();
+    localStorage.removeItem(TOKEN_KEY);
     return this.halFormService.initialize();
   }
 
-  private _validateToken(token: string): boolean {
-    if (isTokenExpired(token)) {
-      this._removeToken();
+  private _validateToken(token: string | null): boolean {
+    if (token && isTokenExpired(token)) {
+      localStorage.removeItem(TOKEN_KEY);
       return false;
     } else return true;
-  }
-
-  private _removeToken(): void {
-    localStorage.removeItem(TOKEN_KEY);
   }
 }

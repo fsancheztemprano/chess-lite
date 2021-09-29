@@ -9,6 +9,8 @@ export class StubUserSettingsService implements Partial<UserSettingsService> {
   isAllowedToChangePassword = () => of(true);
   isAllowedToDeleteAccount = () => of(true);
   isAllowedToUploadAvatar = () => of(true);
+  isAllowedTo = () => of(true);
+  hasLinkToUserPreferences = () => of(true);
   getCurrentUsername = () => of('currentUsername');
   getCurrentUser = () => of(new User({}));
 }

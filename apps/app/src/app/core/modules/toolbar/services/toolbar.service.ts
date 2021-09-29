@@ -10,6 +10,7 @@ export class ToolbarService {
     showContextMenu: false,
     showLocalePicker: true,
     showThemePicker: true,
+    title: 'Application Title',
   };
   private readonly _showLocalePicker: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     this.DEFAULT_TOOLBAR.showLocalePicker,
@@ -20,6 +21,7 @@ export class ToolbarService {
   private readonly _showContextMenu: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     this.DEFAULT_TOOLBAR.showContextMenu,
   );
+  private readonly _title: BehaviorSubject<string> = new BehaviorSubject<string>(this.DEFAULT_TOOLBAR.title);
 
   get showLocalePicker(): Observable<boolean> {
     return this._showLocalePicker.asObservable();
@@ -31,6 +33,14 @@ export class ToolbarService {
 
   get showContextMenu(): Observable<boolean> {
     return this._showContextMenu.asObservable();
+  }
+
+  get title(): Observable<string> {
+    return this._title.asObservable();
+  }
+
+  setTitle(title: string) {
+    this._title.next(title || this.DEFAULT_TOOLBAR.title);
   }
 
   setShowLocalePicker(show?: boolean) {

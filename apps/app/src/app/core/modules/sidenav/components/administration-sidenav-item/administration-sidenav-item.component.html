@@ -17,7 +17,7 @@
           (click)="toggleSidenav.emit()"
           routerLink="/administration/user-management"
           routerLinkActive="active-link"
-          *ngIf="administrationService.hasUserManagementLink() | async"
+          *ngIf="hasUserManagementEmbedded() | async"
         >
           <mat-icon aria-hidden="false" aria-label="User Management">manage_accounts</mat-icon>
           User Management
@@ -36,6 +36,7 @@
           (click)="toggleSidenav.emit()"
           routerLink="/administration/service-logs"
           routerLinkActive="active-link"
+          *ngIf="hasServiceLogsLink() | async"
         >
           <mat-icon aria-hidden="false" aria-label="Service Logs">cabin</mat-icon>
           Service Logs

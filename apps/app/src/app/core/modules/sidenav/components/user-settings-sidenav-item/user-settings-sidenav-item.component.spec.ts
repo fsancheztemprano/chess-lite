@@ -4,7 +4,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubUserSettingsServiceProvider } from '../../../../../modules/user-settings/services/user-settings.service.stub';
-import { stubToasterServiceProvider } from '../../../../services/toaster.service.stub';
 import { UserSettingsSidenavItemComponent } from './user-settings-sidenav-item.component';
 
 describe('UserSettingsSidenavItemComponent', () => {
@@ -15,7 +14,7 @@ describe('UserSettingsSidenavItemComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatExpansionModule, MatIconModule, NoopAnimationsModule],
       declarations: [UserSettingsSidenavItemComponent],
-      providers: [stubToasterServiceProvider, stubUserSettingsServiceProvider],
+      providers: [stubUserSettingsServiceProvider],
     }).compileComponents();
   });
 

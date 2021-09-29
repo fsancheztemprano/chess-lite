@@ -2,7 +2,7 @@ import jwt_decode from 'jwt-decode';
 
 export function isTokenExpired(token: string | null): boolean {
   if (!token?.length) {
-    return false;
+    return true;
   }
   const decoded: { exp: number } = jwt_decode(token);
   return token ? Date.now() > Number(decoded.exp) * 1000 : false;

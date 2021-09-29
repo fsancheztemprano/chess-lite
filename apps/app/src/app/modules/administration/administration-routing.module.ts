@@ -21,6 +21,7 @@ const routes: Routes = [
     path: 'user-management',
     loadChildren: loadUserManagementModule,
     canLoad: [UserManagementGuard],
+    canActivate: [UserManagementGuard],
   },
   {
     path: 'service-logs',

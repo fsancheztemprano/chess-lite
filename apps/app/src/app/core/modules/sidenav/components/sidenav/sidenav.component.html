@@ -16,10 +16,10 @@
         <mat-icon aria-hidden="false" aria-label="Home">home</mat-icon>
         Home
       </a>
-      <app-user-settings-sidenav-item *ngIf="sidenavService.showUserLink() | async" (toggleSidenav)="toggleSidenav()">
+      <app-user-settings-sidenav-item *ngIf="showUserLink() | async" (toggleSidenav)="toggleSidenav()">
       </app-user-settings-sidenav-item>
       <app-administration-sidenav-item
-        *ngIf="sidenavService.showAdministrationLink() | async"
+        *ngIf="showAdministrationLink() | async"
         (toggleSidenav)="toggleSidenav()"
       ></app-administration-sidenav-item>
       <a mat-list-item *ngIf="userService.getCurrentUser() | async" (click)="logout()">
@@ -28,7 +28,7 @@
       </a>
       <a
         mat-list-item
-        *ngIf="sidenavService.showLoginLink() | async"
+        *ngIf="showLoginLink() | async"
         (click)="toggleSidenav()"
         routerLink="/auth/login"
         routerLinkActive="active-link"
@@ -38,7 +38,7 @@
       </a>
       <a
         mat-list-item
-        *ngIf="sidenavService.showSignupLink() | async"
+        *ngIf="showSignupLink() | async"
         (click)="toggleSidenav()"
         routerLink="/auth/signup"
         routerLinkActive="active-link"

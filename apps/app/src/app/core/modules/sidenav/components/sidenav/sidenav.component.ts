@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
+import { AdministrationRelations, AuthRelations, CurrentUserRelations } from '@app/domain';
+import { HalFormService } from '@hal-form-client';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Observable } from 'rxjs';
 import { SessionService } from '../../../../services/session.service';
 import { SidenavService } from '../../../../services/sidenav.service';
 import { UserService } from '../../../../services/user.service';
@@ -21,6 +24,7 @@ export class SidenavComponent {
     public readonly userService: UserService,
     public readonly sessionService: SessionService,
     private readonly router: Router,
+    private readonly halFormService: HalFormService,
   ) {
     this._subscribeToSidenavOpenEvent();
   }
@@ -37,5 +41,21 @@ export class SidenavComponent {
 
   public logout(): void {
     this.sessionService.clearSession().subscribe(() => this.router.navigate(['auth', 'signup']));
+  }
+
+  public showLoginLink(): Observable<boolean> {
+    return this.halFormService.hasLink(AuthRelations.LOGIN_RELATION);
+  }
+
+  public showSignupLink(): Observable<boolean> {
+    return this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION);
+  }
+
+  public showUserLink(): Observable<boolean> {
+    return this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL);
+  }
+
+  public showAdministrationLink(): Observable<boolean> {
+    return this.halFormService.hasLink(AdministrationRelations.ADMINISTRATION_REL);
   }
 }
