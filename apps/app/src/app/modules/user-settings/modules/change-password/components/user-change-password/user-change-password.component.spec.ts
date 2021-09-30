@@ -4,11 +4,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { StubFormErrorComponent } from '../../../../../../shared/components/form-error/form-error.component.stub';
-import { NgLetModule } from '../../../../../../shared/directives/ng-let.directive';
-import { stubToasterServiceProvider } from '../../../../../../shared/services/toaster.service.stub';
-import { stubCurrentUserServiceProvider } from '../../../../services/current-user.service.stub';
-
+import { stubToasterServiceProvider } from '../../../../../../core/services/toaster.service.stub';
+import { StubFormErrorComponent } from '../../../../../../shared/modules/form-error/components/form-error.component.stub';
+import { NgLetModule } from '../../../../../../shared/modules/ng-let/ng-let.module';
+import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserChangePasswordComponent } from './user-change-password.component';
 
 describe('UserChangePasswordComponent', () => {
@@ -26,7 +25,7 @@ describe('UserChangePasswordComponent', () => {
         NgLetModule,
       ],
       declarations: [UserChangePasswordComponent, StubFormErrorComponent],
-      providers: [stubCurrentUserServiceProvider, stubToasterServiceProvider],
+      providers: [stubUserSettingsServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

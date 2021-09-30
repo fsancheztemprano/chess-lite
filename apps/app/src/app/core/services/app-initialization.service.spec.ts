@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientTestingModule } from '@hal-form-client/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { stubAuthServiceProvider } from '../../auth/services/auth.service.stub';
 import { AppInitializationService } from './app-initialization.service';
+import { stubSessionServiceProvider } from './session.service.stub';
 
 describe('AppInitializationService', () => {
   let service: AppInitializationService;
@@ -10,7 +10,7 @@ describe('AppInitializationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HalFormClientTestingModule, TranslateModule.forRoot()],
-      providers: [stubAuthServiceProvider],
+      providers: [stubSessionServiceProvider],
     });
     service = TestBed.inject(AppInitializationService);
   });

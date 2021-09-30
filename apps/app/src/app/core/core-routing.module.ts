@@ -20,25 +20,28 @@ const routes: Routes = [
     component: CoreComponent,
     children: [
       {
-        path: 'home',
+        path: '',
         loadChildren: loadHomeModule,
+        pathMatch: 'full',
       },
       {
         path: 'auth',
         loadChildren: loadAuthModule,
         canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'user',
         loadChildren: loadUserModule,
         canLoad: [UserSettingsGuard],
+        canActivate: [UserSettingsGuard],
       },
       {
         path: 'administration',
         loadChildren: loadAdministrationModule,
         canLoad: [AdministrationGuard],
+        canActivate: [AdministrationGuard],
       },
-      { path: '', redirectTo: 'home' },
       { path: '**', redirectTo: '' },
     ],
   },

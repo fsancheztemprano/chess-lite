@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserResolver } from './modules/detail/resolvers/user.resolver';
 import { RolesResolver } from './resolvers/roles.resolver';
 
 const loadUserManagementHomeModule = () =>
   import('./modules/home/user-management-home.module').then((m) => m.UserManagementHomeModule);
+
+const loadUserManagementListModule = () =>
+  import('./modules/list/user-management-list.module').then((m) => m.UserManagementListModule);
 
 const loadUserManagementDetailModule = () =>
   import('./modules/detail/user-management-detail.module').then((m) => m.UserManagementDetailModule);
@@ -18,6 +20,10 @@ const routes: Routes = [
     loadChildren: loadUserManagementHomeModule,
   },
   {
+    path: 'list',
+    loadChildren: loadUserManagementListModule,
+  },
+  {
     path: 'create',
     loadChildren: loadUserManagementCreateModule,
     resolve: { roles: RolesResolver },
@@ -25,7 +31,6 @@ const routes: Routes = [
   {
     path: 'edit/:userId',
     loadChildren: loadUserManagementDetailModule,
-    resolve: { user: UserResolver },
   },
   { path: '**', redirectTo: '' },
 ];

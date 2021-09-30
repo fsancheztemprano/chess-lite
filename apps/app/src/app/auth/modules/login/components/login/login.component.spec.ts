@@ -7,9 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HalFormClientTestingModule } from '@hal-form-client/testing';
-import { stubHeaderServiceProvider } from '../../../../../core/services/header.service.stub';
-import { StubFormErrorComponent } from '../../../../../shared/components/form-error/form-error.component.stub';
-import { stubLoginServiceProvider } from '../../../../services/login.service.stub';
+import { stubCardViewHeaderServiceProvider } from '../../../../../core/modules/card-view/services/card-view-header.service.stub';
+import { StubFormErrorComponent } from '../../../../../shared/modules/form-error/components/form-error.component.stub';
+import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
 import { LoginComponent } from './login.component';
 
 const MaterialModules = [MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule];
@@ -28,7 +28,7 @@ describe('LoginComponent', () => {
         HalFormClientTestingModule,
       ],
       declarations: [LoginComponent, StubFormErrorComponent],
-      providers: [stubLoginServiceProvider, stubHeaderServiceProvider],
+      providers: [stubAuthServiceProvider, stubCardViewHeaderServiceProvider],
     }).compileComponents();
   });
 

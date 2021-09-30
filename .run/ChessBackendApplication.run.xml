@@ -2,6 +2,7 @@
   <configuration default="false" name="Backend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <module name="api"/>
     <option name="SPRING_BOOT_MAIN_CLASS" value="dev.kurama.api.BackendApplication"/>
+    <option name="HIDE_BANNER" value="true"/>
     <option name="ACTIVE_PROFILES" value="development"/>
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/apps/api"/>
     <option name="ALTERNATIVE_JRE_PATH"/>

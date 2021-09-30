@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HalFormClientTestingModule } from '@hal-form-client/testing';
-
+import { IsMobileModule } from '../../shared/modules/is-mobile/is-mobile.module';
 import { SidenavService } from './sidenav.service';
 
 describe('SidenavService', () => {
@@ -8,7 +7,7 @@ describe('SidenavService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HalFormClientTestingModule],
+      imports: [IsMobileModule],
     });
     service = TestBed.inject(SidenavService);
   });

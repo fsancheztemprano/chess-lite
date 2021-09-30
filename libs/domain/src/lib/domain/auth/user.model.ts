@@ -9,6 +9,7 @@ export class User extends Resource implements IResource {
   lastname?: string;
   username?: string;
   profileImageUrl?: string;
+  userPreferencesId?: string;
   lastLoginDateDisplay?: Date;
   joinDate?: Date;
   role?: Role;
@@ -31,11 +32,14 @@ export interface UserChangePasswordInput {
 }
 
 export class UserPage extends Resource implements IResource {
-  userModels?: User[];
   page?: Page;
+  _embedded!: {
+    userModels?: User[];
+  };
 }
 
 export class UserPreferences extends Resource implements IResource {
+  id?: string;
   darkMode?: boolean;
   contentLanguage?: string;
 }

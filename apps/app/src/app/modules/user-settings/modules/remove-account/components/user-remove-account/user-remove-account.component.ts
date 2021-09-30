@@ -1,14 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CurrentUserRelations, User } from '@app/domain';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { first, switchMap } from 'rxjs/operators';
-import { HeaderService } from '../../../../../../core/services/header.service';
-import { CurrentUserService } from '../../../../services/current-user.service';
+import { CardViewHeaderService } from '../../../../../../core/modules/card-view/services/card-view-header.service';
+import { ToasterService } from '../../../../../../core/services/toaster.service';
+import { UserSettingsService } from '../../../../services/user-settings.service';
 import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confirm/user-remove-account-confirm.component';
 
-@UntilDestroy()
 @Component({
   selector: 'app-user-remove-account',
   templateUrl: './user-remove-account.component.html',
@@ -16,24 +14,18 @@ import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confir
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRemoveAccountComponent implements OnDestroy {
-  private readonly _user$: Observable<User> = this.userService.getCurrentUser() as Observable<User>;
-
-  DELETE_ACCOUNT_REL = CurrentUserRelations.DELETE_ACCOUNT_REL;
-
   constructor(
+    public readonly userSettingsService: UserSettingsService,
+    private readonly headerService: CardViewHeaderService,
+    private readonly toasterService: ToasterService,
     private readonly dialogService: MatDialog,
-    public readonly userService: CurrentUserService,
-    private readonly headerService: HeaderService,
+    private readonly router: Router,
   ) {
     this.headerService.setHeader({ title: 'Remove Account' });
   }
 
   ngOnDestroy(): void {
     this.headerService.resetHeader();
-  }
-
-  get user$(): Observable<User> {
-    return this._user$;
   }
 
   openDialog(): void {
@@ -44,8 +36,15 @@ export class UserRemoveAccountComponent implements OnDestroy {
       .afterClosed()
       .pipe(
         first(),
-        switchMap(() => this.userService.deleteAccount(this.user$)),
+        switchMap(() => this.userSettingsService.deleteAccount()),
       )
-      .subscribe();
+      .subscribe({
+        next: () => {
+          this.toasterService.showToast({ title: 'Account and all associated data were removed.' });
+          this.router.navigate(['auth', 'signup']);
+        },
+        error: () =>
+          this.toasterService.showErrorToast({ title: 'An Error Occurred', message: 'Account was not removed.' }),
+      });
   }
 }

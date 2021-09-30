@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { FormErrorModule } from './components/form-error/form-error.component';
-import { NgLetModule } from './directives/ng-let.directive';
-import { IsMobileModule } from './pipes/is-mobile.pipe';
+import { FormErrorModule } from './modules/form-error/form-error.module';
+import { IsMobileModule } from './modules/is-mobile/is-mobile.module';
+import { NgLetModule } from './modules/ng-let/ng-let.module';
+import { TiledMenuModule } from './modules/tiled-menu/tiled-menu.module';
 
 @NgModule({
-  imports: [IsMobileModule, NgLetModule, FormErrorModule],
-  exports: [IsMobileModule, NgLetModule, FormErrorModule],
+  imports: [IsMobileModule, NgLetModule, FormErrorModule, TiledMenuModule],
+  exports: [IsMobileModule, NgLetModule, FormErrorModule, TiledMenuModule],
 })
 export class SharedModule {}

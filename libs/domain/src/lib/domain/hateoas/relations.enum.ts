@@ -16,6 +16,7 @@ export enum UserManagementRelations {
   USER_MODEL_LIST_REL = 'userModels',
   USER_CREATE_REL = 'create',
   USER_UPDATE_REL = 'update',
+  USER_DELETE_REL = 'delete',
 }
 
 export enum RoleManagementRelations {
@@ -42,4 +43,8 @@ export enum AuthRelations {
 export enum ActivationTokenRelations {
   REQUEST_ACTIVATION_TOKEN_REL = 'requestActivationToken',
   ACTIVATE_ACCOUNT_REL = 'activateAccount',
+}
+
+export enum ServiceLogsRelations {
+  SERVICE_LOGS_REL = 'service-logs',
 }

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { UserManagementDetailComponent } from './components/user-management-detail/user-management-detail.component';
-
 import { UserManagementDetailRoutingModule } from './user-management-detail-routing.module';
 
 @NgModule({

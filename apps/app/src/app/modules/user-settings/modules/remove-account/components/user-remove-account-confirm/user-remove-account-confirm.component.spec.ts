@@ -3,9 +3,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NgLetModule } from '../../../../../../shared/directives/ng-let.directive';
-import { stubCurrentUserServiceProvider } from '../../../../services/current-user.service.stub';
-
+import { NgLetModule } from '../../../../../../shared/modules/ng-let/ng-let.module';
+import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserRemoveAccountConfirmComponent } from './user-remove-account-confirm.component';
 
 describe('UserRemoveAccountConfirmComponent', () => {
@@ -16,7 +15,7 @@ describe('UserRemoveAccountConfirmComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule, NgLetModule],
       declarations: [UserRemoveAccountConfirmComponent],
-      providers: [stubCurrentUserServiceProvider],
+      providers: [stubUserSettingsServiceProvider],
     }).compileComponents();
   });
 

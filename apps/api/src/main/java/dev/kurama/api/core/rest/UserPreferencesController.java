@@ -35,6 +35,6 @@ public class UserPreferencesController {
   public ResponseEntity<UserPreferencesModel> update(
     @PathVariable("userPreferencesId") String userPreferencesId,
     @RequestBody UserPreferencesInput userPreferencesInput) {
-    return ResponseEntity.ok().body(userPreferencesFacade.update(userPreferencesId, userPreferencesInput));
+    return ResponseEntity.ok().body(userPreferencesFacade.updateById(userPreferencesId, userPreferencesInput));
   }
 }

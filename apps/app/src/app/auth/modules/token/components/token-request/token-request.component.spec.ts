@@ -6,9 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StubFormErrorComponent } from '../../../../../shared/components/form-error/form-error.component.stub';
+import { StubFormErrorComponent } from '../../../../../shared/modules/form-error/components/form-error.component.stub';
 import { stubActivationTokenServiceProvider } from '../../../../services/activation-token.service.stub';
-
 import { TokenRequestComponent } from './token-request.component';
 
 describe('TokenRequestComponent', () => {

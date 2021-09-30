@@ -8,6 +8,7 @@ application:
     - /api/auth/signup
     - /api/auth/token
     - /api/auth/activate
+    - /websocket/**
     - /explorer/**
     - /swagger-ui/**
     - /swagger-resources/**

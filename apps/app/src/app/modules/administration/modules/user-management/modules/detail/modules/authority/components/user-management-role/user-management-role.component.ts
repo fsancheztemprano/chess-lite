@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Role, User, UserManagementRelations } from '@app/domain';
+import { Role } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { noop, Observable, startWith } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
-import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
+import { Observable, startWith } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ToasterService } from '../../../../../../../../../../core/services/toaster.service';
+import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @UntilDestroy()
 @Component({
@@ -15,10 +16,6 @@ import { ToasterService } from '../../../../../../../../../../shared/services/to
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementRoleComponent implements OnInit {
-  @Input() user$: Observable<User> | undefined;
-
-  @Output() userChange = new EventEmitter<User>();
-
   roles: Observable<Role[]> = this.route.data.pipe(
     startWith({ roles: [] }),
     map((data) => data.roles),
@@ -26,26 +23,23 @@ export class UserManagementRoleComponent implements OnInit {
 
   public form = new FormGroup({ id: new FormControl('') });
 
-  constructor(private readonly route: ActivatedRoute, private readonly toasterService: ToasterService) {}
+  constructor(
+    public readonly userManagementDetailService: UserManagementDetailService,
+    private readonly route: ActivatedRoute,
+    private readonly toasterService: ToasterService,
+  ) {}
 
   ngOnInit(): void {
-    this.user$?.pipe(untilDestroyed(this)).subscribe((user) => this.form.patchValue(user?.role || {}));
+    this.userManagementDetailService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe((user) => this.form.patchValue(user?.role || {}));
   }
 
   onSubmit() {
-    this.user$
-      ?.pipe(
-        first(),
-        switchMap((user) =>
-          user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { roleId: this.form.value.id }),
-        ),
-      )
-      .subscribe({
-        next: (user) => {
-          this.userChange.emit(user);
-          this.toasterService.showToast({ message: 'Role updated successfully' });
-        },
-        error: () => noop,
-      });
+    this.userManagementDetailService.updateProfile({ roleId: this.form.value.id }).subscribe({
+      next: () => this.toasterService.showToast({ message: 'Role updated successfully' }),
+      error: () => this.toasterService.showToast({ message: 'An error has occurred' }),
+    });
   }
 }

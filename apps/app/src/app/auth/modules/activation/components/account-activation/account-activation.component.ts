@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
-import { HeaderService } from '../../../../../core/services/header.service';
-import { ToasterService } from '../../../../../shared/services/toaster.service';
+import { CardViewHeaderService } from '../../../../../core/modules/card-view/services/card-view-header.service';
+import { ToasterService } from '../../../../../core/services/toaster.service';
 import { matchingControlsValidators } from '../../../../../shared/utils/forms/validators/matching-controls.validator';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
 
@@ -29,7 +29,7 @@ export class AccountActivationComponent implements OnDestroy {
 
   constructor(
     public readonly activationTokenService: ActivationTokenService,
-    private readonly headerService: HeaderService,
+    private readonly headerService: CardViewHeaderService,
     private readonly cdr: ChangeDetectorRef,
     private readonly router: Router,
     private readonly route: ActivatedRoute,

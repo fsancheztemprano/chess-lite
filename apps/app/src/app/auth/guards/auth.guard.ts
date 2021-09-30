@@ -1,28 +1,23 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, CanLoad, Router, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { CanActivate, CanLoad, Router, UrlTree } from '@angular/router';
+import { TOKEN_KEY } from '@app/domain';
+import { isTokenExpired } from '../utils/auth.utils';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanLoad, CanActivateChild {
-  constructor(private readonly router: Router, private readonly authService: AuthService) {}
+export class AuthGuard implements CanActivate, CanLoad {
+  constructor(private readonly router: Router) {}
 
-  canActivate(): Observable<boolean | UrlTree> {
-    return this._canLoadAuthObservable();
+  canActivate(): boolean | UrlTree {
+    return this._guard();
   }
 
-  canActivateChild(): Observable<boolean | UrlTree> {
-    return this._canLoadAuthObservable();
+  canLoad(): boolean | UrlTree {
+    return this._guard();
   }
 
-  canLoad(): Observable<boolean | UrlTree> {
-    return this._canLoadAuthObservable();
-  }
-
-  private _canLoadAuthObservable() {
-    return this.authService.isLoggedIn().pipe(map((isLoggedIn) => !isLoggedIn || this.router.createUrlTree([''])));
+  private _guard(): boolean | UrlTree {
+    return isTokenExpired(localStorage.getItem(TOKEN_KEY)) ? true : this.router.createUrlTree(['']);
   }
 }

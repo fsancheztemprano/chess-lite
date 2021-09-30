@@ -82,8 +82,8 @@ public class UserFacade {
     userService.deleteUserByUsername(username);
   }
 
-  public void deleteById(String id) throws UserNotFoundException {
-    userService.deleteUserById(id);
+  public void deleteById(String userId) throws UserNotFoundException {
+    userService.deleteUserById(userId);
   }
 
   public UserModel changePassword(String username, ChangeUserPasswordInput changeUserPasswordInput) {
@@ -96,8 +96,8 @@ public class UserFacade {
   public UserModel uploadAvatar(String username, MultipartFile avatar) throws IOException {
     String sb = "data:image/png;base64,"
       + StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false));
-    return userModelAssembler.toModel(userMapper.userToUserModel(userService.uploadAvatar(username, sb)));
-
+    return userModelAssembler.toModel(
+      userMapper.userToUserModel(userService.uploadAvatar(username, sb)));
   }
 
   public void requestActivationToken(String id) throws UserNotFoundException, ActivationTokenRecentException {

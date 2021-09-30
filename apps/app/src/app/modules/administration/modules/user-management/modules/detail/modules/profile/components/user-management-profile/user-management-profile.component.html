@@ -41,7 +41,8 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="!form.valid || !user || !user.isAllowedTo('update')"
+        *ngLet="userManagementDetailService.canUpdateProfile() | async as canUpdateProfile"
+        [disabled]="!form.valid || !canUpdateProfile"
       >
         Save
       </button>

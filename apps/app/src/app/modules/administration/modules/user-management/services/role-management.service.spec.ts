@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { RoleManagementService } from './role-management.service';
 import { stubUserManagementServiceProvider } from './user-management.service.stub';
 

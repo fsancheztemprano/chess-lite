@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubCurrentUserServiceProvider } from '../services/current-user.service.stub';
+import { stubUserSettingsServiceProvider } from '../services/user-settings.service.stub';
 import { UserSettingsGuard } from './user-settings.guard';
 
 describe('UserSettingsGuard', () => {
@@ -7,7 +7,7 @@ describe('UserSettingsGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubCurrentUserServiceProvider],
+      providers: [stubUserSettingsServiceProvider],
     });
     guard = TestBed.inject(UserSettingsGuard);
   });

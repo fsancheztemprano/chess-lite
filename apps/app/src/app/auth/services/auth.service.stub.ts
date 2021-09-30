@@ -4,7 +4,8 @@ import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class StubAuthService implements Partial<AuthService> {
-  isLoggedIn = () => of(true);
+  getLoginTemplate = () => of(null);
+  getSignupTemplate = () => of(null);
 }
 
 export const stubAuthServiceProvider = {

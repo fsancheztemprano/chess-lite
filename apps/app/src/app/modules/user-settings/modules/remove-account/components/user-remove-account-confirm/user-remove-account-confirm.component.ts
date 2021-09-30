@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CurrentUserService } from '../../../../services/current-user.service';
+import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @Component({
   selector: 'app-user-remove-account-confirm',
@@ -8,5 +8,5 @@ import { CurrentUserService } from '../../../../services/current-user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRemoveAccountConfirmComponent {
-  constructor(public readonly userService: CurrentUserService) {}
+  constructor(public readonly userService: UserSettingsService) {}
 }

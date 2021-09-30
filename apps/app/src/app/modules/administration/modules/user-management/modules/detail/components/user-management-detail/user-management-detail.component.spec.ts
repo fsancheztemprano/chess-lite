@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { UserManagementDetailComponent } from './user-management-detail.component';
 
 describe('UserManagementDetailComponent', () => {

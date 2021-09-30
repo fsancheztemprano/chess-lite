@@ -8,8 +8,8 @@
       mat-stroked-button
       color="warn"
       (click)="openDialog()"
-      *ngLet="user$ | async as user"
-      [disabled]="!user || !user.isAllowedTo(DELETE_ACCOUNT_REL)"
+      *ngLet="this.userSettingsService.isAllowedToDeleteAccount() | async as canDeleteAccount"
+      [disabled]="!canDeleteAccount"
     >
       Delete this account
     </button>

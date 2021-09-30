@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ActivationTokenRelations, User } from '@app/domain';
-import { ToasterService } from '../../../../../../../../../../shared/services/toaster.service';
+import { ToasterService } from '../../../../../../../../../../core/services/toaster.service';
+import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @Component({
   selector: 'app-user-management-account-token',
@@ -10,16 +9,13 @@ import { ToasterService } from '../../../../../../../../../../shared/services/to
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAccountTokenComponent {
-  public user!: User;
-
-  constructor(private readonly route: ActivatedRoute, private readonly toasterService: ToasterService) {
-    this.route.parent?.parent?.data.subscribe((data) => {
-      this.user = data.user;
-    });
-  }
+  constructor(
+    public readonly userManagementDetailService: UserManagementDetailService,
+    readonly toasterService: ToasterService,
+  ) {}
 
   sendActivationToken() {
-    this.user.submitToTemplateOrThrow(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL).subscribe({
+    this.userManagementDetailService.sendActivationToken().subscribe({
       next: () => this.toasterService.showToast({ message: 'Activation token sent.' }),
       error: () => this.toasterService.showErrorToast({ message: 'Error requesting activation' }),
     });

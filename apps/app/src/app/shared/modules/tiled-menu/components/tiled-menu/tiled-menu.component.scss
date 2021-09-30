@@ -1,0 +1,17 @@
+:host {
+  width: 100%;
+
+  div.tile-menu-content {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    row-gap: 24px;
+    column-gap: 24px;
+
+    &.isMobile {
+      flex-flow: column;
+      row-gap: 6px;
+      column-gap: 0;
+    }
+  }
+}

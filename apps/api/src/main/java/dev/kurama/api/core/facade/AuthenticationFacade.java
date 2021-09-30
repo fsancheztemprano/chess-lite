@@ -1,5 +1,6 @@
 package dev.kurama.api.core.facade;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
@@ -74,7 +75,8 @@ public class AuthenticationFacade {
   private AuthenticatedUserExcerpt authenticateUser(User user) {
     UserPrincipal userPrincipal = new UserPrincipal(user);
     var token = jwtTokenProvider.generateJWTToken(userPrincipal);
-    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(token, null));
+    DecodedJWT decodedToken = jwtTokenProvider.getDecodedJWT(token);
+    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(decodedToken, null));
 
     return AuthenticatedUserExcerpt.builder()
       .userModel(userModelAssembler.toModel(userMapper.userToUserModel(user)))
@@ -92,4 +94,5 @@ public class AuthenticationFacade {
   private void authenticate(String username, String password) {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
   }
+
 }

@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserManagementTableComponent } from '../user-management-table/user-management-table.component';
+import { stubCoreServiceProvider } from '../../../../../../../../core/services/core.service.stub';
+import { StubTiledMenuModule } from '../../../../../../../../shared/modules/tiled-menu/components/tiled-menu/tiled-menu.component.stub';
+import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
 import { UserManagementHomeComponent } from './user-management-home.component';
-
-@Component({ selector: 'app-user-management-table', template: '' })
-class StubUserManagementTableComponent implements Partial<UserManagementTableComponent> {}
 
 describe('UserManagementHomeComponent', () => {
   let component: UserManagementHomeComponent;
@@ -12,7 +10,9 @@ describe('UserManagementHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserManagementHomeComponent, StubUserManagementTableComponent],
+      imports: [StubTiledMenuModule],
+      declarations: [UserManagementHomeComponent],
+      providers: [stubCoreServiceProvider, stubUserManagementServiceProvider],
     }).compileComponents();
   });
 

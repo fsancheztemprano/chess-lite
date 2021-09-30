@@ -36,25 +36,25 @@ export class ServiceLogsComponent implements OnDestroy {
   }
 
   private setHeader() {
-    this.coreService.setHeader({
+    this.coreService.setCardViewHeader({
       title: 'Service Logs',
       showContextMenu: true,
-      options: [
-        {
-          icon: 'refresh',
-          label: 'Refresh',
-          onClick: () => this.refreshServiceLogs(),
-        },
-        {
-          icon: 'delete',
-          label: 'Delete',
-          onClick: () => this.deleteServiceLogs(),
-          disabled: this.serviceLogs.pipe(
-            map((serviceLogs) => !serviceLogs.isAllowedTo(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
-          ),
-        },
-      ],
     });
+    this.coreService.setContextMenuOptions([
+      {
+        icon: 'refresh',
+        label: 'Refresh',
+        onClick: () => this.refreshServiceLogs(),
+      },
+      {
+        icon: 'delete',
+        label: 'Delete',
+        onClick: () => this.deleteServiceLogs(),
+        disabled: this.serviceLogs.pipe(
+          map((serviceLogs) => !serviceLogs.isAllowedTo(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
+        ),
+      },
+    ]);
   }
 
   private refreshServiceLogs() {

@@ -10,5 +10,12 @@
       <app-form-error [control]="form.controls.id" name="id"></app-form-error>
     </mat-error>
   </mat-form-field>
-  <button mat-raised-button color="primary" [disabled]="!user$ || !(user$ | async)?.isAllowedTo('update')">Save</button>
+  <button
+    mat-raised-button
+    color="primary"
+    *ngLet="userManagementDetailService.canUpdateProfile() | async as canUpdateProfile"
+    [disabled]="!form.valid || !canUpdateProfile"
+  >
+    Save
+  </button>
 </form>

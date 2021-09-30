@@ -123,6 +123,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "outputs": ["{options.outputPath}"],
           "options": {
+            "allowedCommonJsDependencies": ["sockjs-client"],
             "outputPath": "dist/apps/app",
             "index": "apps/app/src/index.html",
             "main": "apps/app/src/main.ts",
@@ -138,8 +139,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "595kb",
-                  "maximumError": "600kb"
+                  "maximumWarning": "680kb",
+                  "maximumError": "700kb"
                 },
                 {
                   "type": "anyComponentStyle",

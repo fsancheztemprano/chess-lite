@@ -1,51 +1,63 @@
 import { Injectable } from '@angular/core';
-import { ContextMenuService } from './context-menu.service';
-import { MenuOption } from './context-menu.service.model';
-import { HeaderService } from './header.service';
-import { HeaderConfig } from './header.service.model';
-import { ToolbarService } from './toolbar.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CardViewHeaderService } from '../modules/card-view/services/card-view-header.service';
+import { HeaderConfig } from '../modules/card-view/services/card-view-header.service.model';
+import { ContextMenuService } from '../modules/context-menu/services/context-menu.service';
+import { MenuOption } from '../modules/context-menu/services/context-menu.service.model';
+import { ToolbarService } from '../modules/toolbar/services/toolbar.service';
+
+export type CoreComponentStyle = 'raw' | 'card';
+export const DEFAULT_STYLE: CoreComponentStyle = 'card';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoreService {
+  private _coreStyle: BehaviorSubject<CoreComponentStyle> = new BehaviorSubject<CoreComponentStyle>('card');
+
   constructor(
     private readonly _toolbarService: ToolbarService,
-    private readonly _headerService: HeaderService,
+    private readonly _cardViewHeaderService: CardViewHeaderService,
     private readonly _contextMenuService: ContextMenuService,
   ) {}
+
+  getCoreStyle(): Observable<CoreComponentStyle> {
+    return this._coreStyle.asObservable();
+  }
+
+  setCoreStyle(value: CoreComponentStyle) {
+    this._coreStyle.next(value);
+  }
+
+  setShowContextMenu(show?: boolean): void {
+    this._toolbarService.setShowContextMenu(show);
+    this._cardViewHeaderService.setShowContextMenu(show);
+  }
 
   get toolbarService(): ToolbarService {
     return this._toolbarService;
   }
 
-  get headerService(): HeaderService {
-    return this._headerService;
+  get cardViewHeaderService(): CardViewHeaderService {
+    return this._cardViewHeaderService;
   }
 
   get contextMenuService(): ContextMenuService {
     return this._contextMenuService;
   }
 
-  setShowContextMenu(show?: boolean): void {
-    this._toolbarService.setShowContextMenu(show);
-    this._headerService.setShowContextMenu(show);
-  }
-
-  setHeader(header?: HeaderConfig): void {
-    this._headerService.setHeader(header);
-    if (header?.options?.length) {
-      this._contextMenuService.setOptions(header?.options);
-    }
+  setCardViewHeader(header?: HeaderConfig): void {
+    this.cardViewHeaderService.setHeader(header);
   }
 
   setContextMenuOptions(options?: MenuOption[]): void {
-    this._contextMenuService.setOptions(options);
+    this.contextMenuService.setOptions(options);
   }
 
   reset(): void {
-    this._headerService.resetHeader();
-    this._contextMenuService.resetOptions();
-    this._toolbarService.resetToolbar();
+    this.cardViewHeaderService.resetHeader();
+    this.contextMenuService.resetOptions();
+    this.toolbarService.resetToolbar();
+    this.setCoreStyle(DEFAULT_STYLE);
   }
 }

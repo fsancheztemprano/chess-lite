@@ -4,9 +4,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormErrorModule } from '../../../../../../../../../../shared/components/form-error/form-error.component';
-import { stubToasterServiceProvider } from '../../../../../../../../../../shared/services/toaster.service.stub';
-
+import { stubToasterServiceProvider } from '../../../../../../../../../../core/services/toaster.service.stub';
+import { FormErrorModule } from '../../../../../../../../../../shared/modules/form-error/form-error.module';
+import { NgLetModule } from '../../../../../../../../../../shared/modules/ng-let/ng-let.module';
+import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementRoleComponent } from './user-management-role.component';
 
 describe('UserManagementRoleComponent', () => {
@@ -22,9 +23,10 @@ describe('UserManagementRoleComponent', () => {
         FormErrorModule,
         ReactiveFormsModule,
         NoopAnimationsModule,
+        NgLetModule,
       ],
       declarations: [UserManagementRoleComponent],
-      providers: [stubToasterServiceProvider],
+      providers: [stubToasterServiceProvider, stubUserManagementDetailServiceProvider],
     }).compileComponents();
   });
 
