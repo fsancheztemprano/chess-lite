@@ -120,7 +120,7 @@ public class UserService implements UserDetailsService {
     userChangedEventEmitter.emitUserDeletedEvent(id);
   }
 
-  public String signup(SignupInput signupInput)
+  public void signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(signupInput.getUsername(), signupInput.getEmail());
     var role = roleService.getDefaultRole().orElseThrow();
@@ -148,9 +148,8 @@ public class UserService implements UserDetailsService {
       ActivationToken newToken = activationTokenService.createActivationToken(user);
       sendActivationTokenEmail(user, newToken.getId());
     } catch (ActivationTokenRecentException ignored) {
-      log.atFine().log("This should not be seen...");
+      log.atFine().log("This should not be seen... user:" + user.getId());
     }
-    return user.getId();
   }
 
   public User createUser(UserInput userInput)

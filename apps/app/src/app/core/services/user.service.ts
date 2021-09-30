@@ -85,13 +85,8 @@ export class UserService {
   private _subscribeToUserChanges(userId: string) {
     this._subscription.add(
       this.messageService
-        .connected$()
-        .pipe(
-          switchMap(() =>
-            this.messageService.subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(userId)),
-          ),
-          switchMap(() => this.fetchCurrentUser()),
-        )
+        .subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(userId))
+        .pipe(switchMap(() => this.fetchCurrentUser()))
         .subscribe((user: User) => this.setUser(user)),
     );
   }
@@ -99,15 +94,10 @@ export class UserService {
   private _subscribeToUserPreferencesChanges(user: User) {
     this._subscription.add(
       this.messageService
-        .connected$()
-        .pipe(
-          switchMap(() =>
-            this.messageService.subscribeToMessages<UserPreferencesChangedMessage>(
-              new UserPreferencesChangedMessageDestination(user.userPreferencesId || ''),
-            ),
-          ),
-          switchMap(() => this.fetchUserPreferences(user)),
+        .subscribeToMessages<UserPreferencesChangedMessage>(
+          new UserPreferencesChangedMessageDestination(user.userPreferencesId || ''),
         )
+        .pipe(switchMap(() => this.fetchUserPreferences(user)))
         .subscribe((userPreferences: UserPreferences) => this.setUserPreferences(userPreferences)),
     );
   }

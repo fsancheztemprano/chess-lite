@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AdministrationRelations } from '@app/domain';
+import { AdministrationRelations, ServiceLogsRelations, UserManagementRelations } from '@app/domain';
 import { HalFormService, Resource } from '@hal-form-client';
 import { Observable, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -22,5 +22,13 @@ export class AdministrationService extends HalFormService {
           : throwError(() => new Error('Administration Initialization Error'));
       }),
     );
+  }
+
+  hasUserManagementEmbedded(): Observable<boolean> {
+    return this.hasEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL);
+  }
+
+  hasServiceLogsLink(): Observable<boolean> {
+    return this.hasLink(ServiceLogsRelations.SERVICE_LOGS_REL);
   }
 }

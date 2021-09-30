@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ServiceLogsRelations, UserManagementRelations } from '@app/domain';
-import { Observable } from 'rxjs';
 import { AdministrationService } from '../../../../../modules/administration/services/administration.service';
 
 @Component({
@@ -14,12 +12,4 @@ export class AdministrationSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
 
   constructor(public readonly router: Router, public readonly administrationService: AdministrationService) {}
-
-  hasUserManagementEmbedded(): Observable<boolean> {
-    return this.administrationService.hasEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL);
-  }
-
-  hasServiceLogsLink(): Observable<boolean> {
-    return this.administrationService.hasLink(ServiceLogsRelations.SERVICE_LOGS_REL);
-  }
 }

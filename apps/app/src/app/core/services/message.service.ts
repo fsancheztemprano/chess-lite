@@ -5,7 +5,6 @@ import { IMessage } from '@stomp/stompjs';
 import { filter, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as SockJS from 'sockjs-client';
-import { environment } from '../../../environments/environment';
 import { filterNulls } from '../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 
 enum RxStompState {
@@ -45,9 +44,7 @@ export class MessageService {
     // It can be quite verbose, not recommended in production
     // Skip this key to stop logging to console
     debug: (msg: string): void => {
-      if (!environment.production) {
-        console.log(new Date(), msg);
-      }
+      console.log(new Date(), msg);
     },
   };
 

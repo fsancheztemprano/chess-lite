@@ -5,7 +5,6 @@ import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
-import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
@@ -49,13 +48,9 @@ public class AuthenticationFacade {
   @NonNull
   private final JWTTokenProvider jwtTokenProvider;
 
-  @NonNull
-  private final UserChangedEventEmitter userChangedEventEmitter;
-
   public void signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException {
-    String userId = userService.signup(signupInput);
-    userChangedEventEmitter.emitUserCreatedEvent(userId);
+    userService.signup(signupInput);
   }
 
   public AuthenticatedUserExcerpt login(LoginInput loginInput) throws UserLockedException {
