@@ -148,6 +148,7 @@ public class UserService implements UserDetailsService {
       ActivationToken newToken = activationTokenService.createActivationToken(user);
       sendActivationTokenEmail(user, newToken.getId());
     } catch (ActivationTokenRecentException ignored) {
+      log.atFine().log("This should not be seen...");
     }
     return user.getId();
   }
