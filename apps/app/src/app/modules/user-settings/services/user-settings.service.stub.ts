@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '@app/domain';
+import { User, UserPreferences } from '@app/domain';
 import { of } from 'rxjs';
 import { UserSettingsService } from './user-settings.service';
 
@@ -9,10 +9,12 @@ export class StubUserSettingsService implements Partial<UserSettingsService> {
   isAllowedToChangePassword = () => of(true);
   isAllowedToDeleteAccount = () => of(true);
   isAllowedToUploadAvatar = () => of(true);
+  isAllowedToUpdateUserPreferences = () => of(true);
   isAllowedTo = () => of(true);
   hasLinkToUserPreferences = () => of(true);
   getCurrentUsername = () => of('currentUsername');
   getCurrentUser = () => of(new User({}));
+  getCurrentUserPreferences = () => of(new UserPreferences({}));
 }
 
 export const stubUserSettingsServiceProvider = {

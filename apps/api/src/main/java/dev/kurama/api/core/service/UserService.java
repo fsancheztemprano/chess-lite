@@ -10,6 +10,7 @@ import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.EmailTemplate;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
+import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
@@ -73,6 +74,9 @@ public class UserService implements UserDetailsService {
   @NonNull
   private final EmailService emailService;
 
+  @NonNull
+  private final UserChangedEventEmitter userChangedEventEmitter;
+
   @Value("${application.host_url}")
   private String host;
 
@@ -103,16 +107,17 @@ public class UserService implements UserDetailsService {
     return userRepository.findAll(pageable);
   }
 
-  public String deleteUserByUsername(String username) {
+  public void deleteUserByUsername(String username) {
     var user = findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     String id = user.getId();
     userRepository.delete(user);
-    return id;
+    userChangedEventEmitter.emitUserDeletedEvent(id);
   }
 
   public void deleteUserById(String id) throws UserNotFoundException {
     var user = userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
     userRepository.deleteById(user.getTid());
+    userChangedEventEmitter.emitUserDeletedEvent(id);
   }
 
   public String signup(SignupInput signupInput)
@@ -135,6 +140,7 @@ public class UserService implements UserDetailsService {
       .authorities(Sets.newHashSet(role.getAuthorities()))
       .build();
     user = userRepository.save(user);
+    userChangedEventEmitter.emitUserCreatedEvent(user.getId());
 
     userPreferencesService.createUserPreferences(user);
 
@@ -167,6 +173,7 @@ public class UserService implements UserDetailsService {
       .authorities(Sets.newHashSet(role.getAuthorities()))
       .build();
     user = userRepository.save(user);
+    userChangedEventEmitter.emitUserCreatedEvent(user.getId());
 
     userPreferencesService.createUserPreferences(user);
     return user;
@@ -221,7 +228,9 @@ public class UserService implements UserDetailsService {
       Set<Authority> authorities = authorityService.findAllById(userInput.getAuthorityIds());
       currentUser.getAuthorities().addAll(authorities);
     }
-    return userRepository.save(currentUser);
+    User user = userRepository.save(currentUser);
+    userChangedEventEmitter.emitUserUpdatedEvent(user.getId());
+    return user;
   }
 
   public User updateProfile(String username, UpdateUserProfileInput updateProfileInput) {
@@ -229,7 +238,9 @@ public class UserService implements UserDetailsService {
     currentUser.setFirstname(updateProfileInput.getFirstname());
     currentUser.setLastname(updateProfileInput.getLastname());
     currentUser.setProfileImageUrl(updateProfileInput.getProfileImageUrl());
-    return userRepository.save(currentUser);
+    User user = userRepository.save(currentUser);
+    userChangedEventEmitter.emitUserUpdatedEvent(user.getId());
+    return user;
   }
 
   public User updatePassword(String username, String newPassword) {
@@ -241,7 +252,9 @@ public class UserService implements UserDetailsService {
   public User uploadAvatar(String username, String avatar) {
     var currentUser = findUserByUsername(username).orElseThrow();
     currentUser.setProfileImageUrl(avatar);
-    return userRepository.save(currentUser);
+    User user = userRepository.save(currentUser);
+    userChangedEventEmitter.emitUserUpdatedEvent(user.getId());
+    return user;
   }
 
   public void requestActivationTokenById(String id) throws UserNotFoundException, ActivationTokenRecentException {

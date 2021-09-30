@@ -13,6 +13,7 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
     messages
       .simpSubscribeDestMatchers("/ami/user").hasAuthority(UserAuthority.USER_READ)
       .simpSubscribeDestMatchers("/ami/user/**").hasAuthority(UserAuthority.PROFILE_READ)
+      .simpSubscribeDestMatchers("/ami/user-preferences/**").hasAuthority(UserAuthority.PROFILE_READ)
       .anyMessage().authenticated();
   }
 

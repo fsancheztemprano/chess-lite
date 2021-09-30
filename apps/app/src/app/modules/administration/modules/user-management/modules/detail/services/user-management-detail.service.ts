@@ -90,7 +90,7 @@ export class UserManagementDetailService {
     );
   }
 
-  getUserPreferences(): Observable<UserPreferences> {
+  fetchUserPreferences(): Observable<UserPreferences> {
     return this.getUser().pipe(
       first(),
       filterNulls(),

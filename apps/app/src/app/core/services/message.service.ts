@@ -81,10 +81,6 @@ export class MessageService {
     from(this.rxStompService.deactivate()).subscribe(() => this._removeAuthenticationHeaders());
   }
 
-  public state$(): Observable<RxStompState> {
-    return this.rxStompService.connectionState$;
-  }
-
   public connected$(): Observable<RxStompState> {
     return this.rxStompService.connected$;
   }

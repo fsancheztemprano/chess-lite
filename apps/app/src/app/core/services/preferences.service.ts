@@ -11,13 +11,15 @@ export class PreferencesService {
   private _contentLanguage: Subject<string> = new Subject<string>();
   private defaultPreferences: UserPreferences = new Resource({ contentLanguage: 'en', darkMode: false });
 
-  setPreferences(userPreferences: UserPreferences): void {
-    if (typeof userPreferences.darkMode === 'boolean') {
-      this._darkMode.next(userPreferences.darkMode);
-    }
-    if (userPreferences.contentLanguage?.length === 2) {
-      this._contentLanguage.next(userPreferences.contentLanguage);
-    }
+  setPreferences(userPreferences?: UserPreferences | null): void {
+    if (userPreferences) {
+      if (typeof userPreferences.darkMode === 'boolean') {
+        this._darkMode.next(userPreferences.darkMode);
+      }
+      if (userPreferences.contentLanguage?.length === 2) {
+        this._contentLanguage.next(userPreferences.contentLanguage);
+      }
+    } else this.clearPreferences();
   }
 
   clearPreferences() {

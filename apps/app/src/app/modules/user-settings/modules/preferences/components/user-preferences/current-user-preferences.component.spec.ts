@@ -6,11 +6,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SubscribeModule } from '@ngneat/subscribe';
 import { stubThemeServiceProvider } from '../../../../../../core/services/theme.service.stub';
 import { stubToasterServiceProvider } from '../../../../../../core/services/toaster.service.stub';
 import { stubTranslationServiceProvider } from '../../../../../../core/services/translation.service.stub';
 import { FormErrorModule } from '../../../../../../shared/modules/form-error/form-error.module';
-import { stubCurrentUserPreferencesServiceProvider } from '../../services/current-user-preferences.service.stub';
+import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { CurrentUserPreferencesComponent } from './current-user-preferences.component';
 
 describe('CurrentUserPreferencesComponent', () => {
@@ -28,13 +29,14 @@ describe('CurrentUserPreferencesComponent', () => {
         MatFormFieldModule,
         MatSelectModule,
         FormErrorModule,
+        SubscribeModule,
       ],
       declarations: [CurrentUserPreferencesComponent],
       providers: [
         stubThemeServiceProvider,
         stubToasterServiceProvider,
         stubTranslationServiceProvider,
-        stubCurrentUserPreferencesServiceProvider,
+        stubUserSettingsServiceProvider,
       ],
     }).compileComponents();
   });

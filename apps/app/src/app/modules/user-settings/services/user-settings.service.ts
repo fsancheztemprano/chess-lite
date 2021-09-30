@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { CurrentUserRelations, User, UserChangePasswordInput, UserUpdateProfileInput } from '@app/domain';
-import { HalFormService, Link, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
-import { filter, Observable, switchMap } from 'rxjs';
+import {
+  CurrentUserRelations,
+  User,
+  UserChangePasswordInput,
+  UserPreferences,
+  UserUpdateProfileInput,
+} from '@app/domain';
+import { HalFormService, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
+import { Observable, switchMap } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { SessionService } from '../../../core/services/session.service';
 import { UserService } from '../../../core/services/user.service';
 import { filterNulls } from '../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
-import { isNonNull } from '../../../shared/utils/misc/is-non-null';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +28,11 @@ export class UserSettingsService {
   }
 
   public getCurrentUser(): Observable<User | null> {
-    return this.userService.getCurrentUser();
+    return this.userService.getUser();
+  }
+
+  public getCurrentUserPreferences(): Observable<UserPreferences | null> {
+    return this.userService.getUserPreferences();
   }
 
   public isAllowedToUpdateProfile(): Observable<boolean> {
@@ -37,7 +46,7 @@ export class UserSettingsService {
       first(),
       filterNulls(),
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, updateUserProfileInput),
-      tap((user) => this.userService.setCurrentUser(user)),
+      tap((user) => this.userService.setUser(user)),
     );
   }
 
@@ -51,7 +60,7 @@ export class UserSettingsService {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      switchMap((user) => user.submitToTemplateOrThrow(CurrentUserRelations.DELETE_ACCOUNT_REL)),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.DELETE_ACCOUNT_REL),
       switchMap(() => this.sessionService.clearSession()),
     );
   }
@@ -66,9 +75,7 @@ export class UserSettingsService {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      switchMap((user) =>
-        user.submitToTemplateOrThrow(CurrentUserRelations.CHANGE_PASSWORD_REL, userChangePasswordInput),
-      ),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.CHANGE_PASSWORD_REL, userChangePasswordInput),
     );
   }
 
@@ -84,9 +91,9 @@ export class UserSettingsService {
 
     return this.getCurrentUser().pipe(
       first(),
-      filter(isNonNull),
-      switchMap((user) => user.submitToTemplateOrThrow(CurrentUserRelations.UPLOAD_AVATAR_REL, formData)),
-      tap((user) => this.userService.setCurrentUser(user)),
+      filterNulls(),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, formData),
+      tap((user) => this.userService.setUser(user)),
     );
   }
 
@@ -96,10 +103,20 @@ export class UserSettingsService {
     );
   }
 
-  public getLinkToUserPreferences(): Observable<Link | null> {
-    return this.getCurrentUser().pipe(
+  public updateUserPreferences(changes: UserPreferences): Observable<UserPreferences> {
+    return this.getCurrentUserPreferences().pipe(
       first(),
-      map((user) => user?.getLink(CurrentUserRelations.USER_PREFERENCES_REL) || null),
+      filterNulls(),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PREFERENCES_REL, changes),
+    );
+  }
+
+  isAllowedToUpdateUserPreferences(): Observable<boolean> {
+    return this.getCurrentUserPreferences().pipe(
+      map(
+        (userPreferences: UserPreferences | null) =>
+          !!userPreferences?.isAllowedTo(CurrentUserRelations.UPDATE_PREFERENCES_REL),
+      ),
     );
   }
 }

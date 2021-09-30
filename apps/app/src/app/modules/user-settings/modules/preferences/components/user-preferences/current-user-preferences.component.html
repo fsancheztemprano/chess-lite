@@ -20,5 +20,13 @@
       </mat-error>
     </mat-form-field>
   </div>
-  <button mat-raised-button color="primary" type="submit">Save and Apply</button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    *subscribe="userSettingsService.isAllowedToUpdateUserPreferences(); let canUpdateUserPreferences"
+    [disabled]="!canUpdateUserPreferences"
+  >
+    Save and Apply
+  </button>
 </form>

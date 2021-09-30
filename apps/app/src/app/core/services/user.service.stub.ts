@@ -7,7 +7,7 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class StubUserService implements Partial<UserService> {
-  getCurrentUser = () => of({} as User);
+  getUser = () => of({} as User);
 }
 
 export const stubUserServiceProvider = {

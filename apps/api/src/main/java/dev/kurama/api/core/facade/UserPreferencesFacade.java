@@ -35,7 +35,7 @@ public class UserPreferencesFacade {
         userPreferencesService.findUserPreferencesByUsername(username).orElseThrow()));
   }
 
-  public UserPreferencesModel update(String userPreferencesId, UserPreferencesInput userPreferencesInput) {
+  public UserPreferencesModel updateById(String userPreferencesId, UserPreferencesInput userPreferencesInput) {
     return userPreferencesModelAssembler.toModel(
       userPreferencesMapper.userPreferencesToUserPreferencesModel(
         userPreferencesService.updateUserPreferences(userPreferencesId, userPreferencesInput)));
