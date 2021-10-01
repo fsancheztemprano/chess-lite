@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Hi {{ data.title }}</h1>
+<div mat-dialog-content>
+  <p>{{ data.caption }}</p>
+</div>
+<div mat-dialog-actions>
+  <mat-icon *ngIf="data?.buttonIcon">{{ data.buttonIcon }}</mat-icon>
+  <button mat-button mat-dialog-close cdkFocusInitial>{{ data.buttonText || 'Close' }}</button>
+</div>
