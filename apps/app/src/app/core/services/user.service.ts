@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
   CurrentUserRelations,
+  TOKEN_KEY,
   User,
   UserChangedMessage,
+  UserChangedMessageAction,
   UserChangedMessageDestination,
   UserPreferences,
   UserPreferencesChangedMessage,
   UserPreferencesChangedMessageDestination,
 } from '@app/domain';
 import { HalFormService } from '@hal-form-client';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, filter, Observable, Subscription } from 'rxjs';
+import { first, map, switchMap, tap } from 'rxjs/operators';
 import { MessageService } from './message.service';
 import { PreferencesService } from './preferences.service';
 
@@ -79,15 +81,26 @@ export class UserService {
     this._subscription = new Subscription();
     this.setUser(null);
     this.setUserPreferences(null);
-    this.preferencesService.clearPreferences();
   }
 
   private _subscribeToUserChanges(userId: string) {
     this._subscription.add(
       this.messageService
         .subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(userId))
-        .pipe(switchMap(() => this.fetchCurrentUser()))
-        .subscribe((user: User) => this.setUser(user)),
+        .pipe(
+          filter((message: UserChangedMessage) => message.action !== UserChangedMessageAction.CREATED),
+          switchMap((message: UserChangedMessage) => {
+            if (message.action === UserChangedMessageAction.DELETED) {
+              this.setUser(null);
+              this.setUserPreferences(null);
+              this.messageService.disconnect();
+              localStorage.removeItem(TOKEN_KEY);
+              return this.halFormService.initialize().pipe(tap(() => this.clearUser()));
+            }
+            return this.fetchCurrentUser().pipe(tap((user: User) => this.setUser(user)));
+          }),
+        )
+        .subscribe(),
     );
   }
 
