@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientTestingModule } from '@hal-form-client/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { AppInitializationService } from './app-initialization.service';
 import { stubSessionServiceProvider } from './session.service.stub';
 
@@ -9,7 +8,7 @@ describe('AppInitializationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HalFormClientTestingModule, TranslateModule.forRoot()],
+      imports: [HalFormClientTestingModule],
       providers: [stubSessionServiceProvider],
     });
     service = TestBed.inject(AppInitializationService);

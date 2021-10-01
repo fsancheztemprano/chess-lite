@@ -40,7 +40,9 @@
     "docker:dev:up": "docker compose up -d",
     "docker:dev:stop": "docker compose stop",
     "docker:dev:down": "docker compose down -v",
-    "validate": "npm run lint && nx format:check && npm run test && npm run build"
+    "validate": "npm run lint && nx format:check && npm run test && npm run build",
+    "i18n:extract": "transloco-keys-manager extract",
+    "i18n:find": "transloco-keys-manager find"
   },
   "private": true,
   "dependencies": {
@@ -55,9 +57,8 @@
     "@angular/platform-browser-dynamic": "12.2.7",
     "@angular/router": "12.2.7",
     "@ngneat/subscribe": "2.1.1",
+    "@ngneat/transloco": "2.23.3",
     "@ngneat/until-destroy": "8.1.4",
-    "@ngx-translate/core": "13.0.0",
-    "@ngx-translate/http-loader": "6.0.0",
     "@nrwl/angular": "12.9.0",
     "@stomp/ng2-stompjs": "8.0.0",
     "angular-animations": "0.11.0",
@@ -79,6 +80,7 @@
     "@angular/cli": "12.2.7",
     "@angular/compiler-cli": "12.2.7",
     "@angular/language-service": "12.2.7",
+    "@ngneat/transloco-keys-manager": "^3.0.1",
     "@nrwl/cli": "12.9.0",
     "@nrwl/cypress": "12.9.0",
     "@nrwl/devkit": "12.9.0",
