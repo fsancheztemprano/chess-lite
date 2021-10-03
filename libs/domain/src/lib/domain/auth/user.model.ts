@@ -1,5 +1,6 @@
 import { IResource, Resource } from '@hal-form-client';
 import { Page } from '../hateoas/pageable.model';
+import { Authority } from './authority.model';
 import { Role } from './role.model';
 
 export class User extends Resource implements IResource {
@@ -9,11 +10,11 @@ export class User extends Resource implements IResource {
   lastname?: string;
   username?: string;
   profileImageUrl?: string;
-  userPreferencesId?: string;
+  userPreferences?: UserPreferences;
   lastLoginDateDisplay?: Date;
   joinDate?: Date;
   role?: Role;
-  authorities?: string[];
+  authorities?: Authority[];
   active?: boolean;
   locked?: boolean;
   expired?: boolean;

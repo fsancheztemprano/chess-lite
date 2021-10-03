@@ -26,12 +26,6 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Profile Image" formControlName="profileImageUrl" />
-        <mat-error>
-          <app-form-error [control]="form.controls.profileImageUrl" name="profileImageUrl"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
         <mat-label>Last Login</mat-label>
         <input matInput formControlName="lastLoginDateDisplay" [matDatepicker]="lastLoginDatePicker" />
         <mat-datepicker-toggle matSuffix [for]="lastLoginDatePicker"></mat-datepicker-toggle>

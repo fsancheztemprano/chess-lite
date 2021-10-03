@@ -1,7 +1,9 @@
-package dev.kurama.api.core.hateoas.assembler;
+package dev.kurama.api.core.hateoas.processor;
 
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_DELETE;
+import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAllAuthorities;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -10,15 +12,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import dev.kurama.api.core.hateoas.model.ServiceLogsModel;
 import dev.kurama.api.core.rest.ServiceLogsController;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class ServiceLogsModelAssembler extends DomainModelAssembler<ServiceLogsModel> {
+public class ServiceLogsModelProcessor extends DomainModelProcessor<ServiceLogsModel> {
 
   @Override
   protected Class<ServiceLogsController> getClazz() {
@@ -26,11 +26,10 @@ public class ServiceLogsModelAssembler extends DomainModelAssembler<ServiceLogsM
   }
 
   @Override
-  public @NonNull
-  ServiceLogsModel toModel(@NonNull ServiceLogsModel entity) {
+  public @NonNull ServiceLogsModel process(@NonNull ServiceLogsModel entity) {
     return entity
-      .add(getModelSelfLink(""))
-      .mapLinkIf(hasAuthority(SERVICE_LOGS_DELETE),
+      .addIf(hasAuthority(SERVICE_LOGS_READ), () -> getModelSelfLink(""))
+      .mapLinkIf(hasAllAuthorities(SERVICE_LOGS_READ, SERVICE_LOGS_DELETE),
         LinkRelation.of(SELF),
         link -> link.andAffordance(getDeleteAffordance()))
       ;
@@ -41,8 +40,7 @@ public class ServiceLogsModelAssembler extends DomainModelAssembler<ServiceLogsM
     return linkTo(methodOn(getClazz()).getServiceLogs());
   }
 
-  private @NonNull
-  Affordance getDeleteAffordance() {
+  private @NonNull Affordance getDeleteAffordance() {
     return afford(methodOn(getClazz()).deleteServiceLogs());
   }
 }

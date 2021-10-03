@@ -1,4 +1,4 @@
-package dev.kurama.api.core.hateoas.assembler;
+package dev.kurama.api.core.hateoas.processor;
 
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
@@ -21,7 +21,6 @@ import dev.kurama.api.core.rest.UserPreferencesController;
 import dev.kurama.api.core.rest.UserProfileController;
 import dev.kurama.api.core.utility.AuthorityUtils;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.Link;
@@ -31,8 +30,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class UserPreferencesModelAssembler extends DomainModelAssembler<UserPreferencesModel> {
+public class UserPreferencesModelProcessor extends DomainModelProcessor<UserPreferencesModel> {
 
   @Override
   protected Class<UserPreferencesController> getClazz() {
@@ -40,8 +38,7 @@ public class UserPreferencesModelAssembler extends DomainModelAssembler<UserPref
   }
 
   @Override
-  public @NonNull
-  UserPreferencesModel toModel(@NonNull UserPreferencesModel userPreferencesModel) {
+  public @NonNull UserPreferencesModel process(UserPreferencesModel userPreferencesModel) {
     boolean isCurrentUser = AuthorityUtils.isCurrentUsername(userPreferencesModel.getUser().getUsername());
     return userPreferencesModel
       .add(getModelSelfLink(userPreferencesModel.getId()))
@@ -63,6 +60,11 @@ public class UserPreferencesModelAssembler extends DomainModelAssembler<UserPref
       ;
   }
 
+  @Override
+  public WebMvcLinkBuilder getSelfLink(String id) {
+    return linkTo(methodOn(getClazz()).get(id));
+  }
+
   private @NonNull
   Link getUserLink(String userId) {
     return linkTo(methodOn(UserController.class).get(userId)).withRel(USER_REL);
@@ -71,11 +73,6 @@ public class UserPreferencesModelAssembler extends DomainModelAssembler<UserPref
   private @NonNull
   Link getProfileLink() {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
-  }
-
-  @Override
-  public WebMvcLinkBuilder getSelfLink(String id) {
-    return linkTo(methodOn(getClazz()).get(id));
   }
 
   public Link getCurrentUserPreferencesSelfLink() {

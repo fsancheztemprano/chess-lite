@@ -1,6 +1,5 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.hateoas.assembler.UserPreferencesModelAssembler;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.hateoas.model.UserPreferencesModel;
 import dev.kurama.api.core.mapper.UserPreferencesMapper;
@@ -19,31 +18,23 @@ public class UserPreferencesFacade {
   @NonNull
   private final UserPreferencesMapper userPreferencesMapper;
 
-  @NonNull
-  private final UserPreferencesModelAssembler userPreferencesModelAssembler;
-
-
   public UserPreferencesModel findById(String userPreferencesId) {
-    return userPreferencesModelAssembler.toModel(
-      userPreferencesMapper.userPreferencesToUserPreferencesModel(
-        userPreferencesService.findUserPreferencesById(userPreferencesId).orElseThrow()));
-  }
-
-  public UserPreferencesModel findByUsername(String username) {
-    return userPreferencesModelAssembler.toModel(
-      userPreferencesMapper.userPreferencesToUserPreferencesModel(
-        userPreferencesService.findUserPreferencesByUsername(username).orElseThrow()));
+    return userPreferencesMapper.userPreferencesToUserPreferencesModel(
+      userPreferencesService.findUserPreferencesById(userPreferencesId).orElseThrow());
   }
 
   public UserPreferencesModel updateById(String userPreferencesId, UserPreferencesInput userPreferencesInput) {
-    return userPreferencesModelAssembler.toModel(
-      userPreferencesMapper.userPreferencesToUserPreferencesModel(
-        userPreferencesService.updateUserPreferences(userPreferencesId, userPreferencesInput)));
+    return userPreferencesMapper.userPreferencesToUserPreferencesModel(
+      userPreferencesService.updateUserPreferences(userPreferencesId, userPreferencesInput));
   }
 
-  public UserPreferencesModel updateByUsername(String username, UserPreferencesInput userPreferencesInput) {
-    return userPreferencesModelAssembler.toModel(
-      userPreferencesMapper.userPreferencesToUserPreferencesModel(
-        userPreferencesService.updateUserPreferencesByUsername(username, userPreferencesInput)));
+  public UserPreferencesModel findByUserId(String userId) {
+    return userPreferencesMapper.userPreferencesToUserPreferencesModel(
+      userPreferencesService.findUserPreferencesByUserId(userId));
+  }
+
+  public UserPreferencesModel updateByUserId(String userId, UserPreferencesInput userPreferencesInput) {
+    return userPreferencesMapper.userPreferencesToUserPreferencesModel(
+      userPreferencesService.updateUserPreferencesByUserId(userId, userPreferencesInput));
   }
 }

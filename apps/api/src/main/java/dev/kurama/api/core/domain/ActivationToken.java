@@ -34,6 +34,6 @@ public class ActivationToken extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "activationToken", fetch = FetchType.LAZY)
   private User user;
 }

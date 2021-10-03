@@ -25,11 +25,11 @@ public class UserModel extends RepresentationModel<UserModel> {
   private Date lastLoginDateDisplay;
   private Date joinDate;
   private RoleModel role;
-  private List<String> authorities;
+  private List<AuthorityModel> authorities;
   private boolean active;
   private boolean locked;
   private boolean expired;
   private boolean credentialsExpired;
 
-  private String userPreferencesId;
+  private UserPreferencesModel userPreferences;
 }

@@ -14,10 +14,11 @@ public class UserInput {
   private String username;
   @Length(min = 6, max = 128)
   private String password;
-  @Email
-  private String email;
   private String firstname;
   private String lastname;
+  @Email
+  private String email;
+  private String profileImageUrl;
   private String roleId;
   private Boolean active;
   private Boolean locked;

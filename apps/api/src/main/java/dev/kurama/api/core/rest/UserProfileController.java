@@ -4,6 +4,10 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
+import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
+import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
 import dev.kurama.api.core.facade.UserPreferencesFacade;
 import dev.kurama.api.core.hateoas.input.ChangeUserPasswordInput;
@@ -41,40 +45,43 @@ public class UserProfileController {
   @GetMapping()
   @PreAuthorize("hasAuthority('profile:read')")
   public ResponseEntity<UserModel> get() {
-    return ok().body(userFacade.findByUsername(AuthorityUtils.getCurrentUsername()));
+    return ok().body(userFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }
 
   @PatchMapping()
   @PreAuthorize("hasAuthority('profile:update') ")
-  public ResponseEntity<UserModel> updateProfile(@RequestBody UpdateUserProfileInput updateUserProfileInput) {
+  public ResponseEntity<UserModel> updateProfile(@RequestBody UpdateUserProfileInput updateUserProfileInput)
+    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     return ok()
-      .body(userFacade.updateProfile(AuthorityUtils.getCurrentUsername(), updateUserProfileInput));
+      .body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), updateUserProfileInput));
   }
 
   @PatchMapping("/password")
   @PreAuthorize("hasAuthority('profile:update')")
-  public ResponseEntity<UserModel> changePassword(@RequestBody ChangeUserPasswordInput changeUserPasswordInput) {
+  public ResponseEntity<UserModel> changePassword(@RequestBody ChangeUserPasswordInput changeUserPasswordInput)
+    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     return ok()
-      .body(userFacade.changePassword(AuthorityUtils.getCurrentUsername(), changeUserPasswordInput));
+      .body(userFacade.changePassword(AuthorityUtils.getCurrentUserId(), changeUserPasswordInput));
   }
 
   @PatchMapping(value = "/avatar", consumes = MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("hasAuthority('profile:update')")
-  public ResponseEntity<Object> uploadAvatar(@RequestPart("avatar") MultipartFile avatar) throws IOException {
-    return ok().body(userFacade.uploadAvatar(AuthorityUtils.getCurrentUsername(), avatar));
+  public ResponseEntity<Object> uploadAvatar(@RequestPart("avatar") MultipartFile avatar)
+    throws IOException, UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    return ok().body(userFacade.uploadAvatar(AuthorityUtils.getCurrentUserId(), avatar));
   }
 
   @DeleteMapping()
   @PreAuthorize("hasAuthority('profile:delete')")
-  public ResponseEntity<Void> deleteProfile() {
-    userFacade.deleteByUsername(AuthorityUtils.getCurrentUsername());
+  public ResponseEntity<Void> deleteProfile() throws UserNotFoundException {
+    userFacade.deleteById(AuthorityUtils.getCurrentUserId());
     return noContent().build();
   }
 
   @GetMapping("/preferences")
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserPreferencesModel> getPreferences() {
-    return ok().body(userPreferencesFacade.findByUsername(AuthorityUtils.getCurrentUsername()));
+    return ok().body(userPreferencesFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }
 
 
@@ -83,6 +90,6 @@ public class UserProfileController {
   public ResponseEntity<UserPreferencesModel> updatePreferences(
     @RequestBody UserPreferencesInput userPreferencesInput) {
     return ResponseEntity.ok()
-      .body(userPreferencesFacade.updateByUsername(AuthorityUtils.getCurrentUsername(), userPreferencesInput));
+      .body(userPreferencesFacade.updateByUserId(AuthorityUtils.getCurrentUserId(), userPreferencesInput));
   }
 }

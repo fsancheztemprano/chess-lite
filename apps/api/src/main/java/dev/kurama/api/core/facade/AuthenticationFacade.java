@@ -9,11 +9,9 @@ import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
-import dev.kurama.api.core.exception.domain.EmailExistsException;
-import dev.kurama.api.core.exception.domain.EmailNotFoundException;
-import dev.kurama.api.core.exception.domain.UserLockedException;
-import dev.kurama.api.core.exception.domain.UsernameExistsException;
-import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
+import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
+import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
@@ -24,6 +22,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,9 +39,6 @@ public class AuthenticationFacade {
   private final UserMapper userMapper;
 
   @NonNull
-  private final UserModelAssembler userModelAssembler;
-
-  @NonNull
   private final AuthenticationManager authenticationManager;
 
   @NonNull
@@ -53,12 +49,12 @@ public class AuthenticationFacade {
     userService.signup(signupInput);
   }
 
-  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws UserLockedException {
+  public AuthenticatedUserExcerpt login(LoginInput loginInput) {
     authenticate(loginInput.getUsername(), loginInput.getPassword());
     var user = userService.findUserByUsername(loginInput.getUsername())
       .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
     if (user.isLocked()) {
-      throw new UserLockedException(loginInput.getUsername());
+      throw new LockedException(loginInput.getUsername());
     }
     return authenticateUser(user);
   }
@@ -79,7 +75,7 @@ public class AuthenticationFacade {
     SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(decodedToken, null));
 
     return AuthenticatedUserExcerpt.builder()
-      .userModel(userModelAssembler.toModel(userMapper.userToUserModel(user)))
+      .userModel(userMapper.userToUserModel(user))
       .headers(getJwtHeader(new UserPrincipal(user)))
       .build();
   }

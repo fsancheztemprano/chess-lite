@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -29,16 +28,8 @@ public class RoleModelAssembler extends DomainModelAssembler<RoleModel> {
   }
 
   @Override
-  public @NonNull
-  RoleModel toModel(@NonNull RoleModel entity) {
-    return entity
-      .add(getModelSelfLink(entity.getId()))
-      .add(getParentLink());
-  }
-
-  @Override
   public WebMvcLinkBuilder getSelfLink(String id) {
-    return linkTo(methodOn(getClazz()).get(id));
+    return null;
   }
 
   @Override
@@ -51,10 +42,5 @@ public class RoleModelAssembler extends DomainModelAssembler<RoleModel> {
     return (PagedModel<RoleModel>) pagedResourcesAssembler.toModel(entities, this)
       .add(getCollectionModelSelfLinkWithRel(getAllLink(), ROLES_REL))
       ;
-  }
-
-  private @NonNull
-  Link getParentLink() {
-    return linkTo(methodOn(getClazz()).getAll(null)).withRel(ROLES_REL);
   }
 }

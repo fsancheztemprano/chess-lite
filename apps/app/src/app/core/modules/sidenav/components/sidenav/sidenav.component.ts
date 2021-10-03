@@ -40,7 +40,7 @@ export class SidenavComponent {
   }
 
   public logout(): void {
-    this.sessionService.clearSession().subscribe(() => this.router.navigate(['auth', 'signup']));
+    this.sessionService.clearSession().subscribe(() => this.router.navigate(['auth', 'login']));
   }
 
   public showLoginLink(): Observable<boolean> {

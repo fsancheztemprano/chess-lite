@@ -22,7 +22,6 @@ export class UserUpdateProfileComponent implements OnDestroy {
     email: new FormControl({ value: '', disabled: true }),
     firstname: new FormControl(''),
     lastname: new FormControl(''),
-    profileImageUrl: new FormControl(''),
     lastLoginDateDisplay: new FormControl({ value: '', disabled: true }),
     joinDate: new FormControl({ value: '', disabled: true }),
     role: new FormGroup({

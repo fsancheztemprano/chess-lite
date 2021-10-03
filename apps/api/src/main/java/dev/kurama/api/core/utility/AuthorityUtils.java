@@ -2,6 +2,7 @@ package dev.kurama.api.core.utility;
 
 import com.google.common.collect.Lists;
 import dev.kurama.api.core.filter.ContextUser;
+import java.util.Arrays;
 import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,14 @@ public class AuthorityUtils {
 
   public static boolean hasAuthority(String authority) {
     return getAuthorities().contains(new SimpleGrantedAuthority(authority));
+  }
+
+  public static boolean hasAllAuthorities(String... authorities) {
+    return Arrays.stream(authorities).allMatch(AuthorityUtils::hasAuthority);
+  }
+
+  public static boolean hasAnyAuthority(String... authorities) {
+    return Arrays.stream(authorities).anyMatch(AuthorityUtils::hasAuthority);
   }
 
   public static boolean isAuthenticated() {

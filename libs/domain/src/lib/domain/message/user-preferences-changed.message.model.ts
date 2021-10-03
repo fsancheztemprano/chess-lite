@@ -10,9 +10,9 @@ export enum UserPreferencesChangedMessageAction {
 }
 
 export class UserPreferencesChangedMessageDestination implements MessageDestination {
-  constructor(private readonly userId: string) {}
+  constructor(private readonly userPreferencesId: string = '0') {}
 
   getDestination(): string {
-    return `/ami/user-preferences/${this.userId}`;
+    return `/ami/user-preferences/${this.userPreferencesId}`;
   }
 }

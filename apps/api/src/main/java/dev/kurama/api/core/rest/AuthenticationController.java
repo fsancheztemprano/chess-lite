@@ -6,10 +6,9 @@ import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
-import dev.kurama.api.core.exception.domain.EmailExistsException;
-import dev.kurama.api.core.exception.domain.EmailNotFoundException;
-import dev.kurama.api.core.exception.domain.UserLockedException;
-import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
+import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.facade.AuthenticationFacade;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
@@ -43,7 +42,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) throws UserLockedException {
+  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) {
     var authenticatedUser = authenticationFacade.login(user);
     return ok().headers(authenticatedUser.getHeaders())
       .body(authenticatedUser.getUserModel());

@@ -33,7 +33,7 @@ export class UserManagementAuthoritiesComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe((user) => {
         this.formArray.controls.forEach((control) => {
-          const hasAuthority = user?.authorities?.some((authority) => authority === control.value.name);
+          const hasAuthority = user?.authorities?.some((authority) => authority.id === control.value.id);
           if (control.value.active != hasAuthority) {
             control.patchValue({ active: hasAuthority });
           }

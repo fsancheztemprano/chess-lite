@@ -11,8 +11,8 @@ import {
   UserPreferencesChangedMessageDestination,
 } from '@app/domain';
 import { HalFormService } from '@hal-form-client';
-import { BehaviorSubject, filter, Observable, Subscription } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, filter, Observable, Subscription } from 'rxjs';
+import { first, switchMap, tap } from 'rxjs/operators';
 import { MessageService } from './message.service';
 import { PreferencesService } from './preferences.service';
 
@@ -46,16 +46,11 @@ export class UserService {
     return this._user.asObservable();
   }
 
-  public getUsername(): Observable<string | null> {
+  public fetchUserPreferences(): Observable<UserPreferences> {
     return this.getUser().pipe(
-      map((user) => {
-        return user?.username || null;
-      }),
+      first(),
+      switchMap((user: User | null) => user?.getLinkOrThrow(CurrentUserRelations.USER_PREFERENCES_REL).get() || EMPTY),
     );
-  }
-
-  public fetchUserPreferences(user: User): Observable<UserPreferences> {
-    return user.getLinkOrThrow(CurrentUserRelations.USER_PREFERENCES_REL).get();
   }
 
   public setUserPreferences(userPreferences: UserPreferences | null): void {
@@ -69,11 +64,11 @@ export class UserService {
 
   public initializeUser(user: User) {
     this.setUser(user);
-    this._subscribeToUserChanges(user.id as string);
-    this.fetchUserPreferences(user).subscribe((userPreferences) => {
-      this.setUserPreferences(userPreferences);
-      this._subscribeToUserPreferencesChanges(user);
-    });
+    this._subscribeToUserChanges(user);
+    if (user.userPreferences) {
+      this.setUserPreferences(new UserPreferences(user.userPreferences));
+      this._subscribeToUserPreferencesChanges(user.userPreferences);
+    }
   }
 
   clearUser() {
@@ -83,10 +78,10 @@ export class UserService {
     this.setUserPreferences(null);
   }
 
-  private _subscribeToUserChanges(userId: string) {
+  private _subscribeToUserChanges(user: User) {
     this._subscription.add(
       this.messageService
-        .subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(userId))
+        .subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(user.id))
         .pipe(
           filter((message: UserChangedMessage) => message.action !== UserChangedMessageAction.CREATED),
           switchMap((message: UserChangedMessage) => {
@@ -97,21 +92,21 @@ export class UserService {
               localStorage.removeItem(TOKEN_KEY);
               return this.halFormService.initialize().pipe(tap(() => this.clearUser()));
             }
-            return this.fetchCurrentUser().pipe(tap((user: User) => this.setUser(user)));
+            return this.fetchCurrentUser().pipe(tap((fetchedUser: User) => this.setUser(fetchedUser)));
           }),
         )
         .subscribe(),
     );
   }
 
-  private _subscribeToUserPreferencesChanges(user: User) {
+  private _subscribeToUserPreferencesChanges(userPreferences: UserPreferences) {
     this._subscription.add(
       this.messageService
         .subscribeToMessages<UserPreferencesChangedMessage>(
-          new UserPreferencesChangedMessageDestination(user.userPreferencesId || ''),
+          new UserPreferencesChangedMessageDestination(userPreferences.id),
         )
-        .pipe(switchMap(() => this.fetchUserPreferences(user)))
-        .subscribe((userPreferences: UserPreferences) => this.setUserPreferences(userPreferences)),
+        .pipe(switchMap(() => this.fetchUserPreferences()))
+        .subscribe((fetchedUserPreferences: UserPreferences) => this.setUserPreferences(fetchedUserPreferences)),
     );
   }
 }

@@ -10,6 +10,7 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -22,7 +23,6 @@ import dev.kurama.api.core.rest.AuthorityController;
 import dev.kurama.api.core.rest.RoleController;
 import dev.kurama.api.core.rest.ServiceLogsController;
 import dev.kurama.api.core.rest.UserController;
-import dev.kurama.api.core.utility.AuthorityUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -54,10 +54,12 @@ public class AdministrationRootController {
   public ResponseEntity<RepresentationModel<?>> root() {
     HalModelBuilder rootModel = HalModelBuilder.emptyHalModel()
       .link(getSelfLink())
-      .link(getParentLink())
-      .link(getServiceLogsLink());
+      .link(getParentLink());
+    if (hasAuthority(SERVICE_LOGS_REL)) {
+      rootModel.link(getServiceLogsLink());
+    }
 
-    if (AuthorityUtils.hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
+    if (hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
       rootModel.embed(getUserManagementResource(), LinkRelation.of(USER_MANAGEMENT_ROOT_REL));
     }
 
@@ -102,7 +104,7 @@ public class AdministrationRootController {
   Link getUsersLink() {
     Link link = linkTo(methodOn(UserController.class).getAll(null)).withRel(USERS_REL);
     Link usersLink = getExpandedLink(link);
-    if (AuthorityUtils.hasAuthority(USER_CREATE)) {
+    if (hasAuthority(USER_CREATE)) {
       usersLink = usersLink.andAffordance(afford(methodOn(UserController.class).create(null)));
     }
     return usersLink;

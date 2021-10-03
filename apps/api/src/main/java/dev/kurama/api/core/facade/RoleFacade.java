@@ -1,6 +1,10 @@
 package dev.kurama.api.core.facade;
 
+import dev.kurama.api.core.exception.domain.ImmutableRoleException;
+import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
+import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.assembler.RoleModelAssembler;
+import dev.kurama.api.core.hateoas.input.RoleInput;
 import dev.kurama.api.core.hateoas.model.RoleModel;
 import dev.kurama.api.core.mapper.RoleMapper;
 import dev.kurama.api.core.service.RoleService;
@@ -31,8 +35,18 @@ public class RoleFacade {
   }
 
   public RoleModel findByRoleId(String roleId) {
-    return roleModelAssembler.toModel(
-      roleMapper.roleToRoleModel(
-        roleService.findRoleById(roleId).orElseThrow()));
+    return roleMapper.roleToRoleModel(roleService.findRoleById(roleId).orElseThrow());
+  }
+
+  public RoleModel create(RoleInput roleInput) throws RoleExistsException {
+    return roleMapper.roleToRoleModel(roleService.create(roleInput));
+  }
+
+  public RoleModel update(String roleId, RoleInput roleInput) throws RoleNotFoundException, ImmutableRoleException {
+    return roleMapper.roleToRoleModel(roleService.update(roleId, roleInput));
+  }
+
+  public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {
+    roleService.delete(id);
   }
 }
