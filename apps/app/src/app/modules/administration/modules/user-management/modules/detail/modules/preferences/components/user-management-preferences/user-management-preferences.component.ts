@@ -53,14 +53,14 @@ export class UserManagementPreferencesComponent {
 
   private _subscribeToUserPreferencesChanges(userPreferences: UserPreferences) {
     this.messageService
-    .subscribeToMessages<UserPreferencesChangedMessage>(
-      new UserPreferencesChangedMessageDestination(userPreferences.id),
-    )
-    .pipe(
-      untilDestroyed(this),
-      switchMap(() => this.userManagementDetailService.fetchUserPreferences()),
-    )
-    .subscribe((fetchedUserPreferences) => this._setUserPreferences(fetchedUserPreferences));
+      .subscribeToMessages<UserPreferencesChangedMessage>(
+        new UserPreferencesChangedMessageDestination(userPreferences.id),
+      )
+      .pipe(
+        untilDestroyed(this),
+        switchMap(() => this.userManagementDetailService.fetchUserPreferences()),
+      )
+      .subscribe((fetchedUserPreferences) => this._setUserPreferences(fetchedUserPreferences));
   }
 
   isAllowedToUpdateUserPreferences() {

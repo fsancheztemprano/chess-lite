@@ -41,7 +41,7 @@ public class UserController {
 
   @GetMapping("/{userId}")
   @PreAuthorize("hasAuthority('user:read')")
-  public ResponseEntity<UserModel> get(@PathVariable("userId") String userId) {
+  public ResponseEntity<UserModel> get(@PathVariable("userId") String userId) throws UserNotFoundException {
     return ok().body(userFacade.findByUserId(userId));
   }
 

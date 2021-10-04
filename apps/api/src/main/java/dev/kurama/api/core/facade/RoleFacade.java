@@ -4,12 +4,13 @@ import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.assembler.RoleModelAssembler;
-import dev.kurama.api.core.hateoas.input.RoleInput;
+import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.hateoas.model.RoleModel;
 import dev.kurama.api.core.mapper.RoleMapper;
 import dev.kurama.api.core.service.RoleService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Component;
@@ -34,16 +35,18 @@ public class RoleFacade {
         roleService.getAllRoles(pageable)));
   }
 
-  public RoleModel findByRoleId(String roleId) {
-    return roleMapper.roleToRoleModel(roleService.findRoleById(roleId).orElseThrow());
+  public RoleModel findByRoleId(String roleId) throws RoleNotFoundException {
+    return roleMapper.roleToRoleModel(
+      roleService.findRoleById(roleId).orElseThrow(() -> new RoleNotFoundException(roleId)));
   }
 
-  public RoleModel create(RoleInput roleInput) throws RoleExistsException {
-    return roleMapper.roleToRoleModel(roleService.create(roleInput));
+  public RoleModel create(@Length(min = 3, max = 128) String roleName) throws RoleExistsException {
+    return roleMapper.roleToRoleModel(roleService.create(roleName));
   }
 
-  public RoleModel update(String roleId, RoleInput roleInput) throws RoleNotFoundException, ImmutableRoleException {
-    return roleMapper.roleToRoleModel(roleService.update(roleId, roleInput));
+  public RoleModel update(String roleId, RoleUpdateInput roleUpdateInput)
+    throws RoleNotFoundException, ImmutableRoleException {
+    return roleMapper.roleToRoleModel(roleService.update(roleId, roleUpdateInput));
   }
 
   public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {

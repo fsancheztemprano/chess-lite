@@ -10,6 +10,7 @@ import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import dev.kurama.api.core.rest.AuthorityController;
 import java.util.Collection;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,7 @@ public class AuthorityModelProcessor extends DomainModelProcessor<AuthorityModel
     return AuthorityController.class;
   }
 
+  @SneakyThrows
   @Override
   public WebMvcLinkBuilder getSelfLink(String id) {
     return linkTo(methodOn(getClazz()).get(id));

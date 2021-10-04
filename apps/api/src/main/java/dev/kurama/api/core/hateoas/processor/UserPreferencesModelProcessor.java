@@ -60,16 +60,19 @@ public class UserPreferencesModelProcessor extends DomainModelProcessor<UserPref
       ;
   }
 
+  @SneakyThrows
   @Override
   public WebMvcLinkBuilder getSelfLink(String id) {
     return linkTo(methodOn(getClazz()).get(id));
   }
 
+  @SneakyThrows
   private @NonNull
   Link getUserLink(String userId) {
     return linkTo(methodOn(UserController.class).get(userId)).withRel(USER_REL);
   }
 
+  @SneakyThrows
   private @NonNull
   Link getProfileLink() {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);

@@ -8,6 +8,7 @@ import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import dev.kurama.api.core.rest.AuthorityController;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -27,6 +28,7 @@ public class AuthorityModelAssembler extends DomainModelAssembler<AuthorityModel
     return AuthorityController.class;
   }
 
+  @SneakyThrows
   @Override
   public WebMvcLinkBuilder getSelfLink(String id) {
     return linkTo(methodOn(getClazz()).get(id));

@@ -17,6 +17,7 @@ import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
@@ -103,10 +104,6 @@ public class UserService implements UserDetailsService {
     return userRepository.findAll(pageable);
   }
 
-  public void deleteUserByUsername(String username) {
-    deleteUser(findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username)));
-  }
-
   public void deleteUserById(String id) throws UserNotFoundException {
     deleteUser(userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id)));
   }
@@ -117,8 +114,8 @@ public class UserService implements UserDetailsService {
   }
 
   public void signup(SignupInput signupInput)
-    throws UsernameExistsException, EmailExistsException {
-    var role = roleService.getDefaultRole().orElseThrow();
+    throws UsernameExistsException, EmailExistsException, DomainEntityNotFoundException {
+    var role = roleService.getDefaultRole().orElseThrow(() -> new RoleNotFoundException("default role"));
     var userInput = UserInput.builder()
       .username(signupInput.getUsername())
       .password(UUID.randomUUID().toString())

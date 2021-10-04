@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class UpdateUserProfileInput {
+public class UserProfileUpdateInput {
 
   private String firstname;
   private String lastname;

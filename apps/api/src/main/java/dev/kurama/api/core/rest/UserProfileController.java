@@ -11,8 +11,8 @@ import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
 import dev.kurama.api.core.facade.UserPreferencesFacade;
 import dev.kurama.api.core.hateoas.input.ChangeUserPasswordInput;
-import dev.kurama.api.core.hateoas.input.UpdateUserProfileInput;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
+import dev.kurama.api.core.hateoas.input.UserProfileUpdateInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import dev.kurama.api.core.hateoas.model.UserPreferencesModel;
 import dev.kurama.api.core.utility.AuthorityUtils;
@@ -44,16 +44,16 @@ public class UserProfileController {
 
   @GetMapping()
   @PreAuthorize("hasAuthority('profile:read')")
-  public ResponseEntity<UserModel> get() {
+  public ResponseEntity<UserModel> get() throws UserNotFoundException {
     return ok().body(userFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }
 
   @PatchMapping()
   @PreAuthorize("hasAuthority('profile:update') ")
-  public ResponseEntity<UserModel> updateProfile(@RequestBody UpdateUserProfileInput updateUserProfileInput)
+  public ResponseEntity<UserModel> updateProfile(@RequestBody UserProfileUpdateInput userProfileUpdateInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     return ok()
-      .body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), updateUserProfileInput));
+      .body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), userProfileUpdateInput));
   }
 
   @PatchMapping("/password")

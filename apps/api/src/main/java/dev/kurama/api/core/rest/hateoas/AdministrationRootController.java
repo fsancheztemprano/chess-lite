@@ -1,13 +1,18 @@
 package dev.kurama.api.core.rest.hateoas;
 
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
+import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ROLE_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.SERVICE_LOGS_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
+import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLE_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
@@ -54,13 +59,19 @@ public class AdministrationRootController {
   public ResponseEntity<RepresentationModel<?>> root() {
     HalModelBuilder rootModel = HalModelBuilder.emptyHalModel()
       .link(getSelfLink())
-      .link(getParentLink());
-    if (hasAuthority(SERVICE_LOGS_REL)) {
+      .link(getParentLink())
+      .link(getAuthoritiesLink());
+
+    if (hasAuthority(SERVICE_LOGS_READ)) {
       rootModel.link(getServiceLogsLink());
     }
 
     if (hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
       rootModel.embed(getUserManagementResource(), LinkRelation.of(USER_MANAGEMENT_ROOT_REL));
+    }
+
+    if (hasAuthority(ADMIN_ROLE_MANAGEMENT_ROOT)) {
+      rootModel.embed(getRoleManagementResource(), LinkRelation.of(ROLE_MANAGEMENT_ROOT_REL));
     }
 
     return ok(rootModel.build());
@@ -71,8 +82,14 @@ public class AdministrationRootController {
       .link(getSelfLink())
       .link(getUserLink())
       .link(getUsersLink())
+      .build();
+  }
+
+  private RepresentationModel<?> getRoleManagementResource() {
+    return HalModelBuilder.halModelOf(new RootResource())
+      .link(getSelfLink())
+      .link(getRoleLink())
       .link(getRolesLink())
-      .link(getAuthoritiesLink())
       .build();
   }
 
@@ -93,10 +110,10 @@ public class AdministrationRootController {
       .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
+  @SneakyThrows
   private @NonNull
   Link getUserLink() {
-    return linkTo(methodOn(UserController.class).get(null)).withRel(USER_REL)
-      .andAffordance(afford(methodOn(UserController.class).get(null)));
+    return linkTo(methodOn(UserController.class).get(null)).withRel(USER_REL);
   }
 
   @SneakyThrows
@@ -112,8 +129,19 @@ public class AdministrationRootController {
 
   @SneakyThrows
   private @NonNull
+  Link getRoleLink() {
+    return linkTo(methodOn(RoleController.class).get(null)).withRel(ROLE_REL);
+  }
+
+  @SneakyThrows
+  private @NonNull
   Link getRolesLink() {
-    return getExpandedLink(linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL));
+    Link link = linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL);
+    Link rolesLink = getExpandedLink(link);
+    if (hasAuthority(ROLE_CREATE)) {
+      rolesLink = rolesLink.andAffordance(afford(methodOn(RoleController.class).create(null)));
+    }
+    return rolesLink;
   }
 
   @SneakyThrows
@@ -122,7 +150,6 @@ public class AdministrationRootController {
     return getExpandedLink(
       linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL));
   }
-
 
   private Link getExpandedLink(Link link) {
     UriComponentsBuilder builder = fromUri(link.getTemplate().expand());

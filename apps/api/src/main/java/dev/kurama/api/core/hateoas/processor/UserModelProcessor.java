@@ -87,6 +87,7 @@ public class UserModelProcessor extends DomainModelProcessor<UserModel> {
       ;
   }
 
+  @SneakyThrows
   @Override
   public WebMvcLinkBuilder getSelfLink(String id) {
     return linkTo(methodOn(getClazz()).get(id));
@@ -97,11 +98,13 @@ public class UserModelProcessor extends DomainModelProcessor<UserModel> {
     return linkTo(methodOn(getClazz()).getAll(null)).withRel(USERS_REL);
   }
 
+  @SneakyThrows
   public Link getCurrentUserSelfLink() {
     return of(linkTo(methodOn(UserProfileController.class).get()).withSelfRel()).afford(HttpMethod.HEAD)
       .withName(HateoasRelations.DEFAULT).toLink();
   }
 
+  @SneakyThrows
   private Link getPreferencesLink(String userPreferencesId) {
     return linkTo(methodOn(UserPreferencesController.class).get(userPreferencesId)).withRel(USER_PREFERENCES_REL);
   }

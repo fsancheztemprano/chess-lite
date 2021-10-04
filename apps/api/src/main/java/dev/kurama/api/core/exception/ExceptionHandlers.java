@@ -12,8 +12,9 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.api.core.domain.DomainResponse;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.exists.EntityExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import javax.persistence.NoResultException;
 import lombok.extern.flogger.Flogger;
@@ -27,6 +28,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -85,8 +87,8 @@ public class ExceptionHandlers implements ErrorController {
       exception.getMessage());
   }
 
-  @ExceptionHandler({NoResultException.class, EntityNotFoundException.class})
-  public ResponseEntity<DomainResponse> entityNotFoundException(EntityNotFoundException exception) {
+  @ExceptionHandler({NoSuchElementException.class, NoResultException.class, DomainEntityNotFoundException.class})
+  public ResponseEntity<DomainResponse> entityNotFoundException(DomainEntityNotFoundException exception) {
     return createDomainResponse(NOT_FOUND, String.format(NOT_FOUND_MESSAGE, exception.getMessage()),
       exception.getMessage());
   }
@@ -114,10 +116,10 @@ public class ExceptionHandlers implements ErrorController {
 //    return createDomainResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
 //  }
 
-//  @RequestMapping(ERROR_PATH)
-//  public ResponseEntity<DomainResponse> notFound404() {
-//    return createDomainResponse(NOT_FOUND, "There is no mapping for this URL", null);
-//  }
+  @RequestMapping(ERROR_PATH)
+  public ResponseEntity<DomainResponse> notFound404() {
+    return createDomainResponse(NOT_FOUND, "There is no mapping for this URL", null);
+  }
 
   private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String message, String log) {
     if (log != null) {

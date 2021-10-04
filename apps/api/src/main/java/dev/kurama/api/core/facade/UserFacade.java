@@ -7,8 +7,8 @@ import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
 import dev.kurama.api.core.hateoas.input.ChangeUserPasswordInput;
-import dev.kurama.api.core.hateoas.input.UpdateUserProfileInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
+import dev.kurama.api.core.hateoas.input.UserProfileUpdateInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import dev.kurama.api.core.mapper.UserMapper;
 import dev.kurama.api.core.service.UserService;
@@ -44,8 +44,9 @@ public class UserFacade {
     return userMapper.userToUserModel(userService.createUser(userInput));
   }
 
-  public UserModel findByUserId(String userId) {
-    return userMapper.userToUserModel(userService.findUserById(userId).orElseThrow());
+  public UserModel findByUserId(String userId) throws UserNotFoundException {
+    return userMapper.userToUserModel(
+      userService.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId)));
   }
 
   public PagedModel<UserModel> getAll(Pageable pageable) {
@@ -63,12 +64,12 @@ public class UserFacade {
     return userMapper.userToUserModel(userService.updateUser(id, userInput));
   }
 
-  public UserModel updateProfile(String id, UpdateUserProfileInput updateUserProfileInput)
+  public UserModel updateProfile(String id, UserProfileUpdateInput userProfileUpdateInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     return userMapper.userToUserModel(userService.updateUser(id,
       UserInput.builder()
-        .firstname(updateUserProfileInput.getFirstname())
-        .lastname(updateUserProfileInput.getLastname()).build()));
+        .firstname(userProfileUpdateInput.getFirstname())
+        .lastname(userProfileUpdateInput.getLastname()).build()));
   }
 
   public UserModel changePassword(String id, ChangeUserPasswordInput changeUserPasswordInput)

@@ -4,9 +4,9 @@ import static org.springframework.data.mapping.Alias.ofNullable;
 
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserPreferencesChangedEventEmitter;
+import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.repository.UserPreferencesRepository;
-import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,12 +23,14 @@ public class UserPreferencesService {
   private final UserPreferencesChangedEventEmitter userPreferencesChangedEventEmitter;
 
 
-  public Optional<UserPreferences> findUserPreferencesById(String userId) {
-    return userPreferencesRepository.findUserPreferencesById(userId);
+  public UserPreferences findUserPreferencesById(String userPreferencesId) throws DomainEntityNotFoundException {
+    return userPreferencesRepository.findUserPreferencesById(userPreferencesId)
+      .orElseThrow(() -> new DomainEntityNotFoundException(userPreferencesId, UserPreferences.class));
   }
 
-  public UserPreferences updateUserPreferences(String userPreferencesId, UserPreferencesInput userPreferencesInput) {
-    var userPreferences = userPreferencesRepository.findUserPreferencesById(userPreferencesId).orElseThrow();
+  public UserPreferences updateUserPreferences(String userPreferencesId, UserPreferencesInput userPreferencesInput)
+    throws DomainEntityNotFoundException {
+    var userPreferences = findUserPreferencesById(userPreferencesId);
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }
 

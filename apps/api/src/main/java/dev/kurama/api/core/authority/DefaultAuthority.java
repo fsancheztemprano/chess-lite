@@ -53,6 +53,7 @@ public class DefaultAuthority {
 
     AdminAuthority.ADMIN_ROOT,
     AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
+    AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
 
     ServiceLogsAuthority.SERVICE_LOGS_READ,
     ServiceLogsAuthority.SERVICE_LOGS_DELETE
