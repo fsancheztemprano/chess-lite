@@ -139,7 +139,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "680kb",
+                  "maximumWarning": "685kb",
                   "maximumError": "700kb"
                 },
                 {
@@ -182,12 +182,6 @@
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "app:build"
-          }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
