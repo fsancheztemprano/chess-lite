@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { stubUserManagementServiceProvider } from '../../user-management/services/user-management.service.stub';
 import { RoleManagementService } from './role-management.service';
-import { stubUserManagementServiceProvider } from './user-management.service.stub';
 
 describe('RoleManagementService', () => {
   let service: RoleManagementService;

@@ -7,6 +7,7 @@ import { Link } from '../domain/link';
 import { Resource } from '../domain/resource';
 import { Template } from '../domain/template';
 import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
+import { submitToTemplateOrThrowPipe } from '../utils/rxjs.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -47,51 +48,68 @@ export class HalFormService {
     this._rootResource.next(resource);
   }
 
-  public get rootResource(): Observable<Resource> {
+  public getResource(): Observable<Resource> {
     return this._rootResource.asObservable();
   }
 
+  public getResourceOnce(): Observable<Resource> {
+    return this.getResource().pipe(first());
+  }
+
   public hasLink(link: string = 'self'): Observable<boolean> {
-    return this.rootResource.pipe(map((resource) => resource.hasLink(link)));
+    return this.getResource().pipe(map((resource) => resource.hasLink(link)));
   }
 
   public getLink(link: string = 'self'): Observable<Link | null> {
-    return this.rootResource.pipe(map((resource) => resource.getLink(link)));
+    return this.getResource().pipe(map((resource) => resource.getLink(link)));
   }
 
   public getLinkOrThrow(link: string = 'self', errorMessage?: string | Error): Observable<Link> {
-    return this.rootResource.pipe(map((resource) => resource.getLinkOrThrow(link, errorMessage)));
+    return this.getResource().pipe(map((resource) => resource.getLinkOrThrow(link, errorMessage)));
   }
 
   public getTemplate(template: string = 'self'): Observable<Template | null> {
-    return this.rootResource.pipe(map((resource) => resource.getTemplate(template)));
+    return this.getResource().pipe(map((resource) => resource.getTemplate(template)));
+  }
+
+  public getTemplateOrThrow(template: string = 'self'): Observable<Template | null> {
+    return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
+  }
+
+  public submitToTemplateOrThrow(
+    templateName: string,
+    payload?: any,
+    params?: any,
+    observe: 'body' | 'events' | 'response' = 'body',
+  ): Observable<Resource> {
+    return this.getResource().pipe(submitToTemplateOrThrowPipe(templateName, payload, params, observe));
   }
 
   public isAllowedTo(template: string = 'self'): Observable<boolean> {
-    return this.rootResource.pipe(map((resource) => resource.isAllowedTo(template)));
+    return this.getResource().pipe(map((resource) => resource.isAllowedTo(template)));
   }
 
   public hasEmbedded(embedded: string = 'self'): Observable<boolean> {
-    return this.rootResource.pipe(map((resource) => resource.hasEmbedded(embedded)));
+    return this.getResource().pipe(map((resource) => resource.hasEmbedded(embedded)));
   }
 
   public hasEmbeddedObject(embedded: string = 'self'): Observable<boolean> {
-    return this.rootResource.pipe(map((resource) => resource.hasEmbeddedObject(embedded)));
+    return this.getResource().pipe(map((resource) => resource.hasEmbeddedObject(embedded)));
   }
 
   public hasEmbeddedCollection(embedded: string = 'self'): Observable<boolean> {
-    return this.rootResource.pipe(map((resource) => resource.hasEmbeddedCollection(embedded)));
+    return this.getResource().pipe(map((resource) => resource.hasEmbeddedCollection(embedded)));
   }
 
-  public getEmbeddedObject(embedded: string = 'self'): Observable<Resource> {
-    return this.rootResource.pipe(map((resource) => resource.getEmbeddedObject(embedded)));
+  public getEmbedded<T = Resource>(embedded: string = 'self'): Observable<T | T[] | null> {
+    return this.getResource().pipe(map((resource) => resource.getEmbedded<T>(embedded)));
   }
 
-  public getEmbeddedCollection(embedded: string = 'self'): Observable<Resource[]> {
-    return this.rootResource.pipe(map((resource) => resource.getEmbeddedCollection(embedded)));
+  public getEmbeddedObject<T = Resource>(embedded: string = 'self'): Observable<T> {
+    return this.getResource().pipe(map((resource) => resource.getEmbeddedObject<T>(embedded)));
   }
 
-  public getEmbedded(embedded: string = 'self'): Observable<Resource | Resource[] | null> {
-    return this.rootResource.pipe(map((resource) => resource.getEmbedded(embedded)));
+  public getEmbeddedCollection<T = Resource>(embedded: string = 'self'): Observable<T[]> {
+    return this.getResource().pipe(map((resource) => resource.getEmbeddedCollection<T>(embedded)));
   }
 }

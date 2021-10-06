@@ -11,6 +11,6 @@ export class RolesResolver implements Resolve<Role[]> {
   constructor(private readonly roleManagementService: RoleManagementService) {}
 
   resolve(): Observable<Role[]> {
-    return this.roleManagementService.getAllRoles();
+    return this.roleManagementService.fetchAllRoles();
   }
 }

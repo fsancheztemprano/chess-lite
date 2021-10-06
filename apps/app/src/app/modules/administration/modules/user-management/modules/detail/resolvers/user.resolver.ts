@@ -11,7 +11,7 @@ export class UserResolver implements Resolve<User | null> {
   constructor(private readonly userManagementService: UserManagementService, private readonly router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<User | null> {
-    return this.userManagementService.findUser(route.params.userId).pipe(
+    return this.userManagementService.fetchUser(route.params.userId).pipe(
       catchError(() => {
         this.router.navigate(['administration', 'user-management']);
         return throwError(() => Error('User not found'));

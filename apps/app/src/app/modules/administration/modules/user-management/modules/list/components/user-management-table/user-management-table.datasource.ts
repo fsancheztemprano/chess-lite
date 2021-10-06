@@ -64,7 +64,7 @@ export class UserManagementTableDatasource extends DataSource<User> {
           this._userListChanges.asObservable().pipe(startWith(null)),
         ]).pipe(
           switchMap(([page, sort]: [PageEvent, Sort, unknown]) => {
-            return this.userManagementService.findUsers({
+            return this.userManagementService.fetchUsers({
               page: page.pageIndex,
               size: page.pageSize,
               sort: `${sort.active},${sort.direction}`,

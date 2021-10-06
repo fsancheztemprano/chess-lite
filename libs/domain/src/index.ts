@@ -14,3 +14,5 @@ export * from './lib/domain/message/user-preferences-changed.message.model';
 
 export * from './lib/domain/administration/administration.model';
 export * from './lib/domain/administration/user-management-model';
+
+export * from './lib/domain/ui/menu.model';

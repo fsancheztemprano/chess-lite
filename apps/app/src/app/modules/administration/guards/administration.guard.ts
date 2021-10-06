@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { AdministrationService } from '../services/administration.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdministrationGuard implements CanLoad, CanActivate {
+  private initialization?: Observable<boolean>;
+
   constructor(private readonly administrationService: AdministrationService) {}
 
   canActivate(): Observable<boolean> {
@@ -19,9 +21,13 @@ export class AdministrationGuard implements CanLoad, CanActivate {
   }
 
   private _guard(): Observable<boolean> {
-    return this.administrationService.initialize().pipe(
-      map((resources) => !!resources),
-      catchError(() => of(false)),
-    );
+    if (!this.initialization) {
+      this.initialization = this.administrationService.initialize().pipe(
+        map((resources) => !!resources),
+        shareReplay(),
+        catchError(() => of(false)),
+      );
+    }
+    return this.initialization.pipe();
   }
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RolesResolver } from './resolvers/roles.resolver';
+import { RolesResolver } from '../role-management/resolvers/roles.resolver';
 
 const loadUserManagementHomeModule = () =>
   import('./modules/home/user-management-home.module').then((m) => m.UserManagementHomeModule);
