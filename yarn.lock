@@ -181,13 +181,25 @@
     rxjs "6.6.7"
     source-map "0.7.3"
 
-"@angular-devkit/schematics-cli@12.2.7":
-  version "12.2.7"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-12.2.7.tgz#00bbb5b5ca9ad6c193006a26adbed610b27b8fb7"
-  integrity sha512-dlHY+wD6eosbVbTShgVYskc4rCWn6m06t6TJkp8T0y51kVmjNHMiyBs/7z+YkO4rSDLiHhZmn1b0RUpoxxVw7Q==
+"@angular-devkit/core@12.2.9":
+  version "12.2.9"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-12.2.9.tgz#58f41ca4fea44307d90fb23af605ee06fe3c5552"
+  integrity sha512-iPHQiga08bbryiVq3QYzwpuq9sNb8CB/MVy65MHJ0fuW1z6RYDeUh1EziitBBUT2d81KWKPO1wQ2DuUoxOg4mg==
   dependencies:
-    "@angular-devkit/core" "12.2.7"
-    "@angular-devkit/schematics" "12.2.7"
+    ajv "8.6.2"
+    ajv-formats "2.1.0"
+    fast-json-stable-stringify "2.1.0"
+    magic-string "0.25.7"
+    rxjs "6.6.7"
+    source-map "0.7.3"
+
+"@angular-devkit/schematics-cli@12.2.9":
+  version "12.2.9"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-12.2.9.tgz#aaab75671e6caae751f5bafd827c78e5eb13b9d4"
+  integrity sha512-L83l5SiUHLv0+zMJmEJaE+C2cobUTejJp6Ly1/IuvTOeGP290JtY7lZ6e2DR+RLqrjfTXDY2A6FsU/5hmbLH6A==
+  dependencies:
+    "@angular-devkit/core" "12.2.9"
+    "@angular-devkit/schematics" "12.2.9"
     ansi-colors "4.1.1"
     inquirer "8.1.2"
     minimist "1.2.5"
@@ -202,7 +214,7 @@
     ora "5.3.0"
     rxjs "6.6.3"
 
-"@angular-devkit/schematics@12.2.5", "@angular-devkit/schematics@~12.2.0":
+"@angular-devkit/schematics@12.2.5":
   version "12.2.5"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-12.2.5.tgz#2ca20be4bf5b411e1e29eceb479cb745bda50e16"
   integrity sha512-8WAdZ39FZqbU1/ZQQrK+7PeRuj6QUGlxFUgoVXk5nzRbpZo/OSaKhPoC7sC1A0EU+7udLp5vT7R12sDz7Mr9vQ==
@@ -217,6 +229,15 @@
   integrity sha512-E0hCFyyfbixjerf0Okt4ynC6F1dsT2Wl7MwAePe+wzPTHCnKIRTa2PQTxJzdWeTlSkQMkSK6ft2iyWOD/FODng==
   dependencies:
     "@angular-devkit/core" "12.2.7"
+    ora "5.4.1"
+    rxjs "6.6.7"
+
+"@angular-devkit/schematics@12.2.9", "@angular-devkit/schematics@~12.2.0":
+  version "12.2.9"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-12.2.9.tgz#5dd639f5290b9dcb2e61b0ae167fc5258ec22a51"
+  integrity sha512-OcMDCdlIxiir8XntrNXdXEPi9/8BRx54oYZeRosr0sJZlz4pPzsHs36t5uX2DURYYMkNNMaBnf2luUIC+77ZsA==
+  dependencies:
+    "@angular-devkit/core" "12.2.9"
     ora "5.4.1"
     rxjs "6.6.7"
 
