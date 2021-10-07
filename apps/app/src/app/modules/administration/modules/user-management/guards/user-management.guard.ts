@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
-import { catchError, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { UserManagementService } from '../services/user-management.service';
+import { UserManagementRelations } from '@app/domain';
+import { Observable } from 'rxjs';
+import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserManagementGuard implements CanLoad, CanActivate {
-  constructor(private readonly userManagementService: UserManagementService) {}
+  constructor(private readonly administrationService: AdministrationService) {}
 
   canActivate(): Observable<boolean> {
     return this._guard();
@@ -19,9 +19,6 @@ export class UserManagementGuard implements CanLoad, CanActivate {
   }
 
   private _guard(): Observable<boolean> {
-    return this.userManagementService.initialize().pipe(
-      map((resources) => !!resources),
-      catchError(() => of(false)),
-    );
+    return this.administrationService.hasEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL);
   }
 }

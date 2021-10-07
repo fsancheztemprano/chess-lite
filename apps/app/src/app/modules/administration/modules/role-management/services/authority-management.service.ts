@@ -3,16 +3,16 @@ import { Authority, AuthorityManagementRelations } from '@app/domain';
 import { Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { UserManagementService } from '../../user-management/services/user-management.service';
+import { RoleManagementService } from './role-management.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthorityManagementService {
-  constructor(private readonly userManagementService: UserManagementService) {}
+  constructor(private readonly roleManagementService: RoleManagementService) {}
 
   public getAllAuthorities(): Observable<Authority[]> {
-    return this.userManagementService.getLinkOrThrow(AuthorityManagementRelations.AUTHORITIES_REL).pipe(
+    return this.roleManagementService.getLinkOrThrow(AuthorityManagementRelations.AUTHORITIES_REL).pipe(
       first(),
       switchMap((link: Link) =>
         link

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
-import { catchError, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { RoleManagementService } from '../services/role-management.service';
+import { RoleManagementRelations } from '@app/domain';
+import { Observable } from 'rxjs';
+import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoleManagementGuard implements CanLoad, CanActivate {
-  constructor(private readonly roleManagementService: RoleManagementService) {}
+  constructor(private readonly administrationService: AdministrationService) {}
 
   canActivate(): Observable<boolean> {
     return this._guard();
@@ -19,9 +19,6 @@ export class RoleManagementGuard implements CanLoad, CanActivate {
   }
 
   private _guard(): Observable<boolean> {
-    return this.roleManagementService.initialize().pipe(
-      map((resources) => !!resources),
-      catchError(() => of(false)),
-    );
+    return this.administrationService.hasEmbeddedObject(RoleManagementRelations.ROLE_MANAGEMENT_REL);
   }
 }

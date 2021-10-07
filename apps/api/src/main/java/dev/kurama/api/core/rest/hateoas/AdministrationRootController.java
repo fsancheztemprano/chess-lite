@@ -59,8 +59,7 @@ public class AdministrationRootController {
   public ResponseEntity<RepresentationModel<?>> root() {
     HalModelBuilder rootModel = HalModelBuilder.emptyHalModel()
       .link(getSelfLink())
-      .link(getParentLink())
-      .link(getAuthoritiesLink());
+      .link(getParentLink());
 
     if (hasAuthority(SERVICE_LOGS_READ)) {
       rootModel.link(getServiceLogsLink());
@@ -90,6 +89,7 @@ public class AdministrationRootController {
       .link(getSelfLink())
       .link(getRoleLink())
       .link(getRolesLink())
+      .link(getAuthoritiesLink())
       .build();
   }
 

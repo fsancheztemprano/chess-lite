@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pageable, User, UserManagementRelations, UserPage } from '@app/domain';
-import { HalFormService, Link, Resource } from '@hal-form-client';
+import { HalFormService, Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
@@ -15,16 +15,9 @@ export class UserManagementService extends HalFormService {
     private readonly administrationService: AdministrationService,
   ) {
     super(httpClient, '');
-  }
-
-  initialize(): Observable<Resource> {
-    return this.administrationService.getResource().pipe(
-      map((administrationResource) =>
-        administrationResource.getEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL),
-      ),
-
-      tap((resource) => this.setRootResource(resource)),
-    );
+    this.administrationService
+      .getEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL)
+      .subscribe((resource) => this.setRootResource(resource));
   }
 
   public fetchUsers(pageable?: Pageable): Observable<UserPage> {

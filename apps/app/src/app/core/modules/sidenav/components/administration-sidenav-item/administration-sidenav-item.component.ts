@@ -21,25 +21,25 @@ export class AdministrationSidenavItemComponent {
     {
       icon: 'manage_accounts',
       title: 'User Management',
-      link: 'user-management',
+      link: '/administration/user-management',
       canShow: this.administrationService.hasUserManagementEmbedded(),
     },
     {
       icon: 'military_tech',
       title: 'Role Management',
-      link: 'role-management',
+      link: '/administration/role-management',
       canShow: this.administrationService.hasRoleManagementEmbedded(),
     },
     {
       icon: 'cabin',
       title: 'Service Logs',
-      link: 'service-logs',
+      link: '/administration/service-logs',
       canShow: this.administrationService.hasServiceLogsLink(),
     },
     {
       icon: 'vpn_lock',
       title: 'Global Settings',
-      link: 'global-settings',
+      link: '/administration/global-settings',
       canShow: this.administrationService.hasGlobalSettingsLink(),
     },
   ];

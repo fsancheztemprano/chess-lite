@@ -4,7 +4,7 @@ import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { ContentTypeEnum } from '../domain/content-type.enum';
 import { Link } from '../domain/link';
-import { Resource } from '../domain/resource';
+import { IResource, Resource } from '../domain/resource';
 import { Template } from '../domain/template';
 import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
 import { submitToTemplateOrThrowPipe } from '../utils/rxjs.utils';
@@ -34,7 +34,7 @@ export class HalFormService {
           }
         }),
         map((response) => {
-          this._rootResource.next(new Resource(response.body || {}));
+          this.setRootResource(response.body || {});
           return this._rootResource.value;
         }),
         catchError((err) => {
@@ -44,8 +44,8 @@ export class HalFormService {
       );
   }
 
-  protected setRootResource(resource: Resource) {
-    this._rootResource.next(resource);
+  protected setRootResource(resource: IResource) {
+    this._rootResource.next(new Resource(resource));
   }
 
   public getResource(): Observable<Resource> {
