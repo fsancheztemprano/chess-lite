@@ -1,5 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { stubUserManagementServiceProvider } from '../../user-management/services/user-management.service.stub';
+import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
 import { RoleManagementService } from './role-management.service';
 
 describe('RoleManagementService', () => {
@@ -7,7 +8,8 @@ describe('RoleManagementService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubUserManagementServiceProvider],
+      imports: [HttpClientTestingModule],
+      providers: [stubAdministrationServiceProvider],
     });
     service = TestBed.inject(RoleManagementService);
   });

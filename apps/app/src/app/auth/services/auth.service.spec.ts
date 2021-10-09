@@ -9,7 +9,7 @@ describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HalFormClientTestingModule],
-      providers: [stubSessionServiceProvider],
+      providers: [stubSessionServiceProvider, AuthService],
     });
     service = TestBed.inject(AuthService);
   });

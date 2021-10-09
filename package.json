@@ -13,7 +13,7 @@
     "build": "nx run-many --target=build --all",
     "build:frontend": "nx run-many --target=build --projects=app",
     "build:frontend:prod": "nx run-many --target=build --projects=app --skip-nx-cache --output-path=apps/api/target/classes/static/app --deploy-url=/app/ --base-href=/app/",
-    "build:frontend:stats": "nx run-many --target=build --projects=app --statsJson",
+    "build:frontend:stats": "nx run-many --target=build --projects=app --statsJson --namedChunks",
     "build:backend": "nx run-many --target=build --projects=api",
     "package": "nx run-many --target=package --projects=api",
     "test": "nx run-many --target=test --all",

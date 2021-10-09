@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const loadRoleManagementHomeModule = () =>
-  import('./modules/home/role-management-home.module').then((m) => m.RoleManagementHomeModule);
-
 const loadRoleManagementListModule = () =>
   import('./modules/list/role-management-list.module').then((m) => m.RoleManagementListModule);
 
@@ -13,17 +10,12 @@ const loadRoleManagementDetailModule = () =>
 const routes: Routes = [
   {
     path: '',
-    loadChildren: loadRoleManagementHomeModule,
-  },
-  {
-    path: 'list',
     loadChildren: loadRoleManagementListModule,
   },
   {
-    path: 'edit/:roleId',
+    path: ':roleId',
     loadChildren: loadRoleManagementDetailModule,
   },
-  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
-import { AuthService } from './auth/services/auth.service';
 import { GlobalErrorHandler } from './core/errors/global-error-handler.service';
 import { HttpErrorInterceptor } from './core/errors/http-error.interceptor';
 import { TranslocoRootModule } from './core/modules/transloco/transloco-root.module';
@@ -38,7 +37,7 @@ export function initializeApp(appInitService: AppInitializationService) {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
-      deps: [AppInitializationService, HalFormService, TranslationService, AuthService],
+      deps: [AppInitializationService, HalFormService, TranslationService],
       multi: true,
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },

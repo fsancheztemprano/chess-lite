@@ -5,9 +5,10 @@ import { HalFormService, IResource, submitToTemplateOrThrowPipe, Template } from
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Session, SessionService } from '../../core/services/session.service';
+import { AuthModule } from '../auth.module';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: AuthModule,
 })
 export class AuthService {
   constructor(private readonly halFormService: HalFormService, private readonly sessionService: SessionService) {}

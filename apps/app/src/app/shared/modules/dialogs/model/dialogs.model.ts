@@ -1,7 +1,34 @@
+import { ThemePalette } from '@angular/material/core/common-behaviors/color';
+
+interface ButtonData {
+  text?: string;
+  icon?: string;
+  color?: ThemePalette;
+  disabled?: boolean;
+}
+
 export interface InformationDialogData {
   icon?: string;
   title?: string;
   caption?: string;
-  buttonText?: string;
-  buttonIcon?: string;
+  dismissButton?: ButtonData;
+}
+
+export interface ConfirmationDialogData extends InformationDialogData {
+  acceptButton?: ButtonData;
+}
+
+export interface TextInputDialogData extends ConfirmationDialogData {
+  inputs: TextInputDialogInput[];
+}
+
+export interface TextInputDialogInput {
+  key: string;
+  value?: string;
+  options?: {
+    defaultValue?: string;
+    label?: string;
+    placeholder?: string;
+    disabled?: boolean;
+  };
 }

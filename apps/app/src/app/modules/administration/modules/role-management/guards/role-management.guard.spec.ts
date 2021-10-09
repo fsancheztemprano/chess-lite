@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubRoleManagementServiceProvider } from '../services/role-management.service.stub';
+import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
 import { RoleManagementGuard } from './role-management.guard';
 
 describe('RoleManagementGuard', () => {
@@ -7,7 +7,7 @@ describe('RoleManagementGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubRoleManagementServiceProvider],
+      providers: [stubAdministrationServiceProvider],
     });
     guard = TestBed.inject(RoleManagementGuard);
   });

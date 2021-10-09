@@ -12,7 +12,6 @@ export class InformationDialogService {
 
   openDialog(data: InformationDialogData): Observable<void> {
     const dialogRef = this.dialog.open(InformationDialogComponent, {
-      width: '250px',
       data,
     });
 

@@ -3,6 +3,10 @@
   <p>{{ data.caption }}</p>
 </div>
 <div mat-dialog-actions>
-  <mat-icon *ngIf="data?.buttonIcon">{{ data.buttonIcon }}</mat-icon>
-  <button mat-button mat-dialog-close cdkFocusInitial>{{ data.buttonText || 'Close' }}</button>
+  <app-dialog-actions-button
+    [color]="data.dismissButton?.color"
+    [icon]="data.dismissButton?.icon"
+    [disabled]="data.dismissButton?.disabled"
+    [text]="data.dismissButton?.text || 'CLOSE'"
+  ></app-dialog-actions-button>
 </div>

@@ -41,4 +41,4 @@ export class TiledMenuTileComponent {
   }
 }
 
-export type TiledMenuTileData = MenuData
+export type TiledMenuTileData = MenuData;
