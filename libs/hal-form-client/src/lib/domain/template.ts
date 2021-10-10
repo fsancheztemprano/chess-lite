@@ -105,10 +105,10 @@ export class Template implements ITemplate {
             body,
             observe: observe || 'body',
           })
-      .pipe(
-        first(),
-        map((response) => new Resource(response) as any),
-      )
+          .pipe(
+            first(),
+            map((response) => new Resource(response) as any),
+          )
       : throwError(() => new Error(`Un-parsable Url ${link?.href},  ${params}`));
   }
 
