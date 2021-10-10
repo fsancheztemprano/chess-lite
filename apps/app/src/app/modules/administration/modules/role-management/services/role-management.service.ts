@@ -36,9 +36,9 @@ export class RoleManagementService extends HalFormService {
   public fetchOneRole(roleId: string): Observable<Role> {
     return roleId.length
       ? this.getLinkOrThrow(RoleManagementRelations.ROLE_REL).pipe(
-        first(),
-        switchMap((roleLink) => roleLink.get({ roleId })),
-      )
+          first(),
+          switchMap((roleLink) => roleLink.get({ roleId })),
+        )
       : throwError(() => `Invalid id ${roleId}`);
   }
 }
