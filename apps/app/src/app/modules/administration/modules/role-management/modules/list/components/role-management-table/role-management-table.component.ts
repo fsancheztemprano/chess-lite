@@ -94,9 +94,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
                 color: 'primary',
                 disabled: !rolePage.isAllowedTo(RoleManagementRelations.ROLE_CREATE_REL),
               },
-              template: rolePage
-                .getTemplate(RoleManagementRelations.ROLE_CREATE_REL)
-                ?.setProperty('name', 'required', true),
+              template: rolePage.getTemplate(RoleManagementRelations.ROLE_CREATE_REL),
               inputs: [
                 {
                   key: 'name',

@@ -26,7 +26,10 @@ export class RoleManagementDetailNameComponent implements OnInit {
 
   ngOnInit(): void {
     this.role?.pipe(untilDestroyed(this)).subscribe((user) => {
-      setTemplateValidators(this.form, user.getTemplate(RoleManagementRelations.ROLE_UPDATE_REL));
+      setTemplateValidators(
+        this.form,
+        user.getTemplate(RoleManagementRelations.ROLE_UPDATE_REL)?.setProperty('name', 'required', true),
+      );
       this.form.patchValue(user);
     });
   }

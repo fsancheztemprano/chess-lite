@@ -2,9 +2,12 @@ package dev.kurama.api.core.rest.hateoas;
 
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
+import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
+import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ROLE_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.SERVICE_LOGS_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
@@ -77,20 +80,28 @@ public class AdministrationRootController {
   }
 
   private RepresentationModel<?> getUserManagementResource() {
-    return HalModelBuilder.halModelOf(new RootResource())
-      .link(getSelfLink())
-      .link(getUserLink())
-      .link(getUsersLink())
-      .build();
+    HalModelBuilder userManagementResource = HalModelBuilder.halModelOf(new RootResource())
+      .link(getSelfLink());
+    if (hasAuthority(USER_READ)) {
+      userManagementResource
+        .link(getUserLink())
+        .link(getUsersLink());
+    }
+    return userManagementResource.build();
   }
 
   private RepresentationModel<?> getRoleManagementResource() {
-    return HalModelBuilder.halModelOf(new RootResource())
-      .link(getSelfLink())
-      .link(getRoleLink())
-      .link(getRolesLink())
-      .link(getAuthoritiesLink())
-      .build();
+    HalModelBuilder roleManagementResource = HalModelBuilder.halModelOf(new RootResource())
+      .link(getSelfLink());
+    if (hasAuthority(ROLE_READ)) {
+      roleManagementResource
+        .link(getRoleLink())
+        .link(getRolesLink());
+    }
+    if (hasAuthority(AUTHORITY_READ)) {
+      roleManagementResource.link(getAuthoritiesLink());
+    }
+    return roleManagementResource.build();
   }
 
   private @NonNull
