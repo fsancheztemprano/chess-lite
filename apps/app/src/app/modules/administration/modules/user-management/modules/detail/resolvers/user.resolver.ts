@@ -7,10 +7,10 @@ import { UserManagementService } from '../../../services/user-management.service
 @Injectable({
   providedIn: 'root',
 })
-export class UserResolver implements Resolve<User | null> {
+export class UserResolver implements Resolve<User> {
   constructor(private readonly userManagementService: UserManagementService, private readonly router: Router) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<User | null> {
+  resolve(route: ActivatedRouteSnapshot): Observable<User> {
     return this.userManagementService.fetchUser(route.params.userId).pipe(
       catchError(() => {
         this.router.navigate(['administration', 'user-management']);

@@ -1,0 +1,16 @@
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()" *ngIf="role">
+  <mat-form-field>
+    <input matInput placeholder="Name" formControlName="name" required />
+    <mat-error>
+      <app-form-error [control]="form.controls.name" name="name"></app-form-error>
+    </mat-error>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    type="submit"
+    color="primary"
+    [disabled]="!role || form.invalid || !(role | async)?.isAllowedTo('update')"
+  >
+    Change Name
+  </button>
+</form>

@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 import { Role, RoleManagementRelations, RolePage } from '@app/domain';
 import { EMPTY } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { MenuOption } from '../../../../../../../core/modules/context-menu/services/context-menu.service.model';
-import { CoreService } from '../../../../../../../core/services/core.service';
-import { ToasterService } from '../../../../../../../core/services/toaster.service';
-import { ConfirmationDialogService } from '../../../../../../../shared/modules/dialogs/modules/confirmation-dialog/services/confirmation-dialog.service';
-import { TextInputDialogService } from '../../../../../../../shared/modules/dialogs/modules/input-dialog/modules/text-input-dialog/services/text-input-dialog.service';
+import { MenuOption } from '../../../../../../../../core/modules/context-menu/services/context-menu.service.model';
+import { CoreService } from '../../../../../../../../core/services/core.service';
+import { ToasterService } from '../../../../../../../../core/services/toaster.service';
+import { ConfirmationDialogService } from '../../../../../../../../shared/modules/dialogs/modules/confirmation-dialog/services/confirmation-dialog.service';
+import { TextInputDialogService } from '../../../../../../../../shared/modules/dialogs/modules/input-dialog/modules/text-input-dialog/services/text-input-dialog.service';
 import { RoleManagementTableDatasource } from './role-management-table.datasource';
 
 @Component({

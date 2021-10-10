@@ -17,7 +17,6 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
 })
 export class UserManagementAuthoritiesComponent implements OnInit {
   public formArray = new FormArray([]);
-  public form = new FormGroup({ authorities: this.formArray });
 
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
