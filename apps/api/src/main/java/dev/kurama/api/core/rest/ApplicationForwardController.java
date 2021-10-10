@@ -16,7 +16,7 @@ public class ApplicationForwardController {
   static final String INDEX_URL = "/app/index.html";
 
   @RequestMapping(path = {ROOT_URL, APP_URL,
-    "/app/{path:(?!index\\.html$|favicon\\.ico$|main\\..+\\.js$|polyfills\\..+\\.js$|runtime\\..+\\.js$|styles\\..+\\.css$|common\\..+\\.js$|[0-9]{1,4}\\..+\\.js$|assets).+}/**"})
+    "/app/{path:(?!index\\.html$|favicon\\.ico$|main\\..+\\.js$|polyfills\\..+\\.js$|runtime\\..+\\.js$|styles\\..+\\.css$|common\\..+\\.js$|[0-9]{1,4}\\..+\\.js$|assets).+}"})
   public ModelAndView forwardApp() {
     return new ModelAndView("forward:" + INDEX_URL);
   }
