@@ -13,9 +13,11 @@ import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.repository.RoleRepository;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,13 @@ public class RoleService {
 
   @NonNull
   private final AuthorityService authorityService;
+
+  private UserService userService;
+
+  @Autowired
+  public void setUserService(UserService userService) {
+    this.userService = userService;
+  }
 
   @NonNull
   private final RoleChangedEventEmitter roleChangedEventEmitter;
@@ -49,20 +58,24 @@ public class RoleService {
     return roleRepository.findRoleById(id);
   }
 
+  @Transactional
   public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {
     Role role = roleRepository.findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
     if (role.isCoreRole()) {
       throw new ImmutableRoleException(id);
     }
+    userService.reassignToRole(role.getUsers(),
+      getDefaultRole().orElseThrow(() -> new RoleNotFoundException("default")));
     roleRepository.delete(role);
     roleChangedEventEmitter.emitRoleDeletedEvent(role.getId());
   }
 
   public Role create(@Length(min = 3, max = 128) String roleName) throws RoleExistsException {
-    if (findByName(roleName).isPresent()) {
-      throw new RoleExistsException(roleName);
+    var parsedRoleName = parseRoleName(roleName);
+    if (findByName(parsedRoleName).isPresent()) {
+      throw new RoleExistsException(parsedRoleName);
     }
-    var role = roleRepository.save(Role.builder().setRandomUUID().name(parseRoleName(roleName)).build());
+    var role = roleRepository.save(Role.builder().setRandomUUID().name(parsedRoleName).build());
     roleChangedEventEmitter.emitRoleCreatedEvent(role.getId());
     return role;
   }

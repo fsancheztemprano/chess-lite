@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
 import dev.kurama.api.core.constant.UserConstant;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.EmailTemplate;
+import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.domain.UserPrincipal;
@@ -25,6 +26,7 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,6 +35,7 @@ import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -59,8 +62,6 @@ public class UserService implements UserDetailsService {
   @NonNull
   private final LoginAttemptService loginAttemptService;
 
-  @NonNull
-  private final RoleService roleService;
 
   @NonNull
   private final AuthorityService authorityService;
@@ -73,6 +74,13 @@ public class UserService implements UserDetailsService {
 
   @NonNull
   private final UserChangedEventEmitter userChangedEventEmitter;
+
+  private RoleService roleService;
+
+  @Autowired
+  public void setRoleService(RoleService roleService) {
+    this.roleService = roleService;
+  }
 
   @Value("${application.host_url}")
   private String host;
@@ -225,8 +233,7 @@ public class UserService implements UserDetailsService {
     if (ofNullable(userInput.getRoleId()).isPresent() && !userInput.getRoleId().equals(currentUser.getRole().getId())) {
       var role = roleService.findRoleById(userInput.getRoleId())
         .orElseThrow(() -> new RoleNotFoundException(userInput.getRoleId()));
-      currentUser.setRole(role);
-      currentUser.setAuthorities(Sets.newHashSet(role.getAuthorities()));
+      setRoleAndAuthorities(currentUser, role);
       changed = true;
     }
     if (ofNullable(userInput.getAuthorityIds()).isPresent() && (
@@ -287,6 +294,12 @@ public class UserService implements UserDetailsService {
     sendActivationTokenEmail(user, user.getActivationToken().getId());
   }
 
+  public void reassignToRole(Collection<User> users, Role role) {
+    users.forEach(user -> setRoleAndAuthorities(user, role));
+    users = this.userRepository.saveAllAndFlush(users);
+    users.forEach(user -> this.userChangedEventEmitter.emitUserUpdatedEvent(user.getId()));
+  }
+
   private void validateNewUsernameAndEmail(String newUsername, String email)
     throws UsernameExistsException, EmailExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
@@ -322,4 +335,8 @@ public class UserService implements UserDetailsService {
         .build());
   }
 
+  private void setRoleAndAuthorities(User user, Role role) {
+    user.setRole(role);
+    user.setAuthorities(Sets.newHashSet(role.getAuthorities()));
+  }
 }

@@ -1,6 +1,8 @@
 package dev.kurama.api.core.hateoas.assembler;
 
+import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
 import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -42,7 +44,7 @@ public class AuthorityModelAssembler extends DomainModelAssembler<AuthorityModel
   public @NonNull
   PagedModel<AuthorityModel> toPagedModel(Page<AuthorityModel> entities) {
     return (PagedModel<AuthorityModel>) pagedResourcesAssembler.toModel(entities, this)
-      .add(getCollectionModelSelfLinkWithRel(getAllLink(), AUTHORITIES_REL))
+      .addIf(hasAuthority(AUTHORITY_READ), () -> getCollectionModelSelfLinkWithRel(getAllLink(), AUTHORITIES_REL))
       ;
   }
 }

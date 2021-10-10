@@ -8,7 +8,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import dev.kurama.api.core.rest.AuthorityController;
-import java.util.Collection;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.hateoas.Link;
@@ -20,14 +19,9 @@ public class AuthorityModelProcessor extends DomainModelProcessor<AuthorityModel
 
   @Override
   public @NonNull AuthorityModel process(@NonNull AuthorityModel entity) {
-    return entity
-      .addIf(hasAuthority(AUTHORITY_READ), () -> getModelSelfLink(entity.getId()))
-      .addIf(hasAuthority(AUTHORITY_READ), this::getParentLink);
-  }
-
-  public @NonNull Collection<AuthorityModel> process(@NonNull Collection<AuthorityModel> entities) {
-    entities.forEach(this::process);
-    return entities;
+    return !hasAuthority(AUTHORITY_READ) ? entity : entity
+      .add(getModelSelfLink(entity.getId()))
+      .add(getParentLink());
   }
 
   @Override

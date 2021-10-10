@@ -1,9 +1,7 @@
 package dev.kurama.api.core.hateoas.processor;
 
-import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_DELETE;
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
-import static dev.kurama.api.core.utility.AuthorityUtils.hasAllAuthorities;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -27,9 +25,9 @@ public class ServiceLogsModelProcessor extends DomainModelProcessor<ServiceLogsM
 
   @Override
   public @NonNull ServiceLogsModel process(@NonNull ServiceLogsModel entity) {
-    return entity
-      .addIf(hasAuthority(SERVICE_LOGS_READ), () -> getModelSelfLink(""))
-      .mapLinkIf(hasAllAuthorities(SERVICE_LOGS_READ, SERVICE_LOGS_DELETE),
+    return !hasAuthority(SERVICE_LOGS_READ) ? entity : entity
+      .add(getModelSelfLink(""))
+      .mapLinkIf(hasAuthority(SERVICE_LOGS_READ),
         LinkRelation.of(SELF),
         link -> link.andAffordance(getDeleteAffordance()))
       ;

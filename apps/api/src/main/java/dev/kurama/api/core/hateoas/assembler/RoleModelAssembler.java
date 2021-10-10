@@ -1,6 +1,7 @@
 package dev.kurama.api.core.hateoas.assembler;
 
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
@@ -33,9 +34,10 @@ public class RoleModelAssembler extends DomainModelAssembler<RoleModel> {
     return RoleController.class;
   }
 
+  @SneakyThrows
   @Override
   public WebMvcLinkBuilder getSelfLink(String id) {
-    return null;
+    return linkTo(methodOn(getClazz()).get(id));
   }
 
   @Override
@@ -45,7 +47,8 @@ public class RoleModelAssembler extends DomainModelAssembler<RoleModel> {
 
   public @NonNull
   PagedModel<RoleModel> toPagedModel(Page<RoleModel> entities) {
-    return (PagedModel<RoleModel>) pagedResourcesAssembler.toModel(entities, this)
+    PagedModel<RoleModel> roleModels = pagedResourcesAssembler.toModel(entities, this);
+    return !hasAuthority(ROLE_READ) ? roleModels : (PagedModel<RoleModel>) roleModels
       .add(getCollectionModelSelfLinkWithRel(getAllLink(), ROLES_REL))
       .mapLinkIf(hasAuthority(ROLE_CREATE),
         LinkRelation.of(ROLES_REL),

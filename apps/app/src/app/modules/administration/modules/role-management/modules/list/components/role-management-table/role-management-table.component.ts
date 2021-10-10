@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -17,6 +17,7 @@ import { RoleManagementTableDatasource } from './role-management-table.datasourc
   selector: 'app-role-management-table',
   templateUrl: './role-management-table.component.html',
   styleUrls: ['./role-management-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

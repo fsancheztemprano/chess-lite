@@ -1,6 +1,7 @@
 package dev.kurama.api.core.hateoas.assembler;
 
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
+import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
@@ -35,7 +36,8 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
 
   public @NonNull
   PagedModel<UserModel> toPagedModel(Page<UserModel> entities) {
-    return (PagedModel<UserModel>) pagedResourcesAssembler.toModel(entities, this)
+    PagedModel<UserModel> userModels = pagedResourcesAssembler.toModel(entities, this);
+    return !hasAuthority(USER_READ) ? userModels : (PagedModel<UserModel>) userModels
       .add(getCollectionModelSelfLinkWithRel(getAllLink(), USERS_REL))
       .mapLinkIf(hasAuthority(USER_CREATE),
         LinkRelation.of(USERS_REL),
@@ -43,9 +45,10 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
       ;
   }
 
+  @SneakyThrows
   @Override
   public WebMvcLinkBuilder getSelfLink(String id) {
-    return null;
+    return linkTo(methodOn(getClazz()).get(id));
   }
 
   @Override

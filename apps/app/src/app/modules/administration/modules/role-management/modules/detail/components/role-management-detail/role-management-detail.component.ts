@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Role, RoleChangedMessage, RoleChangedMessageAction, RoleChangedMessageDestination } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -13,6 +13,7 @@ import { RoleManagementService } from '../../../../services/role-management.serv
   selector: 'app-role-management-detail',
   templateUrl: './role-management-detail.component.html',
   styleUrls: ['./role-management-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleManagementDetailComponent implements OnDestroy {
   private _role = new BehaviorSubject<Role>(this.route.snapshot.data.role);
