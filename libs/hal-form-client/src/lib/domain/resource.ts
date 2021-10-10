@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { notAllowedError } from '../utils/exceptions.utils';
+import { HalFormsEntityName, noEntityError } from '../utils/exceptions.utils';
 import { HttpMethodEnum } from './http-method.enum';
 import { ILink, Link } from './link';
 import { ITemplate, Template } from './template';
@@ -78,22 +78,8 @@ export class Resource implements IResource {
     if (link) {
       return link;
     } else {
-      let error;
-      if (errorMessage) {
-        if (typeof errorMessage === 'string') {
-          error = Error(errorMessage);
-        } else {
-          error = errorMessage;
-        }
-      } else {
-        error = Error(`Can not find link: ${key}`);
-      }
-      throw error;
+      throw noEntityError(errorMessage, HalFormsEntityName.LINK, key);
     }
-  }
-
-  getAssuredLink(key: string = 'self'): Link {
-    return this.getLink(key) as Link;
   }
 
   hasLink(key: string = 'self'): boolean {
@@ -111,12 +97,17 @@ export class Resource implements IResource {
     return new Resource(this._embedded[key]) as any as T;
   }
 
-  hasEmbedded(key: string): boolean {
-    return !!this.getEmbedded(key);
+  getEmbeddedOrThrow<T = Resource>(key: string, errorMessage?: string | Error): T | T[] {
+    const embedded = this.getEmbedded<T>(key);
+    if (embedded) {
+      return embedded;
+    } else {
+      throw noEntityError(errorMessage, HalFormsEntityName.EMBEDDED, key);
+    }
   }
 
-  getAssuredEmbedded<T = Resource>(key: string): T | T[] {
-    return this.getEmbedded<T>(key) as T | T[];
+  hasEmbedded(key: string): boolean {
+    return !!this.getEmbedded(key);
   }
 
   hasEmbeddedCollection(key: string): boolean {
@@ -125,7 +116,7 @@ export class Resource implements IResource {
   }
 
   getEmbeddedCollection<T = Resource>(key: string): T[] {
-    return (this.getAssuredEmbedded<T>(key) as T[]) || [];
+    return this.getEmbeddedOrThrow<T>(key) as T[];
   }
 
   hasEmbeddedObject(key: string): boolean {
@@ -134,7 +125,7 @@ export class Resource implements IResource {
   }
 
   getEmbeddedObject<T = Resource>(key: string): T {
-    return this.getAssuredEmbedded<T>(key) as T;
+    return this.getEmbeddedOrThrow<T>(key) as T;
   }
 
   getTemplate(key: string = 'default'): Template | null {
@@ -144,8 +135,13 @@ export class Resource implements IResource {
     return this._templates[key];
   }
 
-  getAssuredTemplate(key: string = 'self'): Template {
-    return this.getTemplate(key) as Template;
+  getTemplateOrThrow(key: string = 'default', errorMessage?: string | Error): Template {
+    const template = this.getTemplate(key);
+    if (template) {
+      return template;
+    } else {
+      throw noEntityError(errorMessage, HalFormsEntityName.TEMPLATE, key);
+    }
   }
 
   isAllowedTo(template: string = 'default'): boolean {
@@ -162,8 +158,6 @@ export class Resource implements IResource {
     params?: any,
     observe: 'body' | 'events' | 'response' = 'body',
   ): Observable<Resource> {
-    return this.getTemplate(templateName)
-      ? this.getAssuredTemplate(templateName).submit(payload, params, observe || 'body')
-      : notAllowedError(templateName);
+    return this.getTemplateOrThrow(templateName).submit(payload, params, observe || 'body');
   }
 }

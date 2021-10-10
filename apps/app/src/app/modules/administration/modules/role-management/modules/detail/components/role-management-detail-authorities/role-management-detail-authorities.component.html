@@ -1,0 +1,17 @@
+<ul>
+  <li *ngFor="let control of form.controls">
+    <form [formGroup]="$any(control)">
+      <mat-checkbox formControlName="active">
+        {{ control.value.name }}
+      </mat-checkbox>
+    </form>
+  </li>
+</ul>
+<button
+  mat-raised-button
+  color="primary"
+  (click)="onSubmit()"
+  [disabled]="!role || !(role | async)?.isAllowedTo('update')"
+>
+  Save Authorities
+</button>

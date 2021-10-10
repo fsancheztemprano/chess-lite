@@ -115,4 +115,21 @@ export class Template implements ITemplate {
   public getProperty(name: string): ITemplateProperty | undefined {
     return this.properties?.find((prop) => prop.name === name);
   }
+
+  public setProperty(property: string, key: string, value: any): this {
+    if (!property || !key) {
+      return this;
+    }
+    const find: any = this.getProperty(property);
+
+    if (find) {
+      find[key] = value;
+    } else {
+      if (!this.properties) {
+        this.properties = [];
+      }
+      this.properties.push({ [key]: value } as any);
+    }
+    return this;
+  }
 }

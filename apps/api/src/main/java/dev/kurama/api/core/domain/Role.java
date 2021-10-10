@@ -43,4 +43,8 @@ public class Role extends AbstractEntity implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
   )
   private Set<Authority> authorities = Sets.newHashSet();
+
+  @Builder.Default
+  private boolean isCoreRole = false;
+
 }

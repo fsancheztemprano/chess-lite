@@ -62,6 +62,7 @@ public class RootController {
       .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
+  @SneakyThrows
   private @NonNull
   Link getCurrentUserLink() {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);

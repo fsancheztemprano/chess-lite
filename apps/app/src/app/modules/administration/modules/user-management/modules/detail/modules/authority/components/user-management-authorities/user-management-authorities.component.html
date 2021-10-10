@@ -1,22 +1,17 @@
-<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
-  <div formArrayName="authorities">
-    <ul>
-      <li *ngFor="let control of formArray.controls">
-        <form [formGroup]="$any(control)">
-          <mat-checkbox formControlName="active">
-            {{ control.value.name }}
-          </mat-checkbox>
-        </form>
-      </li>
-    </ul>
-  </div>
-  <button
-    mat-raised-button
-    color="primary"
-    type="submit"
-    *ngLet="userManagementDetailService.canUpdateProfile() | async as canUpdateProfile"
-    [disabled]="!form.valid || !canUpdateProfile"
-  >
-    Save Authorities
-  </button>
-</form>
+<ul>
+  <li *ngFor="let control of formArray.controls">
+    <form [formGroup]="$any(control)">
+      <mat-checkbox formControlName="active">
+        {{ control.value.name }}
+      </mat-checkbox>
+    </form>
+  </li>
+</ul>
+<button
+  mat-raised-button
+  color="primary"
+  (click)="onSubmit()"
+  [disabled]="(userManagementDetailService.canUpdateProfile() | async) === false"
+>
+  Save Authorities
+</button>

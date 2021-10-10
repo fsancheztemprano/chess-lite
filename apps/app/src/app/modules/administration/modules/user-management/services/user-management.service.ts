@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pageable, User, UserManagementRelations, UserPage } from '@app/domain';
-import { HalFormService, Link, noLinkError, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
-import { iif, Observable, of, throwError } from 'rxjs';
-import { first, switchMap, tap } from 'rxjs/operators';
+import { HalFormService, Link } from '@hal-form-client';
+import { Observable } from 'rxjs';
+import { first, switchMap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
@@ -15,39 +15,27 @@ export class UserManagementService extends HalFormService {
     private readonly administrationService: AdministrationService,
   ) {
     super(httpClient, '');
+    this.administrationService
+      .getEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL)
+      .subscribe((resource) => this.setRootResource(resource));
   }
 
-  initialize(): Observable<Resource> {
-    return this.administrationService.rootResource.pipe(
-      switchMap((administrationResource) => {
-        return iif(
-          () => administrationResource.hasEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL),
-          of(administrationResource.getEmbeddedObject<Resource>(UserManagementRelations.USER_MANAGEMENT_REL)),
-          throwError(() => new Error('User Management Initialization Error')),
-        );
-      }),
-      tap((resource) => this.setRootResource(resource)),
+  public fetchUsers(pageable?: Pageable): Observable<UserPage> {
+    return this.getLinkOrThrow(UserManagementRelations.USERS_REL).pipe(
+      first(),
+      switchMap((link: Link) => link.get<UserPage>(pageable)),
     );
   }
 
-  public findUsers(pageable?: Pageable): Observable<UserPage> {
-    return this.getLink(UserManagementRelations.USERS_REL).pipe(
+  public fetchUser(userId: string): Observable<User> {
+    userId = userId || '0';
+    return this.getLinkOrThrow(UserManagementRelations.USER_REL).pipe(
       first(),
-      switchMap((link: Link | null) =>
-        link ? (link.get(pageable) as Observable<UserPage>) : noLinkError(UserManagementRelations.USERS_REL),
-      ),
+      switchMap((userLink) => userLink.get({ userId })),
     );
   }
 
   public createUser(user: User) {
-    return this.rootResource.pipe(submitToTemplateOrThrowPipe(UserManagementRelations.USER_CREATE_REL, user));
-  }
-
-  public findUser(userId: string): Observable<User> {
-    userId = userId || '0';
-    return this.getLink(UserManagementRelations.USER_REL).pipe(
-      first(),
-      switchMap((userLink) => (userLink ? userLink.get({ userId }) : noLinkError(UserManagementRelations.USER_REL))),
-    );
+    return this.submitToTemplateOrThrow(UserManagementRelations.USER_CREATE_REL, user);
   }
 }

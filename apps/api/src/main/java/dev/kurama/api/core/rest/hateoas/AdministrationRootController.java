@@ -1,15 +1,24 @@
 package dev.kurama.api.core.rest.hateoas;
 
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
+import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
+import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
+import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ROLE_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.SERVICE_LOGS_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
+import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLE_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -22,7 +31,6 @@ import dev.kurama.api.core.rest.AuthorityController;
 import dev.kurama.api.core.rest.RoleController;
 import dev.kurama.api.core.rest.ServiceLogsController;
 import dev.kurama.api.core.rest.UserController;
-import dev.kurama.api.core.utility.AuthorityUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -54,24 +62,46 @@ public class AdministrationRootController {
   public ResponseEntity<RepresentationModel<?>> root() {
     HalModelBuilder rootModel = HalModelBuilder.emptyHalModel()
       .link(getSelfLink())
-      .link(getParentLink())
-      .link(getServiceLogsLink());
+      .link(getParentLink());
 
-    if (AuthorityUtils.hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
+    if (hasAuthority(SERVICE_LOGS_READ)) {
+      rootModel.link(getServiceLogsLink());
+    }
+
+    if (hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
       rootModel.embed(getUserManagementResource(), LinkRelation.of(USER_MANAGEMENT_ROOT_REL));
+    }
+
+    if (hasAuthority(ADMIN_ROLE_MANAGEMENT_ROOT)) {
+      rootModel.embed(getRoleManagementResource(), LinkRelation.of(ROLE_MANAGEMENT_ROOT_REL));
     }
 
     return ok(rootModel.build());
   }
 
   private RepresentationModel<?> getUserManagementResource() {
-    return HalModelBuilder.halModelOf(new RootResource())
-      .link(getSelfLink())
-      .link(getUserLink())
-      .link(getUsersLink())
-      .link(getRolesLink())
-      .link(getAuthoritiesLink())
-      .build();
+    HalModelBuilder userManagementResource = HalModelBuilder.halModelOf(new RootResource())
+      .link(getSelfLink());
+    if (hasAuthority(USER_READ)) {
+      userManagementResource
+        .link(getUserLink())
+        .link(getUsersLink());
+    }
+    return userManagementResource.build();
+  }
+
+  private RepresentationModel<?> getRoleManagementResource() {
+    HalModelBuilder roleManagementResource = HalModelBuilder.halModelOf(new RootResource())
+      .link(getSelfLink());
+    if (hasAuthority(ROLE_READ)) {
+      roleManagementResource
+        .link(getRoleLink())
+        .link(getRolesLink());
+    }
+    if (hasAuthority(AUTHORITY_READ)) {
+      roleManagementResource.link(getAuthoritiesLink());
+    }
+    return roleManagementResource.build();
   }
 
   private @NonNull
@@ -91,10 +121,10 @@ public class AdministrationRootController {
       .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 
+  @SneakyThrows
   private @NonNull
   Link getUserLink() {
-    return linkTo(methodOn(UserController.class).get(null)).withRel(USER_REL)
-      .andAffordance(afford(methodOn(UserController.class).get(null)));
+    return linkTo(methodOn(UserController.class).get(null)).withRel(USER_REL);
   }
 
   @SneakyThrows
@@ -102,7 +132,7 @@ public class AdministrationRootController {
   Link getUsersLink() {
     Link link = linkTo(methodOn(UserController.class).getAll(null)).withRel(USERS_REL);
     Link usersLink = getExpandedLink(link);
-    if (AuthorityUtils.hasAuthority(USER_CREATE)) {
+    if (hasAuthority(USER_CREATE)) {
       usersLink = usersLink.andAffordance(afford(methodOn(UserController.class).create(null)));
     }
     return usersLink;
@@ -110,8 +140,19 @@ public class AdministrationRootController {
 
   @SneakyThrows
   private @NonNull
+  Link getRoleLink() {
+    return linkTo(methodOn(RoleController.class).get(null)).withRel(ROLE_REL);
+  }
+
+  @SneakyThrows
+  private @NonNull
   Link getRolesLink() {
-    return getExpandedLink(linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL));
+    Link link = linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL);
+    Link rolesLink = getExpandedLink(link);
+    if (hasAuthority(ROLE_CREATE)) {
+      rolesLink = rolesLink.andAffordance(afford(methodOn(RoleController.class).create(null)));
+    }
+    return rolesLink;
   }
 
   @SneakyThrows
@@ -120,7 +161,6 @@ public class AdministrationRootController {
     return getExpandedLink(
       linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL));
   }
-
 
   private Link getExpandedLink(Link link) {
     UriComponentsBuilder builder = fromUri(link.getTemplate().expand());

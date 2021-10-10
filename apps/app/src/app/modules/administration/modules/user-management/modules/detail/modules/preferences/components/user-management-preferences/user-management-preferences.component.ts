@@ -35,7 +35,7 @@ export class UserManagementPreferencesComponent {
   ) {
     this.userManagementDetailService.fetchUserPreferences().subscribe((userPreferences: UserPreferences) => {
       this._setUserPreferences(userPreferences);
-      this._subscribeToUserPreferencesChanges(userPreferences.id || '');
+      this._subscribeToUserPreferencesChanges(userPreferences);
     });
   }
 
@@ -51,16 +51,16 @@ export class UserManagementPreferencesComponent {
     this.form.patchValue(userPreferences);
   }
 
-  private _subscribeToUserPreferencesChanges(userPreferencesId: string) {
+  private _subscribeToUserPreferencesChanges(userPreferences: UserPreferences) {
     this.messageService
       .subscribeToMessages<UserPreferencesChangedMessage>(
-        new UserPreferencesChangedMessageDestination(userPreferencesId),
+        new UserPreferencesChangedMessageDestination(userPreferences.id),
       )
       .pipe(
         untilDestroyed(this),
         switchMap(() => this.userManagementDetailService.fetchUserPreferences()),
       )
-      .subscribe((userPreferences) => this._setUserPreferences(userPreferences));
+      .subscribe((fetchedUserPreferences) => this._setUserPreferences(fetchedUserPreferences));
   }
 
   isAllowedToUpdateUserPreferences() {

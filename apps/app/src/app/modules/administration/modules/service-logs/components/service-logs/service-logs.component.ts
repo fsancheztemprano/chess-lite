@@ -58,9 +58,7 @@ export class ServiceLogsComponent implements OnDestroy {
   }
 
   private refreshServiceLogs() {
-    return this.serviceLogsService.getServiceLogs().subscribe((serviceLogs) => {
-      this.serviceLogs.next(serviceLogs);
-    });
+    return this.serviceLogsService.getServiceLogs().subscribe((serviceLogs) => this.serviceLogs.next(serviceLogs));
   }
 
   private deleteServiceLogs() {

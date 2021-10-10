@@ -2,15 +2,14 @@ package dev.kurama.api.core.service;
 
 import static org.springframework.data.mapping.Alias.ofNullable;
 
-import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserPreferencesChangedEventEmitter;
+import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.repository.UserPreferencesRepository;
-import dev.kurama.api.core.repository.UserRepository;
-import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -21,50 +20,47 @@ public class UserPreferencesService {
   private final UserPreferencesRepository userPreferencesRepository;
 
   @NonNull
-  private final UserRepository userRepository;
-
-  @NonNull
   private final UserPreferencesChangedEventEmitter userPreferencesChangedEventEmitter;
 
 
-  public Optional<UserPreferences> findUserPreferencesById(String userId) {
-    return userPreferencesRepository.findUserPreferencesById(userId);
+  public UserPreferences findUserPreferencesById(String userPreferencesId) throws DomainEntityNotFoundException {
+    return userPreferencesRepository.findUserPreferencesById(userPreferencesId)
+      .orElseThrow(() -> new DomainEntityNotFoundException(userPreferencesId, UserPreferences.class));
   }
 
-  public void createUserPreferences(User user) {
-    UserPreferences userPreferences =
-      UserPreferences.builder()
-        .setRandomUUID()
-        .user(user)
-        .build();
-    userPreferencesRepository.save(userPreferences);
-  }
-
-  public Optional<UserPreferences> findUserPreferencesByUsername(String username) {
-    var user = userRepository.findUserByUsername(username).orElseThrow();
-    return userPreferencesRepository.findUserPreferencesByUser(user);
-  }
-
-  public UserPreferences updateUserPreferences(String userPreferencesId, UserPreferencesInput userPreferencesInput) {
-    var userPreferences = userPreferencesRepository.findUserPreferencesById(userPreferencesId).orElseThrow();
+  public UserPreferences updateUserPreferences(String userPreferencesId, UserPreferencesInput userPreferencesInput)
+    throws DomainEntityNotFoundException {
+    var userPreferences = findUserPreferencesById(userPreferencesId);
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }
 
-  public UserPreferences updateUserPreferencesByUsername(String username, UserPreferencesInput userPreferencesInput) {
-    var userPreferences = findUserPreferencesByUsername(username).orElseThrow();
+  public UserPreferences findUserPreferencesByUserId(String userId) {
+    return userPreferencesRepository.findUserPreferencesByUserId(userId)
+      .orElseThrow(() -> new UsernameNotFoundException(userId));
+  }
+
+  public UserPreferences updateUserPreferencesByUserId(String username, UserPreferencesInput userPreferencesInput) {
+    var userPreferences = findUserPreferencesByUserId(username);
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }
 
   private UserPreferences patchUserPreferences(UserPreferences userPreferences,
     UserPreferencesInput userPreferencesInput) {
-    if (ofNullable(userPreferencesInput.getDarkMode()).isPresent()) {
+    var changes = false;
+    if (ofNullable(userPreferencesInput.getDarkMode()).isPresent() &&
+      !userPreferencesInput.getDarkMode().equals(userPreferences.isDarkMode())) {
       userPreferences.setDarkMode(userPreferencesInput.getDarkMode());
+      changes = true;
     }
-    if (ofNullable(userPreferencesInput.getContentLanguage()).isPresent()) {
+    if (ofNullable(userPreferencesInput.getContentLanguage()).isPresent() &&
+      !userPreferencesInput.getContentLanguage().equals(userPreferences.getContentLanguage())) {
       userPreferences.setContentLanguage(userPreferencesInput.getContentLanguage());
+      changes = true;
     }
-    userPreferences = userPreferencesRepository.save(userPreferences);
-    userPreferencesChangedEventEmitter.emitUserPreferencesUpdatedEvent(userPreferences.getId());
+    if (changes) {
+      userPreferences = userPreferencesRepository.save(userPreferences);
+      userPreferencesChangedEventEmitter.emitUserPreferencesUpdatedEvent(userPreferences.getId());
+    }
     return userPreferences;
   }
 }

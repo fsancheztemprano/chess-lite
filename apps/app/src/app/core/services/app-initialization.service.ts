@@ -1,24 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HalFormService } from '@hal-form-client';
-import { forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { SessionService } from './session.service';
-import { TranslationService } from './translation.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppInitializationService {
-  constructor(
-    private readonly halFormService: HalFormService,
-    private readonly sessionService: SessionService,
-    private readonly translationService: TranslationService,
-  ) {}
+  constructor(private readonly halFormService: HalFormService, private readonly sessionService: SessionService) {}
 
   initialize(): Observable<unknown> {
-    return forkJoin([
-      this.translationService.initialize(),
-      this.halFormService.initialize().pipe(switchMap(() => this.sessionService.initialize())),
-    ]);
+    return this.halFormService.initialize().pipe(switchMap(() => this.sessionService.initialize()));
   }
 }

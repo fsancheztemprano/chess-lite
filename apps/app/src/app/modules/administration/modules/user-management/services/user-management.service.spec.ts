@@ -9,7 +9,7 @@ describe('UserManagementService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [stubAdministrationServiceProvider, stubAdministrationServiceProvider],
+      providers: [stubAdministrationServiceProvider],
     });
     service = TestBed.inject(UserManagementService);
   });

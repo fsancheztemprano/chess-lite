@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthoritiesResolver } from '../../../../resolvers/authorities.resolver';
-import { RolesResolver } from '../../../../resolvers/roles.resolver';
+import { AuthoritiesResolver } from '../../../../../role-management/resolvers/authorities.resolver';
+import { RolesResolver } from '../../../../../role-management/resolvers/roles.resolver';
 import { UserManagementAuthorityComponent } from './components/user-management-authority/user-management-authority.component';
 
 const routes: Routes = [

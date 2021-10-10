@@ -5,9 +5,10 @@ import { HalFormService, IResource, submitToTemplateOrThrowPipe, Template } from
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Session, SessionService } from '../../core/services/session.service';
+import { AuthModule } from '../auth.module';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: AuthModule,
 })
 export class AuthService {
   constructor(private readonly halFormService: HalFormService, private readonly sessionService: SessionService) {}
@@ -21,7 +22,7 @@ export class AuthService {
   }
 
   public login(loginInput: LoginInput): Observable<User | null> {
-    return this.halFormService.rootResource.pipe(
+    return this.halFormService.getResource().pipe(
       submitToTemplateOrThrowPipe(AuthRelations.LOGIN_RELATION, loginInput, undefined, 'response'),
       map((response: HttpResponse<IResource>) => {
         const token = response?.headers?.get(HttpHeaders.JWT_TOKEN) || '';
@@ -41,8 +42,8 @@ export class AuthService {
   }
 
   public signup(signupInput: SignupInput): Observable<User | null> {
-    return this.halFormService.rootResource.pipe(
-      submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, signupInput),
-    );
+    return this.halFormService
+      .getResource()
+      .pipe(submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, signupInput));
   }
 }

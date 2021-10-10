@@ -30,8 +30,8 @@ import { UserManagementService } from '../../../../services/user-management.serv
   providedIn: 'root',
 })
 export class UserManagementTableDatasource extends DataSource<User> {
-  paginator: MatPaginator | undefined;
-  sort: MatSort | undefined;
+  public paginator: MatPaginator | undefined;
+  public sort: MatSort | undefined;
   private _userPage$: BehaviorSubject<UserPage> = new BehaviorSubject<UserPage>(new UserPage({}));
   private _userListChanges: Subject<void> = new Subject();
 
@@ -52,7 +52,7 @@ export class UserManagementTableDatasource extends DataSource<User> {
           this.paginator.page.pipe(
             startWith({
               pageIndex: this.paginator.pageIndex,
-              paseSize: this.paginator.pageSize,
+              pageSize: this.paginator.pageSize,
             } as unknown as PageEvent),
           ),
           this.sort.sortChange.pipe(
@@ -64,16 +64,14 @@ export class UserManagementTableDatasource extends DataSource<User> {
           this._userListChanges.asObservable().pipe(startWith(null)),
         ]).pipe(
           switchMap(([page, sort]: [PageEvent, Sort, unknown]) => {
-            return this.userManagementService.findUsers({
+            return this.userManagementService.fetchUsers({
               page: page.pageIndex,
               size: page.pageSize,
               sort: `${sort.active},${sort.direction}`,
             });
           }),
           tap((userPage: UserPage) => this._userPage$.next(userPage)),
-          map(
-            (userPage: UserPage) => userPage.getEmbeddedCollection(UserManagementRelations.USER_MODEL_LIST_REL) || [],
-          ),
+          map((userPage: UserPage) => userPage.getEmbeddedCollection(UserManagementRelations.USER_MODEL_LIST_REL)),
         )
       : throwError(() => 'Please set the paginator and sort on the data source before connecting.');
   }

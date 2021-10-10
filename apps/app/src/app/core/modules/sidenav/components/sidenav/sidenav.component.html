@@ -6,9 +6,10 @@
     [attr.role]="isMobile ? 'dialog' : 'navigation'"
     [mode]="isMobile ? 'over' : 'side'"
     [opened]="this.sidenavService.isOpen$ | async"
+    *transloco="let t"
   >
     <mat-toolbar>
-      {{ 'WELCOME' | translate }}&nbsp;
+      {{ t('WELCOME') }}&nbsp;
       <span *ngIf="userService.getUser() | async as user">{{ user.firstname || user.username }}</span>
     </mat-toolbar>
     <mat-nav-list>

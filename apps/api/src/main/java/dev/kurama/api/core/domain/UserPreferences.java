@@ -23,7 +23,7 @@ public class UserPreferences extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "userPreferences", fetch = FetchType.LAZY)
   private User user;
 
   @Builder.Default

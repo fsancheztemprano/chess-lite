@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, HostListener, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { MenuData } from '@app/domain';
 
 @Component({
   selector: 'app-tiled-menu-tile',
@@ -41,10 +41,4 @@ export class TiledMenuTileComponent {
   }
 }
 
-export interface TiledMenuTileData {
-  icon: string;
-  title: string;
-  subtitle?: string;
-  link: string;
-  canShow?: Observable<boolean>;
-}
+export type TiledMenuTileData = MenuData;

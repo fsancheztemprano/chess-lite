@@ -39,12 +39,11 @@ public class ActivationTokenService {
         activationTokenRepository.deleteAllByUser(user);
       }
     }
-    return activationTokenRepository.saveAndFlush(ActivationToken.builder()
+    return ActivationToken.builder()
       .setRandomUUID()
       .attempts(0)
       .created(new Date())
-      .user(user)
-      .build());
+      .build();
   }
 
   public ActivationToken findActivationToken(String token)

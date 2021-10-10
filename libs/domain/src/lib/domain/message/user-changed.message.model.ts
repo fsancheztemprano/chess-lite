@@ -18,7 +18,7 @@ export class UsersListChangedMessageDestination implements MessageDestination {
 }
 
 export class UserChangedMessageDestination implements MessageDestination {
-  constructor(private readonly userId: string) {}
+  constructor(private readonly userId: string = '0') {}
 
   getDestination(): string {
     return `/ami/user/${this.userId}`;

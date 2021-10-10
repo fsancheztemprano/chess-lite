@@ -33,7 +33,7 @@ export class UserManagementDetailService {
   ) {}
 
   public fetchUser(userId: string) {
-    return this.userManagementService.findUser(userId);
+    return this.userManagementService.fetchUser(userId);
   }
 
   public initialize(userId: string): Observable<User> {

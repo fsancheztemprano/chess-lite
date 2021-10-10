@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  <p>{{ data.caption }}</p>
+  <form [formGroup]="form">
+    <ng-container *ngFor="let input of data.inputs">
+      <mat-form-field appearance="fill">
+        <mat-label>{{ input.options?.label }}</mat-label>
+        <input matInput [placeholder]="input.options?.placeholder || ''" [formControlName]="input.key" />
+      </mat-form-field>
+    </ng-container>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <app-dialog-actions-button
+    [color]="data.dismissButton?.color"
+    [icon]="data.dismissButton?.icon"
+    [disabled]="data.dismissButton?.disabled"
+    [text]="data.dismissButton?.text || 'CLOSE'"
+  ></app-dialog-actions-button>
+  <app-dialog-actions-button
+    [color]="data.acceptButton?.color"
+    [icon]="data.acceptButton?.icon"
+    [disabled]="data.acceptButton?.disabled || form.invalid"
+    [text]="data.acceptButton?.text || 'ACCEPT'"
+    [output]="form.getRawValue()"
+  ></app-dialog-actions-button>
+</div>

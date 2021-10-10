@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubUserManagementServiceProvider } from '../services/user-management.service.stub';
+import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
 import { UserManagementGuard } from './user-management.guard';
 
 describe('UserManagementGuard', () => {
@@ -7,7 +7,7 @@ describe('UserManagementGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubUserManagementServiceProvider],
+      providers: [stubAdministrationServiceProvider],
     });
     guard = TestBed.inject(UserManagementGuard);
   });

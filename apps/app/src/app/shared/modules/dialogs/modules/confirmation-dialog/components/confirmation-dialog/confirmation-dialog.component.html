@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  <p>{{ data.caption }}</p>
+</div>
+<div mat-dialog-actions>
+  <app-dialog-actions-button
+    [color]="data.dismissButton?.color"
+    [icon]="data.dismissButton?.icon"
+    [disabled]="data.dismissButton?.disabled"
+    [text]="data.dismissButton?.text || 'CLOSE'"
+  ></app-dialog-actions-button>
+  <app-dialog-actions-button
+    [color]="data.acceptButton?.color"
+    [icon]="data.acceptButton?.icon"
+    [disabled]="data.acceptButton?.disabled"
+    [text]="data.acceptButton?.text || 'ACCEPT'"
+    [output]="true"
+  ></app-dialog-actions-button>
+</div>

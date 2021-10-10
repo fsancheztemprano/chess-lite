@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PreferencesService } from './preferences.service';
 import { Language } from './translation.service.model';
@@ -18,17 +18,12 @@ export class TranslationService {
   private readonly _activeLanguage$ = new BehaviorSubject<Language>(this.DEFAULT_LANGUAGE);
 
   constructor(
-    private readonly translateService: TranslateService,
+    private readonly translateService: TranslocoService,
     private readonly preferencesService: PreferencesService,
   ) {
     this.preferencesService.contentLanguage
       .pipe(untilDestroyed(this))
       .subscribe((language) => this.setActiveLanguage(language));
-  }
-
-  initialize() {
-    this.translateService.setDefaultLang(this.DEFAULT_LANGUAGE.id);
-    return this.setActiveLanguage(this.translateService.getBrowserLang());
   }
 
   get availableLanguages(): Language[] {
@@ -43,10 +38,10 @@ export class TranslationService {
     return this._activeLanguage$.asObservable();
   }
 
-  setActiveLanguage(language: string | undefined): Observable<unknown> {
+  setActiveLanguage(language: string | undefined) {
     const validLanguage =
       (language && this.availableLanguages.find((lang) => lang.id === language)) || this.defaultLanguage;
     this._activeLanguage$.next(validLanguage);
-    return this.translateService.use(validLanguage.id);
+    this.translateService.setActiveLang(validLanguage.id);
   }
 }

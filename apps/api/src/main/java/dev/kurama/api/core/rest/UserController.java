@@ -7,10 +7,10 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
-import dev.kurama.api.core.exception.domain.EmailExistsException;
-import dev.kurama.api.core.exception.domain.RoleNotFoundException;
-import dev.kurama.api.core.exception.domain.UserNotFoundException;
-import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
+import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
@@ -41,7 +41,7 @@ public class UserController {
 
   @GetMapping("/{userId}")
   @PreAuthorize("hasAuthority('user:read')")
-  public ResponseEntity<UserModel> get(@PathVariable("userId") String userId) {
+  public ResponseEntity<UserModel> get(@PathVariable("userId") String userId) throws UserNotFoundException {
     return ok().body(userFacade.findByUserId(userId));
   }
 

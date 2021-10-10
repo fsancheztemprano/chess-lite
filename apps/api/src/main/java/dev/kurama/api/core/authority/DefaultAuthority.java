@@ -1,8 +1,6 @@
 package dev.kurama.api.core.authority;
 
 import com.google.common.collect.Lists;
-import dev.kurama.api.poc.authority.AuthorAuthority;
-import dev.kurama.api.poc.authority.BookAuthority;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -31,15 +29,6 @@ public class DefaultAuthority {
 
 
   public static final List<String> AUTHORITIES = Lists.newArrayList(
-    BookAuthority.BOOK_READ,
-    BookAuthority.BOOK_UPDATE,
-    BookAuthority.BOOK_DELETE,
-    BookAuthority.BOOK_CREATE,
-    AuthorAuthority.AUTHOR_READ,
-    AuthorAuthority.AUTHOR_UPDATE,
-    AuthorAuthority.AUTHOR_DELETE,
-    AuthorAuthority.AUTHOR_CREATE,
-
     UserAuthority.PROFILE_UPDATE,
     UserAuthority.PROFILE_READ,
     UserAuthority.PROFILE_DELETE,
@@ -64,6 +53,7 @@ public class DefaultAuthority {
 
     AdminAuthority.ADMIN_ROOT,
     AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
+    AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
 
     ServiceLogsAuthority.SERVICE_LOGS_READ,
     ServiceLogsAuthority.SERVICE_LOGS_DELETE

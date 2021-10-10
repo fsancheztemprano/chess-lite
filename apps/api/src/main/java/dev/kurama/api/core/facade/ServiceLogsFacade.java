@@ -1,6 +1,5 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.hateoas.assembler.ServiceLogsModelAssembler;
 import dev.kurama.api.core.hateoas.model.ServiceLogsModel;
 import dev.kurama.api.core.service.ServiceLogsService;
 import lombok.NonNull;
@@ -14,14 +13,11 @@ public class ServiceLogsFacade {
   @NonNull
   private final ServiceLogsService serviceLogsService;
 
-  @NonNull
-  private final ServiceLogsModelAssembler serviceLogsModelAssembler;
-
   public ServiceLogsModel getServiceLogs() {
-    return serviceLogsModelAssembler.toModel(serviceLogsService.getServiceLogs());
+    return serviceLogsService.getServiceLogs();
   }
 
   public ServiceLogsModel deleteServiceLogs() {
-    return serviceLogsModelAssembler.toModel(serviceLogsService.deleteServiceLogs());
+    return serviceLogsService.deleteServiceLogs();
   }
 }

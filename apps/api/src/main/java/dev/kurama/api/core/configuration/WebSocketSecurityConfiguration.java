@@ -1,5 +1,6 @@
 package dev.kurama.api.core.configuration;
 
+import dev.kurama.api.core.authority.RoleAuthority;
 import dev.kurama.api.core.authority.UserAuthority;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
@@ -14,6 +15,7 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
       .simpSubscribeDestMatchers("/ami/user").hasAuthority(UserAuthority.USER_READ)
       .simpSubscribeDestMatchers("/ami/user/**").hasAuthority(UserAuthority.PROFILE_READ)
       .simpSubscribeDestMatchers("/ami/user-preferences/**").hasAuthority(UserAuthority.PROFILE_READ)
+      .simpSubscribeDestMatchers("/ami/role/**").hasAuthority(RoleAuthority.ROLE_READ)
       .anyMessage().authenticated();
   }
 

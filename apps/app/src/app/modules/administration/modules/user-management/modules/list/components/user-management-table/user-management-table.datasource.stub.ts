@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { UserPage } from '@app/domain';
+import { BehaviorSubject, of } from 'rxjs';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 
 @Injectable({ providedIn: 'root' })
 export class StubUserManagementTableDatasource implements Partial<UserManagementTableDatasource> {
+  userPage$ = of({ isAllowedTo: () => true }) as BehaviorSubject<UserPage>;
   connect = () => of([]);
 }
 

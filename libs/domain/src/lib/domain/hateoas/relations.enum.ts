@@ -12,16 +12,21 @@ export enum UserManagementRelations {
   USER_MANAGEMENT_REL = 'user-management',
   USER_REL = 'user',
   USERS_REL = 'users',
-  USER_PREFERENCES_REL = 'user-preferences',
   USER_MODEL_LIST_REL = 'userModels',
   USER_CREATE_REL = 'create',
   USER_UPDATE_REL = 'update',
   USER_DELETE_REL = 'delete',
+  USER_PREFERENCES_REL = 'user-preferences',
 }
 
 export enum RoleManagementRelations {
+  ROLE_MANAGEMENT_REL = 'role-management',
+  ROLE_REL = 'role',
   ROLES_REL = 'roles',
   ROLE_MODEL_LIST_REL = 'roleModels',
+  ROLE_CREATE_REL = 'create',
+  ROLE_UPDATE_REL = 'update',
+  ROLE_DELETE_REL = 'delete',
 }
 
 export enum AuthorityManagementRelations {
@@ -47,4 +52,8 @@ export enum ActivationTokenRelations {
 
 export enum ServiceLogsRelations {
   SERVICE_LOGS_REL = 'service-logs',
+}
+
+export enum GlobalSettingsRelations {
+  GLOBAL_SETTINGS_REL = 'global-settings',
 }

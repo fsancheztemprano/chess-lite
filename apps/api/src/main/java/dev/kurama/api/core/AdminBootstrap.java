@@ -4,8 +4,8 @@ package dev.kurama.api.core;
 import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
-import dev.kurama.api.core.exception.domain.EmailExistsException;
-import dev.kurama.api.core.exception.domain.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
+import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.RoleRepository;
@@ -42,12 +42,21 @@ public class AdminBootstrap implements CommandLineRunner {
       authorityRepository.saveAllAndFlush(
         DefaultAuthority.AUTHORITIES.stream()
           .filter(authority -> authorityRepository.findByName(authority).isEmpty())
-          .map(authority -> Authority.builder().setRandomUUID().name(authority).build())
+          .map(authority ->
+            Authority.builder()
+              .setRandomUUID()
+              .name(authority)
+              .build())
           .collect(Collectors.toList()));
 
       List<Authority> authorities = authorityRepository.findAll();
       roleRepository.saveAllAndFlush(DefaultAuthority.ROLES.stream().map(roleName -> {
-        Role role = roleRepository.findByName(roleName).orElse(Role.builder().setRandomUUID().name(roleName).build());
+        Role role = roleRepository.findByName(roleName).orElse(
+          Role.builder()
+            .setRandomUUID()
+            .name(roleName)
+            .isCoreRole(true)
+            .build());
         role.getAuthorities().addAll(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()).stream().map(
           roleAuthority -> authorities.stream().filter(authority -> roleAuthority.contains(authority.getName()))
             .findFirst().orElseThrow()).collect(Collectors.toSet()));
@@ -70,6 +79,7 @@ public class AdminBootstrap implements CommandLineRunner {
         );
       }
     } catch (Exception e) {
+      e.printStackTrace();
       log.atWarning().log("Bootstrap Init Failed");
     }
   }

@@ -7,12 +7,14 @@
   <img alt="{{ activeLanguage.id }}" src="https://www.countryflags.io/{{ activeLanguage.iso3166 }}/shiny/24.png" />
 </button>
 <mat-menu #menu="matMenu" classList="locale-picker-menu">
-  <button
-    mat-menu-item
-    *ngFor="let language of translationService.availableLanguages"
-    (click)="translationService.setActiveLanguage(language.id)"
-  >
-    <img alt="{{ language.id }}" src="https://www.countryflags.io/{{ language.iso3166 }}/shiny/24.png" />
-    <span>{{ 'LOCALE.' + language.id | translate }}</span>
-  </button>
+  <ng-container *transloco="let t">
+    <button
+      mat-menu-item
+      *ngFor="let language of translationService.availableLanguages"
+      (click)="translationService.setActiveLanguage(language.id)"
+    >
+      <img alt="{{ language.id }}" src="https://www.countryflags.io/{{ language.iso3166 }}/shiny/24.png" />
+      <span>{{ t('LOCALE.' + language.id) }}</span>
+    </button>
+  </ng-container>
 </mat-menu>

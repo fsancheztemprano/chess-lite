@@ -19,11 +19,25 @@ export class AdministrationHomeComponent implements OnDestroy {
       canShow: this.administrationService.hasUserManagementEmbedded(),
     },
     {
+      icon: 'military_tech',
+      title: 'Role Management',
+      subtitle: 'Manage Roles',
+      link: 'role-management',
+      canShow: this.administrationService.hasRoleManagementEmbedded(),
+    },
+    {
       icon: 'cabin',
       title: 'Service Logs',
       subtitle: 'Have a look at the service logs.',
       link: 'service-logs',
       canShow: this.administrationService.hasServiceLogsLink(),
+    },
+    {
+      icon: 'vpn_lock',
+      title: 'Global Settings',
+      subtitle: 'Global Settings',
+      link: 'global-settings',
+      canShow: this.administrationService.hasGlobalSettingsLink(),
     },
   ];
 

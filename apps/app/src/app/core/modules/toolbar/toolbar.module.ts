@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { IsMobileModule } from '../../../shared/modules/is-mobile/is-mobile.module';
 import { ContextMenuModule } from '../context-menu/context-menu.module';
 import { LocalePickerComponent } from './components/locale-picker/locale-picker.component';
@@ -16,6 +16,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
   declarations: [ThemePickerComponent, LocalePickerComponent, ToolbarComponent],
   imports: [
     CommonModule,
+    TranslocoModule,
     MatToolbarModule,
     MatIconModule,
     ContextMenuModule,
@@ -23,7 +24,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     MatButtonModule,
     MatSlideToggleModule,
     MatMenuModule,
-    TranslateModule,
   ],
   exports: [ToolbarComponent],
 })
