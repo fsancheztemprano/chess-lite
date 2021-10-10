@@ -1,11 +1,11 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>
   <p>{{ data.caption }}</p>
-  <form>
-    <ng-container *ngFor="let control of inputs.controls">
-      <mat-form-field appearance="fill" *ngLet="$any(control).controls as input">
-        <mat-label>{{ input.options.value.label }}</mat-label>
-        <input matInput [placeholder]="input.options.value.placeholder" [formControl]="input.value" />
+  <form [formGroup]="form">
+    <ng-container *ngFor="let input of data.inputs">
+      <mat-form-field appearance="fill">
+        <mat-label>{{ input.options?.label }}</mat-label>
+        <input matInput [placeholder]="input.options?.placeholder || ''" [formControlName]="input.key" />
       </mat-form-field>
     </ng-container>
   </form>
@@ -20,8 +20,8 @@
   <app-dialog-actions-button
     [color]="data.acceptButton?.color"
     [icon]="data.acceptButton?.icon"
-    [disabled]="data.acceptButton?.disabled"
+    [disabled]="data.acceptButton?.disabled || form.invalid"
     [text]="data.acceptButton?.text || 'ACCEPT'"
-    [output]="inputs.getRawValue()"
+    [output]="form.getRawValue()"
   ></app-dialog-actions-button>
 </div>

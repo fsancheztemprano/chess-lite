@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { setTemplateValidators } from '../../../../../../../../utils/forms/validators/set-template.validators';
 import { TextInputDialogData } from '../../../../../../model/dialogs.model';
 
 @Component({
@@ -10,20 +11,19 @@ import { TextInputDialogData } from '../../../../../../model/dialogs.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextInputDialogComponent {
-  inputs = new FormArray([]);
+  form = new FormGroup({});
 
   constructor(
     public dialogRef: MatDialogRef<TextInputDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TextInputDialogData,
   ) {
-    this.data?.inputs?.forEach((input) =>
-      this.inputs.push(
-        new FormGroup({
-          key: new FormControl(input.key),
-          value: new FormControl({ value: input.options?.defaultValue, disabled: input.options?.disabled }),
-          options: new FormControl(input.options),
-        }),
-      ),
-    );
+    if (data) {
+      this.data.inputs?.forEach((input) =>
+        this.form.addControl(input.key, new FormControl(input.options?.defaultValue)),
+      );
+      if (data.template) {
+        setTemplateValidators(this.form, data.template);
+      }
+    }
   }
 }

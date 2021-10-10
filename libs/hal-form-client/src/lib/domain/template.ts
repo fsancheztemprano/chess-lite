@@ -105,14 +105,31 @@ export class Template implements ITemplate {
             body,
             observe: observe || 'body',
           })
-          .pipe(
-            first(),
-            map((response) => new Resource(response) as any),
-          )
+      .pipe(
+        first(),
+        map((response) => new Resource(response) as any),
+      )
       : throwError(() => new Error(`Un-parsable Url ${link?.href},  ${params}`));
   }
 
   public getProperty(name: string): ITemplateProperty | undefined {
     return this.properties?.find((prop) => prop.name === name);
+  }
+
+  public setProperty(property: string, key: string, value: any): this {
+    if (!property || !key) {
+      return this;
+    }
+    const find: any = this.getProperty(property);
+
+    if (find) {
+      find[key] = value;
+    } else {
+      if (!this.properties) {
+        this.properties = [];
+      }
+      this.properties.push({ [key]: value } as any);
+    }
+    return this;
   }
 }

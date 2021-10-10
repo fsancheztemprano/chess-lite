@@ -1,4 +1,5 @@
 import { ThemePalette } from '@angular/material/core/common-behaviors/color';
+import { Template } from '@hal-form-client';
 
 interface ButtonData {
   text?: string;
@@ -20,6 +21,7 @@ export interface ConfirmationDialogData extends InformationDialogData {
 
 export interface TextInputDialogData extends ConfirmationDialogData {
   inputs: TextInputDialogInput[];
+  template?: Template | null;
 }
 
 export interface TextInputDialogInput {

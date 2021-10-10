@@ -94,11 +94,13 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
                 color: 'primary',
                 disabled: !rolePage.isAllowedTo(RoleManagementRelations.ROLE_CREATE_REL),
               },
+              template: rolePage
+                .getTemplate(RoleManagementRelations.ROLE_CREATE_REL)
+                ?.setProperty('name', 'required', true),
               inputs: [
                 {
                   key: 'name',
                   options: {
-                    defaultValue: 'ROLE_',
                     label: 'Role Name',
                     placeholder: 'ROLE_SUPER_USER',
                   },
@@ -106,10 +108,9 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
               ],
             })
             .pipe(
-              switchMap((dialogInputs) => {
-                const name = dialogInputs?.find((input) => input.key === 'name')?.value || '';
-                return name.length
-                  ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, { name })
+              switchMap((dialogInputs: { name: string }) => {
+                return dialogInputs?.name?.length
+                  ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, dialogInputs)
                   : EMPTY;
               }),
             );
