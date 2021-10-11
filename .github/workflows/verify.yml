@@ -91,19 +91,19 @@ jobs:
 
       - name: Test Jest Report
         uses: dorny/test-reporter@v1
-        if: always()   # run this step even if previous step failed
+        if: always()
         with:
-          name: Jest Tests            # Name of the check run which will be created
-          path: coverage/apps/app/jest-junit.xml    # Path to test results
-          reporter: jest-junit        # Format of test results
+          name: Jest Tests
+          path: coverage/apps/app/jest-junit.xml
+          reporter: jest-junit
 
       - name: Test Java Report
         uses: dorny/test-reporter@v1
-        if: always()   # run this step even if previous step failed
+        if: always()
         with:
-          name: Java Tests            # Name of the check run which will be created
-          path: apps/api/target/site/jacoco/jacoco.xml    # Path to test results
-          reporter: java-junit        # Format of test results
+          name: Java Tests
+          path: apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
+          reporter: java-junit
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
