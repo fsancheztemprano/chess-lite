@@ -102,14 +102,19 @@ jobs:
           all: 'true'
           parallel: 'true'
 
-      - name: Upload Development Artifacts
+      - name: Upload Development Backend Artifact
         if: github.ref != 'refs/heads/development' || github.event_name != 'push'
         uses: actions/upload-artifact@v2
         with:
-          name: development
-          path: |
-            apps/api/target/*.jar
-            dist/apps/app
+          name: backend
+          path: apps/api/target/*.jar
+
+      - name: Upload Development Frontend Artifact
+        if: github.ref != 'refs/heads/development' || github.event_name != 'push'
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend
+          path: dist/apps/app
 
 
   deploy:
@@ -190,15 +195,12 @@ jobs:
           affected: 'false'
 
 
-      - name: Upload Production Artifacts
+      - name: Upload Deployed Artifact
         if: github.ref != 'refs/heads/development' || github.event_name != 'push'
         uses: actions/upload-artifact@v2
         with:
           name: production
-          path: |
-            apps/api/target/*.jar
-            dist/apps/app
-
+          path: apps/api/target/*.jar
 
       - name: Update Deployment Status
         uses: bobheadxi/deployments@v0.6.0
