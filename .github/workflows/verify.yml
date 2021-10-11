@@ -105,6 +105,14 @@ jobs:
           path: apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
           reporter: java-junit
 
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: |
+            apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
+            coverage/apps/app/jest-junit.xml
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
