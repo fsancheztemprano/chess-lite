@@ -1,5 +1,7 @@
 <!-- PROJECT SHIELDS -->
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=fsancheztemprano_fullstack-template)
+
 ![Development](https://github.com/kurama-dev/fullstack-template/actions/workflows/verify.yml/badge.svg)
 
 <!-- PROJECT LOGO -->
