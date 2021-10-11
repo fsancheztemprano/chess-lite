@@ -89,6 +89,22 @@ jobs:
           parallel: 'true'
           args: '--codeCoverage'
 
+      - name: Test Jest Report
+        uses: dorny/test-reporter@v1
+        if: always()   # run this step even if previous step failed
+        with:
+          name: Jest Tests            # Name of the check run which will be created
+          path: coverage/apps/app/jest-junit.xml    # Path to test results
+          reporter: jest-junit        # Format of test results
+
+      - name: Test Java Report
+        uses: dorny/test-reporter@v1
+        if: always()   # run this step even if previous step failed
+        with:
+          name: Java Tests            # Name of the check run which will be created
+          path: apps/api/target/site/jacoco/jacoco.xml    # Path to test results
+          reporter: java-junit        # Format of test results
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
