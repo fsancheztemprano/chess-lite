@@ -79,7 +79,6 @@ jobs:
           targets: format:check
           all: 'true'
           parallel: 'true'
-          affected: 'false'
 
       - name: Lint
         uses: MansaGroup/nrwl-nx-action@v2.1.0
@@ -87,7 +86,6 @@ jobs:
           targets: lint
           all: 'true'
           parallel: 'true'
-          affected: 'false'
 
       - name: Test
         uses: MansaGroup/nrwl-nx-action@v2.1.0
@@ -95,8 +93,13 @@ jobs:
           targets: test
           all: 'true'
           parallel: 'true'
-          affected: 'false'
           args: '--codeCoverage'
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build
         uses: MansaGroup/nrwl-nx-action@v2.1.0
@@ -104,16 +107,7 @@ jobs:
           targets: build
           all: 'true'
           parallel: 'true'
-          affected: 'false'
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.verbose=true
 
   deploy:
     runs-on: ubuntu-latest
