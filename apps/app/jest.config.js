@@ -9,6 +9,7 @@ module.exports = {
     },
   },
   coverageDirectory: '../../coverage/apps/app',
+  coverageReporters: ['lcov', 'html'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
