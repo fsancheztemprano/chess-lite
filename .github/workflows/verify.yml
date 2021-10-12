@@ -113,6 +113,14 @@ jobs:
             apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
             coverage/apps/app/jest-junit.xml
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/apps/app/lcov.info,apps/api/target/site/jacoco/jacoco.xml
+          name: codecov-app
+          verbose: true
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
