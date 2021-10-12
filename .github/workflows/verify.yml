@@ -228,10 +228,9 @@ jobs:
 
 
       - name: Upload Deployed Artifact
-        if: github.ref != 'refs/heads/development' || github.event_name != 'push'
         uses: actions/upload-artifact@v2
         with:
-          name: production
+          name: production-package
           path: apps/api/target/*.jar
 
       - name: Update Deployment Status
