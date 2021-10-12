@@ -3,6 +3,7 @@
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=fsancheztemprano_fullstack-template)
 
 ![Development](https://github.com/kurama-dev/fullstack-template/actions/workflows/verify.yml/badge.svg)
+[![codecov](https://codecov.io/gh/fsancheztemprano/fullstack-template/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/fsancheztemprano/fullstack-template)
 
 <!-- PROJECT LOGO -->
 <br />

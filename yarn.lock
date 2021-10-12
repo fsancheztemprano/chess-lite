@@ -1789,7 +1789,7 @@
     terminal-link "^2.0.0"
     v8-to-istanbul "^8.0.0"
 
-"@jest/reporters@^27.2.5":
+"@jest/reporters@27.2.5", "@jest/reporters@^27.2.5":
   version "27.2.5"
   resolved "https://registry.yarnpkg.com/@jest/reporters/-/reporters-27.2.5.tgz#65198ed1f3f4449e3f656129764dc6c5bb27ebe3"
   integrity sha512-zYuR9fap3Q3mxQ454VWF8I6jYHErh368NwcKHWO2uy2fwByqBzRHkf9j2ekMDM7PaSTWcLBSZyd7NNxR1iHxzQ==
@@ -1984,10 +1984,10 @@
     cosmiconfig "^7.0.0"
     tslib "^2.3.0"
 
-"@ngneat/transloco@3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-3.0.2.tgz#60130deb89fd26c08eabcf3eee7ae8ccb67886fb"
-  integrity sha512-vL++GGJWIr8mWtYFoVfi3fQj7540c6JxZ+/R+3TvhisZKAb1Jxy84Vns98QsHCqAVkZxCxXQscNEMod9wOXUUQ==
+"@ngneat/transloco@3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-3.0.4.tgz#86e80ee5bdb80bab01db1ed9153f63facba9415e"
+  integrity sha512-fELl/w+MG5ATyNIkneIuweFGbEuL0+XQXc+mv5GaA/E+OwA92K/h7kY4KnTVV3jy/2wBwmpM371sm7kHEh+Lxg==
   dependencies:
     "@ngneat/transloco-utils" "3.0.0"
     flat "5.0.2"
@@ -8505,6 +8505,16 @@ jest-jasmine2@^27.2.2, jest-jasmine2@^27.2.5:
     pretty-format "^27.2.5"
     throat "^6.0.1"
 
+jest-junit@13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/jest-junit/-/jest-junit-13.0.0.tgz#479be347457aad98ae8a5983a23d7c3ec526c9a3"
+  integrity sha512-JSHR+Dhb32FGJaiKkqsB7AR3OqWKtldLd6ZH2+FJ8D4tsweb8Id8zEVReU4+OlrRO1ZluqJLQEETm+Q6/KilBg==
+  dependencies:
+    mkdirp "^1.0.4"
+    strip-ansi "^6.0.1"
+    uuid "^8.3.2"
+    xml "^1.0.1"
+
 jest-leak-detector@^27.2.5:
   version "27.2.5"
   resolved "https://registry.yarnpkg.com/jest-leak-detector/-/jest-leak-detector-27.2.5.tgz#e2edc3b37d38e8d9a527e10e456b403c3151b206"
@@ -13423,12 +13433,12 @@ tslib@2.2.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
   integrity sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w==
 
-tslib@2.3.0, tslib@^2.0.0, tslib@^2.2.0:
+tslib@2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
   integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
 
-tslib@2.3.1, tslib@^2.3.0:
+tslib@2.3.1, tslib@^2.0.0, tslib@^2.2.0, tslib@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
@@ -14308,6 +14318,11 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
+
+xml@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
+  integrity sha1-eLpyAgApxbyHuKgaPPzXS0ovweU=
 
 xmlchars@^2.2.0:
   version "2.2.0"

@@ -10,6 +10,16 @@ module.exports = {
   },
   coverageDirectory: '../../coverage/apps/app',
   coverageReporters: ['lcov', 'html'],
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'coverage/apps/app',
+        outputName: 'jest-junit.xml',
+      },
+    ],
+  ],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
