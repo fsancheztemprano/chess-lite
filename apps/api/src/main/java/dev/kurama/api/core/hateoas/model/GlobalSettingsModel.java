@@ -13,11 +13,10 @@ import org.springframework.hateoas.RepresentationModel;
 @NoArgsConstructor
 @Data
 @Builder
-public class RoleModel extends RepresentationModel<RoleModel> {
+public class GlobalSettingsModel extends RepresentationModel<GlobalSettingsModel> {
 
-  private String id;
-  private String name;
-  private Set<AuthorityModel> authorities;
-  private boolean coreRole;
+  private boolean signupOpen;
+  private RoleModel defaultRole;
+  private Set<RoleModel> rolesThatCanLogin;
 
 }

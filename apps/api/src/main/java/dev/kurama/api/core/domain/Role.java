@@ -45,6 +45,6 @@ public class Role extends AbstractEntity implements Serializable {
   private Set<Authority> authorities = Sets.newHashSet();
 
   @Builder.Default
-  private boolean isCoreRole = false;
+  private boolean coreRole = false;
 
 }

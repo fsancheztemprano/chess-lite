@@ -56,7 +56,10 @@ public class DefaultAuthority {
     AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
 
     ServiceLogsAuthority.SERVICE_LOGS_READ,
-    ServiceLogsAuthority.SERVICE_LOGS_DELETE
+    ServiceLogsAuthority.SERVICE_LOGS_DELETE,
+
+    GlobalSettingsAuthority.GLOBAL_SETTINGS_READ,
+    GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE
   );
 
 

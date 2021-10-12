@@ -11,7 +11,9 @@ import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.repository.RoleRepository;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.NonNull;
@@ -56,6 +58,10 @@ public class RoleService {
 
   public Optional<Role> findRoleById(String id) {
     return roleRepository.findRoleById(id);
+  }
+
+  public Set<Role> findAllById(Collection<String> roleIds) {
+    return roleRepository.findAllByIdIn(roleIds);
   }
 
   @Transactional
