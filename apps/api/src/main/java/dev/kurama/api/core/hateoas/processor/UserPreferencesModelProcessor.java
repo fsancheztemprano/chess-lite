@@ -39,14 +39,15 @@ public class UserPreferencesModelProcessor extends DomainModelProcessor<UserPref
 
   @Override
   public @NonNull UserPreferencesModel process(UserPreferencesModel userPreferencesModel) {
-    boolean isCurrentUser = AuthorityUtils.isCurrentUsername(userPreferencesModel.getUser().getUsername());
+    boolean isCurrentUser = userPreferencesModel.getUser() != null && AuthorityUtils.isCurrentUsername(
+      userPreferencesModel.getUser().getUsername());
     return userPreferencesModel
       .add(getModelSelfLink(userPreferencesModel.getId()))
       .mapLinkIf(isCurrentUser && !hasAuthority(USER_PREFERENCES_READ) && hasAuthority(PROFILE_READ),
         LinkRelation.of(SELF),
         link -> getCurrentUserPreferencesSelfLink())
 
-      .add(getUserLink(userPreferencesModel.getUser().getId()))
+      .addIf(userPreferencesModel.getUser() != null, () -> getUserLink(userPreferencesModel.getUser().getId()))
       .mapLinkIf(isCurrentUser && !hasAuthority(USER_READ) && hasAuthority(PROFILE_READ),
         LinkRelation.of(USER_REL),
         link -> getProfileLink())

@@ -3,7 +3,6 @@ package dev.kurama.api.core.service;
 import static java.util.Optional.ofNullable;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
-import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.event.emitter.RoleChangedEventEmitter;
@@ -12,9 +11,7 @@ import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.repository.RoleRepository;
-import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.NonNull;
@@ -33,20 +30,23 @@ public class RoleService {
   private final RoleRepository roleRepository;
 
   @NonNull
+  private final RoleChangedEventEmitter roleChangedEventEmitter;
+
+  @NonNull
   private final AuthorityService authorityService;
 
   private UserService userService;
 
   @Autowired
-  public void setUserService(UserService userService) {
+  public void setUserService(@NonNull UserService userService) {
     this.userService = userService;
   }
 
-  @NonNull
-  private final RoleChangedEventEmitter roleChangedEventEmitter;
+  private GlobalSettingsService globalSettingsService;
 
-  public Optional<Role> getDefaultRole() {
-    return roleRepository.findByName(DefaultAuthority.DEFAULT_ROLE);
+  @Autowired
+  public void setGlobalSettingsService(@NonNull GlobalSettingsService globalSettingsService) {
+    this.globalSettingsService = globalSettingsService;
   }
 
   public Optional<Role> findByName(String roleName) {
@@ -61,8 +61,8 @@ public class RoleService {
     return roleRepository.findRoleById(id);
   }
 
-  public Set<Role> findAllById(Collection<String> roleIds) {
-    return roleRepository.findAllByIdIn(roleIds);
+  public Role getDefaultRole() {
+    return globalSettingsService.getGlobalSettings().getDefaultRole();
   }
 
   @Transactional
@@ -71,8 +71,7 @@ public class RoleService {
     if (role.isCoreRole()) {
       throw new ImmutableRoleException(id);
     }
-    userService.reassignToRole(role.getUsers(),
-      getDefaultRole().orElseThrow(() -> new RoleNotFoundException("default")));
+    userService.reassignToRole(role.getUsers(), getDefaultRole());
     roleRepository.delete(role);
     roleChangedEventEmitter.emitRoleDeletedEvent(role.getId());
   }

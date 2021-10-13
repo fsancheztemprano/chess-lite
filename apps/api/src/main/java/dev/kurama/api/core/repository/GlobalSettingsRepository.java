@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GlobalSettingsRepository extends JpaRepository<GlobalSettings, Long> {
 
+  GlobalSettings findFirstBy();
 }

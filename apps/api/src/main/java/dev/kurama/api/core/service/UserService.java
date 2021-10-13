@@ -16,9 +16,9 @@ import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
+import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
@@ -62,7 +62,6 @@ public class UserService implements UserDetailsService {
   @NonNull
   private final LoginAttemptService loginAttemptService;
 
-
   @NonNull
   private final AuthorityService authorityService;
 
@@ -78,8 +77,15 @@ public class UserService implements UserDetailsService {
   private RoleService roleService;
 
   @Autowired
-  public void setRoleService(RoleService roleService) {
+  public void setRoleService(@NonNull RoleService roleService) {
     this.roleService = roleService;
+  }
+
+  private GlobalSettingsService globalSettingsService;
+
+  @Autowired
+  public void setGlobalSettingsService(@NonNull GlobalSettingsService globalSettingsService) {
+    this.globalSettingsService = globalSettingsService;
   }
 
   @Value("${application.host_url}")
@@ -122,8 +128,12 @@ public class UserService implements UserDetailsService {
   }
 
   public void signup(SignupInput signupInput)
-    throws UsernameExistsException, EmailExistsException, DomainEntityNotFoundException {
-    var role = roleService.getDefaultRole().orElseThrow(() -> new RoleNotFoundException("default role"));
+    throws UsernameExistsException, EmailExistsException, SignupClosedException, RoleNotFoundException {
+    if (!globalSettingsService.getGlobalSettings().isSignupOpen()) {
+      throw new SignupClosedException();
+    }
+
+    var defaultRole = roleService.getDefaultRole();
     var userInput = UserInput.builder()
       .username(signupInput.getUsername())
       .password(UUID.randomUUID().toString())
@@ -134,7 +144,7 @@ public class UserService implements UserDetailsService {
       .locked(true)
       .expired(false)
       .credentialsExpired(false)
-      .roleId(role.getId())
+      .roleId(defaultRole.getId())
       .build();
     var user = createUser(userInput);
 
@@ -151,7 +161,7 @@ public class UserService implements UserDetailsService {
     throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = roleService.findRoleById(userInput.getRoleId())
-      .orElseGet(() -> roleService.getDefaultRole().orElseThrow());
+      .orElseGet(() -> roleService.getDefaultRole());
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())

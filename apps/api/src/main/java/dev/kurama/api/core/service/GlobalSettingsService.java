@@ -9,6 +9,7 @@ import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,11 +22,15 @@ public class GlobalSettingsService {
   @NonNull
   private final GlobalSettingsChangedEventEmitter globalSettingsChangedEventEmitter;
 
-  @NonNull
-  private final RoleService roleService;
+  private RoleService roleService;
+
+  @Autowired
+  public void setRoleService(@NonNull RoleService roleService) {
+    this.roleService = roleService;
+  }
 
   public GlobalSettings getGlobalSettings() {
-    return globalSettingsRepository.findAll().get(0);
+    return globalSettingsRepository.findFirstBy();
   }
 
   public GlobalSettings updateGlobalSettings(GlobalSettingsUpdateInput globalSettingsUpdateInput)

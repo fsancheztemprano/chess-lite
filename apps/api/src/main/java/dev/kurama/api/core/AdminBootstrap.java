@@ -1,6 +1,7 @@
 package dev.kurama.api.core;
 
 
+import com.google.common.collect.Sets;
 import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.GlobalSettings;
@@ -61,16 +62,16 @@ public class AdminBootstrap implements CommandLineRunner {
             .coreRole(true)
             .canLogin(!roleName.equals(DefaultAuthority.DEFAULT_ROLE))
             .build());
-        role.getAuthorities().addAll(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()).stream().map(
+        role.setAuthorities(Sets.newHashSet(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()).stream().map(
           roleAuthority -> authorities.stream().filter(authority -> roleAuthority.contains(authority.getName()))
-            .findFirst().orElseThrow()).collect(Collectors.toSet()));
+            .findFirst().orElseThrow()).collect(Collectors.toSet())));
         return role;
       }).collect(Collectors.toList()));
 
       if (globalSettingsRepository.count() != 1) {
         var defaultRole = roleRepository.findByName(DefaultAuthority.DEFAULT_ROLE).orElseThrow();
         globalSettingsRepository.deleteAll();
-        globalSettingsRepository.save(
+        globalSettingsRepository.saveAndFlush(
           GlobalSettings.builder()
             .setRandomUUID()
             .signupOpen(false)
