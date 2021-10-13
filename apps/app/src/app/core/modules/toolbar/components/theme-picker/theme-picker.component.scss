@@ -1,7 +1,9 @@
-.dark-mode-slider {
-  display: flex;
+:host {
+  .theme-picker-slider {
+    display: flex;
 
-  mat-slide-toggle {
-    padding: 0 4px;
+    mat-slide-toggle {
+      padding: 0 4px;
+    }
   }
 }

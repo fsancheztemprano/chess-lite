@@ -1,5 +1,6 @@
 package dev.kurama.api.core.service;
 
+import static java.util.Optional.ofNullable;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 import dev.kurama.api.core.authority.DefaultAuthority;
@@ -101,6 +102,11 @@ public class RoleService {
         || !roleUpdateInput.getAuthorityIds().containsAll(
         role.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet())))) {
       role.setAuthorities(authorityService.findAllById(roleUpdateInput.getAuthorityIds()));
+      changed = true;
+    }
+    if (ofNullable(roleUpdateInput.getCanLogin()).isPresent() && !roleUpdateInput.getCanLogin()
+      .equals(role.isCanLogin())) {
+      role.setCanLogin(roleUpdateInput.getCanLogin());
       changed = true;
     }
     if (changed) {

@@ -47,4 +47,7 @@ public class Role extends AbstractEntity implements Serializable {
   @Builder.Default
   private boolean coreRole = false;
 
+  @Builder.Default
+  private boolean canLogin = false;
+
 }

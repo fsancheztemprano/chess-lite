@@ -11,7 +11,7 @@
   mat-raised-button
   color="primary"
   (click)="onSubmit()"
-  [disabled]="!role || !(role | async)?.isAllowedTo('update')"
+  [disabled]="!role$ || !(role$ | async)?.isAllowedTo('update')"
 >
   Save Authorities
 </button>

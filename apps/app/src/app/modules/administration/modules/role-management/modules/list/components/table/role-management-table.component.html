@@ -9,23 +9,28 @@
     <td mat-cell *matCellDef="let row">{{ row.authorities.length }}</td>
   </ng-container>
 
+  <ng-container matColumnDef="canLogin">
+    <th mat-header-cell *matHeaderCellDef scope="col">
+      <mat-icon>vpn_lock</mat-icon>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-icon>{{ 'lock' + (row.canLogin ? '' : '_open') }}</mat-icon>
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="coreRole">
     <th mat-header-cell *matHeaderCellDef scope="col">
       <mat-icon>gavel</mat-icon>
     </th>
     <td mat-cell *matCellDef="let row">
-      <mat-icon>{{ 'lock' + (row.coreRole ? '' : '_open') }}</mat-icon>
+      <mat-icon>{{ row.coreRole ? 'verified' : 'block' }}</mat-icon>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef scope="col"></th>
     <td mat-cell *matCellDef="let row">
-      <a
-        mat-icon-button
-        [routerLink]="row.isAllowedTo('update') ? [row.id] : null"
-        [disabled]="!row.isAllowedTo('update')"
-      >
+      <a mat-icon-button [routerLink]="[row.id]">
         <mat-icon>edit</mat-icon>
       </a>
       <button mat-icon-button [disabled]="!row.isAllowedTo('delete')" (click)="deleteRole(row)">

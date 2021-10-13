@@ -24,7 +24,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Role>;
 
-  displayedColumns = ['name', 'authorities', 'coreRole', 'actions'];
+  displayedColumns = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
 
   private createRoleMenuOption: MenuOption = {
     label: 'New Role',

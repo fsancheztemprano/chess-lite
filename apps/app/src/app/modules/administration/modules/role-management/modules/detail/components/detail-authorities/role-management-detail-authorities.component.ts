@@ -16,7 +16,7 @@ import { ToasterService } from '../../../../../../../../core/services/toaster.se
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleManagementDetailAuthoritiesComponent implements OnInit {
-  @Input() role!: Observable<Role>;
+  @Input() role$!: Observable<Role>;
 
   public form = new FormArray([]);
 
@@ -25,7 +25,7 @@ export class RoleManagementDetailAuthoritiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.role?.pipe(untilDestroyed(this)).subscribe((role) => {
+    this.role$?.pipe(untilDestroyed(this)).subscribe((role) => {
       this.form.controls.forEach((control) => {
         const hasAuthority = role?.authorities?.some((authority) => authority.id === control.value.id);
         if (control.value.active != hasAuthority) {
@@ -36,7 +36,7 @@ export class RoleManagementDetailAuthoritiesComponent implements OnInit {
   }
 
   onSubmit() {
-    this.role
+    this.role$
       .pipe(
         first(),
         submitToTemplateOrThrowPipe(RoleManagementRelations.ROLE_UPDATE_REL, {

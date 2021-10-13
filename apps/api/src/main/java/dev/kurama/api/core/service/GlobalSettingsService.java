@@ -3,12 +3,10 @@ package dev.kurama.api.core.service;
 import static java.util.Optional.ofNullable;
 
 import dev.kurama.api.core.domain.GlobalSettings;
-import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.event.emitter.GlobalSettingsChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
-import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,13 +47,6 @@ public class GlobalSettingsService {
       changed = true;
     }
 
-    if (ofNullable(globalSettingsUpdateInput.getRoleIdsThatCanLogin()).isPresent() && (
-      globalSettingsUpdateInput.getRoleIdsThatCanLogin().size() != globalSettings.getRolesThatCanLogin().size()
-        || !globalSettingsUpdateInput.getRoleIdsThatCanLogin().containsAll(
-        globalSettings.getRolesThatCanLogin().stream().map(Role::getId).collect(Collectors.toSet())))) {
-      globalSettings.setRolesThatCanLogin(roleService.findAllById(globalSettingsUpdateInput.getRoleIdsThatCanLogin()));
-      changed = true;
-    }
     if (changed) {
       globalSettings = globalSettingsRepository.saveAndFlush(globalSettings);
       globalSettingsChangedEventEmitter.emitGlobalSettingsUpdatedEvent();

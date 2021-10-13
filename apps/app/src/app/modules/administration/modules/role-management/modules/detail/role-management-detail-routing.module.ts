@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RoleManagementDetailComponent } from './components/role-management-detail/role-management-detail.component';
+import { RoleManagementDetailComponent } from './components/detail/role-management-detail.component';
 
 const routes: Routes = [{ path: '', component: RoleManagementDetailComponent }];
 

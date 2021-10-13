@@ -35,6 +35,4 @@ public class GlobalSettingsController {
     throws RoleNotFoundException {
     return ResponseEntity.ok().body(globalSettingsFacade.updateGlobalSettings(globalSettingsUpdateInput));
   }
-
-
 }

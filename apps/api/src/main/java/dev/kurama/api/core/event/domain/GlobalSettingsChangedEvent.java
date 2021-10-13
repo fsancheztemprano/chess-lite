@@ -7,4 +7,10 @@ import lombok.Data;
 @Builder
 public class GlobalSettingsChangedEvent implements ApplicationEvent {
 
+  @Builder.Default
+  private GlobalSettingsChangedEventAction action = GlobalSettingsChangedEventAction.UPDATED;
+
+  public enum GlobalSettingsChangedEventAction {
+    UPDATED,
+  }
 }

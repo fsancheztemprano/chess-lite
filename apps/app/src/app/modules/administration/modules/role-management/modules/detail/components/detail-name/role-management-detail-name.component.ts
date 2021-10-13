@@ -16,7 +16,7 @@ import { setTemplateValidators } from '../../../../../../../../shared/utils/form
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleManagementDetailNameComponent implements OnInit {
-  @Input() role!: Observable<Role>;
+  @Input() role$!: Observable<Role>;
 
   form = new FormGroup({
     name: new FormControl(''),
@@ -25,7 +25,7 @@ export class RoleManagementDetailNameComponent implements OnInit {
   constructor(private readonly toasterService: ToasterService) {}
 
   ngOnInit(): void {
-    this.role?.pipe(untilDestroyed(this)).subscribe((user) => {
+    this.role$?.pipe(untilDestroyed(this)).subscribe((user) => {
       setTemplateValidators(
         this.form,
         user.getTemplate(RoleManagementRelations.ROLE_UPDATE_REL)?.setProperty('name', 'required', true),
@@ -35,7 +35,7 @@ export class RoleManagementDetailNameComponent implements OnInit {
   }
 
   onSubmit() {
-    this.role
+    this.role$
       .pipe(first(), submitToTemplateOrThrowPipe(RoleManagementRelations.ROLE_UPDATE_REL, this.form.value))
       .subscribe({
         next: () => this.toasterService.showToast({ title: 'Role updated successfully' }),

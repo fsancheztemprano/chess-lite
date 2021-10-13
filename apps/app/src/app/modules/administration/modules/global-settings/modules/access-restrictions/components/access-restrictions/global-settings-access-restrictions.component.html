@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor="let role of roles$ | async">
+    <app-role-management-detail-can-login [role$]="role" [showRoleName]="true"></app-role-management-detail-can-login>
+  </li>
+</ul>

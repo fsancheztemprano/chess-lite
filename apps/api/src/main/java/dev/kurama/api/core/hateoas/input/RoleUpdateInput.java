@@ -12,4 +12,5 @@ public class RoleUpdateInput {
   @Length(min = 3, max = 128)
   private String name;
   private Set<String> authorityIds;
+  private Boolean canLogin;
 }
