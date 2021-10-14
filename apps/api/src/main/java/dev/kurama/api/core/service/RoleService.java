@@ -1,8 +1,8 @@
 package dev.kurama.api.core.service;
 
+import static java.util.Optional.ofNullable;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
-import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.event.emitter.RoleChangedEventEmitter;
@@ -30,20 +30,23 @@ public class RoleService {
   private final RoleRepository roleRepository;
 
   @NonNull
+  private final RoleChangedEventEmitter roleChangedEventEmitter;
+
+  @NonNull
   private final AuthorityService authorityService;
 
   private UserService userService;
 
   @Autowired
-  public void setUserService(UserService userService) {
+  public void setUserService(@NonNull UserService userService) {
     this.userService = userService;
   }
 
-  @NonNull
-  private final RoleChangedEventEmitter roleChangedEventEmitter;
+  private GlobalSettingsService globalSettingsService;
 
-  public Optional<Role> getDefaultRole() {
-    return roleRepository.findByName(DefaultAuthority.DEFAULT_ROLE);
+  @Autowired
+  public void setGlobalSettingsService(@NonNull GlobalSettingsService globalSettingsService) {
+    this.globalSettingsService = globalSettingsService;
   }
 
   public Optional<Role> findByName(String roleName) {
@@ -58,14 +61,17 @@ public class RoleService {
     return roleRepository.findRoleById(id);
   }
 
+  public Role getDefaultRole() {
+    return globalSettingsService.getGlobalSettings().getDefaultRole();
+  }
+
   @Transactional
   public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {
     Role role = roleRepository.findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
     if (role.isCoreRole()) {
       throw new ImmutableRoleException(id);
     }
-    userService.reassignToRole(role.getUsers(),
-      getDefaultRole().orElseThrow(() -> new RoleNotFoundException("default")));
+    userService.reassignToRole(role.getUsers(), getDefaultRole());
     roleRepository.delete(role);
     roleChangedEventEmitter.emitRoleDeletedEvent(role.getId());
   }
@@ -95,6 +101,11 @@ public class RoleService {
         || !roleUpdateInput.getAuthorityIds().containsAll(
         role.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet())))) {
       role.setAuthorities(authorityService.findAllById(roleUpdateInput.getAuthorityIds()));
+      changed = true;
+    }
+    if (ofNullable(roleUpdateInput.getCanLogin()).isPresent() && !roleUpdateInput.getCanLogin()
+      .equals(role.isCanLogin())) {
+      role.setCanLogin(roleUpdateInput.getCanLogin());
       changed = true;
     }
     if (changed) {

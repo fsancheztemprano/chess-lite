@@ -56,4 +56,6 @@ export enum ServiceLogsRelations {
 
 export enum GlobalSettingsRelations {
   GLOBAL_SETTINGS_REL = 'global-settings',
+  GLOBAL_SETTINGS_CREATE_REL = 'create',
+  GLOBAL_SETTINGS_UPDATE_REL = 'update',
 }

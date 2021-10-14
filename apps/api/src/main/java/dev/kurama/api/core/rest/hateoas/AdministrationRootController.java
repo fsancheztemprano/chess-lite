@@ -3,11 +3,13 @@ package dev.kurama.api.core.rest.hateoas;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
+import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_READ;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.GLOBAL_SETTINGS_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ROLE_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.SERVICE_LOGS_REL;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
@@ -28,6 +30,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromUri;
 
 import dev.kurama.api.core.hateoas.model.RootResource;
 import dev.kurama.api.core.rest.AuthorityController;
+import dev.kurama.api.core.rest.GlobalSettingsController;
 import dev.kurama.api.core.rest.RoleController;
 import dev.kurama.api.core.rest.ServiceLogsController;
 import dev.kurama.api.core.rest.UserController;
@@ -66,6 +69,10 @@ public class AdministrationRootController {
 
     if (hasAuthority(SERVICE_LOGS_READ)) {
       rootModel.link(getServiceLogsLink());
+    }
+
+    if (hasAuthority(GLOBAL_SETTINGS_READ)) {
+      rootModel.link(getGlobalSettingsLink());
     }
 
     if (hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)) {
@@ -118,6 +125,12 @@ public class AdministrationRootController {
 
   private Link getServiceLogsLink() {
     return of(linkTo(methodOn(ServiceLogsController.class).getServiceLogs()).withRel(SERVICE_LOGS_REL))
+      .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
+  }
+
+
+  private Link getGlobalSettingsLink() {
+    return of(linkTo(methodOn(GlobalSettingsController.class).get()).withRel(GLOBAL_SETTINGS_REL))
       .afford(HttpMethod.HEAD).withName(DEFAULT).toLink();
   }
 

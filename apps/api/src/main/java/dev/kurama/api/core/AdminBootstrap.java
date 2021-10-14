@@ -1,13 +1,14 @@
 package dev.kurama.api.core;
 
 
+import com.google.common.collect.Sets;
 import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.Authority;
+import dev.kurama.api.core.domain.GlobalSettings;
 import dev.kurama.api.core.domain.Role;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.AuthorityRepository;
+import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
 import dev.kurama.api.core.repository.UserRepository;
 import dev.kurama.api.core.service.UserService;
@@ -36,8 +37,11 @@ public class AdminBootstrap implements CommandLineRunner {
   @NonNull
   private final AuthorityRepository authorityRepository;
 
+  @NonNull
+  private final GlobalSettingsRepository globalSettingsRepository;
+
   @Override
-  public void run(String... args) throws UsernameExistsException, EmailExistsException {
+  public void run(String... args) {
     try {
       authorityRepository.saveAllAndFlush(
         DefaultAuthority.AUTHORITIES.stream()
@@ -55,13 +59,26 @@ public class AdminBootstrap implements CommandLineRunner {
           Role.builder()
             .setRandomUUID()
             .name(roleName)
-            .isCoreRole(true)
+            .coreRole(true)
+            .canLogin(!roleName.equals(DefaultAuthority.DEFAULT_ROLE))
             .build());
-        role.getAuthorities().addAll(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()).stream().map(
+        role.setAuthorities(Sets.newHashSet(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()).stream().map(
           roleAuthority -> authorities.stream().filter(authority -> roleAuthority.contains(authority.getName()))
-            .findFirst().orElseThrow()).collect(Collectors.toSet()));
+            .findFirst().orElseThrow()).collect(Collectors.toSet())));
         return role;
       }).collect(Collectors.toList()));
+
+      if (globalSettingsRepository.count() != 1) {
+        var defaultRole = roleRepository.findByName(DefaultAuthority.DEFAULT_ROLE).orElseThrow();
+        globalSettingsRepository.deleteAll();
+        globalSettingsRepository.saveAndFlush(
+          GlobalSettings.builder()
+            .setRandomUUID()
+            .signupOpen(false)
+            .defaultRole(defaultRole)
+            .build()
+        );
+      }
 
       if (userRepository.count() < 1) {
         var superAdminRole = roleRepository.findByName(DefaultAuthority.SUPER_ADMIN_ROLE).orElseThrow();

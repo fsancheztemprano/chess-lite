@@ -36,7 +36,7 @@ public class Role extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
     name = "role_authorities",
     joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
@@ -45,6 +45,9 @@ public class Role extends AbstractEntity implements Serializable {
   private Set<Authority> authorities = Sets.newHashSet();
 
   @Builder.Default
-  private boolean isCoreRole = false;
+  private boolean coreRole = false;
+
+  @Builder.Default
+  private boolean canLogin = false;
 
 }

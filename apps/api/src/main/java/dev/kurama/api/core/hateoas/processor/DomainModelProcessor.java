@@ -22,7 +22,7 @@ public abstract class DomainModelProcessor<T extends RepresentationModel<T>> imp
     return model;
   }
 
-  protected @NonNull Link getModelSelfLink(@NonNull String id) {
+  protected @NonNull Link getModelSelfLink(String id) {
     return of(getSelfLink(id).withSelfRel()).afford(HttpMethod.HEAD).withName(HateoasRelations.DEFAULT).toLink();
   }
 }

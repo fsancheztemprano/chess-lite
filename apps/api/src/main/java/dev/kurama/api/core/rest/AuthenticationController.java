@@ -6,6 +6,8 @@ import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
+import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
+import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
@@ -37,13 +39,13 @@ public class AuthenticationController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody SignupInput user)
-    throws EmailExistsException, UsernameExistsException, DomainEntityNotFoundException {
+    throws EmailExistsException, UsernameExistsException, DomainEntityNotFoundException, SignupClosedException {
     authenticationFacade.signup(user);
     return ok().build();
   }
 
   @PostMapping("/login")
-  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) {
+  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) throws RoleCanNotLoginException {
     var authenticatedUser = authenticationFacade.login(user);
     return ok().headers(authenticatedUser.getHeaders())
       .body(authenticatedUser.getUserModel());

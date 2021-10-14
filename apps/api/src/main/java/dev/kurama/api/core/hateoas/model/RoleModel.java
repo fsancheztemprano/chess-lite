@@ -18,6 +18,7 @@ public class RoleModel extends RepresentationModel<RoleModel> {
   private String id;
   private String name;
   private Set<AuthorityModel> authorities;
-  private boolean isCoreRole;
+  private boolean coreRole;
+  private boolean canLogin;
 
 }

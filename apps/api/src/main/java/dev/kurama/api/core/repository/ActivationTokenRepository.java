@@ -5,9 +5,9 @@ import dev.kurama.api.core.domain.User;
 import java.util.Optional;
 import javax.validation.constraints.NotBlank;
 import lombok.NonNull;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface ActivationTokenRepository extends JpaRepository<ActivationToken, Long> {
+public interface ActivationTokenRepository extends CrudRepository<ActivationToken, Long> {
 
   Optional<ActivationToken> findActivationTokenById(@NonNull @NotBlank String id);
 

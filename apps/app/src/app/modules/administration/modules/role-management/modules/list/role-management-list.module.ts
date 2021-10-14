@@ -8,7 +8,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { ConfirmationDialogModule } from '../../../../../../shared/modules/dialogs/modules/confirmation-dialog/confirmation-dialog.module';
 import { TextInputDialogModule } from '../../../../../../shared/modules/dialogs/modules/input-dialog/modules/text-input-dialog/text-input-dialog.module';
-import { RoleManagementTableComponent } from './components/role-management-table/role-management-table.component';
+import { RoleManagementTableComponent } from './components/table/role-management-table.component';
 import { RoleManagementListRoutingModule } from './role-management-list-routing.module';
 
 @NgModule({

@@ -5,9 +5,6 @@ on: [ push, pull_request ]
 jobs:
   verify:
     runs-on: ubuntu-latest
-    env:
-      not-pr: |
-        ${{ github.event_name != 'pull_request' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.4
@@ -16,8 +13,8 @@ jobs:
           fetch-depth: 0
 
       - name: Sync PR with target
-        if: ${{ github.event_name == 'pull_request' }}
-        run: git merge origin/${{ github.base_ref }}
+        if: github.event_name == 'pull_request'
+        run: git merge ${{ github.event.pull_request.head.sha }}
 
       - name: Get branch names
         id: branch-name
@@ -36,7 +33,7 @@ jobs:
           node-version: '14'
 
       - name: Cache Node modules
-        uses: fsancheztemprano/cache@main
+        uses: fsancheztemprano/always-cache@main
         env:
           cache-key: ${{ runner.os }}-yarn-v2
         with:
@@ -49,10 +46,10 @@ jobs:
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
-          save-on-hit: ${{ env.not-pr }}
+          save-on-hit: true
 
       - name: Cache Maven packages
-        uses: fsancheztemprano/cache@main
+        uses: fsancheztemprano/always-cache@main
         env:
           cache-key: ${{ runner.os }}-maven-v2
         with:
@@ -62,17 +59,19 @@ jobs:
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
-          save-on-hit: ${{ env.not-pr }}
+          save-on-hit: true
+
+      - name: Cache Sonar
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.sonar
+          key: sonar
 
       - name: Yarn Install
         run: yarn install
 
-      - name: Prettier
-        uses: MansaGroup/nrwl-nx-action@v2.1.0
-        with:
-          targets: format:check
-          all: 'true'
-          parallel: 'true'
+      - name: Format Check
+        run: npm run format:check
 
       - name: Lint
         uses: MansaGroup/nrwl-nx-action@v2.1.0
@@ -152,9 +151,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: verify
-    env:
-      not-pr: |
-        ${{ github.event_name != 'pull_request' }}
     if: github.ref == 'refs/heads/development' && github.event_name == 'push'
     steps:
       - name: Checkout
@@ -177,7 +173,7 @@ jobs:
         uses: tj-actions/branch-names@v5
 
       - name: Cache Node modules
-        uses: fsancheztemprano/cache@main
+        uses: fsancheztemprano/always-cache@main
         env:
           cache-key: ${{ runner.os }}-yarn-v2
         with:
@@ -190,10 +186,9 @@ jobs:
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
-          save-on-hit: ${{ env.not-pr }}
 
       - name: Cache Maven packages
-        uses: fsancheztemprano/cache@main
+        uses: fsancheztemprano/always-cache@main
         env:
           cache-key: ${{ runner.os }}-maven-v2
         with:
@@ -203,7 +198,6 @@ jobs:
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
             ${{ env.cache-key }}-
-          save-on-hit: ${{ env.not-pr }}
 
       - name: Yarn Install
         run: yarn install
