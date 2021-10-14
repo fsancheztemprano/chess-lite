@@ -9,6 +9,7 @@ import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
+import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
@@ -51,10 +52,13 @@ public class AuthenticationFacade {
     userService.signup(signupInput);
   }
 
-  public AuthenticatedUserExcerpt login(LoginInput loginInput) {
+  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException {
     authenticate(loginInput.getUsername(), loginInput.getPassword());
     var user = userService.findUserByUsername(loginInput.getUsername())
       .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
+    if (!user.getRole().isCanLogin()) {
+      throw new RoleCanNotLoginException(user.getRole().getName());
+    }
     if (user.isLocked()) {
       throw new LockedException(loginInput.getUsername());
     }
