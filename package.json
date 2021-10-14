@@ -112,7 +112,7 @@
     "@schematics/angular": "12.2.9",
     "@schematics/schematics": "0.1102.12",
     "@types/jest": "27.0.2",
-    "@types/node": "16.10.3",
+    "@types/node": "16.10.9",
     "@types/sockjs-client": "1.5.1",
     "@types/url-template": "2.0.28",
     "@typescript-eslint/eslint-plugin": "4.33.0",
