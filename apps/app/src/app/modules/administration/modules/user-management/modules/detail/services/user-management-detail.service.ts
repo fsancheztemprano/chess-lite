@@ -58,6 +58,14 @@ export class UserManagementDetailService {
     return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_REL)));
   }
 
+  canUpdateRole(): Observable<boolean> {
+    return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_ROLE_REL)));
+  }
+
+  canUpdateAuthorities(): Observable<boolean> {
+    return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL)));
+  }
+
   updateProfile(profileInput: ManageUserProfileInput) {
     return this.getUser().pipe(
       first(),

@@ -8,6 +8,8 @@ export class StubUserManagementDetailService implements Partial<UserManagementDe
   getUser = () => of(new User({}));
   fetchUserPreferences = () => of(new UserPreferences({}));
   canUpdateProfile = () => of(true);
+  canUpdateAuthorities = () => of(true);
+  canUpdateRole = () => of(true);
   canSendActivationToken = () => of(true);
   canDeleteAccount = () => of(true);
 }

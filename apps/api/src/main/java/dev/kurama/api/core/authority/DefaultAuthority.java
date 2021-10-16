@@ -21,67 +21,70 @@ public class DefaultAuthority {
   public static final String DEFAULT_ROLE = USER_ROLE;
 
   public static final List<String> ROLES = Lists.newArrayList(
-    DefaultAuthority.USER_ROLE,
-    DefaultAuthority.MOD_ROLE,
-    DefaultAuthority.ADMIN_ROLE,
-    DefaultAuthority.SUPER_ADMIN_ROLE
+      DefaultAuthority.USER_ROLE,
+      DefaultAuthority.MOD_ROLE,
+      DefaultAuthority.ADMIN_ROLE,
+      DefaultAuthority.SUPER_ADMIN_ROLE
   );
 
 
   public static final List<String> AUTHORITIES = Lists.newArrayList(
-    UserAuthority.PROFILE_UPDATE,
-    UserAuthority.PROFILE_READ,
-    UserAuthority.PROFILE_DELETE,
+      UserAuthority.PROFILE_UPDATE,
+      UserAuthority.PROFILE_READ,
+      UserAuthority.PROFILE_DELETE,
 
-    UserAuthority.USER_READ,
-    UserAuthority.USER_CREATE,
-    UserAuthority.USER_UPDATE,
-    UserAuthority.USER_DELETE,
+      UserAuthority.USER_READ,
+      UserAuthority.USER_CREATE,
+      UserAuthority.USER_UPDATE,
+      UserAuthority.USER_UPDATE_ROLE,
+      UserAuthority.USER_UPDATE_AUTHORITIES,
+      UserAuthority.USER_DELETE,
 
-    UserPreferencesAuthority.USER_PREFERENCES_READ,
-    UserPreferencesAuthority.USER_PREFERENCES_UPDATE,
+      UserPreferencesAuthority.USER_PREFERENCES_READ,
+      UserPreferencesAuthority.USER_PREFERENCES_UPDATE,
 
-    RoleAuthority.ROLE_READ,
-    RoleAuthority.ROLE_CREATE,
-    RoleAuthority.ROLE_UPDATE,
-    RoleAuthority.ROLE_DELETE,
+      RoleAuthority.ROLE_READ,
+      RoleAuthority.ROLE_CREATE,
+      RoleAuthority.ROLE_UPDATE,
+      RoleAuthority.ROLE_UPDATE_CORE,
+      RoleAuthority.ROLE_DELETE,
 
-    AuthorityAuthority.AUTHORITY_CREATE,
-    AuthorityAuthority.AUTHORITY_READ,
-    AuthorityAuthority.AUTHORITY_UPDATE,
-    AuthorityAuthority.AUTHORITY_DELETE,
+      AuthorityAuthority.AUTHORITY_CREATE,
+      AuthorityAuthority.AUTHORITY_READ,
+      AuthorityAuthority.AUTHORITY_UPDATE,
+      AuthorityAuthority.AUTHORITY_DELETE,
 
-    AdminAuthority.ADMIN_ROOT,
-    AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
-    AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
+      AdminAuthority.ADMIN_ROOT,
+      AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
+      AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
 
-    ServiceLogsAuthority.SERVICE_LOGS_READ,
-    ServiceLogsAuthority.SERVICE_LOGS_DELETE,
+      ServiceLogsAuthority.SERVICE_LOGS_READ,
+      ServiceLogsAuthority.SERVICE_LOGS_DELETE,
 
-    GlobalSettingsAuthority.GLOBAL_SETTINGS_READ,
-    GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE
+      GlobalSettingsAuthority.GLOBAL_SETTINGS_READ,
+      GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE
   );
 
 
   public static final List<String> USER_AUTHORITIES = Lists.newArrayList(
-    UserAuthority.PROFILE_UPDATE,
-    UserAuthority.PROFILE_READ,
-    UserAuthority.PROFILE_DELETE
+      UserAuthority.PROFILE_UPDATE,
+      UserAuthority.PROFILE_READ,
+      UserAuthority.PROFILE_DELETE
   );
 
   public static final List<String> MOD_AUTHORITIES =
-    Stream.of(USER_AUTHORITIES, Lists.newArrayList(UserAuthority.USER_READ, UserAuthority.USER_UPDATE))
-      .flatMap(Collection::stream)
-      .collect(Collectors.toList());
+      Stream.of(USER_AUTHORITIES, Lists.newArrayList(UserAuthority.USER_READ, UserAuthority.USER_UPDATE))
+          .flatMap(Collection::stream)
+          .collect(Collectors.toList());
 
 
   public static final List<String> ADMIN_AUTHORITIES =
-    Stream.of(MOD_AUTHORITIES,
-        Lists.newArrayList(UserAuthority.USER_CREATE,
-          ServiceLogsAuthority.SERVICE_LOGS_READ,
-          ServiceLogsAuthority.SERVICE_LOGS_DELETE))
-      .flatMap(Collection::stream)
-      .collect(Collectors.toList());
+      Stream.of(MOD_AUTHORITIES,
+              Lists.newArrayList(UserAuthority.USER_CREATE,
+                  ServiceLogsAuthority.SERVICE_LOGS_READ,
+                  ServiceLogsAuthority.SERVICE_LOGS_DELETE))
+          .flatMap(Collection::stream)
+          .collect(Collectors.toList());
 
   public static final Map<String, List<String>> ROLE_AUTHORITIES = new HashMap<String, List<String>>() {
     {

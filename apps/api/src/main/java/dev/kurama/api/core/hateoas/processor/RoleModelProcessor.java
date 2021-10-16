@@ -3,6 +3,7 @@ package dev.kurama.api.core.hateoas.processor;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_DELETE;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_UPDATE;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_UPDATE_CORE;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
@@ -39,7 +40,7 @@ public class RoleModelProcessor extends DomainModelProcessor<RoleModel> {
         .mapLinkIf(!entity.isCoreRole() && hasAuthority(ROLE_DELETE),
           LinkRelation.of(SELF),
           link -> link.andAffordance(getDeleteAffordance(entity.getId())))
-        .mapLinkIf(!entity.isCoreRole() && hasAuthority(ROLE_UPDATE),
+        .mapLinkIf(hasAuthority(ROLE_UPDATE) || (entity.isCoreRole() && hasAuthority(ROLE_UPDATE_CORE)),
           LinkRelation.of(SELF),
           link -> link.andAffordance(getUpdateAffordance(entity.getId())))
       ;

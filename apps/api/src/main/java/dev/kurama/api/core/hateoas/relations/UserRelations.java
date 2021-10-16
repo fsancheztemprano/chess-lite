@@ -11,7 +11,6 @@ public class UserRelations {
 
   public static final String CURRENT_USER_REL = "current-user";
 
-
   public static final String USER_PREFERENCES_REL = "user-preferences";
 
 

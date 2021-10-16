@@ -15,6 +15,8 @@ export enum UserManagementRelations {
   USER_MODEL_LIST_REL = 'userModels',
   USER_CREATE_REL = 'create',
   USER_UPDATE_REL = 'update',
+  USER_UPDATE_ROLE_REL = 'updateRole',
+  USER_UPDATE_AUTHORITIES_REL = 'updateAuthorities',
   USER_DELETE_REL = 'delete',
   USER_PREFERENCES_REL = 'user-preferences',
 }
@@ -56,6 +58,5 @@ export enum ServiceLogsRelations {
 
 export enum GlobalSettingsRelations {
   GLOBAL_SETTINGS_REL = 'global-settings',
-  GLOBAL_SETTINGS_CREATE_REL = 'create',
   GLOBAL_SETTINGS_UPDATE_REL = 'update',
 }

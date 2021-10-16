@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TOKEN_KEY, User } from '@app/domain';
 import { HalFormService, Resource } from '@hal-form-client';
-import { EMPTY, Observable, tap } from 'rxjs';
+import { catchError, EMPTY, Observable, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isTokenExpired } from '../../auth/utils/auth.utils';
 import { MessageService } from './message.service';
@@ -33,9 +33,10 @@ export class SessionService {
         this.userService.initializeUser(options.user);
         return this.halFormService.initialize().pipe(map(() => options.user as User));
       } else {
-        return this.userService
-          .fetchCurrentUser()
-          .pipe(tap((fetchedUser) => this.userService.initializeUser(fetchedUser)));
+        return this.userService.fetchCurrentUser().pipe(
+          tap((fetchedUser) => this.userService.initializeUser(fetchedUser)),
+          catchError(() => this.clearSession()),
+        );
       }
     } else return EMPTY;
   }

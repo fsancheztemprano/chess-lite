@@ -62,9 +62,13 @@ public class AdminBootstrap implements CommandLineRunner {
             .coreRole(true)
             .canLogin(!roleName.equals(DefaultAuthority.DEFAULT_ROLE))
             .build());
-        role.setAuthorities(Sets.newHashSet(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()).stream().map(
-          roleAuthority -> authorities.stream().filter(authority -> roleAuthority.contains(authority.getName()))
-            .findFirst().orElseThrow()).collect(Collectors.toSet())));
+        role.setAuthorities(
+          Sets.newHashSet(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()).stream()
+            .map(roleAuthority ->
+              authorities.stream()
+                .filter(authority ->
+                  roleAuthority.equals(authority.getName()))
+                .findFirst().orElseThrow()).collect(Collectors.toSet())));
         return role;
       }).collect(Collectors.toList()));
 
