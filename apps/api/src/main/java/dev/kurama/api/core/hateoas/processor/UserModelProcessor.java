@@ -6,6 +6,8 @@ import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.authority.UserAuthority.USER_DELETE;
 import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE;
+import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE_AUTHORITIES;
+import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE_ROLE;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_READ;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
@@ -68,6 +70,12 @@ public class UserModelProcessor extends DomainModelProcessor<UserModel> {
       .mapLinkIf(hasAuthority(USER_UPDATE),
         LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(entity.getId())))
+      .mapLinkIf(hasAuthority(USER_UPDATE_ROLE),
+        LinkRelation.of(SELF),
+        link -> link.andAffordance(getUpdateRoleAffordance(entity.getId())))
+      .mapLinkIf(hasAuthority(USER_UPDATE_AUTHORITIES),
+        LinkRelation.of(SELF),
+        link -> link.andAffordance(getUpdateAuthoritiesAffordance(entity.getId())))
       .mapLinkIf(hasAuthority(USER_UPDATE),
         LinkRelation.of(SELF),
         link -> link.andAffordance(getSendActivationTokenAffordance(entity.getId())))
@@ -116,6 +124,16 @@ public class UserModelProcessor extends DomainModelProcessor<UserModel> {
   @SneakyThrows
   private @NonNull Affordance getUpdateAffordance(String username) {
     return afford(methodOn(getClazz()).update(username, null));
+  }
+
+  @SneakyThrows
+  private @NonNull Affordance getUpdateRoleAffordance(String username) {
+    return afford(methodOn(getClazz()).updateRole(username, null));
+  }
+
+  @SneakyThrows
+  private @NonNull Affordance getUpdateAuthoritiesAffordance(String username) {
+    return afford(methodOn(getClazz()).updateAuthorities(username, null));
   }
 
   @SneakyThrows

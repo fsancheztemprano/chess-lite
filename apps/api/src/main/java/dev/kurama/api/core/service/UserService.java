@@ -128,7 +128,7 @@ public class UserService implements UserDetailsService {
   }
 
   public void signup(SignupInput signupInput)
-    throws UsernameExistsException, EmailExistsException, SignupClosedException, RoleNotFoundException {
+    throws UsernameExistsException, EmailExistsException, SignupClosedException {
     if (!globalSettingsService.getGlobalSettings().isSignupOpen()) {
       throw new SignupClosedException();
     }
@@ -186,78 +186,77 @@ public class UserService implements UserDetailsService {
 
   public User updateUser(String id, UserInput userInput)
     throws EmailExistsException, UsernameExistsException, UserNotFoundException, RoleNotFoundException {
-    var currentUser = findUserById(id).orElseThrow(
-      () -> new UserNotFoundException(UserConstant.NO_USER_FOUND_BY_ID + id));
+    var user = findUserById(id).orElseThrow(() -> new UserNotFoundException(UserConstant.NO_USER_FOUND_BY_ID + id));
     var changed = false;
-    if (ofNullable(userInput.getEmail()).isPresent() && !currentUser.getEmail()
+    if (ofNullable(userInput.getEmail()).isPresent() && !user.getEmail()
       .equalsIgnoreCase(userInput.getEmail())) {
       if (findUserByEmail(userInput.getEmail()).isPresent()) {
         throw new EmailExistsException(UserConstant.EMAIL_ALREADY_EXISTS + userInput.getEmail());
       }
-      currentUser.setEmail(userInput.getEmail());
+      user.setEmail(userInput.getEmail());
       changed = true;
     }
-    if (ofNullable(userInput.getUsername()).isPresent() && !currentUser.getUsername()
+    if (ofNullable(userInput.getUsername()).isPresent() && !user.getUsername()
       .equalsIgnoreCase(userInput.getUsername())) {
       if (findUserByUsername(userInput.getUsername()).isPresent()) {
         throw new UsernameExistsException(UserConstant.USERNAME_ALREADY_EXISTS + userInput.getUsername());
       }
-      currentUser.setUsername(userInput.getUsername());
+      user.setUsername(userInput.getUsername());
       changed = true;
     }
     if (ofNullable(userInput.getPassword()).isPresent()) {
-      currentUser.setPassword(passwordEncoder.encode(userInput.getPassword()));
+      user.setPassword(passwordEncoder.encode(userInput.getPassword()));
       changed = true;
     }
     if (ofNullable(userInput.getFirstname()).isPresent() && !userInput.getFirstname()
-      .equals(currentUser.getFirstname())) {
-      currentUser.setFirstname(userInput.getFirstname());
+      .equals(user.getFirstname())) {
+      user.setFirstname(userInput.getFirstname());
       changed = true;
     }
-    if (ofNullable(userInput.getLastname()).isPresent() && !userInput.getLastname().equals(currentUser.getLastname())) {
-      currentUser.setLastname(userInput.getLastname());
+    if (ofNullable(userInput.getLastname()).isPresent() && !userInput.getLastname().equals(user.getLastname())) {
+      user.setLastname(userInput.getLastname());
       changed = true;
     }
     if (ofNullable(userInput.getProfileImageUrl()).isPresent() && !userInput.getProfileImageUrl()
-      .equals(currentUser.getProfileImageUrl())) {
-      currentUser.setProfileImageUrl(userInput.getProfileImageUrl());
+      .equals(user.getProfileImageUrl())) {
+      user.setProfileImageUrl(userInput.getProfileImageUrl());
       changed = true;
     }
-    if (ofNullable(userInput.getActive()).isPresent() && !userInput.getActive().equals(currentUser.isActive())) {
-      currentUser.setActive(userInput.getActive());
+    if (ofNullable(userInput.getActive()).isPresent() && !userInput.getActive().equals(user.isActive())) {
+      user.setActive(userInput.getActive());
       changed = true;
     }
-    if (ofNullable(userInput.getLocked()).isPresent() && !userInput.getLocked().equals(currentUser.isLocked())) {
-      currentUser.setLocked(userInput.getLocked());
+    if (ofNullable(userInput.getLocked()).isPresent() && !userInput.getLocked().equals(user.isLocked())) {
+      user.setLocked(userInput.getLocked());
       changed = true;
     }
-    if (ofNullable(userInput.getExpired()).isPresent() && !userInput.getExpired().equals(currentUser.isExpired())) {
-      currentUser.setExpired(userInput.getExpired());
+    if (ofNullable(userInput.getExpired()).isPresent() && !userInput.getExpired().equals(user.isExpired())) {
+      user.setExpired(userInput.getExpired());
       changed = true;
     }
     if (ofNullable(userInput.getCredentialsExpired()).isPresent() && !userInput.getCredentialsExpired()
-      .equals(currentUser.isCredentialsExpired())) {
-      currentUser.setCredentialsExpired(userInput.getCredentialsExpired());
+      .equals(user.isCredentialsExpired())) {
+      user.setCredentialsExpired(userInput.getCredentialsExpired());
       changed = true;
     }
-    if (ofNullable(userInput.getRoleId()).isPresent() && !userInput.getRoleId().equals(currentUser.getRole().getId())) {
+    if (ofNullable(userInput.getRoleId()).isPresent() && !userInput.getRoleId().equals(user.getRole().getId())) {
       var role = roleService.findRoleById(userInput.getRoleId())
         .orElseThrow(() -> new RoleNotFoundException(userInput.getRoleId()));
-      setRoleAndAuthorities(currentUser, role);
+      setRoleAndAuthorities(user, role);
       changed = true;
     }
     if (ofNullable(userInput.getAuthorityIds()).isPresent() && (
-      userInput.getAuthorityIds().size() != currentUser.getAuthorities().size()
+      userInput.getAuthorityIds().size() != user.getAuthorities().size()
         || !userInput.getAuthorityIds().containsAll(
-        currentUser.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet())))) {
-      currentUser.setAuthorities(authorityService.findAllById(userInput.getAuthorityIds()));
+        user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet())))) {
+      user.setAuthorities(authorityService.findAllById(userInput.getAuthorityIds()));
       changed = true;
     }
     if (changed) {
-      currentUser = userRepository.save(currentUser);
-      userChangedEventEmitter.emitUserUpdatedEvent(currentUser.getId());
+      user = userRepository.save(user);
+      userChangedEventEmitter.emitUserUpdatedEvent(user.getId());
     }
-    return currentUser;
+    return user;
   }
 
   public void requestActivationTokenById(String id) throws UserNotFoundException, ActivationTokenRecentException {

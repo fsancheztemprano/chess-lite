@@ -1,5 +1,7 @@
 package dev.kurama.api.core.service;
 
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_UPDATE_CORE;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static java.util.Optional.ofNullable;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
@@ -88,7 +90,7 @@ public class RoleService {
 
   public Role update(String id, RoleUpdateInput roleUpdateInput) throws RoleNotFoundException, ImmutableRoleException {
     Role role = roleRepository.findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
-    if (role.isCoreRole()) {
+    if (role.isCoreRole() && !hasAuthority(ROLE_UPDATE_CORE)) {
       throw new ImmutableRoleException(id);
     }
     boolean changed = false;

@@ -12,7 +12,9 @@ import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
+import dev.kurama.api.core.hateoas.input.UserAuthoritiesInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
+import dev.kurama.api.core.hateoas.input.UserRoleInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +67,26 @@ public class UserController {
   @PreAuthorize("hasAuthority('user:update')")
   public ResponseEntity<UserModel> update(@PathVariable("userId") String userId, @RequestBody UserInput userInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
+    userInput.setAuthorityIds(null);
+    userInput.setRoleId(null);
     return ok().body(userFacade.update(userId, userInput));
+  }
+
+  @PatchMapping("/{userId}/role")
+  @PreAuthorize("hasAuthority('user:update:role')")
+  public ResponseEntity<UserModel> updateRole(@PathVariable("userId") String userId,
+    @RequestBody UserRoleInput userRoleInput)
+    throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
+    return ok().body(userFacade.update(userId, UserInput.builder().roleId(userRoleInput.getRoleId()).build()));
+  }
+
+  @PatchMapping("/{userId}/authorities")
+  @PreAuthorize("hasAuthority('user:update:authorities')")
+  public ResponseEntity<UserModel> updateAuthorities(@PathVariable("userId") String userId,
+    @RequestBody UserAuthoritiesInput userAuthoritiesInput)
+    throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
+    return ok().body(
+      userFacade.update(userId, UserInput.builder().authorityIds(userAuthoritiesInput.getAuthorityIds()).build()));
   }
 
   @DeleteMapping("/{userId}")

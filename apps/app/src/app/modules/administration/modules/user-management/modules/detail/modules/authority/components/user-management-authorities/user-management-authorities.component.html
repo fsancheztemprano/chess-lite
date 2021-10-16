@@ -11,7 +11,7 @@
   mat-raised-button
   color="primary"
   (click)="onSubmit()"
-  [disabled]="(userManagementDetailService.canUpdateProfile() | async) === false"
+  [disabled]="(userManagementDetailService.canUpdateAuthorities() | async) === false"
 >
   Save Authorities
 </button>
