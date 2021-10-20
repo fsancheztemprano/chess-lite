@@ -143,7 +143,7 @@ public class AdministrationRootController {
   @SneakyThrows
   private @NonNull
   Link getUsersLink() {
-    Link link = linkTo(methodOn(UserController.class).getAll(null)).withRel(USERS_REL);
+    Link link = linkTo(methodOn(UserController.class).getAll(null, null)).withRel(USERS_REL);
     Link usersLink = getExpandedLink(link);
     if (hasAuthority(USER_CREATE)) {
       usersLink = usersLink.andAffordance(afford(methodOn(UserController.class).create(null)));
@@ -160,7 +160,7 @@ public class AdministrationRootController {
   @SneakyThrows
   private @NonNull
   Link getRolesLink() {
-    Link link = linkTo(methodOn(RoleController.class).getAll(null)).withRel(ROLES_REL);
+    Link link = linkTo(methodOn(RoleController.class).getAll(null, null)).withRel(ROLES_REL);
     Link rolesLink = getExpandedLink(link);
     if (hasAuthority(ROLE_CREATE)) {
       rolesLink = rolesLink.andAffordance(afford(methodOn(RoleController.class).create(null)));

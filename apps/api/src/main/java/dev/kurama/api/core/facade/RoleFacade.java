@@ -28,11 +28,10 @@ public class RoleFacade {
   @NonNull
   private final RoleModelAssembler roleModelAssembler;
 
-
-  public PagedModel<RoleModel> getAll(Pageable pageable) {
+  public PagedModel<RoleModel> getAll(Pageable pageable, String search) {
     return roleModelAssembler.toPagedModel(
       roleMapper.rolePageToRoleModelPage(
-        roleService.getAllRoles(pageable)));
+        roleService.getAllRoles(pageable, search)));
   }
 
   public RoleModel findByRoleId(String roleId) throws RoleNotFoundException {

@@ -20,6 +20,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,8 +58,12 @@ public class RoleService {
     return roleRepository.findByName(roleName);
   }
 
-  public Page<Role> getAllRoles(Pageable pageable) {
-    return roleRepository.findAll(pageable);
+  public Page<Role> getAllRoles(Pageable pageable, String search) {
+    if (isEmpty(search)) {
+      return roleRepository.findAll(pageable);
+    } else {
+      return roleRepository.findAll(getRoleExample(search), pageable);
+    }
   }
 
   public Optional<Role> findRoleById(String id) {
@@ -119,5 +126,14 @@ public class RoleService {
 
   private String parseRoleName(String name) {
     return (name + "").toUpperCase().replace(" ", "_");
+  }
+
+
+  private Example<Role> getRoleExample(String search) {
+    return Example.of(
+      Role.builder().name(search).build(),
+      ExampleMatcher.matchingAny()
+        .withIgnorePaths("coreRole", "canLogin")
+        .withMatcher("name", GenericPropertyMatchers.contains().ignoreCase()));
   }
 }

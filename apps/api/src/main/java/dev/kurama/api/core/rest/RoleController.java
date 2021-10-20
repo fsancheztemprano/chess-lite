@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,8 +40,9 @@ public class RoleController {
   @GetMapping()
   @PreAuthorize("hasAuthority('role:read')")
   public ResponseEntity<PagedModel<RoleModel>> getAll(
-    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
-    return ok().body(roleFacade.getAll(pageable));
+    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+    @RequestParam(value = "search", required = false) String search) {
+    return ok().body(roleFacade.getAll(pageable, search));
   }
 
   @GetMapping("/{roleId}")

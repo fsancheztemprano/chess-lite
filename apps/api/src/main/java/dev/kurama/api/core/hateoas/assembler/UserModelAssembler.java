@@ -53,7 +53,7 @@ public class UserModelAssembler extends DomainModelAssembler<UserModel> {
 
   @Override
   public WebMvcLinkBuilder getAllLink() {
-    return linkTo(methodOn(getClazz()).getAll(null));
+    return linkTo(methodOn(getClazz()).getAll(null, null));
   }
 
   @SneakyThrows

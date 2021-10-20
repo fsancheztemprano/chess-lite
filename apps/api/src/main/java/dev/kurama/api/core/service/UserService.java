@@ -2,6 +2,7 @@ package dev.kurama.api.core.service;
 
 import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
 import static java.util.Optional.ofNullable;
+import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 import com.google.common.collect.Sets;
 import dev.kurama.api.core.constant.UserConstant;
@@ -38,6 +39,9 @@ import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -114,8 +118,12 @@ public class UserService implements UserDetailsService {
     return userRepository.findUserByEmail(email);
   }
 
-  public Page<User> getAllUsers(Pageable pageable) {
-    return userRepository.findAll(pageable);
+  public Page<User> getAllUsers(Pageable pageable, String search) {
+    if (isEmpty(search)) {
+      return userRepository.findAll(pageable);
+    } else {
+      return userRepository.findAll(getUserExample(search), pageable);
+    }
   }
 
   public void deleteUserById(String id) throws UserNotFoundException {
@@ -347,5 +355,16 @@ public class UserService implements UserDetailsService {
   private void setRoleAndAuthorities(User user, Role role) {
     user.setRole(role);
     user.setAuthorities(Sets.newHashSet(role.getAuthorities()));
+  }
+
+  private Example<User> getUserExample(String search) {
+    return Example.of(
+      User.builder().username(search).email(search).firstname(search).lastname(search).build(),
+      ExampleMatcher.matchingAny()
+        .withIgnorePaths("active", "locked", "expired", "credentialsExpired")
+        .withMatcher("username", GenericPropertyMatchers.contains().ignoreCase())
+        .withMatcher("email", GenericPropertyMatchers.contains().ignoreCase())
+        .withMatcher("firstname", GenericPropertyMatchers.contains().ignoreCase())
+        .withMatcher("lastname", GenericPropertyMatchers.contains().ignoreCase()));
   }
 }

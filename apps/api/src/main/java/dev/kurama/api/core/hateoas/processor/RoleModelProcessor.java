@@ -53,7 +53,7 @@ public class RoleModelProcessor extends DomainModelProcessor<RoleModel> {
   }
 
   private @NonNull Link getParentLink() {
-    return linkTo(methodOn(getClazz()).getAll(null)).withRel(ROLES_REL);
+    return linkTo(methodOn(getClazz()).getAll(null, null)).withRel(ROLES_REL);
   }
 
   @SneakyThrows
