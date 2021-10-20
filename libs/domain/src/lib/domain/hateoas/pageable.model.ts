@@ -2,6 +2,7 @@ export interface Pageable {
   page?: number;
   size?: number;
   sort?: string;
+  search?: string;
 }
 
 export interface Page {

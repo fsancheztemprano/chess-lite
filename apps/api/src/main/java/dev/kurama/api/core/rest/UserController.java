@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -50,8 +51,9 @@ public class UserController {
   @GetMapping()
   @PreAuthorize("hasAuthority('user:read')")
   public ResponseEntity<PagedModel<UserModel>> getAll(
-    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
-    return ok().body(userFacade.getAll(pageable));
+    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+    @RequestParam(value = "search", required = false) String search) {
+    return ok().body(userFacade.getAll(pageable, search));
   }
 
   @PostMapping()

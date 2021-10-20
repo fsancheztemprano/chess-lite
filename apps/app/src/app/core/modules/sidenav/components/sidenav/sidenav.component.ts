@@ -6,8 +6,8 @@ import { HalFormService } from '@hal-form-client';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { SessionService } from '../../../../services/session.service';
-import { SidenavService } from '../../../../services/sidenav.service';
 import { UserService } from '../../../../services/user.service';
+import { SidenavService } from '../../services/sidenav.service';
 
 @UntilDestroy()
 @Component({

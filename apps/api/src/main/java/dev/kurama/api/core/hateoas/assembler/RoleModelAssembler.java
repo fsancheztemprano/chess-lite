@@ -42,7 +42,7 @@ public class RoleModelAssembler extends DomainModelAssembler<RoleModel> {
 
   @Override
   public WebMvcLinkBuilder getAllLink() {
-    return linkTo(methodOn(getClazz()).getAll(null));
+    return linkTo(methodOn(getClazz()).getAll(null, null));
   }
 
   public @NonNull

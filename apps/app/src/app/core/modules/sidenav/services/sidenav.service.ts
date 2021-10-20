@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IsMobileService } from '../../shared/modules/is-mobile/services/is-mobile.service';
+import { IsMobileService } from '../../../../shared/modules/is-mobile/services/is-mobile.service';
 
 @Injectable({
   providedIn: 'root',

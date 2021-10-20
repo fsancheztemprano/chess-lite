@@ -4,6 +4,7 @@
   </button>
   <span>{{ toolbarService.title | async }}</span>
   <div class="flex-stretch"></div>
+  <app-search-bar></app-search-bar>
   <app-locale-picker *ngIf="toolbarService.showLocalePicker | async"></app-locale-picker>
   <app-theme-picker *ngIf="toolbarService.showThemePicker | async"></app-theme-picker>
   <app-context-menu *ngIf="(toolbarService.showContextMenu | async) && ('' | isMobile | async)"></app-context-menu>

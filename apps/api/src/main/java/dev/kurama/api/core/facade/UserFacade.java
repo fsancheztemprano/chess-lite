@@ -49,10 +49,10 @@ public class UserFacade {
       userService.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId)));
   }
 
-  public PagedModel<UserModel> getAll(Pageable pageable) {
+  public PagedModel<UserModel> getAll(Pageable pageable, String search) {
     return userModelAssembler.toPagedModel(
       userMapper.userPageToUserModelPage(
-        userService.getAllUsers(pageable)));
+        userService.getAllUsers(pageable, search)));
   }
 
   public void deleteById(String id) throws UserNotFoundException {

@@ -103,7 +103,7 @@ public class UserModelProcessor extends DomainModelProcessor<UserModel> {
 
   private @NonNull
   Link getParentLink() {
-    return linkTo(methodOn(getClazz()).getAll(null)).withRel(USERS_REL);
+    return linkTo(methodOn(getClazz()).getAll(null, null)).withRel(USERS_REL);
   }
 
   @SneakyThrows
