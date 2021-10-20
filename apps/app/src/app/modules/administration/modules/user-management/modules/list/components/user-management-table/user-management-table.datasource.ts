@@ -11,9 +11,11 @@ import {
   UsersListChangedMessageDestination,
 } from '@app/domain';
 import {
+  auditTime,
   BehaviorSubject,
   combineLatest,
   filter,
+  finalize,
   Observable,
   startWith,
   Subject,
@@ -22,6 +24,7 @@ import {
   throwError,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { SearchService } from '../../../../../../../../core/modules/toolbar/services/search.service';
 import { MessageService } from '../../../../../../../../core/services/message.service';
 import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { UserManagementService } from '../../../../services/user-management.service';
@@ -41,11 +44,13 @@ export class UserManagementTableDatasource extends DataSource<User> {
     private readonly userManagementService: UserManagementService,
     private readonly messageService: MessageService,
     private readonly toasterService: ToasterService,
+    private readonly searchService: SearchService,
   ) {
     super();
   }
 
   connect(): Observable<User[]> {
+    this.searchService.showSearchBar();
     this._subscribeToUserListChanges();
     return this.paginator && this.sort
       ? combineLatest([
@@ -61,17 +66,26 @@ export class UserManagementTableDatasource extends DataSource<User> {
               direction: 'asc',
             } as Sort),
           ),
+          this.searchService.getSearchTerm().pipe(
+            auditTime(300),
+            finalize(() => this.searchService.reset()),
+          ),
           this._userListChanges.asObservable().pipe(startWith(null)),
         ]).pipe(
-          switchMap(([page, sort]: [PageEvent, Sort, unknown]) => {
+          switchMap(([page, sort, search]: [PageEvent, Sort, string, unknown]) => {
             return this.userManagementService.fetchUsers({
               page: page.pageIndex,
               size: page.pageSize,
               sort: `${sort.active},${sort.direction}`,
+              search: search,
             });
           }),
           tap((userPage: UserPage) => this._userPage$.next(userPage)),
-          map((userPage: UserPage) => userPage.getEmbeddedCollection(UserManagementRelations.USER_MODEL_LIST_REL)),
+          map((userPage: UserPage) =>
+            userPage.hasEmbeddedCollection(UserManagementRelations.USER_MODEL_LIST_REL)
+              ? userPage.getEmbeddedCollection(UserManagementRelations.USER_MODEL_LIST_REL)
+              : [],
+          ),
         )
       : throwError(() => 'Please set the paginator and sort on the data source before connecting.');
   }

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { IsMobileModule } from '../../shared/modules/is-mobile/is-mobile.module';
+import { IsMobileModule } from '../../../../shared/modules/is-mobile/is-mobile.module';
 import { SidenavService } from './sidenav.service';
 
 describe('SidenavService', () => {

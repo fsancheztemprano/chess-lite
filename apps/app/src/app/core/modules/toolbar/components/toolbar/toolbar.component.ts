@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SidenavService } from '../../../../services/sidenav.service';
+import { SidenavService } from '../../../sidenav/services/sidenav.service';
 import { ToolbarService } from '../../services/toolbar.service';
 
 @Component({

@@ -11,9 +11,11 @@ import {
   RolesListChangedMessageDestination,
 } from '@app/domain';
 import {
+  auditTime,
   BehaviorSubject,
   combineLatest,
   filter,
+  finalize,
   Observable,
   startWith,
   Subject,
@@ -22,6 +24,7 @@ import {
   throwError,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { SearchService } from '../../../../../../../../core/modules/toolbar/services/search.service';
 import { MessageService } from '../../../../../../../../core/services/message.service';
 import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { RoleManagementService } from '../../../../services/role-management.service';
@@ -41,11 +44,13 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
     private readonly roleManagementService: RoleManagementService,
     private readonly messageService: MessageService,
     private readonly toasterService: ToasterService,
+    private readonly searchService: SearchService,
   ) {
     super();
   }
 
   connect(): Observable<Role[]> {
+    this.searchService.showSearchBar();
     this._subscribeToRoleListChanges();
     return this.paginator && this.sort
       ? combineLatest([
@@ -61,17 +66,26 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
               direction: 'asc',
             } as Sort),
           ),
+          this.searchService.getSearchTerm().pipe(
+            auditTime(300),
+            finalize(() => this.searchService.reset()),
+          ),
           this._roleListChanges.asObservable().pipe(startWith(null)),
         ]).pipe(
-          switchMap(([page, sort]: [PageEvent, Sort, unknown]) => {
+          switchMap(([page, sort, search]: [PageEvent, Sort, string, unknown]) => {
             return this.roleManagementService.fetchRoles({
               page: page.pageIndex,
               size: page.pageSize,
               sort: `${sort.active},${sort.direction}`,
+              search: search,
             });
           }),
           tap((rolePage: RolePage) => this._rolePage$.next(rolePage)),
-          map((rolePage: RolePage) => rolePage.getEmbeddedCollection(RoleManagementRelations.ROLE_MODEL_LIST_REL)),
+          map((rolePage: RolePage) =>
+            rolePage.hasEmbeddedCollection(RoleManagementRelations.ROLE_MODEL_LIST_REL)
+              ? rolePage.getEmbeddedCollection(RoleManagementRelations.ROLE_MODEL_LIST_REL)
+              : [],
+          ),
         )
       : throwError(() => 'Please set the paginator and sort on the data source before connecting.');
   }
