@@ -5,6 +5,9 @@ on: [ push, pull_request ]
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      dependabot-run: github.actor == "dependabot[bot]"
+      upload-dev-artifacts: github.ref != 'refs/heads/development' || github.event_name == 'pull_request'
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.4
@@ -92,7 +95,7 @@ jobs:
 
       - name: Test Jest Report
         uses: dorny/test-reporter@v1
-        if: always()
+        if: ${{ always() && !env.dependabot-run }}
         with:
           name: Jest Tests
           path: coverage/apps/app/jest-junit.xml
@@ -100,7 +103,7 @@ jobs:
 
       - name: Test Java Report
         uses: dorny/test-reporter@v1
-        if: always()
+        if: ${{ always() && !env.dependabot-run }}
         with:
           name: Java Tests
           path: apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
@@ -108,7 +111,7 @@ jobs:
 
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
+        if: ${{ always() && !env.dependabot-run }}
         with:
           files: |
             apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
@@ -136,14 +139,14 @@ jobs:
           parallel: 'true'
 
       - name: Upload Development Backend Artifact
-        if: github.ref != 'refs/heads/development' || github.event_name != 'push'
+        if: ${{ env.upload-dev-artifacts && !env.dependabot-run }}
         uses: actions/upload-artifact@v2
         with:
           name: backend
           path: apps/api/target/*.jar
 
       - name: Upload Development Frontend Artifact
-        if: github.ref != 'refs/heads/development' || github.event_name != 'push'
+        if: ${{ env.upload-dev-artifacts && !env.dependabot-run }}
         uses: actions/upload-artifact@v2
         with:
           name: frontend
