@@ -16,7 +16,7 @@ application:
   host_url: 'http://localhost:4200'
 spring:
   jpa:
-    show-sql: false
+    show-sql: true
   mail:
     host: localhost
     port: 8825
