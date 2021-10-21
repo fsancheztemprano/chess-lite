@@ -1,12 +1,18 @@
 name: Verify
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches-ignore:
+      - master
+      - development
+  pull_request:
+  workflow_call:
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     env:
-      dependabot-run: ${{ github.actor == 'dependabot[bot]' }}
+      not-dependabot-run: ${{ github.actor != 'dependabot[bot]' }}
       upload-dev-artifacts: ${{ github.ref != 'refs/heads/development' || github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
@@ -73,7 +79,10 @@ jobs:
         run: yarn install
 
       - name: Format Check
-        run: npm run format:check
+        run: npx nx format:check --all
+
+      - name: Workspace Lint
+        run: npx nx workspace-lint
 
       - name: Lint
         uses: MansaGroup/nrwl-nx-action@v2.1.0
@@ -92,7 +101,7 @@ jobs:
 
       - name: Test Jest Report
         uses: dorny/test-reporter@v1
-        if: ${{ always() }} && ${{ !env.dependabot-run }}
+        if: always() && env.not-dependabot-run
         with:
           name: Jest Tests
           path: coverage/apps/app/jest-junit.xml
@@ -100,7 +109,7 @@ jobs:
 
       - name: Test Java Report
         uses: dorny/test-reporter@v1
-        if: ${{ always() }} && ${{ !env.dependabot-run }}
+        if: always() && env.not-dependabot-run
         with:
           name: Java Tests
           path: apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
@@ -108,7 +117,7 @@ jobs:
 
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
-        if: ${{ always() }} && ${{ !env.dependabot-run }}
+        if: always() && env.not-dependabot-run
         with:
           files: |
             apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
@@ -124,7 +133,7 @@ jobs:
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
-        if: ${{ !env.dependabot-run }}
+        if: env.not-dependabot-run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -135,160 +144,17 @@ jobs:
           targets: build
           all: 'true'
           parallel: 'true'
+
       - name: Upload Development Backend Artifact
-        if: ${{ env.upload-dev-artifacts }} && ${{ !env.dependabot-run }}
+        if: env.upload-dev-artifacts && env.not-dependabot-run
         uses: actions/upload-artifact@v2
         with:
           name: backend
           path: apps/api/target/*.jar
 
       - name: Upload Development Frontend Artifact
-        if: ${{ env.upload-dev-artifacts }} && ${{ !env.dependabot-run }}
+        if: env.upload-dev-artifacts && env.not-dependabot-run
         uses: actions/upload-artifact@v2
         with:
           name: frontend
           path: dist/apps/app
-
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: verify
-    if: github.ref == 'refs/heads/development' && github.event_name == 'push'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.5
-
-      - name: Use Java 11
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-          check-latest: true
-
-      - name: Use Node 14
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: '14'
-
-      - name: Get branch names
-        id: branch-name
-        uses: tj-actions/branch-names@v5
-
-      - name: Cache Node modules
-        uses: fsancheztemprano/always-cache@main
-        env:
-          cache-key: ${{ runner.os }}-yarn-v2
-        with:
-          path: |
-            ~/.npm
-            ./node_modules
-            ./node
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
-            ${{ env.cache-key }}-
-
-      - name: Cache Maven packages
-        uses: fsancheztemprano/always-cache@main
-        env:
-          cache-key: ${{ runner.os }}-maven-v2
-        with:
-          path: ~/.m2
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
-            ${{ env.cache-key }}-
-
-      - name: Yarn Install
-        run: yarn install
-
-      - name: Set Deployment Status In Progress
-        uses: bobheadxi/deployments@v0.6.0
-        id: deployment
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: development
-
-      - name: Deploy to Heroku Dev
-        uses: MansaGroup/nrwl-nx-action@v2.1.0
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        with:
-          targets: deploy
-          all: 'true'
-          parallel: 'false'
-          affected: 'false'
-
-
-      - name: Upload Deployed Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: production-package
-          path: apps/api/target/*.jar
-
-      - name: Update Deployment Status
-        uses: bobheadxi/deployments@v0.6.0
-        if: always()
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env_url: https://boiling-shore-06894.herokuapp.com/
-
-      - name: Failed Deployment
-        if: failure()
-        run: echo "DEPLOY_STATE=failed" >> $GITHUB_ENV
-
-      - name: Successfull Deployment
-        if: success()
-        run: echo "DEPLOY_STATE=successful" >> $GITHUB_ENV
-
-      - name: Parse Jira Keys from All Commits
-        id: jira_keys
-        if: always()
-        uses: HighwayThree/jira-extract-issue-keys@master
-        with:
-          is-pull-request: ${{ github.event_name == 'pull_request' }}
-          parse-all-commits: ${{ github.event_name == 'push' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Confirm Deploy State and Jira Key Values
-        if: always()
-        run: |
-          echo "DEPLOY_STATE: ${{env.DEPLOY_STATE}}"
-          echo "Jira Keys: ${{steps.jira_keys.outputs.jira-keys}}"
-
-      - name: Push Deployment Info to Jira
-        id: push_deployment_info_to_jira
-        uses: HighwayThree/jira-upload-deployment-info@master
-        with:
-          #cloud-id: '${{ secrets.CLOUD_ID }}'
-          cloud-instance-base-url: '${{ secrets.JIRA_URL }}'
-          client-id: '${{ secrets.JIRA_CLIENT_ID }}'
-          client-secret: '${{ secrets.JIRA_CLIENT_SECRET }}'
-          deployment-sequence-number: '${{ github.run_id }}'
-          update-sequence-number: '${{ github.run_id }}'
-          issue-keys: "UM-61"
-          #issue-keys: "${{ steps.jira_keys.outputs.jira-keys }}"
-          display-name: "Development"
-          url: https://boiling-shore-06894.herokuapp.com/
-          description: "Test Development"
-          last-updated: '${{github.event.head_commit.timestamp}}'
-          label: 'Test Development'
-          state: '${{env.DEPLOY_STATE}}'
-          pipeline-id: '${{ github.repository }} ${{ github.workflow }}'
-          pipeline-display-name: 'Workflow: ${{ github.workflow }} (#${{ github.run_number }})'
-          pipeline-url: '${{github.event.repository.url}}/actions/runs/${{github.run_id}}'
-          environment-id: 'development'
-          environment-display-name: 'Development'
-          environment-type: 'testing'
-
-      - name: Confirm Jira Deploy Output
-        if: success()
-        run: |
-          echo "Jira Upload Deploy Info response: ${{steps.push_deployment_info_to_jira.outputs.response}}"
