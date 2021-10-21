@@ -107,7 +107,7 @@ public class UserService implements UserDetailsService {
   }
 
   public Optional<User> findUserById(String id) {
-    return userRepository.findUserById(id);
+    return userRepository.findById(id);
   }
 
   public Optional<User> findUserByUsername(String username) {
@@ -127,7 +127,7 @@ public class UserService implements UserDetailsService {
   }
 
   public void deleteUserById(String id) throws UserNotFoundException {
-    deleteUser(userRepository.findUserById(id).orElseThrow(() -> new UserNotFoundException(id)));
+    deleteUser(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
   }
 
   private void deleteUser(User user) {

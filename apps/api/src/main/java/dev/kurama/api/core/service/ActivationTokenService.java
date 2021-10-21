@@ -48,7 +48,7 @@ public class ActivationTokenService {
 
   public ActivationToken findActivationToken(String token)
     throws ActivationTokenNotFoundException, ActivationTokenExpiredException {
-    var activationToken = activationTokenRepository.findActivationTokenById(token)
+    var activationToken = activationTokenRepository.findById(token)
       .orElseThrow(() -> new ActivationTokenNotFoundException(token));
 
     if (activationToken.getCreated().getTime() + ACTIVATION_TOKEN_EXPIRATION_TIME < System.currentTimeMillis()) {

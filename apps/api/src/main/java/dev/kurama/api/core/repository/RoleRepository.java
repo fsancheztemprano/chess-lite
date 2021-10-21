@@ -1,20 +1,13 @@
 package dev.kurama.api.core.repository;
 
 import dev.kurama.api.core.domain.Role;
-import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, String> {
 
   Optional<Role> findByName(String name);
 
-  Optional<Role> findRoleById(String id);
-
-  void deleteRoleById(String id);
-
-  Set<Role> findAllByIdIn(Collection<String> roleIds);
 }

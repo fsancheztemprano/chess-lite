@@ -67,7 +67,7 @@ public class RoleService {
   }
 
   public Optional<Role> findRoleById(String id) {
-    return roleRepository.findRoleById(id);
+    return roleRepository.findById(id);
   }
 
   public Role getDefaultRole() {
@@ -76,7 +76,7 @@ public class RoleService {
 
   @Transactional
   public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {
-    Role role = roleRepository.findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
+    Role role = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
     if (role.isCoreRole()) {
       throw new ImmutableRoleException(id);
     }
@@ -96,7 +96,7 @@ public class RoleService {
   }
 
   public Role update(String id, RoleUpdateInput roleUpdateInput) throws RoleNotFoundException, ImmutableRoleException {
-    Role role = roleRepository.findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
+    Role role = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
     if (role.isCoreRole() && !hasAuthority(ROLE_UPDATE_CORE)) {
       throw new ImmutableRoleException(id);
     }
