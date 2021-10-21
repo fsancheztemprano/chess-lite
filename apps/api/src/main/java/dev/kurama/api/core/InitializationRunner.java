@@ -88,6 +88,8 @@ public class InitializationRunner implements CommandLineRunner {
             Role.builder()
               .setRandomUUID()
               .name(role)
+              .coreRole(true)
+              .canLogin(!role.equals(DefaultAuthority.DEFAULT_ROLE))
               .build())
           .collect(Collectors.toList())).size();
       log.atInfo().log("Initialized Roles -> %d", inserts);
