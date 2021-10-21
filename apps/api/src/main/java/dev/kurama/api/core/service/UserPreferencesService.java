@@ -24,7 +24,7 @@ public class UserPreferencesService {
 
 
   public UserPreferences findUserPreferencesById(String userPreferencesId) throws DomainEntityNotFoundException {
-    return userPreferencesRepository.findUserPreferencesById(userPreferencesId)
+    return userPreferencesRepository.findById(userPreferencesId)
       .orElseThrow(() -> new DomainEntityNotFoundException(userPreferencesId, UserPreferences.class));
   }
 

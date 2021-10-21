@@ -127,7 +127,7 @@ public class InitializationRunner implements CommandLineRunner {
       globalSettingsRepository.deleteAll();
       globalSettingsRepository.saveAndFlush(
         GlobalSettings.builder()
-          .setRandomUUID()
+          .id(GlobalSettings.UNIQUE_ID)
           .signupOpen(false)
           .defaultRole(defaultRole)
           .build()

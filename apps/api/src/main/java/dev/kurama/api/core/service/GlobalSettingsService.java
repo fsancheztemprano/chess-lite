@@ -1,5 +1,6 @@
 package dev.kurama.api.core.service;
 
+import static dev.kurama.api.core.domain.GlobalSettings.UNIQUE_ID;
 import static java.util.Optional.ofNullable;
 
 import dev.kurama.api.core.domain.GlobalSettings;
@@ -30,7 +31,7 @@ public class GlobalSettingsService {
   }
 
   public GlobalSettings getGlobalSettings() {
-    return globalSettingsRepository.findFirstBy();
+    return globalSettingsRepository.findById(UNIQUE_ID).orElseThrow();
   }
 
   public GlobalSettings updateGlobalSettings(GlobalSettingsUpdateInput globalSettingsUpdateInput)

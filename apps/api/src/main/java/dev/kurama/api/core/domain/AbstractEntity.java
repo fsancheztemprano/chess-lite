@@ -1,16 +1,11 @@
 package dev.kurama.api.core.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.UUID;
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -25,23 +20,23 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
 public abstract class AbstractEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(nullable = false, updatable = false)
-  @JsonProperty(access = Access.READ_WRITE)
-  private Long tid;
+//  @Id
+//  @GeneratedValue(strategy = GenerationType.IDENTITY)
+//  @Column(nullable = false, updatable = false)
+//  @JsonProperty(access = Access.READ_WRITE)
+//  private Long tid;
 
+  @Id
   @NonNull
   @NotBlank
   @Column(nullable = false, updatable = false, unique = true)
   private String id;
 
   protected AbstractEntity(AbstractEntityBuilder<?, ?> b) {
-    this.tid = b.tid;
+//    this.tid = b.tid;
     this.id = b.id;
   }
 

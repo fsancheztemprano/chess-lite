@@ -3,6 +3,7 @@ package dev.kurama.api.core.domain;
 import com.google.common.collect.Sets;
 import java.io.Serializable;
 import java.util.Set;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,12 +17,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @SuperBuilder
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 public class Role extends AbstractEntity implements Serializable {
 
@@ -36,6 +41,7 @@ public class Role extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
+  @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
     name = "role_authorities",
