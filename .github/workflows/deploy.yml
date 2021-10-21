@@ -8,6 +8,8 @@ on:
 jobs:
   verify:
     uses: fsancheztemprano/fullstack-template/.github/workflows/verify.yml@development
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   deploy:
     runs-on: ubuntu-latest
     needs: verify
