@@ -15,9 +15,16 @@ import { LocalePickerComponent } from './components/locale-picker/locale-picker.
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ThemePickerComponent } from './components/theme-picker/theme-picker.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 
 @NgModule({
-  declarations: [ThemePickerComponent, LocalePickerComponent, ToolbarComponent, SearchBarComponent],
+  declarations: [
+    ThemePickerComponent,
+    LocalePickerComponent,
+    ToolbarComponent,
+    SearchBarComponent,
+    BreadcrumbComponent,
+  ],
   imports: [
     CommonModule,
     TranslocoModule,
