@@ -18,21 +18,25 @@ const routes: Routes = [
     path: 'login',
     loadChildren: loadLoginModule,
     canActivate: [AuthGuard],
+    data: { breadcrumb: 'Login' },
   },
   {
     path: 'signup',
     loadChildren: loadSignupModule,
     canActivate: [AuthGuard],
+    data: { breadcrumb: 'Signup' },
   },
   {
     path: 'activation',
     loadChildren: loadActivationModule,
     canActivate: [AuthGuard],
+    data: { breadcrumb: 'Activation' },
   },
   {
     path: 'token-request',
     loadChildren: loadTokenModule,
     canActivate: [AuthGuard],
+    data: { breadcrumb: 'Account Recovery' },
   },
   {
     path: '**',

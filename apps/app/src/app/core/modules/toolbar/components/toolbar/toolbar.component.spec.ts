@@ -7,7 +7,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { IsMobileModule } from '../../../../../shared/modules/is-mobile/is-mobile.module';
 import { StubContextMenuComponent } from '../../../context-menu/components/context-menu/context-menu.component.stub';
 import { stubSidenavServiceProvider } from '../../../sidenav/services/sidenav.service.stub';
+import { stubBreadcrumbServiceProvider } from '../../services/breadcrumb.service.stub';
 import { stubToolbarServiceProvider } from '../../services/toolbar.service.stub';
+import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { LocalePickerComponent } from '../locale-picker/locale-picker.component';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 import { ThemePickerComponent } from '../theme-picker/theme-picker.component';
@@ -22,6 +24,9 @@ class StubLocalePickerComponent implements Partial<LocalePickerComponent> {}
 @Component({ selector: 'app-search-bar', template: '' })
 class StubSearchBarComponent implements Partial<SearchBarComponent> {}
 
+@Component({ selector: 'app-breadcrumb', template: '' })
+class StubBreadcrumbComponent implements Partial<BreadcrumbComponent> {}
+
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
@@ -35,9 +40,10 @@ describe('ToolbarComponent', () => {
           StubLocalePickerComponent,
           StubContextMenuComponent,
           StubSearchBarComponent,
+          StubBreadcrumbComponent,
         ],
         imports: [NoopAnimationsModule, MatButtonModule, MatIconModule, MatToolbarModule, IsMobileModule],
-        providers: [stubToolbarServiceProvider, stubSidenavServiceProvider],
+        providers: [stubToolbarServiceProvider, stubSidenavServiceProvider, stubBreadcrumbServiceProvider],
       }).compileComponents();
     }),
   );

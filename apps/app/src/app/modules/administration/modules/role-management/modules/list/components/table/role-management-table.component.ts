@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Role, RoleManagementRelations, RolePage } from '@app/domain';
-import { EMPTY } from 'rxjs';
+import { EMPTY, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { MenuOption } from '../../../../../../../../core/modules/context-menu/services/context-menu.service.model';
 import { CoreService } from '../../../../../../../../core/services/core.service';
@@ -29,7 +29,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
   private createRoleMenuOption: MenuOption = {
     label: 'New Role',
     icon: 'add',
-    onClick: () => this.createRole(),
+    observable: this.createRole(),
     disabled: this.dataSource.rolePage$.pipe(
       map((rolePage: RolePage) => !rolePage.isAllowedTo(RoleManagementRelations.ROLE_CREATE_REL)),
     ),
@@ -81,42 +81,41 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
   }
 
   private createRole() {
-    this.dataSource.rolePage$
-      .pipe(
-        first(),
-        switchMap((rolePage: RolePage) => {
-          return this.textInputDialogService
-            .openDialog({
-              title: 'Create Role',
-              caption: 'Enter a name for the new Role',
-              acceptButton: {
-                text: 'CREATE ROLE',
-                color: 'primary',
-                disabled: !rolePage.isAllowedTo(RoleManagementRelations.ROLE_CREATE_REL),
-              },
-              template: rolePage.getTemplate(RoleManagementRelations.ROLE_CREATE_REL),
-              inputs: [
-                {
-                  key: 'name',
-                  options: {
-                    label: 'Role Name',
-                    placeholder: 'ROLE_SUPER_USER',
-                  },
+    return this.dataSource.rolePage$.pipe(
+      first(),
+      switchMap((rolePage: RolePage) => {
+        return this.textInputDialogService
+          .openDialog({
+            title: 'Create Role',
+            caption: 'Enter a name for the new Role',
+            acceptButton: {
+              text: 'CREATE ROLE',
+              color: 'primary',
+              disabled: !rolePage.isAllowedTo(RoleManagementRelations.ROLE_CREATE_REL),
+            },
+            template: rolePage.getTemplate(RoleManagementRelations.ROLE_CREATE_REL),
+            inputs: [
+              {
+                key: 'name',
+                options: {
+                  label: 'Role Name',
+                  placeholder: 'ROLE_SUPER_USER',
                 },
-              ],
-            })
-            .pipe(
-              switchMap((dialogInputs: { name: string }) => {
-                return dialogInputs?.name?.length
-                  ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, dialogInputs)
-                  : EMPTY;
-              }),
-            );
-        }),
-      )
-      .subscribe({
+              },
+            ],
+          })
+          .pipe(
+            switchMap((dialogInputs: { name: string }) => {
+              return dialogInputs?.name?.length
+                ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, dialogInputs)
+                : EMPTY;
+            }),
+          );
+      }),
+      tap({
         next: () => this.toasterService.showToast({ title: 'Role Created successfully' }),
         error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),
-      });
+      }),
+    );
   }
 }

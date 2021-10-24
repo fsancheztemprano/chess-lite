@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SidenavService } from '../../../sidenav/services/sidenav.service';
+import { BreadcrumbService } from '../../services/breadcrumb.service';
 import { ToolbarService } from '../../services/toolbar.service';
 
 @Component({
@@ -9,5 +10,9 @@ import { ToolbarService } from '../../services/toolbar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
-  constructor(public readonly toolbarService: ToolbarService, public readonly sidenavService: SidenavService) {}
+  constructor(
+    public readonly toolbarService: ToolbarService,
+    public readonly sidenavService: SidenavService,
+    public readonly breadcrumbService: BreadcrumbService,
+  ) {}
 }

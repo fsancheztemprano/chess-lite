@@ -7,15 +7,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 import { SubscribeModule } from '@ngneat/subscribe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { IsMobileModule } from '../../../shared/modules/is-mobile/is-mobile.module';
 import { ContextMenuModule } from '../context-menu/context-menu.module';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LocalePickerComponent } from './components/locale-picker/locale-picker.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ThemePickerComponent } from './components/theme-picker/theme-picker.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     MatFormFieldModule,
     MatInputModule,
     SubscribeModule,
+    RouterModule,
   ],
   exports: [ToolbarComponent],
 })

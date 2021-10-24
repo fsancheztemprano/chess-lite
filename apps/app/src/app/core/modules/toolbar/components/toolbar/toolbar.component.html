@@ -2,7 +2,10 @@
   <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenavService.toggle()">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
-  <span>{{ toolbarService.title | async }}</span>
+  <app-breadcrumb *ngIf="breadcrumbService.getBreadcrumbs$() | async; else title"></app-breadcrumb>
+  <ng-template #title
+  ><span>{{ toolbarService.title | async }}</span></ng-template
+  >
   <div class="flex-stretch"></div>
   <app-search-bar></app-search-bar>
   <app-locale-picker *ngIf="toolbarService.showLocalePicker | async"></app-locale-picker>

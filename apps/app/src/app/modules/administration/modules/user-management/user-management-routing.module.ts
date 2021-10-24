@@ -22,15 +22,18 @@ const routes: Routes = [
   {
     path: 'list',
     loadChildren: loadUserManagementListModule,
+    data: { breadcrumb: 'Users' },
   },
   {
     path: 'create',
     loadChildren: loadUserManagementCreateModule,
     resolve: { roles: RolesResolver },
+    data: { breadcrumb: 'New User' },
   },
   {
     path: 'edit/:userId',
     loadChildren: loadUserManagementDetailModule,
+    data: { breadcrumb: 'User Edit' },
   },
   { path: '**', redirectTo: '' },
 ];

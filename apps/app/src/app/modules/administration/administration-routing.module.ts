@@ -31,24 +31,28 @@ const routes: Routes = [
     loadChildren: loadUserManagementModule,
     canLoad: [UserManagementGuard],
     canActivate: [UserManagementGuard],
+    data: { breadcrumb: 'User Management' },
   },
   {
     path: 'service-logs',
     loadChildren: loadServiceLogsModule,
     canLoad: [ServiceLogsGuard],
     canActivate: [ServiceLogsGuard],
+    data: { breadcrumb: 'Service Logs' },
   },
   {
     path: 'global-settings',
     loadChildren: loadGlobalSettingsModule,
     canLoad: [GlobalSettingsModuleGuard],
     canActivate: [GlobalSettingsModuleGuard],
+    data: { breadcrumb: 'Global Settings' },
   },
   {
     path: 'role-management',
     loadChildren: loadRoleManagementModule,
     canLoad: [RoleManagementGuard],
     canActivate: [RoleManagementGuard],
+    data: { breadcrumb: 'Role Management' },
   },
   { path: '**', redirectTo: '' },
 ];

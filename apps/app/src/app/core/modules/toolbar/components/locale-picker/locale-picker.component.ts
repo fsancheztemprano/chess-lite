@@ -9,5 +9,10 @@ import { TranslationService } from '../../../../services/translation.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class LocalePickerComponent {
+  public readonly pickerFlagWidth = 35;
+  public readonly pickerFlagHeight = 23;
+  public readonly menuFlagWidth = 30;
+  public readonly menuFlagHeight = 20;
+
   constructor(public readonly translationService: TranslationService) {}
 }

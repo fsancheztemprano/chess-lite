@@ -13,11 +13,13 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: loadRoleManagementListModule,
+    data: { breadcrumb: 'Roles' },
   },
   {
     path: ':roleId',
     loadChildren: loadRoleManagementDetailModule,
     resolve: { role: RoleResolver, authorities: AuthoritiesResolver },
+    data: { breadcrumb: (data: { role: { name: string } }) => `${data.role.name}` },
   },
 ];
 

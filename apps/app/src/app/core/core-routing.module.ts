@@ -18,6 +18,7 @@ const routes: Routes = [
   {
     path: '',
     component: CoreComponent,
+    data: { breadcrumb: 'Home' },
     children: [
       {
         path: '',
@@ -29,18 +30,21 @@ const routes: Routes = [
         loadChildren: loadAuthModule,
         canLoad: [AuthGuard],
         canActivate: [AuthGuard],
+        data: { breadcrumb: 'Authentication' },
       },
       {
         path: 'user',
         loadChildren: loadUserModule,
         canLoad: [UserSettingsGuard],
         canActivate: [UserSettingsGuard],
+        data: { breadcrumb: 'User Settings' },
       },
       {
         path: 'administration',
         loadChildren: loadAdministrationModule,
         canLoad: [AdministrationGuard],
         canActivate: [AdministrationGuard],
+        data: { breadcrumb: 'Administration' },
       },
       { path: '**', redirectTo: '' },
     ],

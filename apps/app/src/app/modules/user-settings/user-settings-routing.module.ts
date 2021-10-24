@@ -24,10 +24,12 @@ const routes: Routes = [
     path: '',
     loadChildren: loadUserUserSettingsHomeModule,
     pathMatch: 'full',
+    data: { breadcrumb: 'User Settings Home' },
   },
   {
     path: 'profile',
     loadChildren: loadUserUpdateProfileModule,
+    data: { breadcrumb: 'User Profile' },
   },
   {
     path: 'delete',

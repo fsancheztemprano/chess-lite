@@ -95,7 +95,7 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
   }
 
   disconnect(): void {
-    this._rolePage$.complete();
+    this._rolePage$.next(new RolePage({}));
     this._roleListMessagesSubscription.unsubscribe();
   }
 

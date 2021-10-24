@@ -36,7 +36,7 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
   private createUserMenuOption: MenuOption = {
     label: 'New User',
     icon: 'person_add',
-    onClick: () => this.router.navigate(['administration', 'user-management', 'create']),
+    callback: () => this.router.navigate(['administration', 'user-management', 'create']),
     disabled: this.dataSource.userPage$.pipe(
       map((userPage: UserPage) => !userPage.isAllowedTo(UserManagementRelations.USER_CREATE_REL)),
     ),

@@ -23,10 +23,12 @@ const routes: Routes = [
       {
         path: 'general',
         loadChildren: loadGlobalSettingsGeneralModule,
+        data: { breadcrumb: 'General Settings' },
       },
       {
         path: 'access-restrictions',
         loadChildren: loadGlobalSettingsAccessRestrictionsModule,
+        data: { breadcrumb: 'Access Restrictions' },
       },
       { path: '', redirectTo: 'general' },
       { path: '**', redirectTo: 'general' },

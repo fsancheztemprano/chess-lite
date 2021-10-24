@@ -44,12 +44,12 @@ export class ServiceLogsComponent implements OnDestroy {
       {
         icon: 'refresh',
         label: 'Refresh',
-        onClick: () => this.refreshServiceLogs(),
+        callback: () => this.refreshServiceLogs(),
       },
       {
         icon: 'delete',
         label: 'Delete',
-        onClick: () => this.deleteServiceLogs(),
+        callback: () => this.deleteServiceLogs(),
         disabled: this.serviceLogs.pipe(
           map((serviceLogs) => !serviceLogs.isAllowedTo(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
         ),

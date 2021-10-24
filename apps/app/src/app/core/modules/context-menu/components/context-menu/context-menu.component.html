@@ -5,7 +5,7 @@
   <button
     mat-menu-item
     *ngFor="let option of contextMenuService.options | async"
-    (click)="option.onClick()"
+    (click)="onMenuOptionClick(option)"
     [disabled]="!option.disabled ? false : (option.disabled | async)"
   >
     <mat-icon *ngIf="option.icon">{{ option.icon }}</mat-icon>

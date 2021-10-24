@@ -43,9 +43,9 @@ export class MessageService {
     // Will log diagnostics on console
     // It can be quite verbose, not recommended in production
     // Skip this key to stop logging to console
-    debug: (msg: string): void => {
-      console.log(new Date(), msg);
-    },
+    // debug: (msg: string): void => {
+    // console.log(new Date(), msg);
+    // },
   };
 
   public static getDestinationString(destination: string | MessageDestination): string {

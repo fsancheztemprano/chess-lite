@@ -1,0 +1,4 @@
+<ng-container *ngFor="let breadcrumb of breadcrumbService.getBreadcrumbs$() | async; last as isLast">
+  <a mat-button [routerLink]="breadcrumb.url">{{ breadcrumb.label || 'Home' }}</a>
+  <mat-icon *ngIf="!isLast" aria-hidden="false" aria-label="Next">navigate_next</mat-icon>
+</ng-container>
