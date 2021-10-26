@@ -123,7 +123,7 @@
     "eslint-plugin-cypress": "2.12.1",
     "jest": "27.3.1",
     "jest-junit": "13.0.0",
-    "jest-preset-angular": "10.0.1",
+    "jest-preset-angular": "10.1.0",
     "npm-check-updates": "11.8.5",
     "prettier": "2.4.1",
     "sonarqube-scanner": "2.8.1",
