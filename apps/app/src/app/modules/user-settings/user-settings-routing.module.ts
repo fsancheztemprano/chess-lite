@@ -24,7 +24,6 @@ const routes: Routes = [
     path: '',
     loadChildren: loadUserUserSettingsHomeModule,
     pathMatch: 'full',
-    data: { breadcrumb: 'User Settings Home' },
   },
   {
     path: 'profile',
@@ -34,18 +33,22 @@ const routes: Routes = [
   {
     path: 'delete',
     loadChildren: loadUserRemoveAccountModule,
+    data: { breadcrumb: 'Delete' },
   },
   {
     path: 'password',
     loadChildren: loadUserChangePasswordModule,
+    data: { breadcrumb: 'Password' },
   },
   {
     path: 'avatar',
     loadChildren: loadUserUploadAvatarModule,
+    data: { breadcrumb: 'Avatar' },
   },
   {
     path: 'preferences',
     loadChildren: loadUserPreferencesModule,
+    data: { breadcrumb: 'Preferences' },
   },
   { path: '**', redirectTo: '' },
 ];

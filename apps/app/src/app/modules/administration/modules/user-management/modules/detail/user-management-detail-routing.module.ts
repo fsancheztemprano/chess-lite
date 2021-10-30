@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserManagementDetailComponent } from './components/user-management-detail/user-management-detail.component';
 import { UserManagementDetailGuard } from './guards/user-management-detail.guard';
+import { UserManagementDetailResolver } from './resolvers/user-management-detail.resolver';
 
 const loadUserManagementProfileModule = () =>
   import('./modules/profile/user-management-profile.module').then((m) => m.UserManagementProfileModule);
@@ -17,31 +18,38 @@ const loadUserManagementPreferencesModule = () =>
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':userId',
     component: UserManagementDetailComponent,
     canActivate: [UserManagementDetailGuard],
     canDeactivate: [UserManagementDetailGuard],
+    resolve: { user: UserManagementDetailResolver },
+    data: { breadcrumb: (data: { user: { username: string } }) => `${data.user.username}` },
     children: [
       {
         path: 'profile',
         loadChildren: loadUserManagementProfileModule,
+        data: { breadcrumb: 'Profile' },
       },
       {
         path: 'authority',
         loadChildren: loadUserManagementAuthorityModule,
+        data: { breadcrumb: 'Authority' },
       },
       {
         path: 'account',
         loadChildren: loadUserManagementDeleteModule,
+        data: { breadcrumb: 'Account' },
       },
       {
         path: 'preferences',
         loadChildren: loadUserManagementPreferencesModule,
+        data: { breadcrumb: 'Preferences' },
       },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: '**', redirectTo: 'profile' },
     ],
   },
+  { path: '', redirectTo: '/administration/user-management' },
 ];
 
 @NgModule({

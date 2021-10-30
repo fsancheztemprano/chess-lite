@@ -31,9 +31,9 @@ const routes: Routes = [
     data: { breadcrumb: 'New User' },
   },
   {
-    path: 'edit/:userId',
+    path: 'edit',
     loadChildren: loadUserManagementDetailModule,
-    data: { breadcrumb: 'User Edit' },
+    data: { breadcrumb: 'User' },
   },
   { path: '**', redirectTo: '' },
 ];

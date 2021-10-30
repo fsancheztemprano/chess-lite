@@ -27,15 +27,24 @@ export class BreadcrumbService {
     if (route) {
       const routeUrl = parentUrl.concat(route.url.map((url) => url.path));
       const breadcrumbUrl = '/' + routeUrl.join('/');
-      if (!breadcrumbs.length || (breadcrumbUrl !== breadcrumbs[breadcrumbs.length - 1]?.url && route.data?.breadcrumb))
-        breadcrumbs.push({
-          label:
-            typeof route.data.breadcrumb === 'function' ? route.data.breadcrumb(route.data) : route.data.breadcrumb,
-          url: breadcrumbUrl,
-        });
+
+      if (route.data?.breadcrumb) {
+        if (breadcrumbs[breadcrumbs.length - 1]?.url === breadcrumbUrl) {
+          breadcrumbs[breadcrumbs.length - 1].label = this._getBreadcrumbLabel(route);
+        } else {
+          breadcrumbs.push({
+            label: this._getBreadcrumbLabel(route),
+            url: breadcrumbUrl,
+          });
+        }
+      }
       this.buildBreadcrumbs(route.firstChild, routeUrl, breadcrumbs);
     }
     return breadcrumbs;
+  }
+
+  private _getBreadcrumbLabel(route: ActivatedRouteSnapshot) {
+    return typeof route.data.breadcrumb === 'function' ? route.data.breadcrumb(route.data) : route.data.breadcrumb;
   }
 
   getBreadcrumbs$(): Observable<Breadcrumb[]> {
