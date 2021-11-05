@@ -96,7 +96,7 @@
     "@angular/compiler-cli": "12.2.12",
     "@angular/language-service": "12.2.12",
     "@jest/reporters": "27.3.1",
-    "@ngneat/transloco-keys-manager": "3.0.4",
+    "@ngneat/transloco-keys-manager": "3.1.1",
     "@nrwl/cli": "13.1.2",
     "@nrwl/cypress": "13.1.2",
     "@nrwl/devkit": "13.1.2",
