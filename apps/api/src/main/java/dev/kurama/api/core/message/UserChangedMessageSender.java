@@ -12,12 +12,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserChangedMessageSender {
 
+  public static final String USERS_CHANGED_CHANNEL = "/ami/user";
+  public static final String USER_CHANGED_CHANNEL = USERS_CHANGED_CHANNEL + "/%s";
+
   @NonNull
   private final SimpMessagingTemplate template;
 
   public void sendUserChangedMessage(@NonNull UserChangedEvent event) {
-    template.convertAndSend(format("/ami/user/%s", event.getUserId()), event);
-    template.convertAndSend("/ami/user", event);
+    template.convertAndSend(format(USER_CHANGED_CHANNEL, event.getUserId()), event);
+    template.convertAndSend(USERS_CHANGED_CHANNEL, event);
   }
 
 }

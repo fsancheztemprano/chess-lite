@@ -24,16 +24,13 @@ public class UserChangedEventEmitter {
 
   public void emitUserCreatedEvent(String userId) {
     emitUserChangedEvent(userId, UserChangedEventAction.CREATED);
-
   }
 
   public void emitUserUpdatedEvent(String userId) {
     emitUserChangedEvent(userId, UserChangedEventAction.UPDATED);
-
   }
 
   public void emitUserDeletedEvent(String userId) {
     emitUserChangedEvent(userId, UserChangedEventAction.DELETED);
-
   }
 }
