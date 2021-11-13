@@ -19,7 +19,6 @@ public class GlobalSettingsFacade {
   @NonNull
   private final GlobalSettingsMapper globalSettingsMapper;
 
-
   public GlobalSettingsModel getGlobalSettings() {
     return globalSettingsMapper.globalSettingsToGlobalSettingsModel(
       globalSettingsService.getGlobalSettings());

@@ -13,7 +13,6 @@ import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
@@ -48,7 +47,7 @@ public class AuthenticationFacade {
   private final JWTTokenProvider jwtTokenProvider;
 
   public void signup(SignupInput signupInput)
-    throws UsernameExistsException, EmailExistsException, DomainEntityNotFoundException, SignupClosedException {
+    throws UsernameExistsException, EmailExistsException, SignupClosedException {
     userService.signup(signupInput);
   }
 
