@@ -115,7 +115,7 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           name: Java Tests
-          path: apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
+          path: apps/api/target/*-reports/*Tests.xml
           reporter: java-junit
 
       - name: Publish Unit Test Results
@@ -123,7 +123,7 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           files: |
-            apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
+            apps/api/target/*-reports/*Tests.xml
             coverage/apps/app/jest-junit.xml
 
       - name: Upload coverage to Codecov
@@ -132,7 +132,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/apps/app/lcov.info,apps/api/target/site/jacoco/jacoco.xml
           name: codecov-app
-          verbose: true
+          verbose: false
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
