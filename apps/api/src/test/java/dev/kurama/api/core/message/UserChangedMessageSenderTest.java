@@ -30,6 +30,7 @@ class UserChangedMessageSenderTest {
       .action(UserChangedEventAction.CREATED)
       .userId(randomUUID())
       .build();
+
     userChangedMessageSender.sendUserChangedMessage(event);
 
     verify(template).convertAndSend(format(USER_CHANGED_CHANNEL, event.getUserId()), event);

@@ -12,11 +12,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserPreferencesChangedMessageSender {
 
+  public static final String USERS_PREFERENCES_CHANGED_CHANNEL = "/ami/user-preferences/%s";
+
   @NonNull
   private final SimpMessagingTemplate template;
 
   public void sendUserPreferencesChangedMessage(@NonNull UserPreferencesChangedEvent event) {
-    template.convertAndSend(format("/ami/user-preferences/%s", event.getUserPreferencesId()), event);
+    template.convertAndSend(format(USERS_PREFERENCES_CHANGED_CHANNEL, event.getUserPreferencesId()), event);
   }
 
 }
