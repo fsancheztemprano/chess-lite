@@ -115,7 +115,7 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           name: Java Tests
-          path: apps/api/target/*-reports/*Tests.xml
+          path: apps/api/target/surefire-reports/*Test.xml
           reporter: java-junit
 
       - name: Publish Unit Test Results
@@ -123,7 +123,8 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           files: |
-            apps/api/target/*-reports/*Tests.xml
+            apps/api/target/surefire-reports/*Test.xml
+            apps/api/target/failsafe-reports/*IT.xml
             coverage/apps/app/jest-junit.xml
 
       - name: Upload coverage to Codecov
