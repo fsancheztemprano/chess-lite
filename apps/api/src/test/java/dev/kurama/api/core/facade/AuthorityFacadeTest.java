@@ -24,8 +24,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 class AuthorityFacadeTest {
 
-  private static final PageRequest PAGEABLE = PageRequest.of(1, 2);
-
   @InjectMocks
   private AuthorityFacade authorityFacade;
 
@@ -41,6 +39,7 @@ class AuthorityFacadeTest {
 
   @Test
   void should_get_and_map_all_authorities() {
+    PageRequest PAGEABLE = PageRequest.of(1, 2);
     PageImpl<Authority> pagedAuthorities = new PageImpl<>(newArrayList(), PAGEABLE, 2);
     PageImpl<AuthorityModel> authorityModels = new PageImpl<>(newArrayList(), PAGEABLE, 2);
     PagedModel<AuthorityModel> expected = PagedModel.of(authorityModels.getContent(),
