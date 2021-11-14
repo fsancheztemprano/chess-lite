@@ -102,23 +102,32 @@ jobs:
           parallel: 'true'
           args: '--codeCoverage'
 
-      - name: Test Jest Report
+      - name: Jest Tests Report
         uses: dorny/test-reporter@v1
         if: env.dependabot-run == 'false' && always()
         with:
           name: Jest Tests
           path: coverage/apps/app/jest-junit.xml
           reporter: jest-junit
+          fail-on-error: false
 
-      - name: Test Java Report
+      - name: Java Unit Tests Report
         uses: dorny/test-reporter@v1
         if: env.dependabot-run == 'false' && always()
         with:
-          name: Java Tests
-          path: |
-            apps/api/target/surefire-reports/*Test.xml
-            apps/api/target/failsafe-reports/*IT.xml
+          name: Java Unit Tests
+          path: apps/api/target/surefire-reports/*Test.xml
           reporter: java-junit
+          fail-on-error: false
+
+      - name: Java Integration Tests Report
+        uses: dorny/test-reporter@v1
+        if: env.dependabot-run == 'false' && always()
+        with:
+          name: Java Integration Tests
+          path: apps/api/target/failsafe-reports/*IT.xml
+          reporter: java-junit
+          fail-on-error: false
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
@@ -128,6 +137,7 @@ jobs:
             apps/api/target/surefire-reports/*Test.xml
             apps/api/target/failsafe-reports/*IT.xml
             coverage/apps/app/jest-junit.xml
+          fail_on: 'nothing'
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
