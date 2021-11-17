@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = NONE)
 @ActiveProfiles(value = "integration-test")
-class AuthorityRepositoryTest {
+class AuthorityRepositoryIT {
 
   @Autowired
   private TestEntityManager entityManager;

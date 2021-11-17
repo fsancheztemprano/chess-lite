@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = NONE)
 @ActiveProfiles(value = "integration-test")
-class UserPreferencesRepositoryTest {
+class UserPreferencesRepositoryIT {
 
   @Autowired
   private TestEntityManager entityManager;
@@ -32,7 +32,6 @@ class UserPreferencesRepositoryTest {
     User user1 = User.builder().setRandomUUID().username("user1").userPreferences(userPreferences1)
       .role(role).build();
     userPreferences1.setUser(user1);
-
     entityManager.persist(user1);
     entityManager.flush();
 
