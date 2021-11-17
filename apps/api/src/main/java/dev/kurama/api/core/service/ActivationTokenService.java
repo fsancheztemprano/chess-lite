@@ -24,19 +24,11 @@ public class ActivationTokenService {
   private final ActivationTokenRepository activationTokenRepository;
 
   public ActivationToken createActivationToken(User user) throws ActivationTokenRecentException {
-    Integer tokenCount = activationTokenRepository.countActivationTokenByUser(user);
-    if (tokenCount > 0) {
-      if (tokenCount == 1) {
-        var activationToken = activationTokenRepository.findActivationTokenByUser(user);
-        if (activationToken.isPresent()) {
-          if (activationToken.get().getCreated().getTime() > System.currentTimeMillis() - ACTIVATION_TOKEN_DELAY) {
-            throw new ActivationTokenRecentException();
-          } else {
-            activationTokenRepository.delete(activationToken.get());
-          }
-        }
+    if (user.getActivationToken() != null) {
+      if (user.getActivationToken().getCreated().getTime() > System.currentTimeMillis() - ACTIVATION_TOKEN_DELAY) {
+        throw new ActivationTokenRecentException();
       } else {
-        activationTokenRepository.deleteAllByUser(user);
+        activationTokenRepository.delete(user.getActivationToken());
       }
     }
     return ActivationToken.builder()
