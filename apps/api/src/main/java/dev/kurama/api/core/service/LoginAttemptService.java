@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginAttemptService {
 
-  private static final int MAXIMUM_NUMBER_OF_ATTEMPTS = 5;
+  public static final int MAXIMUM_NUMBER_OF_ATTEMPTS = 5;
   private static final int ATTEMPT_INCREMENT = 1;
   private final LoadingCache<String, Integer> loginAttemptCache;
 
