@@ -108,7 +108,7 @@
     "@nrwl/workspace": "13.1.2",
     "@nx-tools/nx-docker": "1.0.5",
     "@nxrocks/nx-spring-boot": "3.0.0",
-    "@schematics/angular": "12.2.12",
+    "@schematics/angular": "13.0.3",
     "@schematics/schematics": "0.1102.12",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.6",
