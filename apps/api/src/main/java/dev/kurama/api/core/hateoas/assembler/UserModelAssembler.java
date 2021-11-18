@@ -13,7 +13,6 @@ import dev.kurama.api.core.rest.UserController;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Affordance;
@@ -26,8 +25,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserModelAssembler extends DomainModelAssembler<UserModel> {
 
-  @Autowired
-  private PagedResourcesAssembler<UserModel> pagedResourcesAssembler;
+  @NonNull
+  private final PagedResourcesAssembler<UserModel> pagedResourcesAssembler;
 
   @Override
   protected Class<UserController> getClazz() {

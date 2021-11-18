@@ -11,7 +11,6 @@ import dev.kurama.api.core.rest.AuthorityController;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -22,8 +21,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthorityModelAssembler extends DomainModelAssembler<AuthorityModel> {
 
-  @Autowired
-  private PagedResourcesAssembler<AuthorityModel> pagedResourcesAssembler;
+  @NonNull
+  private final PagedResourcesAssembler<AuthorityModel> pagedResourcesAssembler;
 
   @Override
   protected Class<AuthorityController> getClazz() {

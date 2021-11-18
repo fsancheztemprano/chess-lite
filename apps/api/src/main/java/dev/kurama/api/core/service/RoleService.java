@@ -70,17 +70,13 @@ public class RoleService {
     return roleRepository.findById(id);
   }
 
-  public Role getDefaultRole() {
-    return globalSettingsService.getGlobalSettings().getDefaultRole();
-  }
-
   @Transactional
   public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {
     Role role = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
     if (role.isCoreRole()) {
       throw new ImmutableRoleException(id);
     }
-    userService.reassignToRole(role.getUsers(), getDefaultRole());
+    userService.reassignToRole(role.getUsers(), globalSettingsService.getGlobalSettings().getDefaultRole());
     roleRepository.delete(role);
     roleChangedEventEmitter.emitRoleDeletedEvent(role.getId());
   }

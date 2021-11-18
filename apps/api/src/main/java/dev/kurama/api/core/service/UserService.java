@@ -141,7 +141,7 @@ public class UserService implements UserDetailsService {
       throw new SignupClosedException();
     }
 
-    var defaultRole = roleService.getDefaultRole();
+    var defaultRole = globalSettingsService.getGlobalSettings().getDefaultRole();
     var userInput = UserInput.builder()
       .username(signupInput.getUsername())
       .password(UUID.randomUUID().toString())
@@ -169,7 +169,7 @@ public class UserService implements UserDetailsService {
     throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = roleService.findRoleById(userInput.getRoleId())
-      .orElseGet(() -> roleService.getDefaultRole());
+      .orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())
