@@ -54,7 +54,7 @@ class GlobalSettingsServiceTest {
   class UpdateGlobalSettingsTests {
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
       globalSettingsService.setRoleService(roleService);
     }
 
