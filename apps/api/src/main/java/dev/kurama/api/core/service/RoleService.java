@@ -72,7 +72,7 @@ public class RoleService {
 
   @Transactional
   public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {
-    Role role = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
+    Role role = findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
     if (role.isCoreRole()) {
       throw new ImmutableRoleException(id);
     }
@@ -92,7 +92,7 @@ public class RoleService {
   }
 
   public Role update(String id, RoleUpdateInput roleUpdateInput) throws RoleNotFoundException, ImmutableRoleException {
-    Role role = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
+    Role role = findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
     if (role.isCoreRole() && !hasAuthority(ROLE_UPDATE_CORE)) {
       throw new ImmutableRoleException(id);
     }
@@ -104,7 +104,7 @@ public class RoleService {
     if (roleUpdateInput.getAuthorityIds() != null &&
       (roleUpdateInput.getAuthorityIds().size() != role.getAuthorities().size()
         || !roleUpdateInput.getAuthorityIds().containsAll(
-        role.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet())))) {
+        role.getAuthorities().stream().map(Authority::getId).collect(Collectors.toSet())))) {
       role.setAuthorities(authorityService.findAllById(roleUpdateInput.getAuthorityIds()));
       changed = true;
     }
