@@ -255,7 +255,7 @@ public class UserService implements UserDetailsService {
     if (ofNullable(userInput.getAuthorityIds()).isPresent() && (
       userInput.getAuthorityIds().size() != user.getAuthorities().size()
         || !userInput.getAuthorityIds().containsAll(
-        user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet())))) {
+        user.getAuthorities().stream().map(Authority::getId).collect(Collectors.toSet())))) {
       user.setAuthorities(authorityService.findAllById(userInput.getAuthorityIds()));
       changed = true;
     }
