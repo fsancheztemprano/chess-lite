@@ -123,14 +123,14 @@ class ActivationTokenServiceTest {
     void should_throw_and_delete_token_if_failed_attempts_exceed_maximum() throws ActivationTokenUserMismatchException {
       User user = User.builder().setRandomUUID().build();
       ActivationToken activationToken = ActivationToken.builder()
-        .attempts(toIntExact(ACTIVATION_TOKEN_MAX_ATTEMPTS - 1))
+        .attempts(toIntExact(ACTIVATION_TOKEN_MAX_ATTEMPTS))
         .created(new Date())
         .user(User.builder().setRandomUUID().build()).build();
 
       assertThrows(ActivationTokenUserMismatchException.class, () -> {
         activationTokenService.verifyActivationTokenMatch(activationToken, user);
-        verify(activationTokenRepository).delete(activationToken);
       });
+      verify(activationTokenRepository).delete(activationToken);
     }
   }
 }

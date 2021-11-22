@@ -33,8 +33,7 @@ public class LoginAttemptService {
     var attempts = 0;
     try {
       attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    } catch (ExecutionException ignored) {
     }
     loginAttemptCache.put(username, attempts);
   }
@@ -42,8 +41,7 @@ public class LoginAttemptService {
   public boolean hasExceededMaxAttempts(String username) {
     try {
       return loginAttemptCache.get(username) >= MAXIMUM_NUMBER_OF_ATTEMPTS;
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    } catch (ExecutionException ignored) {
     }
     return false;
   }

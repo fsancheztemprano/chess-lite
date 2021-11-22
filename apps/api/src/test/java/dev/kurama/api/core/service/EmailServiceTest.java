@@ -22,16 +22,16 @@ class EmailServiceTest {
   private EmailService emailService;
 
   @Mock
-  private JavaMailSender javaMailSender;
+  private JavaMailSender emailSender;
 
   @Test
   void should_send_email() {
     EmailTemplate emailTemplate =
       EmailTemplate.builder().text("email-text").subject("email-subject").to("email-to").build();
-    when(javaMailSender.createMimeMessage()).thenReturn(new MimeMessage(Session.getDefaultInstance(new Properties())));
+    when(emailSender.createMimeMessage()).thenReturn(new MimeMessage(Session.getDefaultInstance(new Properties())));
 
     emailService.sendEmail(emailTemplate);
 
-    verify(javaMailSender).send(any(MimeMessage.class));
+    verify(emailSender).send(any(MimeMessage.class));
   }
 }

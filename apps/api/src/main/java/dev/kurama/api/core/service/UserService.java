@@ -160,7 +160,6 @@ public class UserService implements UserDetailsService {
       userRepository.saveAndFlush(user);
       sendActivationTokenEmail(user, user.getActivationToken().getId());
     } catch (ActivationTokenRecentException ignored) {
-      log.atFine().log("This should not be seen... user:" + user.getId());
     }
   }
 
@@ -319,10 +318,10 @@ public class UserService implements UserDetailsService {
   private void validateNewUsernameAndEmail(String newUsername, String email)
     throws UsernameExistsException, EmailExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
-    var userByNewEmail = findUserByEmail(email);
     if (userByNewUsername.isPresent()) {
       throw new UsernameExistsException(UserConstant.USERNAME_ALREADY_EXISTS + newUsername);
     }
+    var userByNewEmail = findUserByEmail(email);
     if (userByNewEmail.isPresent()) {
       throw new EmailExistsException(UserConstant.EMAIL_ALREADY_EXISTS + email);
     }

@@ -41,6 +41,7 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -314,14 +315,29 @@ class UserServiceTest {
     @Test
     void should_update_user_except_role_and_authority()
       throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-      UserInput input = UserInput.builder().username("username-A").password("passw0rd").firstname("firstname-A")
-        .lastname("lastname-A").email("email-A@email.com").profileImageUrl("image-url-A").active(true).locked(false)
+      UserInput input = UserInput.builder()
+        .username("username-A")
+        .password("passw0rd")
+        .firstname("firstname-A")
+        .lastname("lastname-A")
+        .email("email-A@email.com")
+        .profileImageUrl("image-url-A")
+        .active(false)
+        .locked(true)
+        .expired(false)
+        .credentialsExpired(true)
+        .build();
+      User expected = User.builder().setRandomUUID()
+        .username("username-B")
+        .firstname("firstname-B")
+        .lastname("lastname-B")
+        .email("email-B@email.com")
+        .profileImageUrl("image-url-B")
+        .active(true)
+        .locked(false)
         .expired(true)
-        .credentialsExpired(false).build();
-      User expected = User.builder().setRandomUUID().username("username-B").firstname("firstname-B")
-        .lastname("lastname-B").email("email-B@email.com").profileImageUrl("image-url-B").active(true).locked(false)
-        .expired(true)
-        .credentialsExpired(false).build();
+        .credentialsExpired(false)
+        .build();
       String encodedPassword = randomUUID();
       when(userRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
       when(passwordEncode.encode(input.getPassword())).thenReturn(encodedPassword);
@@ -499,5 +515,25 @@ class UserServiceTest {
     verifyNoMoreInteractions(userChangedEventEmitter);
     assertThat(users.get(0).getRole()).isEqualTo(targetRole);
     assertThat(users.get(0).getAuthorities()).isEqualTo(targetRole.getAuthorities());
+  }
+
+  @Test
+  void should_throw_if_username_exists() {
+    String username = "username";
+    String email = "email";
+    when(userRepository.findUserByUsername(username)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
+
+    assertThrows(UndeclaredThrowableException.class,
+      () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));
+  }
+
+  @Test
+  void should_throw_if_email_exists() {
+    String username = "username";
+    String email = "email";
+    when(userRepository.findUserByEmail(email)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
+
+    assertThrows(UndeclaredThrowableException.class,
+      () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));
   }
 }
