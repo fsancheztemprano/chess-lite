@@ -18,7 +18,7 @@ public class AuthorityUtils {
     return SecurityContextHolder.getContext().getAuthentication();
   }
 
-  private static ContextUser getContextUser() {
+  public static ContextUser getContextUser() {
     return (ContextUser) getAuthentication().getPrincipal();
   }
 
