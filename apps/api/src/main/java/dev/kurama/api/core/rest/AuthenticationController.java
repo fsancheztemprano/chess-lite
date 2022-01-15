@@ -10,7 +10,6 @@ import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.facade.AuthenticationFacade;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
@@ -39,7 +38,7 @@ public class AuthenticationController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody SignupInput user)
-    throws EmailExistsException, UsernameExistsException, DomainEntityNotFoundException, SignupClosedException {
+    throws EmailExistsException, UsernameExistsException, SignupClosedException {
     authenticationFacade.signup(user);
     return ok().build();
   }

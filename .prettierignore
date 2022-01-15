@@ -10,3 +10,4 @@
 /node
 /node_modules
 /apps/api
+/.angular/cache
