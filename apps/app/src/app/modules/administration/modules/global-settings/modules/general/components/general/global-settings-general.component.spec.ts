@@ -1,9 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { GlobalSettingsGeneralComponent } from './global-settings-general.component';
 import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GlobalSettingsGeneralDefaultRoleComponent } from '../default-role/global-settings-general-default-role.component';
 import { GlobalSettingsGeneralSignupOpenComponent } from '../signup-open/global-settings-general-signup-open.component';
+import { GlobalSettingsGeneralComponent } from './global-settings-general.component';
 
 @Component({ selector: 'app-global-settings-general-default-role', template: '' })
 export class StubGlobalSettingsGeneralDefaultRoleComponent
