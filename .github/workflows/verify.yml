@@ -102,7 +102,7 @@ jobs:
           parallel: 'true'
           args: '--codeCoverage'
 
-      - name: Jest Tests Report
+      - name: Jest Test Execution Report
         uses: dorny/test-reporter@v1
         if: env.dependabot-run == 'false' && always()
         with:
@@ -111,7 +111,7 @@ jobs:
           reporter: jest-junit
           fail-on-error: false
 
-      - name: Java Unit Tests Report
+      - name: Java UTs Execution Report
         uses: dorny/test-reporter@v1
         if: env.dependabot-run == 'false' && always()
         with:
@@ -120,7 +120,7 @@ jobs:
           reporter: java-junit
           fail-on-error: false
 
-      - name: Java Integration Tests Report
+      - name: Java ITs Execution Report
         uses: dorny/test-reporter@v1
         if: env.dependabot-run == 'false' && always()
         with:
@@ -129,7 +129,7 @@ jobs:
           reporter: java-junit
           fail-on-error: false
 
-      - name: Publish Test Results
+      - name: Publish Test Execution Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: env.dependabot-run == 'false' && always()
         with:
@@ -139,12 +139,55 @@ jobs:
             coverage/apps/app/jest-junit.xml
           fail_on: 'nothing'
 
-      - name: Upload coverage to Codecov
+      - name: Jest Coverage Report
+        uses: fsancheztemprano/lcov-reporter-action@master
+        with:
+          title: "Frontend Coverage Report"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: coverage/apps/app/lcov.info
+          filter-changed-files: false
+          delete-old-comments: true
+
+      - name: JaCoCo UT Coverage Report
+        id: jacoco-ut
+        uses: fsancheztemprano/jacoco-report@main
+        with:
+          title: "Backend UT Coverage Report"
+          paths: apps/api/target/site/jacoco-ut/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: JaCoCo IT Coverage Report
+        id: jacoco-it
+        uses: fsancheztemprano/jacoco-report@main
+        with:
+          title: "Backend IT Coverage Report"
+          paths: apps/api/target/site/jacoco-it/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+      #     min-coverage-overall: 40
+      #     min-coverage-changed-files: 60
+
+      - name: Upload Frontend Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/apps/app/lcov.info,apps/api/target/site/jacoco/jacoco.xml
-          name: codecov-app
+          name: codecov-frontend
+          verbose: false
+
+      - name: Upload Backend UT Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/target/site/jacoco-ut/jacoco.xml
+          name: codecov-backend-ut
+          verbose: false
+
+      - name: Upload Backend IT Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/target/site/jacoco-it/jacoco.xml
+          name: codecov-backend-it
           verbose: false
 
       - name: SonarCloud Scan

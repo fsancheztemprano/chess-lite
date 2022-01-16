@@ -26,6 +26,9 @@
     <java.version>11</java.version>
     <org.projectlombok.version>1.18.22</org.projectlombok.version>
     <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+    <skipTests>false</skipTests>
+    <skipITs>${skipTests}</skipITs>
+    <skipUTs>${skipTests}</skipUTs>
   </properties>
 
   <dependencyManagement>
@@ -227,6 +230,11 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
           <version>3.0.0-M5</version>
         </plugin>
@@ -251,6 +259,7 @@
           </excludes>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -281,6 +290,7 @@
           </compilerArgs>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
@@ -294,25 +304,80 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin><!-- https://github.com/eirslett/frontend-maven-plugin -->
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
         <groupId>com.heroku.sdk</groupId>
         <artifactId>heroku-maven-plugin</artifactId>
       </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>pre-unit-test</id>
             <goals>
               <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+              <propertyName>surefireArgLine</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pre-integration-test</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+              <propertyName>failsafeArgLine</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-integration-test</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+            </configuration>
           </execution>
         </executions>
+        <configuration>
+          <excludes>target/**</excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>${surefireArgLine}</argLine>
+          <skipTests>${skipUTs}</skipTests>
+          <excludes>
+            <exclude>**/IT*.java</exclude>
+          </excludes>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -336,6 +401,11 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <argLine>${failsafeArgLine}</argLine>
+          <skipTests>${skipTests}</skipTests>
+          <skipITs>${skipITs}</skipITs>
+        </configuration>
       </plugin>
     </plugins>
   </build>
