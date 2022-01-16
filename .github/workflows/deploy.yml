@@ -34,7 +34,7 @@ jobs:
         uses: tj-actions/branch-names@v5
 
       - name: Cache Node modules
-        uses: fsancheztemprano/always-cache@main
+        uses: fsancheztemprano/cache@main
         env:
           cache-key: ${{ runner.os }}-yarn-v2
         with:
@@ -49,7 +49,7 @@ jobs:
             ${{ env.cache-key }}-
 
       - name: Cache Maven packages
-        uses: fsancheztemprano/always-cache@main
+        uses: fsancheztemprano/cache@main
         env:
           cache-key: ${{ runner.os }}-maven-v2
         with:

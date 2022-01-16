@@ -44,7 +44,7 @@ jobs:
           node-version: '16'
 
       - name: Cache Node modules
-        uses: fsancheztemprano/always-cache@main
+        uses: fsancheztemprano/cache@main
         env:
           cache-key: ${{ runner.os }}-yarn-v2
         with:
@@ -60,7 +60,7 @@ jobs:
           save-on-hit: true
 
       - name: Cache Maven packages
-        uses: fsancheztemprano/always-cache@main
+        uses: fsancheztemprano/cache@main
         env:
           cache-key: ${{ runner.os }}-maven-v2
         with:
