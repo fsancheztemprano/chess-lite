@@ -1,5 +1,6 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/user/profile")
+@RequestMapping(USER_PROFILE_PATH)
 @PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 public class UserProfileController {

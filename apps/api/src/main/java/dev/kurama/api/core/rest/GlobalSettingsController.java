@@ -1,5 +1,7 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
+
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.facade.GlobalSettingsFacade;
 import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/global-settings")
+@RequestMapping(GLOBAL_SETTINGS_PATH)
 @PreAuthorize("isAuthenticated()")
 public class GlobalSettingsController {
 
