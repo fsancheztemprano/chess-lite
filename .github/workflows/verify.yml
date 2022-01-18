@@ -102,6 +102,9 @@ jobs:
           parallel: 'true'
           args: '--codeCoverage'
 
+      - name: Merge Test Reports
+        run: npm run test:merge
+
       - name: Jest Test Execution Report
         uses: dorny/test-reporter@v1
         if: env.dependabot-run == 'false' && always()
@@ -116,7 +119,7 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           name: Java Unit Tests
-          path: apps/api/target/surefire-reports/*Test.xml
+          path: apps/api/target/surefire-reports/merged-uts.xml
           reporter: java-junit
           fail-on-error: false
 
@@ -125,7 +128,7 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           name: Java Integration Tests
-          path: apps/api/target/failsafe-reports/*IT.xml
+          path: apps/api/target/failsafe-reports/merged-its.xml
           reporter: java-junit
           fail-on-error: false
 
