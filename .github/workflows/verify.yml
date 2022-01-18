@@ -104,6 +104,7 @@ jobs:
 
       - name: Merge Test Reports
         run: npm run test:merge
+        if: always()
 
       - name: Jest Test Execution Report
         uses: dorny/test-reporter@v1
