@@ -28,10 +28,3 @@ spring:
 springfox:
   documentation:
     enabled: true
-logging:
-  level:
-    org:
-      hibernate:
-#        cache: trace
-#        type: trace
-#        SQL: DEBUG
