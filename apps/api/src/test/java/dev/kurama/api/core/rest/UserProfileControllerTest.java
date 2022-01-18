@@ -227,35 +227,31 @@ class UserProfileControllerTest {
     UserPreferencesModel expected = UserPreferencesModel.builder().id(randomUUID()).darkMode(false)
       .contentLanguage("de").build();
 
-    @Nested
-    class GetUserPreferencesTests {
+    @Test
+    void should_get_preferences() throws Exception {
+      when(userPreferencesFacade.findByUserId(expected.getId())).thenReturn(expected);
+      try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
+        utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
 
-      @Test
-      void should_get_preferences() throws Exception {
-        when(userPreferencesFacade.findByUserId(expected.getId())).thenReturn(expected);
-        try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
-          utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
-
-          mockMvc.perform(get(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES)).andExpect(status().isOk())
-            .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-            .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
-            .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
-        }
+        mockMvc.perform(get(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES)).andExpect(status().isOk())
+          .andExpect(jsonPath("$.id", equalTo(expected.getId())))
+          .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
+          .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
       }
+    }
 
-      @Test
-      void should_update_user_preferences() throws Exception {
-        UserPreferencesInput input = UserPreferencesInput.builder().darkMode(true).contentLanguage("en").build();
-        when(userPreferencesFacade.updateByUserId(expected.getId(), input)).thenReturn(expected);
-        try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
-          utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
+    @Test
+    void should_update_user_preferences() throws Exception {
+      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(true).contentLanguage("en").build();
+      when(userPreferencesFacade.updateByUserId(expected.getId(), input)).thenReturn(expected);
+      try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
+        utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
 
-          mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).accept(MediaType.APPLICATION_JSON)
-              .contentType(MediaType.APPLICATION_JSON).content(asJsonString(input))).andExpect(status().isOk())
-            .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-            .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
-            .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
-        }
+        mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON).content(asJsonString(input))).andExpect(status().isOk())
+          .andExpect(jsonPath("$.id", equalTo(expected.getId())))
+          .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
+          .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
       }
     }
   }
