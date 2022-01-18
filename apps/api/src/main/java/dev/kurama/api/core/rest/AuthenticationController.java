@@ -1,5 +1,6 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.AUTHENTICATION_PATH;
 import static org.springframework.http.ResponseEntity.ok;
 
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
@@ -27,23 +28,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(AUTHENTICATION_PATH)
 @PreAuthorize("!isAuthenticated()")
 @RequiredArgsConstructor
 public class AuthenticationController {
+
+  public static final String SIGNUP_PATH = "/signup";
+  public static final String LOGIN_PATH = "/login";
+  public static final String TOKEN_PATH = "/token";
+  public static final String ACTIVATE_PATH = "/activate";
 
   @NonNull
   private final AuthenticationFacade authenticationFacade;
 
 
-  @PostMapping("/signup")
+  @PostMapping(SIGNUP_PATH)
   public ResponseEntity<?> signup(@RequestBody SignupInput user)
     throws EmailExistsException, UsernameExistsException, SignupClosedException {
     authenticationFacade.signup(user);
     return ok().build();
   }
 
-  @PostMapping("/login")
+  @PostMapping(LOGIN_PATH)
   public ResponseEntity<UserModel> login(@RequestBody LoginInput user) throws RoleCanNotLoginException {
     var authenticatedUser = authenticationFacade.login(user);
     return ok().headers(authenticatedUser.getHeaders())
@@ -51,14 +57,14 @@ public class AuthenticationController {
   }
 
 
-  @PostMapping("/token")
+  @PostMapping(TOKEN_PATH)
   public ResponseEntity<?> requestActivationToken(@RequestBody RequestActivationTokenInput requestActivationTokenInput)
     throws EmailNotFoundException, ActivationTokenRecentException {
     authenticationFacade.requestActivationToken(requestActivationTokenInput.getEmail());
     return ok().build();
   }
 
-  @PostMapping("/activate")
+  @PostMapping(ACTIVATE_PATH)
   public ResponseEntity<?> activateAccount(@RequestBody AccountActivationInput accountActivationInput)
     throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException {
     authenticationFacade.activateAccount(accountActivationInput);
