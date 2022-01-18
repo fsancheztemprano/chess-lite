@@ -37,6 +37,10 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserProfileController {
 
+  public static final String USER_PROFILE_CHANGE_PASSWORD_PATH = "/password";
+  public static final String USER_PROFILE_UPLOAD_AVATAR_PATH = "/avatar";
+  public static final String USER_PROFILE_PREFERENCES = "/preferences";
+
   @NonNull
   private final UserFacade userFacade;
 
@@ -57,7 +61,7 @@ public class UserProfileController {
       .body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), userProfileUpdateInput));
   }
 
-  @PatchMapping("/password")
+  @PatchMapping(USER_PROFILE_CHANGE_PASSWORD_PATH)
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserModel> changePassword(@RequestBody ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
@@ -65,9 +69,9 @@ public class UserProfileController {
       .body(userFacade.changePassword(AuthorityUtils.getCurrentUserId(), changeUserPasswordInput));
   }
 
-  @PatchMapping(value = "/avatar", consumes = MULTIPART_FORM_DATA_VALUE)
+  @PatchMapping(value = USER_PROFILE_UPLOAD_AVATAR_PATH, consumes = MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("hasAuthority('profile:update')")
-  public ResponseEntity<Object> uploadAvatar(@RequestPart("avatar") MultipartFile avatar)
+  public ResponseEntity<UserModel> uploadAvatar(@RequestPart("avatar") MultipartFile avatar)
     throws IOException, UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     return ok().body(userFacade.uploadAvatar(AuthorityUtils.getCurrentUserId(), avatar));
   }
@@ -79,14 +83,14 @@ public class UserProfileController {
     return noContent().build();
   }
 
-  @GetMapping("/preferences")
+  @GetMapping(USER_PROFILE_PREFERENCES)
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserPreferencesModel> getPreferences() {
     return ok().body(userPreferencesFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }
 
 
-  @PatchMapping("/preferences")
+  @PatchMapping(USER_PROFILE_PREFERENCES)
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserPreferencesModel> updatePreferences(
     @RequestBody UserPreferencesInput userPreferencesInput) {
