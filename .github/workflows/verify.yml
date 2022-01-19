@@ -144,7 +144,7 @@ jobs:
           fail_on: 'nothing'
 
       - name: Jest Coverage Report
-        uses: fsancheztemprano/lcov-reporter-action@master
+        uses: fsancheztemprano/lcov-reporter-action@fix-delete-old-messages
         with:
           title: "Frontend Coverage Report"
           github-token: ${{ secrets.GITHUB_TOKEN }}
