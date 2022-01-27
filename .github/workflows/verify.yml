@@ -169,34 +169,6 @@ jobs:
           global-coverage-error-min: 40
           global-coverage-warn-min: 60
 
-      - name: Jest Coverage Report
-        uses: fsancheztemprano/lcov-reporter-action@master
-        with:
-          if: github.event_name == 'pull_request'
-          title: "Frontend Coverage Report"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: coverage/apps/app/lcov.info
-          filter-changed-files: false
-          delete-old-comments: true
-
-      - name: JaCoCo UT Coverage Report
-        id: jacoco-ut
-        uses: fsancheztemprano/jacoco-report@main
-        with:
-          title: "Backend UT Coverage Report"
-          paths: apps/api/target/site/jacoco-ut/jacoco.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: JaCoCo IT Coverage Report
-        id: jacoco-it
-        uses: fsancheztemprano/jacoco-report@main
-        with:
-          title: "Backend IT Coverage Report"
-          paths: apps/api/target/site/jacoco-it/jacoco.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-      #     min-coverage-overall: 40
-      #     min-coverage-changed-files: 60
-
       - name: Upload Frontend Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:

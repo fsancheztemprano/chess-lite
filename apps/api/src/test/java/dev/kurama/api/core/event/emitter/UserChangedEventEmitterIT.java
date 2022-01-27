@@ -46,7 +46,7 @@ class UserChangedEventEmitterIT {
     String userId = randomUUID();
     userChangedEventEmitter.emitUserCreatedEvent(userId);
 
-    Message<?> message = testChannelInterceptor.awaitMessage(2);
+    Message<?> message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNotNull();
 
     StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
@@ -58,7 +58,7 @@ class UserChangedEventEmitterIT {
       .hasFieldOrPropertyWithValue("userId", userId)
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
 
-    message = testChannelInterceptor.awaitMessage(2);
+    message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNotNull();
 
     messageHeaders = StompHeaderAccessor.wrap(message);
