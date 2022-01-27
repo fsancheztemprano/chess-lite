@@ -143,9 +143,36 @@ jobs:
             coverage/apps/app/jest-junit.xml
           fail_on: 'nothing'
 
-      - name: Jest Coverage Report
-        uses: fsancheztemprano/lcov-reporter-action@fix-delete-old-messages
+      - name: Coverage Report
+        uses: frango9000/test-coverage-report@v0.0.1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Application"
+          disable-comment: github.event_name == 'push'    # Only post on pull request, not on commit
+          report-files: |
+            ./apps/api/target/site/jacoco-ut/jacoco.xml
+            ./apps/api/target/site/jacoco-it/jacoco.xml
+            ./coverage/apps/app/lcov.info
+          report-types: |
+            jacoco
+            jacoco
+            lcov
+          report-titles: |
+            'Backend Unit Tests'
+            'Backend Integration Tests'
+            'Frontend Tests'
+          enable-build-fail: false
+          file-coverage-error-min: 60
+          file-coverage-warn-min: 80
+          report-coverage-error-min: 50
+          report-coverage-warn-min: 70
+          global-coverage-error-min: 40
+          global-coverage-warn-min: 60
+
+      - name: Jest Coverage Report
+        uses: fsancheztemprano/lcov-reporter-action@master
+        with:
+          if: github.event_name == 'pull_request'
           title: "Frontend Coverage Report"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: coverage/apps/app/lcov.info
