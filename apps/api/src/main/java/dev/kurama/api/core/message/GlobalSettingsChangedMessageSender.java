@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class GlobalSettingsChangedMessageSender {
 
   public static final String GLOBAL_SETTINGS_CHANGED_CHANNEL = "/ami/global-settings";
+
   @NonNull
   private final SimpMessagingTemplate template;
 
