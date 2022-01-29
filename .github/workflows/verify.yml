@@ -53,9 +53,8 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.run_id }}
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}
             ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}
             ${{ env.cache-key }}-development
             ${{ env.cache-key }}
