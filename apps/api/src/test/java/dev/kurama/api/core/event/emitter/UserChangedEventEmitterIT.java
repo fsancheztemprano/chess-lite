@@ -1,6 +1,5 @@
 package dev.kurama.api.core.event.emitter;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.message.UserChangedMessageSender.USERS_CHANGED_CHANNEL;
 import static dev.kurama.api.core.message.UserChangedMessageSender.USER_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
@@ -13,7 +12,6 @@ import dev.kurama.api.core.event.domain.UserChangedEvent;
 import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
 import dev.kurama.api.framework.TestChannelInterceptor;
 import java.io.IOException;
-import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,34 +46,29 @@ class UserChangedEventEmitterIT {
     String userId = randomUUID();
     userChangedEventEmitter.emitUserCreatedEvent(userId);
 
-    Message<?> message = testChannelInterceptor.awaitMessage(1);
+    Message<?> message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
 
-    ArrayList<String> destinations = newArrayList();
     StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
     assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
-    assertThat(messageHeaders.getDestination()).startsWith(USERS_CHANGED_CHANNEL);
-    destinations.add(messageHeaders.getDestination());
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, userId));
 
     UserChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
       .hasFieldOrPropertyWithValue("userId", userId)
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
 
-    message = testChannelInterceptor.awaitMessage(1);
+    message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
 
     messageHeaders = StompHeaderAccessor.wrap(message);
     assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
-    assertThat(messageHeaders.getDestination()).startsWith(USERS_CHANGED_CHANNEL);
-    destinations.add(messageHeaders.getDestination());
+    assertThat(messageHeaders.getDestination()).isEqualTo(USERS_CHANGED_CHANNEL);
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
       .hasFieldOrPropertyWithValue("userId", userId)
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
-
-    assertThat(format(USER_CHANGED_CHANNEL, userId)).isIn(destinations);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();

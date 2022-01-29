@@ -21,6 +21,7 @@ import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,9 @@ import org.springframework.stereotype.Component;
 @Flogger
 @RequiredArgsConstructor
 public class InitializationRunner implements CommandLineRunner {
+
+  @Value("${application.run_data_init}")
+  private boolean dataInit;
 
   @NonNull
   private final UserRepository userRepository;
@@ -47,16 +51,18 @@ public class InitializationRunner implements CommandLineRunner {
   @Override
   @Transactional
   public void run(String... args) {
-    try {
-      log.atWarning().log("Data Initialization Start");
-      initializeAuthorities();
-      initializeRoles();
-      setRolesAuthorizations();
-      initializeGlobalSettings();
-      initializeAdminUser();
-      log.atWarning().log("Data Initialization Finish");
-    } catch (Exception e) {
-      log.atWarning().withCause(e).log("Data Initialization Failed");
+    if (dataInit) {
+      try {
+        log.atWarning().log("Data Initialization Start");
+        initializeAuthorities();
+        initializeRoles();
+        setRolesAuthorizations();
+        initializeGlobalSettings();
+        initializeAdminUser();
+        log.atWarning().log("Data Initialization Finish");
+      } catch (Exception e) {
+        log.atWarning().withCause(e).log("Data Initialization Failed");
+      }
     }
   }
 
@@ -64,15 +70,10 @@ public class InitializationRunner implements CommandLineRunner {
   void initializeAuthorities() {
     List<Authority> authorities = authorityRepository.findAll();
     if (authorities.size() != DefaultAuthority.AUTHORITIES.size()) {
-      int inserts = authorityRepository.saveAllAndFlush(
-        DefaultAuthority.AUTHORITIES.stream().filter(authority ->
-            authorities.stream().noneMatch(existingAuthority -> existingAuthority.getName().equals(authority)))
-          .map(authority ->
-            Authority.builder()
-              .setRandomUUID()
-              .name(authority)
-              .build())
-          .collect(Collectors.toList())).size();
+      int inserts = authorityRepository.saveAllAndFlush(DefaultAuthority.AUTHORITIES.stream().filter(
+            authority -> authorities.stream().noneMatch(existingAuthority -> existingAuthority.getName().equals(authority)))
+          .map(authority -> Authority.builder().setRandomUUID().name(authority).build()).collect(Collectors.toList()))
+        .size();
       log.atInfo().log("Initialized Authorities -> %d", inserts);
     }
   }
@@ -81,17 +82,10 @@ public class InitializationRunner implements CommandLineRunner {
   void initializeRoles() {
     List<Role> roles = roleRepository.findAll();
     if (roles.size() != DefaultAuthority.ROLES.size()) {
-      int inserts = roleRepository.saveAllAndFlush(
-        DefaultAuthority.ROLES.stream().filter(role ->
-            roles.stream().noneMatch(existingRole -> existingRole.getName().equals(role)))
-          .map(role ->
-            Role.builder()
-              .setRandomUUID()
-              .name(role)
-              .coreRole(true)
-              .canLogin(!role.equals(DefaultAuthority.DEFAULT_ROLE))
-              .build())
-          .collect(Collectors.toList())).size();
+      int inserts = roleRepository.saveAllAndFlush(DefaultAuthority.ROLES.stream()
+        .filter(role -> roles.stream().noneMatch(existingRole -> existingRole.getName().equals(role))).map(
+          role -> Role.builder().setRandomUUID().name(role).coreRole(true)
+            .canLogin(!role.equals(DefaultAuthority.DEFAULT_ROLE)).build()).collect(Collectors.toList())).size();
       log.atInfo().log("Initialized Roles -> %d", inserts);
     }
   }
@@ -100,21 +94,19 @@ public class InitializationRunner implements CommandLineRunner {
   void setRolesAuthorizations() {
     List<Authority> allAuthorities = authorityRepository.findAll();
     List<Role> allRoles = roleRepository.findAll();
-    int updatedRoleAuthorities = roleRepository.saveAllAndFlush(
-      allRoles.stream().filter(role -> {
-        Set<Authority> roleAuthorities = role.getAuthorities();
-        List<String> defaultRoleAuthorities = DefaultAuthority.ROLE_AUTHORITIES.get(role.getName());
-        if (roleAuthorities.size() != defaultRoleAuthorities.size()
-          || roleAuthorities.stream().anyMatch(authority -> !defaultRoleAuthorities.contains(authority.getName()))) {
-          role.setAuthorities(
-            Sets.newHashSet(
-              allAuthorities.stream().filter(authority -> defaultRoleAuthorities.contains(authority.getName()))
-                .collect(Collectors.toSet())));
-          return true;
-        } else {
-          return false;
-        }
-      }).collect(Collectors.toSet())).size();
+    int updatedRoleAuthorities = roleRepository.saveAllAndFlush(allRoles.stream().filter(role -> {
+      Set<Authority> roleAuthorities = role.getAuthorities();
+      List<String> defaultRoleAuthorities = DefaultAuthority.ROLE_AUTHORITIES.get(role.getName());
+      if (roleAuthorities.size() != defaultRoleAuthorities.size() || roleAuthorities.stream()
+        .anyMatch(authority -> !defaultRoleAuthorities.contains(authority.getName()))) {
+        role.setAuthorities(Sets.newHashSet(
+          allAuthorities.stream().filter(authority -> defaultRoleAuthorities.contains(authority.getName()))
+            .collect(Collectors.toSet())));
+        return true;
+      } else {
+        return false;
+      }
+    }).collect(Collectors.toSet())).size();
     if (updatedRoleAuthorities > 0) {
       log.atInfo().log("Updated Role Authorities -> %d", updatedRoleAuthorities);
     }
@@ -126,12 +118,7 @@ public class InitializationRunner implements CommandLineRunner {
       var defaultRole = roleRepository.findByName(DefaultAuthority.DEFAULT_ROLE).orElseThrow();
       globalSettingsRepository.deleteAll();
       globalSettingsRepository.saveAndFlush(
-        GlobalSettings.builder()
-          .id(GlobalSettings.UNIQUE_ID)
-          .signupOpen(false)
-          .defaultRole(defaultRole)
-          .build()
-      );
+        GlobalSettings.builder().id(GlobalSettings.UNIQUE_ID).signupOpen(false).defaultRole(defaultRole).build());
       log.atInfo().log("Global Settings Initialized");
     }
   }
@@ -140,18 +127,8 @@ public class InitializationRunner implements CommandLineRunner {
   void initializeAdminUser() throws UsernameExistsException, EmailExistsException {
     if (userRepository.count() < 1) {
       var superAdminRole = roleRepository.findByName(DefaultAuthority.SUPER_ADMIN_ROLE).orElseThrow();
-      userService.createUser(
-        UserInput.builder()
-          .username("admin")
-          .email("admin@example.com")
-          .password("123456")
-          .roleId(superAdminRole.getId())
-          .active(true)
-          .locked(false)
-          .expired(false)
-          .credentialsExpired(false)
-          .build()
-      );
+      userService.createUser(UserInput.builder().username("admin").email("admin@example.com").password("123456")
+        .roleId(superAdminRole.getId()).active(true).locked(false).expired(false).credentialsExpired(false).build());
       log.atInfo().log("Admin User Initialized");
     }
   }

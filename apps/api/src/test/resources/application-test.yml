@@ -1,1 +1,4 @@
-server.port: 0
+server:
+  port: 0
+application:
+  run_data_init: false
