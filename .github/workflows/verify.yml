@@ -123,7 +123,7 @@ jobs:
           fail_on: 'nothing'
 
       - name: Coverage Report
-        uses: frango9000/test-coverage-report@v0.0.1
+        uses: frango9000/test-coverage-report@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "Application"
