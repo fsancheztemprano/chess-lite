@@ -55,9 +55,9 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "docker:dev:up": "docker compose up -d",
-    "docker:dev:stop": "docker compose stop",
-    "docker:dev:down": "docker compose down -v",
+    "docker:dev:up": "docker-compose up -d",
+    "docker:dev:stop": "docker-compose stop",
+    "docker:dev:down": "docker-compose down -v",
     "validate": "npm run lint && nx format:check && npm run test && npm run build",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find"

@@ -127,7 +127,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "Application"
-          disable-comment: github.event_name == 'push'    # Only post on pull request, not on commit
+          disable-comment: ${{ github.event_name == 'push' }}    # Only post on pull request, not on commit
           report-files: |
             ./apps/api/target/site/jacoco-ut/jacoco.xml
             ./apps/api/target/site/jacoco-it/jacoco.xml
@@ -152,7 +152,7 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/apps/app/lcov.info,apps/api/target/site/jacoco/jacoco.xml
+          files: coverage/apps/app/lcov.info
           name: codecov-frontend
           verbose: false
 
