@@ -1,5 +1,6 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/authority")
+@RequestMapping(AUTHORITY_PATH)
 @PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 public class AuthorityController {

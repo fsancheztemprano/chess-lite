@@ -1,5 +1,6 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping(ROLE_PATH)
 @PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 public class RoleController {
@@ -60,7 +61,7 @@ public class RoleController {
   @PatchMapping("/{roleId}")
   @PreAuthorize("hasAuthority('role:update')")
   public ResponseEntity<RoleModel> update(@PathVariable("roleId") String roleId,
-    @RequestBody RoleUpdateInput roleUpdateInput)
+                                          @RequestBody RoleUpdateInput roleUpdateInput)
     throws RoleNotFoundException, ImmutableRoleException {
     return ok().body(roleFacade.update(roleId, roleUpdateInput));
   }
