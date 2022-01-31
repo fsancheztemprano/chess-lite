@@ -31,10 +31,10 @@ class AuthorityMapperTest {
     Page<AuthorityModel> actual = userMapper.authorityPageToAuthorityModelPage(page);
 
     assertThat(actual.getContent()).hasSize(2)
-      .extracting("id", "name")
-      .contains(
-        tuple(authority1.getId(), authority1.getName()),
-        tuple(authority2.getId(), authority2.getName()));
+                                   .extracting("id", "name")
+                                   .contains(
+                                     tuple(authority1.getId(), authority1.getName()),
+                                     tuple(authority2.getId(), authority2.getName()));
   }
 
   @Test
@@ -46,9 +46,9 @@ class AuthorityMapperTest {
     Set<AuthorityModel> actual = userMapper.authoritySetToAuthorityModelSet(authorities);
 
     assertThat(actual).hasSize(2)
-      .extracting("id", "name")
-      .contains(
-        tuple(authority1.getId(), authority1.getName()),
-        tuple(authority2.getId(), authority2.getName()));
+                      .extracting("id", "name")
+                      .contains(
+                        tuple(authority1.getId(), authority1.getName()),
+                        tuple(authority2.getId(), authority2.getName()));
   }
 }

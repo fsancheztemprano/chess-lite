@@ -491,8 +491,7 @@
               </includes>
               <processTypes>
                 <web>
-                  java $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.jar
-                  --spring.profiles.active=herokudev
+                  java $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.jar --spring.profiles.active=herokudev
                 </web>
               </processTypes>
             </configuration>
