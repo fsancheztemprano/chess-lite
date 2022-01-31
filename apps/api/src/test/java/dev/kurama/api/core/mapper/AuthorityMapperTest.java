@@ -24,8 +24,14 @@ class AuthorityMapperTest {
 
   @Test
   void authorityPageToAuthorityModelPage() {
-    Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
-    Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
+    Authority authority1 = Authority.builder()
+                                    .setRandomUUID()
+                                    .name("authority1")
+                                    .build();
+    Authority authority2 = Authority.builder()
+                                    .setRandomUUID()
+                                    .name("authority2")
+                                    .build();
     PageImpl<Authority> page = new PageImpl<Authority>(newArrayList(authority1, authority2));
 
     Page<AuthorityModel> actual = userMapper.authorityPageToAuthorityModelPage(page);
@@ -39,8 +45,14 @@ class AuthorityMapperTest {
 
   @Test
   void authoritySetToAuthorityModelSet() {
-    Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
-    Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
+    Authority authority1 = Authority.builder()
+                                    .setRandomUUID()
+                                    .name("authority1")
+                                    .build();
+    Authority authority2 = Authority.builder()
+                                    .setRandomUUID()
+                                    .name("authority2")
+                                    .build();
     HashSet<Authority> authorities = newHashSet(authority1, authority2);
 
     Set<AuthorityModel> actual = userMapper.authoritySetToAuthorityModelSet(authorities);
