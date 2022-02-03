@@ -1,11 +1,5 @@
 package dev.kurama.api.core.hateoas.assembler;
 
-import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
-import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
-import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import dev.kurama.api.core.rest.AuthorityController;
 import lombok.NonNull;
@@ -17,6 +11,12 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
+import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Component
 @RequiredArgsConstructor
 public class AuthorityModelAssembler extends DomainModelAssembler<AuthorityModel> {
@@ -24,7 +24,6 @@ public class AuthorityModelAssembler extends DomainModelAssembler<AuthorityModel
   @NonNull
   private final PagedResourcesAssembler<AuthorityModel> pagedResourcesAssembler;
 
-  @Override
   protected Class<AuthorityController> getClazz() {
     return AuthorityController.class;
   }
@@ -43,7 +42,9 @@ public class AuthorityModelAssembler extends DomainModelAssembler<AuthorityModel
   public @NonNull
   PagedModel<AuthorityModel> toPagedModel(Page<AuthorityModel> entities) {
     return (PagedModel<AuthorityModel>) pagedResourcesAssembler.toModel(entities, this)
-      .addIf(hasAuthority(AUTHORITY_READ), () -> getCollectionModelSelfLinkWithRel(getAllLink(), AUTHORITIES_REL))
+                                                               .addIf(hasAuthority(AUTHORITY_READ),
+                                                                 () -> getCollectionDefaultLink(getAllLink(),
+                                                                   AUTHORITIES_REL))
       ;
   }
 }
