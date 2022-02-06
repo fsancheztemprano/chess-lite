@@ -12,7 +12,7 @@ import lombok.SneakyThrows;
 import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -22,24 +22,22 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_PREFERENCES_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
+import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RequiredArgsConstructor
 @Component
-public class UserModelProcessor extends DomainModelProcessor<UserModel> {
+public class UserModelProcessor implements RepresentationModelProcessor<UserModel> {
 
   @NonNull
   UserPreferencesModelProcessor userPreferencesModelProcessor;
 
-  protected Class<UserController> getClazz() {
-    return UserController.class;
-  }
 
   @Override
   public @NonNull UserModel process(@NonNull UserModel entity) {
     userPreferencesModelProcessor.process(entity.getUserPreferences());
-    entity.add(getModelDefaultLink(entity.getId()))
+    entity.add(getSelfLink(entity.getId()))
           .addIf(hasAuthority(USER_READ), this::getParentLink)
           .add(getPreferencesLink(entity.getUserPreferences()
                                         .getId()))
@@ -84,14 +82,13 @@ public class UserModelProcessor extends DomainModelProcessor<UserModel> {
   }
 
   @SneakyThrows
-  @Override
-  public WebMvcLinkBuilder getSelfLink(String id) {
-    return linkTo(methodOn(getClazz()).get(id));
+  public Link getSelfLink(String id) {
+    return withDefaultAffordance(linkTo(methodOn(UserController.class).get(id)).withSelfRel());
   }
 
   private @NonNull
   Link getParentLink() {
-    return linkTo(methodOn(getClazz()).getAll(null, null)).withRel(USERS_REL);
+    return linkTo(methodOn(UserController.class).getAll(null, null)).withRel(USERS_REL);
   }
 
   @SneakyThrows
@@ -112,27 +109,27 @@ public class UserModelProcessor extends DomainModelProcessor<UserModel> {
 
   @SneakyThrows
   private @NonNull Affordance getUpdateAffordance(String username) {
-    return afford(methodOn(getClazz()).update(username, null));
+    return afford(methodOn(UserController.class).update(username, null));
   }
 
   @SneakyThrows
   private @NonNull Affordance getUpdateRoleAffordance(String username) {
-    return afford(methodOn(getClazz()).updateRole(username, null));
+    return afford(methodOn(UserController.class).updateRole(username, null));
   }
 
   @SneakyThrows
   private @NonNull Affordance getUpdateAuthoritiesAffordance(String username) {
-    return afford(methodOn(getClazz()).updateAuthorities(username, null));
+    return afford(methodOn(UserController.class).updateAuthorities(username, null));
   }
 
   @SneakyThrows
   private @NonNull Affordance getDeleteAffordance(String userId) {
-    return afford(methodOn(getClazz()).delete(userId));
+    return afford(methodOn(UserController.class).delete(userId));
   }
 
   @SneakyThrows
   private @NonNull Affordance getSendActivationTokenAffordance(String userId) {
-    return afford(methodOn(getClazz()).requestActivationToken(userId));
+    return afford(methodOn(UserController.class).requestActivationToken(userId));
   }
 
   @SneakyThrows

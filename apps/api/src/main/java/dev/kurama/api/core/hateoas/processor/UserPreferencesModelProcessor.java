@@ -11,7 +11,7 @@ import lombok.SneakyThrows;
 import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -22,19 +22,16 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
+import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
-public class UserPreferencesModelProcessor extends DomainModelProcessor<UserPreferencesModel> {
-
-  protected Class<UserPreferencesController> getClazz() {
-    return UserPreferencesController.class;
-  }
+public class UserPreferencesModelProcessor implements RepresentationModelProcessor<UserPreferencesModel> {
 
   @Override
   public @NonNull UserPreferencesModel process(@NonNull UserPreferencesModel userPreferencesModel) {
-    userPreferencesModel.add(getModelDefaultLink(userPreferencesModel.getId()))
+    userPreferencesModel.add(getSelfLink(userPreferencesModel.getId()))
                         .addIf(userPreferencesModel.getUser() != null,
                           () -> getUserLink(userPreferencesModel.getUser()
                                                                 .getId()))
@@ -55,9 +52,8 @@ public class UserPreferencesModelProcessor extends DomainModelProcessor<UserPref
   }
 
   @SneakyThrows
-  @Override
-  public WebMvcLinkBuilder getSelfLink(String id) {
-    return linkTo(methodOn(getClazz()).get(id));
+  public Link getSelfLink(String id) {
+    return withDefaultAffordance(linkTo(methodOn(UserPreferencesController.class).get(id)).withSelfRel());
   }
 
   @SneakyThrows
@@ -78,7 +74,7 @@ public class UserPreferencesModelProcessor extends DomainModelProcessor<UserPref
 
   @SneakyThrows
   private @NonNull Affordance getUpdateAffordance(String username) {
-    return afford(methodOn(getClazz()).update(username, null));
+    return afford(methodOn(UserPreferencesController.class).update(username, null));
   }
 
   private @NonNull Affordance getUpdateCurrentUserPreferencesAffordance() {

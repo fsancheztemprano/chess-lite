@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.http.HttpMethod;
 
 import static dev.kurama.api.core.authority.RoleAuthority.*;
 import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
@@ -47,7 +48,8 @@ class RoleModelProcessorTest {
 
   @Test
   void should_have_links() {
-    RoleModel actual = processor.process(this.model);
+    RoleModel actual = processor.process(model);
+
     assertThat(actual.getLinks()).hasSize(2);
     assertThat(actual.getLink(SELF)).isPresent()
                                     .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
@@ -55,71 +57,78 @@ class RoleModelProcessorTest {
     assertThat(actual.getLink(ROLES_REL)).isPresent()
                                          .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(ROLE_PATH));
 
+  }
+
+  @Test
+  void should_have_default_affordance() {
+    RoleModel actual = processor.process(model);
+
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(2)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo(DEFAULT))
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("get"));
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET));
   }
 
-
   @Test
-  void should_have_delete_template_if_user_has_role_delete_authority() {
+  void should_have_delete_affordance_if_user_has_role_delete_authority() {
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_DELETE))
                   .thenReturn(true);
 
-    this.model.setCoreRole(false);
+    model.setCoreRole(false);
 
-    RoleModel actual = processor.process(this.model);
+    RoleModel actual = processor.process(model);
 
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(3)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("delete"));
-
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("delete", HttpMethod.DELETE));
   }
 
 
   @Test
-  void should_have_update_template_if_user_has_role_update_authority() {
+  void should_have_update_affordance_if_user_has_role_update_authority() {
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
                   .thenReturn(true);
 
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_UPDATE))
                   .thenReturn(true);
 
-    this.model.setCoreRole(false);
+    model.setCoreRole(false);
 
-    RoleModel actual = processor.process(this.model);
+    RoleModel actual = processor.process(model);
 
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(3)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("update"));
-
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("update", HttpMethod.PATCH));
   }
 
   @Test
-  void should_have_update_template_if_user_has_core_role_update_authority() {
+  void should_have_update_affordance_if_user_has_core_role_update_authority() {
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
                   .thenReturn(true);
 
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_UPDATE_CORE))
                   .thenReturn(true);
 
-    this.model.setCoreRole(true);
+    model.setCoreRole(true);
 
-    RoleModel actual = processor.process(this.model);
+    RoleModel actual = processor.process(model);
 
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(3)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("update"));
-
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("update", HttpMethod.PATCH));
   }
 }

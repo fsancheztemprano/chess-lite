@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.http.HttpMethod;
 
 import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
@@ -57,7 +58,8 @@ class AuthorityModelProcessorTest {
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(AUTHORITY_READ))
                   .thenReturn(true);
 
-    AuthorityModel actual = processor.process(this.model);
+    AuthorityModel actual = processor.process(model);
+
     assertThat(actual.getLinks()).hasSize(2);
     assertThat(actual.getLink(SELF)).isPresent()
                                     .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
@@ -65,12 +67,22 @@ class AuthorityModelProcessorTest {
     assertThat(actual.getLink(AUTHORITIES_REL)).isPresent()
                                                .hasValueSatisfying(
                                                  link -> assertThat(link.getHref()).isEqualTo(AUTHORITY_PATH));
+  }
+
+  @Test
+  void should_have_default_affordance() {
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(AUTHORITY_READ))
+                  .thenReturn(true);
+
+    AuthorityModel actual = processor.process(model);
 
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(2)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo(DEFAULT))
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("get"));
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET));
+
+
   }
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.http.HttpMethod;
 
 import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
@@ -45,24 +46,30 @@ class GlobalSettingsModelProcessorTest {
   }
 
   @Test
-  void should_have_links() {
+  void should_have_self_link() {
     GlobalSettingsModel actual = processor.process(this.model);
+
     assertThat(actual.getLinks()).hasSize(1);
     assertThat(actual.getLink(SELF)).isPresent()
                                     .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
                                       GLOBAL_SETTINGS_PATH));
+  }
+
+  @Test
+  void should_have_default_affordance() {
+    GlobalSettingsModel actual = processor.process(this.model);
 
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(2)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo(DEFAULT))
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("get"));
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET));
+
   }
 
-
   @Test
-  void should_have_update_template_if_user_has_global_Setting_update_authority() {
+  void should_have_update_affordance_if_user_has_global_setting_update_authority() {
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(GLOBAL_SETTINGS_UPDATE))
                   .thenReturn(true);
 
@@ -71,8 +78,10 @@ class GlobalSettingsModelProcessorTest {
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(3)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("update"));
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("update", HttpMethod.PATCH));
 
   }
 }

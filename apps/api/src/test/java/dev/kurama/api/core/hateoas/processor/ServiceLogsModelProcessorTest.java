@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.http.HttpMethod;
 
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_DELETE;
 import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
@@ -40,34 +41,42 @@ class ServiceLogsModelProcessorTest {
   }
 
   @Test
-  void should_have_links() {
-    ServiceLogsModel actual = processor.process(this.model);
+  void should_have_self_link() {
+    ServiceLogsModel actual = processor.process(model);
+
     assertThat(actual.getLinks()).hasSize(1);
     assertThat(actual.getLink(SELF)).isPresent()
                                     .hasValueSatisfying(
                                       link -> assertThat(link.getHref()).isEqualTo(SERVICE_LOGS_PATH));
 
-    assertThat(actual.getRequiredLink(SELF)
-                     .getAffordances()).hasSize(2)
-                                       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo(DEFAULT))
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("getServiceLogs"));
-
   }
 
   @Test
-  void should_have_delete_template_if_user_has_service_logs_delete_authority() {
+  void should_have_default_affordance() {
+    ServiceLogsModel actual = processor.process(model);
+
+    assertThat(actual.getRequiredLink(SELF)
+                     .getAffordances()).hasSize(2)
+                                       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("getServiceLogs", HttpMethod.GET));
+  }
+
+  @Test
+  void should_have_delete_affordance_if_user_has_service_logs_delete_authority() {
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(SERVICE_LOGS_DELETE))
                   .thenReturn(true);
 
-    ServiceLogsModel actual = processor.process(this.model);
+    ServiceLogsModel actual = processor.process(model);
 
     assertThat(actual.getRequiredLink(SELF)
                      .getAffordances()).hasSize(3)
                                        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name")
-                                       .anySatisfy(name -> assertThat(name).isEqualTo("deleteServiceLogs"));
+                                       .extracting("name", "httpMethod")
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("getServiceLogs", HttpMethod.GET))
+                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("deleteServiceLogs", HttpMethod.DELETE));
 
   }
 }
