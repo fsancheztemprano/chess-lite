@@ -1,13 +1,5 @@
 package dev.kurama.api.core.exception;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.api.core.domain.DomainResponse;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
@@ -15,11 +7,6 @@ import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EntityExistsException;
 import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
-import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import javax.persistence.NoResultException;
-import lombok.extern.flogger.Flogger;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -34,7 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-@Flogger
+import javax.persistence.NoResultException;
+import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+import static org.springframework.http.HttpStatus.*;
+
 @RestController
 @RestControllerAdvice
 public class ExceptionHandlers implements ErrorController {
@@ -76,7 +69,7 @@ public class ExceptionHandlers implements ErrorController {
   }
 
   @ExceptionHandler(RoleCanNotLoginException.class)
-  public ResponseEntity<DomainResponse> lockedException(RoleCanNotLoginException exception) {
+  public ResponseEntity<DomainResponse> roleCanNotLoginException(RoleCanNotLoginException exception) {
     return createDomainResponse(UNAUTHORIZED, ROLE_LOCKED, exception.getMessage());
   }
 
@@ -86,7 +79,7 @@ public class ExceptionHandlers implements ErrorController {
   }
 
   @ExceptionHandler(ImmutableRoleException.class)
-  public ResponseEntity<DomainResponse> tokenExpiredException(ImmutableRoleException exception) {
+  public ResponseEntity<DomainResponse> immutableRoleException(ImmutableRoleException exception) {
     return createDomainResponse(FORBIDDEN, IMMUTABLE_ROLE, exception.getMessage());
   }
 
@@ -97,21 +90,20 @@ public class ExceptionHandlers implements ErrorController {
 
   @ExceptionHandler(EntityExistsException.class)
   public ResponseEntity<DomainResponse> entityExistsException(EntityExistsException exception) {
-    return createDomainResponse(CONFLICT, String.format(EXISTS_MESSAGE, exception.getMessage()),
-      exception.getMessage());
+    return createDomainResponse(CONFLICT, String.format(EXISTS_MESSAGE, exception.getMessage()), exception.getMessage());
   }
 
   @ExceptionHandler({NoSuchElementException.class, NoResultException.class, DomainEntityNotFoundException.class})
   public ResponseEntity<DomainResponse> entityNotFoundException(DomainEntityNotFoundException exception) {
-    return createDomainResponse(NOT_FOUND, String.format(NOT_FOUND_MESSAGE, exception.getMessage()),
-      exception.getMessage());
+    return createDomainResponse(NOT_FOUND, String.format(NOT_FOUND_MESSAGE, exception.getMessage()), exception.getMessage());
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<DomainResponse> methodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-    HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods()).iterator().next();
-    return createDomainResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOWED, supportedMethod),
-      exception.getMessage());
+    HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods())
+                                        .iterator()
+                                        .next();
+    return createDomainResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOWED, supportedMethod), exception.getMessage());
   }
 
   @ExceptionHandler(IOException.class)
@@ -121,13 +113,11 @@ public class ExceptionHandlers implements ErrorController {
 
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<DomainResponse> noHandlerFoundException(NoHandlerFoundException exception) {
-    log.atWarning().log(exception.getMessage());
     return createDomainResponse(BAD_REQUEST, "There is no mapping for this URL", exception.getMessage());
   }
 //
 //  @ExceptionHandler(Exception.class)
 //  public ResponseEntity<DomainResponse> internalServerErrorException(Exception exception) {
-//    log.atWarning().log(exception.getMessage());
 //    return createDomainResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
 //  }
 
@@ -136,15 +126,12 @@ public class ExceptionHandlers implements ErrorController {
 //    return createDomainResponse(NOT_FOUND, "There is no mapping for this URL", null);
 //  }
 
-  private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String message, String log) {
-    if (log != null) {
-      ExceptionHandlers.log.atWarning().log(log);
-    }
+  private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String title, String message) {
     return new ResponseEntity<>(DomainResponse.builder()
-      .status(status)
-      .code(status.value())
-      .message(message)
-      .build(),
-      status);
+                                              .status(status)
+                                              .code(status.value())
+                                              .title(title)
+                                              .message(message)
+                                              .build(), status);
   }
 }
