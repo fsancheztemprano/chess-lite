@@ -6,6 +6,9 @@ import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EntityExistsException;
 import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -40,85 +43,103 @@ class ExceptionHandlersTest {
   }
 
   @Test
-  public void ok_request_should_return_200() throws Exception {
+  void ok_request_should_return_200() throws Exception {
     mockMvc.perform(get("/ok"))
            .andExpect(status().isOk());
   }
 
   @Test
-  public void account_disabled_exception_should_return_bad_request() throws Exception {
+  void account_disabled_exception_should_return_bad_request() throws Exception {
     mockMvc.perform(get("/accountDisabledException"))
            .andExpect(status().isBadRequest());
   }
 
   @Test
-  public void bad_credentials_exception_should_return_bad_request() throws Exception {
+  void bad_credentials_exception_should_return_bad_request() throws Exception {
     mockMvc.perform(get("/badCredentialsException"))
            .andExpect(status().isBadRequest());
   }
 
   @Test
-  public void access_denied_exception_should_return_internal_server_error() throws Exception {
+  void access_denied_exception_should_return_internal_server_error() throws Exception {
     mockMvc.perform(get("/accessDeniedException"))
            .andExpect(status().isInternalServerError());
   }
 
   @Test
-  public void locked_exception_should_return_unauthorized() throws Exception {
+  void locked_exception_should_return_unauthorized() throws Exception {
     mockMvc.perform(get("/lockedException"))
            .andExpect(status().isUnauthorized());
   }
 
   @Test
-  public void role_can_not_login_exception_should_return_unauthorized() throws Exception {
+  void role_can_not_login_exception_should_return_unauthorized() throws Exception {
     mockMvc.perform(get("/roleCanNotLoginException"))
            .andExpect(status().isUnauthorized());
   }
 
   @Test
-  public void token_expired_exception_should_return_unauthorized() throws Exception {
+  void token_expired_exception_should_return_unauthorized() throws Exception {
     mockMvc.perform(get("/tokenExpiredException"))
            .andExpect(status().isUnauthorized());
   }
 
   @Test
-  public void immutable_role_exception_should_return_forbidden() throws Exception {
+  void immutable_role_exception_should_return_forbidden() throws Exception {
     mockMvc.perform(get("/immutableRoleException"))
            .andExpect(status().isForbidden());
   }
 
   @Test
-  public void signup_closed_exception_should_return_forbidden() throws Exception {
+  void signup_closed_exception_should_return_forbidden() throws Exception {
     mockMvc.perform(get("/signupClosedException"))
            .andExpect(status().isForbidden());
   }
 
   @Test
-  public void entity_exists_exception_should_return_conflict() throws Exception {
+  void entity_exists_exception_should_return_conflict() throws Exception {
     mockMvc.perform(get("/entityExistsException"))
            .andExpect(status().isConflict());
   }
 
   @Test
-  public void domain_entity_not_found_exception_should_return_not_found() throws Exception {
+  void domain_entity_not_found_exception_should_return_not_found() throws Exception {
     mockMvc.perform(get("/domainEntityNotFoundException"))
            .andExpect(status().isNotFound());
   }
 
   @Test
-  public void method_not_supported_exception_should_return_method_not_allowed() throws Exception {
+  void role_not_found_exception_should_return_not_found() throws Exception {
+    mockMvc.perform(get("/roleNotFoundException"))
+           .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void user_not_found_exception_should_return_not_found() throws Exception {
+    mockMvc.perform(get("/userNotFoundException"))
+           .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void email_not_found_exception_should_return_not_found() throws Exception {
+    mockMvc.perform(get("/emailNotFoundException"))
+           .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void method_not_supported_exception_should_return_method_not_allowed() throws Exception {
     mockMvc.perform(get("/methodNotSupportedException"))
            .andExpect(status().isMethodNotAllowed());
   }
 
   @Test
-  public void i_o_exception_should_return_internal_server_error() throws Exception {
+  void i_o_exception_should_return_internal_server_error() throws Exception {
     mockMvc.perform(get("/iOException"))
            .andExpect(status().isInternalServerError());
   }
 
   @Test
-  public void no_handler_found_exception_should_return_bad_request() throws Exception {
+  void no_handler_found_exception_should_return_bad_request() throws Exception {
     mockMvc.perform(get("/noHandlerFoundException"))
            .andExpect(status().isBadRequest());
   }
@@ -189,6 +210,24 @@ class ExceptionHandlersTest {
     @GetMapping(path = "/domainEntityNotFoundException")
     public void domainEntityNotFoundException() throws DomainEntityNotFoundException {
       throw new DomainEntityNotFoundException(null);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/roleNotFoundException")
+    public void roleNotFoundException() throws RoleNotFoundException {
+      throw new RoleNotFoundException(null);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/userNotFoundException")
+    public void userNotFoundException() throws UserNotFoundException {
+      throw new UserNotFoundException(null);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/emailNotFoundException")
+    public void emailNotFoundException() throws EmailNotFoundException {
+      throw new EmailNotFoundException(null);
     }
 
     @ResponseStatus(HttpStatus.OK)
