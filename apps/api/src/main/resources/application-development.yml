@@ -28,3 +28,6 @@ spring:
 springfox:
   documentation:
     enabled: true
+logging:
+  level:
+    dev.kurama.api: debug
