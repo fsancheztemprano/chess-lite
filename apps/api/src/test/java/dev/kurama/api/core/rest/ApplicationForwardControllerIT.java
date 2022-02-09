@@ -1,25 +1,10 @@
 package dev.kurama.api.core.rest;
 
-import static com.google.common.collect.Sets.newHashSet;
-import static dev.kurama.api.core.rest.ApplicationForwardController.INDEX_URL;
-import static java.nio.file.Files.createDirectory;
-import static java.nio.file.Files.createFile;
-import static java.nio.file.Files.walk;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.apache.commons.lang3.tuple.Pair.of;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import dev.kurama.api.core.configuration.SecurityConfiguration;
 import dev.kurama.api.core.filter.JWTAccessDeniedHandler;
 import dev.kurama.api.core.filter.JWTAuthenticationEntryPoint;
 import dev.kurama.api.core.rest.ApplicationForwardControllerIT.ApplicationForwardControllerITConfig;
 import dev.kurama.api.core.utility.JWTTokenProvider;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,6 +33,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import static com.google.common.collect.Sets.newHashSet;
+import static dev.kurama.api.core.constant.RestPathConstant.INDEX_URL;
+import static java.nio.file.Files.*;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.tuple.Pair.of;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @EnableSpringDataWebSupport
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ApplicationForwardController.class)
@@ -74,8 +73,8 @@ class ApplicationForwardControllerIT {
   })
   void route_should_forward_if_someone_requests(String path) throws Exception {
     mockMvc.perform(get(path))
-           .andExpect(status().isOk())
-           .andExpect(forwardedUrl(INDEX_URL));
+      .andExpect(status().isOk())
+      .andExpect(forwardedUrl(INDEX_URL));
   }
 
   @DisplayName("Route endpoint should not forward")
@@ -83,8 +82,8 @@ class ApplicationForwardControllerIT {
   @ArgumentsSource(RouteShouldNotForwardArgumentsProvider.class)
   void route_should_not_forward_if_someone_requests(String path) throws Exception {
     mockMvc.perform(get(path))
-           .andExpect(status().isOk())
-           .andExpect(forwardedUrl(null));
+      .andExpect(status().isOk())
+      .andExpect(forwardedUrl(null));
   }
 
   @SuppressWarnings("unchecked")
@@ -95,40 +94,40 @@ class ApplicationForwardControllerIT {
 
     Set<Pair<String, String>> namePatterns = newHashSet(of("index", "html"), of("favicon", "ico"));
     namePatterns.stream()
-                .forEach(p -> addResource(parentDir, p, false));
+      .forEach(p -> addResource(parentDir, p, false));
 
     namePatterns = newHashSet(of("main", "js"), of("polyfills", "js"), of("runtime", "js"), of("styles", "css"),
-                              of("common", "js"));
+      of("common", "js"));
     namePatterns.stream()
-                .forEach(p -> addResource(parentDir, p, true));
+      .forEach(p -> addResource(parentDir, p, true));
 
     Path assetsDir = parentDir.resolve("assets");
     createDirectory(assetsDir);
 
     namePatterns = newHashSet(of("flag", "png"), of("flag", "jpg"));
     namePatterns.stream()
-                .forEach(p -> addResource(assetsDir, p, false));
+      .forEach(p -> addResource(assetsDir, p, false));
 
     Path i18nDir = assetsDir.resolve("i18n");
     createDirectory(i18nDir);
 
     namePatterns = newHashSet(of("en", "json"), of("en", "json"), of("en", "json"));
     namePatterns.stream()
-                .forEach(p -> addResource(i18nDir, p, false));
+      .forEach(p -> addResource(i18nDir, p, false));
   }
 
   @SneakyThrows
   private static void addResource(Path parentDir, Pair<String, String> namePattern, boolean randomize) {
     String name = String.format("%s%s.%s", namePattern.getLeft(), randomize ? ("." + randomAlphanumeric(8)) : "",
-                                namePattern.getRight());
+      namePattern.getRight());
     createFile(parentDir.resolve(name));
   }
 
   private static String relativePath(Path base, Path resource) {
     return new StringBuilder("/").append(base.relativize(resource)
-                                             .toString()
-                                             .replace('\\', '/'))
-                                 .toString();
+        .toString()
+        .replace('\\', '/'))
+      .toString();
   }
 
   @TestConfiguration
@@ -138,16 +137,16 @@ class ApplicationForwardControllerIT {
     @SneakyThrows
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
       walk(tempDir).filter(Files::isRegularFile)
-                   .forEach(f -> addResourceHandler(registry, f, tempDir));
+        .forEach(f -> addResourceHandler(registry, f, tempDir));
     }
 
     private void addResourceHandler(ResourceHandlerRegistry registry, Path resource, Path base) {
       String handler = relativePath(base, resource);
       String location = new StringBuilder("file:///").append(base)
-                                                     .append("/")
-                                                     .toString();
+        .append("/")
+        .toString();
       registry.addResourceHandler(handler)
-              .addResourceLocations(location);
+        .addResourceLocations(location);
     }
   }
 
@@ -156,8 +155,8 @@ class ApplicationForwardControllerIT {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
       return walk(tempDir).filter(Files::isRegularFile)
-                          .map(f -> relativePath(tempDir, f))
-                          .map(Arguments::arguments);
+        .map(f -> relativePath(tempDir, f))
+        .map(Arguments::arguments);
     }
   }
 

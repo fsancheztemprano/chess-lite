@@ -5,15 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import static dev.kurama.api.core.constant.RestPathConstant.*;
+
 @RequestMapping()
 @RequiredArgsConstructor
 @RestController
 public class ApplicationForwardController {
-
-  static final String ROOT_URL = "/";
-  static final String APP_URL = "/app";
-
-  static final String INDEX_URL = "/app/index.html";
 
   @RequestMapping(path = {
     ROOT_URL,

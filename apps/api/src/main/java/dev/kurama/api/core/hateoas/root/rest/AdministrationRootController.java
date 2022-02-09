@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
 import static org.springframework.http.ResponseEntity.ok;
 
 @PreAuthorize("hasAuthority('admin:root')")
 @RestController()
 @RequiredArgsConstructor
-@RequestMapping("/api/administration")
+@RequestMapping(ADMINISTRATION_ROOT_PATH)
 public class AdministrationRootController {
 
   @NonNull

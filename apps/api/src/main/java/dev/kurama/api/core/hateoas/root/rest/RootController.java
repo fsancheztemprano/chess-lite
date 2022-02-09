@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static dev.kurama.api.core.constant.RestPathConstant.BASE_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.ROOT_PATH;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RequiredArgsConstructor
 @RestController()
-@RequestMapping({"/api", "/api/root"})
+@RequestMapping({BASE_PATH, ROOT_PATH})
 public class RootController {
 
   @NonNull
