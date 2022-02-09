@@ -57,8 +57,7 @@ public class InitializationRunner implements CommandLineRunner {
         log.atInfo()
           .log("Data Initialization Finish");
       } catch (Exception e) {
-        log.atInfo()
-          .withCause(e)
+        log.atWarning()
           .log("Data Initialization Failed");
       }
     }
@@ -146,10 +145,13 @@ public class InitializationRunner implements CommandLineRunner {
 
   @Transactional
   void initializeGlobalSettings() throws RoleNotFoundException {
-    if (globalSettingsRepository.count() != 1) {
+    long existentGlobalSettings = globalSettingsRepository.count();
+    if (existentGlobalSettings != 1) {
+      if (existentGlobalSettings > 1) {
+        globalSettingsRepository.deleteAll();
+      }
       var defaultRole = roleRepository.findByName(DefaultAuthority.DEFAULT_ROLE)
         .orElseThrow(() -> new RoleNotFoundException(DefaultAuthority.DEFAULT_ROLE));
-      globalSettingsRepository.deleteAll();
       globalSettingsRepository.saveAndFlush(
         GlobalSettings.builder()
           .id(GlobalSettings.UNIQUE_ID)
@@ -167,7 +169,7 @@ public class InitializationRunner implements CommandLineRunner {
       var superAdminRole = roleRepository.findByName(DefaultAuthority.SUPER_ADMIN_ROLE)
         .orElseThrow(() -> new RoleNotFoundException(DefaultAuthority.SUPER_ADMIN_ROLE));
 
-      userRepository.save(User.builder()
+      userRepository.saveAndFlush(User.builder()
         .setRandomUUID()
         .username("admin")
         .email("admin@example.com")
