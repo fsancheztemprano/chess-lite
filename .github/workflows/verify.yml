@@ -148,32 +148,12 @@ jobs:
           global-coverage-error-min: 40
           global-coverage-warn-min: 60
 
-      - name: Upload Frontend Coverage to Codecov
+      - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/apps/app/lcov.info
-          name: codecov-frontend
+          files: apps/api/target/site/jacoco-ut/jacoco.xml,apps/api/target/site/jacoco-it/jacoco.xml,coverage/apps/app/lcov.info
           verbose: true
-          flags: frontend
-
-      - name: Upload Backend UT Coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: apps/api/target/site/jacoco-ut/jacoco.xml
-          name: codecov-backend-ut
-          verbose: true
-          flags: backend-ut
-
-      - name: Upload Backend IT Coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: apps/api/target/site/jacoco-it/jacoco.xml
-          name: codecov-backend-it
-          verbose: true
-          flags: backend-it
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
