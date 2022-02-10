@@ -17,14 +17,21 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
+import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
 import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_READ;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
 import static dev.kurama.api.core.constant.RestPathConstant.*;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.*;
+import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.*;
+import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
+import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLE_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -85,11 +92,11 @@ class AdministrationRootResourceAssemblerTest {
 
   @Nested
   class UserManagementEmbeddedTests {
+
     @BeforeEach
     void setUp() {
       authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_USER_MANAGEMENT_ROOT))
         .thenReturn(true);
-
     }
 
     @Test
@@ -97,7 +104,8 @@ class AdministrationRootResourceAssemblerTest {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).hasSize(1);
+      assertThat(embeddeds).isNotNull()
+        .hasSize(1);
       assertThat(embeddeds.get(0)
         .getRel()).isPresent()
         .isPresent()
@@ -122,6 +130,8 @@ class AdministrationRootResourceAssemblerTest {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
+      assertThat(embeddeds).isNotNull()
+        .hasSize(1);
 
       RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
         .getValue();
@@ -149,6 +159,8 @@ class AdministrationRootResourceAssemblerTest {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
+      assertThat(embeddeds).isNotNull()
+        .hasSize(1);
 
       RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
         .getValue();
@@ -160,7 +172,111 @@ class AdministrationRootResourceAssemblerTest {
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains("create", HttpMethod.POST));
     }
+  }
 
+  @Nested
+  class RoleManagementEmbeddedTests {
+
+    @BeforeEach
+    void setUp() {
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_ROLE_MANAGEMENT_ROOT))
+        .thenReturn(true);
+    }
+
+    @Test
+    void should_have_role_management_resource_embedded() {
+      RepresentationModel<RootResource> actual = assembler.assemble();
+
+      ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
+      assertThat(embeddeds).isNotNull()
+        .hasSize(1);
+      assertThat(embeddeds.get(0)
+        .getRel()).isPresent()
+        .isPresent()
+        .hasValueSatisfying(link -> assertThat(link.value()).isEqualTo(ROLE_MANAGEMENT_ROOT_REL));
+
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
+        .getValue();
+      assertThat(embedded.getLinks()).hasSize(1);
+      assertThat(embedded.getLink(SELF)).isPresent()
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(ADMINISTRATION_ROOT_PATH))
+        .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(2)
+          .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
+          .extracting("name", "httpMethod")
+          .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD)));
+    }
+
+    @Test
+    void should_have_role_management_resource_embedded_with_links_given_role_read_authority() {
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
+        .thenReturn(true);
+
+      RepresentationModel<RootResource> actual = assembler.assemble();
+
+      ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
+      assertThat(embeddeds).isNotNull()
+        .hasSize(1);
+
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
+        .getValue();
+      assertThat(embedded.getLinks()).hasSize(3);
+
+      assertThat(embedded.getLink(SELF)).isPresent();
+
+      assertThat(embedded.getLink(ROLE_REL)).isPresent()
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(ROLE_PATH + "/{roleId}"))
+        .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(1));
+
+      assertThat(embedded.getLink(ROLES_REL)).isPresent()
+        .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(ROLE_PATH))
+        .hasValueSatisfying(link -> assertThat(link.getAffordances()).isEmpty());
+    }
+
+    @Test
+    void should_have_role_management_resource_embedded_with_create_affordance_given_role_create_authority() {
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
+        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_CREATE))
+        .thenReturn(true);
+
+      RepresentationModel<RootResource> actual = assembler.assemble();
+
+      ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
+      assertThat(embeddeds).isNotNull()
+        .hasSize(1);
+
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
+        .getValue();
+      assertThat(embedded.getLinks()).hasSize(3);
+      assertThat(embedded.getRequiredLink(ROLES_REL)
+        .getAffordances())
+        .hasSize(1)
+        .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
+        .extracting("name", "httpMethod")
+        .anySatisfy(reqs -> assertThat(reqs.toList()).contains("create", HttpMethod.POST));
+    }
+
+    @Test
+    void should_have_authority_management_resource_embedded_with_links_given_authority_read_authority() {
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(AUTHORITY_READ))
+        .thenReturn(true);
+
+      RepresentationModel<RootResource> actual = assembler.assemble();
+
+      ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
+      assertThat(embeddeds).isNotNull()
+        .hasSize(1);
+
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
+        .getValue();
+      assertThat(embedded.getLinks()).hasSize(2);
+
+      assertThat(embedded.getLink(SELF)).isPresent();
+
+      assertThat(embedded.getLink(AUTHORITIES_REL)).isPresent()
+        .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(AUTHORITY_PATH))
+        .hasValueSatisfying(link -> assertThat(link.getAffordances()).isEmpty());
+    }
   }
 
   @Nullable

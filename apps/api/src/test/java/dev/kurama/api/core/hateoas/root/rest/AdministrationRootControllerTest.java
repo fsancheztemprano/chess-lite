@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AdministrationRootController.class})
-@Import(AdministrationRootControllerTest.AdministrationRootResourceAssemblerConfig.class)
+@Import(AdministrationRootControllerTest.AdministrationRootControllerTestConfig.class)
 class AdministrationRootControllerTest {
 
   @Autowired
@@ -42,16 +43,16 @@ class AdministrationRootControllerTest {
 
   @Test
   void should_get_AdministrationRoot_resource_as_unauthenticated_user() throws Exception {
-    RepresentationModel AdministrationRootResource = mock(RepresentationModel.class);
+    RepresentationModel<?> AdministrationRootResource = mock(RepresentationModel.class);
     doReturn(AdministrationRootResource).when(assembler)
       .assemble();
 
-    mockMvc.perform(get("/api/administration"))
+    mockMvc.perform(get(ADMINISTRATION_ROOT_PATH))
       .andExpect(status().isOk());
   }
 
   @TestConfiguration
-  protected static class AdministrationRootResourceAssemblerConfig {
+  protected static class AdministrationRootControllerTestConfig {
 
     @Bean
     public AdministrationRootResourceAssembler AdministrationRootResourceAssembler() {

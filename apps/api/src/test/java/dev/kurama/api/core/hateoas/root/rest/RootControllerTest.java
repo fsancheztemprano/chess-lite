@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static dev.kurama.api.core.constant.RestPathConstant.BASE_PATH;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,11 +43,11 @@ class RootControllerTest {
 
   @Test
   void should_get_root_resource_as_unauthenticated_user() throws Exception {
-    RepresentationModel rootResource = mock(RepresentationModel.class);
+    RepresentationModel<?> rootResource = mock(RepresentationModel.class);
     doReturn(rootResource).when(assembler)
       .assemble();
 
-    mockMvc.perform(get("/api"))
+    mockMvc.perform(get(BASE_PATH))
       .andExpect(status().isOk());
   }
 
