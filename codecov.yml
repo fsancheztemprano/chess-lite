@@ -26,3 +26,11 @@ flags:
   backend-it:
     paths:
       - src/apps/api/src/main/java
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false
+  require_base: no
+  require_head: no
+  branches: null
