@@ -1,9 +1,9 @@
 <!-- PROJECT SHIELDS -->
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=fsancheztemprano_fullstack-template)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=frango9000_fullstack-template)
 
 ![Development](https://github.com/kurama-dev/fullstack-template/actions/workflows/verify.yml/badge.svg)
-[![codecov](https://codecov.io/gh/fsancheztemprano/fullstack-template/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/fsancheztemprano/fullstack-template)
+[![codecov](https://codecov.io/gh/frango9000/fullstack-template/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/fullstack-template)
 
 <!-- PROJECT LOGO -->
 <br />
@@ -233,7 +233,7 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 
 ## Contact ✒️
 
-- **[Francisco Sanchez](https://fsancheztemprano.github.io/)**
+- **[Francisco Sanchez](https://frango9000.github.io/)**
 
 [![Email][email-contact-shield]][email-contact-url]
 [![Github][github-contact-shield]][github-contact-url]
@@ -256,9 +256,9 @@ More info on the project can be found in our [Wiki](https://github.com/kurama-de
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-contact-url]: https://www.linkedin.com/in/fsancheztemprano/
+[linkedin-contact-url]: https://www.linkedin.com/in/frango9000/
 [github-contact-shield]: https://img.shields.io/badge/-Github-black?style=for-the-badge&logo=github&colorB=555
-[github-contact-url]: https://github.com/fsancheztemprano
+[github-contact-url]: https://github.com/frango9000
 [email-contact-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
 [email-contact-url]: mailto:frango9000@gmail.com
 [linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555

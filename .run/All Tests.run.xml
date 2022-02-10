@@ -1,0 +1,24 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All Tests" type="JavaScriptTestRunnerJest" nameIsGenerated="true">
+    <node-interpreter value="project"/>
+    <node-options value=""/>
+    <jest-package value="$PROJECT_DIR$/node_modules/jest"/>
+    <working-dir value="$PROJECT_DIR$"/>
+    <envs/>
+    <scope-kind value="ALL"/>
+    <method v="2"/>
+  </configuration>
+  <configuration default="false" name="All Tests" type="JUnit" factoryName="JUnit">
+    <module name="api"/>
+    <projectPathOnTarget name="projectPathOnTarget"
+                         value="/mnt/c/Users/frang/AppData/Local/JetBrains/Toolbox/apps/IDEA-U/ch-0/213.6461.79/jbr/bin /um"/>
+    <option name="ALTERNATIVE_JRE_PATH" value="11"/>
+    <option name="PACKAGE_NAME" value=""/>
+    <option name="MAIN_CLASS_NAME" value=""/>
+    <option name="METHOD_NAME" value=""/>
+    <option name="TEST_OBJECT" value="package"/>
+    <method v="2">
+      <option name="Make" enabled="true"/>
+    </method>
+  </configuration>
+</component>

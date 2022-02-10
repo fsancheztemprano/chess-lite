@@ -44,7 +44,7 @@ jobs:
           node-version: '16'
 
       - name: Load Cache
-        uses: fsancheztemprano/cache@main
+        uses: frango9000/cache@main
         env:
           cache-key: ${{ runner.os }}-v2
         with:
@@ -155,6 +155,7 @@ jobs:
           files: coverage/apps/app/lcov.info
           name: codecov-frontend
           verbose: false
+          flags: frontend
 
       - name: Upload Backend UT Coverage to Codecov
         uses: codecov/codecov-action@v2
@@ -163,6 +164,7 @@ jobs:
           files: apps/api/target/site/jacoco-ut/jacoco.xml
           name: codecov-backend-ut
           verbose: false
+          flags: backend-ut
 
       - name: Upload Backend IT Coverage to Codecov
         uses: codecov/codecov-action@v2
@@ -171,6 +173,7 @@ jobs:
           files: apps/api/target/site/jacoco-it/jacoco.xml
           name: codecov-backend-it
           verbose: false
+          flags: backend-it
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master

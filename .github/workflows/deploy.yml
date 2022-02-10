@@ -7,7 +7,7 @@ on:
 
 jobs:
   verify:
-    uses: fsancheztemprano/fullstack-template/.github/workflows/verify.yml@development
+    uses: frango9000/fullstack-template/.github/workflows/verify.yml@development
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   deploy:
@@ -34,7 +34,7 @@ jobs:
         uses: tj-actions/branch-names@v5
 
       - name: Cache Node modules
-        uses: fsancheztemprano/cache@main
+        uses: frango9000/cache@main
         env:
           cache-key: ${{ runner.os }}-yarn-v2
         with:
@@ -49,7 +49,7 @@ jobs:
             ${{ env.cache-key }}-
 
       - name: Cache Maven packages
-        uses: fsancheztemprano/cache@main
+        uses: frango9000/cache@main
         env:
           cache-key: ${{ runner.os }}-maven-v2
         with:

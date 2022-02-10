@@ -2,7 +2,7 @@
   "name": "fullstack-template",
   "version": "0.0.1-SNAPSHOT",
   "license": "MIT",
-  "homepage": "https://github.com/fsancheztemprano/fullstack-template",
+  "homepage": "https://github.com/frango9000/fullstack-template",
   "bugs": {
     "url": "https://kurama-dev.atlassian.net/jira/software/c/projects/UM",
     "email": "frango9000@gmail.com"
@@ -10,11 +10,11 @@
   "author": {
     "name": "Francisco Sanchez",
     "email": "frango9000@gmail.com",
-    "url": "https://fsancheztemprano.github.io/"
+    "url": "https://frango9000.github.io/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fsancheztemprano/fullstack-template"
+    "url": "https://github.com/frango9000/fullstack-template"
   },
   "scripts": {
     "ng": "nx",
