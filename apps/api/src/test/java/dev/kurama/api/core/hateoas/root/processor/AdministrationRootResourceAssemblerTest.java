@@ -203,7 +203,8 @@ class AdministrationRootResourceAssemblerTest {
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(2)
           .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
           .extracting("name", "httpMethod")
-          .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD)));
+          .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+          .anySatisfy(reqs -> assertThat(reqs.toList()).contains("root", HttpMethod.GET)));
     }
 
     @Test

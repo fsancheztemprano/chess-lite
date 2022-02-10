@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -46,6 +47,9 @@ class InitializationRunnerTest {
 
   @Mock
   private GlobalSettingsRepository globalSettingsRepository;
+
+  @Mock
+  private BCryptPasswordEncoder passwordEncoder;
 
   @Nested
   class RunnerTests {
@@ -363,7 +367,7 @@ class InitializationRunnerTest {
       verify(userRepository).saveAndFlush(capturedUser.capture());
       User newAdminUser = capturedUser.getValue();
       assertThat(newAdminUser).extracting("username", "email", "password", "active", "locked", "expired", "credentialsExpired")
-        .containsExactly("admin", "admin@example.com", "123456", true, false, false, false);
+        .containsExactly("admin", "admin@example.com", null, true, false, false, false);
       assertThat(newAdminUser.getRole()).isEqualTo(superAdminRole);
       assertThat(newAdminUser.getAuthorities()).isEqualTo(superAdminRole.getAuthorities());
       assertNotNull(newAdminUser.getUserPreferences());

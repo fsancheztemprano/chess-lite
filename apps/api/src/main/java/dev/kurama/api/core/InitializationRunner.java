@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -41,6 +42,9 @@ public class InitializationRunner implements CommandLineRunner {
 
   @NonNull
   private final GlobalSettingsRepository globalSettingsRepository;
+
+  @NonNull
+  private final BCryptPasswordEncoder passwordEncoder;
 
   @Override
   @Transactional
@@ -173,7 +177,7 @@ public class InitializationRunner implements CommandLineRunner {
         .setRandomUUID()
         .username("admin")
         .email("admin@example.com")
-        .password("123456")
+        .password(passwordEncoder.encode("123456"))
         .role(superAdminRole)
         .authorities(superAdminRole.getAuthorities())
         .joinDate(new Date())

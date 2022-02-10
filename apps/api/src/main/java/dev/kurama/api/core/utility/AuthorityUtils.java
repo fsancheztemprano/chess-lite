@@ -2,8 +2,6 @@ package dev.kurama.api.core.utility;
 
 import com.google.common.collect.Lists;
 import dev.kurama.api.core.filter.ContextUser;
-import java.util.Arrays;
-import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -11,11 +9,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthorityUtils {
 
   public static Authentication getAuthentication() {
-    return SecurityContextHolder.getContext().getAuthentication();
+    return SecurityContextHolder.getContext()
+      .getAuthentication();
   }
 
   public static ContextUser getContextUser() {
@@ -47,11 +49,13 @@ public class AuthorityUtils {
   }
 
   public static boolean hasAllAuthorities(String... authorities) {
-    return Arrays.stream(authorities).allMatch(AuthorityUtils::hasAuthority);
+    return Arrays.stream(authorities)
+      .allMatch(AuthorityUtils::hasAuthority);
   }
 
   public static boolean hasAnyAuthority(String... authorities) {
-    return Arrays.stream(authorities).anyMatch(AuthorityUtils::hasAuthority);
+    return Arrays.stream(authorities)
+      .anyMatch(AuthorityUtils::hasAuthority);
   }
 
   public static boolean isAuthenticated() {
