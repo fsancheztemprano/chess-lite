@@ -2743,15 +2743,6 @@
   dependencies:
     xregexp "4.4.1"
 
-"@schematics/angular@13.1.3":
-  version "13.1.3"
-  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-13.1.3.tgz#c763cdf1a2e0784d5263c23b581bfeb4a4a2f12e"
-  integrity sha512-IixVWAEtN97N74PCxg3T03Ar/ECjGyJBWKAjKTTCrgNSWhm2mKgIc4RyI6cVCnltfJWIo48fcFhlOx/elShaCg==
-  dependencies:
-    "@angular-devkit/core" "13.1.3"
-    "@angular-devkit/schematics" "13.1.3"
-    jsonc-parser "3.0.0"
-
 "@schematics/angular@13.2.3", "@schematics/angular@~13.2.0":
   version "13.2.3"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-13.2.3.tgz#600bbe21bff5b090aaee17ba726410ee1328b40b"
