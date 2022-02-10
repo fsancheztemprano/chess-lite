@@ -28,7 +28,7 @@ flags:
       - src/apps/api/src/main/java
 
 comment:
-  layout: "reach, diff, flags, files"
+  layout: 'reach, diff, flags, files'
   behavior: default
   require_changes: false
   require_base: no
