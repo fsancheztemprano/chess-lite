@@ -1,21 +1,28 @@
 coverage:
   status:
     project:
-      default:
-        informational: true
+      frontend:
+        target: 40%
+        flags:
+          - frontend
+      backend-ut:
+        target: 70%
+        flags:
+          - backend-ut
+      backend-it:
+        target: 10%
+        flags:
+          - backend-it
     patch:
       default:
         informational: true
 flags:
-  front-end:
+  frontend:
     paths:
-      - src/apps/app
-    carryforward: true
-  back-end:
+      - src/apps/app/src
+  backend-ut:
     paths:
-      - src/apps/api
-    carryforward: true
-  back-end-it:
+      - src/apps/api/src/main/java
+  backend-it:
     paths:
-      - src/apps/api
-    carryforward: true
+      - src/apps/api/src/main/java
