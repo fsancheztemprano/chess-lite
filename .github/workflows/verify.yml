@@ -154,7 +154,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/apps/app/lcov.info
           name: codecov-frontend
-          verbose: false
+          verbose: true
           flags: frontend
 
       - name: Upload Backend UT Coverage to Codecov
@@ -163,7 +163,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/api/target/site/jacoco-ut/jacoco.xml
           name: codecov-backend-ut
-          verbose: false
+          verbose: true
           flags: backend-ut
 
       - name: Upload Backend IT Coverage to Codecov
@@ -172,7 +172,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/api/target/site/jacoco-it/jacoco.xml
           name: codecov-backend-it
-          verbose: false
+          verbose: true
           flags: backend-it
 
       - name: SonarCloud Scan
