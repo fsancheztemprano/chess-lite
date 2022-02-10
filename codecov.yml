@@ -6,3 +6,16 @@ coverage:
     patch:
       default:
         informational: true
+flags:
+  front-end:
+    paths:
+      - src/apps/app
+    carryforward: true
+  back-end:
+    paths:
+      - src/apps/api
+    carryforward: true
+  back-end-it:
+    paths:
+      - src/apps/api
+    carryforward: true

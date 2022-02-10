@@ -1,5 +1,6 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.noContent;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping(USER_PATH)
 @PreAuthorize("isAuthenticated()")
 public class UserController {
 
@@ -61,8 +62,9 @@ public class UserController {
   public ResponseEntity<UserModel> create(@RequestBody UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
     UserModel newUser = userFacade.create(userInput);
-    return created(fromCurrentRequestUri().path("/user/{userId}").buildAndExpand(newUser.getId()).toUri())
-      .body(newUser);
+    return created(fromCurrentRequestUri().path("/user/{userId}")
+                                          .buildAndExpand(newUser.getId())
+                                          .toUri()).body(newUser);
   }
 
   @PatchMapping("/{userId}")
@@ -77,18 +79,21 @@ public class UserController {
   @PatchMapping("/{userId}/role")
   @PreAuthorize("hasAuthority('user:update:role')")
   public ResponseEntity<UserModel> updateRole(@PathVariable("userId") String userId,
-    @RequestBody UserRoleInput userRoleInput)
+                                              @RequestBody UserRoleInput userRoleInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
-    return ok().body(userFacade.update(userId, UserInput.builder().roleId(userRoleInput.getRoleId()).build()));
+    return ok().body(userFacade.update(userId, UserInput.builder()
+                                                        .roleId(userRoleInput.getRoleId())
+                                                        .build()));
   }
 
   @PatchMapping("/{userId}/authorities")
   @PreAuthorize("hasAuthority('user:update:authorities')")
   public ResponseEntity<UserModel> updateAuthorities(@PathVariable("userId") String userId,
-    @RequestBody UserAuthoritiesInput userAuthoritiesInput)
+                                                     @RequestBody UserAuthoritiesInput userAuthoritiesInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
-    return ok().body(
-      userFacade.update(userId, UserInput.builder().authorityIds(userAuthoritiesInput.getAuthorityIds()).build()));
+    return ok().body(userFacade.update(userId, UserInput.builder()
+                                                        .authorityIds(userAuthoritiesInput.getAuthorityIds())
+                                                        .build()));
   }
 
   @DeleteMapping("/{userId}")

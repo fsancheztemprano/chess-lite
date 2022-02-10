@@ -1,6 +1,7 @@
 package dev.kurama.api.core.service;
 
 import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.util.Optional.ofNullable;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
@@ -8,6 +9,7 @@ import com.google.common.collect.Sets;
 import dev.kurama.api.core.constant.UserConstant;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.EmailTemplate;
+import dev.kurama.api.core.domain.GlobalSettings;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
@@ -127,24 +129,21 @@ public class UserService implements UserDetailsService {
   }
 
   public void deleteUserById(String id) throws UserNotFoundException {
-    deleteUser(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
-  }
-
-  private void deleteUser(User user) {
+    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     userRepository.delete(user);
     userChangedEventEmitter.emitUserDeletedEvent(user.getId());
   }
 
   public void signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException, SignupClosedException {
-    if (!globalSettingsService.getGlobalSettings().isSignupOpen()) {
+    GlobalSettings globalSettings = globalSettingsService.getGlobalSettings();
+    if (!globalSettings.isSignupOpen()) {
       throw new SignupClosedException();
     }
 
-    var defaultRole = roleService.getDefaultRole();
     var userInput = UserInput.builder()
       .username(signupInput.getUsername())
-      .password(UUID.randomUUID().toString())
+      .password(randomUUID())
       .email(signupInput.getEmail())
       .firstname(signupInput.getFirstname())
       .lastname(signupInput.getLastname())
@@ -152,7 +151,7 @@ public class UserService implements UserDetailsService {
       .locked(true)
       .expired(false)
       .credentialsExpired(false)
-      .roleId(defaultRole.getId())
+      .roleId(globalSettings.getDefaultRole().getId())
       .build();
     var user = createUser(userInput);
 
@@ -161,7 +160,6 @@ public class UserService implements UserDetailsService {
       userRepository.saveAndFlush(user);
       sendActivationTokenEmail(user, user.getActivationToken().getId());
     } catch (ActivationTokenRecentException ignored) {
-      log.atFine().log("This should not be seen... user:" + user.getId());
     }
   }
 
@@ -169,7 +167,7 @@ public class UserService implements UserDetailsService {
     throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = roleService.findRoleById(userInput.getRoleId())
-      .orElseGet(() -> roleService.getDefaultRole());
+      .orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())
@@ -256,7 +254,7 @@ public class UserService implements UserDetailsService {
     if (ofNullable(userInput.getAuthorityIds()).isPresent() && (
       userInput.getAuthorityIds().size() != user.getAuthorities().size()
         || !userInput.getAuthorityIds().containsAll(
-        user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet())))) {
+        user.getAuthorities().stream().map(Authority::getId).collect(Collectors.toSet())))) {
       user.setAuthorities(authorityService.findAllById(userInput.getAuthorityIds()));
       changed = true;
     }
@@ -320,10 +318,10 @@ public class UserService implements UserDetailsService {
   private void validateNewUsernameAndEmail(String newUsername, String email)
     throws UsernameExistsException, EmailExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
-    var userByNewEmail = findUserByEmail(email);
     if (userByNewUsername.isPresent()) {
       throw new UsernameExistsException(UserConstant.USERNAME_ALREADY_EXISTS + newUsername);
     }
+    var userByNewEmail = findUserByEmail(email);
     if (userByNewEmail.isPresent()) {
       throw new EmailExistsException(UserConstant.EMAIL_ALREADY_EXISTS + email);
     }

@@ -1,5 +1,7 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
+
 import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.facade.UserPreferencesFacade;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user/preferences")
+@RequestMapping(USER_PREFERENCES_PATH)
 @PreAuthorize("isAuthenticated()")
 public class UserPreferencesController {
 

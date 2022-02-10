@@ -43,3 +43,5 @@ Thumbs.db
 
 .scannerwork
 .jpb
+
+apps/api/src/main/resources/application-gb.yml

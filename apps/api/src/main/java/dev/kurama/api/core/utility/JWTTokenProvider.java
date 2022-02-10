@@ -43,7 +43,7 @@ public class JWTTokenProvider {
         put("id", userPrincipal.getUser().getId());
         put("username", userPrincipal.getUser().getUsername());
       }})
-      .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstant.EXPIRATION_TIME))
+      .withExpiresAt(new Date(getCurrentTimeMillis() + SecurityConstant.EXPIRATION_TIME))
       .sign(getAlgorithm());
   }
 
@@ -102,5 +102,9 @@ public class JWTTokenProvider {
 
   private String[] getAuthoritiesFromUser(UserPrincipal userPrincipal) {
     return userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
+  }
+
+  public long getCurrentTimeMillis() {
+    return System.currentTimeMillis();
   }
 }

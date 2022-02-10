@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginAttemptService {
 
-  private static final int MAXIMUM_NUMBER_OF_ATTEMPTS = 5;
+  public static final int MAXIMUM_NUMBER_OF_ATTEMPTS = 5;
   private static final int ATTEMPT_INCREMENT = 1;
   private final LoadingCache<String, Integer> loginAttemptCache;
 
@@ -33,8 +33,7 @@ public class LoginAttemptService {
     var attempts = 0;
     try {
       attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(username);
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    } catch (ExecutionException ignored) {
     }
     loginAttemptCache.put(username, attempts);
   }
@@ -42,8 +41,7 @@ public class LoginAttemptService {
   public boolean hasExceededMaxAttempts(String username) {
     try {
       return loginAttemptCache.get(username) >= MAXIMUM_NUMBER_OF_ATTEMPTS;
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+    } catch (ExecutionException ignored) {
     }
     return false;
   }

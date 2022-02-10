@@ -34,7 +34,7 @@ jobs:
       - name: Use Java 11
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '11'
           check-latest: true
 
@@ -43,33 +43,21 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Cache Node modules
-        uses: fsancheztemprano/always-cache@main
+      - name: Load Cache
+        uses: fsancheztemprano/cache@main
         env:
-          cache-key: ${{ runner.os }}-yarn-v2
+          cache-key: ${{ runner.os }}-v2
         with:
           path: |
+            ~/.m2
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-${{ github.run_id }}
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/yarn.lock') }}-
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
-            ${{ env.cache-key }}-
-          save-on-hit: true
-
-      - name: Cache Maven packages
-        uses: fsancheztemprano/always-cache@main
-        env:
-          cache-key: ${{ runner.os }}-maven-v2
-        with:
-          path: ~/.m2
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-${{ github.run_id }}
-          restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ hashFiles('**/pom.xml') }}-
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-
-            ${{ env.cache-key }}-
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}
+            ${{ env.cache-key }}-development
+            ${{ env.cache-key }}
           save-on-hit: true
 
       - name: Cache Sonar
@@ -102,37 +90,87 @@ jobs:
           parallel: 'true'
           args: '--codeCoverage'
 
-      - name: Test Jest Report
-        uses: dorny/test-reporter@v1
+      - name: Merge Test Reports
+        run: npm run test:merge
+        if: always()
+
+      - name: Frontend Test Execution Report
+        uses: frango9000/test-execution-report@main
         if: env.dependabot-run == 'false' && always()
         with:
-          name: Jest Tests
+          name: Frontend Tests
           path: coverage/apps/app/jest-junit.xml
           reporter: jest-junit
+          fail-on-error: false
 
-      - name: Test Java Report
-        uses: dorny/test-reporter@v1
+      - name: Backend Test Execution Report
+        uses: frango9000/test-execution-report@main
         if: env.dependabot-run == 'false' && always()
         with:
-          name: Java Tests
-          path: apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
+          name: Backend Tests
+          path: apps/api/target/surefire-reports/merged-uts.xml,apps/api/target/failsafe-reports/merged-its.xml
           reporter: java-junit
+          fail-on-error: false
 
-      - name: Publish Unit Test Results
+      - name: Publish Test Execution Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: env.dependabot-run == 'false' && always()
         with:
           files: |
-            apps/api/target/surefire-reports/TEST-dev.kurama.api.BackendApplicationTests.xml
+            apps/api/target/surefire-reports/merged-uts.xml
+            apps/api/target/failsafe-reports/merged-its.xml
             coverage/apps/app/jest-junit.xml
+          fail_on: 'nothing'
 
-      - name: Upload coverage to Codecov
+      - name: Coverage Report
+        uses: frango9000/test-coverage-report@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Application"
+          disable-comment: ${{ github.event_name == 'push' }}    # Only post on pull request, not on commit
+          report-files: |
+            ./apps/api/target/site/jacoco-ut/jacoco.xml
+            ./apps/api/target/site/jacoco-it/jacoco.xml
+            ./coverage/apps/app/lcov.info
+          report-types: |
+            jacoco
+            jacoco
+            lcov
+          report-titles: |
+            'Backend Unit Tests'
+            'Backend Integration Tests'
+            'Frontend Tests'
+          enable-build-fail: false
+          file-coverage-error-min: 60
+          file-coverage-warn-min: 80
+          report-coverage-error-min: 50
+          report-coverage-warn-min: 70
+          global-coverage-error-min: 40
+          global-coverage-warn-min: 60
+
+      - name: Upload Frontend Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/apps/app/lcov.info,apps/api/target/site/jacoco/jacoco.xml
-          name: codecov-app
-          verbose: true
+          files: coverage/apps/app/lcov.info
+          name: codecov-frontend
+          verbose: false
+
+      - name: Upload Backend UT Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/target/site/jacoco-ut/jacoco.xml
+          name: codecov-backend-ut
+          verbose: false
+
+      - name: Upload Backend IT Coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/target/site/jacoco-it/jacoco.xml
+          name: codecov-backend-it
+          verbose: false
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master

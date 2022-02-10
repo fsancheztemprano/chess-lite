@@ -5,7 +5,7 @@ import dev.kurama.api.core.hateoas.model.UserModel;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
-@Mapper(uses = {RoleMapper.class, AuthorityMapper.class})
+@Mapper(uses = {RoleMapper.class, AuthorityMapper.class, UserPreferencesMapper.class})
 public interface UserMapper {
 
   UserModel userToUserModel(User user);

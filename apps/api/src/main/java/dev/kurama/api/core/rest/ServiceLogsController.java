@@ -1,5 +1,6 @@
 package dev.kurama.api.core.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
 import static org.springframework.http.ResponseEntity.ok;
 
 import dev.kurama.api.core.facade.ServiceLogsFacade;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/administration/service-logs")
+@RequestMapping(SERVICE_LOGS_PATH)
 @PreAuthorize("isAuthenticated()")
 public class ServiceLogsController {
 

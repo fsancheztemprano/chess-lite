@@ -12,6 +12,7 @@ application:
   jwt:
     secret: 'ieWCbSL5dcp3HgWkH2RSEdPGje7jjaM1Lt0jtYnHkml1WVcA6bIHKPi6cHEXWFmaECPkYWtlU85qCE2QC2ZrLlxmk29rFGgDrN8FlezGcrSH0V0ilMtuMnhmvJAvGmLlBZ90sikgYZWaZaWirI4TIUrDThJ6nTFEmRfDaE3ISPZVNr24HsxfmrK9rAqczoeKfpbjRGAE'
   host_url: 'localhost'
+  run_data_init: true
 server:
   port: 8888
   error:
@@ -44,6 +45,8 @@ spring:
           use_second_level_cache: true
           region:
             factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+          ehcache:
+            missing_cache_strategy: 'create'
         javax:
           persistence:
             sharedCache:

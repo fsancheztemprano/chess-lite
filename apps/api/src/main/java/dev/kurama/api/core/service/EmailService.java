@@ -24,9 +24,7 @@ public class EmailService {
       message.setSubject(emailTemplate.getSubject());
       message.setText(emailTemplate.getText(), true);
       emailSender.send(mimeMessage);
-    } catch (MessagingException e) {
-      e.printStackTrace();
+    } catch (MessagingException ignored) {
     }
   }
-
 }

@@ -1,28 +1,33 @@
 package dev.kurama.api.core.hateoas.assembler;
 
-import static org.springframework.hateoas.mediatype.Affordances.of;
-
-import dev.kurama.api.core.hateoas.relations.HateoasRelations;
+import dev.kurama.api.core.utility.HateoasUtils;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkRelation;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.HttpMethod;
+
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 
 public abstract class DomainModelAssembler<T extends RepresentationModel<T>> implements
-  RepresentationModelAssembler<T, T> {
+                                                                             RepresentationModelAssembler<T, T> {
 
-  public abstract WebMvcLinkBuilder getSelfLink(String id);
+  // Collection Assembler
+  protected PagedResourcesAssembler<T> pagedResourcesAssembler;
 
-  public abstract WebMvcLinkBuilder getAllLink();
+  @Autowired
+  public final void setPagedResourcesAssembler(PagedResourcesAssembler<T> pagedResourcesAssembler) {
+    this.pagedResourcesAssembler = pagedResourcesAssembler;
+  }
 
-  protected abstract Class<?> getClazz();
-
-  @Override
-  public @NonNull T toModel(@NonNull T entity) {
-    return entity;
+  public @NonNull PagedModel<T> toPagedModel(Page<T> entities) {
+    return (PagedModel<T>) pagedResourcesAssembler
+      .toModel(entities, this)
+      .mapLink(LinkRelation.of(SELF), HateoasUtils::withDefaultAffordance);
   }
 
   @Override
@@ -30,29 +35,10 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
     return RepresentationModelAssembler.super.toCollectionModel(entities);
   }
 
-  public @NonNull CollectionModel<T> toSelfCollectionModel(@NonNull Iterable<? extends T> entities) {
-    return toLinkedCollectionModel(entities, getAllLink());
-  }
+  // Model Assembler
 
-  protected @NonNull CollectionModel<T> toLinkedCollectionModelWithRel(@NonNull Iterable<? extends T> entities,
-    WebMvcLinkBuilder link, String relationship) {
-    return toCollectionModel(entities).add(getCollectionModelSelfLinkWithRel(link, relationship).withRel(relationship));
-  }
-
-  protected @NonNull CollectionModel<T> toLinkedCollectionModel(@NonNull Iterable<? extends T> entities,
-    WebMvcLinkBuilder link) {
-    return toCollectionModel(entities).add(getCollectionModelSelfLink(link).withSelfRel());
-  }
-
-  protected @NonNull Link getModelSelfLink(@NonNull String id) {
-    return of(getSelfLink(id).withSelfRel()).afford(HttpMethod.HEAD).withName(HateoasRelations.DEFAULT).toLink();
-  }
-
-  protected @NonNull Link getCollectionModelSelfLink(WebMvcLinkBuilder link) {
-    return of(link.withSelfRel()).afford(HttpMethod.HEAD).withName(HateoasRelations.DEFAULT).toLink();
-  }
-
-  protected @NonNull Link getCollectionModelSelfLinkWithRel(WebMvcLinkBuilder link, String relation) {
-    return of(link.withRel(relation)).afford(HttpMethod.HEAD).withName(HateoasRelations.DEFAULT).toLink();
+  @Override
+  public @NonNull T toModel(@NonNull T entity) {
+    return entity;
   }
 }

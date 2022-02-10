@@ -10,6 +10,14 @@ trim_trailing_whitespace = true
 end_of_line = crlf
 max_line_length = 120
 
+[*.java]
+ij_java_method_call_chain_wrap = split_into_lines
+ij_java_align_multiline_chained_methods = false
+ij_java_align_multiline_method_parentheses = true
+ij_java_align_multiline_parameters = true
+ij_java_align_multiline_annotation_parameters = true
+ij_java_align_multiline_extends_list = true
+
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false

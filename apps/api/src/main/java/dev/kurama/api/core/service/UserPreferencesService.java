@@ -44,7 +44,7 @@ public class UserPreferencesService {
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }
 
-  private UserPreferences patchUserPreferences(UserPreferences userPreferences,
+  public UserPreferences patchUserPreferences(UserPreferences userPreferences,
     UserPreferencesInput userPreferencesInput) {
     var changes = false;
     if (ofNullable(userPreferencesInput.getDarkMode()).isPresent() &&

@@ -1,10 +1,6 @@
 package dev.kurama.api.core.hateoas.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,6 +17,7 @@ public class UserPreferencesModel extends RepresentationModel<UserPreferencesMod
   private PreferencesOwner user;
 
   @Data
+  @Builder
   public static class PreferencesOwner {
 
     private String id;

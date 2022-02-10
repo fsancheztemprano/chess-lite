@@ -12,12 +12,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RoleChangedMessageSender {
 
+  public static final String ROLES_CHANGED_CHANNEL = "/ami/role";
+  public static final String ROLE_CHANGED_CHANNEL = ROLES_CHANGED_CHANNEL + "/%s";
+
   @NonNull
   private final SimpMessagingTemplate template;
 
   public void sendRoleChangedMessage(@NonNull RoleChangedEvent event) {
-    template.convertAndSend(format("/ami/role/%s", event.getRoleId()), event);
-    template.convertAndSend("/ami/role", event);
+    template.convertAndSend(format(ROLE_CHANGED_CHANNEL, event.getRoleId()), event);
+    template.convertAndSend(ROLES_CHANGED_CHANNEL, event);
   }
 
 }

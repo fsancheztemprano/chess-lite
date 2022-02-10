@@ -10,11 +10,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GlobalSettingsChangedMessageSender {
 
+  public static final String GLOBAL_SETTINGS_CHANGED_CHANNEL = "/ami/global-settings";
+
   @NonNull
   private final SimpMessagingTemplate template;
 
   public void sendGlobalSettingsChangedMessage(@NonNull GlobalSettingsChangedEvent event) {
-    template.convertAndSend("/ami/global-settings", event);
+    template.convertAndSend(GLOBAL_SETTINGS_CHANGED_CHANNEL, event);
   }
 
 }

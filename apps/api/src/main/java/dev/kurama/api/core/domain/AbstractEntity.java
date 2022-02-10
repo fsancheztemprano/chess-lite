@@ -1,6 +1,6 @@
 package dev.kurama.api.core.domain;
 
-import java.util.UUID;
+import dev.kurama.api.core.utility.UuidUtils;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -23,12 +23,6 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 public abstract class AbstractEntity {
 
-//  @Id
-//  @GeneratedValue(strategy = GenerationType.IDENTITY)
-//  @Column(nullable = false, updatable = false)
-//  @JsonProperty(access = Access.READ_WRITE)
-//  private Long tid;
-
   @Id
   @NonNull
   @NotBlank
@@ -36,22 +30,13 @@ public abstract class AbstractEntity {
   private String id;
 
   protected AbstractEntity(AbstractEntityBuilder<?, ?> b) {
-//    this.tid = b.tid;
     this.id = b.id;
-  }
-
-  public void setRandomUUID() {
-    id = randomUUID();
-  }
-
-  public static String randomUUID() {
-    return UUID.randomUUID().toString();
   }
 
   public abstract static class AbstractEntityBuilder<C extends AbstractEntity, B extends AbstractEntityBuilder<C, B>> {
 
     public B setRandomUUID() {
-      this.id = randomUUID();
+      this.id = UuidUtils.randomUUID();
       return self();
     }
   }

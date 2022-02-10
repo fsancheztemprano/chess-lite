@@ -1,7 +1,11 @@
 logging:
   level:
     root: warn
+server:
+  port: 0
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:12://somehostname:someport/somedbname?TC_INITSCRIPT=testcontainers.sql
+    url: jdbc:tc:postgresql:12://somehostname:someport/somedbname
+application:
+  run_data_init: false

@@ -1,5 +1,6 @@
 package dev.kurama.api.core.facade;
 
+import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
@@ -74,7 +75,8 @@ public class UserFacade {
 
   public UserModel changePassword(String id, ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-    authenticate(id, changeUserPasswordInput.getPassword());
+    User user = userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+    authenticate(user.getUsername(), changeUserPasswordInput.getPassword());
     return userMapper.userToUserModel(
       userService.updateUser(id, UserInput.builder().password(changeUserPasswordInput.getNewPassword()).build()));
   }

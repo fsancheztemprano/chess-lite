@@ -30,8 +30,4 @@ springfox:
     enabled: true
 logging:
   level:
-    org:
-      hibernate:
-#        cache: trace
-#        type: trace
-#        SQL: DEBUG
+    dev.kurama.api: debug

@@ -1,13 +1,10 @@
 package dev.kurama.api.core.hateoas.model;
 
-import java.util.Date;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.Date;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -25,7 +22,7 @@ public class UserModel extends RepresentationModel<UserModel> {
   private Date lastLoginDateDisplay;
   private Date joinDate;
   private RoleModel role;
-  private List<AuthorityModel> authorities;
+  private Set<AuthorityModel> authorities;
   private boolean active;
   private boolean locked;
   private boolean expired;
