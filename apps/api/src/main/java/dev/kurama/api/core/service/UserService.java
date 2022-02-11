@@ -1,25 +1,10 @@
 package dev.kurama.api.core.service;
 
-import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
-import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static java.util.Optional.ofNullable;
-import static org.apache.logging.log4j.util.Strings.isEmpty;
-
 import com.google.common.collect.Sets;
 import dev.kurama.api.core.constant.UserConstant;
-import dev.kurama.api.core.domain.Authority;
-import dev.kurama.api.core.domain.EmailTemplate;
-import dev.kurama.api.core.domain.GlobalSettings;
-import dev.kurama.api.core.domain.Role;
-import dev.kurama.api.core.domain.User;
-import dev.kurama.api.core.domain.UserPreferences;
-import dev.kurama.api.core.domain.UserPrincipal;
+import dev.kurama.api.core.domain.*;
 import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
-import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
-import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
-import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
-import dev.kurama.api.core.exception.domain.SignupClosedException;
+import dev.kurama.api.core.exception.domain.*;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
@@ -29,16 +14,9 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
@@ -51,6 +29,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static java.util.Optional.ofNullable;
+import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 @Flogger
 @RequiredArgsConstructor
@@ -80,19 +70,11 @@ public class UserService implements UserDetailsService {
   @NonNull
   private final UserChangedEventEmitter userChangedEventEmitter;
 
-  private RoleService roleService;
+  @NonNull
+  private final RoleService roleService;
 
-  @Autowired
-  public void setRoleService(@NonNull RoleService roleService) {
-    this.roleService = roleService;
-  }
-
-  private GlobalSettingsService globalSettingsService;
-
-  @Autowired
-  public void setGlobalSettingsService(@NonNull GlobalSettingsService globalSettingsService) {
-    this.globalSettingsService = globalSettingsService;
-  }
+  @NonNull
+  private final GlobalSettingsService globalSettingsService;
 
   @Value("${application.host_url}")
   private String host;
@@ -129,7 +111,8 @@ public class UserService implements UserDetailsService {
   }
 
   public void deleteUserById(String id) throws UserNotFoundException {
-    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    User user = userRepository.findById(id)
+      .orElseThrow(() -> new UserNotFoundException(id));
     userRepository.delete(user);
     userChangedEventEmitter.emitUserDeletedEvent(user.getId());
   }
@@ -151,14 +134,16 @@ public class UserService implements UserDetailsService {
       .locked(true)
       .expired(false)
       .credentialsExpired(false)
-      .roleId(globalSettings.getDefaultRole().getId())
+      .roleId(globalSettings.getDefaultRole()
+        .getId())
       .build();
     var user = createUser(userInput);
 
     try {
       user.setActivationToken(activationTokenService.createActivationToken(user));
       userRepository.saveAndFlush(user);
-      sendActivationTokenEmail(user, user.getActivationToken().getId());
+      sendActivationTokenEmail(user, user.getActivationToken()
+        .getId());
     } catch (ActivationTokenRecentException ignored) {
     }
   }
@@ -167,7 +152,8 @@ public class UserService implements UserDetailsService {
     throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = roleService.findRoleById(userInput.getRoleId())
-      .orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
+      .orElseGet(() -> globalSettingsService.getGlobalSettings()
+        .getDefaultRole());
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())
@@ -182,7 +168,9 @@ public class UserService implements UserDetailsService {
       .credentialsExpired(userInput.getCredentialsExpired())
       .role(role)
       .authorities(Sets.newHashSet(role.getAuthorities()))
-      .userPreferences(UserPreferences.builder().setRandomUUID().build())
+      .userPreferences(UserPreferences.builder()
+        .setRandomUUID()
+        .build())
       .build();
     user = userRepository.save(user);
     userChangedEventEmitter.emitUserCreatedEvent(user.getId());
@@ -219,7 +207,8 @@ public class UserService implements UserDetailsService {
       user.setFirstname(userInput.getFirstname());
       changed = true;
     }
-    if (ofNullable(userInput.getLastname()).isPresent() && !userInput.getLastname().equals(user.getLastname())) {
+    if (ofNullable(userInput.getLastname()).isPresent() && !userInput.getLastname()
+      .equals(user.getLastname())) {
       user.setLastname(userInput.getLastname());
       changed = true;
     }
@@ -228,15 +217,18 @@ public class UserService implements UserDetailsService {
       user.setProfileImageUrl(userInput.getProfileImageUrl());
       changed = true;
     }
-    if (ofNullable(userInput.getActive()).isPresent() && !userInput.getActive().equals(user.isActive())) {
+    if (ofNullable(userInput.getActive()).isPresent() && !userInput.getActive()
+      .equals(user.isActive())) {
       user.setActive(userInput.getActive());
       changed = true;
     }
-    if (ofNullable(userInput.getLocked()).isPresent() && !userInput.getLocked().equals(user.isLocked())) {
+    if (ofNullable(userInput.getLocked()).isPresent() && !userInput.getLocked()
+      .equals(user.isLocked())) {
       user.setLocked(userInput.getLocked());
       changed = true;
     }
-    if (ofNullable(userInput.getExpired()).isPresent() && !userInput.getExpired().equals(user.isExpired())) {
+    if (ofNullable(userInput.getExpired()).isPresent() && !userInput.getExpired()
+      .equals(user.isExpired())) {
       user.setExpired(userInput.getExpired());
       changed = true;
     }
@@ -245,16 +237,24 @@ public class UserService implements UserDetailsService {
       user.setCredentialsExpired(userInput.getCredentialsExpired());
       changed = true;
     }
-    if (ofNullable(userInput.getRoleId()).isPresent() && !userInput.getRoleId().equals(user.getRole().getId())) {
+    if (ofNullable(userInput.getRoleId()).isPresent() && !userInput.getRoleId()
+      .equals(user.getRole()
+        .getId())) {
       var role = roleService.findRoleById(userInput.getRoleId())
         .orElseThrow(() -> new RoleNotFoundException(userInput.getRoleId()));
       setRoleAndAuthorities(user, role);
       changed = true;
     }
     if (ofNullable(userInput.getAuthorityIds()).isPresent() && (
-      userInput.getAuthorityIds().size() != user.getAuthorities().size()
-        || !userInput.getAuthorityIds().containsAll(
-        user.getAuthorities().stream().map(Authority::getId).collect(Collectors.toSet())))) {
+      userInput.getAuthorityIds()
+        .size() != user.getAuthorities()
+        .size()
+        || !userInput.getAuthorityIds()
+        .containsAll(
+          user.getAuthorities()
+            .stream()
+            .map(Authority::getId)
+            .collect(Collectors.toSet())))) {
       user.setAuthorities(authorityService.findAllById(userInput.getAuthorityIds()));
       changed = true;
     }
@@ -300,16 +300,17 @@ public class UserService implements UserDetailsService {
 
   @Transactional
   public void requestActivationToken(User user) throws ActivationTokenRecentException {
-
     user.setActivationToken(activationTokenService.createActivationToken(user));
-    user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+    user.setPassword(passwordEncoder.encode(UUID.randomUUID()
+      .toString()));
     user.setLocked(true);
     userRepository.saveAndFlush(user);
 
-    sendActivationTokenEmail(user, user.getActivationToken().getId());
+    sendActivationTokenEmail(user, user.getActivationToken()
+      .getId());
   }
 
-  public void reassignToRole(Collection<User> users, Role role) {
+  void reassignToRole(@NonNull Collection<User> users, Role role) {
     users.forEach(user -> setRoleAndAuthorities(user, role));
     users = this.userRepository.saveAllAndFlush(users);
     users.forEach(user -> this.userChangedEventEmitter.emitUserUpdatedEvent(user.getId()));
@@ -357,12 +358,21 @@ public class UserService implements UserDetailsService {
 
   private Example<User> getUserExample(String search) {
     return Example.of(
-      User.builder().username(search).email(search).firstname(search).lastname(search).build(),
+      User.builder()
+        .username(search)
+        .email(search)
+        .firstname(search)
+        .lastname(search)
+        .build(),
       ExampleMatcher.matchingAny()
         .withIgnorePaths("active", "locked", "expired", "credentialsExpired")
-        .withMatcher("username", GenericPropertyMatchers.contains().ignoreCase())
-        .withMatcher("email", GenericPropertyMatchers.contains().ignoreCase())
-        .withMatcher("firstname", GenericPropertyMatchers.contains().ignoreCase())
-        .withMatcher("lastname", GenericPropertyMatchers.contains().ignoreCase()));
+        .withMatcher("username", GenericPropertyMatchers.contains()
+          .ignoreCase())
+        .withMatcher("email", GenericPropertyMatchers.contains()
+          .ignoreCase())
+        .withMatcher("firstname", GenericPropertyMatchers.contains()
+          .ignoreCase())
+        .withMatcher("lastname", GenericPropertyMatchers.contains()
+          .ignoreCase()));
   }
 }

@@ -7,6 +7,7 @@ import dev.kurama.api.core.hateoas.assembler.RoleModelAssembler;
 import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.hateoas.model.RoleModel;
 import dev.kurama.api.core.mapper.RoleMapper;
+import dev.kurama.api.core.service.RoleFacility;
 import dev.kurama.api.core.service.RoleService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,9 @@ public class RoleFacade {
   private final RoleService roleService;
 
   @NonNull
+  private final RoleFacility roleFacility;
+
+  @NonNull
   private final RoleMapper roleMapper;
 
   @NonNull
@@ -36,7 +40,8 @@ public class RoleFacade {
 
   public RoleModel findByRoleId(String roleId) throws RoleNotFoundException {
     return roleMapper.roleToRoleModel(
-      roleService.findRoleById(roleId).orElseThrow(() -> new RoleNotFoundException(roleId)));
+      roleService.findRoleById(roleId)
+        .orElseThrow(() -> new RoleNotFoundException(roleId)));
   }
 
   public RoleModel create(@Length(min = 3, max = 128) String roleName) throws RoleExistsException {
@@ -49,6 +54,6 @@ public class RoleFacade {
   }
 
   public void delete(String id) throws ImmutableRoleException, RoleNotFoundException {
-    roleService.delete(id);
+    roleFacility.deleteRole(id);
   }
 }

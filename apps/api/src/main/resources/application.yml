@@ -63,10 +63,11 @@ spring:
   web:
     resources:
       add-mappings: true
-springfox:
-  documentation:
+springdoc:
+  api-docs:
     enabled: false
-
+  swagger-ui:
+    enabled: false
 logging:
   file:
     name: logs/logs.log

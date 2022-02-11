@@ -7,7 +7,6 @@ import dev.kurama.api.core.rest.AuthenticationController;
 import dev.kurama.api.core.rest.UserProfileController;
 import dev.kurama.api.core.utility.AuthorityUtils;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
@@ -24,7 +23,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-@RequiredArgsConstructor
 public class RootResourceAssembler implements RootAssembler<RootResource> {
 
   public @NonNull RepresentationModel<RootResource> assemble() {
