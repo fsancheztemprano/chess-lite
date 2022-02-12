@@ -11,7 +11,6 @@ application:
     - /websocket/**
     - /explorer/**
     - /swagger-ui/**
-    - /swagger-resources/**
     - /v*/api-docs/**
   host_url: 'http://localhost:4200'
 spring:
@@ -25,9 +24,11 @@ spring:
   devtools:
     livereload:
       enabled: true
-springfox:
-  documentation:
+springdoc:
+  show-actuator: true
+  api-docs:
+    enabled: true
+  swagger-ui:
     enabled: true
 logging:
-  level:
-    dev.kurama.api: debug
+  config: src/main/resources/logback-development.xml

@@ -2,6 +2,6 @@
 <configuration>
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
   <logger name="org.springframework" level="WARN"/>
-  <logger name="dev.kurama.api" level="WARN"/>
+  <logger name="dev.kurama.api" level="DEBUG"/>
   <logger name="root" level="WARN"/>
 </configuration>

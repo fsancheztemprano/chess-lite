@@ -44,13 +44,14 @@ spring:
           use_query_cache: true
           use_second_level_cache: true
           region:
-            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
-          ehcache:
-            missing_cache_strategy: 'create'
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
         javax:
           persistence:
             sharedCache:
               mode: ENABLE_SELECTIVE
+          cache:
+            provider: org.ehcache.jsr107.EhcacheCachingProvider
+            missing_cache_strategy: 'create'
   mail:
     host: smtp.gmail.com
     port: 587
@@ -63,10 +64,11 @@ spring:
   web:
     resources:
       add-mappings: true
-springfox:
-  documentation:
+springdoc:
+  api-docs:
     enabled: false
-
+  swagger-ui:
+    enabled: false
 logging:
   file:
     name: logs/logs.log

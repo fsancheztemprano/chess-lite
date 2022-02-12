@@ -1,4 +1,4 @@
-package dev.kurama.api.core.configuration.development.halexplorer;
+package dev.kurama.api.core.configuration.development.swagger;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -8,11 +8,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Profile({"development"})
 @Controller
-@RequestMapping("/explorer")
-public class HalExplorerRedirection {
+@RequestMapping("/swagger-ui")
+public class SwaggerRedirection {
 
   @GetMapping()
   public RedirectView redirectToExplorer() {
-    return new RedirectView("/explorer/index.html#uri=/api");
+    return new RedirectView("/swagger-ui/index.html");
   }
 }
