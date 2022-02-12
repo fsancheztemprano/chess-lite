@@ -31,5 +31,4 @@ springdoc:
   swagger-ui:
     enabled: true
 logging:
-  level:
-    dev.kurama.api: debug
+  config: src/main/resources/logback-development.xml
