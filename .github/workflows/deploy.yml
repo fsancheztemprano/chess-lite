@@ -51,7 +51,7 @@ jobs:
           save-on-hit: true
 
       - name: Java Dependencies
-        run: mvn dependency:resolve dependency:resolve-plugins
+        run: mvn -f apps/api/pom.xml dependency:resolve dependency:resolve-plugins
 
       - name: Node Dependencies
         run: yarn install
