@@ -158,20 +158,12 @@ jobs:
           files: apps/api/target/site/jacoco-ut/jacoco.xml,apps/api/target/site/jacoco-it/jacoco.xml,coverage/apps/app/lcov.info
           verbose: true
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: java, javascript
-
       - name: Build
         uses: MansaGroup/nrwl-nx-action@v2.1.0
         with:
           targets: build
           all: 'true'
           parallel: 'true'
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
