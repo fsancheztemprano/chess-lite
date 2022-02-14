@@ -187,6 +187,11 @@
   resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-13.0.1.tgz#fc0a568f915948fc4eb701abb331dc2f0e3ebc71"
   integrity sha512-Eih9Kh0hxHO4+3in9mgjksQecym0p+3p+287y3LLihIc7gCkAO4xZeHGVGiC8qUX72PNUXkDlyskI9oHjK9Axw==
 
+"@angular-eslint/bundled-angular-compiler@13.1.0":
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-13.1.0.tgz#5806625096441050d9b39b01d176f38d7549e9bc"
+  integrity sha512-0VSAZ3zrHkKdbvogQ4GLSf+lKojtPL3LXLlvXU9xNgNsqw68+gSNwaWd595tXoQCmpwWpTerKUbyIsGnPA7EYA==
+
 "@angular-eslint/eslint-plugin-template@13.0.1":
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-13.0.1.tgz#96d5e319278f629afcd034ff57f02de19e510e2b"
@@ -197,13 +202,13 @@
     aria-query "^4.2.2"
     axobject-query "^2.2.0"
 
-"@angular-eslint/eslint-plugin@13.0.1":
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-13.0.1.tgz#fd737c8a97a5e65ab92e71b5fab1ffd45ed295f6"
-  integrity sha512-WxqgMLTfE45dqjzg/Nq0dOEDwzpdB+zYOWrA41MT3jt0UbukFEx8+FMrAgBLIeDaHzwWomiAEV5Tm5mQAKA4VA==
+"@angular-eslint/eslint-plugin@13.1.0":
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-13.1.0.tgz#cb3a1d4dfff5334459c7f3b4b3a124c84673b833"
+  integrity sha512-WiggBWPhhpSjcYVHJiawCduCsydM/RPudUE8zxv0Nmj/APuzNgvUr6E//uYTrhNv9EIJoZutRovw7R4Y/yXj4Q==
   dependencies:
-    "@angular-eslint/utils" "13.0.1"
-    "@typescript-eslint/experimental-utils" "5.3.0"
+    "@angular-eslint/utils" "13.1.0"
+    "@typescript-eslint/experimental-utils" "5.11.0"
 
 "@angular-eslint/template-parser@13.0.1":
   version "13.0.1"
@@ -213,13 +218,13 @@
     "@angular-eslint/bundled-angular-compiler" "13.0.1"
     eslint-scope "^5.1.0"
 
-"@angular-eslint/utils@13.0.1":
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/utils/-/utils-13.0.1.tgz#e45085987b86a18ff567b4104b11fd03aa886c0a"
-  integrity sha512-makSpu8kr5yHIz0c6WaWwix+tk5DN5Uix9vQulVisZWchTmSqEovJih/UC+4XspM9kQbjcbWHohYKiBbBEQpbA==
+"@angular-eslint/utils@13.1.0":
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/utils/-/utils-13.1.0.tgz#3023c0c66d02a5e80dbcf5b11b1c4767f5811bd2"
+  integrity sha512-iLmYMXNk+1sFMIlYXN8/Z5UcNAOno38v10lzo4bMjCpzXKkMa0O2b+4qi+469iUJAU6RAZ5weUL+S2Wtlr0ooA==
   dependencies:
-    "@angular-eslint/bundled-angular-compiler" "13.0.1"
-    "@typescript-eslint/experimental-utils" "5.3.0"
+    "@angular-eslint/bundled-angular-compiler" "13.1.0"
+    "@typescript-eslint/experimental-utils" "5.11.0"
 
 "@angular/animations@13.2.2":
   version "13.2.2"
@@ -3247,6 +3252,13 @@
     regexpp "^3.2.0"
     semver "^7.3.5"
     tsutils "^3.21.0"
+
+"@typescript-eslint/experimental-utils@5.11.0":
+  version "5.11.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-5.11.0.tgz#e7b2bfd57ddda47c3f658faad57655ed9e01fea0"
+  integrity sha512-EPvC/bU2n1LKtzKWP1AjGWkp7r8tJ8giVlZHIODo6q7SAd6J+/9vjtEKHK2G/Qp+D2IGPsQge+oadDR3CZcFtQ==
+  dependencies:
+    "@typescript-eslint/utils" "5.11.0"
 
 "@typescript-eslint/experimental-utils@5.3.0":
   version "5.3.0"
@@ -9498,12 +9510,7 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-nanoid@^3.1.23, nanoid@^3.1.30:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.2.0.tgz#62667522da6673971cca916a6d3eff3f415ff80c"
-  integrity sha512-fmsZYa9lpn69Ad5eDn7FMcnnSR+8R34W9qJEijxYhTbfOWzr22n1QxCMzXLK+ODyW2973V3Fux959iQoUxzUIA==
-
-nanoid@^3.2.0:
+nanoid@^3.1.23, nanoid@^3.1.30, nanoid@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.2.0.tgz#62667522da6673971cca916a6d3eff3f415ff80c"
   integrity sha512-fmsZYa9lpn69Ad5eDn7FMcnnSR+8R34W9qJEijxYhTbfOWzr22n1QxCMzXLK+ODyW2973V3Fux959iQoUxzUIA==
