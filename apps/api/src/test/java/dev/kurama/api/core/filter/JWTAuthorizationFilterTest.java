@@ -45,7 +45,7 @@ class JWTAuthorizationFilterTest {
     FilterChain filterChain = mock(FilterChain.class);
 
     doReturn(OPTIONS.toString()).when(request)
-                                .getMethod();
+      .getMethod();
 
     filter.doFilterInternal(request, response, filterChain);
 
@@ -61,11 +61,11 @@ class JWTAuthorizationFilterTest {
     FilterChain filterChain = mock(FilterChain.class);
     ArrayList<String> invalidTokens = newArrayList(null, "", "Borrer");
     doReturn(GET.toString()).when(request)
-                            .getMethod();
+      .getMethod();
 
     for (String token : invalidTokens) {
       doReturn(token).when(request)
-                     .getHeader(HttpHeaders.AUTHORIZATION);
+        .getHeader(HttpHeaders.AUTHORIZATION);
 
       filter.doFilterInternal(request, response, filterChain);
     }
@@ -79,18 +79,18 @@ class JWTAuthorizationFilterTest {
     HttpServletResponse response = mock(HttpServletResponse.class);
     FilterChain filterChain = mock(FilterChain.class);
     doReturn(GET.toString()).when(request)
-                            .getMethod();
+      .getMethod();
     String token = "token";
     DecodedJWT decodedToken = mock(DecodedJWT.class);
     doReturn(SecurityConstant.TOKEN_PREFIX + token).when(request)
-                                                   .getHeader(HttpHeaders.AUTHORIZATION);
+      .getHeader(HttpHeaders.AUTHORIZATION);
     doReturn(decodedToken).when(jwtTokenProvider)
-                          .getDecodedJWT(token);
+      .getDecodedJWT(token);
     doReturn(true).when(jwtTokenProvider)
-                  .isTokenValid(decodedToken);
+      .isTokenValid(decodedToken);
     Authentication authentication = mock(Authentication.class);
     doReturn(authentication).when(jwtTokenProvider)
-                            .getAuthentication(decodedToken, request);
+      .getAuthentication(decodedToken, request);
     SecurityContext securityContext = Mockito.mock(SecurityContext.class);
     SecurityContextHolder.setContext(securityContext);
 
@@ -105,15 +105,15 @@ class JWTAuthorizationFilterTest {
     HttpServletResponse response = mock(HttpServletResponse.class);
     FilterChain filterChain = mock(FilterChain.class);
     doReturn(GET.toString()).when(request)
-                            .getMethod();
+      .getMethod();
     String token = "token";
     DecodedJWT decodedToken = mock(DecodedJWT.class);
     doReturn(SecurityConstant.TOKEN_PREFIX + token).when(request)
-                                                   .getHeader(HttpHeaders.AUTHORIZATION);
+      .getHeader(HttpHeaders.AUTHORIZATION);
     doReturn(decodedToken).when(jwtTokenProvider)
-                          .getDecodedJWT(token);
+      .getDecodedJWT(token);
     doReturn(false).when(jwtTokenProvider)
-                   .isTokenValid(decodedToken);
+      .isTokenValid(decodedToken);
 
     try (MockedStatic<SecurityContextHolder> utilities = Mockito.mockStatic(SecurityContextHolder.class)) {
 

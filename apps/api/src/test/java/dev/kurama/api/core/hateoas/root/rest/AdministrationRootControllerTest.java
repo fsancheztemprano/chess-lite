@@ -1,5 +1,11 @@
 package dev.kurama.api.core.hateoas.root.rest;
 
+import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import dev.kurama.api.core.exception.ExceptionHandlers;
 import dev.kurama.api.core.hateoas.root.processor.AdministrationRootResourceAssembler;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +20,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AdministrationRootController.class})

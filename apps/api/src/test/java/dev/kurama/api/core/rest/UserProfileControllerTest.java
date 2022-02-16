@@ -5,7 +5,7 @@ import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_CHANGE
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_UPLOAD_AVATAR_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.framework.JsonUtils.asJsonString;
+import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -65,16 +65,16 @@ class UserProfileControllerTest {
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                             .setControllerAdvice(new ExceptionHandlers())
-                             .build();
+      .setControllerAdvice(new ExceptionHandlers())
+      .build();
   }
 
   @Nested
   class UserProfileTests {
 
     UserModel expected = UserModel.builder()
-                                  .id(randomUUID())
-                                  .build();
+      .id(randomUUID())
+      .build();
 
     @Nested
     class GetUserProfileTests {
@@ -84,11 +84,11 @@ class UserProfileControllerTest {
         when(userFacade.findByUserId(expected.getId())).thenReturn(expected);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(get(USER_PROFILE_PATH))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", equalTo(expected.getId())));
         }
       }
 
@@ -97,10 +97,10 @@ class UserProfileControllerTest {
         when(userFacade.findByUserId(expected.getId())).thenThrow(UserNotFoundException.class);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(get(USER_PROFILE_PATH))
-                 .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound());
         }
       }
     }
@@ -109,23 +109,23 @@ class UserProfileControllerTest {
     class UpdateProfileTests {
 
       UserProfileUpdateInput input = UserProfileUpdateInput.builder()
-                                                           .firstname("first name")
-                                                           .lastname("last name")
-                                                           .build();
+        .firstname("first name")
+        .lastname("last name")
+        .build();
 
       @Test
       void should_update_user_profile() throws Exception {
         when(userFacade.updateProfile(expected.getId(), input)).thenReturn(expected);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(
-                   patch(USER_PROFILE_PATH).accept(MediaType.APPLICATION_JSON)
-                                           .contentType(MediaType.APPLICATION_JSON)
-                                           .content(asJsonString(input)))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+              patch(USER_PROFILE_PATH).accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(input)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", equalTo(expected.getId())));
         }
       }
 
@@ -134,13 +134,13 @@ class UserProfileControllerTest {
         when(userFacade.updateProfile(expected.getId(), input)).thenThrow(UserNotFoundException.class);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(
-                   patch(USER_PROFILE_PATH).accept(MediaType.APPLICATION_JSON)
-                                           .contentType(MediaType.APPLICATION_JSON)
-                                           .content(asJsonString(input)))
-                 .andExpect(status().isNotFound());
+              patch(USER_PROFILE_PATH).accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(input)))
+            .andExpect(status().isNotFound());
         }
       }
     }
@@ -149,23 +149,23 @@ class UserProfileControllerTest {
     class ChangePasswordTests {
 
       ChangeUserPasswordInput input = ChangeUserPasswordInput.builder()
-                                                             .password("old-password")
-                                                             .newPassword("new-password")
-                                                             .build();
+        .password("old-password")
+        .newPassword("new-password")
+        .build();
 
       @Test
       void should_change_user_password() throws Exception {
         when(userFacade.changePassword(expected.getId(), input)).thenReturn(expected);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(
-                   patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaType.APPLICATION_JSON)
-                                                                               .contentType(MediaType.APPLICATION_JSON)
-                                                                               .content(asJsonString(input)))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+              patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(input)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", equalTo(expected.getId())));
         }
       }
 
@@ -174,13 +174,13 @@ class UserProfileControllerTest {
         when(userFacade.changePassword(expected.getId(), input)).thenThrow(UserNotFoundException.class);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(
-                   patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaType.APPLICATION_JSON)
-                                                                               .contentType(MediaType.APPLICATION_JSON)
-                                                                               .content(asJsonString(input)))
-                 .andExpect(status().isNotFound());
+              patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(input)))
+            .andExpect(status().isNotFound());
         }
       }
     }
@@ -195,20 +195,20 @@ class UserProfileControllerTest {
         when(userFacade.uploadAvatar(expected.getId(), avatar)).thenReturn(expected);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar)
-                                                                                        .with(request -> {
-                                                                                          request.setMethod(
-                                                                                            HttpMethod.PATCH.toString());
-                                                                                          return request;
-                                                                                        })
-                                                                                        .accept(
-                                                                                          MediaType.APPLICATION_JSON)
-                                                                                        .contentType(
-                                                                                          MediaType.MULTIPART_FORM_DATA_VALUE))
-                 .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+              .with(request -> {
+                request.setMethod(
+                  HttpMethod.PATCH.toString());
+                return request;
+              })
+              .accept(
+                MediaType.APPLICATION_JSON)
+              .contentType(
+                MediaType.MULTIPART_FORM_DATA_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id", equalTo(expected.getId())));
         }
       }
 
@@ -217,19 +217,19 @@ class UserProfileControllerTest {
         when(userFacade.uploadAvatar(expected.getId(), avatar)).thenThrow(UserNotFoundException.class);
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar)
-                                                                                        .with(request -> {
-                                                                                          request.setMethod(
-                                                                                            HttpMethod.PATCH.toString());
-                                                                                          return request;
-                                                                                        })
-                                                                                        .accept(
-                                                                                          MediaType.APPLICATION_JSON)
-                                                                                        .contentType(
-                                                                                          MediaType.MULTIPART_FORM_DATA_VALUE))
-                 .andExpect(status().isNotFound());
+              .with(request -> {
+                request.setMethod(
+                  HttpMethod.PATCH.toString());
+                return request;
+              })
+              .accept(
+                MediaType.APPLICATION_JSON)
+              .contentType(
+                MediaType.MULTIPART_FORM_DATA_VALUE))
+            .andExpect(status().isNotFound());
         }
       }
     }
@@ -241,10 +241,10 @@ class UserProfileControllerTest {
       void should_delete_profile() throws Exception {
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(delete(USER_PROFILE_PATH))
-                 .andExpect(status().isNoContent());
+            .andExpect(status().isNoContent());
 
           verify(userFacade).deleteById(expected.getId());
         }
@@ -253,13 +253,13 @@ class UserProfileControllerTest {
       @Test
       void should_throw_user_not_found() throws Exception {
         doThrow(UserNotFoundException.class).when(userFacade)
-                                            .deleteById(expected.getId());
+          .deleteById(expected.getId());
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId)
-                   .thenReturn(expected.getId());
+            .thenReturn(expected.getId());
 
           mockMvc.perform(delete(USER_PROFILE_PATH))
-                 .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound());
         }
       }
     }
@@ -269,44 +269,44 @@ class UserProfileControllerTest {
   class UserProfilePreferencesTests {
 
     UserPreferencesModel expected = UserPreferencesModel.builder()
-                                                        .id(randomUUID())
-                                                        .darkMode(false)
-                                                        .contentLanguage("de")
-                                                        .build();
+      .id(randomUUID())
+      .darkMode(false)
+      .contentLanguage("de")
+      .build();
 
     @Test
     void should_get_preferences() throws Exception {
       when(userPreferencesFacade.findByUserId(expected.getId())).thenReturn(expected);
       try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
         utilities.when(AuthorityUtils::getCurrentUserId)
-                 .thenReturn(expected.getId());
+          .thenReturn(expected.getId());
 
         mockMvc.perform(get(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-               .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
-               .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.id", equalTo(expected.getId())))
+          .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
+          .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
       }
     }
 
     @Test
     void should_update_user_preferences() throws Exception {
       UserPreferencesInput input = UserPreferencesInput.builder()
-                                                       .darkMode(true)
-                                                       .contentLanguage("en")
-                                                       .build();
+        .darkMode(true)
+        .contentLanguage("en")
+        .build();
       when(userPreferencesFacade.updateByUserId(expected.getId(), input)).thenReturn(expected);
       try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
         utilities.when(AuthorityUtils::getCurrentUserId)
-                 .thenReturn(expected.getId());
+          .thenReturn(expected.getId());
 
         mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).accept(MediaType.APPLICATION_JSON)
-                                                                           .contentType(MediaType.APPLICATION_JSON)
-                                                                           .content(asJsonString(input)))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-               .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
-               .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(input)))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.id", equalTo(expected.getId())))
+          .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
+          .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())));
       }
     }
   }

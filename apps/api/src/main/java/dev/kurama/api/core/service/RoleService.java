@@ -1,5 +1,10 @@
 package dev.kurama.api.core.service;
 
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_UPDATE_CORE;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
+import static java.util.Optional.ofNullable;
+import static org.apache.logging.log4j.util.Strings.isEmpty;
+
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.event.emitter.RoleChangedEventEmitter;
@@ -8,6 +13,8 @@ import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.repository.RoleRepository;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -17,14 +24,6 @@ import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static dev.kurama.api.core.authority.RoleAuthority.ROLE_UPDATE_CORE;
-import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
-import static java.util.Optional.ofNullable;
-import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 @RequiredArgsConstructor
 @Service

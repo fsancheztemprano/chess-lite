@@ -1,7 +1,39 @@
 package dev.kurama.api.core.hateoas.root.processor;
 
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
+import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
+import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_READ;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
+import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
+import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
+import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
+import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.BASE_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.GLOBAL_SETTINGS_REL;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ROLE_MANAGEMENT_ROOT_REL;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.SERVICE_LOGS_REL;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.ROOT_REL;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
+import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLE_REL;
+import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
+import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
+
 import dev.kurama.api.core.hateoas.root.model.RootResource;
 import dev.kurama.api.core.utility.AuthorityUtils;
+import java.util.ArrayList;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,28 +46,6 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.EmbeddedWrapper;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.ArrayList;
-
-import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
-import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
-import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
-import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_READ;
-import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
-import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
-import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
-import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
-import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
-import static dev.kurama.api.core.constant.RestPathConstant.*;
-import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.*;
-import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
-import static dev.kurama.api.core.hateoas.relations.HateoasRelations.*;
-import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
-import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLE_REL;
-import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
-import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
 
 class AdministrationRootResourceAssemblerTest {
 

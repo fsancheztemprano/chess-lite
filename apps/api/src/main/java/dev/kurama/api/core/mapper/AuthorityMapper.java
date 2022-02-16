@@ -17,7 +17,9 @@ public interface AuthorityMapper {
   }
 
   default Set<AuthorityModel> authoritySetToAuthorityModelSet(Set<Authority> authorities) {
-    return authorities.stream().map(this::authorityToAuthorityModel).collect(Collectors.toSet());
+    return authorities.stream()
+      .map(this::authorityToAuthorityModel)
+      .collect(Collectors.toSet());
   }
 
 }

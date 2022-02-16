@@ -1,5 +1,19 @@
 package dev.kurama.api.core;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.GlobalSettings;
@@ -10,24 +24,22 @@ import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
 import dev.kurama.api.core.repository.UserRepository;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith({MockitoExtension.class})
 class InitializationRunnerTest {
@@ -50,6 +62,13 @@ class InitializationRunnerTest {
 
   @Mock
   private BCryptPasswordEncoder passwordEncoder;
+
+  @BeforeEach
+  void setUp() {
+    lenient().doNothing()
+      .when(initializationRunner)
+      .log(any(), anyString());
+  }
 
   @Nested
   class RunnerTests {
@@ -103,13 +122,13 @@ class InitializationRunnerTest {
       doThrow(new RoleNotFoundException("")).when(initializationRunner)
         .initializeGlobalSettings();
 
-
       initializationRunner.run();
     }
   }
 
   @Nested
   class InitializeAuthoritiesTests {
+
     @Captor
     ArgumentCaptor<Iterable<Authority>> capturedAuthorities;
 
@@ -136,7 +155,8 @@ class InitializationRunnerTest {
       initializationRunner.initializeAuthorities();
 
       verify(authorityRepository).saveAllAndFlush(capturedAuthorities.capture());
-      assertThat(capturedAuthorities.getValue()).hasSize(DefaultAuthority.AUTHORITIES.size() - existentAuthorities.size())
+      assertThat(capturedAuthorities.getValue()).hasSize(
+          DefaultAuthority.AUTHORITIES.size() - existentAuthorities.size())
         .extracting("name")
         .doesNotContainAnyElementsOf(existentAuthorities);
     }
@@ -155,6 +175,7 @@ class InitializationRunnerTest {
 
   @Nested
   class InitializeRolesTests {
+
     @Captor
     ArgumentCaptor<Iterable<Role>> capturedRoles;
 
@@ -164,7 +185,6 @@ class InitializationRunnerTest {
         .findAll();
       doReturn(DefaultAuthority.ROLES).when(roleRepository)
         .saveAllAndFlush(any());
-
 
       initializationRunner.initializeRoles();
 
@@ -201,6 +221,7 @@ class InitializationRunnerTest {
 
   @Nested
   class SetRolesAuthorizationsTests {
+
     @Captor
     ArgumentCaptor<Iterable<Role>> capturedRoles;
 
@@ -214,7 +235,6 @@ class InitializationRunnerTest {
         .findAll();
       doReturn(DefaultAuthority.ROLES).when(roleRepository)
         .saveAllAndFlush(any());
-
 
       initializationRunner.setRolesAuthorizations();
 
@@ -232,7 +252,8 @@ class InitializationRunnerTest {
     @Test
     void should_only_update_roles_missing_any_of_its_default_authorities() {
       List<Authority> authorities = buildAuthorities(DefaultAuthority.AUTHORITIES);
-      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES, authorities);
+      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES,
+        authorities);
       roles.get(0)
         .getAuthorities()
         .clear();
@@ -262,7 +283,8 @@ class InitializationRunnerTest {
     @Test
     void should_not_insert_if_no_new_authorities() {
       List<Authority> authorities = buildAuthorities(DefaultAuthority.AUTHORITIES);
-      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES, authorities);
+      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES,
+        authorities);
       doReturn(authorities).when(authorityRepository)
         .findAll();
       doReturn(roles).when(roleRepository)
@@ -276,6 +298,7 @@ class InitializationRunnerTest {
 
   @Nested
   class InitializeGlobalSettingsTests {
+
     @Captor
     ArgumentCaptor<GlobalSettings> capturedGlobalSettings;
 
@@ -329,6 +352,7 @@ class InitializationRunnerTest {
 
   @Nested
   class InitializeAdminUserTests {
+
     @Captor
     ArgumentCaptor<User> capturedUser;
 
@@ -361,13 +385,17 @@ class InitializationRunnerTest {
         .count();
       doReturn(Optional.of(superAdminRole)).when(roleRepository)
         .findByName(DefaultAuthority.SUPER_ADMIN_ROLE);
+      String encodedPassword = "encoded-password";
+      doReturn(encodedPassword).when(passwordEncoder)
+        .encode("123456");
 
       initializationRunner.initializeAdminUser();
 
       verify(userRepository).saveAndFlush(capturedUser.capture());
       User newAdminUser = capturedUser.getValue();
-      assertThat(newAdminUser).extracting("username", "email", "password", "active", "locked", "expired", "credentialsExpired")
-        .containsExactly("admin", "admin@example.com", null, true, false, false, false);
+      assertThat(newAdminUser).extracting("username", "email", "password", "active", "locked", "expired",
+          "credentialsExpired")
+        .containsExactly("admin", "admin@example.com", encodedPassword, true, false, false, false);
       assertThat(newAdminUser.getRole()).isEqualTo(superAdminRole);
       assertThat(newAdminUser.getAuthorities()).isEqualTo(superAdminRole.getAuthorities());
       assertNotNull(newAdminUser.getUserPreferences());
@@ -394,7 +422,8 @@ class InitializationRunnerTest {
       .collect(Collectors.toList());
   }
 
-  private List<Role> buildRolesWithAuthorities(List<String> names, Map<String, List<String>> roleAuthorities, List<Authority> authorities) {
+  private List<Role> buildRolesWithAuthorities(List<String> names, Map<String, List<String>> roleAuthorities,
+                                               List<Authority> authorities) {
     List<Role> roles = buildRoles(names);
     for (Role role : roles) {
       List<String> defaultRoleAuthorities = roleAuthorities.get(role.getName());

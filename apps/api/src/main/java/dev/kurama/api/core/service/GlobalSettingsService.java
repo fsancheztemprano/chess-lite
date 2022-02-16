@@ -1,5 +1,9 @@
 package dev.kurama.api.core.service;
 
+import static dev.kurama.api.core.domain.GlobalSettings.UNIQUE_ID;
+import static java.util.Optional.ofNullable;
+
+import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.GlobalSettings;
 import dev.kurama.api.core.event.emitter.GlobalSettingsChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
@@ -8,9 +12,6 @@ import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import static dev.kurama.api.core.domain.GlobalSettings.UNIQUE_ID;
-import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,17 @@ public class GlobalSettingsService {
 
   public GlobalSettings getGlobalSettings() {
     return globalSettingsRepository.findById(UNIQUE_ID)
+      .orElseGet(this::createGlobalSettings);
+  }
+
+  private GlobalSettings createGlobalSettings() {
+    var defaultRole = roleService.findByName(DefaultAuthority.DEFAULT_ROLE)
       .orElseThrow();
+    return this.globalSettingsRepository.saveAndFlush(GlobalSettings.builder()
+      .id(UNIQUE_ID)
+      .signupOpen(false)
+      .defaultRole(defaultRole)
+      .build());
   }
 
   public GlobalSettings updateGlobalSettings(GlobalSettingsUpdateInput globalSettingsUpdateInput)

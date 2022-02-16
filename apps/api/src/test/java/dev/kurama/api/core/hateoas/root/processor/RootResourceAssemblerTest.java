@@ -1,5 +1,26 @@
 package dev.kurama.api.core.hateoas.root.processor;
 
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
+import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
+import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.AUTHENTICATION_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.BASE_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.SIGNUP_REL;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
+import static dev.kurama.api.core.rest.AuthenticationController.ACTIVATE_PATH;
+import static dev.kurama.api.core.rest.AuthenticationController.LOGIN_PATH;
+import static dev.kurama.api.core.rest.AuthenticationController.SIGNUP_PATH;
+import static dev.kurama.api.core.rest.AuthenticationController.TOKEN_PATH;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
+
 import dev.kurama.api.core.hateoas.root.model.RootResource;
 import dev.kurama.api.core.utility.AuthorityUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -10,18 +31,6 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpMethod;
-
-import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.constant.RestPathConstant.*;
-import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
-import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.*;
-import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
-import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
-import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
-import static dev.kurama.api.core.rest.AuthenticationController.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
 
 class RootResourceAssemblerTest {
 
@@ -43,6 +52,7 @@ class RootResourceAssemblerTest {
 
   @Nested
   class UnauthenticatedUserRootResourceTests {
+
     @BeforeEach
     void setUp() {
       authorityUtils.when(AuthorityUtils::isAuthenticated)
@@ -119,6 +129,7 @@ class RootResourceAssemblerTest {
 
   @Nested
   class AuthenticatedUserRootResourceTests {
+
     @BeforeEach
     void setUp() {
       authorityUtils.when(AuthorityUtils::isAuthenticated)

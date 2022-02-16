@@ -29,35 +29,58 @@ class UserRepositoryIT {
 
   @BeforeEach
   void setUp() {
-    role = entityManager.persist(Role.builder().setRandomUUID().name("role1").build());
+    role = entityManager.persist(Role.builder()
+      .setRandomUUID()
+      .name("role1")
+      .build());
   }
 
   @Test
   void should_find_user_by_username() {
-    User user1 = User.builder().setRandomUUID().username("username1").role(role).build();
+    User user1 = User.builder()
+      .setRandomUUID()
+      .username("username1")
+      .role(role)
+      .build();
     entityManager.persist(user1);
-    User user2 = User.builder().setRandomUUID().username("username2").role(role).build();
+    User user2 = User.builder()
+      .setRandomUUID()
+      .username("username2")
+      .role(role)
+      .build();
     entityManager.persist(user2);
     entityManager.flush();
 
     Optional<User> actual = userRepository.findUserByUsername(user2.getUsername());
 
-    assertThat(actual).isPresent().get()
+    assertThat(actual).isPresent()
+      .get()
       .hasFieldOrPropertyWithValue("id", user2.getId())
       .hasFieldOrPropertyWithValue("username", user2.getUsername());
   }
 
   @Test
   void should_find_user_by_email() {
-    User user1 = User.builder().setRandomUUID().username("username1").email("username1@email.com").role(role).build();
+    User user1 = User.builder()
+      .setRandomUUID()
+      .username("username1")
+      .email("username1@email.com")
+      .role(role)
+      .build();
     entityManager.persist(user1);
-    User user2 = User.builder().setRandomUUID().username("username2").email("username2@email.com").role(role).build();
+    User user2 = User.builder()
+      .setRandomUUID()
+      .username("username2")
+      .email("username2@email.com")
+      .role(role)
+      .build();
     entityManager.persist(user2);
     entityManager.flush();
 
     Optional<User> actual = userRepository.findUserByEmail(user2.getEmail());
 
-    assertThat(actual).isPresent().get()
+    assertThat(actual).isPresent()
+      .get()
       .hasFieldOrPropertyWithValue("id", user2.getId())
       .hasFieldOrPropertyWithValue("username", user2.getUsername())
       .hasFieldOrPropertyWithValue("email", user2.getEmail());

@@ -1,5 +1,13 @@
 package dev.kurama.api.core.hateoas.processor;
 
+import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE;
+import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
+
 import dev.kurama.api.core.hateoas.model.GlobalSettingsModel;
 import dev.kurama.api.core.hateoas.model.RoleModel;
 import dev.kurama.api.core.utility.AuthorityUtils;
@@ -9,14 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.http.HttpMethod;
-
-import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE;
-import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
-import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
-import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
-import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
 
 class GlobalSettingsModelProcessorTest {
 
@@ -33,11 +33,11 @@ class GlobalSettingsModelProcessorTest {
     authorityUtils = Mockito.mockStatic(AuthorityUtils.class);
 
     model = GlobalSettingsModel.builder()
-                               .signupOpen(false)
-                               .defaultRole(RoleModel.builder()
-                                                     .id(randomUUID())
-                                                     .build())
-                               .build();
+      .signupOpen(false)
+      .defaultRole(RoleModel.builder()
+        .id(randomUUID())
+        .build())
+      .build();
   }
 
   @AfterEach
@@ -51,8 +51,8 @@ class GlobalSettingsModelProcessorTest {
 
     assertThat(actual.getLinks()).hasSize(1);
     assertThat(actual.getLink(SELF)).isPresent()
-                                    .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-                                      GLOBAL_SETTINGS_PATH));
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
+        GLOBAL_SETTINGS_PATH));
   }
 
   @Test
@@ -60,28 +60,28 @@ class GlobalSettingsModelProcessorTest {
     GlobalSettingsModel actual = processor.process(this.model);
 
     assertThat(actual.getRequiredLink(SELF)
-                     .getAffordances()).hasSize(2)
-                                       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name", "httpMethod")
-                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
-                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET));
+      .getAffordances()).hasSize(2)
+      .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
+      .extracting("name", "httpMethod")
+      .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+      .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET));
 
   }
 
   @Test
   void should_have_update_affordance_if_user_has_global_setting_update_authority() {
     authorityUtils.when(() -> AuthorityUtils.hasAuthority(GLOBAL_SETTINGS_UPDATE))
-                  .thenReturn(true);
+      .thenReturn(true);
 
     GlobalSettingsModel actual = processor.process(this.model);
 
     assertThat(actual.getRequiredLink(SELF)
-                     .getAffordances()).hasSize(3)
-                                       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
-                                       .extracting("name", "httpMethod")
-                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
-                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET))
-                                       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("update", HttpMethod.PATCH));
+      .getAffordances()).hasSize(3)
+      .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
+      .extracting("name", "httpMethod")
+      .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
+      .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET))
+      .anySatisfy(reqs -> assertThat(reqs.toList()).contains("update", HttpMethod.PATCH));
 
   }
 }

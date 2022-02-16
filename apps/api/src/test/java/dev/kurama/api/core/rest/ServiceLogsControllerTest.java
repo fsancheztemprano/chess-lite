@@ -41,32 +41,32 @@ class ServiceLogsControllerTest {
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                             .setControllerAdvice(new ExceptionHandlers())
-                             .build();
+      .setControllerAdvice(new ExceptionHandlers())
+      .build();
   }
 
   @Test
   void should_get_service_logs() throws Exception {
     ServiceLogsModel expected = ServiceLogsModel.builder()
-                                                .logs("Logs")
-                                                .build();
+      .logs("Logs")
+      .build();
     when(facade.getServiceLogs()).thenReturn(expected);
 
     mockMvc.perform(get(SERVICE_LOGS_PATH))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.logs", equalTo(expected.getLogs())));
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.logs", equalTo(expected.getLogs())));
   }
 
   @Test
   void should_delete_service_logs() throws Exception {
     ServiceLogsModel expected = ServiceLogsModel.builder()
-                                                .logs("")
-                                                .build();
+      .logs("")
+      .build();
     when(facade.deleteServiceLogs()).thenReturn(expected);
 
     mockMvc.perform(delete(SERVICE_LOGS_PATH))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.logs", equalTo(expected.getLogs())));
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.logs", equalTo(expected.getLogs())));
   }
 
   @TestConfiguration

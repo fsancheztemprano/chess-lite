@@ -5,4 +5,5 @@ import org.springframework.hateoas.RepresentationModel;
 
 @NoArgsConstructor
 public class RootResource extends RepresentationModel<RootResource> {
+
 }

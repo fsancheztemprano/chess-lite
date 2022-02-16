@@ -1,5 +1,17 @@
 package dev.kurama.api.core.hateoas.root.processor;
 
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
+import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.SIGNUP_REL;
+import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
+import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import dev.kurama.api.core.hateoas.root.model.RootResource;
 import dev.kurama.api.core.hateoas.root.rest.AdministrationRootController;
 import dev.kurama.api.core.hateoas.root.rest.RootController;
@@ -13,19 +25,11 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
 import org.springframework.stereotype.Component;
 
-import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
-import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.*;
-import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
-import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Component
 public class RootResourceAssembler implements RootAssembler<RootResource> {
 
-  public @NonNull RepresentationModel<RootResource> assemble() {
+  public @NonNull
+  RepresentationModel<RootResource> assemble() {
     HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource())
       .link(getSelfLink());
 
@@ -46,36 +50,43 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
     return rootModel.build();
   }
 
-  private @NonNull Link getSelfLink() {
+  private @NonNull
+  Link getSelfLink() {
     return withDefaultAffordance(linkTo(methodOn(RootController.class).root()).withSelfRel());
   }
 
   @SneakyThrows
-  private @NonNull Link getCurrentUserLink() {
+  private @NonNull
+  Link getCurrentUserLink() {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
   }
 
   @SneakyThrows
-  private @NonNull Link getLoginLink() {
+  private @NonNull
+  Link getLoginLink() {
     return linkTo(methodOn(AuthenticationController.class).login(null)).withRel(LOGIN_REL);
   }
 
   @SneakyThrows
-  private @NonNull Link getSignupLink() {
+  private @NonNull
+  Link getSignupLink() {
     return linkTo(methodOn(AuthenticationController.class).signup(null)).withRel(SIGNUP_REL);
   }
 
   @SneakyThrows
-  private @NonNull Link getActivationTokenLink() {
+  private @NonNull
+  Link getActivationTokenLink() {
     return linkTo(methodOn(AuthenticationController.class).requestActivationToken(null)).withRel(ACTIVATION_TOKEN_REL);
   }
 
   @SneakyThrows
-  private @NonNull Link getAccountActivationLink() {
+  private @NonNull
+  Link getAccountActivationLink() {
     return linkTo(methodOn(AuthenticationController.class).activateAccount(null)).withRel(ACTIVATE_ACCOUNT_REL);
   }
 
-  private @NonNull Link getAdministrationRootLink() {
+  private @NonNull
+  Link getAdministrationRootLink() {
     return linkTo(methodOn(AdministrationRootController.class).root()).withRel(ADMINISTRATION_REL);
   }
 }

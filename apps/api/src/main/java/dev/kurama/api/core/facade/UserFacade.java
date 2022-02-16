@@ -47,7 +47,8 @@ public class UserFacade {
 
   public UserModel findByUserId(String userId) throws UserNotFoundException {
     return userMapper.userToUserModel(
-      userService.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId)));
+      userService.findUserById(userId)
+        .orElseThrow(() -> new UserNotFoundException(userId)));
   }
 
   public PagedModel<UserModel> getAll(Pageable pageable, String search) {
@@ -70,15 +71,19 @@ public class UserFacade {
     return userMapper.userToUserModel(userService.updateUser(id,
       UserInput.builder()
         .firstname(userProfileUpdateInput.getFirstname())
-        .lastname(userProfileUpdateInput.getLastname()).build()));
+        .lastname(userProfileUpdateInput.getLastname())
+        .build()));
   }
 
   public UserModel changePassword(String id, ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-    User user = userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
+    User user = userService.findUserById(id)
+      .orElseThrow(() -> new UserNotFoundException(id));
     authenticate(user.getUsername(), changeUserPasswordInput.getPassword());
     return userMapper.userToUserModel(
-      userService.updateUser(id, UserInput.builder().password(changeUserPasswordInput.getNewPassword()).build()));
+      userService.updateUser(id, UserInput.builder()
+        .password(changeUserPasswordInput.getNewPassword())
+        .build()));
   }
 
   public UserModel uploadAvatar(String id, MultipartFile avatar)
@@ -86,7 +91,9 @@ public class UserFacade {
     String sb = "data:image/png;base64,"
       + StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false));
     return userMapper.userToUserModel(
-      userService.updateUser(id, UserInput.builder().profileImageUrl(sb).build()));
+      userService.updateUser(id, UserInput.builder()
+        .profileImageUrl(sb)
+        .build()));
   }
 
   public void requestActivationToken(String id) throws UserNotFoundException, ActivationTokenRecentException {

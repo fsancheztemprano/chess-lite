@@ -28,13 +28,15 @@ public class GlobalSettingsController {
   @GetMapping()
   @PreAuthorize("hasAuthority('global-settings:read')")
   public ResponseEntity<GlobalSettingsModel> get() {
-    return ResponseEntity.ok().body(globalSettingsFacade.getGlobalSettings());
+    return ResponseEntity.ok()
+      .body(globalSettingsFacade.getGlobalSettings());
   }
 
   @PatchMapping()
   @PreAuthorize("hasAuthority('global-settings:update')")
   public ResponseEntity<GlobalSettingsModel> update(@RequestBody GlobalSettingsUpdateInput globalSettingsUpdateInput)
     throws RoleNotFoundException {
-    return ResponseEntity.ok().body(globalSettingsFacade.updateGlobalSettings(globalSettingsUpdateInput));
+    return ResponseEntity.ok()
+      .body(globalSettingsFacade.updateGlobalSettings(globalSettingsUpdateInput));
   }
 }

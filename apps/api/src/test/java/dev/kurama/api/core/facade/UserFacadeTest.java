@@ -56,9 +56,17 @@ class UserFacadeTest {
 
   @Test
   void should_create_user() throws UsernameExistsException, EmailExistsException {
-    UserInput input = UserInput.builder().username("username").build();
-    User user = User.builder().username(input.getUsername()).setRandomUUID().build();
-    UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
+    UserInput input = UserInput.builder()
+      .username("username")
+      .build();
+    User user = User.builder()
+      .username(input.getUsername())
+      .setRandomUUID()
+      .build();
+    UserModel expected = UserModel.builder()
+      .username(user.getUsername())
+      .id(user.getId())
+      .build();
     when(userService.createUser(input)).thenReturn(user);
     when(userMapper.userToUserModel(user)).thenReturn(expected);
 
@@ -71,8 +79,14 @@ class UserFacadeTest {
 
   @Test
   void should_find_by_user_id() throws UserNotFoundException {
-    User user = User.builder().username("username").setRandomUUID().build();
-    UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
+    User user = User.builder()
+      .username("username")
+      .setRandomUUID()
+      .build();
+    UserModel expected = UserModel.builder()
+      .username(user.getUsername())
+      .id(user.getId())
+      .build();
     when(userService.findUserById(user.getId())).thenReturn(Optional.of(user));
     when(userMapper.userToUserModel(user)).thenReturn(expected);
 
@@ -86,8 +100,10 @@ class UserFacadeTest {
   @Test
   void should_get_all_users() {
     PageRequest PAGEABLE = PageRequest.of(1, 2);
-    PageImpl<User> pagedUsers = new PageImpl<>(newArrayList(User.builder().build()), PAGEABLE, 1);
-    PageImpl<UserModel> userModels = new PageImpl<>(newArrayList(UserModel.builder().build()), PAGEABLE, 1);
+    PageImpl<User> pagedUsers = new PageImpl<>(newArrayList(User.builder()
+      .build()), PAGEABLE, 1);
+    PageImpl<UserModel> userModels = new PageImpl<>(newArrayList(UserModel.builder()
+      .build()), PAGEABLE, 1);
     PagedModel<UserModel> expected = PagedModel.of(userModels.getContent(),
       new PagedModel.PageMetadata(2, 1, 2));
     when(userService.getAllUsers(PAGEABLE, "")).thenReturn(pagedUsers);
@@ -114,9 +130,17 @@ class UserFacadeTest {
   void should_update_user()
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     String id = randomUUID();
-    UserInput input = UserInput.builder().username("username").build();
-    User user = User.builder().username(input.getUsername()).setRandomUUID().build();
-    UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
+    UserInput input = UserInput.builder()
+      .username("username")
+      .build();
+    User user = User.builder()
+      .username(input.getUsername())
+      .setRandomUUID()
+      .build();
+    UserModel expected = UserModel.builder()
+      .username(user.getUsername())
+      .id(user.getId())
+      .build();
     when(userService.updateUser(id, input)).thenReturn(user);
     when(userMapper.userToUserModel(user)).thenReturn(expected);
 
@@ -131,9 +155,17 @@ class UserFacadeTest {
   void should_update_user_profile()
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     String id = randomUUID();
-    UserProfileUpdateInput input = UserProfileUpdateInput.builder().firstname("firstname").build();
-    User user = User.builder().username(input.getFirstname()).setRandomUUID().build();
-    UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
+    UserProfileUpdateInput input = UserProfileUpdateInput.builder()
+      .firstname("firstname")
+      .build();
+    User user = User.builder()
+      .username(input.getFirstname())
+      .setRandomUUID()
+      .build();
+    UserModel expected = UserModel.builder()
+      .username(user.getUsername())
+      .id(user.getId())
+      .build();
     when(userService.updateUser(eq(id), any(UserInput.class))).thenReturn(user);
     when(userMapper.userToUserModel(user)).thenReturn(expected);
 
@@ -148,10 +180,18 @@ class UserFacadeTest {
   void should_change_user_password()
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     String id = randomUUID();
-    ChangeUserPasswordInput input = ChangeUserPasswordInput.builder().password("Old_p4ss").newPassword("New_p4ss")
+    ChangeUserPasswordInput input = ChangeUserPasswordInput.builder()
+      .password("Old_p4ss")
+      .newPassword("New_p4ss")
       .build();
-    User user = User.builder().id(id).username("username").build();
-    UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
+    User user = User.builder()
+      .id(id)
+      .username("username")
+      .build();
+    UserModel expected = UserModel.builder()
+      .username(user.getUsername())
+      .id(user.getId())
+      .build();
     when(userService.findUserById(id)).thenReturn(Optional.of(user));
     when(userService.updateUser(eq(id), any(UserInput.class))).thenReturn(user);
     when(userMapper.userToUserModel(user)).thenReturn(expected);
@@ -170,8 +210,14 @@ class UserFacadeTest {
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, IOException, EmailExistsException {
     String id = randomUUID();
     MockMultipartFile avatar = new MockMultipartFile("avatar", "image".getBytes());
-    User user = User.builder().id(id).username("username").build();
-    UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
+    User user = User.builder()
+      .id(id)
+      .username("username")
+      .build();
+    UserModel expected = UserModel.builder()
+      .username(user.getUsername())
+      .id(user.getId())
+      .build();
     when(userService.updateUser(eq(id), any(UserInput.class))).thenReturn(user);
     when(userMapper.userToUserModel(user)).thenReturn(expected);
 

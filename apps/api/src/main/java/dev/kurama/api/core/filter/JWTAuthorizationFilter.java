@@ -33,7 +33,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
     throws ServletException, IOException {
     if (request.getMethod()
-               .equalsIgnoreCase(OPTIONS.toString())) {
+      .equalsIgnoreCase(OPTIONS.toString())) {
       response.setStatus(OK.value());
     } else {
       String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -47,7 +47,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
       if (jwtTokenProvider.isTokenValid(decodedToken)) {
         Authentication authentication = jwtTokenProvider.getAuthentication(decodedToken, request);
         SecurityContextHolder.getContext()
-                             .setAuthentication(authentication);
+          .setAuthentication(authentication);
       } else {
         SecurityContextHolder.clearContext();
       }

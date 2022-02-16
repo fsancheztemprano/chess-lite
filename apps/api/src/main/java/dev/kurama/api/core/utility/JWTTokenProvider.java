@@ -40,8 +40,10 @@ public class JWTTokenProvider {
       .withSubject(userPrincipal.getUsername())
       .withArrayClaim(SecurityConstant.AUTHORITIES, authorities)
       .withClaim("user", new HashMap<String, String>() {{
-        put("id", userPrincipal.getUser().getId());
-        put("username", userPrincipal.getUser().getUsername());
+        put("id", userPrincipal.getUser()
+          .getId());
+        put("username", userPrincipal.getUser()
+          .getUsername());
       }})
       .withExpiresAt(new Date(getCurrentTimeMillis() + SecurityConstant.EXPIRATION_TIME))
       .sign(getAlgorithm());
@@ -72,14 +74,20 @@ public class JWTTokenProvider {
   }
 
   private ContextUser getContextUser(DecodedJWT token) {
-    Map<String, Object> user = token.getClaim("user").asMap();
-    return ContextUser.builder().id((String) user.get("id")).username((String) user.get("username")).build();
+    Map<String, Object> user = token.getClaim("user")
+      .asMap();
+    return ContextUser.builder()
+      .id((String) user.get("id"))
+      .username((String) user.get("username"))
+      .build();
   }
 
   private JWTVerifier getJWTVerifier() {
     JWTVerifier verifier;
     try {
-      verifier = JWT.require(getAlgorithm()).withIssuer(SecurityConstant.AUTH_ISSUER).build();
+      verifier = JWT.require(getAlgorithm())
+        .withIssuer(SecurityConstant.AUTH_ISSUER)
+        .build();
     } catch (JWTVerificationException exception) {
       throw new JWTVerificationException(SecurityConstant.TOKEN_CANNOT_BE_VERIFIED);
     }
@@ -87,12 +95,16 @@ public class JWTTokenProvider {
   }
 
   private boolean isTokenExpired(DecodedJWT token) {
-    return token.getExpiresAt().before(new Date());
+    return token.getExpiresAt()
+      .before(new Date());
   }
 
   private List<GrantedAuthority> getAuthorities(DecodedJWT token) {
-    return token.getClaim(SecurityConstant.AUTHORITIES).asList(String.class).stream()
-      .map(SimpleGrantedAuthority::new).collect(
+    return token.getClaim(SecurityConstant.AUTHORITIES)
+      .asList(String.class)
+      .stream()
+      .map(SimpleGrantedAuthority::new)
+      .collect(
         Collectors.toList());
   }
 
@@ -101,7 +113,10 @@ public class JWTTokenProvider {
   }
 
   private String[] getAuthoritiesFromUser(UserPrincipal userPrincipal) {
-    return userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
+    return userPrincipal.getAuthorities()
+      .stream()
+      .map(GrantedAuthority::getAuthority)
+      .toArray(String[]::new);
   }
 
   public long getCurrentTimeMillis() {

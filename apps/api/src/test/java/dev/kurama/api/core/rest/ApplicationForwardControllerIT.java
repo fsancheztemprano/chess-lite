@@ -1,10 +1,24 @@
 package dev.kurama.api.core.rest;
 
+import static com.google.common.collect.Sets.newHashSet;
+import static dev.kurama.api.core.constant.RestPathConstant.INDEX_URL;
+import static java.nio.file.Files.createDirectory;
+import static java.nio.file.Files.createFile;
+import static java.nio.file.Files.walk;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.tuple.Pair.of;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import dev.kurama.api.core.configuration.SecurityConfiguration;
 import dev.kurama.api.core.filter.JWTAccessDeniedHandler;
 import dev.kurama.api.core.filter.JWTAuthenticationEntryPoint;
-import dev.kurama.api.core.rest.ApplicationForwardControllerIT.ApplicationForwardControllerITConfig;
 import dev.kurama.api.core.utility.JWTTokenProvider;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,34 +38,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static com.google.common.collect.Sets.newHashSet;
-import static dev.kurama.api.core.constant.RestPathConstant.INDEX_URL;
-import static java.nio.file.Files.*;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.apache.commons.lang3.tuple.Pair.of;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@EnableSpringDataWebSupport
+@ActiveProfiles(value = "integration-test")
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ApplicationForwardController.class)
-@WithMockUser
-@Import({SecurityConfiguration.class, ApplicationForwardControllerITConfig.class})
+@Import(SecurityConfiguration.class)
 class ApplicationForwardControllerIT {
 
   @Autowired

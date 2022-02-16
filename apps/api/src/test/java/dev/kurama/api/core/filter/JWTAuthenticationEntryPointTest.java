@@ -28,7 +28,7 @@ class JWTAuthenticationEntryPointTest {
     HttpServletResponse response = mock(HttpServletResponse.class);
     ServletOutputStream out = mock(ServletOutputStream.class);
     doReturn(out).when(response)
-                 .getOutputStream();
+      .getOutputStream();
     handler.commence(request, response, null);
 
     verify(response).setContentType(APPLICATION_JSON_VALUE);

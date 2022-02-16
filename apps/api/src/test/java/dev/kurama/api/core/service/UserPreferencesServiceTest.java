@@ -43,7 +43,9 @@ class UserPreferencesServiceTest {
     @Test
     void should_find_user_preferences_by_id() throws DomainEntityNotFoundException {
       String userPreferencesId = randomUUID();
-      UserPreferences expected = UserPreferences.builder().setRandomUUID().build();
+      UserPreferences expected = UserPreferences.builder()
+        .setRandomUUID()
+        .build();
       when(userPreferencesRepository.findById(userPreferencesId)).thenReturn(Optional.of(expected));
 
       UserPreferences actual = userPreferencesService.findUserPreferencesById(userPreferencesId);
@@ -65,11 +67,17 @@ class UserPreferencesServiceTest {
 
   @Test
   void update_user_preferences() throws DomainEntityNotFoundException {
-    UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).build();
+    UserPreferencesInput input = UserPreferencesInput.builder()
+      .darkMode(false)
+      .build();
     String userPreferencesId = randomUUID();
-    UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).build();
+    UserPreferences expected = UserPreferences.builder()
+      .setRandomUUID()
+      .darkMode(true)
+      .build();
     when(userPreferencesRepository.findById(userPreferencesId)).thenReturn(Optional.of(expected));
-    doReturn(expected).when(userPreferencesService).patchUserPreferences(expected, input);
+    doReturn(expected).when(userPreferencesService)
+      .patchUserPreferences(expected, input);
 
     UserPreferences actual = userPreferencesService.updateUserPreferences(userPreferencesId, input);
 
@@ -84,7 +92,9 @@ class UserPreferencesServiceTest {
     @Test
     void should_find_user_preferences_by_user_id() {
       String userId = randomUUID();
-      UserPreferences expected = UserPreferences.builder().setRandomUUID().build();
+      UserPreferences expected = UserPreferences.builder()
+        .setRandomUUID()
+        .build();
       when(userPreferencesRepository.findUserPreferencesByUserId(userId)).thenReturn(Optional.of(expected));
 
       UserPreferences actual = userPreferencesService.findUserPreferencesByUserId(userId);
@@ -105,11 +115,17 @@ class UserPreferencesServiceTest {
 
   @Test
   void update_user_preferences_by_user_id() {
-    UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).build();
+    UserPreferencesInput input = UserPreferencesInput.builder()
+      .darkMode(false)
+      .build();
     String userId = randomUUID();
-    UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).build();
+    UserPreferences expected = UserPreferences.builder()
+      .setRandomUUID()
+      .darkMode(true)
+      .build();
     when(userPreferencesRepository.findUserPreferencesByUserId(userId)).thenReturn(Optional.of(expected));
-    doReturn(expected).when(userPreferencesService).patchUserPreferences(expected, input);
+    doReturn(expected).when(userPreferencesService)
+      .patchUserPreferences(expected, input);
 
     UserPreferences actual = userPreferencesService.updateUserPreferencesByUserId(userId, input);
 
@@ -124,8 +140,15 @@ class UserPreferencesServiceTest {
 
     @Test
     void updateGlobalSettings() {
-      UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).contentLanguage("en").build();
-      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
+      UserPreferences expected = UserPreferences.builder()
+        .setRandomUUID()
+        .darkMode(true)
+        .contentLanguage("en")
+        .build();
+      UserPreferencesInput input = UserPreferencesInput.builder()
+        .darkMode(false)
+        .contentLanguage("de")
+        .build();
       when(userPreferencesRepository.save(expected)).thenReturn(expected);
 
       UserPreferences actual = userPreferencesService.patchUserPreferences(expected, input);
@@ -139,9 +162,15 @@ class UserPreferencesServiceTest {
 
     @Test
     void should_not_save_nor_emit_event_if_user_preferences_did_not_change() {
-      UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).contentLanguage("en").build();
-      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(expected.isDarkMode())
-        .contentLanguage(expected.getContentLanguage()).build();
+      UserPreferences expected = UserPreferences.builder()
+        .setRandomUUID()
+        .darkMode(true)
+        .contentLanguage("en")
+        .build();
+      UserPreferencesInput input = UserPreferencesInput.builder()
+        .darkMode(expected.isDarkMode())
+        .contentLanguage(expected.getContentLanguage())
+        .build();
 
       UserPreferences actual = userPreferencesService.patchUserPreferences(expected, input);
 

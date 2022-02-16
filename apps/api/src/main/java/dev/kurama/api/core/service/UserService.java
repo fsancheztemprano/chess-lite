@@ -1,10 +1,24 @@
 package dev.kurama.api.core.service;
 
+import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static java.util.Optional.ofNullable;
+import static org.apache.logging.log4j.util.Strings.isEmpty;
+
 import com.google.common.collect.Sets;
 import dev.kurama.api.core.constant.UserConstant;
-import dev.kurama.api.core.domain.*;
+import dev.kurama.api.core.domain.Authority;
+import dev.kurama.api.core.domain.EmailTemplate;
+import dev.kurama.api.core.domain.GlobalSettings;
+import dev.kurama.api.core.domain.Role;
+import dev.kurama.api.core.domain.User;
+import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
-import dev.kurama.api.core.exception.domain.*;
+import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
+import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
+import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
+import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
@@ -14,49 +28,34 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
-import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static java.util.Optional.ofNullable;
-import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 @Flogger
 @RequiredArgsConstructor
 @Service
-@Transactional
-@Qualifier("userDetailsService")
-public class UserService implements UserDetailsService {
+public class UserService {
 
   @NonNull
   private final UserRepository userRepository;
 
   @NonNull
   private final BCryptPasswordEncoder passwordEncoder;
-
-  @NonNull
-  private final LoginAttemptService loginAttemptService;
 
   @NonNull
   private final AuthorityService authorityService;
@@ -78,17 +77,6 @@ public class UserService implements UserDetailsService {
 
   @Value("${application.host_url}")
   private String host;
-
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    var user = userRepository.findUserByUsername(username)
-      .orElseThrow(() -> new UsernameNotFoundException("User not found by username: " + username));
-    validateLoginAttempt(user);
-    user.setLastLoginDateDisplay(user.getLastLoginDate());
-    user.setLastLoginDate(new Date());
-    userRepository.save(user);
-    return new UserPrincipal(user);
-  }
 
   public Optional<User> findUserById(String id) {
     return userRepository.findById(id);
@@ -325,14 +313,6 @@ public class UserService implements UserDetailsService {
     var userByNewEmail = findUserByEmail(email);
     if (userByNewEmail.isPresent()) {
       throw new EmailExistsException(UserConstant.EMAIL_ALREADY_EXISTS + email);
-    }
-  }
-
-  private void validateLoginAttempt(User user) {
-    if (user.isLocked()) {
-      loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
-    } else {
-      user.setLocked(loginAttemptService.hasExceededMaxAttempts(user.getUsername()));
     }
   }
 

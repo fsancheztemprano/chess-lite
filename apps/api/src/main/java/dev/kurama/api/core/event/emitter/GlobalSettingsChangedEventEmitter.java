@@ -16,7 +16,9 @@ public class GlobalSettingsChangedEventEmitter {
 
   public void emitGlobalSettingsChangedEvent(GlobalSettingsChangedEventAction action) {
     applicationEventPublisher.publishEvent(
-      GlobalSettingsChangedEvent.builder().action(action).build());
+      GlobalSettingsChangedEvent.builder()
+        .action(action)
+        .build());
   }
 
   public void emitGlobalSettingsUpdatedEvent() {

@@ -1,5 +1,9 @@
 package dev.kurama.api.core.listener;
 
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 import dev.kurama.api.core.service.LoginAttemptService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationFailureListenerTest {
@@ -27,8 +29,9 @@ class AuthenticationFailureListenerTest {
     AuthenticationException exception = mock(AuthenticationException.class);
     String principal = "ANON_USER";
     doReturn(principal).when(authentication)
-                       .getPrincipal();
-    AuthenticationFailureBadCredentialsEvent event = new AuthenticationFailureBadCredentialsEvent(authentication, exception);
+      .getPrincipal();
+    AuthenticationFailureBadCredentialsEvent event = new AuthenticationFailureBadCredentialsEvent(authentication,
+      exception);
 
     listener.onAuthenticationFailure(event);
 

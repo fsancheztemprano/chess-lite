@@ -45,15 +45,17 @@ public class UserPreferencesService {
   }
 
   public UserPreferences patchUserPreferences(UserPreferences userPreferences,
-    UserPreferencesInput userPreferencesInput) {
+                                              UserPreferencesInput userPreferencesInput) {
     var changes = false;
     if (ofNullable(userPreferencesInput.getDarkMode()).isPresent() &&
-      !userPreferencesInput.getDarkMode().equals(userPreferences.isDarkMode())) {
+      !userPreferencesInput.getDarkMode()
+        .equals(userPreferences.isDarkMode())) {
       userPreferences.setDarkMode(userPreferencesInput.getDarkMode());
       changes = true;
     }
     if (ofNullable(userPreferencesInput.getContentLanguage()).isPresent() &&
-      !userPreferencesInput.getContentLanguage().equals(userPreferences.getContentLanguage())) {
+      !userPreferencesInput.getContentLanguage()
+        .equals(userPreferences.getContentLanguage())) {
       userPreferences.setContentLanguage(userPreferencesInput.getContentLanguage());
       changes = true;
     }

@@ -19,7 +19,8 @@ public class ServiceLogsService {
     .toAbsolutePath() + "\\logs\\logs.log";
 
   public ServiceLogsModel getServiceLogs() {
-    ServiceLogsModelBuilder serviceLogsModelBuilder = ServiceLogsModel.builder().timestamp(new Date());
+    ServiceLogsModelBuilder serviceLogsModelBuilder = ServiceLogsModel.builder()
+      .timestamp(new Date());
     File file = new File(LOGS_FILE);
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 

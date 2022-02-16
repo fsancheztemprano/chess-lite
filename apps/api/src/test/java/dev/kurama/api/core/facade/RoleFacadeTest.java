@@ -1,5 +1,11 @@
 package dev.kurama.api.core.facade;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
@@ -10,6 +16,7 @@ import dev.kurama.api.core.hateoas.model.RoleModel;
 import dev.kurama.api.core.mapper.RoleMapper;
 import dev.kurama.api.core.service.RoleFacility;
 import dev.kurama.api.core.service.RoleService;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,14 +25,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Optional;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class RoleFacadeTest {

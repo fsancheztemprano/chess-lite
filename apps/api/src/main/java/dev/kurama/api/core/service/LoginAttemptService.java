@@ -17,8 +17,10 @@ public class LoginAttemptService {
 
   public LoginAttemptService() {
     super();
-    this.loginAttemptCache = CacheBuilder.newBuilder().expireAfterWrite(15, MINUTES)
-      .maximumSize(100).build(new CacheLoader<String, Integer>() {
+    this.loginAttemptCache = CacheBuilder.newBuilder()
+      .expireAfterWrite(15, MINUTES)
+      .maximumSize(100)
+      .build(new CacheLoader<String, Integer>() {
         public Integer load(String key) {
           return 0;
         }

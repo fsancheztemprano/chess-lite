@@ -21,10 +21,10 @@ public class JWTAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException arg2)
     throws IOException {
     var domainResponse = DomainResponse.builder()
-                                       .status(FORBIDDEN)
-                                       .code(FORBIDDEN.value())
-                                       .message(SecurityConstant.FORBIDDEN_MESSAGE)
-                                       .build();
+      .status(FORBIDDEN)
+      .code(FORBIDDEN.value())
+      .message(SecurityConstant.FORBIDDEN_MESSAGE)
+      .build();
     response.setContentType(APPLICATION_JSON_VALUE);
     response.setStatus(FORBIDDEN.value());
     OutputStream outputStream = response.getOutputStream();

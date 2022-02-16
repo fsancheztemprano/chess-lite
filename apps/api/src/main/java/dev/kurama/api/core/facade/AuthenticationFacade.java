@@ -1,9 +1,7 @@
 package dev.kurama.api.core.facade;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
-import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
@@ -18,16 +16,12 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.mapper.UserMapper;
+import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserService;
-import dev.kurama.api.core.utility.JWTTokenProvider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,16 +29,13 @@ import org.springframework.stereotype.Component;
 public class AuthenticationFacade {
 
   @NonNull
+  private final AuthenticationFacility authenticationFacility;
+
+  @NonNull
   private final UserService userService;
 
   @NonNull
   private final UserMapper userMapper;
-
-  @NonNull
-  private final AuthenticationManager authenticationManager;
-
-  @NonNull
-  private final JWTTokenProvider jwtTokenProvider;
 
   public void signup(SignupInput signupInput)
     throws UsernameExistsException, EmailExistsException, SignupClosedException {
@@ -52,16 +43,12 @@ public class AuthenticationFacade {
   }
 
   public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException {
-    authenticate(loginInput.getUsername(), loginInput.getPassword());
-    var user = userService.findUserByUsername(loginInput.getUsername())
-      .orElseThrow(() -> new UsernameNotFoundException(loginInput.getUsername()));
-    if (!user.getRole().isCanLogin()) {
-      throw new RoleCanNotLoginException(user.getRole().getName());
-    }
-    if (user.isLocked()) {
-      throw new LockedException(loginInput.getUsername());
-    }
-    return authenticateUser(user);
+    Pair<User, String> authenticationInfo = authenticationFacility.login(loginInput.getUsername(),
+      loginInput.getPassword());
+    return AuthenticatedUserExcerpt.builder()
+      .userModel(userMapper.userToUserModel(authenticationInfo.getLeft()))
+      .headers(getJwtHeader(authenticationInfo.getRight()))
+      .build();
   }
 
   public void requestActivationToken(String email) throws EmailNotFoundException, ActivationTokenRecentException {
@@ -73,27 +60,11 @@ public class AuthenticationFacade {
     userService.activateAccount(accountActivationInput);
   }
 
-  private AuthenticatedUserExcerpt authenticateUser(User user) {
-    UserPrincipal userPrincipal = new UserPrincipal(user);
-    var token = jwtTokenProvider.generateJWTToken(userPrincipal);
-    DecodedJWT decodedToken = jwtTokenProvider.getDecodedJWT(token);
-    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(decodedToken, null));
 
-    return AuthenticatedUserExcerpt.builder()
-      .userModel(userMapper.userToUserModel(user))
-      .headers(getJwtHeader(new UserPrincipal(user)))
-      .build();
-  }
-
-
-  private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
+  private HttpHeaders getJwtHeader(String token) {
     var headers = new HttpHeaders();
-    headers.add(SecurityConstant.JWT_TOKEN_HEADER, jwtTokenProvider.generateJWTToken(userPrincipal));
+    headers.add(SecurityConstant.JWT_TOKEN_HEADER, token);
     return headers;
-  }
-
-  private void authenticate(String username, String password) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
   }
 
 }
