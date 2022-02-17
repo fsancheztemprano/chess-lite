@@ -1,6 +1,7 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.constant.SecurityConstant;
+import static dev.kurama.api.core.utility.HttpUtils.getJwtHeader;
+
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
@@ -21,7 +22,6 @@ import dev.kurama.api.core.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -59,12 +59,4 @@ public class AuthenticationFacade {
     throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException {
     userService.activateAccount(accountActivationInput);
   }
-
-
-  private HttpHeaders getJwtHeader(String token) {
-    var headers = new HttpHeaders();
-    headers.add(SecurityConstant.JWT_TOKEN_HEADER, token);
-    return headers;
-  }
-
 }

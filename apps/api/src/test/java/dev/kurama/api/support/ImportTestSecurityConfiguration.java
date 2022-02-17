@@ -3,6 +3,7 @@ package dev.kurama.api.support;
 import dev.kurama.api.core.configuration.SecurityConfiguration;
 import dev.kurama.api.core.filter.JWTAccessDeniedHandler;
 import dev.kurama.api.core.filter.JWTAuthenticationEntryPoint;
+import dev.kurama.api.core.hateoas.HateoasConfiguration;
 import dev.kurama.api.core.service.UserDetailsServiceImpl;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import java.lang.annotation.Documented;
@@ -30,7 +31,8 @@ import org.springframework.context.annotation.Import;
   JWTTokenProvider.class,
   JWTAuthenticationEntryPoint.class,
   JWTAccessDeniedHandler.class,
-  TestSecurityConfiguration.class
+  TestSecurityConfiguration.class,
+  HateoasConfiguration.class
 })
 public @interface ImportTestSecurityConfiguration {
 
