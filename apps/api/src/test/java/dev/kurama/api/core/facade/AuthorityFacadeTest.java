@@ -53,30 +53,20 @@ class AuthorityFacadeTest {
     verify(authorityService).getAllAuthorities(PAGEABLE);
     verify(authorityMapper).authorityPageToAuthorityModelPage(pagedAuthorities);
     verify(authorityModelAssembler).toPagedModel(authorityModels);
-    assertThat(actual).isNotNull()
-      .isEqualTo(expected);
+    assertThat(actual).isNotNull().isEqualTo(expected);
   }
 
   @Test
   void should_find_and_map_by_authority_id() throws DomainEntityNotFoundException {
-    Authority authority = Authority.builder()
-      .name("test:auth")
-      .setRandomUUID()
-      .build();
-    AuthorityModel expected = AuthorityModel.builder()
-      .name(authority.getName())
-      .id(authority.getId())
-      .build();
+    Authority authority = Authority.builder().name("test:auth").setRandomUUID().build();
+    AuthorityModel expected = AuthorityModel.builder().name(authority.getName()).id(authority.getId()).build();
     when(authorityService.findAuthorityById(authority.getId())).thenReturn(Optional.of(authority));
     when(authorityMapper.authorityToAuthorityModel(authority)).thenReturn(expected);
-    when(authorityModelAssembler.toModel(expected)).thenReturn(expected);
 
     AuthorityModel actual = authorityFacade.findByAuthorityId(authority.getId());
 
     verify(authorityService).findAuthorityById(authority.getId());
     verify(authorityMapper).authorityToAuthorityModel(authority);
-    verify(authorityModelAssembler).toModel(expected);
-    assertThat(actual).isNotNull()
-      .isEqualTo(expected);
+    assertThat(actual).isNotNull().isEqualTo(expected);
   }
 }

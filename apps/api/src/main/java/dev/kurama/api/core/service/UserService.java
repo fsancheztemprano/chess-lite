@@ -82,7 +82,7 @@ public class UserService {
     return userRepository.findById(id);
   }
 
-  public Optional<User> findUserByUsername(String username) {
+  Optional<User> findUserByUsername(String username) {
     return userRepository.findUserByUsername(username);
   }
 
@@ -99,8 +99,7 @@ public class UserService {
   }
 
   public void deleteUserById(String id) throws UserNotFoundException {
-    User user = userRepository.findById(id)
-      .orElseThrow(() -> new UserNotFoundException(id));
+    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     userRepository.delete(user);
     userChangedEventEmitter.emitUserDeletedEvent(user.getId());
   }
@@ -122,26 +121,22 @@ public class UserService {
       .locked(true)
       .expired(false)
       .credentialsExpired(false)
-      .roleId(globalSettings.getDefaultRole()
-        .getId())
+      .roleId(globalSettings.getDefaultRole().getId())
       .build();
     var user = createUser(userInput);
 
     try {
       user.setActivationToken(activationTokenService.createActivationToken(user));
       userRepository.saveAndFlush(user);
-      sendActivationTokenEmail(user, user.getActivationToken()
-        .getId());
+      sendActivationTokenEmail(user, user.getActivationToken().getId());
     } catch (ActivationTokenRecentException ignored) {
     }
   }
 
-  public User createUser(UserInput userInput)
-    throws UsernameExistsException, EmailExistsException {
+  public User createUser(UserInput userInput) throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = roleService.findRoleById(userInput.getRoleId())
-      .orElseGet(() -> globalSettingsService.getGlobalSettings()
-        .getDefaultRole());
+      .orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())
@@ -156,9 +151,7 @@ public class UserService {
       .credentialsExpired(userInput.getCredentialsExpired())
       .role(role)
       .authorities(Sets.newHashSet(role.getAuthorities()))
-      .userPreferences(UserPreferences.builder()
-        .setRandomUUID()
-        .build())
+      .userPreferences(UserPreferences.builder().setRandomUUID().build())
       .build();
     user = userRepository.save(user);
     userChangedEventEmitter.emitUserCreatedEvent(user.getId());
@@ -170,8 +163,7 @@ public class UserService {
     throws EmailExistsException, UsernameExistsException, UserNotFoundException, RoleNotFoundException {
     var user = findUserById(id).orElseThrow(() -> new UserNotFoundException(UserConstant.NO_USER_FOUND_BY_ID + id));
     var changed = false;
-    if (ofNullable(userInput.getEmail()).isPresent() && !user.getEmail()
-      .equalsIgnoreCase(userInput.getEmail())) {
+    if (ofNullable(userInput.getEmail()).isPresent() && !user.getEmail().equalsIgnoreCase(userInput.getEmail())) {
       if (findUserByEmail(userInput.getEmail()).isPresent()) {
         throw new EmailExistsException(UserConstant.EMAIL_ALREADY_EXISTS + userInput.getEmail());
       }
@@ -190,13 +182,11 @@ public class UserService {
       user.setPassword(passwordEncoder.encode(userInput.getPassword()));
       changed = true;
     }
-    if (ofNullable(userInput.getFirstname()).isPresent() && !userInput.getFirstname()
-      .equals(user.getFirstname())) {
+    if (ofNullable(userInput.getFirstname()).isPresent() && !userInput.getFirstname().equals(user.getFirstname())) {
       user.setFirstname(userInput.getFirstname());
       changed = true;
     }
-    if (ofNullable(userInput.getLastname()).isPresent() && !userInput.getLastname()
-      .equals(user.getLastname())) {
+    if (ofNullable(userInput.getLastname()).isPresent() && !userInput.getLastname().equals(user.getLastname())) {
       user.setLastname(userInput.getLastname());
       changed = true;
     }
@@ -205,18 +195,15 @@ public class UserService {
       user.setProfileImageUrl(userInput.getProfileImageUrl());
       changed = true;
     }
-    if (ofNullable(userInput.getActive()).isPresent() && !userInput.getActive()
-      .equals(user.isActive())) {
+    if (ofNullable(userInput.getActive()).isPresent() && !userInput.getActive().equals(user.isActive())) {
       user.setActive(userInput.getActive());
       changed = true;
     }
-    if (ofNullable(userInput.getLocked()).isPresent() && !userInput.getLocked()
-      .equals(user.isLocked())) {
+    if (ofNullable(userInput.getLocked()).isPresent() && !userInput.getLocked().equals(user.isLocked())) {
       user.setLocked(userInput.getLocked());
       changed = true;
     }
-    if (ofNullable(userInput.getExpired()).isPresent() && !userInput.getExpired()
-      .equals(user.isExpired())) {
+    if (ofNullable(userInput.getExpired()).isPresent() && !userInput.getExpired().equals(user.isExpired())) {
       user.setExpired(userInput.getExpired());
       changed = true;
     }
@@ -225,24 +212,15 @@ public class UserService {
       user.setCredentialsExpired(userInput.getCredentialsExpired());
       changed = true;
     }
-    if (ofNullable(userInput.getRoleId()).isPresent() && !userInput.getRoleId()
-      .equals(user.getRole()
-        .getId())) {
+    if (ofNullable(userInput.getRoleId()).isPresent() && !userInput.getRoleId().equals(user.getRole().getId())) {
       var role = roleService.findRoleById(userInput.getRoleId())
         .orElseThrow(() -> new RoleNotFoundException(userInput.getRoleId()));
       setRoleAndAuthorities(user, role);
       changed = true;
     }
-    if (ofNullable(userInput.getAuthorityIds()).isPresent() && (
-      userInput.getAuthorityIds()
-        .size() != user.getAuthorities()
-        .size()
-        || !userInput.getAuthorityIds()
-        .containsAll(
-          user.getAuthorities()
-            .stream()
-            .map(Authority::getId)
-            .collect(Collectors.toSet())))) {
+    if (ofNullable(userInput.getAuthorityIds()).isPresent() && (userInput.getAuthorityIds().size()
+      != user.getAuthorities().size() || !userInput.getAuthorityIds()
+      .containsAll(user.getAuthorities().stream().map(Authority::getId).collect(Collectors.toSet())))) {
       user.setAuthorities(authorityService.findAllById(userInput.getAuthorityIds()));
       changed = true;
     }
@@ -265,11 +243,12 @@ public class UserService {
   }
 
   public void activateAccount(AccountActivationInput accountActivationInput)
-    throws ActivationTokenExpiredException, ActivationTokenNotFoundException, EmailNotFoundException, ActivationTokenUserMismatchException {
+    throws ActivationTokenExpiredException, ActivationTokenNotFoundException, EmailNotFoundException,
+    ActivationTokenUserMismatchException {
     var activationToken = activationTokenService.findActivationToken(accountActivationInput.getToken());
 
-    var user = findUserByEmail(accountActivationInput.getEmail())
-      .orElseThrow(() -> new EmailNotFoundException(accountActivationInput.getEmail()));
+    var user = findUserByEmail(accountActivationInput.getEmail()).orElseThrow(() -> new EmailNotFoundException(
+      accountActivationInput.getEmail()));
 
     activationTokenService.verifyActivationTokenMatch(activationToken, user);
 
@@ -278,24 +257,21 @@ public class UserService {
     user.setActivationToken(null);
     userRepository.saveAndFlush(user);
 
-    emailService.sendEmail(
-      EmailTemplate.builder()
-        .to(user.getEmail())
-        .subject(ACTIVATION_EMAIL_SUBJECT)
-        .text("Your Account has just been Activated.")
-        .build());
+    emailService.sendEmail(EmailTemplate.builder()
+      .to(user.getEmail())
+      .subject(ACTIVATION_EMAIL_SUBJECT)
+      .text("Your Account has just been Activated.")
+      .build());
   }
 
   @Transactional
   public void requestActivationToken(User user) throws ActivationTokenRecentException {
     user.setActivationToken(activationTokenService.createActivationToken(user));
-    user.setPassword(passwordEncoder.encode(UUID.randomUUID()
-      .toString()));
+    user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
     user.setLocked(true);
     userRepository.saveAndFlush(user);
 
-    sendActivationTokenEmail(user, user.getActivationToken()
-      .getId());
+    sendActivationTokenEmail(user, user.getActivationToken().getId());
   }
 
   void reassignToRole(@NonNull Collection<User> users, Role role) {
@@ -317,18 +293,16 @@ public class UserService {
   }
 
   private void sendActivationTokenEmail(User user, String token) {
-    String activationEmailText = String.format(
-      "Here is the token to activate your account:<br><br>%s<br><br>"
-        + "It is valid for 24 hours, you can follow this link to reset your password:<br><br>"
-        + "<a href =\"%s/auth/activation?token=%s&email=%s\"> Click Here </a><br><br><br>"
-        + "Thank You", token, host, token, user.getEmail());
+    String activationEmailText = String.format("Here is the token to activate your account:<br><br>%s<br><br>"
+      + "It is valid for 24 hours, you can follow this link to reset your password:<br><br>"
+      + "<a href =\"%s/auth/activation?token=%s&email=%s\"> Click Here </a><br><br><br>"
+      + "Thank You", token, host, token, user.getEmail());
 
-    emailService.sendEmail(
-      EmailTemplate.builder()
-        .to(user.getEmail())
-        .subject(ACTIVATION_EMAIL_SUBJECT)
-        .text(activationEmailText)
-        .build());
+    emailService.sendEmail(EmailTemplate.builder()
+      .to(user.getEmail())
+      .subject(ACTIVATION_EMAIL_SUBJECT)
+      .text(activationEmailText)
+      .build());
   }
 
   private void setRoleAndAuthorities(User user, Role role) {
@@ -337,22 +311,12 @@ public class UserService {
   }
 
   private Example<User> getUserExample(String search) {
-    return Example.of(
-      User.builder()
-        .username(search)
-        .email(search)
-        .firstname(search)
-        .lastname(search)
-        .build(),
+    return Example.of(User.builder().username(search).email(search).firstname(search).lastname(search).build(),
       ExampleMatcher.matchingAny()
         .withIgnorePaths("active", "locked", "expired", "credentialsExpired")
-        .withMatcher("username", GenericPropertyMatchers.contains()
-          .ignoreCase())
-        .withMatcher("email", GenericPropertyMatchers.contains()
-          .ignoreCase())
-        .withMatcher("firstname", GenericPropertyMatchers.contains()
-          .ignoreCase())
-        .withMatcher("lastname", GenericPropertyMatchers.contains()
-          .ignoreCase()));
+        .withMatcher("username", GenericPropertyMatchers.contains().ignoreCase())
+        .withMatcher("email", GenericPropertyMatchers.contains().ignoreCase())
+        .withMatcher("firstname", GenericPropertyMatchers.contains().ignoreCase())
+        .withMatcher("lastname", GenericPropertyMatchers.contains().ignoreCase()));
   }
 }

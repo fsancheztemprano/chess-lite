@@ -25,15 +25,12 @@ public class AuthorityFacade {
   private final AuthorityModelAssembler authorityModelAssembler;
 
   public PagedModel<AuthorityModel> getAll(Pageable pageable) {
-    return authorityModelAssembler.toPagedModel(
-      authorityMapper.authorityPageToAuthorityModelPage(
-        authorityService.getAllAuthorities(pageable)));
+    return authorityModelAssembler.toPagedModel(authorityMapper.authorityPageToAuthorityModelPage(authorityService.getAllAuthorities(
+      pageable)));
   }
 
   public AuthorityModel findByAuthorityId(String authorityId) throws DomainEntityNotFoundException {
-    return authorityModelAssembler.toModel(
-      authorityMapper.authorityToAuthorityModel(
-        authorityService.findAuthorityById(authorityId)
-          .orElseThrow(() -> new DomainEntityNotFoundException(authorityId))));
+    return authorityMapper.authorityToAuthorityModel(authorityService.findAuthorityById(authorityId)
+      .orElseThrow(() -> new DomainEntityNotFoundException(authorityId)));
   }
 }
