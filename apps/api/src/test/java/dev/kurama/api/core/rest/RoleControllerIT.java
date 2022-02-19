@@ -94,14 +94,14 @@ class RoleControllerIT {
       Page<Role> expected = new PageImpl<Role>(roles, PageRequest.of(2, 2), 6);
       doReturn(expected).when(roleService).getAllRoles(any(), any());
 
-      mockMvc.perform(get(ROLE_PATH).accept(HAL_FORMS_JSON_VALUE)
-          .headers(getAuthorizationHeader(jwtTokenProvider, ROLE_READ)))
+      mockMvc.perform(
+          get(ROLE_PATH).accept(HAL_FORMS_JSON_VALUE).headers(getAuthorizationHeader(jwtTokenProvider, ROLE_READ)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$._links.*", hasSize(4)))
         .andExpect(jsonPath("$._links..href", everyItem(startsWith(MOCK_MVC_HOST + ROLE_PATH))))
         .andExpect(jsonPath("$._embedded.roleModels", hasSize(2)))
-        .andExpect(jsonPath("$._embedded.roleModels[*].id",
-          allOf(contains(roles.get(0).getId(), roles.get(1).getId()))))
+        .andExpect(
+          jsonPath("$._embedded.roleModels[*].id", allOf(contains(roles.get(0).getId(), roles.get(1).getId()))))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
     }
@@ -129,8 +129,9 @@ class RoleControllerIT {
     void should_return_forbidden_without_role_read_authority() throws Exception {
       mockMvc.perform(get(ROLE_PATH + "/id")).andExpect(status().isForbidden());
 
-      mockMvc.perform(get(ROLE_PATH + "/id").headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider,
-        "MOCK:AUTH"))).andExpect(status().isForbidden());
+      mockMvc.perform(
+          get(ROLE_PATH + "/id").headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
+        .andExpect(status().isForbidden());
     }
 
     @Test
@@ -144,8 +145,8 @@ class RoleControllerIT {
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
         .andExpect(jsonPath("$.name", equalTo(expected.getName())))
         .andExpect(jsonPath("$._links.*", hasSize(2)))
-        .andExpect(jsonPath("$._links.self.href",
-          equalTo(MOCK_MVC_HOST + format("%s/%s", ROLE_PATH, expected.getId()))))
+        .andExpect(
+          jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + format("%s/%s", ROLE_PATH, expected.getId()))))
         .andExpect(jsonPath("$._links.roles.href", startsWith(MOCK_MVC_HOST + ROLE_PATH)))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
@@ -220,10 +221,10 @@ class RoleControllerIT {
       mockMvc.perform(patch(format("%s/%s", ROLE_PATH, "roleId")).contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isForbidden());
 
-      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, "roleId")).headers(TokenTestUtils.getAuthorizationHeader(
-          jwtTokenProvider,
-          ROLE_READ)).contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)))
-        .andExpect(status().isForbidden());
+      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, "roleId")).headers(
+          TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_READ))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isForbidden());
     }
 
     @Test
@@ -232,9 +233,11 @@ class RoleControllerIT {
       Role expected = Role.builder().setRandomUUID().name(input.getName()).build();
       doReturn(expected).when(roleService).update(expected.getId(), input);
 
-      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, expected.getId())).headers(TokenTestUtils.getAuthorizationHeader(
-          jwtTokenProvider,
-          ROLE_UPDATE)).contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)).accept(HAL_FORMS_JSON_VALUE))
+      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, expected.getId())).headers(
+            TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_UPDATE))
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input))
+          .accept(HAL_FORMS_JSON_VALUE))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
@@ -247,16 +250,16 @@ class RoleControllerIT {
     void should_return_forbidden_without_role_delete_authority() throws Exception {
       mockMvc.perform(delete(ROLE_PATH + "/id")).andExpect(status().isForbidden());
 
-      mockMvc.perform(delete(ROLE_PATH + "/id").headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider,
-        ROLE_READ))).andExpect(status().isForbidden());
+      mockMvc.perform(
+          delete(ROLE_PATH + "/id").headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_READ)))
+        .andExpect(status().isForbidden());
     }
 
     @Test
     void should_delete_role() throws Exception {
       String roleId = randomUUID();
-      mockMvc.perform(delete(format("%s/%s", ROLE_PATH, roleId)).headers(TokenTestUtils.getAuthorizationHeader(
-        jwtTokenProvider,
-        ROLE_DELETE))).andExpect(status().isNoContent());
+      mockMvc.perform(delete(format("%s/%s", ROLE_PATH, roleId)).headers(
+        TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_DELETE))).andExpect(status().isNoContent());
 
       verify(roleFacility, times(1)).deleteRole(roleId);
     }

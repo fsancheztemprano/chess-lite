@@ -19,6 +19,8 @@ server:
     whitelabel:
       enabled: true
 spring:
+  main:
+    banner-mode: "off"
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     password: p@ssw0rd

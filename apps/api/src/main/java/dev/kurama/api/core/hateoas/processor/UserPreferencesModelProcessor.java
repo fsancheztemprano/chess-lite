@@ -9,6 +9,7 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
+import static dev.kurama.api.core.utility.AuthorityUtils.isCurrentUsername;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
@@ -20,7 +21,6 @@ import dev.kurama.api.core.hateoas.relations.HateoasRelations;
 import dev.kurama.api.core.rest.UserController;
 import dev.kurama.api.core.rest.UserPreferencesController;
 import dev.kurama.api.core.rest.UserProfileController;
-import dev.kurama.api.core.utility.AuthorityUtils;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.hateoas.Affordance;
@@ -34,22 +34,16 @@ import org.springframework.stereotype.Component;
 public class UserPreferencesModelProcessor implements RepresentationModelProcessor<UserPreferencesModel> {
 
   @Override
-  public @NonNull
-  UserPreferencesModel process(@NonNull UserPreferencesModel userPreferencesModel) {
+  public @NonNull UserPreferencesModel process(@NonNull UserPreferencesModel userPreferencesModel) {
     userPreferencesModel.add(getSelfLink(userPreferencesModel.getId()))
-      .addIf(userPreferencesModel.getUser() != null,
-        () -> getUserLink(userPreferencesModel.getUser()
-          .getId()))
+      .addIf(userPreferencesModel.getUser() != null, () -> getUserLink(userPreferencesModel.getUser().getId()))
       .mapLinkIf(hasAuthority(USER_PREFERENCES_UPDATE), LinkRelation.of(SELF),
-        link -> link.andAffordance(
-          getUpdateAffordance(userPreferencesModel.getId())));
-    if (userPreferencesModel.getUser() != null && AuthorityUtils.isCurrentUsername(
-      userPreferencesModel.getUser()
-        .getUsername())) {
+        link -> link.andAffordance(getUpdateAffordance(userPreferencesModel.getId())));
+    if (userPreferencesModel.getUser() != null && isCurrentUsername(userPreferencesModel.getUser().getUsername())) {
       return userPreferencesModel.mapLinkIf(!hasAuthority(USER_PREFERENCES_READ) && hasAuthority(PROFILE_READ),
           LinkRelation.of(SELF), link -> getCurrentUserPreferencesSelfLink())
-        .mapLinkIf(!hasAuthority(USER_READ) && hasAuthority(PROFILE_READ),
-          LinkRelation.of(USER_REL), link -> getProfileLink())
+        .mapLinkIf(!hasAuthority(USER_READ) && hasAuthority(PROFILE_READ), LinkRelation.of(USER_REL),
+          link -> getProfileLink())
         .mapLinkIf(hasAuthority(PROFILE_UPDATE), LinkRelation.of(SELF),
           link -> link.andAffordance(getUpdateCurrentUserPreferencesAffordance()));
     }
@@ -62,14 +56,12 @@ public class UserPreferencesModelProcessor implements RepresentationModelProcess
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getUserLink(String userId) {
+  private @NonNull Link getUserLink(String userId) {
     return linkTo(methodOn(UserController.class).get(userId)).withRel(USER_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getProfileLink() {
+  private @NonNull Link getProfileLink() {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
   }
 
@@ -80,13 +72,11 @@ public class UserPreferencesModelProcessor implements RepresentationModelProcess
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUpdateAffordance(String username) {
+  private @NonNull Affordance getUpdateAffordance(String username) {
     return afford(methodOn(UserPreferencesController.class).update(username, null));
   }
 
-  private @NonNull
-  Affordance getUpdateCurrentUserPreferencesAffordance() {
+  private @NonNull Affordance getUpdateCurrentUserPreferencesAffordance() {
     return afford(methodOn(UserProfileController.class).updatePreferences(null));
   }
 }
