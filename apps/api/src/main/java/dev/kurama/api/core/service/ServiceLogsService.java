@@ -15,12 +15,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiceLogsService {
 
-  public static final String LOGS_FILE = Paths.get("")
-    .toAbsolutePath() + "\\logs\\logs.log";
+  public static final String LOGS_FILE = Paths.get("").toAbsolutePath() + "\\logs\\logs.log";
 
   public ServiceLogsModel getServiceLogs() {
-    ServiceLogsModelBuilder serviceLogsModelBuilder = ServiceLogsModel.builder()
-      .timestamp(new Date());
+    ServiceLogsModelBuilder serviceLogsModelBuilder = ServiceLogsModel.builder().timestamp(new Date());
     File file = new File(LOGS_FILE);
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 

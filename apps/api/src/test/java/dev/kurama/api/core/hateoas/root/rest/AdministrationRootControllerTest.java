@@ -36,19 +36,15 @@ class AdministrationRootControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .setControllerAdvice(new ExceptionHandlers())
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
   @Test
   void should_get_AdministrationRoot_resource_as_unauthenticated_user() throws Exception {
     RepresentationModel<?> AdministrationRootResource = mock(RepresentationModel.class);
-    doReturn(AdministrationRootResource).when(assembler)
-      .assemble();
+    doReturn(AdministrationRootResource).when(assembler).assemble();
 
-    mockMvc.perform(get(ADMINISTRATION_ROOT_PATH))
-      .andExpect(status().isOk());
+    mockMvc.perform(get(ADMINISTRATION_ROOT_PATH)).andExpect(status().isOk());
   }
 
   @TestConfiguration

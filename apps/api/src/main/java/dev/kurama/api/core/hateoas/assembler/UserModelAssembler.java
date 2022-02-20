@@ -22,17 +22,13 @@ import org.springframework.stereotype.Component;
 public class UserModelAssembler extends DomainModelAssembler<UserModel> {
 
   @Override
-  public @NonNull
-  PagedModel<UserModel> toPagedModel(Page<UserModel> entities) {
+  public @NonNull PagedModel<UserModel> toPagedModel(Page<UserModel> entities) {
     return (PagedModel<UserModel>) super.toPagedModel(entities)
-      .mapLinkIf(hasAuthority(USER_CREATE),
-        LinkRelation.of(SELF),
-        link -> link.andAffordance(getCreateAffordance()));
+      .mapLinkIf(hasAuthority(USER_CREATE), LinkRelation.of(SELF), link -> link.andAffordance(getCreateAffordance()));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getCreateAffordance() {
+  private @NonNull Affordance getCreateAffordance() {
     return afford(methodOn(UserController.class).create(null));
   }
 }

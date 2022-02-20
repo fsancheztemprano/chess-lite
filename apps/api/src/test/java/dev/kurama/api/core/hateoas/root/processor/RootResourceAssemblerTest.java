@@ -55,8 +55,7 @@ class RootResourceAssemblerTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(AuthorityUtils::isAuthenticated)
-        .thenReturn(false);
+      authorityUtils.when(AuthorityUtils::isAuthenticated).thenReturn(false);
     }
 
     @Test
@@ -132,8 +131,7 @@ class RootResourceAssemblerTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(AuthorityUtils::isAuthenticated)
-        .thenReturn(true);
+      authorityUtils.when(AuthorityUtils::isAuthenticated).thenReturn(true);
     }
 
     @Test
@@ -152,8 +150,7 @@ class RootResourceAssemblerTest {
 
     @Test
     void should_have_administration_root_link() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_ROOT))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_ROOT)).thenReturn(true);
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
@@ -168,8 +165,7 @@ class RootResourceAssemblerTest {
 
     @Test
     void should_have_current_user_link() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ)).thenReturn(true);
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 

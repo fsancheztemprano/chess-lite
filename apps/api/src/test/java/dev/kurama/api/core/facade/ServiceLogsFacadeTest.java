@@ -23,9 +23,7 @@ class ServiceLogsFacadeTest {
 
   @Test
   void should_get_service_logs() {
-    ServiceLogsModel expected = ServiceLogsModel.builder()
-      .logs("logs-1")
-      .build();
+    ServiceLogsModel expected = ServiceLogsModel.builder().logs("logs-1").build();
     when(serviceLogsService.getServiceLogs()).thenReturn(expected);
 
     ServiceLogsModel actual = serviceLogsFacade.getServiceLogs();
@@ -36,9 +34,7 @@ class ServiceLogsFacadeTest {
 
   @Test
   void should_delete_service_logs() {
-    ServiceLogsModel expected = ServiceLogsModel.builder()
-      .logs("")
-      .build();
+    ServiceLogsModel expected = ServiceLogsModel.builder().logs("").build();
     when(serviceLogsService.deleteServiceLogs()).thenReturn(expected);
 
     ServiceLogsModel actual = serviceLogsFacade.deleteServiceLogs();

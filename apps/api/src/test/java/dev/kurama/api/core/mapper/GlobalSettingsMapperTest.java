@@ -32,34 +32,22 @@ class GlobalSettingsMapperTest {
 
   @Test
   void global_settings_to_global_settings_model() {
-    Authority adminAuthority = Authority.builder()
-      .setRandomUUID()
-      .name("ADMIN")
-      .build();
-    Authority modAuthority = Authority.builder()
-      .setRandomUUID()
-      .name("MOD")
-      .build();
+    Authority adminAuthority = Authority.builder().setRandomUUID().name("ADMIN").build();
+    Authority modAuthority = Authority.builder().setRandomUUID().name("MOD").build();
     GlobalSettings globalSettings = GlobalSettings.builder()
       .setRandomUUID()
       .signupOpen(false)
-      .defaultRole(Role.builder()
-        .setRandomUUID()
-        .name(randomUUID())
-        .authorities(newHashSet(adminAuthority, modAuthority))
-        .build())
+      .defaultRole(
+        Role.builder().setRandomUUID().name(randomUUID()).authorities(newHashSet(adminAuthority, modAuthority)).build())
       .build();
 
     GlobalSettingsModel actual = mapper.globalSettingsToGlobalSettingsModel(globalSettings);
 
     assertThat(actual).hasFieldOrPropertyWithValue("signupOpen", globalSettings.isSignupOpen())
       .extracting("defaultRole")
-      .hasFieldOrPropertyWithValue("id", globalSettings.getDefaultRole()
-        .getId())
-      .hasFieldOrPropertyWithValue("name", globalSettings.getDefaultRole()
-        .getName());
-    assertThat(actual.getDefaultRole()
-      .getAuthorities()).hasSize(2)
+      .hasFieldOrPropertyWithValue("id", globalSettings.getDefaultRole().getId())
+      .hasFieldOrPropertyWithValue("name", globalSettings.getDefaultRole().getName());
+    assertThat(actual.getDefaultRole().getAuthorities()).hasSize(2)
       .extracting("id", "name")
       .containsExactlyInAnyOrder(Tuple.tuple(adminAuthority.getId(), adminAuthority.getName()),
         Tuple.tuple(modAuthority.getId(), modAuthority.getName()));

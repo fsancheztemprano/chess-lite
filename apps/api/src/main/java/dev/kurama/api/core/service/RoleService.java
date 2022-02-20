@@ -64,10 +64,7 @@ public class RoleService {
     if (findByName(parsedRoleName).isPresent()) {
       throw new RoleExistsException(parsedRoleName);
     }
-    var role = roleRepository.save(Role.builder()
-      .setRandomUUID()
-      .name(parsedRoleName)
-      .build());
+    var role = roleRepository.save(Role.builder().setRandomUUID().name(parsedRoleName).build());
     roleChangedEventEmitter.emitRoleCreatedEvent(role.getId());
     return role;
   }
@@ -78,21 +75,13 @@ public class RoleService {
       throw new ImmutableRoleException(id);
     }
     boolean changed = false;
-    if (!isEmpty(roleUpdateInput.getName()) && !role.getName()
-      .equals(roleUpdateInput.getName())) {
+    if (!isEmpty(roleUpdateInput.getName()) && !role.getName().equals(roleUpdateInput.getName())) {
       role.setName(parseRoleName(roleUpdateInput.getName()));
       changed = true;
     }
-    if (roleUpdateInput.getAuthorityIds() != null &&
-      (roleUpdateInput.getAuthorityIds()
-        .size() != role.getAuthorities()
-        .size()
-        || !roleUpdateInput.getAuthorityIds()
-        .containsAll(
-          role.getAuthorities()
-            .stream()
-            .map(Authority::getId)
-            .collect(Collectors.toSet())))) {
+    if (roleUpdateInput.getAuthorityIds() != null && (roleUpdateInput.getAuthorityIds().size() != role.getAuthorities()
+      .size() || !roleUpdateInput.getAuthorityIds()
+      .containsAll(role.getAuthorities().stream().map(Authority::getId).collect(Collectors.toSet())))) {
       role.setAuthorities(authorityService.findAllById(roleUpdateInput.getAuthorityIds()));
       changed = true;
     }
@@ -109,19 +98,13 @@ public class RoleService {
   }
 
   private String parseRoleName(String name) {
-    return (name + "").toUpperCase()
-      .replace(" ", "_");
+    return (name + "").toUpperCase().replace(" ", "_");
   }
 
 
   private Example<Role> getRoleExample(String search) {
-    return Example.of(
-      Role.builder()
-        .name(search)
-        .build(),
-      ExampleMatcher.matchingAny()
-        .withIgnorePaths("coreRole", "canLogin")
-        .withMatcher("name", GenericPropertyMatchers.contains()
-          .ignoreCase()));
+    return Example.of(Role.builder().name(search).build(), ExampleMatcher.matchingAny()
+      .withIgnorePaths("coreRole", "canLogin")
+      .withMatcher("name", GenericPropertyMatchers.contains().ignoreCase()));
   }
 }

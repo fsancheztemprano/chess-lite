@@ -36,14 +36,8 @@ class AuthorityModelAssemblerTest {
 
   @Test
   void should_map_to_paged_model_and_add_links() {
-    AuthorityModel admin = AuthorityModel.builder()
-      .id(randomUUID())
-      .name("ADMIN")
-      .build();
-    AuthorityModel mod = AuthorityModel.builder()
-      .id(randomUUID())
-      .name("MOD")
-      .build();
+    AuthorityModel admin = AuthorityModel.builder().id(randomUUID()).name("ADMIN").build();
+    AuthorityModel mod = AuthorityModel.builder().id(randomUUID()).name("MOD").build();
     PageImpl<AuthorityModel> pagedAuthorities = new PageImpl<>(newArrayList(admin, mod), of(2, 2), 10);
 
     PagedModel<AuthorityModel> actual = assembler.toPagedModel(pagedAuthorities);
@@ -54,8 +48,7 @@ class AuthorityModelAssemblerTest {
       .anySatisfy(id -> assertThat(id).isEqualTo(mod.getId()));
     assertThat(actual.getLinks()).hasSize(5);
     assertThat(actual.getLink(SELF)).isPresent()
-      .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(
-        baseUri.toString()));
+      .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(baseUri.toString()));
 
     assertThat(actual.getLinks()).extracting("rel")
       .anySatisfy(name -> assertThat(name).hasToString("first"))
@@ -70,8 +63,7 @@ class AuthorityModelAssemblerTest {
 
     PagedModel<AuthorityModel> actual = assembler.toPagedModel(pagedAuthorities);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(1)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(1)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD));

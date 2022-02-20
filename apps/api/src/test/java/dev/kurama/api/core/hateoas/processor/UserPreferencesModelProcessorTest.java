@@ -45,10 +45,7 @@ class UserPreferencesModelProcessorTest {
       .id(randomUUID())
       .darkMode(true)
       .contentLanguage("en")
-      .user(UserPreferencesModel.PreferencesOwner.builder()
-        .id(randomUUID())
-        .username(randomUUID())
-        .build())
+      .user(UserPreferencesModel.PreferencesOwner.builder().id(randomUUID()).username(randomUUID()).build())
       .build();
   }
 
@@ -62,9 +59,7 @@ class UserPreferencesModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUser()
-          .getUsername()))
-        .thenReturn(false);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUser().getUsername())).thenReturn(false);
     }
 
     @Test
@@ -73,20 +68,18 @@ class UserPreferencesModelProcessorTest {
 
       assertThat(actual.getLinks()).hasSize(2);
       assertThat(actual.getLink(SELF)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          format("%s/%s", USER_PREFERENCES_PATH, model.getId())));
+        .hasValueSatisfying(
+          link -> assertThat(link.getHref()).isEqualTo(format("%s/%s", USER_PREFERENCES_PATH, model.getId())));
       assertThat(actual.getLink(USER_REL)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          format("%s/%s", USER_PATH, model.getUser()
-            .getId())));
+        .hasValueSatisfying(
+          link -> assertThat(link.getHref()).isEqualTo(format("%s/%s", USER_PATH, model.getUser().getId())));
     }
 
     @Test
     void should_have_user_preferences_default_affordance() {
       UserPreferencesModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(2)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -95,13 +88,11 @@ class UserPreferencesModelProcessorTest {
 
     @Test
     void should_have_update_affordance_if_user_has_user_preferences_update_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_PREFERENCES_UPDATE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_PREFERENCES_UPDATE)).thenReturn(true);
 
       UserPreferencesModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(3)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -115,11 +106,8 @@ class UserPreferencesModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUser()
-          .getUsername()))
-        .thenReturn(true);
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUser().getUsername())).thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ)).thenReturn(true);
     }
 
     @Test
@@ -128,19 +116,16 @@ class UserPreferencesModelProcessorTest {
 
       assertThat(actual.getLinks()).hasSize(2);
       assertThat(actual.getLink(SELF)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          USER_PROFILE_PATH + USER_PROFILE_PREFERENCES));
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES));
       assertThat(actual.getLink(CURRENT_USER_REL)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          USER_PROFILE_PATH));
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(USER_PROFILE_PATH));
     }
 
     @Test
     void should_have_current_user_preferences_default_affordance() {
       UserPreferencesModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(2)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -149,13 +134,11 @@ class UserPreferencesModelProcessorTest {
 
     @Test
     void should_have_update_affordance_if_user_has_user_profile_update_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_UPDATE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_UPDATE)).thenReturn(true);
 
       UserPreferencesModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(3)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))

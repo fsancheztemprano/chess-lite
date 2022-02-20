@@ -16,10 +16,7 @@ public class UserPreferencesChangedEventEmitter {
 
   public void emitUserPreferencesChangedEvent(String userPreferencesId, UserPreferencesChangedEventAction action) {
     applicationEventPublisher.publishEvent(
-      UserPreferencesChangedEvent.builder()
-        .userPreferencesId(userPreferencesId)
-        .action(action)
-        .build());
+      UserPreferencesChangedEvent.builder().userPreferencesId(userPreferencesId).action(action).build());
   }
 
   public void emitUserPreferencesUpdatedEvent(String userPreferencesId) {

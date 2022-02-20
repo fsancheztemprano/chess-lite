@@ -47,14 +47,12 @@ public class UserFacade {
 
   public UserModel findByUserId(String userId) throws UserNotFoundException {
     return userMapper.userToUserModel(
-      userService.findUserById(userId)
-        .orElseThrow(() -> new UserNotFoundException(userId)));
+      userService.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId)));
   }
 
   public PagedModel<UserModel> getAll(Pageable pageable, String search) {
     return userModelAssembler.toPagedModel(
-      userMapper.userPageToUserModelPage(
-        userService.getAllUsers(pageable, search)));
+      userMapper.userPageToUserModelPage(userService.getAllUsers(pageable, search)));
   }
 
   public void deleteById(String id) throws UserNotFoundException {
@@ -68,32 +66,24 @@ public class UserFacade {
 
   public UserModel updateProfile(String id, UserProfileUpdateInput userProfileUpdateInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-    return userMapper.userToUserModel(userService.updateUser(id,
-      UserInput.builder()
-        .firstname(userProfileUpdateInput.getFirstname())
-        .lastname(userProfileUpdateInput.getLastname())
-        .build()));
+    return userMapper.userToUserModel(userService.updateUser(id, UserInput.builder()
+      .firstname(userProfileUpdateInput.getFirstname())
+      .lastname(userProfileUpdateInput.getLastname())
+      .build()));
   }
 
   public UserModel changePassword(String id, ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-    User user = userService.findUserById(id)
-      .orElseThrow(() -> new UserNotFoundException(id));
+    User user = userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
     authenticate(user.getUsername(), changeUserPasswordInput.getPassword());
     return userMapper.userToUserModel(
-      userService.updateUser(id, UserInput.builder()
-        .password(changeUserPasswordInput.getNewPassword())
-        .build()));
+      userService.updateUser(id, UserInput.builder().password(changeUserPasswordInput.getNewPassword()).build()));
   }
 
   public UserModel uploadAvatar(String id, MultipartFile avatar)
     throws IOException, UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-    String sb = "data:image/png;base64,"
-      + StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false));
-    return userMapper.userToUserModel(
-      userService.updateUser(id, UserInput.builder()
-        .profileImageUrl(sb)
-        .build()));
+    String sb = "data:image/png;base64," + StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false));
+    return userMapper.userToUserModel(userService.updateUser(id, UserInput.builder().profileImageUrl(sb).build()));
   }
 
   public void requestActivationToken(String id) throws UserNotFoundException, ActivationTokenRecentException {

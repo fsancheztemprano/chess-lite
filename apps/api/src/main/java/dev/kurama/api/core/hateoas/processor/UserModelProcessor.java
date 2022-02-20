@@ -39,53 +39,39 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserModelProcessor implements RepresentationModelProcessor<UserModel> {
 
-  @NonNull
-  UserPreferencesModelProcessor userPreferencesModelProcessor;
+  @NonNull UserPreferencesModelProcessor userPreferencesModelProcessor;
 
 
   @Override
-  public @NonNull
-  UserModel process(@NonNull UserModel entity) {
+  public @NonNull UserModel process(@NonNull UserModel entity) {
     userPreferencesModelProcessor.process(entity.getUserPreferences());
     entity.add(getSelfLink(entity.getId()))
       .addIf(hasAuthority(USER_READ), this::getParentLink)
-      .add(getPreferencesLink(entity.getUserPreferences()
-        .getId()))
-      .mapLinkIf(hasAuthority(USER_DELETE),
-        LinkRelation.of(SELF),
+      .add(getPreferencesLink(entity.getUserPreferences().getId()))
+      .mapLinkIf(hasAuthority(USER_DELETE), LinkRelation.of(SELF),
         link -> link.andAffordance(getDeleteAffordance(entity.getId())))
-      .mapLinkIf(hasAuthority(USER_UPDATE),
-        LinkRelation.of(SELF),
+      .mapLinkIf(hasAuthority(USER_UPDATE), LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(entity.getId())))
-      .mapLinkIf(hasAuthority(USER_UPDATE_ROLE),
-        LinkRelation.of(SELF),
+      .mapLinkIf(hasAuthority(USER_UPDATE_ROLE), LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateRoleAffordance(entity.getId())))
-      .mapLinkIf(hasAuthority(USER_UPDATE_AUTHORITIES),
-        LinkRelation.of(SELF),
+      .mapLinkIf(hasAuthority(USER_UPDATE_AUTHORITIES), LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAuthoritiesAffordance(entity.getId())))
-      .mapLinkIf(hasAuthority(USER_UPDATE),
-        LinkRelation.of(SELF),
+      .mapLinkIf(hasAuthority(USER_UPDATE), LinkRelation.of(SELF),
         link -> link.andAffordance(getSendActivationTokenAffordance(entity.getId())));
 
     if (AuthorityUtils.isCurrentUsername(entity.getUsername())) {
       boolean canUpdateOwnProfile = hasAuthority(PROFILE_UPDATE);
-      entity.mapLinkIf(!hasAuthority(USER_READ) && hasAuthority(PROFILE_READ),
-          LinkRelation.of(SELF),
+      entity.mapLinkIf(!hasAuthority(USER_READ) && hasAuthority(PROFILE_READ), LinkRelation.of(SELF),
           link -> getCurrentUserSelfLink())
         .mapLinkIf(!hasAuthority(USER_PREFERENCES_READ) && hasAuthority(PROFILE_READ),
-          LinkRelation.of(USER_PREFERENCES_REL),
-          link -> getCurrentUserPreferencesSelfLink())
-        .mapLinkIf((canUpdateOwnProfile),
-          LinkRelation.of(SELF),
+          LinkRelation.of(USER_PREFERENCES_REL), link -> getCurrentUserPreferencesSelfLink())
+        .mapLinkIf((canUpdateOwnProfile), LinkRelation.of(SELF),
           link -> link.andAffordance(getUpdateProfileAffordance()))
-        .mapLinkIf((canUpdateOwnProfile),
-          LinkRelation.of(SELF),
+        .mapLinkIf((canUpdateOwnProfile), LinkRelation.of(SELF),
           link -> link.andAffordance(getChangePasswordAffordance()))
-        .mapLinkIf((canUpdateOwnProfile),
-          LinkRelation.of(SELF),
+        .mapLinkIf((canUpdateOwnProfile), LinkRelation.of(SELF),
           link -> link.andAffordance(getUploadAvatarAffordance()))
-        .mapLinkIf((hasAuthority(PROFILE_DELETE)),
-          LinkRelation.of(SELF),
+        .mapLinkIf((hasAuthority(PROFILE_DELETE)), LinkRelation.of(SELF),
           link -> link.andAffordance(getDeleteProfileAffordance()));
     }
     return entity;
@@ -96,8 +82,7 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
     return withDefaultAffordance(linkTo(methodOn(UserController.class).get(id)).withSelfRel());
   }
 
-  private @NonNull
-  Link getParentLink() {
+  private @NonNull Link getParentLink() {
     return linkTo(methodOn(UserController.class).getAll(null, null)).withRel(USERS_REL);
   }
 
@@ -118,56 +103,47 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUpdateAffordance(String username) {
+  private @NonNull Affordance getUpdateAffordance(String username) {
     return afford(methodOn(UserController.class).update(username, null));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUpdateRoleAffordance(String username) {
+  private @NonNull Affordance getUpdateRoleAffordance(String username) {
     return afford(methodOn(UserController.class).updateRole(username, null));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUpdateAuthoritiesAffordance(String username) {
+  private @NonNull Affordance getUpdateAuthoritiesAffordance(String username) {
     return afford(methodOn(UserController.class).updateAuthorities(username, null));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getDeleteAffordance(String userId) {
+  private @NonNull Affordance getDeleteAffordance(String userId) {
     return afford(methodOn(UserController.class).delete(userId));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getSendActivationTokenAffordance(String userId) {
+  private @NonNull Affordance getSendActivationTokenAffordance(String userId) {
     return afford(methodOn(UserController.class).requestActivationToken(userId));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUpdateProfileAffordance() {
+  private @NonNull Affordance getUpdateProfileAffordance() {
     return afford(methodOn(UserProfileController.class).updateProfile(null));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getChangePasswordAffordance() {
+  private @NonNull Affordance getChangePasswordAffordance() {
     return afford(methodOn(UserProfileController.class).changePassword(null));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUploadAvatarAffordance() {
+  private @NonNull Affordance getUploadAvatarAffordance() {
     return afford(methodOn(UserProfileController.class).uploadAvatar(null));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getDeleteProfileAffordance() {
+  private @NonNull Affordance getDeleteProfileAffordance() {
     return afford(methodOn(UserProfileController.class).deleteProfile());
   }
 }

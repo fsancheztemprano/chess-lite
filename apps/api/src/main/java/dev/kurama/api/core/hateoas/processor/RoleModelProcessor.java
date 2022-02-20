@@ -26,15 +26,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class RoleModelProcessor implements RepresentationModelProcessor<RoleModel> {
 
-  public @NonNull
-  RoleModel process(@NonNull RoleModel entity) {
+  public @NonNull RoleModel process(@NonNull RoleModel entity) {
     boolean canUpdate = entity.isCoreRole() ? hasAuthority(ROLE_UPDATE_CORE) : hasAuthority(ROLE_UPDATE);
     return entity.add(getSelfLink(entity.getId()))
       .add(getParentLink())
       .mapLinkIf(!entity.isCoreRole() && hasAuthority(ROLE_DELETE), LinkRelation.of(SELF),
         link -> link.andAffordance(getDeleteAffordance(entity.getId())))
-      .mapLinkIf(canUpdate, LinkRelation.of(SELF),
-        link -> link.andAffordance(getUpdateAffordance(entity.getId())));
+      .mapLinkIf(canUpdate, LinkRelation.of(SELF), link -> link.andAffordance(getUpdateAffordance(entity.getId())));
   }
 
   @SneakyThrows
@@ -42,20 +40,17 @@ public class RoleModelProcessor implements RepresentationModelProcessor<RoleMode
     return withDefaultAffordance(linkTo(methodOn(RoleController.class).get(id)).withSelfRel());
   }
 
-  private @NonNull
-  Link getParentLink() {
+  private @NonNull Link getParentLink() {
     return linkTo(methodOn(RoleController.class).getAll(null, null)).withRel(ROLES_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUpdateAffordance(String username) {
+  private @NonNull Affordance getUpdateAffordance(String username) {
     return afford(methodOn(RoleController.class).update(username, null));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getDeleteAffordance(String userId) {
+  private @NonNull Affordance getDeleteAffordance(String userId) {
     return afford(methodOn(RoleController.class).delete(userId));
   }
 }

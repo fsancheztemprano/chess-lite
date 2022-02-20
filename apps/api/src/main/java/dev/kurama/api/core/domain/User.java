@@ -50,11 +50,8 @@ public class User extends AbstractEntity implements Serializable {
   @EqualsAndHashCode.Exclude
   @Builder.Default
   @ManyToMany
-  @JoinTable(
-    name = "user_authorities",
-    joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
-  )
+  @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
   private Set<Authority> authorities = Sets.newHashSet();
 
   private boolean active;

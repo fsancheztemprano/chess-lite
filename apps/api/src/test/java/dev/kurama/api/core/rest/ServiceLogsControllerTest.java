@@ -40,16 +40,12 @@ class ServiceLogsControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .setControllerAdvice(new ExceptionHandlers())
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
   @Test
   void should_get_service_logs() throws Exception {
-    ServiceLogsModel expected = ServiceLogsModel.builder()
-      .logs("Logs")
-      .build();
+    ServiceLogsModel expected = ServiceLogsModel.builder().logs("Logs").build();
     when(facade.getServiceLogs()).thenReturn(expected);
 
     mockMvc.perform(get(SERVICE_LOGS_PATH))
@@ -59,9 +55,7 @@ class ServiceLogsControllerTest {
 
   @Test
   void should_delete_service_logs() throws Exception {
-    ServiceLogsModel expected = ServiceLogsModel.builder()
-      .logs("")
-      .build();
+    ServiceLogsModel expected = ServiceLogsModel.builder().logs("").build();
     when(facade.deleteServiceLogs()).thenReturn(expected);
 
     mockMvc.perform(delete(SERVICE_LOGS_PATH))

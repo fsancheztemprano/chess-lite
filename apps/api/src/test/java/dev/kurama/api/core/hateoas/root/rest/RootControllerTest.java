@@ -36,19 +36,15 @@ class RootControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .setControllerAdvice(new ExceptionHandlers())
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
   @Test
   void should_get_root_resource_as_unauthenticated_user() throws Exception {
     RepresentationModel<?> rootResource = mock(RepresentationModel.class);
-    doReturn(rootResource).when(assembler)
-      .assemble();
+    doReturn(rootResource).when(assembler).assemble();
 
-    mockMvc.perform(get(BASE_PATH))
-      .andExpect(status().isOk());
+    mockMvc.perform(get(BASE_PATH)).andExpect(status().isOk());
   }
 
   @TestConfiguration

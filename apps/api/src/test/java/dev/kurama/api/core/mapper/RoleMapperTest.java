@@ -32,10 +32,7 @@ class RoleMapperTest {
 
   @Test
   void should_map_role_to_role_model() {
-    Role role = Role.builder()
-      .setRandomUUID()
-      .name(randomUUID())
-      .build();
+    Role role = Role.builder().setRandomUUID().name(randomUUID()).build();
 
     RoleModel actual = mapper.roleToRoleModel(role);
 
@@ -46,14 +43,8 @@ class RoleMapperTest {
 
   @Test
   void should_map_role_page_to_role_model_page() {
-    Role role1 = Role.builder()
-      .setRandomUUID()
-      .name("Role1")
-      .build();
-    Role role2 = Role.builder()
-      .setRandomUUID()
-      .name("Role2")
-      .build();
+    Role role1 = Role.builder().setRandomUUID().name("Role1").build();
+    Role role2 = Role.builder().setRandomUUID().name("Role2").build();
     PageImpl<Role> page = new PageImpl<Role>(newArrayList(role1, role2));
 
     Page<RoleModel> actual = mapper.rolePageToRoleModelPage(page);

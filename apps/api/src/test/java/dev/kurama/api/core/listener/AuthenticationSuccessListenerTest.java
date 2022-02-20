@@ -28,10 +28,8 @@ class AuthenticationSuccessListenerTest {
   void should_remove_username_from_login_attempt_cache() {
     Authentication authentication = mock(Authentication.class);
     UserPrincipal principal = mock(UserPrincipal.class);
-    doReturn("Username").when(principal)
-      .getUsername();
-    doReturn(principal).when(authentication)
-      .getPrincipal();
+    doReturn("Username").when(principal).getUsername();
+    doReturn(principal).when(authentication).getPrincipal();
     AuthenticationSuccessEvent event = new AuthenticationSuccessEvent(authentication);
 
     listener.onAuthenticationSuccess(event);

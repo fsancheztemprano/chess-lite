@@ -20,17 +20,13 @@ import org.springframework.stereotype.Component;
 public class RoleModelAssembler extends DomainModelAssembler<RoleModel> {
 
   @Override
-  public @NonNull
-  PagedModel<RoleModel> toPagedModel(Page<RoleModel> entities) {
+  public @NonNull PagedModel<RoleModel> toPagedModel(Page<RoleModel> entities) {
     return (PagedModel<RoleModel>) super.toPagedModel(entities)
-      .mapLinkIf(hasAuthority(ROLE_CREATE),
-        LinkRelation.of(SELF),
-        link -> link.andAffordance(getCreateAffordance()));
+      .mapLinkIf(hasAuthority(ROLE_CREATE), LinkRelation.of(SELF), link -> link.andAffordance(getCreateAffordance()));
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getCreateAffordance() {
+  private @NonNull Affordance getCreateAffordance() {
     return afford(methodOn(RoleController.class).create(null));
   }
 }

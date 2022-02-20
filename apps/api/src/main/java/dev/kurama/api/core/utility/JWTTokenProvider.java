@@ -40,10 +40,8 @@ public class JWTTokenProvider {
       .withSubject(userPrincipal.getUsername())
       .withArrayClaim(SecurityConstant.AUTHORITIES, authorities)
       .withClaim("user", new HashMap<String, String>() {{
-        put("id", userPrincipal.getUser()
-          .getId());
-        put("username", userPrincipal.getUser()
-          .getUsername());
+        put("id", userPrincipal.getUser().getId());
+        put("username", userPrincipal.getUser().getUsername());
       }})
       .withExpiresAt(new Date(getCurrentTimeMillis() + SecurityConstant.EXPIRATION_TIME))
       .sign(getAlgorithm());
@@ -58,8 +56,7 @@ public class JWTTokenProvider {
   }
 
   public Authentication getAuthentication(DecodedJWT token, HttpServletRequest request) {
-    UsernamePasswordAuthenticationToken authenticationToken = getUsernamePasswordAuthenticationToken(
-      token);
+    UsernamePasswordAuthenticationToken authenticationToken = getUsernamePasswordAuthenticationToken(token);
     if (request != null) {
       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
     }
@@ -74,20 +71,14 @@ public class JWTTokenProvider {
   }
 
   private ContextUser getContextUser(DecodedJWT token) {
-    Map<String, Object> user = token.getClaim("user")
-      .asMap();
-    return ContextUser.builder()
-      .id((String) user.get("id"))
-      .username((String) user.get("username"))
-      .build();
+    Map<String, Object> user = token.getClaim("user").asMap();
+    return ContextUser.builder().id((String) user.get("id")).username((String) user.get("username")).build();
   }
 
   private JWTVerifier getJWTVerifier() {
     JWTVerifier verifier;
     try {
-      verifier = JWT.require(getAlgorithm())
-        .withIssuer(SecurityConstant.AUTH_ISSUER)
-        .build();
+      verifier = JWT.require(getAlgorithm()).withIssuer(SecurityConstant.AUTH_ISSUER).build();
     } catch (JWTVerificationException exception) {
       throw new JWTVerificationException(SecurityConstant.TOKEN_CANNOT_BE_VERIFIED);
     }
@@ -95,8 +86,7 @@ public class JWTTokenProvider {
   }
 
   private boolean isTokenExpired(DecodedJWT token) {
-    return token.getExpiresAt()
-      .before(new Date());
+    return token.getExpiresAt().before(new Date());
   }
 
   private List<GrantedAuthority> getAuthorities(DecodedJWT token) {
@@ -104,8 +94,7 @@ public class JWTTokenProvider {
       .asList(String.class)
       .stream()
       .map(SimpleGrantedAuthority::new)
-      .collect(
-        Collectors.toList());
+      .collect(Collectors.toList());
   }
 
   private Algorithm getAlgorithm() {
@@ -113,10 +102,7 @@ public class JWTTokenProvider {
   }
 
   private String[] getAuthoritiesFromUser(UserPrincipal userPrincipal) {
-    return userPrincipal.getAuthorities()
-      .stream()
-      .map(GrantedAuthority::getAuthority)
-      .toArray(String[]::new);
+    return userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
   }
 
   public long getCurrentTimeMillis() {

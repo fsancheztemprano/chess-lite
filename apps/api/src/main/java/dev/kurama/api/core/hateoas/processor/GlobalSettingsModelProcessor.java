@@ -23,25 +23,19 @@ public class GlobalSettingsModelProcessor implements RepresentationModelProcesso
 
 
   @Override
-  public @NonNull
-  GlobalSettingsModel process(@NonNull GlobalSettingsModel globalSettingsModel) {
-    return globalSettingsModel
-      .add(getSelfLink())
-      .mapLinkIf(hasAuthority(GLOBAL_SETTINGS_UPDATE),
-        LinkRelation.of(SELF),
-        link -> link.andAffordance(getUpdateAffordance()))
-      ;
+  public @NonNull GlobalSettingsModel process(@NonNull GlobalSettingsModel globalSettingsModel) {
+    return globalSettingsModel.add(getSelfLink())
+      .mapLinkIf(hasAuthority(GLOBAL_SETTINGS_UPDATE), LinkRelation.of(SELF),
+        link -> link.andAffordance(getUpdateAffordance()));
   }
 
   @SneakyThrows
-  public @NonNull
-  Link getSelfLink() {
+  public @NonNull Link getSelfLink() {
     return withDefaultAffordance(linkTo(methodOn(GlobalSettingsController.class).get()).withSelfRel());
   }
 
   @SneakyThrows
-  private @NonNull
-  Affordance getUpdateAffordance() {
+  private @NonNull Affordance getUpdateAffordance() {
     return afford(methodOn(GlobalSettingsController.class).update(null));
   }
 }

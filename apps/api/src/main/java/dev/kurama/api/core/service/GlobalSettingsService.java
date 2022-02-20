@@ -27,18 +27,13 @@ public class GlobalSettingsService {
   private final RoleService roleService;
 
   public GlobalSettings getGlobalSettings() {
-    return globalSettingsRepository.findById(UNIQUE_ID)
-      .orElseGet(this::createGlobalSettings);
+    return globalSettingsRepository.findById(UNIQUE_ID).orElseGet(this::createGlobalSettings);
   }
 
   private GlobalSettings createGlobalSettings() {
-    var defaultRole = roleService.findByName(DefaultAuthority.DEFAULT_ROLE)
-      .orElseThrow();
-    return this.globalSettingsRepository.saveAndFlush(GlobalSettings.builder()
-      .id(UNIQUE_ID)
-      .signupOpen(false)
-      .defaultRole(defaultRole)
-      .build());
+    var defaultRole = roleService.findByName(DefaultAuthority.DEFAULT_ROLE).orElseThrow();
+    return this.globalSettingsRepository.saveAndFlush(
+      GlobalSettings.builder().id(UNIQUE_ID).signupOpen(false).defaultRole(defaultRole).build());
   }
 
   public GlobalSettings updateGlobalSettings(GlobalSettingsUpdateInput globalSettingsUpdateInput)
@@ -53,9 +48,7 @@ public class GlobalSettingsService {
     }
 
     if (ofNullable(globalSettingsUpdateInput.getDefaultRoleId()).isPresent()
-      && !globalSettingsUpdateInput.getDefaultRoleId()
-      .equals(globalSettings.getDefaultRole()
-        .getId())) {
+      && !globalSettingsUpdateInput.getDefaultRoleId().equals(globalSettings.getDefaultRole().getId())) {
       var role = roleService.findRoleById(globalSettingsUpdateInput.getDefaultRoleId())
         .orElseThrow(() -> new RoleNotFoundException(globalSettingsUpdateInput.getDefaultRoleId()));
       globalSettings.setDefaultRole(role);

@@ -37,12 +37,15 @@ public class ExceptionHandlers {
   public static final String ERROR_PATH = "/error";
 
   private static final String ROLE_LOCKED = "Your role has been locked. Please contact administration";
-  private static final String ACCOUNT_LOCKED = "Your account has been locked. Please recover your password or contact administration";
+  private static final String ACCOUNT_LOCKED = "Your account has been locked. Please recover your password or contact"
+    + " administration";
   private static final String TOKEN_EXPIRED = "This token is expired. Log in again to get a valid one.";
-  private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please send a '%s' request";
+  private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please "
+    + "send a '%s' request";
   private static final String INTERNAL_SERVER_ERROR_MSG = "An error occurred while processing the request";
   private static final String INCORRECT_CREDENTIALS = "Username / password incorrect. Please try again";
-  private static final String ACCOUNT_DISABLED = "Your account has been disabled. If this is an error, please contact administration";
+  private static final String ACCOUNT_DISABLED = "Your account has been disabled. If this is an error, please contact"
+    + " administration";
   private static final String ERROR_PROCESSING_FILE = "Error occurred while processing file";
   private static final String NOT_ENOUGH_PERMISSION = "You do not have enough permission";
   private static final String NOT_FOUND_MESSAGE = "Identifier %s was not found";
@@ -104,9 +107,7 @@ public class ExceptionHandlers {
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<DomainResponse> methodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-    HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods())
-      .iterator()
-      .next();
+    HttpMethod supportedMethod = Objects.requireNonNull(exception.getSupportedHttpMethods()).iterator().next();
     return createDomainResponse(METHOD_NOT_ALLOWED, String.format(METHOD_IS_NOT_ALLOWED, supportedMethod),
       exception.getMessage());
   }
@@ -132,11 +133,7 @@ public class ExceptionHandlers {
 //  }
 
   private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String title, String message) {
-    return new ResponseEntity<>(DomainResponse.builder()
-      .status(status)
-      .code(status.value())
-      .title(title)
-      .message(message)
-      .build(), status);
+    return new ResponseEntity<>(
+      DomainResponse.builder().status(status).code(status.value()).title(title).message(message).build(), status);
   }
 }

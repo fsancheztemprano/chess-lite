@@ -12,9 +12,7 @@ public class UserChangedEvent implements ApplicationEvent {
   private UserChangedEventAction action;
 
   public enum UserChangedEventAction {
-    CREATED,
-    UPDATED,
-    DELETED,
+    CREATED, UPDATED, DELETED,
   }
 
 }

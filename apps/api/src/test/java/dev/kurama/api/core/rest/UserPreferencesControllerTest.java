@@ -47,9 +47,7 @@ class UserPreferencesControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .setControllerAdvice(new ExceptionHandlers())
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
   @Nested
@@ -72,11 +70,9 @@ class UserPreferencesControllerTest {
     @Test
     void should_throw_getting_user_preferences_if_id_does_not_exist() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(DomainEntityNotFoundException.class).when(facade)
-        .findById(notFoundId);
+      doThrow(DomainEntityNotFoundException.class).when(facade).findById(notFoundId);
 
-      mockMvc.perform(get(USER_PREFERENCES_PATH + "/" + notFoundId))
-        .andExpect(status().isNotFound());
+      mockMvc.perform(get(USER_PREFERENCES_PATH + "/" + notFoundId)).andExpect(status().isNotFound());
 
     }
   }
@@ -86,10 +82,7 @@ class UserPreferencesControllerTest {
 
     @Test
     void should_update_user_preferences() throws Exception {
-      UserPreferencesInput input = UserPreferencesInput.builder()
-        .darkMode(false)
-        .contentLanguage("de")
-        .build();
+      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
       UserPreferencesModel expected = UserPreferencesModel.builder()
         .id(randomUUID())
         .darkMode(true)
@@ -108,17 +101,12 @@ class UserPreferencesControllerTest {
     @Test
     void should_throw_updating_user_preferences_if_id_does_not_exist() throws Exception {
       String notFoundId = randomUUID();
-      UserPreferencesInput input = UserPreferencesInput.builder()
-        .darkMode(false)
-        .contentLanguage("de")
-        .build();
-      doThrow(DomainEntityNotFoundException.class).when(facade)
-        .updateById(notFoundId, input);
+      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
+      doThrow(DomainEntityNotFoundException.class).when(facade).updateById(notFoundId, input);
 
       mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + notFoundId).accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-        .andExpect(status().isNotFound());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
 
     }
   }

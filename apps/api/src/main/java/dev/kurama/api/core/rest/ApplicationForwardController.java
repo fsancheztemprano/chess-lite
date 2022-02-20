@@ -14,11 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class ApplicationForwardController {
 
-  @RequestMapping(path = {
-    ROOT_URL,
-    APP_URL,
-    "/app/{path:(?!index\\.html$|favicon\\.ico$|main\\..+\\.js$|polyfills\\..+\\.js$|runtime\\..+\\.js$|styles\\..+\\.css$|common\\..+\\.js$|[0-9]{1,4}\\..+\\.js$|assets).*}/**"
-  })
+  @RequestMapping(path = {ROOT_URL, APP_URL,
+    "/app/{path:(?!index\\.html$|favicon\\.ico$|main\\..+\\.js$|polyfills\\..+\\.js$|runtime\\..+\\.js$|styles\\..+\\"
+      + ".css$|common\\..+\\.js$|[0-9]{1,4}\\..+\\.js$|assets).*}/**"})
   public ModelAndView forwardApp() {
     return new ModelAndView("forward:" + INDEX_URL);
   }

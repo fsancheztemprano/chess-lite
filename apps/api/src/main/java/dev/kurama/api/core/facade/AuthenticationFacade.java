@@ -56,7 +56,8 @@ public class AuthenticationFacade {
   }
 
   public void activateAccount(AccountActivationInput accountActivationInput)
-    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException {
+    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
+    ActivationTokenExpiredException {
     userService.activateAccount(accountActivationInput);
   }
 }

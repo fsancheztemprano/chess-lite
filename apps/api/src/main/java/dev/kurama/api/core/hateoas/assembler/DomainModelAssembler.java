@@ -24,24 +24,20 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
     this.pagedResourcesAssembler = pagedResourcesAssembler;
   }
 
-  public @NonNull
-  PagedModel<T> toPagedModel(Page<T> entities) {
-    return (PagedModel<T>) pagedResourcesAssembler
-      .toModel(entities, this)
+  public @NonNull PagedModel<T> toPagedModel(Page<T> entities) {
+    return (PagedModel<T>) pagedResourcesAssembler.toModel(entities, this)
       .mapLink(LinkRelation.of(SELF), HateoasUtils::withDefaultAffordance);
   }
 
   @Override
-  public @NonNull
-  CollectionModel<T> toCollectionModel(@NonNull Iterable<? extends T> entities) {
+  public @NonNull CollectionModel<T> toCollectionModel(@NonNull Iterable<? extends T> entities) {
     return RepresentationModelAssembler.super.toCollectionModel(entities);
   }
 
   // Model Assembler
 
   @Override
-  public @NonNull
-  T toModel(@NonNull T entity) {
+  public @NonNull T toModel(@NonNull T entity) {
     return entity;
   }
 }

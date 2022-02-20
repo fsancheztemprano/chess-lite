@@ -31,14 +31,8 @@ class UserPreferencesFacadeTest {
 
   @Test
   void should_find_by_id() throws DomainEntityNotFoundException {
-    UserPreferences preferences = UserPreferences.builder()
-      .setRandomUUID()
-      .darkMode(true)
-      .build();
-    UserPreferencesModel expected = UserPreferencesModel.builder()
-      .id(preferences.getId())
-      .darkMode(true)
-      .build();
+    UserPreferences preferences = UserPreferences.builder().setRandomUUID().darkMode(true).build();
+    UserPreferencesModel expected = UserPreferencesModel.builder().id(preferences.getId()).darkMode(true).build();
     when(userPreferencesService.findUserPreferencesById(preferences.getId())).thenReturn(preferences);
     when(userPreferencesMapper.userPreferencesToUserPreferencesModel(preferences)).thenReturn(expected);
 
@@ -51,17 +45,9 @@ class UserPreferencesFacadeTest {
 
   @Test
   void should_update_by_id() throws DomainEntityNotFoundException {
-    UserPreferencesInput input = UserPreferencesInput.builder()
-      .darkMode(true)
-      .build();
-    UserPreferences preferences = UserPreferences.builder()
-      .setRandomUUID()
-      .darkMode(true)
-      .build();
-    UserPreferencesModel expected = UserPreferencesModel.builder()
-      .id(preferences.getId())
-      .darkMode(true)
-      .build();
+    UserPreferencesInput input = UserPreferencesInput.builder().darkMode(true).build();
+    UserPreferences preferences = UserPreferences.builder().setRandomUUID().darkMode(true).build();
+    UserPreferencesModel expected = UserPreferencesModel.builder().id(preferences.getId()).darkMode(true).build();
     when(userPreferencesService.updateUserPreferences(preferences.getId(), input)).thenReturn(preferences);
     when(userPreferencesMapper.userPreferencesToUserPreferencesModel(preferences)).thenReturn(expected);
 
@@ -75,14 +61,8 @@ class UserPreferencesFacadeTest {
   @Test
   void should_find_by_user_id() {
     String userId = randomUUID();
-    UserPreferences preferences = UserPreferences.builder()
-      .setRandomUUID()
-      .darkMode(true)
-      .build();
-    UserPreferencesModel expected = UserPreferencesModel.builder()
-      .id(preferences.getId())
-      .darkMode(true)
-      .build();
+    UserPreferences preferences = UserPreferences.builder().setRandomUUID().darkMode(true).build();
+    UserPreferencesModel expected = UserPreferencesModel.builder().id(preferences.getId()).darkMode(true).build();
     when(userPreferencesService.findUserPreferencesByUserId(userId)).thenReturn(preferences);
     when(userPreferencesMapper.userPreferencesToUserPreferencesModel(preferences)).thenReturn(expected);
 
@@ -95,17 +75,9 @@ class UserPreferencesFacadeTest {
 
   @Test
   void should_update_by_user_id() {
-    UserPreferencesInput input = UserPreferencesInput.builder()
-      .darkMode(true)
-      .build();
-    UserPreferences preferences = UserPreferences.builder()
-      .setRandomUUID()
-      .darkMode(true)
-      .build();
-    UserPreferencesModel expected = UserPreferencesModel.builder()
-      .id(preferences.getId())
-      .darkMode(true)
-      .build();
+    UserPreferencesInput input = UserPreferencesInput.builder().darkMode(true).build();
+    UserPreferences preferences = UserPreferences.builder().setRandomUUID().darkMode(true).build();
+    UserPreferencesModel expected = UserPreferencesModel.builder().id(preferences.getId()).darkMode(true).build();
     when(userPreferencesService.updateUserPreferencesByUserId(preferences.getId(), input)).thenReturn(preferences);
     when(userPreferencesMapper.userPreferencesToUserPreferencesModel(preferences)).thenReturn(expected);
 

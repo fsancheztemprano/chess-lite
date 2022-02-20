@@ -27,19 +27,15 @@ class ApplicationForwardControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
   @DisplayName("Route endpoint should forward")
   @ParameterizedTest(name = "if someone requests \"{0}\"")
   @ValueSource(strings = {"/", "/app", "/app/", "/app/index.htm", "/app/some.html", "/app/some.css", "/app/test.js",
-    "/app/a/b/c/d/", "/app/a/b/c/d/index.html", "/app/a/b/c/d/some.css", "/app/a/b/c/d/some.js",
-  })
+    "/app/a/b/c/d/", "/app/a/b/c/d/index.html", "/app/a/b/c/d/some.css", "/app/a/b/c/d/some.js",})
   void route_should_forward_if_someone_requests(String path) throws Exception {
-    mockMvc.perform(get(path))
-      .andExpect(status().isOk())
-      .andExpect(forwardedUrl(INDEX_URL));
+    mockMvc.perform(get(path)).andExpect(status().isOk()).andExpect(forwardedUrl(INDEX_URL));
   }
 
 //  @DisplayName("Route endpoint should not forward")
@@ -66,8 +62,10 @@ class ApplicationForwardControllerTest {
 //                                            "/app/assets/flags/es.png");
 //
 //      return Stream.concat(
-//                       Stream.concat(Stream.concat(mainFiles.stream(), hashCodedFiles.stream().map(this::getHashCodedFilename)),
-//                                     hashCodedModules.stream().map(this::getHashCodedFilename)), assetsFolder.stream())
+//                       Stream.concat(Stream.concat(mainFiles.stream(), hashCodedFiles.stream().map
+//                       (this::getHashCodedFilename)),
+//                                     hashCodedModules.stream().map(this::getHashCodedFilename)), assetsFolder
+//                                     .stream())
 //                   .map(Arguments::arguments);
 //    }
 //

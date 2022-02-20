@@ -27,12 +27,9 @@ class UserPreferencesMapperTest {
 
   @Test
   void should_return_null_user_when_user_is_null() {
-    UserPreferences userPreferences = UserPreferences.builder()
-      .setRandomUUID()
-      .build();
+    UserPreferences userPreferences = UserPreferences.builder().setRandomUUID().build();
 
-    assertNull(mapper.userPreferencesToUserPreferencesModel(userPreferences)
-      .getUser());
+    assertNull(mapper.userPreferencesToUserPreferencesModel(userPreferences).getUser());
   }
 
   @Test
@@ -41,10 +38,7 @@ class UserPreferencesMapperTest {
       .setRandomUUID()
       .darkMode(true)
       .contentLanguage("en")
-      .user(User.builder()
-        .setRandomUUID()
-        .username(randomUUID())
-        .build())
+      .user(User.builder().setRandomUUID().username(randomUUID()).build())
       .build();
 
     UserPreferencesModel actual = mapper.userPreferencesToUserPreferencesModel(userPreferences);
@@ -53,10 +47,8 @@ class UserPreferencesMapperTest {
       .hasFieldOrPropertyWithValue("darkMode", userPreferences.isDarkMode())
       .hasFieldOrPropertyWithValue("contentLanguage", userPreferences.getContentLanguage())
       .extracting("user")
-      .hasFieldOrPropertyWithValue("id", userPreferences.getUser()
-        .getId())
-      .hasFieldOrPropertyWithValue("username", userPreferences.getUser()
-        .getUsername());
+      .hasFieldOrPropertyWithValue("id", userPreferences.getUser().getId())
+      .hasFieldOrPropertyWithValue("username", userPreferences.getUser().getUsername());
 
   }
 }

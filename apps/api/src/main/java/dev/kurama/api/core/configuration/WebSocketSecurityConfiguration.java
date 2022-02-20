@@ -12,8 +12,7 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
 
   @Override
   protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-    messages
-      .simpSubscribeDestMatchers("/ami/user")
+    messages.simpSubscribeDestMatchers("/ami/user")
       .hasAuthority(UserAuthority.USER_READ)
       .simpSubscribeDestMatchers("/ami/user/**")
       .hasAuthority(UserAuthority.PROFILE_READ)

@@ -114,10 +114,10 @@ class GlobalSettingsControllerIT {
       mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)))
         .andExpect(status().isForbidden());
 
-      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider,
-          GLOBAL_SETTINGS_READ))
+      mockMvc.perform(
+        patch(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, GLOBAL_SETTINGS_READ))
 
-        .contentType(MediaType.APPLICATION_JSON).content(asJsonString(input))).andExpect(status().isForbidden());
+          .contentType(MediaType.APPLICATION_JSON).content(asJsonString(input))).andExpect(status().isForbidden());
     }
 
 

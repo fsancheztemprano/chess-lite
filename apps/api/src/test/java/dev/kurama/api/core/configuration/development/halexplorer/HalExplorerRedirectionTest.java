@@ -26,14 +26,12 @@ class HalExplorerRedirectionTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
   @Test
   void should_redirect_to_hal_explorer() throws Exception {
-    mockMvc.perform(
-        get("/explorer"))
+    mockMvc.perform(get("/explorer"))
       .andExpect(status().is3xxRedirection())
       .andExpect(redirectedUrl("/explorer/index.html#uri=/api"));
   }

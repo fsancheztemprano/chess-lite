@@ -37,18 +37,11 @@ class RoleFacilityTest {
 
     @Test
     void should_delete_role_by_id() throws ImmutableRoleException, RoleNotFoundException {
-      Role expected = Role.builder()
-        .setRandomUUID()
-        .users(newHashSet())
-        .build();
+      Role expected = Role.builder().setRandomUUID().users(newHashSet()).build();
       when(roleService.findRoleById(expected.getId())).thenReturn(Optional.of(expected));
-      Role defaultRole = Role.builder()
-        .setRandomUUID()
-        .build();
+      Role defaultRole = Role.builder().setRandomUUID().build();
       when(globalSettingsService.getGlobalSettings()).thenReturn(
-        GlobalSettings.builder()
-          .defaultRole(defaultRole)
-          .build());
+        GlobalSettings.builder().defaultRole(defaultRole).build());
 
       facility.deleteRole(expected.getId());
 
@@ -60,10 +53,7 @@ class RoleFacilityTest {
 
     @Test
     void should_throw_if_role_is_core_role() {
-      Role expected = Role.builder()
-        .setRandomUUID()
-        .coreRole(true)
-        .build();
+      Role expected = Role.builder().setRandomUUID().coreRole(true).build();
       when(roleService.findRoleById(expected.getId())).thenReturn(Optional.of(expected));
 
       assertThrows(ImmutableRoleException.class, () -> facility.deleteRole(expected.getId()));

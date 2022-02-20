@@ -22,8 +22,7 @@ class GlobalSettingsChangedMessageSenderTest {
 
   @Test
   void should_send_global_settings_changed_message() {
-    GlobalSettingsChangedEvent event = GlobalSettingsChangedEvent.builder()
-      .build();
+    GlobalSettingsChangedEvent event = GlobalSettingsChangedEvent.builder().build();
 
     globalSettingsChangedMessageSender.sendGlobalSettingsChangedMessage(event);
 

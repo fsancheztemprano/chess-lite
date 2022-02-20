@@ -31,16 +31,14 @@ public class UserPreferencesController {
   @PreAuthorize("hasAuthority('user:preferences:read')")
   public ResponseEntity<UserPreferencesModel> get(@PathVariable("userPreferencesId") String userPreferencesId)
     throws DomainEntityNotFoundException {
-    return ResponseEntity.ok()
-      .body(userPreferencesFacade.findById(userPreferencesId));
+    return ResponseEntity.ok().body(userPreferencesFacade.findById(userPreferencesId));
   }
 
   @PatchMapping("/{userPreferencesId}")
   @PreAuthorize("hasAuthority('user:preferences:update')")
-  public ResponseEntity<UserPreferencesModel> update(
-    @PathVariable("userPreferencesId") String userPreferencesId,
-    @RequestBody UserPreferencesInput userPreferencesInput) throws DomainEntityNotFoundException {
-    return ResponseEntity.ok()
-      .body(userPreferencesFacade.updateById(userPreferencesId, userPreferencesInput));
+  public ResponseEntity<UserPreferencesModel> update(@PathVariable("userPreferencesId") String userPreferencesId,
+                                                     @RequestBody UserPreferencesInput userPreferencesInput)
+    throws DomainEntityNotFoundException {
+    return ResponseEntity.ok().body(userPreferencesFacade.updateById(userPreferencesId, userPreferencesInput));
   }
 }

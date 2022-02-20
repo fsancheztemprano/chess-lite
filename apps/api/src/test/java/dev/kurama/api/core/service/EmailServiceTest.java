@@ -26,12 +26,11 @@ class EmailServiceTest {
 
   @Test
   void should_send_email() {
-    EmailTemplate emailTemplate =
-      EmailTemplate.builder()
-        .text("email-text")
-        .subject("email-subject")
-        .to("email-to")
-        .build();
+    EmailTemplate emailTemplate = EmailTemplate.builder()
+      .text("email-text")
+      .subject("email-subject")
+      .to("email-to")
+      .build();
     when(emailSender.createMimeMessage()).thenReturn(new MimeMessage(Session.getDefaultInstance(new Properties())));
 
     emailService.sendEmail(emailTemplate);

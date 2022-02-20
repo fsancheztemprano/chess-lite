@@ -51,8 +51,7 @@ class GlobalSettingsChangedEventEmitterIT {
 
     GlobalSettingsChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(),
       GlobalSettingsChangedEvent.class);
-    assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("action", GlobalSettingsChangedEventAction.UPDATED);
+    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("action", GlobalSettingsChangedEventAction.UPDATED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();

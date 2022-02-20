@@ -59,10 +59,7 @@ class AuthorityControllerTest {
 
   @Test
   void should_get_all_authorities() throws Exception {
-    AuthorityModel authority = AuthorityModel.builder()
-      .id(randomUUID())
-      .name("AUTH")
-      .build();
+    AuthorityModel authority = AuthorityModel.builder().id(randomUUID()).name("AUTH").build();
     PagedModel<AuthorityModel> expected = PagedModel.of(newArrayList(authority), new PagedModel.PageMetadata(2, 1, 2));
 
     when(facade.getAll(any(Pageable.class))).thenReturn(expected);
@@ -79,10 +76,7 @@ class AuthorityControllerTest {
 
     @Test
     void should_get_one_authority() throws Exception {
-      AuthorityModel expected = AuthorityModel.builder()
-        .id(randomUUID())
-        .name("AUTH")
-        .build();
+      AuthorityModel expected = AuthorityModel.builder().id(randomUUID()).name("AUTH").build();
       when(facade.findByAuthorityId(expected.getId())).thenReturn(expected);
 
       mockMvc.perform(get(AUTHORITY_PATH + "/" + expected.getId()))
@@ -94,11 +88,9 @@ class AuthorityControllerTest {
     @Test
     void get_one_authority_should_throw_if_id_does_not_exists() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(DomainEntityNotFoundException.class).when(facade)
-        .findByAuthorityId(notFoundId);
+      doThrow(DomainEntityNotFoundException.class).when(facade).findByAuthorityId(notFoundId);
 
-      mockMvc.perform(get(AUTHORITY_PATH + "/" + notFoundId))
-        .andExpect(status().isNotFound());
+      mockMvc.perform(get(AUTHORITY_PATH + "/" + notFoundId)).andExpect(status().isNotFound());
     }
   }
 

@@ -26,25 +26,13 @@ class AuthorityRepositoryIT {
 
   @Test
   void should_find_all_filtered_by_id() {
-    Authority authority1 = Authority.builder()
-      .setRandomUUID()
-      .name("auth1")
-      .build();
+    Authority authority1 = Authority.builder().setRandomUUID().name("auth1").build();
     entityManager.persist(authority1);
-    Authority authority2 = Authority.builder()
-      .setRandomUUID()
-      .name("auth2")
-      .build();
+    Authority authority2 = Authority.builder().setRandomUUID().name("auth2").build();
     entityManager.persist(authority2);
-    Authority authority3 = Authority.builder()
-      .setRandomUUID()
-      .name("auth3")
-      .build();
+    Authority authority3 = Authority.builder().setRandomUUID().name("auth3").build();
     entityManager.persist(authority3);
-    Authority authority4 = Authority.builder()
-      .setRandomUUID()
-      .name("auth4")
-      .build();
+    Authority authority4 = Authority.builder().setRandomUUID().name("auth4").build();
     entityManager.persist(authority4);
     entityManager.flush();
 
@@ -52,9 +40,7 @@ class AuthorityRepositoryIT {
 
     assertThat(actual.size()).isEqualTo(2);
     assertThat(actual.stream()
-      .allMatch(
-        authority -> authority.getId()
-          .equals(authority2.getId()) || authority.getId()
-          .equals(authority4.getId()))).isTrue();
+      .allMatch(authority -> authority.getId().equals(authority2.getId()) || authority.getId()
+        .equals(authority4.getId()))).isTrue();
   }
 }

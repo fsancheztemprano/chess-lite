@@ -28,10 +28,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RootResourceAssembler implements RootAssembler<RootResource> {
 
-  public @NonNull
-  RepresentationModel<RootResource> assemble() {
-    HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource())
-      .link(getSelfLink());
+  public @NonNull RepresentationModel<RootResource> assemble() {
+    HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource()).link(getSelfLink());
 
     if (AuthorityUtils.isAuthenticated()) {
       if (AuthorityUtils.hasAuthority(ADMIN_ROOT)) {
@@ -41,8 +39,7 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
         rootModel.link(getCurrentUserLink());
       }
     } else {
-      rootModel
-        .link(getLoginLink())
+      rootModel.link(getLoginLink())
         .link(getSignupLink())
         .link(getActivationTokenLink())
         .link(getAccountActivationLink());
@@ -50,43 +47,36 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
     return rootModel.build();
   }
 
-  private @NonNull
-  Link getSelfLink() {
+  private @NonNull Link getSelfLink() {
     return withDefaultAffordance(linkTo(methodOn(RootController.class).root()).withSelfRel());
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getCurrentUserLink() {
+  private @NonNull Link getCurrentUserLink() {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getLoginLink() {
+  private @NonNull Link getLoginLink() {
     return linkTo(methodOn(AuthenticationController.class).login(null)).withRel(LOGIN_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getSignupLink() {
+  private @NonNull Link getSignupLink() {
     return linkTo(methodOn(AuthenticationController.class).signup(null)).withRel(SIGNUP_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getActivationTokenLink() {
+  private @NonNull Link getActivationTokenLink() {
     return linkTo(methodOn(AuthenticationController.class).requestActivationToken(null)).withRel(ACTIVATION_TOKEN_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getAccountActivationLink() {
+  private @NonNull Link getAccountActivationLink() {
     return linkTo(methodOn(AuthenticationController.class).activateAccount(null)).withRel(ACTIVATE_ACCOUNT_REL);
   }
 
-  private @NonNull
-  Link getAdministrationRootLink() {
+  private @NonNull Link getAdministrationRootLink() {
     return linkTo(methodOn(AdministrationRootController.class).root()).withRel(ADMINISTRATION_REL);
   }
 }

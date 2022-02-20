@@ -55,8 +55,7 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
   private final HateoasPageableHandlerMethodArgumentResolver pageableResolver;
 
   @Override
-  public @NonNull
-  RepresentationModel<RootResource> assemble() {
+  public @NonNull RepresentationModel<RootResource> assemble() {
     HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource())
       .link(getSelfLink())
       .link(getParentLink());
@@ -80,13 +79,11 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
     return rootModel.build();
   }
 
-  private @NonNull
-  Link getSelfLink() {
+  private @NonNull Link getSelfLink() {
     return withDefaultAffordance(linkTo(methodOn(AdministrationRootController.class).root()).withSelfRel());
   }
 
-  private @NonNull
-  Link getParentLink() {
+  private @NonNull Link getParentLink() {
     return linkTo(methodOn(RootController.class).root()).withRel(ROOT_REL);
   }
 
@@ -99,25 +96,20 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
   }
 
   private RepresentationModel<?> getUserManagementResource() {
-    HalModelBuilder userManagementResource = HalModelBuilder.emptyHalModel()
-      .link(getSelfLink());
+    HalModelBuilder userManagementResource = HalModelBuilder.emptyHalModel().link(getSelfLink());
     if (hasAuthority(USER_READ)) {
-      userManagementResource
-        .link(getUserLink())
-        .link(getUsersLink());
+      userManagementResource.link(getUserLink()).link(getUsersLink());
     }
     return userManagementResource.build();
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getUserLink() {
+  private @NonNull Link getUserLink() {
     return linkTo(methodOn(UserController.class).get(null)).withRel(USER_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getUsersLink() {
+  private @NonNull Link getUsersLink() {
     Link link = linkTo(methodOn(UserController.class).getAll(null, null)).withRel(USERS_REL);
     Link usersLink = getExpandedLink(link);
     if (hasAuthority(USER_CREATE)) {
@@ -127,12 +119,9 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
   }
 
   private RepresentationModel<?> getRoleManagementResource() {
-    HalModelBuilder roleManagementResource = HalModelBuilder.emptyHalModel()
-      .link(getSelfLink());
+    HalModelBuilder roleManagementResource = HalModelBuilder.emptyHalModel().link(getSelfLink());
     if (hasAuthority(ROLE_READ)) {
-      roleManagementResource
-        .link(getRoleLink())
-        .link(getRolesLink());
+      roleManagementResource.link(getRoleLink()).link(getRolesLink());
     }
     if (hasAuthority(AUTHORITY_READ)) {
       roleManagementResource.link(getAuthoritiesLink());
@@ -141,14 +130,12 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getRoleLink() {
+  private @NonNull Link getRoleLink() {
     return linkTo(methodOn(RoleController.class).get(null)).withRel(ROLE_REL);
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getRolesLink() {
+  private @NonNull Link getRolesLink() {
     Link link = linkTo(methodOn(RoleController.class).getAll(null, null)).withRel(ROLES_REL);
     Link rolesLink = getExpandedLink(link);
     if (hasAuthority(ROLE_CREATE)) {
@@ -158,18 +145,14 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
   }
 
   @SneakyThrows
-  private @NonNull
-  Link getAuthoritiesLink() {
-    return getExpandedLink(
-      linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL));
+  private @NonNull Link getAuthoritiesLink() {
+    return getExpandedLink(linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL));
   }
 
   private Link getExpandedLink(Link link) {
-    UriComponentsBuilder builder = fromUri(link.getTemplate()
-      .expand());
+    UriComponentsBuilder builder = fromUri(link.getTemplate().expand());
     TemplateVariables templateVariables = pageableResolver.getPaginationTemplateVariables(null, builder.build());
-    UriTemplate template = UriTemplate.of(link.getHref())
-      .with(templateVariables);
+    UriTemplate template = UriTemplate.of(link.getHref()).with(templateVariables);
     return Link.of(template, link.getRel());
   }
 }

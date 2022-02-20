@@ -247,8 +247,8 @@ public class UserService {
     ActivationTokenUserMismatchException {
     var activationToken = activationTokenService.findActivationToken(accountActivationInput.getToken());
 
-    var user = findUserByEmail(accountActivationInput.getEmail()).orElseThrow(() -> new EmailNotFoundException(
-      accountActivationInput.getEmail()));
+    var user = findUserByEmail(accountActivationInput.getEmail()).orElseThrow(
+      () -> new EmailNotFoundException(accountActivationInput.getEmail()));
 
     activationTokenService.verifyActivationTokenMatch(activationToken, user);
 
@@ -298,11 +298,8 @@ public class UserService {
       + "<a href =\"%s/auth/activation?token=%s&email=%s\"> Click Here </a><br><br><br>"
       + "Thank You", token, host, token, user.getEmail());
 
-    emailService.sendEmail(EmailTemplate.builder()
-      .to(user.getEmail())
-      .subject(ACTIVATION_EMAIL_SUBJECT)
-      .text(activationEmailText)
-      .build());
+    emailService.sendEmail(
+      EmailTemplate.builder().to(user.getEmail()).subject(ACTIVATION_EMAIL_SUBJECT).text(activationEmailText).build());
   }
 
   private void setRoleAndAuthorities(User user, Role role) {

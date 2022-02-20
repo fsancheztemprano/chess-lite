@@ -31,11 +31,8 @@ class GlobalSettingsFacadeTest {
 
   @Test
   void should_get_global_settings_from_service() {
-    GlobalSettings globalSettings = GlobalSettings.builder()
-      .setRandomUUID()
-      .build();
-    GlobalSettingsModel expected = GlobalSettingsModel.builder()
-      .build();
+    GlobalSettings globalSettings = GlobalSettings.builder().setRandomUUID().build();
+    GlobalSettingsModel expected = GlobalSettingsModel.builder().build();
     when(globalSettingsService.getGlobalSettings()).thenReturn(globalSettings);
     when(globalSettingsMapper.globalSettingsToGlobalSettingsModel(globalSettings)).thenReturn(expected);
 
@@ -43,8 +40,7 @@ class GlobalSettingsFacadeTest {
 
     verify(globalSettingsService).getGlobalSettings();
     verify(globalSettingsMapper).globalSettingsToGlobalSettingsModel(globalSettings);
-    assertThat(actual).isNotNull()
-      .isEqualTo(expected);
+    assertThat(actual).isNotNull().isEqualTo(expected);
   }
 
   @Test
@@ -52,11 +48,8 @@ class GlobalSettingsFacadeTest {
     GlobalSettingsUpdateInput globalSettingsUpdateInput = GlobalSettingsUpdateInput.builder()
       .defaultRoleId(randomUUID())
       .build();
-    GlobalSettings globalSettings = GlobalSettings.builder()
-      .setRandomUUID()
-      .build();
-    GlobalSettingsModel expected = GlobalSettingsModel.builder()
-      .build();
+    GlobalSettings globalSettings = GlobalSettings.builder().setRandomUUID().build();
+    GlobalSettingsModel expected = GlobalSettingsModel.builder().build();
     when(globalSettingsService.updateGlobalSettings(globalSettingsUpdateInput)).thenReturn(globalSettings);
     when(globalSettingsMapper.globalSettingsToGlobalSettingsModel(globalSettings)).thenReturn(expected);
 
@@ -64,7 +57,6 @@ class GlobalSettingsFacadeTest {
 
     verify(globalSettingsService).updateGlobalSettings(globalSettingsUpdateInput);
     verify(globalSettingsMapper).globalSettingsToGlobalSettingsModel(globalSettings);
-    assertThat(actual).isNotNull()
-      .isEqualTo(expected);
+    assertThat(actual).isNotNull().isEqualTo(expected);
   }
 }

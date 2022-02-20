@@ -47,10 +47,7 @@ class AuthenticationFacilityTest {
     String password = "password";
     User user = User.builder()
       .setRandomUUID()
-      .role(Role.builder()
-        .setRandomUUID()
-        .canLogin(true)
-        .build())
+      .role(Role.builder().setRandomUUID().canLogin(true).build())
       .username(username)
       .locked(false)
       .build();
@@ -59,8 +56,7 @@ class AuthenticationFacilityTest {
 
     Pair<User, String> authenticatedUser = facility.login(username, password);
 
-    verify(authenticationManager).authenticate(
-      new UsernamePasswordAuthenticationToken(username, password));
+    verify(authenticationManager).authenticate(new UsernamePasswordAuthenticationToken(username, password));
     verify(jwtTokenProvider, times(2)).generateJWTToken(any(UserPrincipal.class));
     verify(jwtTokenProvider).getDecodedJWT(anyString());
     assertThat(authenticatedUser).isNotNull()
@@ -74,10 +70,7 @@ class AuthenticationFacilityTest {
     String password = "password";
     User user = User.builder()
       .setRandomUUID()
-      .role(Role.builder()
-        .setRandomUUID()
-        .canLogin(true)
-        .build())
+      .role(Role.builder().setRandomUUID().canLogin(true).build())
       .username(username)
       .locked(true)
       .build();
@@ -94,10 +87,7 @@ class AuthenticationFacilityTest {
     String password = "password";
     User user = User.builder()
       .setRandomUUID()
-      .role(Role.builder()
-        .setRandomUUID()
-        .canLogin(false)
-        .build())
+      .role(Role.builder().setRandomUUID().canLogin(false).build())
       .username(username)
       .locked(false)
       .build();

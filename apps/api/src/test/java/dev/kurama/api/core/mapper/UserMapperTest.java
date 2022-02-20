@@ -59,14 +59,8 @@ class UserMapperTest {
 
   @Test
   void userPageToUserModelPage() {
-    User user1 = User.builder()
-      .setRandomUUID()
-      .username("username1")
-      .build();
-    User user2 = User.builder()
-      .setRandomUUID()
-      .username("username2")
-      .build();
+    User user1 = User.builder().setRandomUUID().username("username1").build();
+    User user2 = User.builder().setRandomUUID().username("username2").build();
     PageImpl<User> page = new PageImpl<User>(newArrayList(user1, user2));
 
     Page<UserModel> actual = mapper.userPageToUserModelPage(page);

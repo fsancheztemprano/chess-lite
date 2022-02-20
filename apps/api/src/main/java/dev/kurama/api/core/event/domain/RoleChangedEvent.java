@@ -12,9 +12,7 @@ public class RoleChangedEvent implements ApplicationEvent {
   private RoleChangedEventAction action;
 
   public enum RoleChangedEventAction {
-    CREATED,
-    UPDATED,
-    DELETED,
+    CREATED, UPDATED, DELETED,
   }
 
 }

@@ -55,9 +55,7 @@ class AuthenticationControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .setControllerAdvice(new ExceptionHandlers())
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
 
@@ -70,11 +68,9 @@ class AuthenticationControllerTest {
       .email("em@i.l")
       .build();
 
-    mockMvc.perform(
-        post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-      .andExpect(status().isOk());
+    mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(asJsonString(input))).andExpect(status().isOk());
 
     verify(facade).signup(input);
   }
@@ -82,26 +78,17 @@ class AuthenticationControllerTest {
 
   @Test
   void should_login() throws Exception {
-    LoginInput input = LoginInput.builder()
-      .username("username")
-      .password("password")
-      .build();
-    UserModel user = UserModel.builder()
-      .id(randomUUID())
-      .build();
+    LoginInput input = LoginInput.builder().username("username").password("password").build();
+    UserModel user = UserModel.builder().id(randomUUID()).build();
     String token = randomUUID();
     var headers = new HttpHeaders();
     headers.add(SecurityConstant.JWT_TOKEN_HEADER, token);
-    AuthenticatedUserExcerpt expected = AuthenticatedUserExcerpt.builder()
-      .userModel(user)
-      .headers(headers)
-      .build();
+    AuthenticatedUserExcerpt expected = AuthenticatedUserExcerpt.builder().userModel(user).headers(headers).build();
     when(facade.login(input)).thenReturn(expected);
 
-    mockMvc.perform(
-        post(AUTHENTICATION_PATH + LOGIN_PATH).accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
+    mockMvc.perform(post(AUTHENTICATION_PATH + LOGIN_PATH).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input)))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.id", equalTo(user.getId())))
       .andExpect(header().stringValues(SecurityConstant.JWT_TOKEN_HEADER, token));
@@ -109,15 +96,11 @@ class AuthenticationControllerTest {
 
   @Test
   void should_request_activation_token() throws Exception {
-    RequestActivationTokenInput input = RequestActivationTokenInput.builder()
-      .email("em@i.l")
-      .build();
+    RequestActivationTokenInput input = RequestActivationTokenInput.builder().email("em@i.l").build();
 
-    mockMvc.perform(
-        post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-      .andExpect(status().isOk());
+    mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(asJsonString(input))).andExpect(status().isOk());
 
     verify(facade).requestActivationToken(input.getEmail());
   }
@@ -131,9 +114,8 @@ class AuthenticationControllerTest {
       .build();
 
     mockMvc.perform(post(AUTHENTICATION_PATH + ACTIVATE_PATH).accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(input)))
-      .andExpect(status().isOk());
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(asJsonString(input))).andExpect(status().isOk());
 
     verify(facade).activateAccount(input);
   }

@@ -15,8 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AuthorityUtils {
 
   public static Authentication getAuthentication() {
-    return SecurityContextHolder.getContext()
-      .getAuthentication();
+    return SecurityContextHolder.getContext().getAuthentication();
   }
 
   public static ContextUser getContextUser() {
@@ -48,13 +47,11 @@ public class AuthorityUtils {
   }
 
   public static boolean hasAllAuthorities(String... authorities) {
-    return Arrays.stream(authorities)
-      .allMatch(AuthorityUtils::hasAuthority);
+    return Arrays.stream(authorities).allMatch(AuthorityUtils::hasAuthority);
   }
 
   public static boolean hasAnyAuthority(String... authorities) {
-    return Arrays.stream(authorities)
-      .anyMatch(AuthorityUtils::hasAuthority);
+    return Arrays.stream(authorities).anyMatch(AuthorityUtils::hasAuthority);
   }
 
   public static boolean isAuthenticated() {

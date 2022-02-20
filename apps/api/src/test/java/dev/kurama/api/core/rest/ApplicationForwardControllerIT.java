@@ -70,18 +70,14 @@ class ApplicationForwardControllerIT {
 
   })
   void route_should_forward_if_someone_requests(String path) throws Exception {
-    mockMvc.perform(get(path))
-      .andExpect(status().isOk())
-      .andExpect(forwardedUrl(INDEX_URL));
+    mockMvc.perform(get(path)).andExpect(status().isOk()).andExpect(forwardedUrl(INDEX_URL));
   }
 
   @DisplayName("Route endpoint should not forward")
   @ParameterizedTest(name = "if someone requests \"{0}\"")
   @ArgumentsSource(RouteShouldNotForwardArgumentsProvider.class)
   void route_should_not_forward_if_someone_requests(String path) throws Exception {
-    mockMvc.perform(get(path))
-      .andExpect(status().isOk())
-      .andExpect(forwardedUrl(null));
+    mockMvc.perform(get(path)).andExpect(status().isOk()).andExpect(forwardedUrl(null));
   }
 
   @SuppressWarnings("unchecked")
@@ -91,27 +87,23 @@ class ApplicationForwardControllerIT {
     createDirectory(parentDir);
 
     Set<Pair<String, String>> namePatterns = newHashSet(of("index", "html"), of("favicon", "ico"));
-    namePatterns.stream()
-      .forEach(p -> addResource(parentDir, p, false));
+    namePatterns.stream().forEach(p -> addResource(parentDir, p, false));
 
     namePatterns = newHashSet(of("main", "js"), of("polyfills", "js"), of("runtime", "js"), of("styles", "css"),
       of("common", "js"));
-    namePatterns.stream()
-      .forEach(p -> addResource(parentDir, p, true));
+    namePatterns.stream().forEach(p -> addResource(parentDir, p, true));
 
     Path assetsDir = parentDir.resolve("assets");
     createDirectory(assetsDir);
 
     namePatterns = newHashSet(of("flag", "png"), of("flag", "jpg"));
-    namePatterns.stream()
-      .forEach(p -> addResource(assetsDir, p, false));
+    namePatterns.stream().forEach(p -> addResource(assetsDir, p, false));
 
     Path i18nDir = assetsDir.resolve("i18n");
     createDirectory(i18nDir);
 
     namePatterns = newHashSet(of("en", "json"), of("en", "json"), of("en", "json"));
-    namePatterns.stream()
-      .forEach(p -> addResource(i18nDir, p, false));
+    namePatterns.stream().forEach(p -> addResource(i18nDir, p, false));
   }
 
   @SneakyThrows
@@ -122,10 +114,7 @@ class ApplicationForwardControllerIT {
   }
 
   private static String relativePath(Path base, Path resource) {
-    return new StringBuilder("/").append(base.relativize(resource)
-        .toString()
-        .replace('\\', '/'))
-      .toString();
+    return new StringBuilder("/").append(base.relativize(resource).toString().replace('\\', '/')).toString();
   }
 
   @TestConfiguration
@@ -134,17 +123,13 @@ class ApplicationForwardControllerIT {
     @Override
     @SneakyThrows
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      walk(tempDir).filter(Files::isRegularFile)
-        .forEach(f -> addResourceHandler(registry, f, tempDir));
+      walk(tempDir).filter(Files::isRegularFile).forEach(f -> addResourceHandler(registry, f, tempDir));
     }
 
     private void addResourceHandler(ResourceHandlerRegistry registry, Path resource, Path base) {
       String handler = relativePath(base, resource);
-      String location = new StringBuilder("file:///").append(base)
-        .append("/")
-        .toString();
-      registry.addResourceHandler(handler)
-        .addResourceLocations(location);
+      String location = new StringBuilder("file:///").append(base).append("/").toString();
+      registry.addResourceHandler(handler).addResourceLocations(location);
     }
   }
 
@@ -152,9 +137,7 @@ class ApplicationForwardControllerIT {
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-      return walk(tempDir).filter(Files::isRegularFile)
-        .map(f -> relativePath(tempDir, f))
-        .map(Arguments::arguments);
+      return walk(tempDir).filter(Files::isRegularFile).map(f -> relativePath(tempDir, f)).map(Arguments::arguments);
     }
   }
 

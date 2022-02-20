@@ -21,8 +21,7 @@ import org.springframework.stereotype.Component;
 public class ServiceLogsModelProcessor implements RepresentationModelProcessor<ServiceLogsModel> {
 
   @Override
-  public @NonNull
-  ServiceLogsModel process(@NonNull ServiceLogsModel entity) {
+  public @NonNull ServiceLogsModel process(@NonNull ServiceLogsModel entity) {
     return entity.add(getSelfLink())
       .mapLinkIf(hasAuthority(SERVICE_LOGS_DELETE), LinkRelation.of(SELF),
         link -> link.andAffordance(getDeleteAffordance()));
@@ -32,8 +31,7 @@ public class ServiceLogsModelProcessor implements RepresentationModelProcessor<S
     return withDefaultAffordance(linkTo(methodOn(ServiceLogsController.class).getServiceLogs()).withSelfRel());
   }
 
-  private @NonNull
-  Affordance getDeleteAffordance() {
+  private @NonNull Affordance getDeleteAffordance() {
     return afford(methodOn(ServiceLogsController.class).deleteServiceLogs());
   }
 

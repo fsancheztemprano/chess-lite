@@ -12,11 +12,7 @@ import org.springframework.http.HttpMethod;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HateoasUtils {
 
-  public static @NonNull
-  Link withDefaultAffordance(Link link) {
-    return of(link)
-      .afford(HttpMethod.HEAD)
-      .withName(HateoasRelations.DEFAULT)
-      .toLink();
+  public static @NonNull Link withDefaultAffordance(Link link) {
+    return of(link).afford(HttpMethod.HEAD).withName(HateoasRelations.DEFAULT).toLink();
   }
 }

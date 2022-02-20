@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 public class UuidUtils {
 
   public static String randomUUID() {
-    return UUID.randomUUID()
-      .toString();
+    return UUID.randomUUID().toString();
   }
 }

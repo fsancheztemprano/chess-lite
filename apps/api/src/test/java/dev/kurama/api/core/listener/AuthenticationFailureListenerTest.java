@@ -28,8 +28,7 @@ class AuthenticationFailureListenerTest {
     Authentication authentication = mock(Authentication.class);
     AuthenticationException exception = mock(AuthenticationException.class);
     String principal = "ANON_USER";
-    doReturn(principal).when(authentication)
-      .getPrincipal();
+    doReturn(principal).when(authentication).getPrincipal();
     AuthenticationFailureBadCredentialsEvent event = new AuthenticationFailureBadCredentialsEvent(authentication,
       exception);
 

@@ -50,14 +50,8 @@ class RoleModelAssemblerTest {
 
   @Test
   void should_map_to_paged_model_and_add_links() {
-    RoleModel admin = RoleModel.builder()
-      .id(randomUUID())
-      .name("ADMIN")
-      .build();
-    RoleModel mod = RoleModel.builder()
-      .id(randomUUID())
-      .name("MOD")
-      .build();
+    RoleModel admin = RoleModel.builder().id(randomUUID()).name("ADMIN").build();
+    RoleModel mod = RoleModel.builder().id(randomUUID()).name("MOD").build();
     PageImpl<RoleModel> pagedRoles = new PageImpl<>(newArrayList(admin, mod), of(2, 2), 10);
 
     PagedModel<RoleModel> actual = assembler.toPagedModel(pagedRoles);
@@ -68,8 +62,7 @@ class RoleModelAssemblerTest {
       .anySatisfy(id -> assertThat(id).isEqualTo(mod.getId()));
     assertThat(actual.getLinks()).hasSize(5);
     assertThat(actual.getLink(SELF)).isPresent()
-      .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(
-        baseUri.toString()));
+      .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(baseUri.toString()));
 
     assertThat(actual.getLinks()).extracting("rel")
       .anySatisfy(name -> assertThat(name).hasToString("first"))
@@ -84,8 +77,7 @@ class RoleModelAssemblerTest {
 
     PagedModel<RoleModel> actual = assembler.toPagedModel(pagedRoles);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(1)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(1)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD));
@@ -93,15 +85,13 @@ class RoleModelAssemblerTest {
 
   @Test
   void should_add_create_affordance_if_user_has_role_create_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_CREATE))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_CREATE)).thenReturn(true);
 
     PageImpl<RoleModel> pagedRoles = new PageImpl<>(newArrayList(), of(0, 1), 0);
 
     PagedModel<RoleModel> actual = assembler.toPagedModel(pagedRoles);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(2)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))

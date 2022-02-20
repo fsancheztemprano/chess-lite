@@ -78,8 +78,7 @@ class AdministrationRootResourceAssemblerTest {
 
   @Test
   void should_have_service_logs_link_with_service_logs_read_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(SERVICE_LOGS_READ))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(SERVICE_LOGS_READ)).thenReturn(true);
 
     RepresentationModel<RootResource> actual = assembler.assemble();
 
@@ -90,8 +89,7 @@ class AdministrationRootResourceAssemblerTest {
 
   @Test
   void should_have_global_settings_link_with_global_settings_read_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(GLOBAL_SETTINGS_READ))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(GLOBAL_SETTINGS_READ)).thenReturn(true);
 
     RepresentationModel<RootResource> actual = assembler.assemble();
 
@@ -105,8 +103,7 @@ class AdministrationRootResourceAssemblerTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_USER_MANAGEMENT_ROOT))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_USER_MANAGEMENT_ROOT)).thenReturn(true);
     }
 
     @Test
@@ -114,15 +111,12 @@ class AdministrationRootResourceAssemblerTest {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).isNotNull()
-        .hasSize(1);
-      assertThat(embeddeds.get(0)
-        .getRel()).isPresent()
+      assertThat(embeddeds).isNotNull().hasSize(1);
+      assertThat(embeddeds.get(0).getRel()).isPresent()
         .isPresent()
         .hasValueSatisfying(link -> assertThat(link.value()).isEqualTo(USER_MANAGEMENT_ROOT_REL));
 
-      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
-        .getValue();
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0).getValue();
       assertThat(embedded.getLinks()).hasSize(1);
       assertThat(embedded.getLink(SELF)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(ADMINISTRATION_ROOT_PATH))
@@ -134,17 +128,14 @@ class AdministrationRootResourceAssemblerTest {
 
     @Test
     void should_have_user_management_resource_embedded_with_links_given_user_read_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_READ))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_READ)).thenReturn(true);
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).isNotNull()
-        .hasSize(1);
+      assertThat(embeddeds).isNotNull().hasSize(1);
 
-      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
-        .getValue();
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0).getValue();
       assertThat(embedded.getLinks()).hasSize(3);
 
       assertThat(embedded.getLink(SELF)).isPresent();
@@ -161,23 +152,17 @@ class AdministrationRootResourceAssemblerTest {
 
     @Test
     void should_have_user_management_resource_embedded_with_create_affordance_given_user_create_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_READ))
-        .thenReturn(true);
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_CREATE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_READ)).thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_CREATE)).thenReturn(true);
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).isNotNull()
-        .hasSize(1);
+      assertThat(embeddeds).isNotNull().hasSize(1);
 
-      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
-        .getValue();
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0).getValue();
       assertThat(embedded.getLinks()).hasSize(3);
-      assertThat(embedded.getRequiredLink(USERS_REL)
-        .getAffordances())
-        .hasSize(1)
+      assertThat(embedded.getRequiredLink(USERS_REL).getAffordances()).hasSize(1)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains("create", HttpMethod.POST));
@@ -189,8 +174,7 @@ class AdministrationRootResourceAssemblerTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_ROLE_MANAGEMENT_ROOT))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ADMIN_ROLE_MANAGEMENT_ROOT)).thenReturn(true);
     }
 
     @Test
@@ -198,15 +182,12 @@ class AdministrationRootResourceAssemblerTest {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).isNotNull()
-        .hasSize(1);
-      assertThat(embeddeds.get(0)
-        .getRel()).isPresent()
+      assertThat(embeddeds).isNotNull().hasSize(1);
+      assertThat(embeddeds.get(0).getRel()).isPresent()
         .isPresent()
         .hasValueSatisfying(link -> assertThat(link.value()).isEqualTo(ROLE_MANAGEMENT_ROOT_REL));
 
-      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
-        .getValue();
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0).getValue();
       assertThat(embedded.getLinks()).hasSize(1);
       assertThat(embedded.getLink(SELF)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(ADMINISTRATION_ROOT_PATH))
@@ -219,17 +200,14 @@ class AdministrationRootResourceAssemblerTest {
 
     @Test
     void should_have_role_management_resource_embedded_with_links_given_role_read_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ)).thenReturn(true);
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).isNotNull()
-        .hasSize(1);
+      assertThat(embeddeds).isNotNull().hasSize(1);
 
-      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
-        .getValue();
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0).getValue();
       assertThat(embedded.getLinks()).hasSize(3);
 
       assertThat(embedded.getLink(SELF)).isPresent();
@@ -245,23 +223,17 @@ class AdministrationRootResourceAssemblerTest {
 
     @Test
     void should_have_role_management_resource_embedded_with_create_affordance_given_role_create_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
-        .thenReturn(true);
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_CREATE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ)).thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_CREATE)).thenReturn(true);
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).isNotNull()
-        .hasSize(1);
+      assertThat(embeddeds).isNotNull().hasSize(1);
 
-      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
-        .getValue();
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0).getValue();
       assertThat(embedded.getLinks()).hasSize(3);
-      assertThat(embedded.getRequiredLink(ROLES_REL)
-        .getAffordances())
-        .hasSize(1)
+      assertThat(embedded.getRequiredLink(ROLES_REL).getAffordances()).hasSize(1)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains("create", HttpMethod.POST));
@@ -269,17 +241,14 @@ class AdministrationRootResourceAssemblerTest {
 
     @Test
     void should_have_authority_management_resource_embedded_with_links_given_authority_read_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(AUTHORITY_READ))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(AUTHORITY_READ)).thenReturn(true);
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
       ArrayList<EmbeddedWrapper> embeddeds = getEmbeddeds(actual);
-      assertThat(embeddeds).isNotNull()
-        .hasSize(1);
+      assertThat(embeddeds).isNotNull().hasSize(1);
 
-      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0)
-        .getValue();
+      RepresentationModel<?> embedded = (RepresentationModel<?>) embeddeds.get(0).getValue();
       assertThat(embedded.getLinks()).hasSize(2);
 
       assertThat(embedded.getLink(SELF)).isPresent();

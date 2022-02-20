@@ -21,8 +21,7 @@ class GlobalSettingsChangedEventEmitterTest {
 
   @Test
   void should_emit_global_settings_updated_event() {
-    GlobalSettingsChangedEvent event = GlobalSettingsChangedEvent.builder()
-      .build();
+    GlobalSettingsChangedEvent event = GlobalSettingsChangedEvent.builder().build();
 
     globalSettingsChangedEventEmitter.emitGlobalSettingsUpdatedEvent();
 

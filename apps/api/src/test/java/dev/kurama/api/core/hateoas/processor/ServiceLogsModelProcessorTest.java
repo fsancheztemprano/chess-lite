@@ -30,9 +30,7 @@ class ServiceLogsModelProcessorTest {
 
     authorityUtils = Mockito.mockStatic(AuthorityUtils.class);
 
-    model = ServiceLogsModel.builder()
-      .logs("Logs")
-      .build();
+    model = ServiceLogsModel.builder().logs("Logs").build();
   }
 
   @AfterEach
@@ -46,8 +44,7 @@ class ServiceLogsModelProcessorTest {
 
     assertThat(actual.getLinks()).hasSize(1);
     assertThat(actual.getLink(SELF)).isPresent()
-      .hasValueSatisfying(
-        link -> assertThat(link.getHref()).isEqualTo(SERVICE_LOGS_PATH));
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(SERVICE_LOGS_PATH));
 
   }
 
@@ -55,8 +52,7 @@ class ServiceLogsModelProcessorTest {
   void should_have_default_affordance() {
     ServiceLogsModel actual = processor.process(model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(2)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -65,13 +61,11 @@ class ServiceLogsModelProcessorTest {
 
   @Test
   void should_have_delete_affordance_if_user_has_service_logs_delete_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(SERVICE_LOGS_DELETE))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(SERVICE_LOGS_DELETE)).thenReturn(true);
 
     ServiceLogsModel actual = processor.process(model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(3)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))

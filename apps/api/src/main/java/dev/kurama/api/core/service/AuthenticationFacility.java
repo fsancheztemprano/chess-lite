@@ -30,12 +30,9 @@ public class AuthenticationFacility {
 
   public Pair<User, String> login(String username, String password) throws RoleCanNotLoginException {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-    var user = userService.findUserByUsername(username)
-      .orElseThrow(() -> new UsernameNotFoundException(username));
-    if (!user.getRole()
-      .isCanLogin()) {
-      throw new RoleCanNotLoginException(user.getRole()
-        .getName());
+    var user = userService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    if (!user.getRole().isCanLogin()) {
+      throw new RoleCanNotLoginException(user.getRole().getName());
     }
     if (user.isLocked()) {
       throw new LockedException(username);
@@ -48,8 +45,7 @@ public class AuthenticationFacility {
     UserPrincipal userPrincipal = new UserPrincipal(user);
     var token = jwtTokenProvider.generateJWTToken(userPrincipal);
     DecodedJWT decodedToken = jwtTokenProvider.getDecodedJWT(token);
-    SecurityContextHolder.getContext()
-      .setAuthentication(jwtTokenProvider.getAuthentication(decodedToken, null));
+    SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(decodedToken, null));
 
     return Pair.of(user, jwtTokenProvider.generateJWTToken(userPrincipal));
   }

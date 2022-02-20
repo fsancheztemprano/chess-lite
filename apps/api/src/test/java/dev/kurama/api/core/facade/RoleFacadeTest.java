@@ -47,12 +47,9 @@ class RoleFacadeTest {
   @Test
   void should_get_all_roles() {
     PageRequest PAGEABLE = PageRequest.of(1, 2);
-    PageImpl<Role> pagedRoles = new PageImpl<>(newArrayList(Role.builder()
-      .build()), PAGEABLE, 1);
-    PageImpl<RoleModel> roleModels = new PageImpl<>(newArrayList(RoleModel.builder()
-      .build()), PAGEABLE, 1);
-    PagedModel<RoleModel> expected = PagedModel.of(roleModels.getContent(),
-      new PagedModel.PageMetadata(2, 1, 2));
+    PageImpl<Role> pagedRoles = new PageImpl<>(newArrayList(Role.builder().build()), PAGEABLE, 1);
+    PageImpl<RoleModel> roleModels = new PageImpl<>(newArrayList(RoleModel.builder().build()), PAGEABLE, 1);
+    PagedModel<RoleModel> expected = PagedModel.of(roleModels.getContent(), new PagedModel.PageMetadata(2, 1, 2));
     when(roleService.getAllRoles(PAGEABLE, "")).thenReturn(pagedRoles);
     when(roleMapper.rolePageToRoleModelPage(pagedRoles)).thenReturn(roleModels);
     when(roleModelAssembler.toPagedModel(roleModels)).thenReturn(expected);
@@ -67,14 +64,8 @@ class RoleFacadeTest {
 
   @Test
   void should_find_by_role_id() throws RoleNotFoundException {
-    Role role = Role.builder()
-      .name("TEST_ROLE")
-      .setRandomUUID()
-      .build();
-    RoleModel expected = RoleModel.builder()
-      .name(role.getName())
-      .id(role.getId())
-      .build();
+    Role role = Role.builder().name("TEST_ROLE").setRandomUUID().build();
+    RoleModel expected = RoleModel.builder().name(role.getName()).id(role.getId()).build();
     when(roleService.findRoleById(role.getId())).thenReturn(Optional.of(role));
     when(roleMapper.roleToRoleModel(role)).thenReturn(expected);
 
@@ -87,14 +78,8 @@ class RoleFacadeTest {
 
   @Test
   void should_call_service_to_create_role() throws RoleExistsException {
-    Role role = Role.builder()
-      .name("TEST_ROLE")
-      .setRandomUUID()
-      .build();
-    RoleModel expected = RoleModel.builder()
-      .name(role.getName())
-      .id(role.getId())
-      .build();
+    Role role = Role.builder().name("TEST_ROLE").setRandomUUID().build();
+    RoleModel expected = RoleModel.builder().name(role.getName()).id(role.getId()).build();
     when(roleService.create(role.getName())).thenReturn(role);
     when(roleMapper.roleToRoleModel(role)).thenReturn(expected);
 
@@ -108,17 +93,9 @@ class RoleFacadeTest {
   @Test
   void should_call_service_to_update_role() throws ImmutableRoleException, RoleNotFoundException {
     String id = randomUUID();
-    RoleUpdateInput input = RoleUpdateInput.builder()
-      .name("TEST_ROLE")
-      .build();
-    Role role = Role.builder()
-      .name(input.getName())
-      .setRandomUUID()
-      .build();
-    RoleModel expected = RoleModel.builder()
-      .name(role.getName())
-      .id(role.getId())
-      .build();
+    RoleUpdateInput input = RoleUpdateInput.builder().name("TEST_ROLE").build();
+    Role role = Role.builder().name(input.getName()).setRandomUUID().build();
+    RoleModel expected = RoleModel.builder().name(role.getName()).id(role.getId()).build();
     when(roleService.update(id, input)).thenReturn(role);
     when(roleMapper.roleToRoleModel(role)).thenReturn(expected);
 

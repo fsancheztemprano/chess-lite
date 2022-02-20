@@ -14,7 +14,6 @@ class HttpUtilsTest {
     String token = "test.token";
     HttpHeaders jwtHeader = HttpUtils.getJwtHeader(token);
 
-    assertEquals(Objects.requireNonNull(jwtHeader.get(SecurityConstant.JWT_TOKEN_HEADER))
-      .get(0), token);
+    assertEquals(Objects.requireNonNull(jwtHeader.get(SecurityConstant.JWT_TOKEN_HEADER)).get(0), token);
   }
 }

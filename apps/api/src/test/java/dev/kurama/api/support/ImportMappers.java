@@ -17,13 +17,8 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({
-  AuthorityMapperImpl.class,
-  GlobalSettingsMapperImpl.class,
-  RoleMapperImpl.class,
-  UserPreferencesMapperImpl.class,
-  UserMapperImpl.class
-})
+@Import({AuthorityMapperImpl.class, GlobalSettingsMapperImpl.class, RoleMapperImpl.class,
+  UserPreferencesMapperImpl.class, UserMapperImpl.class})
 public @interface ImportMappers {
 
 }

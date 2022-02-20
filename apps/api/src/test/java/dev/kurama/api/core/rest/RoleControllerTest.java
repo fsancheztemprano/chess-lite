@@ -67,11 +67,7 @@ class RoleControllerTest {
       .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
       .build();
 
-    role = RoleModel.builder()
-      .id(randomUUID())
-      .coreRole(true)
-      .name("R1")
-      .build();
+    role = RoleModel.builder().id(randomUUID()).coreRole(true).name("R1").build();
   }
 
   @Test
@@ -101,11 +97,9 @@ class RoleControllerTest {
     @Test
     void get_nonexistent_role_should_throw_exception() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(RoleNotFoundException.class).when(facade)
-        .findByRoleId(notFoundId);
+      doThrow(RoleNotFoundException.class).when(facade).findByRoleId(notFoundId);
 
-      mockMvc.perform(get(ROLE_PATH + "/" + notFoundId))
-        .andExpect(status().isNotFound());
+      mockMvc.perform(get(ROLE_PATH + "/" + notFoundId)).andExpect(status().isNotFound());
     }
   }
 
@@ -114,79 +108,57 @@ class RoleControllerTest {
 
     @Test
     void should_create_a_role() throws Exception {
-      RoleCreateInput input = RoleCreateInput.builder()
-        .name("NEW_ROLE")
-        .build();
+      RoleCreateInput input = RoleCreateInput.builder().name("NEW_ROLE").build();
       when(facade.create(input.getName())).thenReturn(role);
 
-      mockMvc.perform(post(ROLE_PATH)
-          .accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", equalTo(role.getId())));
+      mockMvc.perform(post(ROLE_PATH).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(role.getId())));
 
     }
 
     @Test
     void creating_and_existing_role_should_throw_exception() throws Exception {
-      RoleCreateInput input = RoleCreateInput.builder()
-        .name("EXISTING")
-        .build();
-      doThrow(RoleExistsException.class).when(facade)
-        .create(input.getName());
+      RoleCreateInput input = RoleCreateInput.builder().name("EXISTING").build();
+      doThrow(RoleExistsException.class).when(facade).create(input.getName());
 
-      mockMvc.perform(post(ROLE_PATH)
-          .accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-        .andExpect(status().isConflict());
+      mockMvc.perform(post(ROLE_PATH).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isConflict());
     }
   }
 
   @Nested
   class UpdateRoleTests {
 
-    RoleUpdateInput input = RoleUpdateInput.builder()
-      .name("NEW_NAME")
-      .canLogin(true)
-      .build();
+    RoleUpdateInput input = RoleUpdateInput.builder().name("NEW_NAME").canLogin(true).build();
 
     @Test
     void should_update_a_role() throws Exception {
       when(facade.update(role.getId(), input)).thenReturn(role);
 
-      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId())
-          .accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", equalTo(role.getId())));
+      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId()).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(role.getId())));
     }
 
     @Test
     void updating_nonexistent_role_should_throw_exception() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(RoleNotFoundException.class).when(facade)
-        .update(notFoundId, input);
+      doThrow(RoleNotFoundException.class).when(facade).update(notFoundId, input);
 
-      mockMvc.perform(patch(ROLE_PATH + "/" + notFoundId)
-          .accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-        .andExpect(status().isNotFound());
+      mockMvc.perform(patch(ROLE_PATH + "/" + notFoundId).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
     }
 
     @Test
     void updating_immutable_role_should_throw_exception() throws Exception {
-      doThrow(ImmutableRoleException.class).when(facade)
-        .update(role.getId(), input);
+      doThrow(ImmutableRoleException.class).when(facade).update(role.getId(), input);
 
-      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId())
-          .accept(MediaType.APPLICATION_JSON)
-          .contentType(MediaType.APPLICATION_JSON)
-          .content(asJsonString(input)))
-        .andExpect(status().isForbidden());
+      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId()).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isForbidden());
     }
   }
 
@@ -195,8 +167,7 @@ class RoleControllerTest {
 
     @Test
     void should_delete_a_role() throws Exception {
-      mockMvc.perform(delete(ROLE_PATH + "/" + role.getId()))
-        .andExpect(status().isNoContent());
+      mockMvc.perform(delete(ROLE_PATH + "/" + role.getId())).andExpect(status().isNoContent());
 
       verify(facade).delete(role.getId());
     }
@@ -204,21 +175,17 @@ class RoleControllerTest {
     @Test
     void deleting_nonexistent_role_should_throw_exception() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(RoleNotFoundException.class).when(facade)
-        .delete(notFoundId);
+      doThrow(RoleNotFoundException.class).when(facade).delete(notFoundId);
 
-      mockMvc.perform(delete(ROLE_PATH + "/" + notFoundId))
-        .andExpect(status().isNotFound());
+      mockMvc.perform(delete(ROLE_PATH + "/" + notFoundId)).andExpect(status().isNotFound());
     }
 
 
     @Test
     void deleting_immutable_role_should_throw_exception() throws Exception {
-      doThrow(ImmutableRoleException.class).when(facade)
-        .delete(role.getId());
+      doThrow(ImmutableRoleException.class).when(facade).delete(role.getId());
 
-      mockMvc.perform(delete(ROLE_PATH + "/" + role.getId()))
-        .andExpect(status().isForbidden());
+      mockMvc.perform(delete(ROLE_PATH + "/" + role.getId())).andExpect(status().isForbidden());
     }
   }
 

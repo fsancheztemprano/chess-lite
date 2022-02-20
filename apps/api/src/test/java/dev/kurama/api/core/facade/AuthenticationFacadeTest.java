@@ -64,28 +64,18 @@ class AuthenticationFacadeTest {
 
   @Test
   void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException {
-    LoginInput loginInput = LoginInput.builder()
-      .username("username")
-      .password("password")
-      .build();
-    User user = User.builder()
-      .setRandomUUID()
-      .username(loginInput.getUsername())
-      .build();
+    LoginInput loginInput = LoginInput.builder().username("username").password("password").build();
+    User user = User.builder().setRandomUUID().username(loginInput.getUsername()).build();
     String token = "token";
     doReturn(Pair.of(user, token)).when(authenticationFacility)
       .login(loginInput.getUsername(), loginInput.getPassword());
-    UserModel userModel = UserModel.builder()
-      .username(loginInput.getUsername())
-      .build();
+    UserModel userModel = UserModel.builder().username(loginInput.getUsername()).build();
     when(userMapper.userToUserModel(user)).thenReturn(userModel);
 
     AuthenticatedUserExcerpt authenticatedUserExcerpt = facade.login(loginInput);
 
-    assertThat(authenticatedUserExcerpt).isNotNull()
-      .hasFieldOrPropertyWithValue("userModel", userModel);
-    assertThat(Objects.requireNonNull(authenticatedUserExcerpt.getHeaders()
-        .get(SecurityConstant.JWT_TOKEN_HEADER))
+    assertThat(authenticatedUserExcerpt).isNotNull().hasFieldOrPropertyWithValue("userModel", userModel);
+    assertThat(Objects.requireNonNull(authenticatedUserExcerpt.getHeaders().get(SecurityConstant.JWT_TOKEN_HEADER))
       .get(0)).isEqualTo(token);
   }
 
@@ -100,7 +90,8 @@ class AuthenticationFacadeTest {
 
   @Test
   void activate_account_should_call_service()
-    throws EmailNotFoundException, ActivationTokenExpiredException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException {
+    throws EmailNotFoundException, ActivationTokenExpiredException, ActivationTokenNotFoundException,
+    ActivationTokenUserMismatchException {
     AccountActivationInput input = AccountActivationInput.builder()
       .email("email@example.com")
       .password("password")

@@ -24,15 +24,13 @@ public class RoleFacility {
 
   @Transactional
   public void deleteRole(String id) throws RoleNotFoundException, ImmutableRoleException {
-    Role role = roleService.findRoleById(id)
-      .orElseThrow(() -> new RoleNotFoundException(id));
+    Role role = roleService.findRoleById(id).orElseThrow(() -> new RoleNotFoundException(id));
 
     if (role.isCoreRole()) {
       throw new ImmutableRoleException(id);
     }
 
-    Role defaultRole = globalSettingsService.getGlobalSettings()
-      .getDefaultRole();
+    Role defaultRole = globalSettingsService.getGlobalSettings().getDefaultRole();
 
     userService.reassignToRole(role.getUsers(), defaultRole);
 

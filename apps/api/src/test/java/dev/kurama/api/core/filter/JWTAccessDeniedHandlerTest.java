@@ -27,8 +27,7 @@ class JWTAccessDeniedHandlerTest {
     HttpServletRequest request = mock(HttpServletRequest.class);
     HttpServletResponse response = mock(HttpServletResponse.class);
     ServletOutputStream out = mock(ServletOutputStream.class);
-    doReturn(out).when(response)
-      .getOutputStream();
+    doReturn(out).when(response).getOutputStream();
 
     handler.handle(request, response, null);
 

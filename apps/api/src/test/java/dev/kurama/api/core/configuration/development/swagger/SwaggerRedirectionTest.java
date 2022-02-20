@@ -26,14 +26,12 @@ class SwaggerRedirectionTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-      .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
   @Test
   void should_redirect_to_hal_explorer() throws Exception {
-    mockMvc.perform(
-        get("/swagger-ui"))
+    mockMvc.perform(get("/swagger-ui"))
       .andExpect(status().is3xxRedirection())
       .andExpect(redirectedUrl("/swagger-ui/index.html"));
   }

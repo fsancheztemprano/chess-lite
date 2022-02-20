@@ -36,12 +36,7 @@ class RoleModelProcessorTest {
 
     authorityUtils = Mockito.mockStatic(AuthorityUtils.class);
 
-    model = RoleModel.builder()
-      .id(randomUUID())
-      .name("TEST_ROLE")
-      .canLogin(false)
-      .coreRole(true)
-      .build();
+    model = RoleModel.builder().id(randomUUID()).name("TEST_ROLE").canLogin(false).coreRole(true).build();
   }
 
   @AfterEach
@@ -55,8 +50,7 @@ class RoleModelProcessorTest {
 
     assertThat(actual.getLinks()).hasSize(2);
     assertThat(actual.getLink(SELF)).isPresent()
-      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-        format("%s/%s", ROLE_PATH, model.getId())));
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(format("%s/%s", ROLE_PATH, model.getId())));
     assertThat(actual.getLink(ROLES_REL)).isPresent()
       .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(ROLE_PATH));
 
@@ -66,8 +60,7 @@ class RoleModelProcessorTest {
   void should_have_default_affordance() {
     RoleModel actual = processor.process(model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(2)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -76,15 +69,13 @@ class RoleModelProcessorTest {
 
   @Test
   void should_have_delete_affordance_if_user_has_role_delete_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_DELETE))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_DELETE)).thenReturn(true);
 
     model.setCoreRole(false);
 
     RoleModel actual = processor.process(model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(3)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -95,18 +86,15 @@ class RoleModelProcessorTest {
 
   @Test
   void should_have_update_affordance_if_user_has_role_update_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ)).thenReturn(true);
 
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_UPDATE))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_UPDATE)).thenReturn(true);
 
     model.setCoreRole(false);
 
     RoleModel actual = processor.process(model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(3)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -116,18 +104,15 @@ class RoleModelProcessorTest {
 
   @Test
   void should_have_update_affordance_if_user_has_core_role_update_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ)).thenReturn(true);
 
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_UPDATE_CORE))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_UPDATE_CORE)).thenReturn(true);
 
     model.setCoreRole(true);
 
     RoleModel actual = processor.process(model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(3)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))

@@ -34,9 +34,7 @@ class GlobalSettingsModelProcessorTest {
 
     model = GlobalSettingsModel.builder()
       .signupOpen(false)
-      .defaultRole(RoleModel.builder()
-        .id(randomUUID())
-        .build())
+      .defaultRole(RoleModel.builder().id(randomUUID()).build())
       .build();
   }
 
@@ -51,16 +49,14 @@ class GlobalSettingsModelProcessorTest {
 
     assertThat(actual.getLinks()).hasSize(1);
     assertThat(actual.getLink(SELF)).isPresent()
-      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-        GLOBAL_SETTINGS_PATH));
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(GLOBAL_SETTINGS_PATH));
   }
 
   @Test
   void should_have_default_affordance() {
     GlobalSettingsModel actual = processor.process(this.model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(2)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -70,13 +66,11 @@ class GlobalSettingsModelProcessorTest {
 
   @Test
   void should_have_update_affordance_if_user_has_global_setting_update_authority() {
-    authorityUtils.when(() -> AuthorityUtils.hasAuthority(GLOBAL_SETTINGS_UPDATE))
-      .thenReturn(true);
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(GLOBAL_SETTINGS_UPDATE)).thenReturn(true);
 
     GlobalSettingsModel actual = processor.process(this.model);
 
-    assertThat(actual.getRequiredLink(SELF)
-      .getAffordances()).hasSize(3)
+    assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))

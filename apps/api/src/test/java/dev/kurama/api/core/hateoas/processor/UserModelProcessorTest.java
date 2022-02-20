@@ -56,9 +56,7 @@ class UserModelProcessorTest {
     model = UserModel.builder()
       .id(randomUUID())
       .username(randomUUID())
-      .userPreferences(UserPreferencesModel.builder()
-        .id(randomUUID())
-        .build())
+      .userPreferences(UserPreferencesModel.builder().id(randomUUID()).build())
       .build();
   }
 
@@ -72,8 +70,7 @@ class UserModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUsername()))
-        .thenReturn(false);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUsername())).thenReturn(false);
     }
 
     @Test
@@ -82,19 +79,16 @@ class UserModelProcessorTest {
 
       assertThat(actual.getLinks()).hasSize(2);
       assertThat(actual.getLink(SELF)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          format("%s/%s", USER_PATH, model.getId())));
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(format("%s/%s", USER_PATH, model.getId())));
       assertThat(actual.getLink(USER_PREFERENCES_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          format("%s/%s", USER_PREFERENCES_PATH, model.getUserPreferences()
-            .getId())));
+          format("%s/%s", USER_PREFERENCES_PATH, model.getUserPreferences().getId())));
     }
 
     @Test
     void should_have_user_default_affordance() {
       UserModel actual = processor.process(model);
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(2)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -104,26 +98,22 @@ class UserModelProcessorTest {
 
     @Test
     void should_have_link_to_all_users_if_user_has_user_read_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_READ))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_READ)).thenReturn(true);
 
       UserModel actual = processor.process(model);
 
       assertThat(actual.getLinks()).hasSize(3);
       assertThat(actual.getLink(USERS_REL)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref())
-          .startsWith(USER_PATH));
+        .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(USER_PATH));
     }
 
     @Test
     void should_have_affordance_to_delete_user_if_user_has_user_delete_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_DELETE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_DELETE)).thenReturn(true);
 
       UserModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(3)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -133,13 +123,11 @@ class UserModelProcessorTest {
 
     @Test
     void should_have_affordance_to_update_user_if_user_has_user_update_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_UPDATE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_UPDATE)).thenReturn(true);
 
       UserModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(4)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(4)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -150,13 +138,11 @@ class UserModelProcessorTest {
 
     @Test
     void should_have_affordance_to_update_users_role_if_user_has_user_update_role_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_UPDATE_ROLE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_UPDATE_ROLE)).thenReturn(true);
 
       UserModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(3)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -166,13 +152,11 @@ class UserModelProcessorTest {
 
     @Test
     void should_have_affordance_to_update_users_authorities_if_user_has_user_update_authorities_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_UPDATE_AUTHORITIES))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(USER_UPDATE_AUTHORITIES)).thenReturn(true);
 
       UserModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(3)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -186,10 +170,8 @@ class UserModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUsername()))
-        .thenReturn(true);
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUsername())).thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ)).thenReturn(true);
     }
 
     @Test
@@ -198,19 +180,16 @@ class UserModelProcessorTest {
 
       assertThat(actual.getLinks()).hasSize(2);
       assertThat(actual.getLink(SELF)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          USER_PROFILE_PATH));
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(USER_PROFILE_PATH));
       assertThat(actual.getLink(USER_PREFERENCES_REL)).isPresent()
-        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
-          USER_PROFILE_PATH + USER_PROFILE_PREFERENCES));
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES));
     }
 
     @Test
     void should_have_current_users_default_affordance_model() {
       UserModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(2)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(2)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -219,13 +198,11 @@ class UserModelProcessorTest {
 
     @Test
     void should_have_update_affordances_to_update_profile_if_user_has_profile_update_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_UPDATE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_UPDATE)).thenReturn(true);
 
       UserModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(5)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(5)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
@@ -237,13 +214,11 @@ class UserModelProcessorTest {
 
     @Test
     void should_have_affordance_to_delete_profile_if_user_has_profile_delete_authority() {
-      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_DELETE))
-        .thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_DELETE)).thenReturn(true);
 
       UserModel actual = processor.process(model);
 
-      assertThat(actual.getRequiredLink(SELF)
-        .getAffordances()).hasSize(3)
+      assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(3)
         .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
         .extracting("name", "httpMethod")
         .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))

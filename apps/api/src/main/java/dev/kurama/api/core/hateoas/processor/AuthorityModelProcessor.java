@@ -19,11 +19,8 @@ import org.springframework.stereotype.Component;
 public class AuthorityModelProcessor implements RepresentationModelProcessor<AuthorityModel> {
 
   @Override
-  public @NonNull
-  AuthorityModel process(@NonNull AuthorityModel entity) {
-    return !hasAuthority(AUTHORITY_READ) ? entity : entity
-      .add(getSelfLink(entity.getId()))
-      .add(getParentLink());
+  public @NonNull AuthorityModel process(@NonNull AuthorityModel entity) {
+    return !hasAuthority(AUTHORITY_READ) ? entity : entity.add(getSelfLink(entity.getId())).add(getParentLink());
   }
 
   @SneakyThrows
@@ -31,8 +28,7 @@ public class AuthorityModelProcessor implements RepresentationModelProcessor<Aut
     return withDefaultAffordance(linkTo(methodOn(AuthorityController.class).get(id)).withSelfRel());
   }
 
-  private @NonNull
-  Link getParentLink() {
+  private @NonNull Link getParentLink() {
     return linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL);
   }
 }
