@@ -41,10 +41,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-@ActiveProfiles(value = "integration-test")
+
 @ImportTestSecurityConfiguration
 @WebMvcTest(controllers = AuthorityController.class)
 @Import({AuthorityFacade.class, AuthorityModelProcessor.class, AuthorityModelAssembler.class})

@@ -19,9 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("integration-test")
+
 @SpringBootTest
 class UserPreferencesChangedEventEmitterIT {
 

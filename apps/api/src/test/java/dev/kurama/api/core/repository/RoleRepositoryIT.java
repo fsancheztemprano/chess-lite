@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = NONE)
-@ActiveProfiles(value = "integration-test")
+@ActiveProfiles(value = "data-jpa")
 class RoleRepositoryIT {
 
   @Autowired

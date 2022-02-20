@@ -27,12 +27,15 @@ public class TestUtils {
   public static HttpHeaders getAuthorizationHeader(@NonNull JWTTokenProvider jwtTokenProvider,
                                                    @NonNull MockAuthorizedUser authorizedUser) {
     HttpHeaders httpHeaders = new HttpHeaders();
-    UserPrincipal userPrincipal = UserPrincipal.builder().user(User.builder()
+    UserPrincipal userPrincipal = UserPrincipal.builder()
+      .user(User.builder()
         .id(authorizedUser.getId())
         .username(authorizedUser.getUsername())
         .authorities(Arrays.stream(authorizedUser.getAuthorities())
           .map(authorization -> Authority.builder().setRandomUUID().name(authorization).build())
-          .collect(Collectors.toSet())).build()).build();
+          .collect(Collectors.toSet()))
+        .build())
+      .build();
     String token = jwtTokenProvider.generateJWTToken(userPrincipal);
 
     httpHeaders.add(HttpHeaders.AUTHORIZATION, SecurityConstant.TOKEN_PREFIX + token);

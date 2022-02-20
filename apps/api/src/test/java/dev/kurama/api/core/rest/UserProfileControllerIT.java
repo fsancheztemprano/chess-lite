@@ -55,10 +55,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-@ActiveProfiles(value = "integration-test")
+
 @ImportTestSecurityConfiguration
 @WebMvcTest(controllers = UserProfileController.class)
 @Import({UserFacade.class, UserPreferencesFacade.class, UserModelProcessor.class, UserModelAssembler.class,
