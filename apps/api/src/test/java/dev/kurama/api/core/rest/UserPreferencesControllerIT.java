@@ -11,7 +11,7 @@ import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFER
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TokenTestUtils.getAuthorizationHeader;
+import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;

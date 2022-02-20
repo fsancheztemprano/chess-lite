@@ -14,13 +14,11 @@ import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_PREFERENCES_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
-import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import dev.kurama.api.core.hateoas.model.UserModel;
-import dev.kurama.api.core.hateoas.relations.HateoasRelations;
 import dev.kurama.api.core.rest.UserController;
 import dev.kurama.api.core.rest.UserPreferencesController;
 import dev.kurama.api.core.rest.UserProfileController;
@@ -32,7 +30,6 @@ import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -88,9 +85,7 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
 
   @SneakyThrows
   private Link getCurrentUserSelfLink() {
-    return of(linkTo(methodOn(UserProfileController.class).get()).withSelfRel()).afford(HttpMethod.HEAD)
-      .withName(HateoasRelations.DEFAULT)
-      .toLink();
+    return withDefaultAffordance(linkTo(methodOn(UserProfileController.class).get()).withSelfRel());
   }
 
   @SneakyThrows

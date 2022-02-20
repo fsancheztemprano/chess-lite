@@ -26,7 +26,7 @@ public class MockAuthorizedUser {
   }
 
   public HttpHeaders getAuthorizationHeader(@NonNull JWTTokenProvider jwtTokenProvider) {
-    return TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, this);
+    return TestUtils.getAuthorizationHeader(jwtTokenProvider, this);
   }
 
   public static class MockAuthorizedUserBuilder {

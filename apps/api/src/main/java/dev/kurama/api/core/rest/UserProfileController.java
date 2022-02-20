@@ -82,7 +82,7 @@ public class UserProfileController {
   }
 
   @GetMapping(USER_PROFILE_PREFERENCES)
-  @PreAuthorize("hasAuthority('profile:update')")
+  @PreAuthorize("hasAuthority('profile:read')")
   public ResponseEntity<UserPreferencesModel> getPreferences() {
     return ok().body(userPreferencesFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }

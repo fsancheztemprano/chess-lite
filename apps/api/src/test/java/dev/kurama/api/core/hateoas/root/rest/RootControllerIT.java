@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import dev.kurama.api.core.hateoas.root.processor.RootResourceAssembler;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import dev.kurama.api.support.ImportTestSecurityConfiguration;
-import dev.kurama.api.support.TokenTestUtils;
+import dev.kurama.api.support.TestUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ class RootControllerIT {
     @Test
     void should_get_root_resource_as_authenticated_user() throws Exception {
       mockMvc.perform(get(BASE_PATH).accept(HAL_FORMS_JSON_VALUE)
-          .headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, "AUTHORIZED")))
+          .headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "AUTHORIZED")))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$._links.*", hasSize(1)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + BASE_PATH)))
@@ -84,7 +84,7 @@ class RootControllerIT {
     @Test
     void should_get_root_resource_with_profile_link_given_profile_read_authority() throws Exception {
       mockMvc.perform(get(BASE_PATH).accept(HAL_FORMS_JSON_VALUE)
-          .headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, PROFILE_READ)))
+          .headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, PROFILE_READ)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$._links.*", hasSize(2)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + BASE_PATH)))
@@ -96,7 +96,7 @@ class RootControllerIT {
     @Test
     void should_get_root_resource_with_administration_link_given_admin_root_authority() throws Exception {
       mockMvc.perform(get(BASE_PATH).accept(HAL_FORMS_JSON_VALUE)
-          .headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, ADMIN_ROOT)))
+          .headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, ADMIN_ROOT)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$._links.*", hasSize(2)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + BASE_PATH)))

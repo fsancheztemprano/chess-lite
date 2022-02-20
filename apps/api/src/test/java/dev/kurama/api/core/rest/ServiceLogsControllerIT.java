@@ -3,7 +3,7 @@ package dev.kurama.api.core.rest;
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_DELETE;
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
-import static dev.kurama.api.support.TokenTestUtils.getAuthorizationHeader;
+import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;

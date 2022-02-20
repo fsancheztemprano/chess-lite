@@ -5,7 +5,7 @@ import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TokenTestUtils.getAuthorizationHeader;
+import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
@@ -28,7 +28,7 @@ import dev.kurama.api.core.service.AuthorityService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import dev.kurama.api.support.ImportMappers;
 import dev.kurama.api.support.ImportTestSecurityConfiguration;
-import dev.kurama.api.support.TokenTestUtils;
+import dev.kurama.api.support.TestUtils;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.junit.jupiter.api.Nested;
@@ -67,7 +67,7 @@ class AuthorityControllerIT {
     void should_return_forbidden_without_authority_read_authorization() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH)).andExpect(status().isForbidden());
 
-      mockMvc.perform(get(AUTHORITY_PATH).headers(TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
+      mockMvc.perform(get(AUTHORITY_PATH).headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
         .andExpect(status().isForbidden());
     }
 
@@ -98,8 +98,9 @@ class AuthorityControllerIT {
     void should_return_forbidden_without_authority_read_authorization() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH + "/authorityId")).andExpect(status().isForbidden());
 
-      mockMvc.perform(get(AUTHORITY_PATH + "/authorityId").headers(
-        TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH"))).andExpect(status().isForbidden());
+      mockMvc.perform(
+          get(AUTHORITY_PATH + "/authorityId").headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
+        .andExpect(status().isForbidden());
     }
 
     @Test

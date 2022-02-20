@@ -6,7 +6,7 @@ import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TokenTestUtils.getAuthorizationHeader;
+import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doReturn;

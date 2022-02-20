@@ -12,7 +12,8 @@ import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PAT
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TokenTestUtils.getAuthorizationHeader;
+import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
+import static dev.kurama.api.support.TestUtils.getMockUser;
 import static java.lang.String.format;
 import static org.apache.commons.compress.utils.Sets.newHashSet;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -34,10 +35,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
-import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.facade.UserFacade;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
 import dev.kurama.api.core.hateoas.input.UserAuthoritiesInput;
@@ -390,17 +389,4 @@ class UserControllerIT {
 
   }
 
-  private User getMockUser() {
-    return User.builder()
-      .setRandomUUID()
-      .username(randomAlphanumeric(8))
-      .email(randomAlphanumeric(8))
-      .firstname(randomAlphanumeric(8))
-      .lastname(randomAlphanumeric(8))
-      .userPreferences(UserPreferences.builder().setRandomUUID().build())
-      .role(Role.builder().setRandomUUID().build())
-      .authorities(newHashSet(Authority.builder().setRandomUUID().name(randomAlphanumeric(4)).build(),
-        Authority.builder().setRandomUUID().name(randomAlphanumeric(4)).build()))
-      .build();
-  }
 }
