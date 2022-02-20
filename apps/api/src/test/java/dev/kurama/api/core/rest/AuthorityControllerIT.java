@@ -61,7 +61,7 @@ class AuthorityControllerIT {
   private AuthorityService authorityService;
 
   @Nested
-  class GetAllAuthoritiesTest {
+  class GetAllAuthoritiesITs {
 
     @Test
     void should_return_forbidden_without_authority_read_authorization() throws Exception {
@@ -92,15 +92,14 @@ class AuthorityControllerIT {
   }
 
   @Nested
-  class GetOneAuthorityTests {
+  class GetOneAuthorityITs {
 
     @Test
     void should_return_forbidden_without_authority_read_authorization() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH + "/authorityId")).andExpect(status().isForbidden());
 
-      mockMvc.perform(get(AUTHORITY_PATH + "/authorityId").headers(TokenTestUtils.getAuthorizationHeader(
-        jwtTokenProvider,
-        "MOCK:AUTH"))).andExpect(status().isForbidden());
+      mockMvc.perform(get(AUTHORITY_PATH + "/authorityId").headers(
+        TokenTestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH"))).andExpect(status().isForbidden());
     }
 
     @Test
@@ -114,8 +113,8 @@ class AuthorityControllerIT {
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
         .andExpect(jsonPath("$.name", equalTo(expected.getName())))
         .andExpect(jsonPath("$._links.*", hasSize(2)))
-        .andExpect(jsonPath("$._links.self.href",
-          equalTo(MOCK_MVC_HOST + format("%s/%s", AUTHORITY_PATH, expected.getId()))))
+        .andExpect(
+          jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + format("%s/%s", AUTHORITY_PATH, expected.getId()))))
         .andExpect(jsonPath("$._links.authorities.href", equalTo(MOCK_MVC_HOST + AUTHORITY_PATH)))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
