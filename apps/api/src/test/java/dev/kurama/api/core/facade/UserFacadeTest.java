@@ -21,6 +21,7 @@ import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.hateoas.input.UserProfileUpdateInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import dev.kurama.api.core.mapper.UserMapper;
+import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserService;
 import java.io.IOException;
 import java.util.Optional;
@@ -32,8 +33,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -52,7 +51,7 @@ class UserFacadeTest {
   private UserModelAssembler userModelAssembler;
 
   @Mock
-  private AuthenticationManager authenticationManager;
+  private AuthenticationFacility authenticationFacility;
 
   @Test
   void should_create_user() throws UsernameExistsException, EmailExistsException {
@@ -159,8 +158,7 @@ class UserFacadeTest {
 
     UserModel actual = userFacade.changePassword(id, input);
 
-    verify(authenticationManager).authenticate(
-      new UsernamePasswordAuthenticationToken(user.getUsername(), input.getPassword()));
+    verify(authenticationFacility).verifyAuthentication(user.getUsername(), input.getPassword());
     verify(userService).updateUser(eq(id), any(UserInput.class));
     verify(userMapper).userToUserModel(user);
     assertEquals(expected, actual);

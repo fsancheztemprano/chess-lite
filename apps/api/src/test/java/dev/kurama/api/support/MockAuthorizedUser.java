@@ -18,7 +18,7 @@ public class MockAuthorizedUser {
   @Builder.Default
   private String username = randomUUID();
 
-  private String[] authorities = new String[0];
+  private String[] authorities;
 
   public MockAuthorizedUser setAuthorities(String... authorities) {
     this.authorities = authorities;

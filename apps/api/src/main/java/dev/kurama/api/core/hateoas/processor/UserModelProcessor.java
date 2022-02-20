@@ -39,8 +39,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserModelProcessor implements RepresentationModelProcessor<UserModel> {
 
-  @NonNull UserPreferencesModelProcessor userPreferencesModelProcessor;
-
+  @NonNull
+  private final UserPreferencesModelProcessor userPreferencesModelProcessor;
 
   @Override
   public @NonNull UserModel process(@NonNull UserModel entity) {

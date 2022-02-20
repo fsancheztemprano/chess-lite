@@ -29,7 +29,7 @@ public class AuthenticationFacility {
   private final AuthenticationManager authenticationManager;
 
   public Pair<User, String> login(String username, String password) throws RoleCanNotLoginException {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    verifyAuthentication(username, password);
     var user = userService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     if (!user.getRole().isCanLogin()) {
       throw new RoleCanNotLoginException(user.getRole().getName());
@@ -40,6 +40,9 @@ public class AuthenticationFacility {
     return authenticateUser(user);
   }
 
+  public void verifyAuthentication(String username, String password) {
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  }
 
   private Pair<User, String> authenticateUser(User user) {
     UserPrincipal userPrincipal = new UserPrincipal(user);

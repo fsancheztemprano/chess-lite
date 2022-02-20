@@ -12,6 +12,7 @@ import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.hateoas.input.UserProfileUpdateInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import dev.kurama.api.core.mapper.UserMapper;
+import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserService;
 import java.io.IOException;
 import lombok.NonNull;
@@ -20,8 +21,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +38,7 @@ public class UserFacade {
   private final UserModelAssembler userModelAssembler;
 
   @NonNull
-  private final AuthenticationManager authenticationManager;
+  private final AuthenticationFacility authenticationFacility;
 
   public UserModel create(UserInput userInput) throws UsernameExistsException, EmailExistsException {
     return userMapper.userToUserModel(userService.createUser(userInput));
@@ -75,7 +74,7 @@ public class UserFacade {
   public UserModel changePassword(String id, ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     User user = userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
-    authenticate(user.getUsername(), changeUserPasswordInput.getPassword());
+    authenticationFacility.verifyAuthentication(user.getUsername(), changeUserPasswordInput.getPassword());
     return userMapper.userToUserModel(
       userService.updateUser(id, UserInput.builder().password(changeUserPasswordInput.getNewPassword()).build()));
   }
@@ -88,9 +87,5 @@ public class UserFacade {
 
   public void requestActivationToken(String id) throws UserNotFoundException, ActivationTokenRecentException {
     userService.requestActivationTokenById(id);
-  }
-
-  private void authenticate(String username, String password) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
   }
 }

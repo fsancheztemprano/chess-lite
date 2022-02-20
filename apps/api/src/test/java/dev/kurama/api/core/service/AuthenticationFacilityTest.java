@@ -98,4 +98,13 @@ class AuthenticationFacilityTest {
     });
   }
 
+  @Test
+  void should_validate_user_credentials() {
+    String username = "username";
+    String password = "password";
+
+    facility.verifyAuthentication(username, password);
+
+    verify(authenticationManager).authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  }
 }
