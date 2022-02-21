@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HalExplorerRedirection.class})
-@ActiveProfiles(profiles = "development")
+@ActiveProfiles("development")
 class HalExplorerRedirectionTest {
 
   @Autowired

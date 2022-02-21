@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "data-jpa")
+@ActiveProfiles(value = "integration-test")
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = NONE)
 @Import(AuthorityService.class)

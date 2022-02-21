@@ -55,7 +55,9 @@ class UserChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, userId));
 
     UserChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("userId", userId).hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
 
     message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
@@ -65,7 +67,9 @@ class UserChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(USERS_CHANGED_CHANNEL);
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("userId", userId).hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();
