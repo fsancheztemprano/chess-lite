@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -35,11 +36,14 @@ class ActivationTokenServiceIT {
   @Autowired
   private ActivationTokenRepository repository;
 
+  @Autowired
+  private TestEntityManager entityManager;
+
   private ActivationToken token1;
 
   @BeforeEach
   void setUp() {
-    token1 = repository.save(ActivationToken.builder()
+    token1 = entityManager.persist(ActivationToken.builder()
       .setRandomUUID()
       .created(new Date(System.currentTimeMillis() - ACTIVATION_TOKEN_DELAY - 1))
       .attempts(0)

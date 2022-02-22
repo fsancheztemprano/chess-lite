@@ -6,7 +6,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.domain.Authority;
-import dev.kurama.api.core.repository.AuthorityRepository;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,8 +25,9 @@ import org.springframework.test.context.ActiveProfiles;
 @Import(AuthorityService.class)
 class AuthorityServiceIT {
 
+
   @Autowired
-  private AuthorityRepository authorityRepository;
+  private TestEntityManager entityManager;
 
   @Autowired
   private AuthorityService authorityService;
@@ -39,12 +40,10 @@ class AuthorityServiceIT {
 
   @BeforeEach
   void setUp() {
-    authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build();
-    authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build();
-    authority3 = Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build();
-    authority4 = Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build();
-
-    authorityRepository.saveAllAndFlush(newHashSet(authority1, authority2, authority3, authority4));
+    authority1 = entityManager.persist(Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build());
+    authority2 = entityManager.persist(Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build());
+    authority3 = entityManager.persist(Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build());
+    authority4 = entityManager.persist(Authority.builder().setRandomUUID().name(randomAlphanumeric(6)).build());
   }
 
   @Test
