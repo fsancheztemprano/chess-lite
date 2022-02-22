@@ -54,11 +54,6 @@ public class RoleService {
     return roleRepository.findById(id);
   }
 
-  void delete(@NonNull Role role) {
-    roleRepository.delete(role);
-    roleChangedEventEmitter.emitRoleDeletedEvent(role.getId());
-  }
-
   public Role create(@Length(min = 3, max = 128) String roleName) throws RoleExistsException {
     var parsedRoleName = parseRoleName(roleName);
     if (findByName(parsedRoleName).isPresent()) {
@@ -95,6 +90,11 @@ public class RoleService {
       roleChangedEventEmitter.emitRoleUpdatedEvent(role.getId());
     }
     return role;
+  }
+
+  void delete(@NonNull Role role) {
+    roleRepository.delete(role);
+    roleChangedEventEmitter.emitRoleDeletedEvent(role.getId());
   }
 
   private String parseRoleName(String name) {
