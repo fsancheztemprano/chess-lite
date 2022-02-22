@@ -30,12 +30,6 @@ public class GlobalSettingsService {
     return globalSettingsRepository.findById(UNIQUE_ID).orElseGet(this::createGlobalSettings);
   }
 
-  private GlobalSettings createGlobalSettings() {
-    var defaultRole = roleService.findByName(DefaultAuthority.DEFAULT_ROLE).orElseThrow();
-    return this.globalSettingsRepository.saveAndFlush(
-      GlobalSettings.builder().id(UNIQUE_ID).signupOpen(false).defaultRole(defaultRole).build());
-  }
-
   public GlobalSettings updateGlobalSettings(GlobalSettingsUpdateInput globalSettingsUpdateInput)
     throws RoleNotFoundException {
     var globalSettings = getGlobalSettings();
@@ -60,5 +54,11 @@ public class GlobalSettingsService {
       globalSettingsChangedEventEmitter.emitGlobalSettingsUpdatedEvent();
     }
     return globalSettings;
+  }
+
+  private GlobalSettings createGlobalSettings() {
+    var defaultRole = roleService.findByName(DefaultAuthority.DEFAULT_ROLE).orElseThrow();
+    return this.globalSettingsRepository.saveAndFlush(
+      GlobalSettings.builder().id(UNIQUE_ID).signupOpen(false).defaultRole(defaultRole).build());
   }
 }
