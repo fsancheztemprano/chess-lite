@@ -57,16 +57,14 @@ public class UserProfileController {
   @PreAuthorize("hasAuthority('profile:update') ")
   public ResponseEntity<UserModel> updateProfile(@RequestBody UserProfileUpdateInput userProfileUpdateInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-    return ok()
-      .body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), userProfileUpdateInput));
+    return ok().body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), userProfileUpdateInput));
   }
 
   @PatchMapping(USER_PROFILE_CHANGE_PASSWORD_PATH)
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserModel> changePassword(@RequestBody ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-    return ok()
-      .body(userFacade.changePassword(AuthorityUtils.getCurrentUserId(), changeUserPasswordInput));
+    return ok().body(userFacade.changePassword(AuthorityUtils.getCurrentUserId(), changeUserPasswordInput));
   }
 
   @PatchMapping(value = USER_PROFILE_UPLOAD_AVATAR_PATH, consumes = MULTIPART_FORM_DATA_VALUE)
@@ -84,7 +82,7 @@ public class UserProfileController {
   }
 
   @GetMapping(USER_PROFILE_PREFERENCES)
-  @PreAuthorize("hasAuthority('profile:update')")
+  @PreAuthorize("hasAuthority('profile:read')")
   public ResponseEntity<UserPreferencesModel> getPreferences() {
     return ok().body(userPreferencesFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }

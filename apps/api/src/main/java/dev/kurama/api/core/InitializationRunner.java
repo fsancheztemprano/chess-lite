@@ -1,14 +1,26 @@
 package dev.kurama.api.core;
 
 
+import static java.lang.String.format;
+
 import com.google.common.collect.Sets;
+import com.google.common.flogger.FluentLogger;
 import dev.kurama.api.core.authority.DefaultAuthority;
-import dev.kurama.api.core.domain.*;
+import dev.kurama.api.core.domain.Authority;
+import dev.kurama.api.core.domain.GlobalSettings;
+import dev.kurama.api.core.domain.Role;
+import dev.kurama.api.core.domain.User;
+import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
 import dev.kurama.api.core.repository.UserRepository;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
@@ -16,12 +28,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @Flogger
@@ -51,18 +57,13 @@ public class InitializationRunner implements CommandLineRunner {
   public void run(String... args) {
     if (dataInit) {
       try {
-        log.atInfo()
-          .log("Data Initialization Start");
         initializeAuthorities();
         initializeRoles();
         setRolesAuthorizations();
         initializeGlobalSettings();
         initializeAdminUser();
-        log.atInfo()
-          .log("Data Initialization Finish");
       } catch (Exception e) {
-        log.atWarning()
-          .log("Data Initialization Failed");
+        log(log.atWarning(), "Data Initialization Failed");
       }
     }
   }
@@ -72,19 +73,13 @@ public class InitializationRunner implements CommandLineRunner {
     List<Authority> existentAuthorities = authorityRepository.findAll();
     List<Authority> newAuthorities = DefaultAuthority.AUTHORITIES.stream()
       .filter(authorityName -> existentAuthorities.stream()
-        .noneMatch(existingAuthority -> existingAuthority.getName()
-          .equals(authorityName)))
-      .map(authorityName -> Authority.builder()
-        .setRandomUUID()
-        .name(authorityName)
-        .build())
+        .noneMatch(existingAuthority -> existingAuthority.getName().equals(authorityName)))
+      .map(authorityName -> Authority.builder().setRandomUUID().name(authorityName).build())
       .collect(Collectors.toList());
     if (!newAuthorities.isEmpty()) {
-      int inserts = authorityRepository.saveAllAndFlush(newAuthorities)
-        .size();
+      int inserts = authorityRepository.saveAllAndFlush(newAuthorities).size();
       if (inserts > 0) {
-        log.atInfo()
-          .log("Initialized Authorities -> %d", inserts);
+        log(log.atInfo(), format("Initialized Authorities -> %d", inserts));
       }
     }
   }
@@ -93,23 +88,18 @@ public class InitializationRunner implements CommandLineRunner {
   void initializeRoles() {
     List<Role> existentRoles = roleRepository.findAll();
     List<Role> newRoles = DefaultAuthority.ROLES.stream()
-      .filter(role -> existentRoles.stream()
-        .noneMatch(existingRole -> existingRole.getName()
-          .equals(role)))
-      .map(
-        role -> Role.builder()
-          .setRandomUUID()
-          .name(role)
-          .coreRole(true)
-          .canLogin(!role.equals(DefaultAuthority.DEFAULT_ROLE))
-          .build())
+      .filter(role -> existentRoles.stream().noneMatch(existingRole -> existingRole.getName().equals(role)))
+      .map(role -> Role.builder()
+        .setRandomUUID()
+        .name(role)
+        .coreRole(true)
+        .canLogin(!role.equals(DefaultAuthority.DEFAULT_ROLE))
+        .build())
       .collect(Collectors.toList());
     if (!newRoles.isEmpty()) {
-      int inserts = roleRepository.saveAllAndFlush(newRoles)
-        .size();
+      int inserts = roleRepository.saveAllAndFlush(newRoles).size();
       if (inserts > 0) {
-        log.atInfo()
-          .log("Initialized Roles -> %d", inserts);
+        log(log.atInfo(), format("Initialized Roles -> %d", inserts));
       }
     }
   }
@@ -118,31 +108,25 @@ public class InitializationRunner implements CommandLineRunner {
   void setRolesAuthorizations() {
     List<Authority> allAuthorities = authorityRepository.findAll();
     List<Role> allRoles = roleRepository.findAll();
-    List<Role> updatableRoles = allRoles.stream()
-      .filter(role -> {
-        Set<Authority> currentRoleAuthorities = role.getAuthorities();
-        List<String> defaultRoleAuthorities = DefaultAuthority.ROLE_AUTHORITIES.get(role.getName());
-        boolean authoritiesMismatch = defaultRoleAuthorities.stream()
-          .anyMatch(authorityName -> currentRoleAuthorities.stream()
-            .map(Authority::getName)
-            .noneMatch(authorityName::equals));
-        if (authoritiesMismatch) {
-          role.setAuthorities(Sets.newHashSet(
-            allAuthorities.stream()
-              .filter(authority -> defaultRoleAuthorities.contains(authority.getName()))
-              .collect(Collectors.toSet())));
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .collect(Collectors.toList());
+    List<Role> updatableRoles = allRoles.stream().filter(role -> {
+      Set<Authority> currentRoleAuthorities = role.getAuthorities();
+      List<String> defaultRoleAuthorities = DefaultAuthority.ROLE_AUTHORITIES.get(role.getName());
+      boolean authoritiesMismatch = defaultRoleAuthorities.stream()
+        .anyMatch(
+          authorityName -> currentRoleAuthorities.stream().map(Authority::getName).noneMatch(authorityName::equals));
+      if (authoritiesMismatch) {
+        role.setAuthorities(Sets.newHashSet(allAuthorities.stream()
+          .filter(authority -> defaultRoleAuthorities.contains(authority.getName()))
+          .collect(Collectors.toSet())));
+        return true;
+      } else {
+        return false;
+      }
+    }).collect(Collectors.toList());
     if (!updatableRoles.isEmpty()) {
-      int updates = roleRepository.saveAllAndFlush(updatableRoles)
-        .size();
+      int updates = roleRepository.saveAllAndFlush(updatableRoles).size();
       if (updates > 0) {
-        log.atInfo()
-          .log("Updated Role Authorities -> %d", updates);
+        log(log.atInfo(), format("Updated Role Authorities -> %d", updates));
       }
     }
   }
@@ -157,13 +141,8 @@ public class InitializationRunner implements CommandLineRunner {
       var defaultRole = roleRepository.findByName(DefaultAuthority.DEFAULT_ROLE)
         .orElseThrow(() -> new RoleNotFoundException(DefaultAuthority.DEFAULT_ROLE));
       globalSettingsRepository.saveAndFlush(
-        GlobalSettings.builder()
-          .id(GlobalSettings.UNIQUE_ID)
-          .signupOpen(false)
-          .defaultRole(defaultRole)
-          .build());
-      log.atInfo()
-        .log("Global Settings Initialized");
+        GlobalSettings.builder().id(GlobalSettings.UNIQUE_ID).signupOpen(false).defaultRole(defaultRole).build());
+      log(log.atInfo(), "Global Settings Initialized");
     }
   }
 
@@ -185,12 +164,13 @@ public class InitializationRunner implements CommandLineRunner {
         .locked(false)
         .expired(false)
         .credentialsExpired(false)
-        .userPreferences(UserPreferences.builder()
-          .setRandomUUID()
-          .build())
+        .userPreferences(UserPreferences.builder().setRandomUUID().build())
         .build());
-      log.atInfo()
-        .log("Admin User Initialized");
+      log(log.atInfo(), "Admin User Initialized");
     }
+  }
+
+  public void log(FluentLogger.Api log, String message) {
+    log.log(message);
   }
 }

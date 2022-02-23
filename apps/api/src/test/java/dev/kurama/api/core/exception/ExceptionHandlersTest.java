@@ -1,5 +1,9 @@
 package dev.kurama.api.core.exception;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
@@ -9,6 +13,8 @@ import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundExcept
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -24,13 +30,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.io.IOException;
-import java.nio.file.AccessDeniedException;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 class ExceptionHandlersTest {
 
   private MockMvc mockMvc;
@@ -38,110 +37,93 @@ class ExceptionHandlersTest {
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(new ExceptionHandlersTest.ExceptionHandlersTestController())
-                             .setControllerAdvice(new ExceptionHandlers())
-                             .build();
+      .setControllerAdvice(new ExceptionHandlers())
+      .build();
   }
 
   @Test
   void ok_request_should_return_200() throws Exception {
-    mockMvc.perform(get("/ok"))
-           .andExpect(status().isOk());
+    mockMvc.perform(get("/ok")).andExpect(status().isOk());
   }
 
   @Test
   void account_disabled_exception_should_return_bad_request() throws Exception {
-    mockMvc.perform(get("/accountDisabledException"))
-           .andExpect(status().isBadRequest());
+    mockMvc.perform(get("/accountDisabledException")).andExpect(status().isBadRequest());
   }
 
   @Test
   void bad_credentials_exception_should_return_bad_request() throws Exception {
-    mockMvc.perform(get("/badCredentialsException"))
-           .andExpect(status().isBadRequest());
+    mockMvc.perform(get("/badCredentialsException")).andExpect(status().isBadRequest());
   }
 
   @Test
   void access_denied_exception_should_return_internal_server_error() throws Exception {
-    mockMvc.perform(get("/accessDeniedException"))
-           .andExpect(status().isInternalServerError());
+    mockMvc.perform(get("/accessDeniedException")).andExpect(status().isInternalServerError());
   }
 
   @Test
   void locked_exception_should_return_unauthorized() throws Exception {
-    mockMvc.perform(get("/lockedException"))
-           .andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/lockedException")).andExpect(status().isUnauthorized());
   }
 
   @Test
   void role_can_not_login_exception_should_return_unauthorized() throws Exception {
-    mockMvc.perform(get("/roleCanNotLoginException"))
-           .andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/roleCanNotLoginException")).andExpect(status().isUnauthorized());
   }
 
   @Test
   void token_expired_exception_should_return_unauthorized() throws Exception {
-    mockMvc.perform(get("/tokenExpiredException"))
-           .andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/tokenExpiredException")).andExpect(status().isUnauthorized());
   }
 
   @Test
   void immutable_role_exception_should_return_forbidden() throws Exception {
-    mockMvc.perform(get("/immutableRoleException"))
-           .andExpect(status().isForbidden());
+    mockMvc.perform(get("/immutableRoleException")).andExpect(status().isForbidden());
   }
 
   @Test
   void signup_closed_exception_should_return_forbidden() throws Exception {
-    mockMvc.perform(get("/signupClosedException"))
-           .andExpect(status().isForbidden());
+    mockMvc.perform(get("/signupClosedException")).andExpect(status().isForbidden());
   }
 
   @Test
   void entity_exists_exception_should_return_conflict() throws Exception {
-    mockMvc.perform(get("/entityExistsException"))
-           .andExpect(status().isConflict());
+    mockMvc.perform(get("/entityExistsException")).andExpect(status().isConflict());
   }
 
   @Test
   void domain_entity_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/domainEntityNotFoundException"))
-           .andExpect(status().isNotFound());
+    mockMvc.perform(get("/domainEntityNotFoundException")).andExpect(status().isNotFound());
   }
 
   @Test
   void role_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/roleNotFoundException"))
-           .andExpect(status().isNotFound());
+    mockMvc.perform(get("/roleNotFoundException")).andExpect(status().isNotFound());
   }
 
   @Test
   void user_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/userNotFoundException"))
-           .andExpect(status().isNotFound());
+    mockMvc.perform(get("/userNotFoundException")).andExpect(status().isNotFound());
   }
 
   @Test
   void email_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/emailNotFoundException"))
-           .andExpect(status().isNotFound());
+    mockMvc.perform(get("/emailNotFoundException")).andExpect(status().isNotFound());
   }
 
   @Test
   void method_not_supported_exception_should_return_method_not_allowed() throws Exception {
-    mockMvc.perform(get("/methodNotSupportedException"))
-           .andExpect(status().isMethodNotAllowed());
+    mockMvc.perform(get("/methodNotSupportedException")).andExpect(status().isMethodNotAllowed());
   }
 
   @Test
   void i_o_exception_should_return_internal_server_error() throws Exception {
-    mockMvc.perform(get("/iOException"))
-           .andExpect(status().isInternalServerError());
+    mockMvc.perform(get("/iOException")).andExpect(status().isInternalServerError());
   }
 
   @Test
   void no_handler_found_exception_should_return_bad_request() throws Exception {
-    mockMvc.perform(get("/noHandlerFoundException"))
-           .andExpect(status().isBadRequest());
+    mockMvc.perform(get("/noHandlerFoundException")).andExpect(status().isBadRequest());
   }
 
   @RestController

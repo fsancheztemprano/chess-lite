@@ -9,7 +9,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.UserPreferencesChangedEvent;
 import dev.kurama.api.core.event.domain.UserPreferencesChangedEvent.UserPreferencesChangedEventAction;
-import dev.kurama.api.framework.TestChannelInterceptor;
+import dev.kurama.api.support.TestChannelInterceptor;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +20,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.test.context.ActiveProfiles;
+
 
 @ActiveProfiles("integration-test")
 @SpringBootTest

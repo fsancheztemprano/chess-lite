@@ -17,20 +17,14 @@ public class SwaggerConfiguration {
 
   @Bean
   public OpenAPI springOpenAPI() {
-    return new OpenAPI()
-      .info(new Info().title("Open API")
+    return new OpenAPI().info(new Info().title("Open API")
         .description("Application API")
         .version("v0.0.1")
-        .license(new License().name("MIT")
-          .url("http://springdoc.org")))
-      .externalDocs(new ExternalDocumentation()
-        .description("Application Wiki Documentation")
+        .license(new License().name("MIT").url("http://springdoc.org")))
+      .externalDocs(new ExternalDocumentation().description("Application Wiki Documentation")
         .url("https://github.com/frango9000/fullstack-template"))
       .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-      .components(new Components()
-        .addSecuritySchemes("bearerAuth",
-          new SecurityScheme().type(SecurityScheme.Type.HTTP)
-            .scheme("bearer")
-            .bearerFormat("JWT")));
+      .components(new Components().addSecuritySchemes("bearerAuth",
+        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
   }
 }

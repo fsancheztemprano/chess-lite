@@ -2,7 +2,7 @@ package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.framework.JsonUtils.asJsonString;
+import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -47,9 +47,7 @@ class UserPreferencesControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                             .setControllerAdvice(new ExceptionHandlers())
-                             .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
   @Nested
@@ -58,25 +56,23 @@ class UserPreferencesControllerTest {
     @Test
     void should_get_user_preferences_by_id() throws Exception {
       UserPreferencesModel expected = UserPreferencesModel.builder()
-                                                          .id(randomUUID())
-                                                          .darkMode(true)
-                                                          .contentLanguage("en")
-                                                          .build();
+        .id(randomUUID())
+        .darkMode(true)
+        .contentLanguage("en")
+        .build();
       when(facade.findById(expected.getId())).thenReturn(expected);
 
       mockMvc.perform(get(USER_PREFERENCES_PATH + "/" + expected.getId()))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
 
     @Test
     void should_throw_getting_user_preferences_if_id_does_not_exist() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(DomainEntityNotFoundException.class).when(facade)
-                                                  .findById(notFoundId);
+      doThrow(DomainEntityNotFoundException.class).when(facade).findById(notFoundId);
 
-      mockMvc.perform(get(USER_PREFERENCES_PATH + "/" + notFoundId))
-             .andExpect(status().isNotFound());
+      mockMvc.perform(get(USER_PREFERENCES_PATH + "/" + notFoundId)).andExpect(status().isNotFound());
 
     }
   }
@@ -86,39 +82,31 @@ class UserPreferencesControllerTest {
 
     @Test
     void should_update_user_preferences() throws Exception {
-      UserPreferencesInput input = UserPreferencesInput.builder()
-                                                       .darkMode(false)
-                                                       .contentLanguage("de")
-                                                       .build();
+      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
       UserPreferencesModel expected = UserPreferencesModel.builder()
-                                                          .id(randomUUID())
-                                                          .darkMode(true)
-                                                          .contentLanguage("en")
-                                                          .build();
+        .id(randomUUID())
+        .darkMode(true)
+        .contentLanguage("en")
+        .build();
       when(facade.updateById(expected.getId(), input)).thenReturn(expected);
 
       mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + expected.getId()).accept(MediaType.APPLICATION_JSON)
-                                                                           .contentType(MediaType.APPLICATION_JSON)
-                                                                           .content(asJsonString(input)))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", equalTo(expected.getId())));
 
     }
 
     @Test
     void should_throw_updating_user_preferences_if_id_does_not_exist() throws Exception {
       String notFoundId = randomUUID();
-      UserPreferencesInput input = UserPreferencesInput.builder()
-                                                       .darkMode(false)
-                                                       .contentLanguage("de")
-                                                       .build();
-      doThrow(DomainEntityNotFoundException.class).when(facade)
-                                                  .updateById(notFoundId, input);
+      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
+      doThrow(DomainEntityNotFoundException.class).when(facade).updateById(notFoundId, input);
 
       mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + notFoundId).accept(MediaType.APPLICATION_JSON)
-                                                                     .contentType(MediaType.APPLICATION_JSON)
-                                                                     .content(asJsonString(input)))
-             .andExpect(status().isNotFound());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
 
     }
   }

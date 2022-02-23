@@ -19,6 +19,8 @@ server:
     whitelabel:
       enabled: true
 spring:
+  main:
+    banner-mode: "off"
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     password: p@ssw0rd
@@ -52,6 +54,7 @@ spring:
           cache:
             provider: org.ehcache.jsr107.EhcacheCachingProvider
             missing_cache_strategy: 'create'
+    open-in-view: true
   mail:
     host: smtp.gmail.com
     port: 587

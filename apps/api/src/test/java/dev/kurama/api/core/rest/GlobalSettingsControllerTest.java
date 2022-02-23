@@ -1,7 +1,7 @@
 package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
-import static dev.kurama.api.framework.JsonUtils.asJsonString;
+import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -46,29 +46,22 @@ class GlobalSettingsControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                             .setControllerAdvice(new ExceptionHandlers())
-                             .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
   @Test
   void should_get_global_settings() throws Exception {
     GlobalSettingsModel expected = GlobalSettingsModel.builder()
-                                                      .defaultRole(RoleModel.builder()
-                                                                            .id("r1")
-                                                                            .canLogin(true)
-                                                                            .build())
-                                                      .signupOpen(false)
-                                                      .build();
+      .defaultRole(RoleModel.builder().id("r1").canLogin(true).build())
+      .signupOpen(false)
+      .build();
     when(facade.getGlobalSettings()).thenReturn(expected);
 
     mockMvc.perform(get(GLOBAL_SETTINGS_PATH))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.signupOpen", equalTo(expected.isSignupOpen())))
-           .andExpect(jsonPath("$.defaultRole.id", equalTo(expected.getDefaultRole()
-                                                                   .getId())))
-           .andExpect(jsonPath("$.defaultRole.canLogin", equalTo(expected.getDefaultRole()
-                                                                         .isCanLogin())));
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.signupOpen", equalTo(expected.isSignupOpen())))
+      .andExpect(jsonPath("$.defaultRole.id", equalTo(expected.getDefaultRole().getId())))
+      .andExpect(jsonPath("$.defaultRole.canLogin", equalTo(expected.getDefaultRole().isCanLogin())));
   }
 
   @Nested
@@ -77,44 +70,36 @@ class GlobalSettingsControllerTest {
     @Test
     void should_update_global_settings() throws Exception {
       GlobalSettingsModel expected = GlobalSettingsModel.builder()
-                                                        .defaultRole(RoleModel.builder()
-                                                                              .id("r1")
-                                                                              .canLogin(true)
-                                                                              .build())
-                                                        .signupOpen(false)
-                                                        .build();
+        .defaultRole(RoleModel.builder().id("r1").canLogin(true).build())
+        .signupOpen(false)
+        .build();
       GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
-                                                                 .signupOpen(false)
-                                                                 .defaultRoleId("r1")
-                                                                 .build();
+        .signupOpen(false)
+        .defaultRoleId("r1")
+        .build();
 
       when(facade.updateGlobalSettings(input)).thenReturn(expected);
 
-      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(input)))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.signupOpen", equalTo(expected.isSignupOpen())))
-             .andExpect(jsonPath("$.defaultRole.id", equalTo(expected.getDefaultRole()
-                                                                     .getId())))
-             .andExpect(jsonPath("$.defaultRole.canLogin", equalTo(expected.getDefaultRole()
-                                                                           .isCanLogin())));
+      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).accept(MediaType.APPLICATION_JSON)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.signupOpen", equalTo(expected.isSignupOpen())))
+        .andExpect(jsonPath("$.defaultRole.id", equalTo(expected.getDefaultRole().getId())))
+        .andExpect(jsonPath("$.defaultRole.canLogin", equalTo(expected.getDefaultRole().isCanLogin())));
     }
 
     @Test
     void should_throw_when_updating_global_settings_role_not_found() throws Exception {
       GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
-                                                                 .signupOpen(false)
-                                                                 .defaultRoleId("r2")
-                                                                 .build();
+        .signupOpen(false)
+        .defaultRoleId("r2")
+        .build();
       when(facade.updateGlobalSettings(input)).thenThrow(RoleNotFoundException.class);
 
-      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(input)))
-             .andExpect(status().isNotFound());
+      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
     }
   }
 

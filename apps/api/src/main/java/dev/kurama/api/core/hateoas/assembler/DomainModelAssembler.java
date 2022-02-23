@@ -1,5 +1,7 @@
 package dev.kurama.api.core.hateoas.assembler;
 
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+
 import dev.kurama.api.core.utility.HateoasUtils;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,6 @@ import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
-
-import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 
 public abstract class DomainModelAssembler<T extends RepresentationModel<T>> implements
                                                                              RepresentationModelAssembler<T, T> {
@@ -25,8 +25,7 @@ public abstract class DomainModelAssembler<T extends RepresentationModel<T>> imp
   }
 
   public @NonNull PagedModel<T> toPagedModel(Page<T> entities) {
-    return (PagedModel<T>) pagedResourcesAssembler
-      .toModel(entities, this)
+    return (PagedModel<T>) pagedResourcesAssembler.toModel(entities, this)
       .mapLink(LinkRelation.of(SELF), HateoasUtils::withDefaultAffordance);
   }
 

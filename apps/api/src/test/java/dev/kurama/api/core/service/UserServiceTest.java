@@ -1,8 +1,37 @@
 package dev.kurama.api.core.service;
 
-import dev.kurama.api.core.domain.*;
+import static com.google.common.collect.Sets.newHashSet;
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.util.Lists.newArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static org.springframework.data.domain.Sort.Direction.ASC;
+
+import dev.kurama.api.core.domain.ActivationToken;
+import dev.kurama.api.core.domain.Authority;
+import dev.kurama.api.core.domain.EmailTemplate;
+import dev.kurama.api.core.domain.GlobalSettings;
+import dev.kurama.api.core.domain.Role;
+import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
-import dev.kurama.api.core.exception.domain.*;
+import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
+import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
+import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
+import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
@@ -12,35 +41,27 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
+import java.lang.reflect.UndeclaredThrowableException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.data.domain.*;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.lang.reflect.UndeclaredThrowableException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-
-import static com.google.common.collect.Sets.newHashSet;
-import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.util.Lists.newArrayList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.data.domain.Sort.Direction.ASC;
-
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
   @Spy
@@ -52,9 +73,6 @@ class UserServiceTest {
 
   @Mock
   private BCryptPasswordEncoder passwordEncode;
-
-  @Mock
-  private LoginAttemptService loginAttemptService;
 
   @Mock
   private AuthorityService authorityService;
@@ -74,93 +92,37 @@ class UserServiceTest {
   @Mock
   private GlobalSettingsService globalSettingsService;
 
-  @Nested
-  class LoadUserByUsernameTests {
-
-    @Test
-    void should_load_user_by_username() {
-      User expected = User.builder()
-        .setRandomUUID()
-        .username("username")
-        .locked(false)
-        .build();
-      when(userRepository.findUserByUsername(expected.getUsername())).thenReturn(Optional.of(expected));
-      when(loginAttemptService.hasExceededMaxAttempts(expected.getUsername())).thenReturn(false);
-
-      UserDetails actual = userService.loadUserByUsername(expected.getUsername());
-
-      verify(loginAttemptService).hasExceededMaxAttempts(expected.getUsername());
-      verify(userRepository).save(expected);
-      assertThat(actual).isNotNull();
-      User actualUser = (User) ReflectionTestUtils.getField(actual, "user");
-      assertThat(actualUser).isNotNull()
-        .hasFieldOrPropertyWithValue("id", expected.getId())
-        .hasFieldOrPropertyWithValue("locked", false);
-    }
-
-    @Test
-    void should_evict_if_user_was_locked() {
-      User expected = User.builder()
-        .setRandomUUID()
-        .username("username")
-        .locked(true)
-        .build();
-      when(userRepository.findUserByUsername(expected.getUsername())).thenReturn(Optional.of(expected));
-
-      userService.loadUserByUsername(expected.getUsername());
-
-      verify(loginAttemptService).evictUserFromLoginAttemptCache(expected.getUsername());
-    }
-  }
-
   @Test
   void should_find_user_by_id() {
-    User expected = User.builder()
-      .setRandomUUID()
-      .build();
+    User expected = User.builder().setRandomUUID().build();
     when(userRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
 
     Optional<User> actual = userService.findUserById(expected.getId());
 
     verify(userRepository).findById(expected.getId());
-    assertThat(actual).isNotNull()
-      .isPresent()
-      .get()
-      .isEqualTo(expected);
+    assertThat(actual).isNotNull().isPresent().get().isEqualTo(expected);
   }
 
   @Test
   void should_find_user_by_username() {
-    User expected = User.builder()
-      .setRandomUUID()
-      .username("username")
-      .build();
+    User expected = User.builder().setRandomUUID().username("username").build();
     when(userRepository.findUserByUsername(expected.getUsername())).thenReturn(Optional.of(expected));
 
     Optional<User> actual = userService.findUserByUsername(expected.getUsername());
 
     verify(userRepository).findUserByUsername(expected.getUsername());
-    assertThat(actual).isNotNull()
-      .isPresent()
-      .get()
-      .isEqualTo(expected);
+    assertThat(actual).isNotNull().isPresent().get().isEqualTo(expected);
   }
 
   @Test
   void should_find_user_by_email() {
-    User expected = User.builder()
-      .setRandomUUID()
-      .email("email@email.com")
-      .build();
+    User expected = User.builder().setRandomUUID().email("email@email.com").build();
     when(userRepository.findUserByEmail(expected.getEmail())).thenReturn(Optional.of(expected));
 
     Optional<User> actual = userService.findUserByEmail(expected.getEmail());
 
     verify(userRepository).findUserByEmail(expected.getEmail());
-    assertThat(actual).isNotNull()
-      .isPresent()
-      .get()
-      .isEqualTo(expected);
+    assertThat(actual).isNotNull().isPresent().get().isEqualTo(expected);
   }
 
   @Nested
@@ -169,9 +131,7 @@ class UserServiceTest {
     @Test
     void should_get_all_users() {
       PageRequest pageable = PageRequest.of(1, 2, Sort.by(ASC, "id"));
-      Page<User> expected = new PageImpl<User>(newArrayList(User.builder()
-        .setRandomUUID()
-        .build()));
+      Page<User> expected = new PageImpl<User>(newArrayList(User.builder().setRandomUUID().build()));
       when(userRepository.findAll(pageable)).thenReturn(expected);
 
       Page<User> actual = userService.getAllUsers(pageable, "");
@@ -185,10 +145,7 @@ class UserServiceTest {
     void should_get_users_filtered() {
       String search = "search";
       PageRequest pageable = PageRequest.of(1, 2, Sort.by(ASC, "id"));
-      Page<User> expected = new PageImpl<User>(newArrayList(User.builder()
-        .setRandomUUID()
-        .username("search")
-        .build()));
+      Page<User> expected = new PageImpl<User>(newArrayList(User.builder().setRandomUUID().username("search").build()));
       when(userRepository.findAll(any(Example.class), eq(pageable))).thenReturn(expected);
 
       Page<User> actual = userService.getAllUsers(pageable, search);
@@ -201,9 +158,7 @@ class UserServiceTest {
 
   @Test
   void should_delete_user_by_id() throws UserNotFoundException {
-    User expected = User.builder()
-      .setRandomUUID()
-      .build();
+    User expected = User.builder().setRandomUUID().build();
     when(userRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
 
     userService.deleteUserById(expected.getId());
@@ -217,27 +172,16 @@ class UserServiceTest {
 
     @Test
     void should_throw_if_signup_is_locked() {
-      when(globalSettingsService.getGlobalSettings()).thenReturn(GlobalSettings.builder()
-        .signupOpen(false)
-        .build());
+      when(globalSettingsService.getGlobalSettings()).thenReturn(GlobalSettings.builder().signupOpen(false).build());
       assertThrows(SignupClosedException.class,
-        () -> userService.signup(SignupInput.builder()
-          .username("")
-          .email("")
-          .build()));
+        () -> userService.signup(SignupInput.builder().username("").email("").build()));
     }
 
     @Test
     void should_signup()
       throws UsernameExistsException, EmailExistsException, SignupClosedException, ActivationTokenRecentException {
-      User expected = User.builder()
-        .setRandomUUID()
-        .email("email@email.com")
-        .build();
-      Role defaultRole = Role.builder()
-        .setRandomUUID()
-        .name("DEFAULT_ROLE")
-        .build();
+      User expected = User.builder().setRandomUUID().email("email@email.com").build();
+      Role defaultRole = Role.builder().setRandomUUID().name("DEFAULT_ROLE").build();
       SignupInput input = SignupInput.builder()
         .firstname("firstname")
         .lastname("lastname")
@@ -245,26 +189,17 @@ class UserServiceTest {
         .username("username")
         .build();
       when(globalSettingsService.getGlobalSettings()).thenReturn(
-        GlobalSettings.builder()
-          .signupOpen(true)
-          .defaultRole(defaultRole)
-          .build());
-      doReturn(expected).when(userService)
-        .createUser(any(UserInput.class));
+        GlobalSettings.builder().signupOpen(true).defaultRole(defaultRole).build());
+      doReturn(expected).when(userService).createUser(any(UserInput.class));
       when(activationTokenService.createActivationToken(expected)).thenReturn(
-        ActivationToken.builder()
-          .setRandomUUID()
-          .created(new Date())
-          .attempts(0)
-          .build());
+        ActivationToken.builder().setRandomUUID().created(new Date()).attempts(0).build());
 
       userService.signup(input);
 
       verify(globalSettingsService, times(1)).getGlobalSettings();
       verify(userService).createUser(any(UserInput.class));
       verify(userRepository).saveAndFlush(expected);
-      verify(emailService).sendEmail(argThat((EmailTemplate template) -> template.getTo()
-        .equals(expected.getEmail())));
+      verify(emailService).sendEmail(argThat((EmailTemplate template) -> template.getTo().equals(expected.getEmail())));
     }
   }
 
@@ -276,10 +211,7 @@ class UserServiceTest {
       Role role = Role.builder()
         .setRandomUUID()
         .name("ROLE_NAME")
-        .authorities(newHashSet(Authority.builder()
-          .setRandomUUID()
-          .name("Auhtority")
-          .build()))
+        .authorities(newHashSet(Authority.builder().setRandomUUID().name("Auhtority").build()))
         .build();
       UserInput input = UserInput.builder()
         .username("username")
@@ -293,9 +225,7 @@ class UserServiceTest {
         .expired(false)
         .roleId(role.getId())
         .build();
-      User expected = User.builder()
-        .setRandomUUID()
-        .build();
+      User expected = User.builder().setRandomUUID().build();
       String encodedPassword = randomUUID();
 
       when(roleService.findRoleById(input.getRoleId())).thenReturn(Optional.of(role));
@@ -308,25 +238,17 @@ class UserServiceTest {
       verify(roleService).findRoleById(role.getId());
       verify(passwordEncode).encode(input.getPassword());
       verify(userRepository).save(any(User.class));
-      verify(userRepository).save(argThat((User user) ->
-        user.isActive() == input.getActive() &&
-          user.isLocked() == input.getLocked() &&
-          user.isExpired() == input.getExpired() &&
-          user.isCredentialsExpired() == input.getCredentialsExpired() &&
-          user.getFirstname()
-            .equals(input.getFirstname()) &&
-          user.getLastname()
-            .equals(input.getLastname()) &&
-          user.getEmail()
-            .equals(input.getEmail()) &&
-          user.getUsername()
-            .equals(input.getUsername()) &&
-          user.getPassword()
-            .equals(encodedPassword) &&
-          user.getRole()
-            .equals(role) &&
-          user.getAuthorities()
-            .equals(role.getAuthorities())));
+      verify(userRepository).save(argThat((User user) -> user.isActive() == input.getActive()
+        && user.isLocked() == input.getLocked()
+        && user.isExpired() == input.getExpired()
+        && user.isCredentialsExpired() == input.getCredentialsExpired()
+        && user.getFirstname().equals(input.getFirstname())
+        && user.getLastname().equals(input.getLastname())
+        && user.getEmail().equals(input.getEmail())
+        && user.getUsername().equals(input.getUsername())
+        && user.getPassword().equals(encodedPassword)
+        && user.getRole().equals(role)
+        && user.getAuthorities().equals(role.getAuthorities())));
       verify(userChangedEventEmitter).emitUserCreatedEvent(anyString());
       assertEquals(expected, actual);
     }
@@ -336,10 +258,7 @@ class UserServiceTest {
       Role defaultRole = Role.builder()
         .setRandomUUID()
         .name("ROLE_NAME")
-        .authorities(newHashSet(Authority.builder()
-          .setRandomUUID()
-          .name("Auhtority")
-          .build()))
+        .authorities(newHashSet(Authority.builder().setRandomUUID().name("Auhtority").build()))
         .build();
       UserInput input = UserInput.builder()
         .username("username")
@@ -353,16 +272,11 @@ class UserServiceTest {
         .expired(false)
         .roleId(randomUUID())
         .build();
-      User expected = User.builder()
-        .setRandomUUID()
-        .build();
+      User expected = User.builder().setRandomUUID().build();
       String encodedPassword = randomUUID();
       when(roleService.findRoleById(anyString())).thenReturn(Optional.empty());
       when(globalSettingsService.getGlobalSettings()).thenReturn(
-        GlobalSettings.builder()
-          .signupOpen(true)
-          .defaultRole(defaultRole)
-          .build());
+        GlobalSettings.builder().signupOpen(true).defaultRole(defaultRole).build());
       when(passwordEncode.encode(input.getPassword())).thenReturn(encodedPassword);
       when(userRepository.save(any(User.class))).thenReturn(expected);
 
@@ -372,11 +286,8 @@ class UserServiceTest {
       verify(globalSettingsService).getGlobalSettings();
       verify(passwordEncode).encode(input.getPassword());
       verify(userRepository).save(any(User.class));
-      verify(userRepository).save(argThat((User user) ->
-        user.getRole()
-          .equals(defaultRole) &&
-          user.getAuthorities()
-            .equals(defaultRole.getAuthorities())));
+      verify(userRepository).save(argThat((User user) -> user.getRole().equals(defaultRole) && user.getAuthorities()
+        .equals(defaultRole.getAuthorities())));
       verify(userChangedEventEmitter).emitUserCreatedEvent(anyString());
       assertEquals(expected, actual);
     }
@@ -439,17 +350,9 @@ class UserServiceTest {
     @Test
     void should_update_user_role()
       throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-      Role currentRole = Role.builder()
-        .setRandomUUID()
-        .name("ROLE_A")
-        .build();
-      Role targetRole = Role.builder()
-        .setRandomUUID()
-        .name("ROLE_B")
-        .build();
-      UserInput input = UserInput.builder()
-        .roleId(targetRole.getId())
-        .build();
+      Role currentRole = Role.builder().setRandomUUID().name("ROLE_A").build();
+      Role targetRole = Role.builder().setRandomUUID().name("ROLE_B").build();
+      UserInput input = UserInput.builder().roleId(targetRole.getId()).build();
       User expected = User.builder()
         .setRandomUUID()
         .username("username")
@@ -474,21 +377,10 @@ class UserServiceTest {
     @Test
     void should_update_user_authorities()
       throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-      Authority authority1 = Authority.builder()
-        .setRandomUUID()
-        .name("authority1")
-        .build();
-      Authority authority2 = Authority.builder()
-        .setRandomUUID()
-        .name("authority2")
-        .build();
-      Authority authority3 = Authority.builder()
-        .setRandomUUID()
-        .name("authority3")
-        .build();
-      UserInput input = UserInput.builder()
-        .authorityIds(newHashSet(authority2.getId(), authority3.getId()))
-        .build();
+      Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
+      Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
+      Authority authority3 = Authority.builder().setRandomUUID().name("authority3").build();
+      UserInput input = UserInput.builder().authorityIds(newHashSet(authority2.getId(), authority3.getId())).build();
       User expected = User.builder()
         .setRandomUUID()
         .username("username")
@@ -513,19 +405,9 @@ class UserServiceTest {
     @Test
     void should_not_update_user_if_nothing_has_changed()
       throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
-      Authority authority1 = Authority.builder()
-        .setRandomUUID()
-        .name("authority1")
-        .build();
-      Authority authority2 = Authority.builder()
-        .setRandomUUID()
-        .name("authority2")
-        .build();
-      Role role = Role.builder()
-        .setRandomUUID()
-        .name("ROLE_A")
-        .authorities(newHashSet(authority1, authority2))
-        .build();
+      Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
+      Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
+      Role role = Role.builder().setRandomUUID().name("ROLE_A").authorities(newHashSet(authority1, authority2)).build();
       UserInput input = UserInput.builder()
         .username("username")
         .firstname("firstname")
@@ -566,12 +448,9 @@ class UserServiceTest {
 
   @Test
   void request_activation_token_by_id() throws ActivationTokenRecentException, UserNotFoundException {
-    User expected = User.builder()
-      .setRandomUUID()
-      .build();
+    User expected = User.builder().setRandomUUID().build();
     when(userRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
-    doNothing().when(userService)
-      .requestActivationToken(expected);
+    doNothing().when(userService).requestActivationToken(expected);
 
     userService.requestActivationTokenById(expected.getId());
 
@@ -581,13 +460,9 @@ class UserServiceTest {
 
   @Test
   void request_activation_token_by_email() throws ActivationTokenRecentException, EmailNotFoundException {
-    User expected = User.builder()
-      .setRandomUUID()
-      .email("email@example.com")
-      .build();
+    User expected = User.builder().setRandomUUID().email("email@example.com").build();
     when(userRepository.findUserByEmail(expected.getEmail())).thenReturn(Optional.of(expected));
-    doNothing().when(userService)
-      .requestActivationToken(expected);
+    doNothing().when(userService).requestActivationToken(expected);
 
     userService.requestActivationTokenByEmail(expected.getEmail());
 
@@ -597,21 +472,15 @@ class UserServiceTest {
 
   @Test
   void activate_account()
-    throws ActivationTokenExpiredException, EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException {
+    throws ActivationTokenExpiredException, EmailNotFoundException, ActivationTokenNotFoundException,
+    ActivationTokenUserMismatchException {
     AccountActivationInput input = AccountActivationInput.builder()
       .token(randomUUID())
       .password("passw0rd")
       .email("email@example.com")
       .build();
-    User expected = User.builder()
-      .setRandomUUID()
-      .email("email@example.com")
-      .build();
-    ActivationToken token = ActivationToken.builder()
-      .setRandomUUID()
-      .created(new Date())
-      .attempts(0)
-      .build();
+    User expected = User.builder().setRandomUUID().email("email@example.com").build();
+    ActivationToken token = ActivationToken.builder().setRandomUUID().created(new Date()).attempts(0).build();
     when(userRepository.findUserByEmail(input.getEmail())).thenReturn(Optional.of(expected));
     when(activationTokenService.findActivationToken(input.getToken())).thenReturn(token);
 
@@ -627,16 +496,9 @@ class UserServiceTest {
 
   @Test
   void request_activation_token() throws ActivationTokenRecentException {
-    User expected = User.builder()
-      .setRandomUUID()
-      .build();
-    when(userRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
+    User expected = User.builder().setRandomUUID().build();
     when(activationTokenService.createActivationToken(expected)).thenReturn(
-      ActivationToken.builder()
-        .setRandomUUID()
-        .created(new Date())
-        .attempts(0)
-        .build());
+      ActivationToken.builder().setRandomUUID().created(new Date()).attempts(0).build());
 
     userService.requestActivationToken(expected);
 
@@ -646,34 +508,12 @@ class UserServiceTest {
 
   @Test
   void reassign_to_role() {
-    Authority authority1 = Authority.builder()
-      .setRandomUUID()
-      .name("authority1")
-      .build();
-    Authority authority2 = Authority.builder()
-      .setRandomUUID()
-      .name("authority2")
-      .build();
-    Role currentRole = Role.builder()
-      .setRandomUUID()
-      .authorities(newHashSet(authority1))
-      .name("ROLE_A")
-      .build();
-    Role targetRole = Role.builder()
-      .setRandomUUID()
-      .authorities(newHashSet(authority2))
-      .name("ROLE_B")
-      .build();
-    User user1 = User.builder()
-      .setRandomUUID()
-      .username("user1")
-      .role(currentRole)
-      .build();
-    User user2 = User.builder()
-      .setRandomUUID()
-      .username("user2")
-      .role(currentRole)
-      .build();
+    Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
+    Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
+    Role currentRole = Role.builder().setRandomUUID().authorities(newHashSet(authority1)).name("ROLE_A").build();
+    Role targetRole = Role.builder().setRandomUUID().authorities(newHashSet(authority2)).name("ROLE_B").build();
+    User user1 = User.builder().setRandomUUID().username("user1").role(currentRole).build();
+    User user2 = User.builder().setRandomUUID().username("user2").role(currentRole).build();
     ArrayList<User> users = newArrayList(user1, user2);
     when(userRepository.saveAllAndFlush(users)).thenReturn(users);
 
@@ -683,19 +523,15 @@ class UserServiceTest {
     verify(userChangedEventEmitter).emitUserUpdatedEvent(user1.getId());
     verify(userChangedEventEmitter).emitUserUpdatedEvent(user2.getId());
     verifyNoMoreInteractions(userChangedEventEmitter);
-    assertThat(users.get(0)
-      .getRole()).isEqualTo(targetRole);
-    assertThat(users.get(0)
-      .getAuthorities()).isEqualTo(targetRole.getAuthorities());
+    assertThat(users.get(0).getRole()).isEqualTo(targetRole);
+    assertThat(users.get(0).getAuthorities()).isEqualTo(targetRole.getAuthorities());
   }
 
   @Test
   void should_throw_if_username_exists() {
     String username = "username";
     String email = "email";
-    when(userRepository.findUserByUsername(username)).thenReturn(Optional.of(User.builder()
-      .setRandomUUID()
-      .build()));
+    when(userRepository.findUserByUsername(username)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
     assertThrows(UndeclaredThrowableException.class,
       () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));
@@ -705,9 +541,7 @@ class UserServiceTest {
   void should_throw_if_email_exists() {
     String username = "username";
     String email = "email";
-    when(userRepository.findUserByEmail(email)).thenReturn(Optional.of(User.builder()
-      .setRandomUUID()
-      .build()));
+    when(userRepository.findUserByEmail(email)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
     assertThrows(UndeclaredThrowableException.class,
       () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));

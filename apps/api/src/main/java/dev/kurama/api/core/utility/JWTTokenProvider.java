@@ -56,8 +56,7 @@ public class JWTTokenProvider {
   }
 
   public Authentication getAuthentication(DecodedJWT token, HttpServletRequest request) {
-    UsernamePasswordAuthenticationToken authenticationToken = getUsernamePasswordAuthenticationToken(
-      token);
+    UsernamePasswordAuthenticationToken authenticationToken = getUsernamePasswordAuthenticationToken(token);
     if (request != null) {
       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
     }
@@ -91,9 +90,11 @@ public class JWTTokenProvider {
   }
 
   private List<GrantedAuthority> getAuthorities(DecodedJWT token) {
-    return token.getClaim(SecurityConstant.AUTHORITIES).asList(String.class).stream()
-      .map(SimpleGrantedAuthority::new).collect(
-        Collectors.toList());
+    return token.getClaim(SecurityConstant.AUTHORITIES)
+      .asList(String.class)
+      .stream()
+      .map(SimpleGrantedAuthority::new)
+      .collect(Collectors.toList());
   }
 
   private Algorithm getAlgorithm() {

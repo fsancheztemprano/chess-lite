@@ -43,11 +43,8 @@ public class Role extends AbstractEntity implements Serializable {
   @Builder.Default
   @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-    name = "role_authorities",
-    joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id")
-  )
+  @JoinTable(name = "role_authorities", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
   private Set<Authority> authorities = Sets.newHashSet();
 
   @Builder.Default

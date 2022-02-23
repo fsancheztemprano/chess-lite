@@ -54,14 +54,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http
-      .csrf().disable()
-      .cors().and()
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-      .authorizeRequests().antMatchers(applicationProperties.getPublicUrls()).permitAll()
-      .anyRequest().authenticated().and()
-      .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
-      .authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+    http.csrf()
+      .disable()
+      .cors()
+      .and()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .authorizeRequests()
+      .antMatchers(applicationProperties.getPublicUrls())
+      .permitAll()
+      .anyRequest()
+      .authenticated()
+      .and()
+      .exceptionHandling()
+      .accessDeniedHandler(jwtAccessDeniedHandler)
+      .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+      .and()
       .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
@@ -70,5 +79,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
-
 }

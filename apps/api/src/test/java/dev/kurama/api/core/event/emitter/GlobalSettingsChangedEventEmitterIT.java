@@ -7,7 +7,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.GlobalSettingsChangedEvent;
 import dev.kurama.api.core.event.domain.GlobalSettingsChangedEvent.GlobalSettingsChangedEventAction;
-import dev.kurama.api.framework.TestChannelInterceptor;
+import dev.kurama.api.support.TestChannelInterceptor;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.test.context.ActiveProfiles;
+
 
 @ActiveProfiles("integration-test")
 @SpringBootTest
@@ -51,8 +52,7 @@ class GlobalSettingsChangedEventEmitterIT {
 
     GlobalSettingsChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(),
       GlobalSettingsChangedEvent.class);
-    assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("action", GlobalSettingsChangedEventAction.UPDATED);
+    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("action", GlobalSettingsChangedEventAction.UPDATED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();

@@ -15,11 +15,7 @@ public class RoleChangedEventEmitter {
   private final ApplicationEventPublisher applicationEventPublisher;
 
   public void emitRoleChangedEvent(String roleId, RoleChangedEventAction action) {
-    applicationEventPublisher.publishEvent(
-      RoleChangedEvent.builder()
-        .roleId(roleId)
-        .action(action)
-        .build());
+    applicationEventPublisher.publishEvent(RoleChangedEvent.builder().roleId(roleId).action(action).build());
   }
 
   public void emitRoleCreatedEvent(String roleId) {

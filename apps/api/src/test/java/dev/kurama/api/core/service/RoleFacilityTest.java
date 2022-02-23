@@ -1,22 +1,21 @@
 package dev.kurama.api.core.service;
 
+import static com.google.common.collect.Sets.newHashSet;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import dev.kurama.api.core.domain.GlobalSettings;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
+import java.util.Optional;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
-import static com.google.common.collect.Sets.newHashSet;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RoleFacilityTest {
@@ -38,18 +37,11 @@ class RoleFacilityTest {
 
     @Test
     void should_delete_role_by_id() throws ImmutableRoleException, RoleNotFoundException {
-      Role expected = Role.builder()
-        .setRandomUUID()
-        .users(newHashSet())
-        .build();
+      Role expected = Role.builder().setRandomUUID().users(newHashSet()).build();
       when(roleService.findRoleById(expected.getId())).thenReturn(Optional.of(expected));
-      Role defaultRole = Role.builder()
-        .setRandomUUID()
-        .build();
+      Role defaultRole = Role.builder().setRandomUUID().build();
       when(globalSettingsService.getGlobalSettings()).thenReturn(
-        GlobalSettings.builder()
-          .defaultRole(defaultRole)
-          .build());
+        GlobalSettings.builder().defaultRole(defaultRole).build());
 
       facility.deleteRole(expected.getId());
 
@@ -61,10 +53,7 @@ class RoleFacilityTest {
 
     @Test
     void should_throw_if_role_is_core_role() {
-      Role expected = Role.builder()
-        .setRandomUUID()
-        .coreRole(true)
-        .build();
+      Role expected = Role.builder().setRandomUUID().coreRole(true).build();
       when(roleService.findRoleById(expected.getId())).thenReturn(Optional.of(expected));
 
       assertThrows(ImmutableRoleException.class, () -> facility.deleteRole(expected.getId()));

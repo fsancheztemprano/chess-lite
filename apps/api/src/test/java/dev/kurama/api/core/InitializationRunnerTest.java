@@ -1,5 +1,19 @@
 package dev.kurama.api.core;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.GlobalSettings;
@@ -10,24 +24,22 @@ import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
 import dev.kurama.api.core.repository.UserRepository;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith({MockitoExtension.class})
 class InitializationRunnerTest {
@@ -51,6 +63,11 @@ class InitializationRunnerTest {
   @Mock
   private BCryptPasswordEncoder passwordEncoder;
 
+  @BeforeEach
+  void setUp() {
+    lenient().doNothing().when(initializationRunner).log(any(), anyString());
+  }
+
   @Nested
   class RunnerTests {
 
@@ -58,16 +75,11 @@ class InitializationRunnerTest {
     void should_run_if_data_init_is_true() throws RoleNotFoundException {
       ReflectionTestUtils.setField(initializationRunner, "dataInit", true);
 
-      doNothing().when(initializationRunner)
-        .initializeAuthorities();
-      doNothing().when(initializationRunner)
-        .initializeRoles();
-      doNothing().when(initializationRunner)
-        .setRolesAuthorizations();
-      doNothing().when(initializationRunner)
-        .initializeGlobalSettings();
-      doNothing().when(initializationRunner)
-        .initializeAdminUser();
+      doNothing().when(initializationRunner).initializeAuthorities();
+      doNothing().when(initializationRunner).initializeRoles();
+      doNothing().when(initializationRunner).setRolesAuthorizations();
+      doNothing().when(initializationRunner).initializeGlobalSettings();
+      doNothing().when(initializationRunner).initializeAdminUser();
 
       initializationRunner.run();
 
@@ -94,15 +106,10 @@ class InitializationRunnerTest {
     @Test
     void should_catch_initialization_exceptions() throws RoleNotFoundException {
       ReflectionTestUtils.setField(initializationRunner, "dataInit", true);
-      doNothing().when(initializationRunner)
-        .initializeAuthorities();
-      doNothing().when(initializationRunner)
-        .initializeRoles();
-      doNothing().when(initializationRunner)
-        .setRolesAuthorizations();
-      doThrow(new RoleNotFoundException("")).when(initializationRunner)
-        .initializeGlobalSettings();
-
+      doNothing().when(initializationRunner).initializeAuthorities();
+      doNothing().when(initializationRunner).initializeRoles();
+      doNothing().when(initializationRunner).setRolesAuthorizations();
+      doThrow(new RoleNotFoundException("")).when(initializationRunner).initializeGlobalSettings();
 
       initializationRunner.run();
     }
@@ -110,15 +117,14 @@ class InitializationRunnerTest {
 
   @Nested
   class InitializeAuthoritiesTests {
+
     @Captor
     ArgumentCaptor<Iterable<Authority>> capturedAuthorities;
 
     @Test
     void should_initialize_authorities() {
-      doReturn(newArrayList()).when(authorityRepository)
-        .findAll();
-      doReturn(DefaultAuthority.AUTHORITIES).when(authorityRepository)
-        .saveAllAndFlush(any());
+      doReturn(newArrayList()).when(authorityRepository).findAll();
+      doReturn(DefaultAuthority.AUTHORITIES).when(authorityRepository).saveAllAndFlush(any());
 
       initializationRunner.initializeAuthorities();
 
@@ -130,13 +136,13 @@ class InitializationRunnerTest {
     @Test
     void should_insert_only_nonexistent_authorities() {
       List<Authority> existentAuthorities = buildAuthorities(DefaultAuthority.AUTHORITIES.subList(0, 3));
-      doReturn(existentAuthorities).when(authorityRepository)
-        .findAll();
+      doReturn(existentAuthorities).when(authorityRepository).findAll();
 
       initializationRunner.initializeAuthorities();
 
       verify(authorityRepository).saveAllAndFlush(capturedAuthorities.capture());
-      assertThat(capturedAuthorities.getValue()).hasSize(DefaultAuthority.AUTHORITIES.size() - existentAuthorities.size())
+      assertThat(capturedAuthorities.getValue()).hasSize(
+          DefaultAuthority.AUTHORITIES.size() - existentAuthorities.size())
         .extracting("name")
         .doesNotContainAnyElementsOf(existentAuthorities);
     }
@@ -144,8 +150,7 @@ class InitializationRunnerTest {
     @Test
     void should_not_insert_if_no_new_authorities() {
       List<Authority> existentAuthorities = buildAuthorities(DefaultAuthority.AUTHORITIES);
-      doReturn(existentAuthorities).when(authorityRepository)
-        .findAll();
+      doReturn(existentAuthorities).when(authorityRepository).findAll();
 
       initializationRunner.initializeAuthorities();
 
@@ -155,16 +160,14 @@ class InitializationRunnerTest {
 
   @Nested
   class InitializeRolesTests {
+
     @Captor
     ArgumentCaptor<Iterable<Role>> capturedRoles;
 
     @Test
     void should_initialize_roles() {
-      doReturn(newArrayList()).when(roleRepository)
-        .findAll();
-      doReturn(DefaultAuthority.ROLES).when(roleRepository)
-        .saveAllAndFlush(any());
-
+      doReturn(newArrayList()).when(roleRepository).findAll();
+      doReturn(DefaultAuthority.ROLES).when(roleRepository).saveAllAndFlush(any());
 
       initializationRunner.initializeRoles();
 
@@ -176,8 +179,7 @@ class InitializationRunnerTest {
     @Test
     void should_insert_only_nonexistent_roles() {
       List<Role> existentRoles = buildRoles(DefaultAuthority.ROLES.subList(0, 3));
-      doReturn(existentRoles).when(roleRepository)
-        .findAll();
+      doReturn(existentRoles).when(roleRepository).findAll();
 
       initializationRunner.initializeRoles();
 
@@ -190,8 +192,7 @@ class InitializationRunnerTest {
     @Test
     void should_not_insert_if_no_new_roles() {
       List<Role> existentRoles = buildRoles(DefaultAuthority.ROLES);
-      doReturn(existentRoles).when(roleRepository)
-        .findAll();
+      doReturn(existentRoles).when(roleRepository).findAll();
 
       initializationRunner.initializeRoles();
 
@@ -201,6 +202,7 @@ class InitializationRunnerTest {
 
   @Nested
   class SetRolesAuthorizationsTests {
+
     @Captor
     ArgumentCaptor<Iterable<Role>> capturedRoles;
 
@@ -208,13 +210,9 @@ class InitializationRunnerTest {
     void should_set_all_roles_default_authorities() {
       List<Role> roles = buildRoles(DefaultAuthority.ROLES);
       List<Authority> authorities = buildAuthorities(DefaultAuthority.AUTHORITIES);
-      doReturn(roles).when(roleRepository)
-        .findAll();
-      doReturn(authorities).when(authorityRepository)
-        .findAll();
-      doReturn(DefaultAuthority.ROLES).when(roleRepository)
-        .saveAllAndFlush(any());
-
+      doReturn(roles).when(roleRepository).findAll();
+      doReturn(authorities).when(authorityRepository).findAll();
+      doReturn(DefaultAuthority.ROLES).when(roleRepository).saveAllAndFlush(any());
 
       initializationRunner.setRolesAuthorizations();
 
@@ -232,17 +230,12 @@ class InitializationRunnerTest {
     @Test
     void should_only_update_roles_missing_any_of_its_default_authorities() {
       List<Authority> authorities = buildAuthorities(DefaultAuthority.AUTHORITIES);
-      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES, authorities);
-      roles.get(0)
-        .getAuthorities()
-        .clear();
-      roles.get(1)
-        .getAuthorities()
-        .clear();
-      doReturn(roles).when(roleRepository)
-        .findAll();
-      doReturn(authorities).when(authorityRepository)
-        .findAll();
+      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES,
+        authorities);
+      roles.get(0).getAuthorities().clear();
+      roles.get(1).getAuthorities().clear();
+      doReturn(roles).when(roleRepository).findAll();
+      doReturn(authorities).when(authorityRepository).findAll();
 
       initializationRunner.setRolesAuthorizations();
 
@@ -250,9 +243,7 @@ class InitializationRunnerTest {
       Iterable<Role> savedRoles = capturedRoles.getValue();
       assertThat(savedRoles).hasSize(2)
         .extracting("name")
-        .containsExactlyInAnyOrder(roles.get(0)
-          .getName(), roles.get(1)
-          .getName());
+        .containsExactlyInAnyOrder(roles.get(0).getName(), roles.get(1).getName());
       for (Role role : roles) {
         assertThat(role.getAuthorities()).extracting("name")
           .containsExactlyInAnyOrderElementsOf(DefaultAuthority.ROLE_AUTHORITIES.get(role.getName()));
@@ -262,11 +253,10 @@ class InitializationRunnerTest {
     @Test
     void should_not_insert_if_no_new_authorities() {
       List<Authority> authorities = buildAuthorities(DefaultAuthority.AUTHORITIES);
-      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES, authorities);
-      doReturn(authorities).when(authorityRepository)
-        .findAll();
-      doReturn(roles).when(roleRepository)
-        .findAll();
+      List<Role> roles = buildRolesWithAuthorities(DefaultAuthority.ROLES, DefaultAuthority.ROLE_AUTHORITIES,
+        authorities);
+      doReturn(authorities).when(authorityRepository).findAll();
+      doReturn(roles).when(roleRepository).findAll();
 
       initializationRunner.setRolesAuthorizations();
 
@@ -276,13 +266,13 @@ class InitializationRunnerTest {
 
   @Nested
   class InitializeGlobalSettingsTests {
+
     @Captor
     ArgumentCaptor<GlobalSettings> capturedGlobalSettings;
 
     @Test
     void should_do_nothing_if_exactly_one_global_settings_exists() throws RoleNotFoundException {
-      doReturn(1L).when(globalSettingsRepository)
-        .count();
+      doReturn(1L).when(globalSettingsRepository).count();
 
       initializationRunner.initializeGlobalSettings();
 
@@ -292,13 +282,9 @@ class InitializationRunnerTest {
 
     @Test
     void should_create_one_global_settings_if_none_are_available() throws RoleNotFoundException {
-      Role defaultRole = Role.builder()
-        .setRandomUUID()
-        .build();
-      doReturn(0L).when(globalSettingsRepository)
-        .count();
-      doReturn(Optional.of(defaultRole)).when(roleRepository)
-        .findByName(DefaultAuthority.DEFAULT_ROLE);
+      Role defaultRole = Role.builder().setRandomUUID().build();
+      doReturn(0L).when(globalSettingsRepository).count();
+      doReturn(Optional.of(defaultRole)).when(roleRepository).findByName(DefaultAuthority.DEFAULT_ROLE);
 
       initializationRunner.initializeGlobalSettings();
 
@@ -310,13 +296,9 @@ class InitializationRunnerTest {
 
     @Test
     void should_surplus_global_settings_if_more_than_one_available() throws RoleNotFoundException {
-      Role defaultRole = Role.builder()
-        .setRandomUUID()
-        .build();
-      doReturn(2L).when(globalSettingsRepository)
-        .count();
-      doReturn(Optional.of(defaultRole)).when(roleRepository)
-        .findByName(DefaultAuthority.DEFAULT_ROLE);
+      Role defaultRole = Role.builder().setRandomUUID().build();
+      doReturn(2L).when(globalSettingsRepository).count();
+      doReturn(Optional.of(defaultRole)).when(roleRepository).findByName(DefaultAuthority.DEFAULT_ROLE);
 
       initializationRunner.initializeGlobalSettings();
 
@@ -329,13 +311,13 @@ class InitializationRunnerTest {
 
   @Nested
   class InitializeAdminUserTests {
+
     @Captor
     ArgumentCaptor<User> capturedUser;
 
     @Test
     void should_do_nothing_if_users_exists() throws RoleNotFoundException {
-      doReturn(1L).when(userRepository)
-        .count();
+      doReturn(1L).when(userRepository).count();
 
       initializationRunner.initializeAdminUser();
 
@@ -347,27 +329,20 @@ class InitializationRunnerTest {
       Role superAdminRole = Role.builder()
         .setRandomUUID()
         .name(DefaultAuthority.SUPER_ADMIN_ROLE)
-        .authorities(newHashSet(
-          Authority.builder()
-            .setRandomUUID()
-            .name("ADMIN")
-            .build(),
-          Authority.builder()
-            .setRandomUUID()
-            .name("SUPER_ADMIN")
-            .build()))
+        .authorities(newHashSet(Authority.builder().setRandomUUID().name("ADMIN").build(),
+          Authority.builder().setRandomUUID().name("SUPER_ADMIN").build()))
         .build();
-      doReturn(0L).when(userRepository)
-        .count();
-      doReturn(Optional.of(superAdminRole)).when(roleRepository)
-        .findByName(DefaultAuthority.SUPER_ADMIN_ROLE);
+      doReturn(0L).when(userRepository).count();
+      doReturn(Optional.of(superAdminRole)).when(roleRepository).findByName(DefaultAuthority.SUPER_ADMIN_ROLE);
+      String encodedPassword = "encoded-password";
+      doReturn(encodedPassword).when(passwordEncoder).encode("123456");
 
       initializationRunner.initializeAdminUser();
 
       verify(userRepository).saveAndFlush(capturedUser.capture());
       User newAdminUser = capturedUser.getValue();
-      assertThat(newAdminUser).extracting("username", "email", "password", "active", "locked", "expired", "credentialsExpired")
-        .containsExactly("admin", "admin@example.com", null, true, false, false, false);
+      assertThat(newAdminUser).extracting("username", "email", "password", "active", "locked", "expired",
+        "credentialsExpired").containsExactly("admin", "admin@example.com", encodedPassword, true, false, false, false);
       assertThat(newAdminUser.getRole()).isEqualTo(superAdminRole);
       assertThat(newAdminUser.getAuthorities()).isEqualTo(superAdminRole.getAuthorities());
       assertNotNull(newAdminUser.getUserPreferences());
@@ -375,33 +350,23 @@ class InitializationRunnerTest {
   }
 
   private List<Role> buildRoles(List<String> names) {
-    return names
-      .stream()
-      .map(role -> Role.builder()
-        .setRandomUUID()
-        .name(role)
-        .build())
-      .collect(Collectors.toList());
+    return names.stream().map(role -> Role.builder().setRandomUUID().name(role).build()).collect(Collectors.toList());
   }
 
   private List<Authority> buildAuthorities(List<String> names) {
-    return names
-      .stream()
-      .map(authority -> Authority.builder()
-        .setRandomUUID()
-        .name(authority)
-        .build())
+    return names.stream()
+      .map(authority -> Authority.builder().setRandomUUID().name(authority).build())
       .collect(Collectors.toList());
   }
 
-  private List<Role> buildRolesWithAuthorities(List<String> names, Map<String, List<String>> roleAuthorities, List<Authority> authorities) {
+  private List<Role> buildRolesWithAuthorities(List<String> names, Map<String, List<String>> roleAuthorities,
+                                               List<Authority> authorities) {
     List<Role> roles = buildRoles(names);
     for (Role role : roles) {
       List<String> defaultRoleAuthorities = roleAuthorities.get(role.getName());
-      role.setAuthorities(newHashSet(
-        authorities.stream()
-          .filter(authority -> defaultRoleAuthorities.contains(authority.getName()))
-          .collect(Collectors.toSet())));
+      role.setAuthorities(newHashSet(authorities.stream()
+        .filter(authority -> defaultRoleAuthorities.contains(authority.getName()))
+        .collect(Collectors.toSet())));
     }
     return roles;
   }

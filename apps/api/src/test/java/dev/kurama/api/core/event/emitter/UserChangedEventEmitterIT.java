@@ -10,7 +10,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.UserChangedEvent;
 import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
-import dev.kurama.api.framework.TestChannelInterceptor;
+import dev.kurama.api.support.TestChannelInterceptor;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.test.context.ActiveProfiles;
+
 
 @ActiveProfiles("integration-test")
 @SpringBootTest
@@ -42,7 +43,7 @@ class UserChangedEventEmitterIT {
   }
 
   @Test
-  void should_send_user_changed_message() throws InterruptedException, IOException {
+  void should_send_user_created_message() throws InterruptedException, IOException {
     String userId = randomUUID();
     userChangedEventEmitter.emitUserCreatedEvent(userId);
 
@@ -69,6 +70,72 @@ class UserChangedEventEmitterIT {
     assertThat(payload).isNotNull()
       .hasFieldOrPropertyWithValue("userId", userId)
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
+
+    message = testChannelInterceptor.awaitMessage(1);
+    assertThat(message).isNull();
+  }
+
+  @Test
+  void should_send_user_updated_message() throws InterruptedException, IOException {
+    String userId = randomUUID();
+    userChangedEventEmitter.emitUserUpdatedEvent(userId);
+
+    Message<?> message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, userId));
+
+    UserChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("action", UserChangedEventAction.UPDATED);
+
+    message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(USERS_CHANGED_CHANNEL);
+
+    payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("action", UserChangedEventAction.UPDATED);
+
+    message = testChannelInterceptor.awaitMessage(1);
+    assertThat(message).isNull();
+  }
+
+  @Test
+  void should_send_user_deleted_message() throws InterruptedException, IOException {
+    String userId = randomUUID();
+    userChangedEventEmitter.emitUserDeletedEvent(userId);
+
+    Message<?> message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, userId));
+
+    UserChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("action", UserChangedEventAction.DELETED);
+
+    message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(USERS_CHANGED_CHANNEL);
+
+    payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("action", UserChangedEventAction.DELETED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();

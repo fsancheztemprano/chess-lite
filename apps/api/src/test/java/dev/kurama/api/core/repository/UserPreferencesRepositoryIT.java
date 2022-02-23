@@ -29,18 +29,18 @@ class UserPreferencesRepositoryIT {
   void should_find_user_preferences_by_user_id() {
     Role role = entityManager.persist(Role.builder().setRandomUUID().name("r1").build());
     UserPreferences userPreferences1 = UserPreferences.builder().setRandomUUID().build();
-    User user1 = User.builder().setRandomUUID().username("user1").userPreferences(userPreferences1)
-      .role(role).build();
+    User user1 = User.builder().setRandomUUID().username("user1").userPreferences(userPreferences1).role(role).build();
     userPreferences1.setUser(user1);
     entityManager.persist(user1);
     entityManager.flush();
 
-    Optional<UserPreferences> actual = userPreferencesRepository.findUserPreferencesByUserId(
-      user1.getId());
+    Optional<UserPreferences> actual = userPreferencesRepository.findUserPreferencesByUserId(user1.getId());
 
-    assertThat(actual).isPresent().get()
+    assertThat(actual).isPresent()
+      .get()
       .hasFieldOrPropertyWithValue("id", userPreferences1.getId())
       .hasFieldOrProperty("user")
-      .extracting("user").hasFieldOrPropertyWithValue("id", user1.getId());
+      .extracting("user")
+      .hasFieldOrPropertyWithValue("id", user1.getId());
   }
 }

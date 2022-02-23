@@ -22,9 +22,7 @@ class UserPreferencesChangedEventEmitterTest {
 
   @Test
   void should_emit_user_preferences_updated_event() {
-    UserPreferencesChangedEvent event = UserPreferencesChangedEvent.builder()
-      .userPreferencesId(randomUUID())
-      .build();
+    UserPreferencesChangedEvent event = UserPreferencesChangedEvent.builder().userPreferencesId(randomUUID()).build();
 
     userPreferencesChangedEventEmitter.emitUserPreferencesUpdatedEvent(event.getUserPreferencesId());
 

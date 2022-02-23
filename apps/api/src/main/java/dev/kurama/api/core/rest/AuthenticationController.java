@@ -52,8 +52,7 @@ public class AuthenticationController {
   @PostMapping(LOGIN_PATH)
   public ResponseEntity<UserModel> login(@RequestBody LoginInput user) throws RoleCanNotLoginException {
     var authenticatedUser = authenticationFacade.login(user);
-    return ok().headers(authenticatedUser.getHeaders())
-      .body(authenticatedUser.getUserModel());
+    return ok().headers(authenticatedUser.getHeaders()).body(authenticatedUser.getUserModel());
   }
 
 
@@ -66,7 +65,8 @@ public class AuthenticationController {
 
   @PostMapping(ACTIVATE_PATH)
   public ResponseEntity<?> activateAccount(@RequestBody AccountActivationInput accountActivationInput)
-    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException {
+    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
+    ActivationTokenExpiredException {
     authenticationFacade.activateAccount(accountActivationInput);
     return ok().build();
   }

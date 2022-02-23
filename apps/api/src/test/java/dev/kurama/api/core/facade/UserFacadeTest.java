@@ -21,6 +21,7 @@ import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.hateoas.input.UserProfileUpdateInput;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import dev.kurama.api.core.mapper.UserMapper;
+import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserService;
 import java.io.IOException;
 import java.util.Optional;
@@ -32,8 +33,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -52,7 +51,7 @@ class UserFacadeTest {
   private UserModelAssembler userModelAssembler;
 
   @Mock
-  private AuthenticationManager authenticationManager;
+  private AuthenticationFacility authenticationFacility;
 
   @Test
   void should_create_user() throws UsernameExistsException, EmailExistsException {
@@ -88,8 +87,7 @@ class UserFacadeTest {
     PageRequest PAGEABLE = PageRequest.of(1, 2);
     PageImpl<User> pagedUsers = new PageImpl<>(newArrayList(User.builder().build()), PAGEABLE, 1);
     PageImpl<UserModel> userModels = new PageImpl<>(newArrayList(UserModel.builder().build()), PAGEABLE, 1);
-    PagedModel<UserModel> expected = PagedModel.of(userModels.getContent(),
-      new PagedModel.PageMetadata(2, 1, 2));
+    PagedModel<UserModel> expected = PagedModel.of(userModels.getContent(), new PagedModel.PageMetadata(2, 1, 2));
     when(userService.getAllUsers(PAGEABLE, "")).thenReturn(pagedUsers);
     when(userMapper.userPageToUserModelPage(pagedUsers)).thenReturn(userModels);
     when(userModelAssembler.toPagedModel(userModels)).thenReturn(expected);
@@ -148,7 +146,9 @@ class UserFacadeTest {
   void should_change_user_password()
     throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
     String id = randomUUID();
-    ChangeUserPasswordInput input = ChangeUserPasswordInput.builder().password("Old_p4ss").newPassword("New_p4ss")
+    ChangeUserPasswordInput input = ChangeUserPasswordInput.builder()
+      .password("Old_p4ss")
+      .newPassword("New_p4ss")
       .build();
     User user = User.builder().id(id).username("username").build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
@@ -158,8 +158,7 @@ class UserFacadeTest {
 
     UserModel actual = userFacade.changePassword(id, input);
 
-    verify(authenticationManager).authenticate(
-      new UsernamePasswordAuthenticationToken(user.getUsername(), input.getPassword()));
+    verify(authenticationFacility).verifyAuthentication(user.getUsername(), input.getPassword());
     verify(userService).updateUser(eq(id), any(UserInput.class));
     verify(userMapper).userToUserModel(user);
     assertEquals(expected, actual);

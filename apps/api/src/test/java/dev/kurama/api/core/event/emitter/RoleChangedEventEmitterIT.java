@@ -10,7 +10,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.RoleChangedEvent;
 import dev.kurama.api.core.event.domain.RoleChangedEvent.RoleChangedEventAction;
-import dev.kurama.api.framework.TestChannelInterceptor;
+import dev.kurama.api.support.TestChannelInterceptor;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ class RoleChangedEventEmitterIT {
   }
 
   @Test
-  void should_send_role_changed_message() throws InterruptedException, IOException {
+  void should_send_role_created_message() throws InterruptedException, IOException {
     String roleId = randomUUID();
     roleChangedEventEmitter.emitRoleCreatedEvent(roleId);
 
@@ -69,6 +69,72 @@ class RoleChangedEventEmitterIT {
     assertThat(payload).isNotNull()
       .hasFieldOrPropertyWithValue("roleId", roleId)
       .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.CREATED);
+
+    message = testChannelInterceptor.awaitMessage(1);
+    assertThat(message).isNull();
+  }
+
+  @Test
+  void should_send_role_updated_message() throws InterruptedException, IOException {
+    String roleId = randomUUID();
+    roleChangedEventEmitter.emitRoleUpdatedEvent(roleId);
+
+    Message<?> message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(ROLE_CHANGED_CHANNEL, roleId));
+
+    RoleChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.UPDATED);
+
+    message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(ROLES_CHANGED_CHANNEL);
+
+    payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.UPDATED);
+
+    message = testChannelInterceptor.awaitMessage(1);
+    assertThat(message).isNull();
+  }
+
+  @Test
+  void should_send_role_deleted_message() throws InterruptedException, IOException {
+    String roleId = randomUUID();
+    roleChangedEventEmitter.emitRoleDeletedEvent(roleId);
+
+    Message<?> message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(ROLE_CHANGED_CHANNEL, roleId));
+
+    RoleChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.DELETED);
+
+    message = testChannelInterceptor.awaitMessage(2);
+    assertThat(message).isNotNull();
+
+    messageHeaders = StompHeaderAccessor.wrap(message);
+    assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
+    assertThat(messageHeaders.getDestination()).isEqualTo(ROLES_CHANGED_CHANNEL);
+
+    payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.DELETED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();

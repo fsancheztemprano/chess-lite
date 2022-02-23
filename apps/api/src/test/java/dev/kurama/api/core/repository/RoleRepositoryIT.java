@@ -35,7 +35,8 @@ class RoleRepositoryIT {
 
     Optional<Role> actual = roleRepository.findByName(role2.getName());
 
-    assertThat(actual).isPresent().get()
+    assertThat(actual).isPresent()
+      .get()
       .hasFieldOrPropertyWithValue("id", role2.getId())
       .hasFieldOrPropertyWithValue("name", role2.getName());
   }

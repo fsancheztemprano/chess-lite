@@ -1,10 +1,13 @@
 package dev.kurama.api.core.hateoas.model;
 
-import lombok.*;
-import org.springframework.hateoas.RepresentationModel;
-
 import java.util.Date;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor

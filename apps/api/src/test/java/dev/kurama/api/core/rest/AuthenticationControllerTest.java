@@ -6,7 +6,7 @@ import static dev.kurama.api.core.rest.AuthenticationController.LOGIN_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.SIGNUP_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.TOKEN_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.framework.JsonUtils.asJsonString;
+import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,26 +55,22 @@ class AuthenticationControllerTest {
 
   @BeforeEach
   void setUp() {
-    mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                             .setControllerAdvice(new ExceptionHandlers())
-                             .build();
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ExceptionHandlers()).build();
   }
 
 
   @Test
   void should_signup() throws Exception {
     SignupInput input = SignupInput.builder()
-                                   .firstname("firstname")
-                                   .lastname("lastname")
-                                   .username("username")
-                                   .email("em@i.l")
-                                   .build();
+      .firstname("firstname")
+      .lastname("lastname")
+      .username("username")
+      .email("em@i.l")
+      .build();
 
-    mockMvc.perform(
-             post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
-                                                    .contentType(MediaType.APPLICATION_JSON)
-                                                    .content(asJsonString(input)))
-           .andExpect(status().isOk());
+    mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(asJsonString(input))).andExpect(status().isOk());
 
     verify(facade).signup(input);
   }
@@ -82,42 +78,29 @@ class AuthenticationControllerTest {
 
   @Test
   void should_login() throws Exception {
-    LoginInput input = LoginInput.builder()
-                                 .username("username")
-                                 .password("password")
-                                 .build();
-    UserModel user = UserModel.builder()
-                              .id(randomUUID())
-                              .build();
+    LoginInput input = LoginInput.builder().username("username").password("password").build();
+    UserModel user = UserModel.builder().id(randomUUID()).build();
     String token = randomUUID();
     var headers = new HttpHeaders();
     headers.add(SecurityConstant.JWT_TOKEN_HEADER, token);
-    AuthenticatedUserExcerpt expected = AuthenticatedUserExcerpt.builder()
-                                                                .userModel(user)
-                                                                .headers(headers)
-                                                                .build();
+    AuthenticatedUserExcerpt expected = AuthenticatedUserExcerpt.builder().userModel(user).headers(headers).build();
     when(facade.login(input)).thenReturn(expected);
 
-    mockMvc.perform(
-             post(AUTHENTICATION_PATH + LOGIN_PATH).accept(MediaType.APPLICATION_JSON)
-                                                   .contentType(MediaType.APPLICATION_JSON)
-                                                   .content(asJsonString(input)))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.id", equalTo(user.getId())))
-           .andExpect(header().stringValues(SecurityConstant.JWT_TOKEN_HEADER, token));
+    mockMvc.perform(post(AUTHENTICATION_PATH + LOGIN_PATH).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input)))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.id", equalTo(user.getId())))
+      .andExpect(header().stringValues(SecurityConstant.JWT_TOKEN_HEADER, token));
   }
 
   @Test
   void should_request_activation_token() throws Exception {
-    RequestActivationTokenInput input = RequestActivationTokenInput.builder()
-                                                                   .email("em@i.l")
-                                                                   .build();
+    RequestActivationTokenInput input = RequestActivationTokenInput.builder().email("em@i.l").build();
 
-    mockMvc.perform(
-             post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
-                                                   .contentType(MediaType.APPLICATION_JSON)
-                                                   .content(asJsonString(input)))
-           .andExpect(status().isOk());
+    mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(asJsonString(input))).andExpect(status().isOk());
 
     verify(facade).requestActivationToken(input.getEmail());
   }
@@ -125,15 +108,14 @@ class AuthenticationControllerTest {
   @Test
   void should_activate_account() throws Exception {
     AccountActivationInput input = AccountActivationInput.builder()
-                                                         .email("em@i.l")
-                                                         .password("password")
-                                                         .token(randomUUID())
-                                                         .build();
+      .email("em@i.l")
+      .password("password")
+      .token(randomUUID())
+      .build();
 
     mockMvc.perform(post(AUTHENTICATION_PATH + ACTIVATE_PATH).accept(MediaType.APPLICATION_JSON)
-                                                             .contentType(MediaType.APPLICATION_JSON)
-                                                             .content(asJsonString(input)))
-           .andExpect(status().isOk());
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(asJsonString(input))).andExpect(status().isOk());
 
     verify(facade).activateAccount(input);
   }

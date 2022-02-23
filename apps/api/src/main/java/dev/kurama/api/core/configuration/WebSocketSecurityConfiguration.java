@@ -12,13 +12,18 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
 
   @Override
   protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-    messages
-      .simpSubscribeDestMatchers("/ami/user").hasAuthority(UserAuthority.USER_READ)
-      .simpSubscribeDestMatchers("/ami/user/**").hasAuthority(UserAuthority.PROFILE_READ)
-      .simpSubscribeDestMatchers("/ami/user-preferences/**").hasAuthority(UserAuthority.PROFILE_READ)
-      .simpSubscribeDestMatchers("/ami/role/**").hasAuthority(RoleAuthority.ROLE_READ)
-      .simpSubscribeDestMatchers("/ami/global-settings").hasAuthority(GlobalSettingsAuthority.GLOBAL_SETTINGS_READ)
-      .anyMessage().authenticated();
+    messages.simpSubscribeDestMatchers("/ami/user")
+      .hasAuthority(UserAuthority.USER_READ)
+      .simpSubscribeDestMatchers("/ami/user/**")
+      .hasAuthority(UserAuthority.PROFILE_READ)
+      .simpSubscribeDestMatchers("/ami/user-preferences/**")
+      .hasAuthority(UserAuthority.PROFILE_READ)
+      .simpSubscribeDestMatchers("/ami/role/**")
+      .hasAuthority(RoleAuthority.ROLE_READ)
+      .simpSubscribeDestMatchers("/ami/global-settings")
+      .hasAuthority(GlobalSettingsAuthority.GLOBAL_SETTINGS_READ)
+      .anyMessage()
+      .authenticated();
   }
 
   @Override

@@ -1,5 +1,17 @@
 package dev.kurama.api.core.hateoas.root.processor;
 
+import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
+import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.SIGNUP_REL;
+import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
+import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import dev.kurama.api.core.hateoas.root.model.RootResource;
 import dev.kurama.api.core.hateoas.root.rest.AdministrationRootController;
 import dev.kurama.api.core.hateoas.root.rest.RootController;
@@ -13,21 +25,11 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
 import org.springframework.stereotype.Component;
 
-import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
-import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.*;
-import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
-import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Component
 public class RootResourceAssembler implements RootAssembler<RootResource> {
 
   public @NonNull RepresentationModel<RootResource> assemble() {
-    HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource())
-      .link(getSelfLink());
+    HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource()).link(getSelfLink());
 
     if (AuthorityUtils.isAuthenticated()) {
       if (AuthorityUtils.hasAuthority(ADMIN_ROOT)) {
@@ -37,8 +39,7 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
         rootModel.link(getCurrentUserLink());
       }
     } else {
-      rootModel
-        .link(getLoginLink())
+      rootModel.link(getLoginLink())
         .link(getSignupLink())
         .link(getActivationTokenLink())
         .link(getAccountActivationLink());

@@ -42,8 +42,12 @@ class JWTTokenProviderTest {
   void generateJWTToken() {
     Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
     Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
-    User user = User.builder().setRandomUUID().username("username").email("email@example.com")
-      .authorities(newHashSet(authority1, authority2)).build();
+    User user = User.builder()
+      .setRandomUUID()
+      .username("username")
+      .email("email@example.com")
+      .authorities(newHashSet(authority1, authority2))
+      .build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
     Date before = new Date();
     doReturn(7979512271000L).when(jwtTokenProvider).getCurrentTimeMillis();
@@ -56,7 +60,9 @@ class JWTTokenProviderTest {
     assertEquals("[" + SecurityConstant.AUTH_AUDIENCE + "]", decoded.getAudience().toString());
     assertThat(decoded.getIssuedAt()).isCloseTo(before, 1000);
     assertEquals(user.getUsername(), decoded.getSubject());
-    assertTrue(decoded.getClaim(SecurityConstant.AUTHORITIES).asList(String.class).stream()
+    assertTrue(decoded.getClaim(SecurityConstant.AUTHORITIES)
+      .asList(String.class)
+      .stream()
       .allMatch(auth -> auth.equals(authority1.getName()) || auth.equals(authority2.getName())));
     Map<String, Object> userMap = decoded.getClaim("user").asMap();
     assertEquals(userMap.get("id"), user.getId());
@@ -85,8 +91,8 @@ class JWTTokenProviderTest {
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
     String token = jwtTokenProvider.generateJWTToken(userPrincipal);
 
-    Authentication authentication = jwtTokenProvider.getAuthentication(jwtTokenProvider.getDecodedJWT(token), mock(
-      HttpServletRequest.class));
+    Authentication authentication = jwtTokenProvider.getAuthentication(jwtTokenProvider.getDecodedJWT(token),
+      mock(HttpServletRequest.class));
 
     assertThat(authentication).isNotNull();
     assertEquals(((ContextUser) authentication.getPrincipal()).getUsername(), user.getUsername());

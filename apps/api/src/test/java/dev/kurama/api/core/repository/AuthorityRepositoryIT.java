@@ -39,8 +39,8 @@ class AuthorityRepositoryIT {
     Set<Authority> actual = authorityRepository.findAllByIdIn(newHashSet(authority2.getId(), authority4.getId()));
 
     assertThat(actual.size()).isEqualTo(2);
-    assertThat(actual.stream().allMatch(
-      authority -> authority.getId().equals(authority2.getId()) || authority.getId()
+    assertThat(actual.stream()
+      .allMatch(authority -> authority.getId().equals(authority2.getId()) || authority.getId()
         .equals(authority4.getId()))).isTrue();
   }
 }

@@ -34,14 +34,12 @@ public class RoleFacade {
 
   public PagedModel<RoleModel> getAll(Pageable pageable, String search) {
     return roleModelAssembler.toPagedModel(
-      roleMapper.rolePageToRoleModelPage(
-        roleService.getAllRoles(pageable, search)));
+      roleMapper.rolePageToRoleModelPage(roleService.getAllRoles(pageable, search)));
   }
 
   public RoleModel findByRoleId(String roleId) throws RoleNotFoundException {
     return roleMapper.roleToRoleModel(
-      roleService.findRoleById(roleId)
-        .orElseThrow(() -> new RoleNotFoundException(roleId)));
+      roleService.findRoleById(roleId).orElseThrow(() -> new RoleNotFoundException(roleId)));
   }
 
   public RoleModel create(@Length(min = 3, max = 128) String roleName) throws RoleExistsException {

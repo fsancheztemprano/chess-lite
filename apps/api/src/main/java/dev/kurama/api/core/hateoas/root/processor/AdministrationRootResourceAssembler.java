@@ -1,18 +1,5 @@
 package dev.kurama.api.core.hateoas.root.processor;
 
-import dev.kurama.api.core.hateoas.root.model.RootResource;
-import dev.kurama.api.core.hateoas.root.rest.AdministrationRootController;
-import dev.kurama.api.core.hateoas.root.rest.RootController;
-import dev.kurama.api.core.rest.*;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
-import org.springframework.hateoas.*;
-import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT;
 import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
@@ -22,7 +9,10 @@ import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_CREATE;
 import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
-import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.*;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.GLOBAL_SETTINGS_REL;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ROLE_MANAGEMENT_ROOT_REL;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.SERVICE_LOGS_REL;
+import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.USER_MANAGEMENT_ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthorityRelations.AUTHORITIES_REL;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
@@ -31,8 +21,31 @@ import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.web.util.UriComponentsBuilder.fromUri;
+
+import dev.kurama.api.core.hateoas.root.model.RootResource;
+import dev.kurama.api.core.hateoas.root.rest.AdministrationRootController;
+import dev.kurama.api.core.hateoas.root.rest.RootController;
+import dev.kurama.api.core.rest.AuthorityController;
+import dev.kurama.api.core.rest.GlobalSettingsController;
+import dev.kurama.api.core.rest.RoleController;
+import dev.kurama.api.core.rest.ServiceLogsController;
+import dev.kurama.api.core.rest.UserController;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkRelation;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
+import org.springframework.hateoas.mediatype.hal.HalModelBuilder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
@@ -66,13 +79,11 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
     return rootModel.build();
   }
 
-  private @NonNull
-  Link getSelfLink() {
+  private @NonNull Link getSelfLink() {
     return withDefaultAffordance(linkTo(methodOn(AdministrationRootController.class).root()).withSelfRel());
   }
 
-  private @NonNull
-  Link getParentLink() {
+  private @NonNull Link getParentLink() {
     return linkTo(methodOn(RootController.class).root()).withRel(ROOT_REL);
   }
 
@@ -85,12 +96,9 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
   }
 
   private RepresentationModel<?> getUserManagementResource() {
-    HalModelBuilder userManagementResource = HalModelBuilder.emptyHalModel()
-      .link(getSelfLink());
+    HalModelBuilder userManagementResource = HalModelBuilder.emptyHalModel().link(getSelfLink());
     if (hasAuthority(USER_READ)) {
-      userManagementResource
-        .link(getUserLink())
-        .link(getUsersLink());
+      userManagementResource.link(getUserLink()).link(getUsersLink());
     }
     return userManagementResource.build();
   }
@@ -111,12 +119,9 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
   }
 
   private RepresentationModel<?> getRoleManagementResource() {
-    HalModelBuilder roleManagementResource = HalModelBuilder.emptyHalModel()
-      .link(getSelfLink());
+    HalModelBuilder roleManagementResource = HalModelBuilder.emptyHalModel().link(getSelfLink());
     if (hasAuthority(ROLE_READ)) {
-      roleManagementResource
-        .link(getRoleLink())
-        .link(getRolesLink());
+      roleManagementResource.link(getRoleLink()).link(getRolesLink());
     }
     if (hasAuthority(AUTHORITY_READ)) {
       roleManagementResource.link(getAuthoritiesLink());
@@ -141,16 +146,13 @@ public class AdministrationRootResourceAssembler implements RootAssembler<RootRe
 
   @SneakyThrows
   private @NonNull Link getAuthoritiesLink() {
-    return getExpandedLink(
-      linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL));
+    return getExpandedLink(linkTo(methodOn(AuthorityController.class).getAll(null)).withRel(AUTHORITIES_REL));
   }
 
   private Link getExpandedLink(Link link) {
-    UriComponentsBuilder builder = fromUri(link.getTemplate()
-      .expand());
+    UriComponentsBuilder builder = fromUri(link.getTemplate().expand());
     TemplateVariables templateVariables = pageableResolver.getPaginationTemplateVariables(null, builder.build());
-    UriTemplate template = UriTemplate.of(link.getHref())
-      .with(templateVariables);
+    UriTemplate template = UriTemplate.of(link.getHref()).with(templateVariables);
     return Link.of(template, link.getRel());
   }
 }

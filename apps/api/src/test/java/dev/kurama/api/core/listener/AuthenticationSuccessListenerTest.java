@@ -1,5 +1,9 @@
 package dev.kurama.api.core.listener;
 
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.service.LoginAttemptService;
 import org.junit.jupiter.api.Test;
@@ -9,8 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationSuccessListenerTest {
@@ -26,10 +28,8 @@ class AuthenticationSuccessListenerTest {
   void should_remove_username_from_login_attempt_cache() {
     Authentication authentication = mock(Authentication.class);
     UserPrincipal principal = mock(UserPrincipal.class);
-    doReturn("Username").when(principal)
-                        .getUsername();
-    doReturn(principal).when(authentication)
-                       .getPrincipal();
+    doReturn("Username").when(principal).getUsername();
+    doReturn(principal).when(authentication).getPrincipal();
     AuthenticationSuccessEvent event = new AuthenticationSuccessEvent(authentication);
 
     listener.onAuthenticationSuccess(event);

@@ -4,7 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.framework.JsonUtils.asJsonString;
+import static dev.kurama.api.support.JsonUtils.asJsonString;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
@@ -69,14 +69,11 @@ class UserControllerTest {
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                             .setControllerAdvice(new ExceptionHandlers())
-                             .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
-                             .build();
+      .setControllerAdvice(new ExceptionHandlers())
+      .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+      .build();
 
-    user = UserModel.builder()
-                    .id(randomUUID())
-                    .username("username")
-                    .build();
+    user = UserModel.builder().id(randomUUID()).username("username").build();
   }
 
 
@@ -86,10 +83,10 @@ class UserControllerTest {
     when(facade.getAll(any(Pageable.class), any())).thenReturn(expected);
 
     mockMvc.perform(get(USER_PATH))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.content").isArray())
-           .andExpect(jsonPath("$.content", hasSize(1)))
-           .andExpect(jsonPath("$.content..id", hasItem(user.getId())));
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.content").isArray())
+      .andExpect(jsonPath("$.content", hasSize(1)))
+      .andExpect(jsonPath("$.content..id", hasItem(user.getId())));
   }
 
   @Nested
@@ -100,160 +97,127 @@ class UserControllerTest {
       when(facade.findByUserId(user.getId())).thenReturn(user);
 
       mockMvc.perform(get(format("%s/%s", USER_PATH, user.getId())))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.id", equalTo(user.getId())));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", equalTo(user.getId())));
     }
 
     @Test
     void get_nonexistent_should_throw() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(UserNotFoundException.class).when(facade)
-                                          .findByUserId(notFoundId);
+      doThrow(UserNotFoundException.class).when(facade).findByUserId(notFoundId);
 
-      mockMvc.perform(get(format("%s/%s", USER_PATH, notFoundId)))
-             .andExpect(status().isNotFound());
+      mockMvc.perform(get(format("%s/%s", USER_PATH, notFoundId))).andExpect(status().isNotFound());
     }
   }
 
   @Nested
   class CreateUserTests {
 
-    UserInput input = UserInput.builder()
-                               .username("username")
-                               .password("password")
-                               .email("em@il")
-                               .build();
+    UserInput input = UserInput.builder().username("username").password("password").email("em@il").build();
 
     @Test
     void should_create_a_user() throws Exception {
-      doReturn(user).when(facade)
-                    .create(input);
+      doReturn(user).when(facade).create(input);
 
       mockMvc.perform(post(USER_PATH).accept(MediaType.APPLICATION_JSON)
-                                     .contentType(MediaType.APPLICATION_JSON)
-                                     .content(asJsonString(input)))
-             .andExpect(status().isCreated())
-             .andExpect(jsonPath("$.id", equalTo(user.getId())));
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id", equalTo(user.getId())));
 
     }
 
     @Test
     void should_throw_if_username_exists() throws Exception {
-      doThrow(UsernameExistsException.class).when(facade)
-                                            .create(input);
+      doThrow(UsernameExistsException.class).when(facade).create(input);
 
       mockMvc.perform(post(USER_PATH).accept(MediaType.APPLICATION_JSON)
-                                     .contentType(MediaType.APPLICATION_JSON)
-                                     .content(asJsonString(input)))
-             .andExpect(status().isConflict());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isConflict());
     }
 
     @Test
     void should_throw_if_email_exists() throws Exception {
-      doThrow(EmailExistsException.class).when(facade)
-                                         .create(input);
+      doThrow(EmailExistsException.class).when(facade).create(input);
 
       mockMvc.perform(post(USER_PATH).accept(MediaType.APPLICATION_JSON)
-                                     .contentType(MediaType.APPLICATION_JSON)
-                                     .content(asJsonString(input)))
-             .andExpect(status().isConflict());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isConflict());
     }
   }
 
   @Nested
   class UpdateUserTests {
 
-    UserInput input = UserInput.builder()
-                               .username("new_username")
-                               .password("new_password")
-                               .email("new_em@il")
-                               .build();
+    UserInput input = UserInput.builder().username("new_username").password("new_password").email("new_em@il").build();
 
     @Test
     void should_update_a_user() throws Exception {
-      doReturn(user).when(facade)
-                    .update(user.getId(), input);
+      doReturn(user).when(facade).update(user.getId(), input);
 
       mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                     .contentType(MediaType.APPLICATION_JSON)
-                                                                     .content(asJsonString(input)))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.id", equalTo(user.getId())));
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(user.getId())));
     }
 
     @Test
     void should_throw_if_user_does_not_exist() throws Exception {
-      doThrow(UserNotFoundException.class).when(facade)
-                                          .update(user.getId(), input);
+      doThrow(UserNotFoundException.class).when(facade).update(user.getId(), input);
 
       mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                     .contentType(MediaType.APPLICATION_JSON)
-                                                                     .content(asJsonString(input)))
-             .andExpect(status().isNotFound());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
     }
 
     @Test
     void should_throw_if_username_exists() throws Exception {
-      doThrow(UsernameExistsException.class).when(facade)
-                                            .update(user.getId(), input);
+      doThrow(UsernameExistsException.class).when(facade).update(user.getId(), input);
 
       mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                     .contentType(MediaType.APPLICATION_JSON)
-                                                                     .content(asJsonString(input)))
-             .andExpect(status().isConflict());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isConflict());
     }
 
     @Test
     void should_throw_if_email_exists() throws Exception {
-      doThrow(EmailExistsException.class).when(facade)
-                                         .update(user.getId(), input);
+      doThrow(EmailExistsException.class).when(facade).update(user.getId(), input);
 
       mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                     .contentType(MediaType.APPLICATION_JSON)
-                                                                     .content(asJsonString(input)))
-             .andExpect(status().isConflict());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isConflict());
     }
   }
 
   @Nested
   class UpdateUserRoleTests {
 
-    UserRoleInput input = UserRoleInput.builder()
-                                       .roleId(randomUUID())
-                                       .build();
+    UserRoleInput input = UserRoleInput.builder().roleId(randomUUID()).build();
 
     @Test
     void should_update_user_role() throws Exception {
-      doReturn(user).when(facade)
-                    .update(eq(user.getId()), any(UserInput.class));
+      doReturn(user).when(facade).update(eq(user.getId()), any(UserInput.class));
 
       mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                          .contentType(MediaType.APPLICATION_JSON)
-                                                                          .content(asJsonString(input)))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.id", equalTo(user.getId())));
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(user.getId())));
     }
 
     @Test
     void should_throw_if_user_does_not_exist() throws Exception {
-      doThrow(UserNotFoundException.class).when(facade)
-                                          .update(eq(user.getId()), any(UserInput.class));
+      doThrow(UserNotFoundException.class).when(facade).update(eq(user.getId()), any(UserInput.class));
 
       mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                          .contentType(MediaType.APPLICATION_JSON)
-                                                                          .content(asJsonString(input)))
-             .andExpect(status().isNotFound());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
     }
 
     @Test
     void should_throw_if_role_does_not_exist() throws Exception {
-      doThrow(RoleNotFoundException.class).when(facade)
-                                          .update(eq(user.getId()), any(UserInput.class));
+      doThrow(RoleNotFoundException.class).when(facade).update(eq(user.getId()), any(UserInput.class));
 
       mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                          .contentType(MediaType.APPLICATION_JSON)
-                                                                          .content(asJsonString(input)))
-             .andExpect(status().isNotFound());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
     }
   }
 
@@ -261,33 +225,24 @@ class UserControllerTest {
   class UpdateUserAuthoritiesTests {
 
     String id = randomUUID();
-    UserAuthoritiesInput input = UserAuthoritiesInput.builder()
-                                                     .authorityIds(newHashSet(id))
-                                                     .build();
+    UserAuthoritiesInput input = UserAuthoritiesInput.builder().authorityIds(newHashSet(id)).build();
 
     @Test
     void should_update_user_authorities() throws Exception {
-      doReturn(user).when(facade)
-                    .update(eq(user.getId()), any(UserInput.class));
+      doReturn(user).when(facade).update(eq(user.getId()), any(UserInput.class));
 
       mockMvc.perform(patch(format("%s/%s/authorities", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                                 .contentType(
-                                                                                   MediaType.APPLICATION_JSON)
-                                                                                 .content(asJsonString(input)))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$.id", equalTo(user.getId())));
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(user.getId())));
     }
 
     @Test
     void should_throw_if_user_does_not_exist() throws Exception {
-      doThrow(UserNotFoundException.class).when(facade)
-                                          .update(eq(user.getId()), any(UserInput.class));
+      doThrow(UserNotFoundException.class).when(facade).update(eq(user.getId()), any(UserInput.class));
 
       mockMvc.perform(patch(format("%s/%s/authorities", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-                                                                                 .contentType(
-                                                                                   MediaType.APPLICATION_JSON)
-                                                                                 .content(asJsonString(input)))
-             .andExpect(status().isNotFound());
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isNotFound());
     }
   }
 
@@ -297,19 +252,16 @@ class UserControllerTest {
 
     @Test
     void should_delete_user() throws Exception {
-      mockMvc.perform(delete(format("%s/%s", USER_PATH, user.getId())))
-             .andExpect(status().isNoContent());
+      mockMvc.perform(delete(format("%s/%s", USER_PATH, user.getId()))).andExpect(status().isNoContent());
 
       verify(facade).deleteById(user.getId());
     }
 
     @Test
     void should_throw_if_user_does_not_exist() throws Exception {
-      doThrow(UserNotFoundException.class).when(facade)
-                                          .deleteById(user.getId());
+      doThrow(UserNotFoundException.class).when(facade).deleteById(user.getId());
 
-      mockMvc.perform(delete(format("%s/%s", USER_PATH, user.getId())))
-             .andExpect(status().isNotFound());
+      mockMvc.perform(delete(format("%s/%s", USER_PATH, user.getId()))).andExpect(status().isNotFound());
 
     }
   }
@@ -319,19 +271,16 @@ class UserControllerTest {
 
     @Test
     void should_request_activation_token() throws Exception {
-      mockMvc.perform(post(format("%s/%s", USER_PATH, user.getId())))
-             .andExpect(status().isNoContent());
+      mockMvc.perform(post(format("%s/%s", USER_PATH, user.getId()))).andExpect(status().isNoContent());
 
       verify(facade).requestActivationToken(user.getId());
     }
 
     @Test
     void should_throw_if_user_has_recent_activation_token() throws Exception {
-      doThrow(UserNotFoundException.class).when(facade)
-                                          .requestActivationToken(user.getId());
+      doThrow(UserNotFoundException.class).when(facade).requestActivationToken(user.getId());
 
-      mockMvc.perform(post(format("%s/%s", USER_PATH, user.getId())))
-             .andExpect(status().isNotFound());
+      mockMvc.perform(post(format("%s/%s", USER_PATH, user.getId()))).andExpect(status().isNotFound());
     }
 
   }

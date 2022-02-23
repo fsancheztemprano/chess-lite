@@ -24,9 +24,7 @@ class UserPreferencesChangedMessageSenderTest {
 
   @Test
   void should_send_user_preferences_changed_message() {
-    UserPreferencesChangedEvent event = UserPreferencesChangedEvent.builder()
-      .userPreferencesId(randomUUID())
-      .build();
+    UserPreferencesChangedEvent event = UserPreferencesChangedEvent.builder().userPreferencesId(randomUUID()).build();
 
     userPreferencesChangedMessageSender.sendUserPreferencesChangedMessage(event);
 

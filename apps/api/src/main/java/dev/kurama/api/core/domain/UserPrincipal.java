@@ -22,7 +22,10 @@ public class UserPrincipal implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return this.user.getAuthorities().stream().map(Authority::getName).map(SimpleGrantedAuthority::new)
+    return this.user.getAuthorities()
+      .stream()
+      .map(Authority::getName)
+      .map(SimpleGrantedAuthority::new)
       .collect(Collectors.toList());
   }
 

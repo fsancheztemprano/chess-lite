@@ -36,9 +36,9 @@ public class UserPreferencesController {
 
   @PatchMapping("/{userPreferencesId}")
   @PreAuthorize("hasAuthority('user:preferences:update')")
-  public ResponseEntity<UserPreferencesModel> update(
-    @PathVariable("userPreferencesId") String userPreferencesId,
-    @RequestBody UserPreferencesInput userPreferencesInput) throws DomainEntityNotFoundException {
+  public ResponseEntity<UserPreferencesModel> update(@PathVariable("userPreferencesId") String userPreferencesId,
+                                                     @RequestBody UserPreferencesInput userPreferencesInput)
+    throws DomainEntityNotFoundException {
     return ResponseEntity.ok().body(userPreferencesFacade.updateById(userPreferencesId, userPreferencesInput));
   }
 }

@@ -15,11 +15,7 @@ public class UserChangedEventEmitter {
   private final ApplicationEventPublisher applicationEventPublisher;
 
   public void emitUserChangedEvent(String userId, UserChangedEventAction action) {
-    applicationEventPublisher.publishEvent(
-      UserChangedEvent.builder()
-        .userId(userId)
-        .action(action)
-        .build());
+    applicationEventPublisher.publishEvent(UserChangedEvent.builder().userId(userId).action(action).build());
   }
 
   public void emitUserCreatedEvent(String userId) {

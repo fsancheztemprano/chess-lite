@@ -1,4 +1,4 @@
-package dev.kurama.api.framework;
+package dev.kurama.api.support;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,8 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 /**
- * http://www.java2s.com/example/java-src/pkg/org/appverse/web/framework/backend/frontfacade/websocket/testchannelinterceptor-04033.html
+ * http://www.java2s.com/example/java-src/pkg/org/appverse/web/framework/backend/frontfacade/websocket
+ * /testchannelinterceptor-04033.html
  */
 
 public class TestChannelInterceptor implements ChannelInterceptor {

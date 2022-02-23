@@ -74,8 +74,8 @@ class AuthorityUtilsTest {
 
   @Test
   void getAuthorities() {
-    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities =
-      newArrayList(new SimpleGrantedAuthority("auth:a"), new SimpleGrantedAuthority("auth:b"));
+    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities = newArrayList(new SimpleGrantedAuthority("auth:a"),
+      new SimpleGrantedAuthority("auth:b"));
     doReturn(simpleGrantedAuthorities).when(authentication).getAuthorities();
 
     assertEquals(simpleGrantedAuthorities, AuthorityUtils.getAuthorities());
@@ -84,8 +84,8 @@ class AuthorityUtilsTest {
   @Test
   void hasAuthority() {
     SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("auth:a");
-    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities =
-      newArrayList(simpleGrantedAuthority, new SimpleGrantedAuthority("auth:b"));
+    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities = newArrayList(simpleGrantedAuthority,
+      new SimpleGrantedAuthority("auth:b"));
     doReturn(simpleGrantedAuthorities).when(authentication).getAuthorities();
 
     assertTrue(AuthorityUtils.hasAuthority(simpleGrantedAuthority.toString()));
@@ -96,8 +96,8 @@ class AuthorityUtilsTest {
   void hasAllAuthorities() {
     SimpleGrantedAuthority simpleGrantedAuthority1 = new SimpleGrantedAuthority("auth:a");
     SimpleGrantedAuthority simpleGrantedAuthority2 = new SimpleGrantedAuthority("auth:b");
-    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities =
-      newArrayList(simpleGrantedAuthority1, simpleGrantedAuthority2);
+    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities = newArrayList(simpleGrantedAuthority1,
+      simpleGrantedAuthority2);
     doReturn(simpleGrantedAuthorities).when(authentication).getAuthorities();
 
     assertTrue(
@@ -109,12 +109,11 @@ class AuthorityUtilsTest {
   void hasAnyAuthority() {
     SimpleGrantedAuthority simpleGrantedAuthority1 = new SimpleGrantedAuthority("auth:a");
     SimpleGrantedAuthority simpleGrantedAuthority2 = new SimpleGrantedAuthority("auth:b");
-    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities =
-      newArrayList(simpleGrantedAuthority1, simpleGrantedAuthority2);
+    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities = newArrayList(simpleGrantedAuthority1,
+      simpleGrantedAuthority2);
     doReturn(simpleGrantedAuthorities).when(authentication).getAuthorities();
 
-    assertTrue(
-      AuthorityUtils.hasAnyAuthority(simpleGrantedAuthority1.toString(), simpleGrantedAuthority2.toString()));
+    assertTrue(AuthorityUtils.hasAnyAuthority(simpleGrantedAuthority1.toString(), simpleGrantedAuthority2.toString()));
     assertTrue(AuthorityUtils.hasAnyAuthority(simpleGrantedAuthority1.toString(), "auth:c"));
     assertFalse(AuthorityUtils.hasAnyAuthority("auth:c", "auth:d"));
   }
@@ -122,15 +121,13 @@ class AuthorityUtilsTest {
   @Test
   void isAuthenticated() {
     SimpleGrantedAuthority anonymous = new SimpleGrantedAuthority("auth:a");
-    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities =
-      newArrayList(anonymous);
+    Collection<SimpleGrantedAuthority> simpleGrantedAuthorities = newArrayList(anonymous);
     doReturn(simpleGrantedAuthorities).when(authentication).getAuthorities();
 
     assertTrue(AuthorityUtils.isAuthenticated());
 
     anonymous = new SimpleGrantedAuthority("ROLE_ANONYMOUS");
-    simpleGrantedAuthorities =
-      newArrayList(anonymous);
+    simpleGrantedAuthorities = newArrayList(anonymous);
     doReturn(simpleGrantedAuthorities).when(authentication).getAuthorities();
 
     assertFalse(AuthorityUtils.isAuthenticated());

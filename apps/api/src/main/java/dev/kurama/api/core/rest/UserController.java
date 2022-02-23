@@ -62,9 +62,8 @@ public class UserController {
   public ResponseEntity<UserModel> create(@RequestBody UserInput userInput)
     throws UsernameExistsException, EmailExistsException {
     UserModel newUser = userFacade.create(userInput);
-    return created(fromCurrentRequestUri().path("/user/{userId}")
-                                          .buildAndExpand(newUser.getId())
-                                          .toUri()).body(newUser);
+    return created(fromCurrentRequestUri().path("/user/{userId}").buildAndExpand(newUser.getId()).toUri()).body(
+      newUser);
   }
 
   @PatchMapping("/{userId}")
@@ -81,9 +80,7 @@ public class UserController {
   public ResponseEntity<UserModel> updateRole(@PathVariable("userId") String userId,
                                               @RequestBody UserRoleInput userRoleInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
-    return ok().body(userFacade.update(userId, UserInput.builder()
-                                                        .roleId(userRoleInput.getRoleId())
-                                                        .build()));
+    return ok().body(userFacade.update(userId, UserInput.builder().roleId(userRoleInput.getRoleId()).build()));
   }
 
   @PatchMapping("/{userId}/authorities")
@@ -91,9 +88,8 @@ public class UserController {
   public ResponseEntity<UserModel> updateAuthorities(@PathVariable("userId") String userId,
                                                      @RequestBody UserAuthoritiesInput userAuthoritiesInput)
     throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
-    return ok().body(userFacade.update(userId, UserInput.builder()
-                                                        .authorityIds(userAuthoritiesInput.getAuthorityIds())
-                                                        .build()));
+    return ok().body(
+      userFacade.update(userId, UserInput.builder().authorityIds(userAuthoritiesInput.getAuthorityIds()).build()));
   }
 
   @DeleteMapping("/{userId}")

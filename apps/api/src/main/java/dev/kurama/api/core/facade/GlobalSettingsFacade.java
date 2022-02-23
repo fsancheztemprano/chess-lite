@@ -20,8 +20,7 @@ public class GlobalSettingsFacade {
   private final GlobalSettingsMapper globalSettingsMapper;
 
   public GlobalSettingsModel getGlobalSettings() {
-    return globalSettingsMapper.globalSettingsToGlobalSettingsModel(
-      globalSettingsService.getGlobalSettings());
+    return globalSettingsMapper.globalSettingsToGlobalSettingsModel(globalSettingsService.getGlobalSettings());
   }
 
   public GlobalSettingsModel updateGlobalSettings(GlobalSettingsUpdateInput globalSettingsUpdateInput)

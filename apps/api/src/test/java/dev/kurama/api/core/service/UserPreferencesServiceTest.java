@@ -98,8 +98,7 @@ class UserPreferencesServiceTest {
       String userId = randomUUID();
       when(userPreferencesRepository.findUserPreferencesByUserId(userId)).thenReturn(Optional.empty());
 
-      assertThrows(UsernameNotFoundException.class,
-        () -> userPreferencesService.findUserPreferencesByUserId(userId));
+      assertThrows(UsernameNotFoundException.class, () -> userPreferencesService.findUserPreferencesByUserId(userId));
     }
   }
 
@@ -140,8 +139,10 @@ class UserPreferencesServiceTest {
     @Test
     void should_not_save_nor_emit_event_if_user_preferences_did_not_change() {
       UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).contentLanguage("en").build();
-      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(expected.isDarkMode())
-        .contentLanguage(expected.getContentLanguage()).build();
+      UserPreferencesInput input = UserPreferencesInput.builder()
+        .darkMode(expected.isDarkMode())
+        .contentLanguage(expected.getContentLanguage())
+        .build();
 
       UserPreferences actual = userPreferencesService.patchUserPreferences(expected, input);
 

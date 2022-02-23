@@ -42,7 +42,8 @@ class UserRepositoryIT {
 
     Optional<User> actual = userRepository.findUserByUsername(user2.getUsername());
 
-    assertThat(actual).isPresent().get()
+    assertThat(actual).isPresent()
+      .get()
       .hasFieldOrPropertyWithValue("id", user2.getId())
       .hasFieldOrPropertyWithValue("username", user2.getUsername());
   }
@@ -57,7 +58,8 @@ class UserRepositoryIT {
 
     Optional<User> actual = userRepository.findUserByEmail(user2.getEmail());
 
-    assertThat(actual).isPresent().get()
+    assertThat(actual).isPresent()
+      .get()
       .hasFieldOrPropertyWithValue("id", user2.getId())
       .hasFieldOrPropertyWithValue("username", user2.getUsername())
       .hasFieldOrPropertyWithValue("email", user2.getEmail());
