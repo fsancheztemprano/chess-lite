@@ -1,4 +1,4 @@
 -- CREATE DATABASE postgres;
-CREATE SCHEMA application;
-CREATE USER master WITH PASSWORD 'p@ssw0rd';
-GRANT ALL PRIVILEGES ON DATABASE postgres TO master;
+-- CREATE SCHEMA application;
+-- CREATE USER master WITH PASSWORD 'p@ssw0rd';
+-- GRANT ALL PRIVILEGES ON DATABASE postgres TO master;
