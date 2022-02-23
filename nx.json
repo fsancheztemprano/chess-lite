@@ -42,8 +42,6 @@
         "e2eTestRunner": "cypress"
       },
       "library": {
-        "style": "scss",
-        "spec": true,
         "linter": "eslint",
         "unitTestRunner": "jest"
       }
@@ -54,7 +52,6 @@
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:library": {
-      "style": "scss",
       "linter": "eslint",
       "unitTestRunner": "jest"
     },

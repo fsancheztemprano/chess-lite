@@ -11,7 +11,7 @@ import { AdministrationService } from '../../../services/administration.service'
 })
 export class UserManagementService extends HalFormService {
   constructor(
-    protected readonly httpClient: HttpClient,
+    protected override readonly httpClient: HttpClient,
     private readonly administrationService: AdministrationService,
   ) {
     super(httpClient, '');

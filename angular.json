@@ -204,6 +204,29 @@
       "tags": [],
       "implicitDependencies": ["app"]
     },
+    "consumer-pact": {
+      "projectType": "library",
+      "root": "libs/consumer-pact",
+      "sourceRoot": "libs/consumer-pact/src",
+      "prefix": "pact",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/consumer-pact"],
+          "options": {
+            "jestConfig": "libs/consumer-pact/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/consumer-pact/src/**/*.ts"]
+          }
+        }
+      },
+      "tags": []
+    },
     "domain": {
       "projectType": "library",
       "root": "libs/domain",

@@ -44,7 +44,7 @@ export class HalFormService {
       );
   }
 
-  protected setRootResource(resource: IResource) {
+  public setRootResource(resource: IResource) {
     this._rootResource.next(new Resource(resource));
   }
 

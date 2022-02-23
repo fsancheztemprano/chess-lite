@@ -34,7 +34,7 @@ export interface UserChangePasswordInput {
 
 export class UserPage extends Resource implements IResource {
   page?: Page;
-  _embedded!: {
+  override _embedded!: {
     userModels?: User[];
   };
 }
