@@ -57,13 +57,11 @@ public class InitializationRunner implements CommandLineRunner {
   public void run(String... args) {
     if (dataInit) {
       try {
-        log(log.atInfo(), "Data Initialization Start");
         initializeAuthorities();
         initializeRoles();
         setRolesAuthorizations();
         initializeGlobalSettings();
         initializeAdminUser();
-        log(log.atInfo(), "Data Initialization Finish");
       } catch (Exception e) {
         log(log.atWarning(), "Data Initialization Failed");
       }
