@@ -31,7 +31,7 @@ public class ActivationTokenService {
         activationTokenRepository.delete(user.getActivationToken());
       }
     }
-    return ActivationToken.builder().setRandomUUID().attempts(0).created(new Date()).build();
+    return ActivationToken.builder().setRandomUUID().attempts(0).created(new Date()).user(user).build();
   }
 
   public ActivationToken findActivationToken(String token)
