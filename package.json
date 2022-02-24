@@ -113,7 +113,7 @@
     "@nx-tools/nx-docker": "2.3.0",
     "@nxrocks/nx-spring-boot": "4.0.2",
     "@pact-foundation/pact": "9.17.2",
-    "@schematics/angular": "13.2.4",
+    "@schematics/angular": "13.2.5",
     "@schematics/schematics": "0.1102.12",
     "@types/jest": "27.4.1",
     "@types/node": "17.0.21",
