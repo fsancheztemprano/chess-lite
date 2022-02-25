@@ -1,7 +1,5 @@
 package dev.kurama.api.core.properties;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -12,14 +10,4 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationProperties {
 
   private String[] publicUrls;
-
-  @NotNull
-  private Jwt jwt;
-
-  @Data
-  public static class Jwt {
-
-    @NotBlank
-    private String secret;
-  }
 }

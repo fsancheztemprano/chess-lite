@@ -2,28 +2,21 @@ package dev.kurama.api.core.service;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
-import dev.kurama.api.support.MockEventLayer;
+import dev.kurama.api.support.ServiceLayerIntegrationTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "integration-test")
-@DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace = NONE)
+@ServiceLayerIntegrationTestConfig
 @Import({UserPreferencesService.class})
-@MockEventLayer
 class UserPreferencesServiceIT {
 
   @Autowired

@@ -2,28 +2,21 @@ package dev.kurama.api.core.service;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.utility.JWTTokenProvider;
-import dev.kurama.api.support.MockEventLayer;
+import dev.kurama.api.support.ServiceLayerIntegrationTestConfig;
 import dev.kurama.api.support.TestEmailConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "integration-test")
-@DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace = NONE)
-@MockEventLayer
+@ServiceLayerIntegrationTestConfig
 @Import({AuthenticationFacility.class, UserService.class, JWTTokenProvider.class, AuthorityService.class,
   ActivationTokenService.class, EmailService.class, TestEmailConfiguration.class, RoleService.class,
   GlobalSettingsService.class,})

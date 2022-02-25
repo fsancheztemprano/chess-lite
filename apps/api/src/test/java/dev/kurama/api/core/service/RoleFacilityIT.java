@@ -5,7 +5,6 @@ import static dev.kurama.api.core.domain.GlobalSettings.UNIQUE_ID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.GlobalSettings;
@@ -13,22 +12,16 @@ import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
-import dev.kurama.api.support.MockEventLayer;
+import dev.kurama.api.support.ServiceLayerIntegrationTestConfig;
 import dev.kurama.api.support.TestEmailConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "integration-test")
-@DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace = NONE)
+@ServiceLayerIntegrationTestConfig
 @Import({RoleFacility.class, UserService.class, RoleService.class, GlobalSettingsService.class, AuthorityService.class,
   ActivationTokenService.class, TestEmailConfiguration.class, EmailService.class})
-@MockEventLayer
 class RoleFacilityIT {
 
   @Autowired
