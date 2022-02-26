@@ -1,18 +1,21 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { UserManagementRelations } from '@app/domain';
+import { TOKEN_KEY, UserManagementRelations } from '@app/domain';
 import { HalFormClientModule } from '@hal-form-client';
 import { Pact } from '@pact-foundation/pact';
 import { UserManagementService } from 'apps/app/src/app/modules/administration/modules/user-management/services/user-management.service';
 import { AdministrationService } from 'apps/app/src/app/modules/administration/services/administration.service';
+import { avengersAssemble } from 'libs/consumer-pact/src/interceptor/pact.interceptor';
+import { generateToken } from 'libs/consumer-pact/src/utils/token.util';
 import * as path from 'path';
+import { tap } from 'rxjs';
 import { GetOneUserPacts } from './user.resource.pact';
 
 const provider = new Pact({
   consumer: 'app-user',
   provider: 'api',
   log: path.resolve(process.cwd(), 'libs', 'consumer-pact', 'logs', 'pact.log'),
-  logLevel: 'trace',
+  logLevel: 'debug',
   dir: path.resolve(process.cwd(), 'pacts'), // spec: 2,
   // port: 9999,
   // cors: true,
@@ -20,18 +23,18 @@ const provider = new Pact({
   spec: 2,
 });
 
-describe('User Resource Pacts', () => {
+describe.skip('User Resource Pacts', () => {
   let service: UserManagementService;
   let adminService: AdministrationService;
 
-  beforeAll(async () => await provider.setup());
-  afterEach(async () => await provider.verify());
-  afterAll(async () => await provider.finalize());
+  beforeAll(() => provider.setup());
+  afterEach(() => provider.verify());
+  afterAll(() => provider.finalize());
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, HalFormClientModule.forRoot('')],
-      providers: [AdministrationService, UserManagementService],
+      imports: [HalFormClientModule],
+      providers: [avengersAssemble(provider.mockService.baseUrl)],
     });
     adminService = TestBed.inject(AdministrationService);
     adminService.setRootResource({
@@ -43,7 +46,7 @@ describe('User Resource Pacts', () => {
           _links: {
             self: { href: '' },
             [UserManagementRelations.USER_REL]: {
-              href: 'http://localhost:9999/api/user/{userId}',
+              href: '/api/user/{userId}',
             },
           },
         },
@@ -55,13 +58,10 @@ describe('User Resource Pacts', () => {
   describe('Get One User Pacts', () => {
     it('returns server health', (done) => {
       provider.addInteraction(GetOneUserPacts.getOneUser).then(() => {
-        const httpClient = TestBed.inject(HttpClient);
-        httpClient
-          .get(provider.mockService.baseUrl + '/api/user/u1')
-          // http
-          // service
-          //   .fetchUser('u1')
-          // .pipe(tap({ next: console.log, error: console.log }))
+        localStorage.setItem(TOKEN_KEY, generateToken({ authorities: ['user:read'] }));
+        service
+          .fetchUser('u1')
+          .pipe(tap({ next: console.log, error: console.log }))
           .subscribe((value) => {
             console.log(value);
             done();

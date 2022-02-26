@@ -15,7 +15,7 @@ import { submitToTemplateOrThrowPipe } from '../utils/rxjs.utils';
 export class HalFormService {
   private _rootResource: BehaviorSubject<Resource> = new BehaviorSubject<Resource>(new Resource({}));
 
-  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected _rootUrl: string) {}
+  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected _rootUrl = '') {}
 
   initialize(): Observable<Resource> {
     return this.httpClient
@@ -72,7 +72,7 @@ export class HalFormService {
     return this.getResource().pipe(map((resource) => resource.getTemplate(template)));
   }
 
-  public getTemplateOrThrow(template: string = 'self'): Observable<Template | null> {
+  public getTemplateOrThrow(template: string = 'self'): Observable<Template> {
     return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
   }
 

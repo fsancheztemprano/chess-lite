@@ -28,8 +28,9 @@
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
     <skipUTs>${skipTests}</skipUTs>
-    <node.version>v16.13.2</node.version>
-    <yarn.version>v1.22.17</yarn.version>
+    <node.version>v16.14.0</node.version><!-- See https://nodejs.org/en/download/ for latest node and yarn (lts) versions -->
+    <yarn.version>v1.22.17</yarn.version><!-- https://www.npmjs.com/package/yarn -->
+    <spring-cloud-contract.version>3.1.0</spring-cloud-contract.version>
   </properties>
 
   <dependencyManagement>
@@ -38,6 +39,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${project.parent.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>2021.0.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -135,6 +143,11 @@
       <artifactId>spring-messaging</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-contract-verifier</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
     </dependency>
@@ -205,7 +218,6 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
     </dependency>
     <dependency>
       <groupId>com.icegreen</groupId>
@@ -258,6 +270,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>3.0.0-M5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.springframework.cloud</groupId>
+          <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+          <version>${spring-cloud-contract.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -432,6 +449,83 @@
 
   <profiles>
     <profile>
+      <id>pact</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin><!-- https://github.com/eirslett/frontend-maven-plugin -->
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <configuration>
+              <workingDirectory>../../</workingDirectory>
+              <nodeVersion>${node.version}</nodeVersion>
+              <yarnVersion>${yarn.version}</yarnVersion>
+              <skip>${skipITs}</skip>
+            </configuration>
+            <executions>
+              <execution>
+                <id>install node and yarn</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>install-node-and-yarn</goal>
+                </goals>
+                <configuration>
+                  <nodeVersion>${node.version}</nodeVersion>
+                  <yarnVersion>${yarn.version}</yarnVersion>
+                </configuration>
+              </execution>
+              <execution>
+                <id>yarn install</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>install</arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>run consumer pact</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>run test:pact:consumer</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <skip>${skipITs}</skip>
+              <testFramework>JUNIT5</testFramework>
+              <nameSuffixForTests>PactIT</nameSuffixForTests>
+              <contractsDirectory>${project.basedir}/target/test-classes/pact</contractsDirectory>
+              <packageWithBaseClasses>dev.kurama.api.core.pact</packageWithBaseClasses>
+              <baseClassForTests>dev.kurama.api.core.pact.PactBase</baseClassForTests>
+              <basePackageForTests>dev.kurama.api.core.pact</basePackageForTests>
+              <assertJsonSize>true</assertJsonSize>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-contract-pact</artifactId>
+                <version>${spring-cloud-contract.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <id>frontend</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -454,7 +548,6 @@
                   <goal>install-node-and-yarn</goal>
                 </goals>
                 <configuration>
-                  <!-- See https://nodejs.org/en/download/ for latest node and yarn (lts) versions -->
                   <nodeVersion>${node.version}</nodeVersion>
                   <yarnVersion>${yarn.version}</yarnVersion>
                 </configuration>
@@ -465,7 +558,6 @@
                 <goals>
                   <goal>yarn</goal>
                 </goals>
-                <!-- Optional configuration which provides for running any yarn command -->
                 <configuration>
                   <arguments>install</arguments>
                 </configuration>

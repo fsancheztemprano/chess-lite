@@ -11,7 +11,9 @@ export namespace GetOneUserPacts {
     },
     willRespondWith: {
       status: 200,
-      body: {},
+      body: {
+        msg: 's',
+      },
     },
   };
 }

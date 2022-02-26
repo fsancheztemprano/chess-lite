@@ -212,7 +212,7 @@
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/consumer-pact"],
+          "outputs": ["apps/api/target/test-classes/pact"],
           "options": {
             "jestConfig": "libs/consumer-pact/jest.config.js",
             "passWithNoTests": true

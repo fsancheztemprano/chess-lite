@@ -259,6 +259,7 @@ class AdministrationRootResourceAssemblerTest {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Nullable
   private ArrayList<EmbeddedWrapper> getEmbeddeds(RepresentationModel<RootResource> actual) {
     return (ArrayList<EmbeddedWrapper>) ReflectionTestUtils.getField(actual, "embeddeds");

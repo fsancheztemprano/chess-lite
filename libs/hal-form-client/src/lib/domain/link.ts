@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import * as parser from 'url-template';
-import { InjectorInstance } from '../hal-form-client.module';
+import { INJECTOR_INSTANCE } from '../hal-form-client.module';
 import { ContentTypeEnum } from './content-type.enum';
 import { Resource } from './resource';
 
@@ -14,7 +14,7 @@ export interface ILink {
 }
 
 export class Link implements ILink {
-  private httpClient: HttpClient = InjectorInstance.get(HttpClient);
+  private readonly httpClient: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
   href: string;
   templated?: boolean;

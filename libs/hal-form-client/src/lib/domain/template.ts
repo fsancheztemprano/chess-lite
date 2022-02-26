@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { InjectorInstance } from '../hal-form-client.module';
+import { INJECTOR_INSTANCE } from '../hal-form-client.module';
 import { ContentTypeEnum } from './content-type.enum';
 import { HTTP_METHODS, HttpMethodEnum } from './http-method.enum';
 import { ILink, Link } from './link';
@@ -46,7 +46,7 @@ export interface ITemplate {
 }
 
 export class Template implements ITemplate {
-  private httpClient: HttpClient = InjectorInstance.get(HttpClient);
+  private readonly httpClient: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
   method: HttpMethodEnum;
   title?: string;
