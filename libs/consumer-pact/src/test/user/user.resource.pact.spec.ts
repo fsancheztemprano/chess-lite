@@ -5,10 +5,10 @@ import { HalFormClientModule } from '@hal-form-client';
 import { Pact } from '@pact-foundation/pact';
 import { UserManagementService } from 'apps/app/src/app/modules/administration/modules/user-management/services/user-management.service';
 import { AdministrationService } from 'apps/app/src/app/modules/administration/services/administration.service';
-import { avengersAssemble } from 'libs/consumer-pact/src/interceptor/pact.interceptor';
-import { generateToken } from 'libs/consumer-pact/src/utils/token.util';
 import * as path from 'path';
 import { tap } from 'rxjs';
+import { avengersAssemble } from '../../interceptor/pact.interceptor';
+import { jwtToken } from '../../utils/token.util';
 import { GetOneUserPacts } from './user.resource.pact';
 
 const provider = new Pact({
@@ -58,7 +58,7 @@ describe.skip('User Resource Pacts', () => {
   describe('Get One User Pacts', () => {
     it('returns server health', (done) => {
       provider.addInteraction(GetOneUserPacts.getOneUser).then(() => {
-        localStorage.setItem(TOKEN_KEY, generateToken({ authorities: ['user:read'] }));
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read'] }));
         service
           .fetchUser('u1')
           .pipe(tap({ next: console.log, error: console.log }))

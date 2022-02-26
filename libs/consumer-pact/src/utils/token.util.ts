@@ -9,7 +9,7 @@ export interface AuthUser {
   authorities?: string[];
 }
 
-export function generateToken(authUser: AuthUser = {}): string {
+export function jwtToken(authUser: AuthUser = {}): string {
   const { user, authorities = [] } = authUser;
   const payload = {
     user: {

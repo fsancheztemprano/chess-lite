@@ -1,11 +1,13 @@
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { bearer } from 'libs/consumer-pact/src/utils/pact.utils';
+import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 
 export namespace GetRootResourcePacts {
-  export const getRootResource: InteractionObject = {
-    state: 'no token',
-    uponReceiving: 'get root resource',
+  export const getRootResourceAsUnauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get root resource as unauthorized user',
     withRequest: {
       method: HTTPMethod.GET,
       path: '/api',
@@ -15,6 +17,9 @@ export namespace GetRootResourcePacts {
     },
     willRespondWith: {
       status: 200,
+      headers: {
+        'Content-Type': ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
       body: {
         _links: {
           self: {
@@ -118,6 +123,76 @@ export namespace GetRootResourcePacts {
               },
             ],
             target: 'http://localhost/api/auth/activate',
+          },
+        },
+      },
+    },
+  };
+
+  export const getRootResource_profile_read: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get root resource with authority profile:read',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['profile:read'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: {
+        'Content-Type': ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        _links: {
+          self: {
+            href: 'http://localhost/api',
+          },
+          'current-user': {
+            href: 'http://localhost/api/user/profile',
+          },
+        },
+        _templates: {
+          default: {
+            method: 'HEAD',
+            properties: [],
+          },
+        },
+      },
+    },
+  };
+
+  export const getRootResource_admin_root: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get root resource with authority admin:root',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['admin:root'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: {
+        'Content-Type': ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        _links: {
+          self: {
+            href: 'http://localhost/api',
+          },
+          administration: {
+            href: 'http://localhost/api/administration',
+          },
+        },
+        _templates: {
+          default: {
+            method: 'HEAD',
+            properties: [],
           },
         },
       },
