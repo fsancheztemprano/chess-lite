@@ -95,11 +95,14 @@ class UserControllerIT {
   class GetOneUserITs {
 
     @Test
-    void should_return_forbidden_without_user_read_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(USER_PATH + "/id")).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_read_authority() throws Exception {
       mockMvc.perform(get(USER_PATH + "/id").headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -186,11 +189,14 @@ class UserControllerIT {
   class GetAllUsersITs {
 
     @Test
-    void should_return_forbidden_without_user_read_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(USER_PATH)).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_read_authority() throws Exception {
       mockMvc.perform(get(USER_PATH).headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -238,13 +244,16 @@ class UserControllerIT {
   class CreateUserITs {
 
     @Test
-    void should_return_forbidden_without_user_create_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(post(USER_PATH).contentType(MediaType.APPLICATION_JSON).content(asJsonString(userInput)))
         .andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_create_authority() throws Exception {
       mockMvc.perform(post(USER_PATH).contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(userInput))
-        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -262,13 +271,17 @@ class UserControllerIT {
   class UpdateUserITs {
 
     @Test
-    void should_return_forbidden_without_user_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(patch(format("%s/%s", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(userInput))).andExpect(status().isForbidden());
+    }
 
+
+    @Test
+    void should_return_unauthorized_without_user_update_authority() throws Exception {
       mockMvc.perform(patch(format("%s/%s", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(userInput))
-        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -278,8 +291,7 @@ class UserControllerIT {
       mockMvc.perform(patch(format("%s/%s", USER_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(userInput))
-          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE)))
-        .andExpect(status().isOk())
+          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE))).andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
   }
@@ -290,13 +302,16 @@ class UserControllerIT {
     private final UserRoleInput input = UserRoleInput.builder().roleId(randomUUID()).build();
 
     @Test
-    void should_return_forbidden_without_user_update_role_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(patch(format("%s/%s/role", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_authentication_without_user_update_role_authority() throws Exception {
       mockMvc.perform(patch(format("%s/%s/role", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))
-        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -306,8 +321,7 @@ class UserControllerIT {
       mockMvc.perform(patch(format("%s/%s/role", USER_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input))
-          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_ROLE)))
-        .andExpect(status().isOk())
+          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_ROLE))).andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
   }
@@ -320,15 +334,19 @@ class UserControllerIT {
       .build();
 
     @Test
-    void should_return_forbidden_without_user_update_authorities_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(
         patch(format("%s/%s/authorities", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input))).andExpect(status().isForbidden());
+    }
 
+
+    @Test
+    void should_return_unauthorized_without_user_update_authorities_authority() throws Exception {
       mockMvc.perform(
         patch(format("%s/%s/authorities", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input))
-          .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isForbidden());
+          .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -338,8 +356,7 @@ class UserControllerIT {
       mockMvc.perform(patch(format("%s/%s/authorities", USER_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input))
-          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_AUTHORITIES)))
-        .andExpect(status().isOk())
+          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_AUTHORITIES))).andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
   }
@@ -348,12 +365,15 @@ class UserControllerIT {
   class DeleteUserITs {
 
     @Test
-    void should_return_forbidden_without_user_delete_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(delete(format("%s/%s", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_delete_authority() throws Exception {
       mockMvc.perform(delete(format("%s/%s", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
-        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -370,12 +390,15 @@ class UserControllerIT {
   class RequestActivationTokenITs {
 
     @Test
-    void should_return_forbidden_without_user_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(post(format("%s/%s", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_update_authority() throws Exception {
       mockMvc.perform(post(format("%s/%s", USER_PATH, expected.getId())).contentType(MediaType.APPLICATION_JSON)
-        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test

@@ -13,6 +13,8 @@ application:
     - /swagger-ui/**
     - /v*/api-docs/**
   host_url: 'http://localhost:4200'
+  jwt:
+    secret: 'secret'
 spring:
   jpa:
     show-sql: false

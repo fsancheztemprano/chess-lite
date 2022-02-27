@@ -22,7 +22,6 @@ import javax.persistence.NoResultException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -42,12 +41,10 @@ public class ExceptionHandlers {
   private static final String TOKEN_EXPIRED = "This token is expired. Log in again to get a valid one.";
   private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please "
     + "send a '%s' request";
-  private static final String INTERNAL_SERVER_ERROR_MSG = "An error occurred while processing the request";
   private static final String INCORRECT_CREDENTIALS = "Username / password incorrect. Please try again";
   private static final String ACCOUNT_DISABLED = "Your account has been disabled. If this is an error, please contact"
     + " administration";
   private static final String ERROR_PROCESSING_FILE = "Error occurred while processing file";
-  private static final String NOT_ENOUGH_PERMISSION = "You do not have enough permission";
   private static final String NOT_FOUND_MESSAGE = "Identifier %s was not found";
   private static final String EXISTS_MESSAGE = "Identifier %s is already used";
   private static final String IMMUTABLE_ROLE = "Role %s is not modifiable";
@@ -61,11 +58,6 @@ public class ExceptionHandlers {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<DomainResponse> badCredentialsException(BadCredentialsException exception) {
     return createDomainResponse(BAD_REQUEST, INCORRECT_CREDENTIALS, exception.getMessage());
-  }
-
-  @ExceptionHandler(AccessDeniedException.class)
-  public ResponseEntity<DomainResponse> accessDeniedException(AccessDeniedException exception) {
-    return createDomainResponse(FORBIDDEN, NOT_ENOUGH_PERMISSION, exception.getMessage());
   }
 
   @ExceptionHandler(LockedException.class)
@@ -121,19 +113,13 @@ public class ExceptionHandlers {
   public ResponseEntity<DomainResponse> noHandlerFoundException(NoHandlerFoundException exception) {
     return createDomainResponse(BAD_REQUEST, "There is no mapping for this URL", exception.getMessage());
   }
-//
-//  @ExceptionHandler(Exception.class)
-//  public ResponseEntity<DomainResponse> internalServerErrorException(Exception exception) {
-//    return createDomainResponse(INTERNAL_SERVER_ERROR, exception.getMessage());
-//  }
-
-//  @RequestMapping(ERROR_PATH)
-//  public ResponseEntity<DomainResponse> notFound404() {
-//    return createDomainResponse(NOT_FOUND, "There is no mapping for this URL", null);
-//  }
 
   private ResponseEntity<DomainResponse> createDomainResponse(HttpStatus status, String title, String message) {
-    return new ResponseEntity<>(
-      DomainResponse.builder().status(status).code(status.value()).title(title).message(message).build(), status);
+    return new ResponseEntity<>(DomainResponse.builder()
+      .reason(status.getReasonPhrase())
+      .status(status.value())
+      .title(title)
+      .message(message)
+      .build(), status);
   }
 }

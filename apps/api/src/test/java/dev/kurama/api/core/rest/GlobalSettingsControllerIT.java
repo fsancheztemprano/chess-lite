@@ -55,11 +55,15 @@ class GlobalSettingsControllerIT {
   class GetGlobalSettingsITs {
 
     @Test
-    void should_return_forbidden_without_global_settings_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(GLOBAL_SETTINGS_PATH)).andExpect(status().isForbidden());
+    }
 
+
+    @Test
+    void should_return_unauthorized_without_global_settings_read_authorization() throws Exception {
       mockMvc.perform(get(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -103,29 +107,28 @@ class GlobalSettingsControllerIT {
   @Nested
   class UpdateGlobalSettingsITs {
 
-    @Test
-    void should_return_forbidden_without_global_settings_update_authorization() throws Exception {
-      GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
-        .signupOpen(false)
-        .defaultRoleId(randomUUID())
-        .build();
+    private final GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
+      .signupOpen(true)
+      .defaultRoleId(randomUUID())
+      .build();
 
+    @Test
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)))
         .andExpect(status().isForbidden());
-
-      mockMvc.perform(
-        patch(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, GLOBAL_SETTINGS_READ))
-
-          .contentType(MediaType.APPLICATION_JSON).content(asJsonString(input))).andExpect(status().isForbidden());
     }
 
 
     @Test
+    void should_return_unauthorized_without_global_settings_update_authorization() throws Exception {
+      mockMvc.perform(
+        patch(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, GLOBAL_SETTINGS_READ))
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input))).andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void should_update_global_settings_given_global_settings_update_authority() throws Exception {
-      GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
-        .signupOpen(true)
-        .defaultRoleId(randomUUID())
-        .build();
       GlobalSettings expected = GlobalSettings.builder()
         .setRandomUUID()
         .signupOpen(false)

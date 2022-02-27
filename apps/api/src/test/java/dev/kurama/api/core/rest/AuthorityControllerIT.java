@@ -63,11 +63,14 @@ class AuthorityControllerIT {
   class GetAllAuthoritiesITs {
 
     @Test
-    void should_return_forbidden_without_authority_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH)).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_authority_read_authorization() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH).headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -94,12 +97,15 @@ class AuthorityControllerIT {
   class GetOneAuthorityITs {
 
     @Test
-    void should_return_forbidden_without_authority_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH + "/authorityId")).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_authority_read_authorization() throws Exception {
       mockMvc.perform(
           get(AUTHORITY_PATH + "/authorityId").headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test

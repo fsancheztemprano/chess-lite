@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { first, map, tap } from 'rxjs/operators';
 import { ContentTypeEnum } from '../domain/content-type.enum';
 import { Link } from '../domain/link';
 import { IResource, Resource } from '../domain/resource';
@@ -25,21 +25,20 @@ export class HalFormService {
       })
       .pipe(
         first(),
-        tap((response) => {
-          if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS)) {
-            console.warn(`Provided url ${this._rootUrl} is not Hal Form Compliant`);
-            if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL)) {
-              console.warn(`Provided url ${this._rootUrl} is not Hal Compliant`);
+        tap({
+          next: (response) => {
+            if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS)) {
+              console.warn(`Provided url ${this._rootUrl} is not Hal Form Compliant`);
+              if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL)) {
+                console.warn(`Provided url ${this._rootUrl} is not Hal Compliant`);
+              }
             }
-          }
+          },
+          error: (error) => console.error('Hal Form Client Initialization Error', error),
         }),
         map((response) => {
           this.setRootResource(response.body || {});
           return this._rootResource.value;
-        }),
-        catchError((err) => {
-          console.error('Hal Form Client Initialization Error', err);
-          return EMPTY;
         }),
       );
   }

@@ -3,10 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { TOKEN_KEY } from '@app/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { Pact } from '@pact-foundation/pact';
+import { GetRootResource } from 'libs/consumer-pact/src/test/root/root.pact';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { GetRootResourcePacts } from './root.resource.pact';
 
 const provider: Pact = pactForResource('root');
 
@@ -26,33 +26,33 @@ describe('Root Resource Pacts', () => {
   });
 
   describe('get root resource with authority', () => {
-    it('none', (done) => {
-      provider.addInteraction(GetRootResourcePacts.getRootResourceAsUnauthorized).then(() => {
+    it('null', (done) => {
+      provider.addInteraction(GetRootResource.as_unauthorized).then(() => {
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResourcePacts.getRootResourceAsUnauthorized.willRespondWith.body);
+          expect(resource).toMatchObject(GetRootResource.as_unauthorized.willRespondWith.body);
           done();
         });
       });
     });
 
     it('profile:read', (done) => {
-      provider.addInteraction(GetRootResourcePacts.getRootResource_profile_read).then(() => {
+      provider.addInteraction(GetRootResource.with_profile_read).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read'] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResourcePacts.getRootResource_profile_read.willRespondWith.body);
+          expect(resource).toMatchObject(GetRootResource.with_profile_read.willRespondWith.body);
           done();
         });
       });
     });
 
     it('admin:root', (done) => {
-      provider.addInteraction(GetRootResourcePacts.getRootResource_admin_root).then(() => {
+      provider.addInteraction(GetRootResource.with_admin_root).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root'] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResourcePacts.getRootResource_admin_root.willRespondWith.body);
+          expect(resource).toMatchObject(GetRootResource.with_admin_root.willRespondWith.body);
           done();
         });
       });

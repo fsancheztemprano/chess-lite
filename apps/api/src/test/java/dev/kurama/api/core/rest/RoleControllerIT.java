@@ -79,11 +79,14 @@ class RoleControllerIT {
   class GetAllRolesITs {
 
     @Test
-    void should_return_forbidden_without_role_read_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(ROLE_PATH)).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_role_read_authority() throws Exception {
       mockMvc.perform(get(ROLE_PATH).headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -125,11 +128,14 @@ class RoleControllerIT {
   class GetOneRoleITs {
 
     @Test
-    void should_return_forbidden_without_role_read_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(ROLE_PATH + "/id")).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_role_read_authority() throws Exception {
       mockMvc.perform(get(ROLE_PATH + "/id").headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -184,20 +190,23 @@ class RoleControllerIT {
   @Nested
   class CreateRoleITs {
 
+    private final RoleCreateInput input = RoleCreateInput.builder().name("ROLE_NAME").build();
+
     @Test
-    void should_return_forbidden_without_role_create_authority() throws Exception {
-      RoleCreateInput input = RoleCreateInput.builder().name("ROLE_NAME").build();
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(post(ROLE_PATH).contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)))
         .andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_role_create_authority() throws Exception {
       mockMvc.perform(post(ROLE_PATH).headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_READ))
         .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(input))).andExpect(status().isForbidden());
+        .content(asJsonString(input))).andExpect(status().isUnauthorized());
     }
 
     @Test
     void should_create_role() throws Exception {
-      RoleCreateInput input = RoleCreateInput.builder().name("ROLE_NAME").build();
       Role expected = Role.builder().setRandomUUID().name(input.getName()).canLogin(false).build();
       doReturn(expected).when(roleService).create(input.getName());
 
@@ -213,21 +222,24 @@ class RoleControllerIT {
   @Nested
   class UpdateRoleITs {
 
-    @Test
-    void should_return_forbidden_without_role_update_authority() throws Exception {
-      RoleUpdateInput input = RoleUpdateInput.builder().name("ROLE_NAME").build();
-      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, "roleId")).contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(input))).andExpect(status().isForbidden());
+    private final RoleUpdateInput input = RoleUpdateInput.builder().name("ROLE_NAME").build();
 
-      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, "roleId")).headers(
-          TestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_READ))
-        .contentType(MediaType.APPLICATION_JSON)
+    @Test
+    void should_return_forbidden_without_authentication() throws Exception {
+      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, "roleId")).contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isForbidden());
     }
 
     @Test
+    void should_return_unauthorized_without_role_update_authority() throws Exception {
+      mockMvc.perform(patch(format("%s/%s", ROLE_PATH, "roleId")).headers(
+          TestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_READ))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(input))).andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void should_update_role() throws Exception {
-      RoleUpdateInput input = RoleUpdateInput.builder().name("ROLE_NAME").build();
       Role expected = Role.builder().setRandomUUID().name(input.getName()).build();
       doReturn(expected).when(roleService).update(expected.getId(), input);
 
@@ -245,11 +257,15 @@ class RoleControllerIT {
   class DeleteRoleITs {
 
     @Test
-    void should_return_forbidden_without_role_delete_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(delete(ROLE_PATH + "/id")).andExpect(status().isForbidden());
+    }
 
+
+    @Test
+    void should_return_unauthorized_without_role_delete_authority() throws Exception {
       mockMvc.perform(delete(ROLE_PATH + "/id").headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, ROLE_READ)))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test

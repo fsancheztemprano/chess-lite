@@ -18,7 +18,7 @@ export function jwtToken(authUser: AuthUser = {}): string {
     },
     authorities,
   };
-  return jwt.sign(payload, 'pact-secret', {
+  return jwt.sign(payload, 'secret', {
     algorithm: 'HS512',
     issuer: 'api',
     audience: 'app',

@@ -47,11 +47,14 @@ class ServiceLogsControllerIT {
   class GetServiceLogsITs {
 
     @Test
-    void should_return_forbidden_without_service_logs_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(SERVICE_LOGS_PATH)).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_authentication_without_service_logs_read_authorization() throws Exception {
       mockMvc.perform(get(SERVICE_LOGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -69,11 +72,14 @@ class ServiceLogsControllerIT {
   class DeleteServiceLogsITs {
 
     @Test
-    void should_return_forbidden_without_service_logs_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(delete(SERVICE_LOGS_PATH)).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_service_logs_read_authorization() throws Exception {
       mockMvc.perform(delete(SERVICE_LOGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test

@@ -25,7 +25,9 @@
           <script value="pact:consumer"/>
         </scripts>
         <node-interpreter value="project"/>
-        <envs/>
+        <envs>
+          <env name="NX_TASKS_RUNNER_DYNAMIC_OUTPUT" value="false"/>
+        </envs>
       </option>
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/apps/api/pom.xml"
         goal="spring-cloud-contract:generateTests"/>

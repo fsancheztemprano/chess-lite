@@ -15,7 +15,6 @@ import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.support.ImportTestSecurityConfiguration;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -64,11 +63,6 @@ class ExceptionHandlersIT {
   @Test
   void bad_credentials_exception_should_return_bad_request() throws Exception {
     mockMvc.perform(get("/badCredentialsException")).andExpect(status().isBadRequest());
-  }
-
-  @Test
-  void access_denied_exception_should_return_internal_server_error() throws Exception {
-    mockMvc.perform(get("/accessDeniedException")).andExpect(status().isInternalServerError());
   }
 
   @Test
@@ -154,12 +148,6 @@ class ExceptionHandlersIT {
     @GetMapping(path = "/badCredentialsException")
     public void badCredentialsException() {
       throw new BadCredentialsException(null);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/accessDeniedException")
-    public void accessDeniedException() throws AccessDeniedException {
-      throw new AccessDeniedException(null);
     }
 
     @ResponseStatus(HttpStatus.OK)

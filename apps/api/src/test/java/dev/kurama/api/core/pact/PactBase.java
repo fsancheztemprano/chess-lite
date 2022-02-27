@@ -10,7 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.context.WebApplicationContext;
 
 @ActiveProfiles("integration-test")
-@TestPropertySource(properties = "application.jwt.secret=pact-secret")
+@TestPropertySource(properties = "application.jwt.secret=secret")
 @SpringBootTest
 public abstract class PactBase {
 

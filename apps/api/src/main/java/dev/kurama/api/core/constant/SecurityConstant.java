@@ -13,7 +13,7 @@ public class SecurityConstant {
   public static final String AUTH_ISSUER = "api";
   public static final String AUTH_AUDIENCE = "app";
   public static final String AUTHORITIES = "authorities";
-  public static final String FORBIDDEN_MESSAGE = "You need to log in to access this page";
-  public static final String ACCESS_DENIED_MESSAGE = "You do not have permission to access this page";
+  public static final String FORBIDDEN_MESSAGE = "Authentication required";
+  public static final String UNAUTHORIZED_MESSAGE = "Insufficient permissions";
 
 }

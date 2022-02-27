@@ -7,7 +7,7 @@ export function pactForResource(resource: string, suffix = 'Controller'): Pact {
     consumer: `app-${resource}`,
     provider: 'api',
     log: path.resolve(process.cwd(), 'libs', 'consumer-pact', 'logs', 'pact.log'),
-    logLevel: 'debug',
+    logLevel: 'warn',
     dir: path.resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact', resource + suffix),
     cors: true,
     timeout: 10000,

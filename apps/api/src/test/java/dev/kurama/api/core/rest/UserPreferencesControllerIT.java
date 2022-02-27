@@ -75,11 +75,14 @@ class UserPreferencesControllerIT {
   class GetUserPreferencesITs {
 
     @Test
-    void should_return_forbidden_without_user_preferences_read_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(USER_PREFERENCES_PATH + "/id")).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_preferences_read_authority() throws Exception {
       mockMvc.perform(get(USER_PREFERENCES_PATH + "/id").headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -158,14 +161,17 @@ class UserPreferencesControllerIT {
     UserPreferencesInput input = UserPreferencesInput.builder().contentLanguage("jp").darkMode(true).build();
 
     @Test
-    void should_return_forbidden_without_user_preferences_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(
           patch(USER_PREFERENCES_PATH + "/id").contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)))
         .andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_preferences_update_authority() throws Exception {
       mockMvc.perform(patch(USER_PREFERENCES_PATH + "/id").contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))
-        .headers(getAuthorizationHeader(jwtTokenProvider, USER_PREFERENCES_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, USER_PREFERENCES_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test

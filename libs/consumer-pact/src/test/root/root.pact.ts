@@ -4,8 +4,8 @@ import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from 'libs/consumer-pact/src/utils/pact.utils';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 
-export namespace GetRootResourcePacts {
-  export const getRootResourceAsUnauthorized: InteractionObject = {
+export namespace GetRootResource {
+  export const as_unauthorized: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get root resource as unauthorized user',
     withRequest: {
@@ -129,7 +129,7 @@ export namespace GetRootResourcePacts {
     },
   };
 
-  export const getRootResource_profile_read: InteractionObject = {
+  export const with_profile_read: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get root resource with authority profile:read',
     withRequest: {
@@ -164,7 +164,7 @@ export namespace GetRootResourcePacts {
     },
   };
 
-  export const getRootResource_admin_root: InteractionObject = {
+  export const with_admin_root: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get root resource with authority admin:root',
     withRequest: {
