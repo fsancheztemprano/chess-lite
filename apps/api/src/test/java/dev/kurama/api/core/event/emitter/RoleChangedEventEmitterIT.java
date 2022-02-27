@@ -54,7 +54,9 @@ class RoleChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(format(ROLE_CHANGED_CHANNEL, roleId));
 
     RoleChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("roleId", roleId).hasFieldOrPropertyWithValue("action", RoleChangedEventAction.CREATED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.CREATED);
 
     message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
@@ -64,7 +66,9 @@ class RoleChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(ROLES_CHANGED_CHANNEL);
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("roleId", roleId).hasFieldOrPropertyWithValue("action", RoleChangedEventAction.CREATED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.CREATED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();
@@ -83,8 +87,9 @@ class RoleChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(format(ROLE_CHANGED_CHANNEL, roleId));
 
     RoleChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("roleId", roleId).hasFieldOrPropertyWithValue(
-      "action", RoleChangedEventAction.UPDATED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.UPDATED);
 
     message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
@@ -94,7 +99,9 @@ class RoleChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(ROLES_CHANGED_CHANNEL);
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("roleId", roleId).hasFieldOrPropertyWithValue("action", RoleChangedEventAction.UPDATED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.UPDATED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();
@@ -113,7 +120,9 @@ class RoleChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(format(ROLE_CHANGED_CHANNEL, roleId));
 
     RoleChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("roleId", roleId).hasFieldOrPropertyWithValue("action", RoleChangedEventAction.DELETED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.DELETED);
 
     message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
@@ -123,7 +132,9 @@ class RoleChangedEventEmitterIT {
     assertThat(messageHeaders.getDestination()).isEqualTo(ROLES_CHANGED_CHANNEL);
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), RoleChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("roleId", roleId).hasFieldOrPropertyWithValue("action", RoleChangedEventAction.DELETED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("roleId", roleId)
+      .hasFieldOrPropertyWithValue("action", RoleChangedEventAction.DELETED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();

@@ -22,7 +22,7 @@ export function jwtToken(authUser: AuthUser = {}): string {
     algorithm: 'HS512',
     issuer: 'api',
     audience: 'app',
-    expiresIn: '2h',
+    expiresIn: '2y',
     subject: payload.user.username,
   });
 }

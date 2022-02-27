@@ -55,7 +55,9 @@ class UserPreferencesChangedEventEmitterIT {
 
     UserPreferencesChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(),
       UserPreferencesChangedEvent.class);
-    assertThat(payload).isNotNull().hasFieldOrPropertyWithValue("userPreferencesId", userPreferencesId).hasFieldOrPropertyWithValue("action", UserPreferencesChangedEventAction.UPDATED);
+    assertThat(payload).isNotNull()
+      .hasFieldOrPropertyWithValue("userPreferencesId", userPreferencesId)
+      .hasFieldOrPropertyWithValue("action", UserPreferencesChangedEventAction.UPDATED);
 
     message = testChannelInterceptor.awaitMessage(1);
     assertThat(message).isNull();
