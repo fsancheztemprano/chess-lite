@@ -196,6 +196,11 @@
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
       <artifactId>postgresql</artifactId>
       <scope>test</scope>
     </dependency>
@@ -508,9 +513,9 @@
               <testFramework>JUNIT5</testFramework>
               <nameSuffixForTests>PactIT</nameSuffixForTests>
               <contractsDirectory>${project.basedir}/target/test-classes/pact</contractsDirectory>
-              <packageWithBaseClasses>dev.kurama.api.core.pact</packageWithBaseClasses>
-              <baseClassForTests>dev.kurama.api.core.pact.PactBase</baseClassForTests>
-              <basePackageForTests>dev.kurama.api.core.pact</basePackageForTests>
+              <packageWithBaseClasses>dev.kurama.api.pact</packageWithBaseClasses>
+              <baseClassForTests>dev.kurama.api.pact.PactBase</baseClassForTests>
+              <basePackageForTests>dev.kurama.api.pact</basePackageForTests>
               <assertJsonSize>true</assertJsonSize>
             </configuration>
             <dependencies>

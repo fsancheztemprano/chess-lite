@@ -1,6 +1,7 @@
 package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHENTICATION_PATH;
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
@@ -41,12 +42,11 @@ public class AuthenticationController {
   @NonNull
   private final AuthenticationFacade authenticationFacade;
 
-
   @PostMapping(SIGNUP_PATH)
   public ResponseEntity<?> signup(@RequestBody SignupInput user)
     throws EmailExistsException, UsernameExistsException, SignupClosedException {
     authenticationFacade.signup(user);
-    return ok().build();
+    return noContent().build();
   }
 
   @PostMapping(LOGIN_PATH)
@@ -60,7 +60,7 @@ public class AuthenticationController {
   public ResponseEntity<?> requestActivationToken(@RequestBody RequestActivationTokenInput requestActivationTokenInput)
     throws EmailNotFoundException, ActivationTokenRecentException {
     authenticationFacade.requestActivationToken(requestActivationTokenInput.getEmail());
-    return ok().build();
+    return noContent().build();
   }
 
   @PostMapping(ACTIVATE_PATH)
@@ -68,6 +68,6 @@ public class AuthenticationController {
     throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
     ActivationTokenExpiredException {
     authenticationFacade.activateAccount(accountActivationInput);
-    return ok().build();
+    return noContent().build();
   }
 }

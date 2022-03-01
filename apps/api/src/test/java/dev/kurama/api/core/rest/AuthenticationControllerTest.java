@@ -70,7 +70,7 @@ class AuthenticationControllerTest {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(facade).signup(input);
   }
@@ -100,7 +100,7 @@ class AuthenticationControllerTest {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(facade).requestActivationToken(input.getEmail());
   }
@@ -115,7 +115,7 @@ class AuthenticationControllerTest {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + ACTIVATE_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(facade).activateAccount(input);
   }

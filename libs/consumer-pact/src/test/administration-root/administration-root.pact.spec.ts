@@ -13,7 +13,6 @@ import { pactForResource } from '../../utils/pact.utils';
 const provider: Pact = pactForResource('administrationRoot');
 
 describe('Administration Root Resource Pacts', () => {
-  let halFormService: HalFormService;
   let service: AdministrationService;
 
   beforeAll(() => provider.setup());
@@ -25,8 +24,7 @@ describe('Administration Root Resource Pacts', () => {
       imports: [HttpClientModule, HalFormClientModule.forRoot('/api')],
       providers: [avengersAssemble(provider.mockService.baseUrl)],
     });
-    halFormService = TestBed.inject(HalFormService);
-    service = TestBed.inject(AdministrationService);
+    const halFormService: HalFormService = TestBed.inject(HalFormService);
     halFormService.setRootResource({
       _links: {
         self: {
@@ -37,6 +35,7 @@ describe('Administration Root Resource Pacts', () => {
         },
       },
     });
+    service = TestBed.inject(AdministrationService);
   });
 
   describe('get administration root resource with authority', () => {

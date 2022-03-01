@@ -38,7 +38,7 @@ export interface ITemplatePropertyOption {
 }
 
 export interface ITemplate {
-  method?: HttpMethodEnum;
+  method?: HttpMethodEnum | string;
   title?: string;
   contentType?: ContentTypeEnum;
   properties?: ITemplateProperty[];
@@ -48,7 +48,7 @@ export interface ITemplate {
 export class Template implements ITemplate {
   private readonly httpClient: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
-  method: HttpMethodEnum;
+  method: HttpMethodEnum | string;
   title?: string;
   contentType?: ContentTypeEnum;
   properties?: ITemplateProperty[];

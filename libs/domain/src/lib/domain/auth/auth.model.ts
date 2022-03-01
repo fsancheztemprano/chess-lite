@@ -5,7 +5,6 @@ export interface LoginInput {
 
 export interface SignupInput {
   username: string;
-  password: string;
   email: string;
   firstname?: string;
   lastname?: string;

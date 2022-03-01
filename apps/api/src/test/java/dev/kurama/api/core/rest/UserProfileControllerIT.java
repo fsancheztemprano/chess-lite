@@ -106,8 +106,10 @@ class UserProfileControllerIT {
       doReturn(Optional.of(expected)).when(userService).findUserById(expected.getId());
 
       mockMvc.perform(get(USER_PROFILE_PATH).accept(HAL_FORMS_JSON_VALUE)
-          .headers(
-            MockAuthorizedUser.builder().username(expected.getUsername()).id(expected.getId()).authorities(PROFILE_READ)
+          .headers(MockAuthorizedUser.builder()
+            .username(expected.getUsername())
+            .id(expected.getId())
+            .authorities(PROFILE_READ)
             .buildAuthorizationHeader(jwtTokenProvider)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
@@ -192,7 +194,8 @@ class UserProfileControllerIT {
       mockMvc.perform(patch(USER_PROFILE_PATH).contentType(APPLICATION_JSON_VALUE)
           .accept(HAL_FORMS_JSON_VALUE)
           .content(asJsonString(input))
-          .headers(MockAuthorizedUser.builder().username(expected.getUsername())
+          .headers(MockAuthorizedUser.builder()
+            .username(expected.getUsername())
             .id(expected.getId())
             .authorities(PROFILE_UPDATE)
             .buildAuthorizationHeader(jwtTokenProvider)))
@@ -267,7 +270,8 @@ class UserProfileControllerIT {
     void should_upload_avatar() throws Exception {
       doReturn(expected).when(userService).updateUser(eq(expected.getId()), any(UserInput.class));
 
-      mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar).with(request -> {
+      mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar)
+          .with(request -> {
             request.setMethod(HttpMethod.PATCH.toString());
             return request;
           })
@@ -334,7 +338,9 @@ class UserProfileControllerIT {
           .findUserPreferencesByUserId(expected.getId());
 
         mockMvc.perform(get(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).accept(HAL_FORMS_JSON_VALUE)
-            .headers(MockAuthorizedUser.builder().username(expected.getUsername()).id(expected.getId())
+            .headers(MockAuthorizedUser.builder()
+              .username(expected.getUsername())
+              .id(expected.getId())
               .authorities(PROFILE_READ)
               .buildAuthorizationHeader(jwtTokenProvider)))
           .andExpect(status().isOk())

@@ -1,4 +1,4 @@
-package dev.kurama.api.core.pact;
+package dev.kurama.api.pact;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
 
@@ -6,12 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.context.WebApplicationContext;
 
-@ActiveProfiles("integration-test")
-@TestPropertySource(properties = "application.jwt.secret=secret")
-@SpringBootTest
+@ActiveProfiles("pact-test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class PactBase {
 
   @Autowired

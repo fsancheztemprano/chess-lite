@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:14.2:////testdb
+    url: jdbc:tc:postgresql:14.2:////pactdb
     hikari:
       maximum-pool-size: 2
   jpa:
@@ -13,4 +13,6 @@ spring:
           use_query_cache: false
           use_second_level_cache: false
 application:
-  run_data_init: false
+  run_data_init: true
+  jwt:
+    secret: 'secret'

@@ -17,6 +17,7 @@ public class SignupInput {
   private String username;
 
   @NonNull
+  @NotNull
   @Email
   private String email;
 

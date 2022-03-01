@@ -56,6 +56,16 @@ class ExceptionHandlersIT {
   }
 
   @Test
+  void null_pointer_exception_should_return_bad_request() throws Exception {
+    mockMvc.perform(get("/NullPointerException")).andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void illegal_argument_exception_should_return_bad_request() throws Exception {
+    mockMvc.perform(get("/IllegalArgumentException")).andExpect(status().isBadRequest());
+  }
+
+  @Test
   void account_disabled_exception_should_return_bad_request() throws Exception {
     mockMvc.perform(get("/accountDisabledException")).andExpect(status().isBadRequest());
   }
@@ -142,6 +152,18 @@ class ExceptionHandlersIT {
     @GetMapping(path = "/accountDisabledException")
     public void accountDisabledException() {
       throw new DisabledException(null);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/NullPointerException")
+    public void NullPointerException() {
+      throw new NullPointerException(null);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/IllegalArgumentException")
+    public void IllegalArgumentException() {
+      throw new IllegalArgumentException();
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -1,4 +1,4 @@
-package dev.kurama.api.core.pact;
+package dev.kurama.api.pact;
 
 public abstract class AdministrationRootControllerBase extends PactBase {
 
