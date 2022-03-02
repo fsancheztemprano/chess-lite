@@ -72,7 +72,7 @@ describe('Authentication Pacts', () => {
 
     it('successful', (done) => {
       provider.addInteraction(Signup.successful).then(() => {
-        service.signup({ username: 'username1', email: 'username1@example.com' }).subscribe(() => {
+        service.signup({ username: 'username2', email: 'username2@example.com' }).subscribe(() => {
           done();
         });
       });
@@ -95,7 +95,7 @@ describe('Authentication Pacts', () => {
     it('existing email error', (done) => {
       const interaction: InteractionObject = Signup.existing_email;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'username2', email: 'admin@example.com' }).subscribe({
+        service.signup({ username: 'username0', email: 'username1@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -123,7 +123,7 @@ describe('Authentication Pacts', () => {
     it('existing username error', (done) => {
       const interaction: InteractionObject = Signup.existing_username;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'admin', email: 'username2@example.com' }).subscribe({
+        service.signup({ username: 'username1', email: 'username0@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

@@ -20,9 +20,13 @@ public class UserInput {
   private String email;
   private String profileImageUrl;
   private String roleId;
-  private Boolean active;
-  private Boolean locked;
-  private Boolean expired;
-  private Boolean credentialsExpired;
   private Set<String> authorityIds;
+  @Builder.Default
+  private Boolean active = true;
+  @Builder.Default
+  private Boolean locked = true;
+  @Builder.Default
+  private Boolean expired = true;
+  @Builder.Default
+  private Boolean credentialsExpired = true;
 }

@@ -3,6 +3,7 @@ package dev.kurama.api.core.service;
 import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 import com.google.common.collect.Sets;
@@ -135,8 +136,8 @@ public class UserService {
 
   public User createUser(UserInput userInput) throws UsernameExistsException, EmailExistsException {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
-    var role = roleService.findRoleById(userInput.getRoleId())
-      .orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
+    var role = (isNotEmpty(userInput.getRoleId()) ? roleService.findRoleById(userInput.getRoleId())
+      : Optional.<Role>empty()).orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
     User user = User.builder()
       .setRandomUUID()
       .username(userInput.getUsername())

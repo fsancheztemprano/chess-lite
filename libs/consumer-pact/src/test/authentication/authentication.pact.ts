@@ -14,8 +14,8 @@ export namespace Signup {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        username: 'username1',
-        email: 'username1@example.com',
+        username: 'username2',
+        email: 'username2@example.com',
       },
     },
     willRespondWith: {
@@ -57,15 +57,15 @@ export namespace Signup {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        username: 'username2',
-        email: 'admin@example.com',
+        username: 'username0',
+        email: 'username1@example.com',
       },
     },
     willRespondWith: {
       status: 409,
       body: {
         reason: 'Conflict',
-        title: 'Email already exists: admin@example.com',
+        title: 'Email already exists: username1@example.com',
       },
     },
   };
@@ -104,15 +104,15 @@ export namespace Signup {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        username: 'admin',
-        email: 'username2@example.com',
+        username: 'username1',
+        email: 'username0@example.com',
       },
     },
     willRespondWith: {
       status: 409,
       body: {
         reason: 'Conflict',
-        title: 'Username already exists: admin',
+        title: 'Username already exists: username1',
       },
     },
   };
