@@ -5,7 +5,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import dev.kurama.api.core.domain.Authority;
-import dev.kurama.api.support.ServiceLayerIntegrationTestConfig;
+import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;

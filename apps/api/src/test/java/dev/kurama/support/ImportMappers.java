@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import dev.kurama.api.core.mapper.AuthorityMapperImpl;
 import dev.kurama.api.core.mapper.GlobalSettingsMapperImpl;

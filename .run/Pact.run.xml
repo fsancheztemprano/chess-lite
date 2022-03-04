@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Pact" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="PactFlow" type="JUnit" factoryName="JUnit">
     <module name="api"/>
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="false"/>
@@ -18,17 +18,8 @@
     <dir value="$PROJECT_DIR$/apps/api/target/generated-test-sources/contracts"/>
     <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/apps/api/pom.xml" goal="clean"/>
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json"/>
-        <command value="run"/>
-        <scripts>
-          <script value="pact:consumer"/>
-        </scripts>
-        <node-interpreter value="project"/>
-        <envs>
-          <env name="NX_TASKS_RUNNER_DYNAMIC_OUTPUT" value="false"/>
-        </envs>
-      </option>
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Pact Tests"
+        run_configuration_type="JavaScriptTestRunnerJest"/>
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/apps/api/pom.xml"
         goal="spring-cloud-contract:generateTests"/>
       <option name="MakeProject" enabled="true"/>

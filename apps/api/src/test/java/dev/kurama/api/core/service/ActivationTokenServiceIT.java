@@ -13,7 +13,7 @@ import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.repository.ActivationTokenRepository;
-import dev.kurama.api.support.ServiceLayerIntegrationTestConfig;
+import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

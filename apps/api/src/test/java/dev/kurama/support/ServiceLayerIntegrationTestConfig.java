@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 

@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

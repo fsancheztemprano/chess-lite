@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import static org.apache.commons.compress.utils.Sets.newHashSet;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;

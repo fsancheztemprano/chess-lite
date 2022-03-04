@@ -13,7 +13,7 @@ import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundExcept
 import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
-import dev.kurama.api.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.ImportTestSecurityConfiguration;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

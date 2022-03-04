@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import dev.kurama.api.core.repository.ActivationTokenRepository;
 import dev.kurama.api.core.repository.AuthorityRepository;

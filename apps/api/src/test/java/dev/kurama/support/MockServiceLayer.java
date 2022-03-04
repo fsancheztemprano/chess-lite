@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import(MockEventLayerConfig.class)
-public @interface MockEventLayer {
+@Import(MockServiceLayerConfig.class)
+public @interface MockServiceLayer {
 
 }

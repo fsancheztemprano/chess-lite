@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class UserInput {
 
+  private String id;
   @Length(min = 5, max = 128)
   private String username;
   @Length(min = 6, max = 128)
@@ -24,9 +25,9 @@ public class UserInput {
   @Builder.Default
   private Boolean active = true;
   @Builder.Default
-  private Boolean locked = true;
+  private Boolean locked = false;
   @Builder.Default
-  private Boolean expired = true;
+  private Boolean expired = false;
   @Builder.Default
-  private Boolean credentialsExpired = true;
+  private Boolean credentialsExpired = false;
 }

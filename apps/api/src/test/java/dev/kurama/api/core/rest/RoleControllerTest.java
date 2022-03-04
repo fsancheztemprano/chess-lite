@@ -3,7 +3,7 @@ package dev.kurama.api.core.rest;
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
+import static dev.kurama.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;

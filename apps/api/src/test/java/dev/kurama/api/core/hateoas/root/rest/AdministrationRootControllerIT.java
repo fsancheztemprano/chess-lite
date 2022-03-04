@@ -17,7 +17,7 @@ import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH
 import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
-import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
+import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON_VALUE;
@@ -27,8 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import dev.kurama.api.core.hateoas.root.processor.AdministrationRootResourceAssembler;
 import dev.kurama.api.core.utility.JWTTokenProvider;
-import dev.kurama.api.support.ImportTestSecurityConfiguration;
-import dev.kurama.api.support.TestUtils;
+import dev.kurama.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.TestUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

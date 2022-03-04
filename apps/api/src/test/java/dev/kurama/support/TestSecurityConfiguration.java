@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import dev.kurama.api.core.repository.UserRepository;
 import dev.kurama.api.core.service.LoginAttemptService;

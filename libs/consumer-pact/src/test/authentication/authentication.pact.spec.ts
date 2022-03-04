@@ -1,11 +1,12 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AuthRelations, SignupInput } from '@app/domain';
+import { AuthRelations, HttpHeaders, SignupInput } from '@app/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
+import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
 import { AuthService } from 'apps/app/src/app/auth/services/auth.service';
 import { stubSessionServiceProvider } from 'apps/app/src/app/core/services/session.service.stub';
-import { Signup } from 'libs/consumer-pact/src/test/authentication/authentication.pact';
+import { LoginPact, SignupPact } from 'libs/consumer-pact/src/test/authentication/authentication.pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 
@@ -35,7 +36,7 @@ describe('Authentication Pacts', () => {
           self: {
             href: '/api',
           },
-          [AuthRelations.LOGIN_RELATION]: {
+          [AuthRelations.SIGNUP_RELATION]: {
             href: '/api/auth/signup',
           },
         },
@@ -71,17 +72,17 @@ describe('Authentication Pacts', () => {
     });
 
     it('successful', (done) => {
-      provider.addInteraction(Signup.successful).then(() => {
-        service.signup({ username: 'username2', email: 'username2@example.com' }).subscribe(() => {
+      provider.addInteraction(SignupPact.successful).then(() => {
+        service.signup({ username: 'janeDoe', email: 'janeDoe@example.com' }).subscribe(() => {
           done();
         });
       });
     });
 
     it('no email error', (done) => {
-      const interaction: InteractionObject = Signup.no_email;
+      const interaction: InteractionObject = SignupPact.no_email;
       provider.addInteraction(interaction).then(() => {
-        service.signup(<SignupInput>{ username: 'username2' }).subscribe({
+        service.signup(<SignupInput>{ username: 'username' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -93,9 +94,9 @@ describe('Authentication Pacts', () => {
     });
 
     it('existing email error', (done) => {
-      const interaction: InteractionObject = Signup.existing_email;
+      const interaction: InteractionObject = SignupPact.existing_email;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'username0', email: 'username1@example.com' }).subscribe({
+        service.signup({ username: 'username', email: 'johnDoe@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -107,9 +108,9 @@ describe('Authentication Pacts', () => {
     });
 
     it('no username error', (done) => {
-      const interaction: InteractionObject = Signup.no_username;
+      const interaction: InteractionObject = SignupPact.no_username;
       provider.addInteraction(interaction).then(() => {
-        service.signup(<SignupInput>{ email: 'username2@example.com' }).subscribe({
+        service.signup(<SignupInput>{ email: 'username@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -121,15 +122,95 @@ describe('Authentication Pacts', () => {
     });
 
     it('existing username error', (done) => {
-      const interaction: InteractionObject = Signup.existing_username;
+      const interaction: InteractionObject = SignupPact.existing_username;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'username1', email: 'username0@example.com' }).subscribe({
+        service.signup({ username: 'johnDoe', email: 'username@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
             expect(error.error).toMatchObject(interaction.willRespondWith.body);
             done();
           },
+        });
+      });
+    });
+  });
+
+  describe('login', () => {
+    beforeEach(() => {
+      halFormService.setRootResource({
+        _links: {
+          self: {
+            href: '/api',
+          },
+          [AuthRelations.LOGIN_RELATION]: {
+            href: '/api/auth/login',
+          },
+        },
+        _templates: {
+          default: {},
+          [AuthRelations.LOGIN_RELATION]: {
+            method: 'POST',
+            properties: [
+              {
+                name: 'password',
+                required: true,
+                minLength: 6,
+                maxLength: 128,
+                type: 'text',
+              },
+              {
+                name: 'username',
+                required: true,
+                minLength: 5,
+                maxLength: 128,
+                type: 'text',
+              },
+            ],
+            target: '/api/auth/login',
+          },
+        },
+      });
+    });
+
+    it('locked role', (done) => {
+      const interaction: InteractionObject = LoginPact.locked_role;
+      provider.addInteraction(interaction).then(() => {
+        service.login({ username: 'lockedRoleUser', password: 'lockedRoleUser' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(401);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('locked user', (done) => {
+      const interaction: InteractionObject = LoginPact.locked_user;
+      provider.addInteraction(interaction).then(() => {
+        service.login({ username: 'lockedUser', password: 'lockedUser' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(401);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = LoginPact.successful;
+      provider.addInteraction(interaction).then(() => {
+        service.login({ username: 'johnDoe', password: 'johnDoe0' }).subscribe((session) => {
+          expect(session).toBeTruthy();
+          expect(session?.token).toBe(
+            (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaders.JWT_TOKEN]).getValue(),
+          );
+          expect(session?.user?.id).toBe(interaction.willRespondWith.body.id);
+          done();
         });
       });
     });

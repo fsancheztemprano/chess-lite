@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthRelations, HttpHeaders, LoginInput, SignupInput, User } from '@app/domain';
 import { HalFormService, IResource, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { exhaustMap, map } from 'rxjs/operators';
 import { Session, SessionService } from '../../core/services/session.service';
 import { AuthModule } from '../auth.module';
 
@@ -21,7 +21,7 @@ export class AuthService {
     return this.halFormService.isAllowedTo(AuthRelations.LOGIN_RELATION);
   }
 
-  public login(loginInput: LoginInput): Observable<User | null> {
+  public login(loginInput: LoginInput): Observable<Session | null> {
     return this.halFormService.getResource().pipe(
       submitToTemplateOrThrowPipe(AuthRelations.LOGIN_RELATION, loginInput, undefined, 'response'),
       map((response: HttpResponse<IResource>) => {
@@ -29,7 +29,7 @@ export class AuthService {
         const user = new User(response.body as IResource);
         return { token, user };
       }),
-      switchMap((session: Session) => this.sessionService.initialize(session)),
+      exhaustMap((session: Session) => this.sessionService.initialize(session).pipe(map(() => session))),
     );
   }
 

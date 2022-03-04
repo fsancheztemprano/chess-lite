@@ -1,5 +1,6 @@
 package dev.kurama.api.core.exception;
 
+import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -39,9 +40,7 @@ public class ExceptionHandlers {
 
   private static final String AN_ERROR_HAS_OCCURRED = "An error has occurred";
 
-  private static final String ROLE_LOCKED = "Your role has been locked. Please contact administration";
-  private static final String ACCOUNT_LOCKED = "Your account has been locked. Please recover your password or contact"
-    + " administration";
+  private static final String IS_LOCKED = "%s is locked";
   private static final String TOKEN_EXPIRED = "This token is expired. Log in again to get a valid one.";
   private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please "
     + "send a '%s' request";
@@ -78,13 +77,13 @@ public class ExceptionHandlers {
   @ResponseStatus(code = UNAUTHORIZED)
   @ExceptionHandler(LockedException.class)
   public ResponseEntity<DomainResponse> lockedException(LockedException exception) {
-    return createDomainResponse(UNAUTHORIZED, ACCOUNT_LOCKED, exception.getMessage());
+    return createDomainResponse(UNAUTHORIZED, exception.getMessage(), exception.getMessage());
   }
 
   @ResponseStatus(code = UNAUTHORIZED)
   @ExceptionHandler(RoleCanNotLoginException.class)
   public ResponseEntity<DomainResponse> roleCanNotLoginException(RoleCanNotLoginException exception) {
-    return createDomainResponse(UNAUTHORIZED, ROLE_LOCKED, exception.getMessage());
+    return createDomainResponse(UNAUTHORIZED, format(IS_LOCKED, exception.getMessage()), exception.getMessage());
   }
 
   @ResponseStatus(code = UNAUTHORIZED)

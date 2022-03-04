@@ -20,7 +20,7 @@ import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
-import dev.kurama.api.support.ServiceLayerIntegrationTestConfig;
+import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -139,7 +139,7 @@ public class UserService {
     var role = (isNotEmpty(userInput.getRoleId()) ? roleService.findRoleById(userInput.getRoleId())
       : Optional.<Role>empty()).orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
     User user = User.builder()
-      .setRandomUUID()
+      .setIdOrRandomUUID(userInput.getId())
       .username(userInput.getUsername())
       .password(passwordEncoder.encode(userInput.getPassword()))
       .email(userInput.getEmail())

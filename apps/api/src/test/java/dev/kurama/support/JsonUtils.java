@@ -1,4 +1,4 @@
-package dev.kurama.api.support;
+package dev.kurama.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

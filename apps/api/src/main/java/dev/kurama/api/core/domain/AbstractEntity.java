@@ -1,6 +1,8 @@
 package dev.kurama.api.core.domain;
 
-import dev.kurama.api.core.utility.UuidUtils;
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -36,7 +38,12 @@ public abstract class AbstractEntity {
   public abstract static class AbstractEntityBuilder<C extends AbstractEntity, B extends AbstractEntityBuilder<C, B>> {
 
     public B setRandomUUID() {
-      this.id = UuidUtils.randomUUID();
+      this.id = randomUUID();
+      return self();
+    }
+
+    public B setIdOrRandomUUID(String id) {
+      this.id = isEmpty(id) ? randomUUID() : id;
       return self();
     }
   }
