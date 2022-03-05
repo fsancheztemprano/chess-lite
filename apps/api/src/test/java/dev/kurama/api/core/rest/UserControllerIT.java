@@ -291,8 +291,8 @@ class UserControllerIT {
       mockMvc.perform(patch(format("%s/%s", USER_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(userInput))
-          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE))).andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE))) //
+        .andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
   }
 
@@ -321,8 +321,8 @@ class UserControllerIT {
       mockMvc.perform(patch(format("%s/%s/role", USER_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input))
-          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_ROLE))).andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_ROLE))) //
+        .andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
   }
 
@@ -356,8 +356,8 @@ class UserControllerIT {
       mockMvc.perform(patch(format("%s/%s/authorities", USER_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input))
-          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_AUTHORITIES))).andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", equalTo(expected.getId())));
+          .headers(getAuthorizationHeader(jwtTokenProvider, USER_UPDATE_AUTHORITIES))) //
+        .andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(expected.getId())));
     }
   }
 

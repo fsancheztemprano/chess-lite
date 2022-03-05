@@ -49,7 +49,9 @@ export enum AuthRelations {
 
 export enum ActivationTokenRelations {
   REQUEST_ACTIVATION_TOKEN_REL = 'requestActivationToken',
+  ACTIVATION_TOKEN_REL = 'activation-token',
   ACTIVATE_ACCOUNT_REL = 'activateAccount',
+  ACTIVATE_ACCOUNT_LINK = 'activate-account',
 }
 
 export enum ServiceLogsRelations {

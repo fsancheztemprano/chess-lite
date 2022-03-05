@@ -1,12 +1,18 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AuthRelations, HttpHeaders, SignupInput } from '@app/domain';
+import { ActivationTokenRelations, AuthRelations, HttpHeaders, SignupInput } from '@app/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
 import { AuthService } from 'apps/app/src/app/auth/services/auth.service';
 import { stubSessionServiceProvider } from 'apps/app/src/app/core/services/session.service.stub';
-import { LoginPact, SignupPact } from 'libs/consumer-pact/src/test/authentication/authentication.pact';
+import {
+  ActivateAccountPact,
+  ActivationTokenPact,
+  LoginPact,
+  SignupPact,
+} from 'libs/consumer-pact/src/test/authentication/authentication.pact';
+import { ActivationTokenService } from '../../../../../apps/app/src/app/auth/services/activation-token.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 
@@ -14,7 +20,8 @@ const provider: Pact = pactForResource('authentication');
 
 describe('Authentication Pacts', () => {
   let halFormService: HalFormService;
-  let service: AuthService;
+  let authService: AuthService;
+  let activationTokenService: ActivationTokenService;
 
   beforeAll(() => provider.setup());
   afterEach(() => provider.verify());
@@ -26,7 +33,8 @@ describe('Authentication Pacts', () => {
       providers: [avengersAssemble(provider.mockService.baseUrl), AuthService, stubSessionServiceProvider],
     });
     halFormService = TestBed.inject(HalFormService);
-    service = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
+    activationTokenService = TestBed.inject(ActivationTokenService);
   });
 
   describe('signup', () => {
@@ -73,7 +81,7 @@ describe('Authentication Pacts', () => {
 
     it('successful', (done) => {
       provider.addInteraction(SignupPact.successful).then(() => {
-        service.signup({ username: 'janeDoe', email: 'janeDoe@example.com' }).subscribe(() => {
+        authService.signup({ username: 'janeDoe', email: 'janeDoe@example.com' }).subscribe(() => {
           done();
         });
       });
@@ -82,7 +90,7 @@ describe('Authentication Pacts', () => {
     it('no email error', (done) => {
       const interaction: InteractionObject = SignupPact.no_email;
       provider.addInteraction(interaction).then(() => {
-        service.signup(<SignupInput>{ username: 'username1' }).subscribe({
+        authService.signup(<SignupInput>{ username: 'username1' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -96,7 +104,7 @@ describe('Authentication Pacts', () => {
     it('existing email error', (done) => {
       const interaction: InteractionObject = SignupPact.existing_email;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'username2', email: 'johnDoe@example.com' }).subscribe({
+        authService.signup({ username: 'username2', email: 'johnDoe@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -110,7 +118,7 @@ describe('Authentication Pacts', () => {
     it('no username error', (done) => {
       const interaction: InteractionObject = SignupPact.no_username;
       provider.addInteraction(interaction).then(() => {
-        service.signup(<SignupInput>{ email: 'username3@example.com' }).subscribe({
+        authService.signup(<SignupInput>{ email: 'username3@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -124,7 +132,7 @@ describe('Authentication Pacts', () => {
     it('existing username error', (done) => {
       const interaction: InteractionObject = SignupPact.existing_username;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'johnDoe', email: 'username4@example.com' }).subscribe({
+        authService.signup({ username: 'johnDoe', email: 'username4@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -176,7 +184,7 @@ describe('Authentication Pacts', () => {
     it('locked role', (done) => {
       const interaction: InteractionObject = LoginPact.locked_role;
       provider.addInteraction(interaction).then(() => {
-        service.login({ username: 'lockedRoleUser', password: 'lockedRoleUser' }).subscribe({
+        authService.login({ username: 'lockedRoleUser', password: 'lockedRoleUser' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(401);
@@ -190,7 +198,7 @@ describe('Authentication Pacts', () => {
     it('locked user', (done) => {
       const interaction: InteractionObject = LoginPact.locked_user;
       provider.addInteraction(interaction).then(() => {
-        service.login({ username: 'lockedUser', password: 'lockedUser' }).subscribe({
+        authService.login({ username: 'lockedUser', password: 'lockedUser' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(401);
@@ -204,7 +212,7 @@ describe('Authentication Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = LoginPact.successful;
       provider.addInteraction(interaction).then(() => {
-        service.login({ username: 'johnDoe', password: 'johnDoe0' }).subscribe((session) => {
+        authService.login({ username: 'johnDoe', password: 'johnDoe0' }).subscribe((session) => {
           expect(session).toBeTruthy();
           expect(session?.token).toBe(
             (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaders.JWT_TOKEN]).getValue(),
@@ -212,6 +220,129 @@ describe('Authentication Pacts', () => {
           expect(session?.user?.id).toBe(interaction.willRespondWith.body.id);
           done();
         });
+      });
+    });
+  });
+
+  describe('Activation token', () => {
+    beforeEach(() => {
+      halFormService.setRootResource({
+        _links: {
+          self: {
+            href: '/api',
+          },
+          [ActivationTokenRelations.ACTIVATION_TOKEN_REL]: {
+            href: '/api/auth/login',
+          },
+        },
+        _templates: {
+          default: {},
+          [ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL]: {
+            method: 'POST',
+            properties: [
+              {
+                name: 'email',
+                required: true,
+                type: 'email',
+              },
+            ],
+            target: '/api/auth/token',
+          },
+        },
+      });
+    });
+
+    it('email not found', (done) => {
+      const interaction: InteractionObject = ActivationTokenPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        activationTokenService.requestActivationToken('username6@example.com').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(404);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('successful', (done) => {
+      provider.addInteraction(ActivationTokenPact.successful).then(() => {
+        activationTokenService.requestActivationToken('lockedRoleUser@example.com').subscribe(() => done());
+      });
+    });
+  });
+
+  describe('Activate account', () => {
+    beforeEach(() => {
+      halFormService.setRootResource({
+        _links: {
+          self: {
+            href: '/api',
+          },
+          [ActivationTokenRelations.ACTIVATE_ACCOUNT_LINK]: {
+            href: '/api/auth/activate',
+          },
+        },
+        _templates: {
+          default: {},
+          [ActivationTokenRelations.ACTIVATE_ACCOUNT_REL]: {
+            method: 'POST',
+            properties: [
+              {
+                name: 'email',
+                required: true,
+                type: 'email',
+              },
+              {
+                name: 'password',
+                required: true,
+                minLength: 8,
+                maxLength: 128,
+                type: 'text',
+              },
+              {
+                name: 'token',
+                required: true,
+                minLength: 8,
+                maxLength: 128,
+                type: 'text',
+              },
+            ],
+            target: '/api/auth/activate',
+          },
+        },
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = ActivateAccountPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        activationTokenService
+          .activateAccount({ password: 'username7', token: 'username7TokenId', email: 'username7@example.com' })
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(404);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              done();
+            },
+          });
+      });
+    });
+
+    it('successful', (done) => {
+      provider.addInteraction(ActivateAccountPact.successful).then(() => {
+        activationTokenService
+          .activateAccount({
+            password: 'activationUser',
+            token: 'activationUserTokenId',
+            email: 'activationUser@example.com',
+          })
+          .subscribe((response) => {
+            expect(response).toBeTruthy();
+            done();
+          });
       });
     });
   });

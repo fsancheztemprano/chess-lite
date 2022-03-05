@@ -3,7 +3,10 @@ package dev.kurama.support;
 import static dev.kurama.api.core.authority.DefaultAuthority.DEFAULT_ROLE;
 
 import dev.kurama.api.core.domain.AbstractEntity;
+import dev.kurama.api.core.domain.ActivationToken;
 import dev.kurama.api.core.domain.Role;
+import dev.kurama.api.core.domain.User;
+import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
 import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
@@ -12,10 +15,12 @@ import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
 import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
+import dev.kurama.api.core.repository.UserRepository;
 import dev.kurama.api.core.service.DataInitializationService;
 import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.api.core.service.UserService;
+import java.util.Date;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.NonNull;
@@ -33,6 +38,9 @@ public class PactDataLoader {
 
   @NonNull
   private final UserService userService;
+
+  @NonNull
+  private final UserRepository userRepository;
 
   @NonNull
   private final RoleService roleService;
@@ -56,6 +64,7 @@ public class PactDataLoader {
         createUser();
         createLockedUser();
         createLockedRoleUser();
+        createActivationUser();
         log.atInfo().log("Pact Data Loader Complete");
       }
     } catch (Exception e) {
@@ -100,6 +109,20 @@ public class PactDataLoader {
       .password("lockedUser")
       .locked(true)
       .build());
+  }
+
+  private void createActivationUser()
+    throws UsernameExistsException, EmailExistsException, ActivationTokenRecentException {
+    User lockedUser = userService.createUser(UserInput.builder()
+      .id("activationUserId")
+      .username("activationUser")
+      .email("activationUser@example.com")
+      .password("activationUser")
+      .locked(true)
+      .build());
+    lockedUser.setActivationToken(
+      ActivationToken.builder().id("activationUserTokenId").user(lockedUser).created(new Date()).attempts(0).build());
+    userRepository.saveAndFlush(lockedUser);
   }
 
   private void createLockedRoleUser()

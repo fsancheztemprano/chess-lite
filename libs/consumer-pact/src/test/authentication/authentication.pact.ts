@@ -272,3 +272,95 @@ export namespace LoginPact {
     },
   };
 }
+
+export namespace ActivationTokenPact {
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'request activation token with email not found',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/auth/token',
+      headers: {
+        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        email: 'username6@example.com',
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'Identifier username6@example.com was not found',
+      },
+    },
+  };
+
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'request activation token',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/auth/token',
+      headers: {
+        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        email: 'lockedRoleUser@example.com',
+      },
+    },
+    willRespondWith: {
+      status: 204,
+    },
+  };
+}
+
+export namespace ActivateAccountPact {
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'activate account not found',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/auth/activate',
+      headers: {
+        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        password: 'username7',
+        token: 'username7TokenId',
+        email: 'username7@example.com',
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'Identifier username7TokenId was not found',
+      },
+    },
+  };
+
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'activate account',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/auth/activate',
+      headers: {
+        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        password: 'activationUser',
+        token: 'activationUserTokenId',
+        email: 'activationUser@example.com',
+      },
+    },
+    willRespondWith: {
+      status: 204,
+    },
+  };
+}

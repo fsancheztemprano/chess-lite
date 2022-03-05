@@ -1,6 +1,8 @@
 package dev.kurama.api.core.exception.domain;
 
-public class ActivationTokenNotFoundException extends Exception {
+import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+
+public class ActivationTokenNotFoundException extends DomainEntityNotFoundException {
 
   public ActivationTokenNotFoundException(String message) {
     super(message);
