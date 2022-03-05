@@ -1,5 +1,5 @@
 import { Pact } from '@pact-foundation/pact';
-import { term } from '@pact-foundation/pact/src/dsl/matchers';
+import { term, UUID_V4_FORMAT } from '@pact-foundation/pact/src/dsl/matchers';
 import * as path from 'path';
 
 export function pactForResource(resource: string, suffix = 'Controller'): Pact {
@@ -35,5 +35,20 @@ export function jwt(token?: string) {
   return term({
     generate: token || defaultToken,
     matcher: JWT_TOKEN_REGEX.source,
+  });
+}
+
+const UUID_REGEX_SLICE = UUID_V4_FORMAT.slice(1, -1);
+
+export function withUuid(string?: string) {
+  let generate = string || '/{uuid}';
+  generate = generate.replace(/{uuid}/, 'ce118b6e-d8e1-11e7-9296-cec278b6b50a');
+  let matcher = string || '/{uuid}';
+  matcher = matcher.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  matcher = matcher.replace(/\\{uuid\\}/, UUID_REGEX_SLICE);
+  matcher = `^${matcher}$`;
+  return term({
+    generate,
+    matcher,
   });
 }
