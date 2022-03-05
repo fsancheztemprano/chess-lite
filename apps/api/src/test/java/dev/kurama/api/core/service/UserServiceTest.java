@@ -2,6 +2,7 @@ package dev.kurama.api.core.service;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -181,7 +182,7 @@ class UserServiceTest {
     void should_signup()
       throws UsernameExistsException, EmailExistsException, SignupClosedException, ActivationTokenRecentException {
       User expected = User.builder().setRandomUUID().email("email@email.com").build();
-      Role defaultRole = Role.builder().setRandomUUID().name("DEFAULT_ROLE").build();
+      Role defaultRole = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       SignupInput input = SignupInput.builder()
         .firstname("firstname")
         .lastname("lastname")

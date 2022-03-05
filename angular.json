@@ -59,8 +59,8 @@
               "verify",
               "-U",
               "-B",
-              "-D it.test=\"dev.kurama.api.core.pact.**\"",
-              "-Dtest=\"dev.kurama.api.core.null.**\"",
+              "-D it.test=\"dev.kurama.api.pact.**\"",
+              "-Dtest=\"dev.kurama.api.null.**\"",
               "-DfailIfNoTests=false"
             ]
           }

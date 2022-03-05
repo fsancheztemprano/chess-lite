@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="PactFlow" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="PactSolo" type="JUnit" factoryName="JUnit">
     <module name="api"/>
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="false"/>
@@ -11,14 +11,13 @@
         <ENTRY IS_ENABLED="true" PARSER="runconfig"/>
       </ENTRIES>
     </extension>
-    <option name="PACKAGE_NAME" value="dev.kurama.api.pact"/>
+    <option name="PACKAGE_NAME" value="dev.kurama.api.core.pact"/>
     <option name="MAIN_CLASS_NAME" value=""/>
     <option name="METHOD_NAME" value=""/>
-    <option name="TEST_OBJECT" value="package"/>
+    <option name="TEST_OBJECT" value="directory"/>
     <dir value="$PROJECT_DIR$/apps/api/target/generated-test-sources/contracts"/>
     <method v="2">
-      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/apps/api/pom.xml"
-        goal="clean verify -U -B -D it.test=&quot;dev.kurama.api.null.**&quot; -Dtest=&quot;dev.kurama.api.null.**&quot; -DfailIfNoTests=false"/>
+      <option name="Make" enabled="true"/>
     </method>
   </configuration>
 </component>

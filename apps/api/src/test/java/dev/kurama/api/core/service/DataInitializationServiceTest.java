@@ -1,4 +1,4 @@
-package dev.kurama.api.core;
+package dev.kurama.api.core.service;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -39,14 +39,13 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith({MockitoExtension.class})
-class InitializationRunnerTest {
+class DataInitializationServiceTest {
 
   @Spy
   @InjectMocks
-  private InitializationRunner initializationRunner;
+  private DataInitializationService service;
 
   @Mock
   private UserRepository userRepository;
@@ -65,53 +64,37 @@ class InitializationRunnerTest {
 
   @BeforeEach
   void setUp() {
-    lenient().doNothing().when(initializationRunner).log(any(), anyString());
+    lenient().doNothing().when(service).log(any(), anyString());
   }
 
   @Nested
-  class RunnerTests {
+  class InitializeTests {
 
     @Test
     void should_run_if_data_init_is_true() throws RoleNotFoundException {
-      ReflectionTestUtils.setField(initializationRunner, "dataInit", true);
+      doNothing().when(service).initializeAuthorities();
+      doNothing().when(service).initializeRoles();
+      doNothing().when(service).setRolesAuthorizations();
+      doNothing().when(service).initializeGlobalSettings();
+      doNothing().when(service).initializeAdminUser();
 
-      doNothing().when(initializationRunner).initializeAuthorities();
-      doNothing().when(initializationRunner).initializeRoles();
-      doNothing().when(initializationRunner).setRolesAuthorizations();
-      doNothing().when(initializationRunner).initializeGlobalSettings();
-      doNothing().when(initializationRunner).initializeAdminUser();
+      service.initialize();
 
-      initializationRunner.run();
-
-      verify(initializationRunner).initializeAuthorities();
-      verify(initializationRunner).initializeRoles();
-      verify(initializationRunner).setRolesAuthorizations();
-      verify(initializationRunner).initializeGlobalSettings();
-      verify(initializationRunner).initializeAdminUser();
-    }
-
-    @Test
-    void should_not_run_if_data_init_is_false() throws RoleNotFoundException {
-      ReflectionTestUtils.setField(initializationRunner, "dataInit", false);
-
-      initializationRunner.run();
-
-      verify(initializationRunner, never()).initializeAuthorities();
-      verify(initializationRunner, never()).initializeRoles();
-      verify(initializationRunner, never()).setRolesAuthorizations();
-      verify(initializationRunner, never()).initializeGlobalSettings();
-      verify(initializationRunner, never()).initializeAdminUser();
+      verify(service).initializeAuthorities();
+      verify(service).initializeRoles();
+      verify(service).setRolesAuthorizations();
+      verify(service).initializeGlobalSettings();
+      verify(service).initializeAdminUser();
     }
 
     @Test
     void should_catch_initialization_exceptions() throws RoleNotFoundException {
-      ReflectionTestUtils.setField(initializationRunner, "dataInit", true);
-      doNothing().when(initializationRunner).initializeAuthorities();
-      doNothing().when(initializationRunner).initializeRoles();
-      doNothing().when(initializationRunner).setRolesAuthorizations();
-      doThrow(new RoleNotFoundException("")).when(initializationRunner).initializeGlobalSettings();
+      doNothing().when(service).initializeAuthorities();
+      doNothing().when(service).initializeRoles();
+      doNothing().when(service).setRolesAuthorizations();
+      doThrow(new RoleNotFoundException("")).when(service).initializeGlobalSettings();
 
-      initializationRunner.run();
+      service.initialize();
     }
   }
 
@@ -126,7 +109,7 @@ class InitializationRunnerTest {
       doReturn(newArrayList()).when(authorityRepository).findAll();
       doReturn(DefaultAuthority.AUTHORITIES).when(authorityRepository).saveAllAndFlush(any());
 
-      initializationRunner.initializeAuthorities();
+      service.initializeAuthorities();
 
       verify(authorityRepository).saveAllAndFlush(capturedAuthorities.capture());
       assertThat(capturedAuthorities.getValue()).extracting("name")
@@ -138,7 +121,7 @@ class InitializationRunnerTest {
       List<Authority> existentAuthorities = buildAuthorities(DefaultAuthority.AUTHORITIES.subList(0, 3));
       doReturn(existentAuthorities).when(authorityRepository).findAll();
 
-      initializationRunner.initializeAuthorities();
+      service.initializeAuthorities();
 
       verify(authorityRepository).saveAllAndFlush(capturedAuthorities.capture());
       assertThat(capturedAuthorities.getValue()).hasSize(
@@ -152,7 +135,7 @@ class InitializationRunnerTest {
       List<Authority> existentAuthorities = buildAuthorities(DefaultAuthority.AUTHORITIES);
       doReturn(existentAuthorities).when(authorityRepository).findAll();
 
-      initializationRunner.initializeAuthorities();
+      service.initializeAuthorities();
 
       verify(authorityRepository, never()).saveAllAndFlush(any());
     }
@@ -169,7 +152,7 @@ class InitializationRunnerTest {
       doReturn(newArrayList()).when(roleRepository).findAll();
       doReturn(DefaultAuthority.ROLES).when(roleRepository).saveAllAndFlush(any());
 
-      initializationRunner.initializeRoles();
+      service.initializeRoles();
 
       verify(roleRepository).saveAllAndFlush(capturedRoles.capture());
       assertThat(capturedRoles.getValue()).extracting("name")
@@ -181,7 +164,7 @@ class InitializationRunnerTest {
       List<Role> existentRoles = buildRoles(DefaultAuthority.ROLES.subList(0, 3));
       doReturn(existentRoles).when(roleRepository).findAll();
 
-      initializationRunner.initializeRoles();
+      service.initializeRoles();
 
       verify(roleRepository).saveAllAndFlush(capturedRoles.capture());
       assertThat(capturedRoles.getValue()).hasSize(DefaultAuthority.ROLES.size() - existentRoles.size())
@@ -194,7 +177,7 @@ class InitializationRunnerTest {
       List<Role> existentRoles = buildRoles(DefaultAuthority.ROLES);
       doReturn(existentRoles).when(roleRepository).findAll();
 
-      initializationRunner.initializeRoles();
+      service.initializeRoles();
 
       verify(roleRepository, never()).saveAllAndFlush(any());
     }
@@ -214,7 +197,7 @@ class InitializationRunnerTest {
       doReturn(authorities).when(authorityRepository).findAll();
       doReturn(DefaultAuthority.ROLES).when(roleRepository).saveAllAndFlush(any());
 
-      initializationRunner.setRolesAuthorizations();
+      service.setRolesAuthorizations();
 
       verify(roleRepository).saveAllAndFlush(capturedRoles.capture());
       Iterable<Role> savedRoles = capturedRoles.getValue();
@@ -237,7 +220,7 @@ class InitializationRunnerTest {
       doReturn(roles).when(roleRepository).findAll();
       doReturn(authorities).when(authorityRepository).findAll();
 
-      initializationRunner.setRolesAuthorizations();
+      service.setRolesAuthorizations();
 
       verify(roleRepository).saveAllAndFlush(capturedRoles.capture());
       Iterable<Role> savedRoles = capturedRoles.getValue();
@@ -258,7 +241,7 @@ class InitializationRunnerTest {
       doReturn(authorities).when(authorityRepository).findAll();
       doReturn(roles).when(roleRepository).findAll();
 
-      initializationRunner.setRolesAuthorizations();
+      service.setRolesAuthorizations();
 
       verify(authorityRepository, never()).saveAllAndFlush(any());
     }
@@ -274,7 +257,7 @@ class InitializationRunnerTest {
     void should_do_nothing_if_exactly_one_global_settings_exists() throws RoleNotFoundException {
       doReturn(1L).when(globalSettingsRepository).count();
 
-      initializationRunner.initializeGlobalSettings();
+      service.initializeGlobalSettings();
 
       verify(globalSettingsRepository, never()).deleteAll();
       verify(globalSettingsRepository, never()).saveAndFlush(any());
@@ -286,7 +269,7 @@ class InitializationRunnerTest {
       doReturn(0L).when(globalSettingsRepository).count();
       doReturn(Optional.of(defaultRole)).when(roleRepository).findByName(DefaultAuthority.DEFAULT_ROLE);
 
-      initializationRunner.initializeGlobalSettings();
+      service.initializeGlobalSettings();
 
       verify(globalSettingsRepository, never()).deleteAll();
       verify(globalSettingsRepository).saveAndFlush(capturedGlobalSettings.capture());
@@ -300,7 +283,7 @@ class InitializationRunnerTest {
       doReturn(2L).when(globalSettingsRepository).count();
       doReturn(Optional.of(defaultRole)).when(roleRepository).findByName(DefaultAuthority.DEFAULT_ROLE);
 
-      initializationRunner.initializeGlobalSettings();
+      service.initializeGlobalSettings();
 
       verify(globalSettingsRepository, times(1)).deleteAll();
       verify(globalSettingsRepository).saveAndFlush(capturedGlobalSettings.capture());
@@ -319,7 +302,7 @@ class InitializationRunnerTest {
     void should_do_nothing_if_users_exists() throws RoleNotFoundException {
       doReturn(1L).when(userRepository).count();
 
-      initializationRunner.initializeAdminUser();
+      service.initializeAdminUser();
 
       verify(userRepository, never()).saveAllAndFlush(any());
     }
@@ -337,7 +320,7 @@ class InitializationRunnerTest {
       String encodedPassword = "encoded-password";
       doReturn(encodedPassword).when(passwordEncoder).encode("123456");
 
-      initializationRunner.initializeAdminUser();
+      service.initializeAdminUser();
 
       verify(userRepository).saveAndFlush(capturedUser.capture());
       User newAdminUser = capturedUser.getValue();
@@ -359,7 +342,8 @@ class InitializationRunnerTest {
       .collect(Collectors.toList());
   }
 
-  private List<Role> buildRolesWithAuthorities(List<String> names, Map<String, List<String>> roleAuthorities,
+  private List<Role> buildRolesWithAuthorities(List<String> names,
+                                               Map<String, List<String>> roleAuthorities,
                                                List<Authority> authorities) {
     List<Role> roles = buildRoles(names);
     for (Role role : roles) {

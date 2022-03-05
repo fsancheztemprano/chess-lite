@@ -38,7 +38,7 @@ export namespace SignupPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        username: 'username',
+        username: 'username1',
       },
     },
     willRespondWith: {
@@ -61,7 +61,7 @@ export namespace SignupPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        username: 'username',
+        username: 'username2',
         email: 'johnDoe@example.com',
       },
     },
@@ -85,7 +85,7 @@ export namespace SignupPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        email: 'username@example.com',
+        email: 'username3@example.com',
       },
     },
     willRespondWith: {
@@ -109,7 +109,7 @@ export namespace SignupPact {
       },
       body: {
         username: 'johnDoe',
-        email: 'username@example.com',
+        email: 'username4@example.com',
       },
     },
     willRespondWith: {
@@ -204,7 +204,7 @@ export namespace LoginPact {
         joinDate: iso8601DateTimeWithMillis(),
         role: {
           id: uuid(),
-          name: 'DEFAULT_ROLE',
+          name: 'PACT_ROLE',
           authorities: [
             { id: uuid(), name: 'profile:read' },
             { id: uuid(), name: 'profile:update' },

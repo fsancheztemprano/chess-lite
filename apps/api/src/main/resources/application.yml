@@ -12,7 +12,7 @@ application:
   jwt:
     secret: 'secret'
   host_url: 'localhost'
-  run_data_init: true
+  run_data_init: false
 server:
   port: 8888
   error:

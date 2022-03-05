@@ -82,7 +82,7 @@ describe('Authentication Pacts', () => {
     it('no email error', (done) => {
       const interaction: InteractionObject = SignupPact.no_email;
       provider.addInteraction(interaction).then(() => {
-        service.signup(<SignupInput>{ username: 'username' }).subscribe({
+        service.signup(<SignupInput>{ username: 'username1' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -96,7 +96,7 @@ describe('Authentication Pacts', () => {
     it('existing email error', (done) => {
       const interaction: InteractionObject = SignupPact.existing_email;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'username', email: 'johnDoe@example.com' }).subscribe({
+        service.signup({ username: 'username2', email: 'johnDoe@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -110,7 +110,7 @@ describe('Authentication Pacts', () => {
     it('no username error', (done) => {
       const interaction: InteractionObject = SignupPact.no_username;
       provider.addInteraction(interaction).then(() => {
-        service.signup(<SignupInput>{ email: 'username@example.com' }).subscribe({
+        service.signup(<SignupInput>{ email: 'username3@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -124,7 +124,7 @@ describe('Authentication Pacts', () => {
     it('existing username error', (done) => {
       const interaction: InteractionObject = SignupPact.existing_username;
       provider.addInteraction(interaction).then(() => {
-        service.signup({ username: 'johnDoe', email: 'username@example.com' }).subscribe({
+        service.signup({ username: 'johnDoe', email: 'username4@example.com' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

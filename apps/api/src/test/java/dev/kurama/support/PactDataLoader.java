@@ -1,5 +1,7 @@
 package dev.kurama.support;
 
+import static dev.kurama.api.core.authority.DefaultAuthority.DEFAULT_ROLE;
+
 import dev.kurama.api.core.domain.AbstractEntity;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
@@ -10,10 +12,12 @@ import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
 import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
+import dev.kurama.api.core.service.DataInitializationService;
 import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.api.core.service.UserService;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
@@ -33,32 +37,42 @@ public class PactDataLoader {
   @NonNull
   private final RoleService roleService;
 
+  @NonNull
+  private final DataInitializationService initializationService;
 
-  public void initialize() {
+
+  @Transactional
+  public void initialize() throws Exception {
     try {
       if (!isInitialized()) {
+        log.atInfo().log("Pact Data Loader Start");
+        initializationService.initializeAuthorities();
+        initializationService.initializeRoles();
+        initializationService.setRolesAuthorizations();
+        initializationService.initializeGlobalSettings();
+
         openUserSignup();
 
         createUser();
         createLockedUser();
         createLockedRoleUser();
+        log.atInfo().log("Pact Data Loader Complete");
       }
     } catch (Exception e) {
-      System.out.println(e);
       log.atWarning().withCause(e).log("Pact Data Loader Error");
+      throw e;
     }
   }
 
 
   private boolean isInitialized() {
-    return roleService.findByName("DEFAULT_ROLE").isPresent() && globalSettingsService.getGlobalSettings()
-      .isSignupOpen();
+    return roleService.findByName(DEFAULT_ROLE).isPresent() && globalSettingsService.getGlobalSettings().isSignupOpen();
   }
 
   private void openUserSignup() throws RoleNotFoundException, ImmutableRoleException, RoleExistsException {
     Role userRole = globalSettingsService.getGlobalSettings().getDefaultRole();
 
-    Role defaultRole = roleService.create("DEFAULT_ROLE");
+    Role defaultRole = roleService.create("PACT_ROLE");
 
     globalSettingsService.updateGlobalSettings(
       GlobalSettingsUpdateInput.builder().signupOpen(true).defaultRoleId(defaultRole.getId()).build());
