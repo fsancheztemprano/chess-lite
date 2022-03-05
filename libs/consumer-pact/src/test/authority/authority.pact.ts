@@ -7,6 +7,29 @@ import { bearer, withUuid } from 'libs/consumer-pact/src/utils/pact.utils';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 
 export namespace GetAllAuthoritiesPact {
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'unauthorized',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/authority',
+      query: {
+        size: '1000',
+      },
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
   export const successful: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get all authorities',

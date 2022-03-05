@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AuthorityManagementRelations, RoleManagementRelations, TOKEN_KEY } from '@app/domain';
 import { HalFormClientModule } from '@hal-form-client';
@@ -55,6 +55,21 @@ describe('Authority Pacts', () => {
           expect(authorities).toBeTruthy();
           expect(authorities).toHaveLength(interaction.willRespondWith.body._embedded.authorityModels.length);
           done();
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = GetAllAuthoritiesPact.unauthorized;
+      localStorage.setItem(TOKEN_KEY, jwtToken());
+      provider.addInteraction(interaction).then(() => {
+        service.getAllAuthorities().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            done();
+          },
         });
       });
     });
