@@ -1,4 +1,4 @@
-import { HttpHeaders } from '@app/domain';
+import { HttpHeaderKey } from '@app/domain';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
@@ -19,7 +19,7 @@ export namespace GetRootResource {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {
@@ -144,7 +144,7 @@ export namespace GetRootResource {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {
@@ -179,7 +179,7 @@ export namespace GetRootResource {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
@@ -46,7 +46,7 @@ export interface ITemplate {
 }
 
 export class Template implements ITemplate {
-  private readonly httpClient: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
+  private readonly http: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
   method: HttpMethodEnum | string;
   title?: string;
@@ -54,6 +54,10 @@ export class Template implements ITemplate {
   properties?: ITemplateProperty[];
   target?: string;
   targetLink?: Link;
+
+  public static of(raw: ITemplate, link?: Link): Template {
+    return new Template(raw, link);
+  }
 
   constructor(raw: ITemplate, link?: Link) {
     this.method = raw.method || HttpMethodEnum.GET;
@@ -77,39 +81,31 @@ export class Template implements ITemplate {
     }
   }
 
-  submit<T = any>(payload?: any, params?: any, observe: 'body' | 'events' | 'response' = 'body'): Observable<T> {
-    return this.submitToTarget(this.targetLink as any, payload, params, observe || 'body');
+  submit<T extends Resource = Resource>(options?: AffordanceOptions): Observable<T> {
+    return this.afford<T>(options).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
   }
 
-  submitToTarget<T = any>(
-    link: Link,
-    body?: any,
-    params?: any,
-    observe: 'body' | 'events' | 'response' = 'body',
-  ): Observable<T> {
-    if (!link?.href?.length) {
+  afford<T>(options?: AffordanceOptions): Observable<HttpResponse<T>> {
+    if (!this.targetLink?.href?.length) {
       return throwError(() => new Error('Invalid link'));
     }
     if (!HTTP_METHODS.includes(this.method.toUpperCase())) {
       return throwError(() => new Error(`Method ${this.method} is not supported`));
     }
-    let headers = new HttpHeaders({ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS });
-    if (body && this.contentType !== ContentTypeEnum.MULTIPART_FILE) {
-      headers = headers.append('Content-Type', this.contentType || ContentTypeEnum.APPLICATION_JSON);
+    const headers: any = { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS };
+    if (options?.body && this.contentType !== ContentTypeEnum.MULTIPART_FILE) {
+      headers['Content-Type'] = this.contentType || ContentTypeEnum.APPLICATION_JSON;
     }
-    const url = link.parseUrl(params || {});
+    const url = this.targetLink.parseUrl(options?.params || {});
     return url
-      ? this.httpClient
-          .request(this.method, url, {
-            headers,
-            body,
-            observe: observe || 'body',
+      ? this.http
+          .request<T>(this.method, url, {
+            headers: { ...headers, ...options?.headers },
+            body: options?.body,
+            observe: 'response',
           })
-          .pipe(
-            first(),
-            map((response) => new Resource(response) as any),
-          )
-      : throwError(() => new Error(`Un-parsable Url ${link?.href},  ${params}`));
+          .pipe(first())
+      : throwError(() => new Error(`Un-parsable Url ${this.targetLink?.href},  ${options?.params}`));
   }
 
   public getProperty(name: string): ITemplateProperty | undefined {
@@ -132,4 +128,11 @@ export class Template implements ITemplate {
     }
     return this;
   }
+}
+
+export interface AffordanceOptions {
+  body?: any;
+  params?: any;
+  observe?: 'body' | 'events' | 'response';
+  headers?: HttpHeaders | { [p: string]: string | string[] };
 }

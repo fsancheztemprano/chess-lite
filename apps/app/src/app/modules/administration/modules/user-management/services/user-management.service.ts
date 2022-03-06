@@ -23,7 +23,7 @@ export class UserManagementService extends HalFormService {
   public fetchUsers(pageable?: Pageable): Observable<UserPage> {
     return this.getLinkOrThrow(UserManagementRelations.USERS_REL).pipe(
       first(),
-      switchMap((link: Link) => link.get<UserPage>(pageable)),
+      switchMap((link: Link) => link.follow<UserPage>(pageable)),
     );
   }
 
@@ -31,11 +31,11 @@ export class UserManagementService extends HalFormService {
     userId = userId || '0';
     return this.getLinkOrThrow(UserManagementRelations.USER_REL).pipe(
       first(),
-      switchMap((userLink) => userLink.get({ userId })),
+      switchMap((userLink) => userLink.follow({ userId })),
     );
   }
 
-  public createUser(user: User) {
-    return this.submitToTemplateOrThrow(UserManagementRelations.USER_CREATE_REL, user);
+  public createUser(body: User) {
+    return this.submitToTemplateOrThrow(UserManagementRelations.USER_CREATE_REL, { body });
   }
 }

@@ -71,28 +71,26 @@ describe('Administration Root Resource Pacts', () => {
     });
 
     it('admin:root', (done) => {
-      provider.addInteraction(GetAdministrationRootResource.as_admin_root).then(() => {
+      const interaction = GetAdministrationRootResource.as_admin_root;
+      provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root'] }));
-        service.initialize().subscribe({
-          next: (resource) => {
-            expect(resource).toBeTruthy();
-            expect(resource).toMatchObject(GetAdministrationRootResource.as_admin_root.willRespondWith.body);
-            done();
-          },
+        service.initialize().subscribe((resource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toMatchObject(interaction.willRespondWith.body);
+          done();
         });
       });
     });
 
     describe('admin:root &', () => {
       it('service-logs:read', (done) => {
-        provider.addInteraction(GetAdministrationRootResource.as_admin_root__service_logs_read).then(() => {
+        const interaction = GetAdministrationRootResource.as_admin_root__service_logs_read;
+        provider.addInteraction(interaction).then(() => {
           localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root', 'service-logs:read'] }));
           service.initialize().subscribe({
             next: (resource) => {
               expect(resource).toBeTruthy();
-              expect(resource).toMatchObject(
-                GetAdministrationRootResource.as_admin_root__service_logs_read.willRespondWith.body,
-              );
+              expect(resource).toMatchObject(interaction.willRespondWith.body);
               done();
             },
           });
@@ -100,54 +98,45 @@ describe('Administration Root Resource Pacts', () => {
       });
 
       it('global-settings:read', (done) => {
-        provider.addInteraction(GetAdministrationRootResource.as_admin_root__service_logs_read).then(() => {
-          localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root', 'service-logs:read'] }));
-          service.initialize().subscribe({
-            next: (resource) => {
-              expect(resource).toBeTruthy();
-              expect(resource).toMatchObject(
-                GetAdministrationRootResource.as_admin_root__service_logs_read.willRespondWith.body,
-              );
-              done();
-            },
+        const interaction: InteractionObject = GetAdministrationRootResource.as_admin_root__global_settings_read;
+        provider.addInteraction(interaction).then(() => {
+          localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root', 'global-settings:read'] }));
+          service.initialize().subscribe((resource) => {
+            expect(resource).toBeTruthy();
+            expect(resource).toMatchObject(interaction.willRespondWith.body);
+            done();
           });
         });
       });
 
       it('admin:user-management:root', (done) => {
-        provider.addInteraction(GetAdministrationRootResource.as_admin_user_management_root).then(() => {
+        const interaction = GetAdministrationRootResource.as_admin_user_management_root;
+        provider.addInteraction(interaction).then(() => {
           localStorage.setItem(
             TOKEN_KEY,
             jwtToken({ authorities: ['admin:root', 'admin:user-management:root', 'user:read', 'user:create'] }),
           );
-          service.initialize().subscribe({
-            next: (resource) => {
-              expect(resource).toBeTruthy();
-              expect(resource).toMatchObject(
-                GetAdministrationRootResource.as_admin_user_management_root.willRespondWith.body,
-              );
-              done();
-            },
+          service.initialize().subscribe((resource) => {
+            expect(resource).toBeTruthy();
+            expect(resource).toMatchObject(interaction.willRespondWith.body);
+            done();
           });
         });
       });
 
       it('admin:role-management:root', (done) => {
-        provider.addInteraction(GetAdministrationRootResource.as_admin_role_management_root).then(() => {
+        const interaction = GetAdministrationRootResource.as_admin_role_management_root;
+        provider.addInteraction(interaction).then(() => {
           localStorage.setItem(
             TOKEN_KEY,
             jwtToken({
               authorities: ['admin:root', 'admin:role-management:root', 'role:read', 'role:create', 'authority:read'],
             }),
           );
-          service.initialize().subscribe({
-            next: (resource) => {
-              expect(resource).toBeTruthy();
-              expect(resource).toMatchObject(
-                GetAdministrationRootResource.as_admin_role_management_root.willRespondWith.body,
-              );
-              done();
-            },
+          service.initialize().subscribe((resource) => {
+            expect(resource).toBeTruthy();
+            expect(resource).toMatchObject(interaction.willRespondWith.body);
+            done();
           });
         });
       });

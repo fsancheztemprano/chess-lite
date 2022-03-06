@@ -1,20 +1,20 @@
 import { ValidatorFn, Validators } from '@angular/forms';
-import { Template } from '@hal-form-client';
+import { ITemplateProperty, Template } from '@hal-form-client';
 
 export function getPropertyValidators(template: Template | null | undefined, propertyName: string): ValidatorFn[] {
-  const property = template?.getProperty(propertyName);
-  const usernameValidators = [];
+  const property: ITemplateProperty | undefined = template?.getProperty(propertyName);
+  const validators: ValidatorFn[] = [];
   if (property?.minLength) {
-    usernameValidators.push(Validators.minLength(property.minLength));
+    validators.push(Validators.minLength(property.minLength));
   }
   if (property?.maxLength) {
-    usernameValidators.push(Validators.maxLength(property.maxLength));
+    validators.push(Validators.maxLength(property.maxLength));
   }
   if (property?.type === 'email') {
-    usernameValidators.push(Validators.email);
+    validators.push(Validators.email);
   }
   if (property?.required) {
-    usernameValidators.push(Validators.required);
+    validators.push(Validators.required);
   }
-  return usernameValidators;
+  return validators;
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import * as parser from 'url-template';
@@ -14,12 +14,22 @@ export interface ILink {
 }
 
 export class Link implements ILink {
-  private readonly httpClient: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
+  private readonly http: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
   href: string;
   templated?: boolean;
   type?: string;
   name?: string;
+
+  headers?: HttpHeaders | { [p: string]: string | string[] };
+
+  public static of(raw: ILink): Link {
+    return new Link(raw);
+  }
+
+  public static ofUrl(href: string): Link {
+    return new Link({ href });
+  }
 
   constructor(raw: ILink) {
     this.href = raw.href;
@@ -36,13 +46,20 @@ export class Link implements ILink {
     return template.expand(params);
   }
 
-  get<T extends Resource = Resource>(params?: any): Observable<T> {
-    const url = this.parseUrl(params);
+  follow<T extends Resource = Resource>(params?: any): Observable<T> {
+    return this.fetch<T>(params).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
+  }
+
+  fetch<T>(params?: any): Observable<HttpResponse<T>> {
+    const url: string | null = this.parseUrl(params);
     return url
-      ? this.httpClient.get<T>(url, { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } }).pipe(
-          first(),
-          map((res: T) => new Resource(res || {}) as T),
-        )
+      ? this.http
+          .get<T>(url, {
+            headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
+            observe: 'response',
+            responseType: 'json',
+          })
+          .pipe(first())
       : throwError(() => new Error(`Un-parsable Url ${url}, ${this.href},  ${params}`));
   }
 }

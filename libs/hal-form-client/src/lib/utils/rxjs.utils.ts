@@ -1,17 +1,16 @@
 import { Observable, switchMap } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Resource } from '../domain/resource';
+import { AffordanceOptions } from '../domain/template';
 
-export function submitToTemplateOrThrowPipe(
-  templateName: string,
-  payload?: any,
-  params?: any,
-  observe: 'body' | 'events' | 'response' = 'body',
-): (observable: Observable<Resource>) => Observable<any> {
-  return (observable: Observable<Resource>) => {
+export function submitToTemplateOrThrowPipe<T extends Resource = Resource>(
+  templateName?: string,
+  options?: AffordanceOptions,
+): (observable: Observable<T>) => Observable<T> {
+  return (observable: Observable<T>) => {
     return observable.pipe(
       first(),
-      switchMap((resource) => resource.submitToTemplateOrThrow(templateName, payload, params, observe || 'body')),
+      switchMap((resource) => resource.submitToTemplateOrThrow<T>(templateName, options)),
     );
   };
 }

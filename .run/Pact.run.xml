@@ -19,6 +19,7 @@
     <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/apps/api/pom.xml"
         goal="clean verify -D it.test=&quot;dev.kurama.api.null.**&quot; -Dtest=&quot;dev.kurama.api.null.**&quot; -DfailIfNoTests=false"/>
+      <option name="MakeProject" enabled="true"/>
     </method>
   </configuration>
 </component>

@@ -1,9 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthRelations, HttpHeaders, LoginInput, SignupInput, User } from '@app/domain';
+import { AuthRelations, HttpHeaderKey, LoginInput, SignupInput, User } from '@app/domain';
 import { HalFormService, IResource, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
-import { exhaustMap, map } from 'rxjs/operators';
+import { exhaustMap, first, map, switchMap } from 'rxjs/operators';
 import { Session, SessionService } from '../../core/services/session.service';
 import { AuthModule } from '../auth.module';
 
@@ -21,11 +21,12 @@ export class AuthService {
     return this.halFormService.isAllowedTo(AuthRelations.LOGIN_RELATION);
   }
 
-  public login(loginInput: LoginInput): Observable<Session | null> {
-    return this.halFormService.getResource().pipe(
-      submitToTemplateOrThrowPipe(AuthRelations.LOGIN_RELATION, loginInput, undefined, 'response'),
+  public login(body: LoginInput): Observable<Session | null> {
+    return this.halFormService.getTemplateOrThrow(AuthRelations.LOGIN_RELATION).pipe(
+      first(),
+      switchMap((template) => template.afford<Session>({ body })),
       map((response: HttpResponse<IResource>) => {
-        const token = response?.headers?.get(HttpHeaders.JWT_TOKEN) || '';
+        const token = response?.headers?.get(HttpHeaderKey.JWT_TOKEN) || '';
         const user = new User(response.body as IResource);
         return { token, user };
       }),
@@ -41,9 +42,7 @@ export class AuthService {
     return this.halFormService.isAllowedTo(AuthRelations.SIGNUP_RELATION);
   }
 
-  public signup(signupInput: SignupInput): Observable<User | null> {
-    return this.halFormService
-      .getResource()
-      .pipe(submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, signupInput));
+  public signup(body: SignupInput): Observable<User | null> {
+    return this.halFormService.getResource().pipe(submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, { body }));
   }
 }

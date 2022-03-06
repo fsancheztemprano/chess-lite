@@ -13,7 +13,7 @@ export class ServiceLogsService {
   public getServiceLogs(): Observable<ServiceLogs> {
     return this.administrationService.getLinkOrThrow(AdministrationRelations.SERVICE_LOGS_REL).pipe(
       first(),
-      switchMap((link) => link.get()),
+      switchMap((link) => link.follow()),
     );
   }
 }

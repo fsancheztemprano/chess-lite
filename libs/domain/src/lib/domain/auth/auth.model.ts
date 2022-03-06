@@ -10,7 +10,7 @@ export interface SignupInput {
   lastname?: string;
 }
 
-export enum HttpHeaders {
+export enum HttpHeaderKey {
   JWT_TOKEN = 'Jwt-Token',
   CONTENT_TYPE = 'Content-Type',
   ACCESS_CONTROL_EXPOSE_HEADERS = 'Access-Control-Expose-Headers',

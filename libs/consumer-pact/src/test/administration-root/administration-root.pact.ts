@@ -1,4 +1,4 @@
-import { HttpHeaders } from '@app/domain';
+import { HttpHeaderKey } from '@app/domain';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from 'libs/consumer-pact/src/utils/pact.utils';
@@ -59,7 +59,7 @@ export namespace GetAdministrationRootResource {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {
@@ -91,7 +91,7 @@ export namespace GetAdministrationRootResource {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {
@@ -120,13 +120,13 @@ export namespace GetAdministrationRootResource {
       path: '/api/administration',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['admin:root', 'service-logs:read'] })),
+        Authorization: bearer(jwtToken({ authorities: ['admin:root', 'global-settings:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {
@@ -164,7 +164,7 @@ export namespace GetAdministrationRootResource {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {
@@ -277,7 +277,7 @@ export namespace GetAdministrationRootResource {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaders.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         _links: {

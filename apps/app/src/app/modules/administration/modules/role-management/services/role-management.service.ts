@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pageable, Role, RoleManagementRelations, RolePage } from '@app/domain';
 import { HalFormService, Link } from '@hal-form-client';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';
 
@@ -23,7 +23,7 @@ export class RoleManagementService extends HalFormService {
   public fetchRoles(pageable?: Pageable): Observable<RolePage> {
     return this.getLinkOrThrow(RoleManagementRelations.ROLES_REL).pipe(
       first(),
-      switchMap((link: Link) => link.get<RolePage>(pageable)),
+      switchMap((link: Link) => link.follow<RolePage>(pageable)),
     );
   }
 
@@ -34,11 +34,9 @@ export class RoleManagementService extends HalFormService {
   }
 
   public fetchOneRole(roleId: string): Observable<Role> {
-    return roleId.length
-      ? this.getLinkOrThrow(RoleManagementRelations.ROLE_REL).pipe(
-          first(),
-          switchMap((roleLink) => roleLink.get({ roleId })),
-        )
-      : throwError(() => `Invalid id ${roleId}`);
+    return this.getLinkOrThrow(RoleManagementRelations.ROLE_REL).pipe(
+      first(),
+      switchMap((roleLink) => roleLink.follow({ roleId })),
+    );
   }
 }

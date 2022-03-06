@@ -9,7 +9,6 @@ import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.pact.AuthorityControllerBase.AuthorityControllerBaseDataLoader;
-import dev.kurama.support.PactDataLoader;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;

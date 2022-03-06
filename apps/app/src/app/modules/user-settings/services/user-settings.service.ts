@@ -41,11 +41,11 @@ export class UserSettingsService {
     );
   }
 
-  public updateProfile(updateUserProfileInput: UserUpdateProfileInput): Observable<User> {
+  public updateProfile(body: UserUpdateProfileInput): Observable<User> {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, updateUserProfileInput),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, { body }),
       tap((user) => this.userService.setUser(user)),
     );
   }
@@ -71,11 +71,11 @@ export class UserSettingsService {
     );
   }
 
-  changePassword(userChangePasswordInput: UserChangePasswordInput): Observable<User> {
+  changePassword(body: UserChangePasswordInput): Observable<User> {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.CHANGE_PASSWORD_REL, userChangePasswordInput),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.CHANGE_PASSWORD_REL, { body }),
     );
   }
 
@@ -86,13 +86,13 @@ export class UserSettingsService {
   }
 
   uploadAvatar(file: File): Observable<User> {
-    const formData = new FormData();
-    formData.append('avatar', file);
+    const body = new FormData();
+    body.append('avatar', file);
 
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, formData),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, { body }),
       tap((user) => this.userService.setUser(user)),
     );
   }
@@ -103,11 +103,11 @@ export class UserSettingsService {
     );
   }
 
-  public updateUserPreferences(changes: UserPreferences): Observable<UserPreferences> {
+  public updateUserPreferences(body: UserPreferences): Observable<UserPreferences> {
     return this.getCurrentUserPreferences().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PREFERENCES_REL, changes),
+      submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PREFERENCES_REL, { body }),
     );
   }
 

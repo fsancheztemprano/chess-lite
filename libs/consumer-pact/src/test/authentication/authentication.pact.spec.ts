@@ -1,6 +1,6 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ActivationTokenRelations, AuthRelations, HttpHeaders, SignupInput } from '@app/domain';
+import { ActivationTokenRelations, AuthRelations, HttpHeaderKey, SignupInput } from '@app/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
@@ -215,7 +215,7 @@ describe('Authentication Pacts', () => {
         authService.login({ username: 'johnDoe', password: 'johnDoe0' }).subscribe((session) => {
           expect(session).toBeTruthy();
           expect(session?.token).toBe(
-            (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaders.JWT_TOKEN]).getValue(),
+            (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
           );
           expect(session?.user?.id).toBe(interaction.willRespondWith.body.id);
           done();

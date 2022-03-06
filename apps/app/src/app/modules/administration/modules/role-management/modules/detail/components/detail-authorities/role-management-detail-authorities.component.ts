@@ -40,9 +40,11 @@ export class RoleManagementDetailAuthoritiesComponent implements OnInit {
       .pipe(
         first(),
         submitToTemplateOrThrowPipe(RoleManagementRelations.ROLE_UPDATE_REL, {
-          authorityIds: this.form.value
-            .filter((authority: { active: boolean }) => authority.active)
-            .map((authority: { id: string }) => authority.id),
+          body: {
+            authorityIds: this.form.value
+              .filter((authority: { active: boolean }) => authority.active)
+              .map((authority: { id: string }) => authority.id),
+          },
         }),
       )
       .subscribe({

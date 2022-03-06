@@ -105,9 +105,9 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
             ],
           })
           .pipe(
-            switchMap((dialogInputs: { name: string }) => {
-              return dialogInputs?.name?.length
-                ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, dialogInputs)
+            switchMap((body: { name: string }) => {
+              return body?.name?.length
+                ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, { body })
                 : EMPTY;
             }),
           );

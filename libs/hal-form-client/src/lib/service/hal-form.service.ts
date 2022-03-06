@@ -5,7 +5,7 @@ import { first, map, tap } from 'rxjs/operators';
 import { ContentTypeEnum } from '../domain/content-type.enum';
 import { Link } from '../domain/link';
 import { IResource, Resource } from '../domain/resource';
-import { Template } from '../domain/template';
+import { AffordanceOptions, Template } from '../domain/template';
 import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
 import { submitToTemplateOrThrowPipe } from '../utils/rxjs.utils';
 
@@ -55,60 +55,55 @@ export class HalFormService {
     return this.getResource().pipe(first());
   }
 
-  public hasLink(link: string = 'self'): Observable<boolean> {
+  public hasLink(link?: string): Observable<boolean> {
     return this.getResource().pipe(map((resource) => resource.hasLink(link)));
   }
 
-  public getLink(link: string = 'self'): Observable<Link | null> {
+  public getLink(link?: string): Observable<Link | null> {
     return this.getResource().pipe(map((resource) => resource.getLink(link)));
   }
 
-  public getLinkOrThrow(link: string = 'self', errorMessage?: string | Error): Observable<Link> {
+  public getLinkOrThrow(link?: string, errorMessage?: string | Error): Observable<Link> {
     return this.getResource().pipe(map((resource) => resource.getLinkOrThrow(link, errorMessage)));
   }
 
-  public getTemplate(template: string = 'self'): Observable<Template | null> {
-    return this.getResource().pipe(map((resource) => resource.getTemplate(template)));
-  }
-
-  public getTemplateOrThrow(template: string = 'self'): Observable<Template> {
-    return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
-  }
-
-  public submitToTemplateOrThrow(
-    templateName: string,
-    payload?: any,
-    params?: any,
-    observe: 'body' | 'events' | 'response' = 'body',
-  ): Observable<Resource> {
-    return this.getResource().pipe(submitToTemplateOrThrowPipe(templateName, payload, params, observe));
-  }
-
-  public isAllowedTo(template: string = 'self'): Observable<boolean> {
-    return this.getResource().pipe(map((resource) => resource.isAllowedTo(template)));
-  }
-
-  public hasEmbedded(embedded: string = 'self'): Observable<boolean> {
+  public hasEmbedded(embedded: string): Observable<boolean> {
     return this.getResource().pipe(map((resource) => resource.hasEmbedded(embedded)));
   }
 
-  public hasEmbeddedObject(embedded: string = 'self'): Observable<boolean> {
+  public hasEmbeddedObject(embedded: string): Observable<boolean> {
     return this.getResource().pipe(map((resource) => resource.hasEmbeddedObject(embedded)));
   }
 
-  public hasEmbeddedCollection(embedded: string = 'self'): Observable<boolean> {
+  public hasEmbeddedCollection(embedded: string): Observable<boolean> {
     return this.getResource().pipe(map((resource) => resource.hasEmbeddedCollection(embedded)));
   }
 
-  public getEmbedded<T = Resource>(embedded: string = 'self'): Observable<T | T[] | null> {
+  public getEmbedded<T = Resource>(embedded: string): Observable<T | T[] | null> {
     return this.getResource().pipe(map((resource) => resource.getEmbedded<T>(embedded)));
   }
 
-  public getEmbeddedObject<T = Resource>(embedded: string = 'self'): Observable<T> {
+  public getEmbeddedObject<T = Resource>(embedded: string): Observable<T> {
     return this.getResource().pipe(map((resource) => resource.getEmbeddedObject<T>(embedded)));
   }
 
-  public getEmbeddedCollection<T = Resource>(embedded: string = 'self'): Observable<T[]> {
+  public getEmbeddedCollection<T = Resource>(embedded: string): Observable<T[]> {
     return this.getResource().pipe(map((resource) => resource.getEmbeddedCollection<T>(embedded)));
+  }
+
+  public getTemplate(template?: string): Observable<Template | null> {
+    return this.getResource().pipe(map((resource) => resource.getTemplate(template)));
+  }
+
+  public getTemplateOrThrow(template?: string): Observable<Template> {
+    return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
+  }
+
+  public submitToTemplateOrThrow(template?: string, options?: AffordanceOptions): Observable<Resource> {
+    return this.getResource().pipe(submitToTemplateOrThrowPipe(template, options));
+  }
+
+  public isAllowedTo(template?: string): Observable<boolean> {
+    return this.getResource().pipe(map((resource) => resource.isAllowedTo(template)));
   }
 }

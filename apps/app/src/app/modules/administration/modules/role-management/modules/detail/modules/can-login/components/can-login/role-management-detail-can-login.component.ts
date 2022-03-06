@@ -20,7 +20,7 @@ export class RoleManagementDetailCanLoginComponent {
       .pipe(
         first(),
         switchMap((role) =>
-          role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_UPDATE_REL, { canLogin: $event.checked }),
+          role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_UPDATE_REL, { body: { canLogin: $event.checked } }),
         ),
       )
       .subscribe();

@@ -17,10 +17,10 @@ export class ActivationTokenService {
     return this.halFormService.isAllowedTo(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL);
   }
 
-  public requestActivationToken(email: string): Observable<void> {
+  public requestActivationToken(email: string): Observable<unknown> {
     return this.halFormService
-      .getResource()
-      .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL, { email }));
+    .getResource()
+    .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL, { body: { email } }));
   }
 
   public getAccountActivationTemplate(): Observable<Template | null> {
@@ -31,9 +31,9 @@ export class ActivationTokenService {
     return this.halFormService.isAllowedTo(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL);
   }
 
-  public activateAccount(accountActivation: AccountActivationInput) {
+  public activateAccount(body: AccountActivationInput) {
     return this.halFormService
-      .getResource()
-      .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL, accountActivation));
+    .getResource()
+    .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL, { body }));
   }
 }
