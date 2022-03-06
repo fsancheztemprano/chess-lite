@@ -14,11 +14,11 @@
     <option name="PACKAGE_NAME" value="dev.kurama.api.pact"/>
     <option name="MAIN_CLASS_NAME" value=""/>
     <option name="METHOD_NAME" value=""/>
-    <option name="TEST_OBJECT" value="package"/>
+    <option name="TEST_OBJECT" value="directory"/>
     <dir value="$PROJECT_DIR$/apps/api/target/generated-test-sources/contracts"/>
     <method v="2">
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/apps/api/pom.xml"
-        goal="clean verify -U -B -D it.test=&quot;dev.kurama.api.null.**&quot; -Dtest=&quot;dev.kurama.api.null.**&quot; -DfailIfNoTests=false"/>
+        goal="clean verify -D it.test=&quot;dev.kurama.api.null.**&quot; -Dtest=&quot;dev.kurama.api.null.**&quot; -DfailIfNoTests=false"/>
     </method>
   </configuration>
 </component>

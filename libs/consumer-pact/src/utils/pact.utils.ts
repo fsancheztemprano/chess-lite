@@ -38,14 +38,12 @@ export function jwt(token?: string) {
   });
 }
 
-const UUID_REGEX_SLICE = UUID_V4_FORMAT.slice(1, -1);
-
 export function withUuid(string?: string) {
   let generate = string || '/{uuid}';
   generate = generate.replace(/{uuid}/, 'ce118b6e-d8e1-11e7-9296-cec278b6b50a');
   let matcher = string || '/{uuid}';
   matcher = matcher.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-  matcher = matcher.replace(/\\{uuid\\}/, UUID_REGEX_SLICE);
+  matcher = matcher.replace(/\\{uuid\\}/, UUID_V4_FORMAT.slice(1, -1));
   matcher = `^${matcher}$`;
   return term({
     generate,
