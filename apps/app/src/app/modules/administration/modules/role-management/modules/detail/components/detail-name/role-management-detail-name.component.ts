@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Role, RoleManagementRelations } from '@app/domain';
-import { submitToTemplateOrThrowPipe } from '@hal-form-client';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { setTemplateValidators } from '../../../../../../../../shared/utils/forms/validators/set-template.validators';
+import { RoleManagementService } from '../../../../services/role-management.service';
 
 @UntilDestroy()
 @Component({
@@ -22,7 +21,10 @@ export class RoleManagementDetailNameComponent implements OnInit {
     name: new FormControl(''),
   });
 
-  constructor(private readonly toasterService: ToasterService) {}
+  constructor(
+    private readonly roleManagementService: RoleManagementService,
+    private readonly toasterService: ToasterService,
+  ) {}
 
   ngOnInit(): void {
     this.role$?.pipe(untilDestroyed(this)).subscribe((user) => {
@@ -34,12 +36,10 @@ export class RoleManagementDetailNameComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    this.role$
-      .pipe(first(), submitToTemplateOrThrowPipe(RoleManagementRelations.ROLE_UPDATE_REL, this.form.value))
-      .subscribe({
-        next: () => this.toasterService.showToast({ title: 'Role updated successfully' }),
-        error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),
-      });
+  onSubmit(role: Role) {
+    this.roleManagementService.updateRole(role, this.form.value).subscribe({
+      next: () => this.toasterService.showToast({ title: 'Role updated successfully' }),
+      error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),
+    });
   }
 }

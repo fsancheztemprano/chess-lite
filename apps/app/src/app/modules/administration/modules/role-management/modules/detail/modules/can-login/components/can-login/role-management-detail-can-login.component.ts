@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Role, RoleManagementRelations } from '@app/domain';
+import { Role } from '@app/domain';
 import { Observable } from 'rxjs';
-import { first, switchMap } from 'rxjs/operators';
+import { RoleManagementService } from '../../../../../../services/role-management.service';
 
 @Component({
   selector: 'app-role-management-detail-can-login',
@@ -15,14 +15,9 @@ export class RoleManagementDetailCanLoginComponent {
   @Input() showRoleName = false;
   @Input() showCanLoginLabel = false;
 
-  onToggle($event: MatSlideToggleChange) {
-    this.role$
-      .pipe(
-        first(),
-        switchMap((role) =>
-          role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_UPDATE_REL, { body: { canLogin: $event.checked } }),
-        ),
-      )
-      .subscribe();
+  constructor(private readonly roleManagementService: RoleManagementService) {}
+
+  onToggle(role: Role, $event: MatSlideToggleChange) {
+    this.roleManagementService.updateRole(role, { canLogin: $event.checked }).subscribe();
   }
 }

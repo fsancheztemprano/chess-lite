@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorModule } from '../../../../../../shared/modules/form-error/form-error.module';
+import { NgLetModule } from '../../../../../../shared/modules/ng-let/ng-let.module';
 import { RoleManagementDetailAuthoritiesComponent } from './components/detail-authorities/role-management-detail-authorities.component';
 import { RoleManagementDetailNameComponent } from './components/detail-name/role-management-detail-name.component';
 import { RoleManagementDetailComponent } from './components/detail/role-management-detail.component';
@@ -28,6 +29,7 @@ import { RoleManagementDetailRoutingModule } from './role-management-detail-rout
     FormErrorModule,
     MatButtonModule,
     MatCheckboxModule,
+    NgLetModule,
   ],
 })
 export class RoleManagementDetailModule {}
