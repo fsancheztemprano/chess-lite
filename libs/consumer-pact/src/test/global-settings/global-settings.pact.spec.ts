@@ -98,5 +98,22 @@ describe('Global Settings Pacts', () => {
           });
       });
     });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = UpdateGlobalSettingPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        Template.of({ method: 'PATCH', target: '/api/global-settings' })
+          .afford<GlobalSettings>({ body: { signupOpen: true } })
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              done();
+            },
+          });
+      });
+    });
   });
 });

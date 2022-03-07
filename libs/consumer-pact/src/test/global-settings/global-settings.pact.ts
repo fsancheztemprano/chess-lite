@@ -118,4 +118,28 @@ export namespace UpdateGlobalSettingPact {
       },
     },
   };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update global settings unauthorized',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/global-settings',
+      headers: {
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+      body: {
+        signupOpen: true,
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
 }
