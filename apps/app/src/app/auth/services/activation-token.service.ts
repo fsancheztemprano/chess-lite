@@ -19,8 +19,8 @@ export class ActivationTokenService {
 
   public requestActivationToken(email: string): Observable<unknown> {
     return this.halFormService
-    .getResource()
-    .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL, { body: { email } }));
+      .getResource()
+      .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL, { body: { email } }));
   }
 
   public getAccountActivationTemplate(): Observable<Template | null> {
@@ -33,7 +33,7 @@ export class ActivationTokenService {
 
   public activateAccount(body: AccountActivationInput) {
     return this.halFormService
-    .getResource()
-    .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL, { body }));
+      .getResource()
+      .pipe(submitToTemplateOrThrowPipe(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL, { body }));
   }
 }
