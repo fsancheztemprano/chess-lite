@@ -51,7 +51,7 @@ export class Link implements ILink {
   }
 
   fetch<T>(params?: any): Observable<HttpResponse<T>> {
-    const url: string | null = this.parseUrl(params);
+    const url: string | null = this.parseUrl(params || {});
     return url
       ? this.http
           .get<T>(url, {
