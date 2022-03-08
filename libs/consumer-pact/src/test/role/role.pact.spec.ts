@@ -8,7 +8,7 @@ import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 import { RoleManagementService } from '../../../../../apps/app/src/app/modules/administration/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { GetAllRolesPact } from './role.pact';
+import { GetAllRolesPact, GetOneRolePact } from './role.pact';
 
 const provider: Pact = pactForResource('role');
 
@@ -105,7 +105,7 @@ describe('Role Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
             done();
           },
         });
@@ -113,18 +113,60 @@ describe('Role Pacts', () => {
     });
   });
 
-  /*
   describe('Get One Role', () => {
-    const options = { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } };
-
     it('successful', (done) => {
       const interaction: InteractionObject = GetOneRolePact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
       provider.addInteraction(interaction).then(() => {
-        http.get('/api/role/roleId', options).subscribe((role) => {
+        service.fetchOneRole('defaultPactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
-          expect(role).toEqual(interaction.willRespondWith.body);
+          expect(role.id).toEqual(interaction.willRespondWith.body.id);
+          expect(role.name).toEqual(interaction.willRespondWith.body.name);
+          expect(role.authorities).toHaveLength(3);
           done();
+        });
+      });
+    });
+
+    it('with update', (done) => {
+      const interaction: InteractionObject = GetOneRolePact.with_update;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:update'] }));
+      provider.addInteraction(interaction).then(() => {
+        service.fetchOneRole('defaultPactRoleId').subscribe((role) => {
+          expect(role).toBeTruthy();
+          expect(role.id).toEqual(interaction.willRespondWith.body.id);
+          expect(role.name).toEqual(interaction.willRespondWith.body.name);
+          expect(role.isAllowedTo(RoleManagementRelations.ROLE_UPDATE_REL)).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('with delete', (done) => {
+      const interaction: InteractionObject = GetOneRolePact.with_delete;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:delete'] }));
+      provider.addInteraction(interaction).then(() => {
+        service.fetchOneRole('defaultPactRoleId').subscribe((role) => {
+          expect(role).toBeTruthy();
+          expect(role.id).toEqual(interaction.willRespondWith.body.id);
+          expect(role.name).toEqual(interaction.willRespondWith.body.name);
+          expect(role.isAllowedTo(RoleManagementRelations.ROLE_DELETE_REL)).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = GetOneRolePact.not_found;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
+      provider.addInteraction(interaction).then(() => {
+        service.fetchOneRole('notFoundId').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
         });
       });
     });
@@ -133,31 +175,15 @@ describe('Role Pacts', () => {
       const interaction: InteractionObject = GetOneRolePact.unauthorized;
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
-        http.get('/api/role/roleId', options).subscribe({
+        service.fetchOneRole('defaultPactRoleId').subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
-            done();
-          },
-        });
-      });
-    });
-
-    it('not found', (done) => {
-      const interaction: InteractionObject = GetOneRolePact.not_found;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
-      provider.addInteraction(interaction).then(() => {
-        http.get('/api/role/notFoundId', options).subscribe({
-          error: (error: HttpErrorResponse) => {
-            expect(error).toBeTruthy();
-            expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
             done();
           },
         });
       });
     });
   });
-  */
 });
