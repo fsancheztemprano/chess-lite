@@ -12,7 +12,7 @@ import { GetAllRolesPact, GetOneRolePact } from './role.pact';
 
 const provider: Pact = pactForResource('role');
 
-describe('Role Pacts', () => {
+describe.skip('Role Pacts', () => {
   let service: RoleManagementService;
 
   beforeAll(() => provider.setup());

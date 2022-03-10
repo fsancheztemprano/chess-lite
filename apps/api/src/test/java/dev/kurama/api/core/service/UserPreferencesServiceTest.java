@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserPreferencesChangedEventEmitter;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.repository.UserPreferencesRepository;
 import java.util.Optional;
@@ -41,7 +41,7 @@ class UserPreferencesServiceTest {
   class FindUserPreferencesByIdTests {
 
     @Test
-    void should_find_user_preferences_by_id() throws DomainEntityNotFoundException {
+    void should_find_user_preferences_by_id() throws EntityNotFoundException {
       String userPreferencesId = randomUUID();
       UserPreferences expected = UserPreferences.builder().setRandomUUID().build();
       when(userPreferencesRepository.findById(userPreferencesId)).thenReturn(Optional.of(expected));
@@ -57,14 +57,14 @@ class UserPreferencesServiceTest {
       String userPreferencesId = randomUUID();
       when(userPreferencesRepository.findById(userPreferencesId)).thenReturn(Optional.empty());
 
-      assertThrows(DomainEntityNotFoundException.class,
+      assertThrows(EntityNotFoundException.class,
         () -> userPreferencesService.findUserPreferencesById(userPreferencesId));
     }
   }
 
 
   @Test
-  void update_user_preferences() throws DomainEntityNotFoundException {
+  void update_user_preferences() throws EntityNotFoundException {
     UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).build();
     String userPreferencesId = randomUUID();
     UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).build();

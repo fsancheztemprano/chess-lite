@@ -13,7 +13,7 @@ import { GetAllAuthoritiesPact, GetOneAuthorityPact } from './authority.pact';
 
 const provider: Pact = pactForResource('authority');
 
-describe('Authority Pacts', () => {
+describe.skip('Authority Pacts', () => {
   let service: AuthorityManagementService;
   let http: HttpClient;
 

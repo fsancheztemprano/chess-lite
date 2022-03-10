@@ -8,13 +8,11 @@ import dev.kurama.api.core.domain.GlobalSettings;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
@@ -119,7 +117,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_signup() throws UsernameExistsException, EmailExistsException, SignupClosedException {
+  void should_signup() throws UserExistsException, SignupClosedException {
     SignupInput input = SignupInput.builder()
       .username(randomAlphanumeric(8))
       .firstname(randomAlphanumeric(8))
@@ -133,7 +131,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_create_user() throws UsernameExistsException, EmailExistsException {
+  void should_create_user() throws UserExistsException {
     Role role = entityManager.persist(Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build());
     UserInput input = UserInput.builder()
       .username(randomAlphanumeric(8))
@@ -156,8 +154,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_update_user()
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+  void should_update_user() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     Role role = entityManager.persist(Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build());
     UserInput input = UserInput.builder()
       .username(randomAlphanumeric(8))
@@ -185,7 +182,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_request_activation_token_by_email() throws ActivationTokenRecentException, EmailNotFoundException {
+  void should_request_activation_token_by_email() throws ActivationTokenRecentException, UserNotFoundException {
     service.requestActivationTokenByEmail(user3.getEmail());
 
     User actual = entityManager.find(User.class, user3.getId());
@@ -196,8 +193,8 @@ class UserServiceIT {
 
   @Test
   void should_activate_account()
-    throws ActivationTokenRecentException, ActivationTokenExpiredException, EmailNotFoundException,
-    ActivationTokenNotFoundException, ActivationTokenUserMismatchException {
+    throws ActivationTokenRecentException, ActivationTokenExpiredException, ActivationTokenNotFoundException,
+    ActivationTokenUserMismatchException, UserNotFoundException {
     User lockedUser = entityManager.persist(User.builder()
       .setRandomUUID()
       .username(randomAlphanumeric(8))
@@ -206,8 +203,7 @@ class UserServiceIT {
       .locked(true)
       .build());
     service.requestActivationToken(lockedUser);
-    AccountActivationInput input = AccountActivationInput.builder()
-      .email(lockedUser.getEmail())
+    AccountActivationInput input = AccountActivationInput.builder().email(lockedUser.getEmail())
       .password(randomAlphanumeric(8))
       .token(lockedUser.getActivationToken().getId())
       .build();

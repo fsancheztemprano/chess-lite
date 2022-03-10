@@ -15,7 +15,7 @@ import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EntityExistsException;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -48,8 +48,10 @@ public class ExceptionHandlers {
   private static final String ACCOUNT_DISABLED = "Your account has been disabled. If this is an error, please contact"
     + " administration";
   private static final String ERROR_PROCESSING_FILE = "Error occurred while processing file";
-  private static final String NOT_FOUND_MESSAGE = "Identifier %s was not found";
-  private static final String EXISTS_MESSAGE = "Unique property conflict";
+  private static final String ENTITY_NOT_FOUND_MESSAGE = "%s with id: %s not found";
+  private static final String NOT_FOUND_MESSAGE = "Id %s not found";
+  private static final String ENTITY_EXISTS_MESSAGE = "%s with unique id: %s already exists";
+  private static final String EXISTS_MESSAGE = "Id %s already exists";
   private static final String IMMUTABLE_ROLE = "Role %s is not modifiable";
   private static final String SIGN_UP_CLOSED = "Sign Up is closed, try again later.";
   private static final String NO_MAPPING_ERROR = "There is no mapping for this URL";
@@ -107,12 +109,23 @@ public class ExceptionHandlers {
   @ResponseStatus(code = CONFLICT)
   @ExceptionHandler(EntityExistsException.class)
   public ResponseEntity<DomainResponse> entityExistsException(EntityExistsException exception) {
-    return createDomainResponse(CONFLICT, exception.getMessage(), EXISTS_MESSAGE);
+    return createDomainResponse(CONFLICT,
+      exception.getEntityClass() != null ? format(ENTITY_EXISTS_MESSAGE, exception.getMessage(),
+        exception.getEntityClass().getSimpleName()) : format(EXISTS_MESSAGE, exception.getMessage()), "");
   }
 
   @ResponseStatus(code = NOT_FOUND)
-  @ExceptionHandler({NoSuchElementException.class, NoResultException.class, DomainEntityNotFoundException.class})
-  public ResponseEntity<DomainResponse> entityNotFoundException(Exception exception) {
+  @ExceptionHandler({EntityNotFoundException.class})
+  public ResponseEntity<DomainResponse> entityNotFoundException(EntityNotFoundException exception) {
+    return createDomainResponse(NOT_FOUND,
+      exception.getEntityClass() != null ? String.format(ENTITY_NOT_FOUND_MESSAGE, exception.getMessage(),
+        exception.getEntityClass().getSimpleName()) : String.format(NOT_FOUND_MESSAGE, exception.getMessage()),
+      exception.getMessage());
+  }
+
+  @ResponseStatus(code = NOT_FOUND)
+  @ExceptionHandler({NoSuchElementException.class, NoResultException.class,})
+  public ResponseEntity<DomainResponse> notFoundException(Exception exception) {
     return createDomainResponse(NOT_FOUND, String.format(NOT_FOUND_MESSAGE, exception.getMessage()),
       exception.getMessage());
   }

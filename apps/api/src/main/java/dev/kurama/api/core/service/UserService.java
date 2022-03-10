@@ -16,13 +16,11 @@ import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
@@ -105,8 +103,7 @@ public class UserService {
     userChangedEventEmitter.emitUserDeletedEvent(user.getId());
   }
 
-  public void signup(SignupInput signupInput)
-    throws UsernameExistsException, EmailExistsException, SignupClosedException {
+  public void signup(SignupInput signupInput) throws UserExistsException, SignupClosedException {
     GlobalSettings globalSettings = globalSettingsService.getGlobalSettings();
     if (!globalSettings.isSignupOpen()) {
       throw new SignupClosedException();
@@ -134,7 +131,7 @@ public class UserService {
     }
   }
 
-  public User createUser(UserInput userInput) throws UsernameExistsException, EmailExistsException {
+  public User createUser(UserInput userInput) throws UserExistsException {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = (isNotEmpty(userInput.getRoleId()) ? roleService.findRoleById(userInput.getRoleId())
       : Optional.<Role>empty()).orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
@@ -161,12 +158,12 @@ public class UserService {
   }
 
   public User updateUser(String id, UserInput userInput)
-    throws EmailExistsException, UsernameExistsException, UserNotFoundException, RoleNotFoundException {
+    throws UserExistsException, UserNotFoundException, RoleNotFoundException {
     var user = findUserById(id).orElseThrow(() -> new UserNotFoundException(UserConstant.NO_USER_FOUND_BY_ID + id));
     var changed = false;
     if (ofNullable(userInput.getEmail()).isPresent() && !user.getEmail().equalsIgnoreCase(userInput.getEmail())) {
       if (findUserByEmail(userInput.getEmail()).isPresent()) {
-        throw new EmailExistsException(UserConstant.EMAIL_ALREADY_EXISTS + userInput.getEmail());
+        throw new UserExistsException(userInput.getEmail());
       }
       user.setEmail(userInput.getEmail());
       changed = true;
@@ -174,7 +171,7 @@ public class UserService {
     if (ofNullable(userInput.getUsername()).isPresent() && !user.getUsername()
       .equalsIgnoreCase(userInput.getUsername())) {
       if (findUserByUsername(userInput.getUsername()).isPresent()) {
-        throw new UsernameExistsException(UserConstant.USERNAME_ALREADY_EXISTS + userInput.getUsername());
+        throw new UserExistsException(UserConstant.USERNAME_ALREADY_EXISTS + userInput.getUsername());
       }
       user.setUsername(userInput.getUsername());
       changed = true;
@@ -237,19 +234,18 @@ public class UserService {
     requestActivationToken(user);
   }
 
-  public void requestActivationTokenByEmail(String email)
-    throws EmailNotFoundException, ActivationTokenRecentException {
-    var user = findUserByEmail(email).orElseThrow(() -> new EmailNotFoundException(email));
+  public void requestActivationTokenByEmail(String email) throws ActivationTokenRecentException, UserNotFoundException {
+    var user = findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     requestActivationToken(user);
   }
 
   public void activateAccount(AccountActivationInput accountActivationInput)
-    throws ActivationTokenExpiredException, ActivationTokenNotFoundException, EmailNotFoundException,
-    ActivationTokenUserMismatchException {
+    throws ActivationTokenExpiredException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
+    UserNotFoundException {
     var activationToken = activationTokenService.findActivationToken(accountActivationInput.getToken());
 
     var user = findUserByEmail(accountActivationInput.getEmail()).orElseThrow(
-      () -> new EmailNotFoundException(accountActivationInput.getEmail()));
+      () -> new UserNotFoundException(accountActivationInput.getEmail()));
 
     activationTokenService.verifyActivationTokenMatch(activationToken, user);
 
@@ -281,15 +277,14 @@ public class UserService {
     users.forEach(user -> this.userChangedEventEmitter.emitUserUpdatedEvent(user.getId()));
   }
 
-  private void validateNewUsernameAndEmail(String newUsername, String email)
-    throws UsernameExistsException, EmailExistsException {
+  private void validateNewUsernameAndEmail(String newUsername, String email) throws UserExistsException {
     var userByNewUsername = findUserByUsername(newUsername);
     if (userByNewUsername.isPresent()) {
-      throw new UsernameExistsException(UserConstant.USERNAME_ALREADY_EXISTS + newUsername);
+      throw new UserExistsException(UserConstant.USERNAME_ALREADY_EXISTS + newUsername);
     }
     var userByNewEmail = findUserByEmail(email);
     if (userByNewEmail.isPresent()) {
-      throw new EmailExistsException(UserConstant.EMAIL_ALREADY_EXISTS + email);
+      throw new UserExistsException(UserConstant.EMAIL_ALREADY_EXISTS + email);
     }
   }
 

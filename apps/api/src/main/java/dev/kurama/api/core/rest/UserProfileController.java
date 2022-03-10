@@ -5,8 +5,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
@@ -56,21 +55,21 @@ public class UserProfileController {
   @PatchMapping()
   @PreAuthorize("hasAuthority('profile:update') ")
   public ResponseEntity<UserModel> updateProfile(@RequestBody UserProfileUpdateInput userProfileUpdateInput)
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     return ok().body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), userProfileUpdateInput));
   }
 
   @PatchMapping(USER_PROFILE_CHANGE_PASSWORD_PATH)
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserModel> changePassword(@RequestBody ChangeUserPasswordInput changeUserPasswordInput)
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     return ok().body(userFacade.changePassword(AuthorityUtils.getCurrentUserId(), changeUserPasswordInput));
   }
 
   @PatchMapping(value = USER_PROFILE_UPLOAD_AVATAR_PATH, consumes = MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("hasAuthority('profile:update')")
   public ResponseEntity<UserModel> uploadAvatar(@RequestPart("avatar") MultipartFile avatar)
-    throws IOException, UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    throws IOException, UserNotFoundException, RoleNotFoundException, UserExistsException {
     return ok().body(userFacade.uploadAvatar(AuthorityUtils.getCurrentUserId(), avatar));
   }
 
@@ -90,8 +89,7 @@ public class UserProfileController {
 
   @PatchMapping(USER_PROFILE_PREFERENCES)
   @PreAuthorize("hasAuthority('profile:update')")
-  public ResponseEntity<UserPreferencesModel> updatePreferences(
-    @RequestBody UserPreferencesInput userPreferencesInput) {
+  public ResponseEntity<UserPreferencesModel> updatePreferences(@RequestBody UserPreferencesInput userPreferencesInput) {
     return ResponseEntity.ok()
       .body(userPreferencesFacade.updateByUserId(AuthorityUtils.getCurrentUserId(), userPreferencesInput));
   }

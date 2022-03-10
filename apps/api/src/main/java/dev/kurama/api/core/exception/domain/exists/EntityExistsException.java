@@ -1,8 +1,10 @@
 package dev.kurama.api.core.exception.domain.exists;
 
-public class EntityExistsException extends Exception {
+import dev.kurama.api.core.exception.domain.EntityException;
 
-  public EntityExistsException(String id) {
-    super(id);
+public class EntityExistsException extends EntityException {
+
+  public EntityExistsException(String message, Class<?> entityClass) {
+    super(message, entityClass);
   }
 }

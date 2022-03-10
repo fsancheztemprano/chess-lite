@@ -457,3 +457,158 @@ export namespace GetOneRolePact {
     },
   };
 }
+
+export namespace CreateRolePact {
+  const expectedRole = {
+    id: 'defaultPactRoleId',
+    name: 'NEW_PACT_ROLE',
+    authorities: eachLike({ id: uuid(), name: 'profile:delete' }, { min: 3 }),
+    coreRole: false,
+    canLogin: true,
+    _links: {
+      self: {
+        href: 'http://localhost/api/role/defaultPactRoleId',
+      },
+      roles: {
+        href: 'http://localhost/api/role{?search}',
+        templated: true,
+      },
+    },
+    _templates: { default: { method: 'HEAD', properties: [] } },
+  };
+
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create one role',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:create'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        name: 'pact new role',
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: {
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: { ...expectedRole },
+    },
+  };
+
+  export const with_update: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create one role with update',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:update'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: {
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        ...expectedRole,
+        _templates: {
+          default: { method: 'HEAD', properties: [] },
+          update: {
+            method: 'PATCH',
+            properties: [
+              {
+                name: 'authorityIds',
+              },
+              {
+                name: 'canLogin',
+              },
+              {
+                name: 'name',
+                minLength: 3,
+                maxLength: 128,
+                type: 'text',
+              },
+            ],
+          },
+        },
+      },
+    },
+  };
+
+  export const with_delete: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create one role with delete',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:delete'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: {
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: {
+        ...expectedRole,
+        _templates: {
+          default: { method: 'HEAD', properties: [] },
+          delete: {
+            method: 'DELETE',
+            properties: [],
+          },
+        },
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create one role not found',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/role/notFoundId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'Identifier notFoundId was not found',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create one role unauthorized',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+}

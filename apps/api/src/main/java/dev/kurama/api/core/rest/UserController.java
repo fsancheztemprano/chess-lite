@@ -8,8 +8,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
@@ -51,16 +50,14 @@ public class UserController {
 
   @GetMapping()
   @PreAuthorize("hasAuthority('user:read')")
-  public ResponseEntity<PagedModel<UserModel>> getAll(
-    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
-    @RequestParam(value = "search", required = false) String search) {
+  public ResponseEntity<PagedModel<UserModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+                                                      @RequestParam(value = "search", required = false) String search) {
     return ok().body(userFacade.getAll(pageable, search));
   }
 
   @PostMapping()
   @PreAuthorize("hasAuthority('user:create')")
-  public ResponseEntity<UserModel> create(@RequestBody UserInput userInput)
-    throws UsernameExistsException, EmailExistsException {
+  public ResponseEntity<UserModel> create(@RequestBody UserInput userInput) throws UserExistsException {
     UserModel newUser = userFacade.create(userInput);
     return created(fromCurrentRequestUri().path("/user/{userId}").buildAndExpand(newUser.getId()).toUri()).body(
       newUser);
@@ -69,7 +66,7 @@ public class UserController {
   @PatchMapping("/{userId}")
   @PreAuthorize("hasAuthority('user:update')")
   public ResponseEntity<UserModel> update(@PathVariable("userId") String userId, @RequestBody UserInput userInput)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
+    throws UserNotFoundException, UserExistsException, RoleNotFoundException {
     userInput.setAuthorityIds(null);
     userInput.setRoleId(null);
     return ok().body(userFacade.update(userId, userInput));
@@ -79,7 +76,7 @@ public class UserController {
   @PreAuthorize("hasAuthority('user:update:role')")
   public ResponseEntity<UserModel> updateRole(@PathVariable("userId") String userId,
                                               @RequestBody UserRoleInput userRoleInput)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
+    throws UserNotFoundException, UserExistsException, RoleNotFoundException {
     return ok().body(userFacade.update(userId, UserInput.builder().roleId(userRoleInput.getRoleId()).build()));
   }
 
@@ -87,7 +84,7 @@ public class UserController {
   @PreAuthorize("hasAuthority('user:update:authorities')")
   public ResponseEntity<UserModel> updateAuthorities(@PathVariable("userId") String userId,
                                                      @RequestBody UserAuthoritiesInput userAuthoritiesInput)
-    throws UserNotFoundException, UsernameExistsException, EmailExistsException, RoleNotFoundException {
+    throws UserNotFoundException, UserExistsException, RoleNotFoundException {
     return ok().body(
       userFacade.update(userId, UserInput.builder().authorityIds(userAuthoritiesInput.getAuthorityIds()).build()));
   }

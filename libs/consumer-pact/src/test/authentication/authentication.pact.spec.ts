@@ -18,7 +18,7 @@ import { pactForResource } from '../../utils/pact.utils';
 
 const provider: Pact = pactForResource('authentication');
 
-describe('Authentication Pacts', () => {
+describe.skip('Authentication Pacts', () => {
   let halFormService: HalFormService;
   let authService: AuthService;
   let activationTokenService: ActivationTokenService;

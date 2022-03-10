@@ -7,9 +7,9 @@ import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_TO
 import dev.kurama.api.core.domain.ActivationToken;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
 import dev.kurama.api.core.repository.ActivationTokenRepository;
 import java.util.Date;
 import lombok.NonNull;

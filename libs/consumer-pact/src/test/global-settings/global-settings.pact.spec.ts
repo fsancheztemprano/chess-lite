@@ -13,7 +13,7 @@ import { pactForResource } from '../../utils/pact.utils';
 
 const provider: Pact = pactForResource('globalSettings');
 
-describe('Global Settings Pacts', () => {
+describe.skip('Global Settings Pacts', () => {
   beforeAll(() => provider.setup());
   afterEach(() => provider.verify());
   afterAll(() => provider.finalize());

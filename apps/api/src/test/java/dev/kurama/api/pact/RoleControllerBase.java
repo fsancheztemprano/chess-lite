@@ -1,5 +1,5 @@
 package dev.kurama.api.pact;
 
-public abstract class RoleControllerBase extends PactDataBase {
+public abstract class RoleControllerBase extends PactBase {
 
 }
