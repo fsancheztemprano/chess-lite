@@ -203,7 +203,8 @@ class UserServiceIT {
       .locked(true)
       .build());
     service.requestActivationToken(lockedUser);
-    AccountActivationInput input = AccountActivationInput.builder().email(lockedUser.getEmail())
+    AccountActivationInput input = AccountActivationInput.builder()
+      .email(lockedUser.getEmail())
       .password(randomAlphanumeric(8))
       .token(lockedUser.getActivationToken().getId())
       .build();
