@@ -456,7 +456,7 @@ class UserServiceTest {
 
   @Test
   void request_activation_token_by_email() throws ActivationTokenRecentException, UserNotFoundException {
-    User expected = User.builder().setRandomUUID().email("email@example.com").build();
+    User expected = User.builder().setRandomUUID().email("email@localhost").build();
     when(userRepository.findUserByEmail(expected.getEmail())).thenReturn(Optional.of(expected));
     doNothing().when(userService).requestActivationToken(expected);
 
@@ -473,9 +473,9 @@ class UserServiceTest {
     AccountActivationInput input = AccountActivationInput.builder()
       .token(randomUUID())
       .password("passw0rd")
-      .email("email@example.com")
+      .email("email@localhost")
       .build();
-    User expected = User.builder().setRandomUUID().email("email@example.com").build();
+    User expected = User.builder().setRandomUUID().email("email@localhost").build();
     ActivationToken token = ActivationToken.builder().setRandomUUID().created(new Date()).attempts(0).build();
     when(userRepository.findUserByEmail(input.getEmail())).thenReturn(Optional.of(expected));
     when(activationTokenService.findActivationToken(input.getToken())).thenReturn(token);

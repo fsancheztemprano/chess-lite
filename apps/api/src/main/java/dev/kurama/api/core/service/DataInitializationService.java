@@ -149,10 +149,7 @@ public class DataInitializationService {
       var superAdminRole = roleRepository.findByName(DefaultAuthority.SUPER_ADMIN_ROLE)
         .orElseThrow(() -> new RoleNotFoundException(DefaultAuthority.SUPER_ADMIN_ROLE));
 
-      userRepository.saveAndFlush(User.builder()
-        .setRandomUUID()
-        .username("admin")
-        .email("admin@example.com")
+      userRepository.saveAndFlush(User.builder().setRandomUUID().username("admin").email("admin@localhost")
         .password(passwordEncoder.encode("123456"))
         .role(superAdminRole)
         .authorities(superAdminRole.getAuthorities())

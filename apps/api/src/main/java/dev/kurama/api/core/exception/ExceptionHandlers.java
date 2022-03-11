@@ -40,7 +40,8 @@ public class ExceptionHandlers {
 
   private static final String AN_ERROR_HAS_OCCURRED = "An error has occurred";
 
-  private static final String IS_LOCKED = "%s is locked";
+  private static final String ACCOUNT_IS_LOCKED = "User account is locked";
+  private static final String ROLE_IS_LOCKED = "%s is locked";
   private static final String TOKEN_EXPIRED = "This token is expired. Log in again to get a valid one.";
   private static final String METHOD_IS_NOT_ALLOWED = "This request method is not allowed on this endpoint. Please "
     + "send a '%s' request";
@@ -79,13 +80,13 @@ public class ExceptionHandlers {
   @ResponseStatus(code = UNAUTHORIZED)
   @ExceptionHandler(LockedException.class)
   public ResponseEntity<DomainResponse> lockedException(LockedException exception) {
-    return createDomainResponse(UNAUTHORIZED, exception.getMessage(), exception.getMessage());
+    return createDomainResponse(UNAUTHORIZED, ACCOUNT_IS_LOCKED, exception.getMessage());
   }
 
   @ResponseStatus(code = UNAUTHORIZED)
   @ExceptionHandler(RoleCanNotLoginException.class)
   public ResponseEntity<DomainResponse> roleCanNotLoginException(RoleCanNotLoginException exception) {
-    return createDomainResponse(UNAUTHORIZED, format(IS_LOCKED, exception.getMessage()), exception.getMessage());
+    return createDomainResponse(UNAUTHORIZED, format(ROLE_IS_LOCKED, exception.getMessage()), exception.getMessage());
   }
 
   @ResponseStatus(code = UNAUTHORIZED)
@@ -110,17 +111,16 @@ public class ExceptionHandlers {
   @ExceptionHandler(EntityExistsException.class)
   public ResponseEntity<DomainResponse> entityExistsException(EntityExistsException exception) {
     return createDomainResponse(CONFLICT,
-      exception.getEntityClass() != null ? format(ENTITY_EXISTS_MESSAGE, exception.getMessage(),
-        exception.getEntityClass().getSimpleName()) : format(EXISTS_MESSAGE, exception.getMessage()), "");
+      exception.getEntityClass() != null ? format(ENTITY_EXISTS_MESSAGE, exception.getEntityClass().getSimpleName(),
+        exception.getMessage()) : format(EXISTS_MESSAGE, exception.getMessage()), "");
   }
 
   @ResponseStatus(code = NOT_FOUND)
   @ExceptionHandler({EntityNotFoundException.class})
   public ResponseEntity<DomainResponse> entityNotFoundException(EntityNotFoundException exception) {
-    return createDomainResponse(NOT_FOUND,
-      exception.getEntityClass() != null ? String.format(ENTITY_NOT_FOUND_MESSAGE, exception.getMessage(),
-        exception.getEntityClass().getSimpleName()) : String.format(NOT_FOUND_MESSAGE, exception.getMessage()),
-      exception.getMessage());
+    return createDomainResponse(NOT_FOUND, exception.getEntityClass() != null ? String.format(ENTITY_NOT_FOUND_MESSAGE,
+      exception.getEntityClass().getSimpleName(), exception.getMessage())
+      : String.format(NOT_FOUND_MESSAGE, exception.getMessage()), exception.getMessage());
   }
 
   @ResponseStatus(code = NOT_FOUND)

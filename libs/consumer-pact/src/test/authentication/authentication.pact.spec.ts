@@ -18,7 +18,7 @@ import { pactForResource } from '../../utils/pact.utils';
 
 const provider: Pact = pactForResource('authentication');
 
-describe.skip('Authentication Pacts', () => {
+describe('Authentication Pacts', () => {
   let halFormService: HalFormService;
   let authService: AuthService;
   let activationTokenService: ActivationTokenService;
@@ -81,7 +81,7 @@ describe.skip('Authentication Pacts', () => {
 
     it('successful', (done) => {
       provider.addInteraction(SignupPact.successful).then(() => {
-        authService.signup({ username: 'janeDoe', email: 'janeDoe@example.com' }).subscribe(() => {
+        authService.signup({ username: 'janeDoe', email: 'janeDoe@localhost' }).subscribe(() => {
           done();
         });
       });
@@ -104,7 +104,7 @@ describe.skip('Authentication Pacts', () => {
     it('existing email error', (done) => {
       const interaction: InteractionObject = SignupPact.existing_email;
       provider.addInteraction(interaction).then(() => {
-        authService.signup({ username: 'username2', email: 'johnDoe@example.com' }).subscribe({
+        authService.signup({ username: 'username2', email: 'pactUser@localhost' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -118,7 +118,7 @@ describe.skip('Authentication Pacts', () => {
     it('no username error', (done) => {
       const interaction: InteractionObject = SignupPact.no_username;
       provider.addInteraction(interaction).then(() => {
-        authService.signup(<SignupInput>{ email: 'username3@example.com' }).subscribe({
+        authService.signup(<SignupInput>{ email: 'username3@localhost' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -132,7 +132,7 @@ describe.skip('Authentication Pacts', () => {
     it('existing username error', (done) => {
       const interaction: InteractionObject = SignupPact.existing_username;
       provider.addInteraction(interaction).then(() => {
-        authService.signup({ username: 'johnDoe', email: 'username4@example.com' }).subscribe({
+        authService.signup({ username: 'pactUser', email: 'username4@localhost' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -212,7 +212,7 @@ describe.skip('Authentication Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = LoginPact.successful;
       provider.addInteraction(interaction).then(() => {
-        authService.login({ username: 'johnDoe', password: 'johnDoe0' }).subscribe((session) => {
+        authService.login({ username: 'pactUser', password: 'pactUser0' }).subscribe((session) => {
           expect(session).toBeTruthy();
           expect(session?.token).toBe(
             (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
@@ -255,7 +255,7 @@ describe.skip('Authentication Pacts', () => {
     it('email not found', (done) => {
       const interaction: InteractionObject = ActivationTokenPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        activationTokenService.requestActivationToken('username6@example.com').subscribe({
+        activationTokenService.requestActivationToken('notFound@localhost').subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(404);
@@ -268,7 +268,7 @@ describe.skip('Authentication Pacts', () => {
 
     it('successful', (done) => {
       provider.addInteraction(ActivationTokenPact.successful).then(() => {
-        activationTokenService.requestActivationToken('lockedRoleUser@example.com').subscribe(() => done());
+        activationTokenService.requestActivationToken('lockedRoleUser@localhost').subscribe(() => done());
       });
     });
   });
@@ -319,7 +319,7 @@ describe.skip('Authentication Pacts', () => {
       const interaction: InteractionObject = ActivateAccountPact.not_found;
       provider.addInteraction(interaction).then(() => {
         activationTokenService
-          .activateAccount({ password: 'username7', token: 'username7TokenId', email: 'username7@example.com' })
+          .activateAccount({ password: 'notFoundPassword', token: 'notFoundTokenId', email: 'notFound@localhost' })
           .subscribe({
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
@@ -337,7 +337,7 @@ describe.skip('Authentication Pacts', () => {
           .activateAccount({
             password: 'activationUser',
             token: 'activationUserTokenId',
-            email: 'activationUser@example.com',
+            email: 'activationUser@localhost',
           })
           .subscribe((response) => {
             expect(response).toBeTruthy();

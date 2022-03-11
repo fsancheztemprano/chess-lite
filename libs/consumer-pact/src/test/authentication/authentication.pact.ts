@@ -19,7 +19,7 @@ export namespace SignupPact {
       },
       body: {
         username: 'janeDoe',
-        email: 'janeDoe@example.com',
+        email: 'janeDoe@localhost',
       },
     },
     willRespondWith: {
@@ -62,14 +62,14 @@ export namespace SignupPact {
       },
       body: {
         username: 'username2',
-        email: 'johnDoe@example.com',
+        email: 'pactUser@localhost',
       },
     },
     willRespondWith: {
       status: 409,
       body: {
         reason: 'Conflict',
-        title: 'Email already exists: johnDoe@example.com',
+        title: 'User with unique id: pactUser@localhost already exists',
       },
     },
   };
@@ -85,7 +85,7 @@ export namespace SignupPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        email: 'username3@example.com',
+        email: 'username3@localhost',
       },
     },
     willRespondWith: {
@@ -108,15 +108,15 @@ export namespace SignupPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        username: 'johnDoe',
-        email: 'username4@example.com',
+        username: 'pactUser',
+        email: 'username4@localhost',
       },
     },
     willRespondWith: {
       status: 409,
       body: {
         reason: 'Conflict',
-        title: 'Username already exists: johnDoe',
+        title: 'User with unique id: pactUser already exists',
       },
     },
   };
@@ -182,8 +182,8 @@ export namespace LoginPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        username: 'johnDoe',
-        password: 'johnDoe0',
+        username: 'pactUser',
+        password: 'pactUser0',
       },
     },
     willRespondWith: {
@@ -194,17 +194,17 @@ export namespace LoginPact {
         [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
       },
       body: {
-        id: 'johnDoeId',
+        id: 'pactUserId',
         firstname: null,
         lastname: null,
-        username: 'johnDoe',
-        email: 'johnDoe@example.com',
+        username: 'pactUser',
+        email: 'pactUser@localhost',
         profileImageUrl: null,
         lastLoginDateDisplay: null,
         joinDate: iso8601DateTimeWithMillis(),
         role: {
-          id: 'defaultPactRoleId',
-          name: 'DEFAULT_PACT_ROLE',
+          id: 'pactRoleId',
+          name: 'PACT_ROLE',
           authorities: [
             { id: uuid(), name: 'profile:read' },
             { id: uuid(), name: 'profile:update' },
@@ -226,7 +226,7 @@ export namespace LoginPact {
           id: uuid(),
           darkMode: false,
           contentLanguage: 'en',
-          user: { id: 'johnDoeId', username: 'johnDoe' },
+          user: { id: 'pactUserId', username: 'pactUser' },
           _links: {
             'current-user': { href: 'http://localhost/api/user/profile' },
             self: { href: 'http://localhost/api/user/profile/preferences' },
@@ -285,14 +285,14 @@ export namespace ActivationTokenPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        email: 'username6@example.com',
+        email: 'notFound@localhost',
       },
     },
     willRespondWith: {
       status: 404,
       body: {
         reason: 'Not Found',
-        title: 'Identifier username6@example.com was not found',
+        title: 'User with id: notFound@localhost not found',
       },
     },
   };
@@ -308,7 +308,7 @@ export namespace ActivationTokenPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        email: 'lockedRoleUser@example.com',
+        email: 'lockedRoleUser@localhost',
       },
     },
     willRespondWith: {
@@ -329,16 +329,16 @@ export namespace ActivateAccountPact {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        password: 'username7',
-        token: 'username7TokenId',
-        email: 'username7@example.com',
+        password: 'notFoundPassword',
+        token: 'notFoundTokenId',
+        email: 'notFound@localhost',
       },
     },
     willRespondWith: {
       status: 404,
       body: {
         reason: 'Not Found',
-        title: 'Identifier username7TokenId was not found',
+        title: 'User with id: notFound@localhost not found',
       },
     },
   };
@@ -356,7 +356,7 @@ export namespace ActivateAccountPact {
       body: {
         password: 'activationUser',
         token: 'activationUserTokenId',
-        email: 'activationUser@example.com',
+        email: 'activationUser@localhost',
       },
     },
     willRespondWith: {

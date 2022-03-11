@@ -7,7 +7,7 @@ import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +28,7 @@ public class AuthenticationFacility {
   @NonNull
   private final AuthenticationManager authenticationManager;
 
-  public Pair<User, String> login(String username, String password) throws RoleCanNotLoginException {
+  public ImmutablePair<User, String> login(String username, String password) throws RoleCanNotLoginException {
     verifyAuthentication(username, password);
     var user = userService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     if (!user.getRole().isCanLogin()) {
@@ -44,12 +44,12 @@ public class AuthenticationFacility {
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
   }
 
-  private Pair<User, String> authenticateUser(User user) {
+  private ImmutablePair<User, String> authenticateUser(User user) {
     UserPrincipal userPrincipal = new UserPrincipal(user);
     var token = jwtTokenProvider.generateJWTToken(userPrincipal);
     DecodedJWT decodedToken = jwtTokenProvider.getDecodedJWT(token);
     SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(decodedToken, null));
 
-    return Pair.of(user, jwtTokenProvider.generateJWTToken(userPrincipal));
+    return ImmutablePair.of(user, jwtTokenProvider.generateJWTToken(userPrincipal));
   }
 }

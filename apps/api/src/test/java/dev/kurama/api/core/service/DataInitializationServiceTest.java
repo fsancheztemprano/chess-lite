@@ -325,7 +325,7 @@ class DataInitializationServiceTest {
       verify(userRepository).saveAndFlush(capturedUser.capture());
       User newAdminUser = capturedUser.getValue();
       assertThat(newAdminUser).extracting("username", "email", "password", "active", "locked", "expired",
-        "credentialsExpired").containsExactly("admin", "admin@example.com", encodedPassword, true, false, false, false);
+        "credentialsExpired").containsExactly("admin", "admin@localhost", encodedPassword, true, false, false, false);
       assertThat(newAdminUser.getRole()).isEqualTo(superAdminRole);
       assertThat(newAdminUser.getAuthorities()).isEqualTo(superAdminRole.getAuthorities());
       assertNotNull(newAdminUser.getUserPreferences());
