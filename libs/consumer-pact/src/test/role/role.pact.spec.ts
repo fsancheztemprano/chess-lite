@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AuthorityManagementRelations, RoleManagementRelations, RolePage, TOKEN_KEY } from '@app/domain';
+import { AuthorityManagementRelations, Role, RoleManagementRelations, RolePage, TOKEN_KEY } from '@app/domain';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { AdministrationService } from 'apps/app/src/app/modules/administration/services/administration.service';
@@ -8,7 +8,7 @@ import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 import { RoleManagementService } from '../../../../../apps/app/src/app/modules/administration/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { CreateRolePact, GetAllRolesPact, GetOneRolePact } from './role.pact';
+import { CreateRolePact, DeleteRolePact, GetAllRolesPact, GetOneRolePact, UpdateRolePact } from './role.pact';
 
 const provider: Pact = pactForResource('role');
 
@@ -248,6 +248,190 @@ describe('Role Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.createRole(rolePage, 'NEW_PACT_ROLE').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Update Role', () => {
+    let pactRole: Role;
+
+    beforeEach(() => {
+      pactRole = new Role({
+        _links: {
+          self: {
+            href: '/api/role/pactRoleId',
+          },
+        },
+        _templates: {
+          default: {
+            method: 'HEAD',
+            properties: [],
+          },
+          update: {
+            method: 'PATCH',
+            properties: [
+              {
+                name: 'authorityIds',
+              },
+              {
+                name: 'canLogin',
+              },
+              {
+                name: 'name',
+                minLength: 3,
+                maxLength: 128,
+                type: 'text',
+              },
+            ],
+          },
+        },
+      });
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = UpdateRolePact.successful;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:create'] }));
+      provider.addInteraction(interaction).then(() => {
+        service.updateRole(pactRole, { name: 'PACT_ROLE' }).subscribe((role) => {
+          expect(role).toBeTruthy();
+          expect(role.id).toEqual(interaction.willRespondWith.body.id);
+          expect(role.name).toEqual(interaction.willRespondWith.body.name);
+          expect(role.authorities).toHaveLength(interaction.willRespondWith.body.authorities.length);
+          done();
+        });
+      });
+    });
+
+    it('core role', (done) => {
+      const interaction: InteractionObject = UpdateRolePact.core_role;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:create'] }));
+      provider.addInteraction(interaction).then(() => {
+        const coreRole = JSON.parse(JSON.stringify(pactRole));
+        coreRole._links.self.href = '/api/role/coreRoleId';
+        service.updateRole(new Role(coreRole), { name: 'PACT_ROLE' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = UpdateRolePact.unauthorized;
+      localStorage.setItem(TOKEN_KEY, jwtToken());
+      provider.addInteraction(interaction).then(() => {
+        service.updateRole(pactRole, { name: 'PACT_ROLE' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = UpdateRolePact.not_found;
+      localStorage.setItem(TOKEN_KEY, jwtToken());
+      provider.addInteraction(interaction).then(() => {
+        const notFoundRole = JSON.parse(JSON.stringify(pactRole));
+        notFoundRole._links.self.href = '/api/role/notFoundId';
+        service.updateRole(new Role(notFoundRole), { name: 'PACT_ROLE' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Delete Role', () => {
+    let pactRole: Role;
+
+    beforeEach(() => {
+      pactRole = new Role({
+        _links: {
+          self: {
+            href: '/api/role/pactRoleId',
+          },
+        },
+        _templates: {
+          default: {
+            method: 'HEAD',
+            properties: [],
+          },
+          delete: {
+            method: 'DELETE',
+            properties: [],
+          },
+        },
+      });
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = DeleteRolePact.successful;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
+      provider.addInteraction(interaction).then(() => {
+        service.deleteRole(pactRole).subscribe((role) => {
+          expect(role).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('core role', (done) => {
+      const interaction: InteractionObject = DeleteRolePact.core_role;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
+      provider.addInteraction(interaction).then(() => {
+        const coreRole = JSON.parse(JSON.stringify(pactRole));
+        coreRole._links.self.href = '/api/role/coreRoleId';
+        service.deleteRole(new Role(coreRole)).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = DeleteRolePact.unauthorized;
+      localStorage.setItem(TOKEN_KEY, jwtToken());
+      provider.addInteraction(interaction).then(() => {
+        service.deleteRole(pactRole).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = DeleteRolePact.not_found;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
+      provider.addInteraction(interaction).then(() => {
+        const notFoundRole = JSON.parse(JSON.stringify(pactRole));
+        notFoundRole._links.self.href = '/api/role/notFoundId';
+        service.deleteRole(new Role(notFoundRole)).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

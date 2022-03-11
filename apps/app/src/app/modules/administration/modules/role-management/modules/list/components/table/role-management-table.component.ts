@@ -69,11 +69,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
           disabled: !role.isAllowedTo(RoleManagementRelations.ROLE_DELETE_REL),
         },
       })
-      .pipe(
-        switchMap((confirmRemoveRole) =>
-          confirmRemoveRole ? role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_DELETE_REL) : EMPTY,
-        ),
-      )
+      .pipe(switchMap((confirmRemoveRole) => (confirmRemoveRole ? this.dataSource.deleteRole(role) : EMPTY)))
       .subscribe({
         next: () => this.toasterService.showToast({ title: 'Role deleted successfully' }),
         error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),

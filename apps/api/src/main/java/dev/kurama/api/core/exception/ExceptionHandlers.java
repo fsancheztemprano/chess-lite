@@ -53,7 +53,7 @@ public class ExceptionHandlers {
   private static final String NOT_FOUND_MESSAGE = "Id %s not found";
   private static final String ENTITY_EXISTS_MESSAGE = "%s with unique id: %s already exists";
   private static final String EXISTS_MESSAGE = "Id %s already exists";
-  private static final String IMMUTABLE_ROLE = "Role %s is not modifiable";
+  private static final String IMMUTABLE_ROLE = "Role %s is immutable";
   private static final String SIGN_UP_CLOSED = "Sign Up is closed, try again later.";
   private static final String NO_MAPPING_ERROR = "There is no mapping for this URL";
 
@@ -98,7 +98,7 @@ public class ExceptionHandlers {
   @ResponseStatus(code = FORBIDDEN)
   @ExceptionHandler(ImmutableRoleException.class)
   public ResponseEntity<DomainResponse> immutableRoleException(ImmutableRoleException exception) {
-    return createDomainResponse(FORBIDDEN, IMMUTABLE_ROLE, exception.getMessage());
+    return createDomainResponse(FORBIDDEN, format(IMMUTABLE_ROLE, exception.getMessage()), exception.getMessage());
   }
 
   @ResponseStatus(code = FORBIDDEN)

@@ -119,7 +119,11 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
       });
   }
 
-  createRole(name: string) {
+  createRole(name: string): Observable<Role> {
     return this.roleManagementService.createRole(this._rolePage$.value, name);
+  }
+
+  deleteRole(role: Role): Observable<unknown> {
+    return this.roleManagementService.deleteRole(role);
   }
 }

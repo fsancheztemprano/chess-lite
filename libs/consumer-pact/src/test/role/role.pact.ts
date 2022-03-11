@@ -418,3 +418,179 @@ export namespace CreateRolePact {
     },
   };
 }
+
+export namespace UpdateRolePact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update role',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/role/pactRoleId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        name: 'PACT_ROLE',
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: {
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: { ...pactRole },
+    },
+  };
+
+  export const core_role: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update role core role',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/role/coreRoleId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        name: 'PACT_ROLE',
+      },
+    },
+    willRespondWith: {
+      status: 403,
+      body: {
+        reason: 'Forbidden',
+        title: 'Role coreRoleId is immutable',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update role unauthorized',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/role/pactRoleId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        name: 'PACT_ROLE',
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update role not found',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/role/notFoundId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        name: 'PACT_ROLE',
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'Role with id: notFoundId not found',
+      },
+    },
+  };
+}
+
+export namespace DeleteRolePact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'delete role',
+    withRequest: {
+      method: HTTPMethod.DELETE,
+      path: '/api/role/pactRoleId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
+      },
+    },
+    willRespondWith: {
+      status: 204,
+    },
+  };
+
+  export const core_role: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'delete role core role',
+    withRequest: {
+      method: HTTPMethod.DELETE,
+      path: '/api/role/coreRoleId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
+      },
+    },
+    willRespondWith: {
+      status: 403,
+      body: {
+        reason: 'Forbidden',
+        title: 'Role coreRoleId is immutable',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'delete role unauthorized',
+    withRequest: {
+      method: HTTPMethod.DELETE,
+      path: '/api/role/pactRoleId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'delete role not found',
+    withRequest: {
+      method: HTTPMethod.DELETE,
+      path: '/api/role/notFoundId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'Role with id: notFoundId not found',
+      },
+    },
+  };
+}

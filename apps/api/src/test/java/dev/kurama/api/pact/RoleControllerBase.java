@@ -3,15 +3,19 @@ package dev.kurama.api.pact;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
+import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
+import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.facade.RoleFacade;
 import dev.kurama.api.core.hateoas.assembler.RoleModelAssembler;
+import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
 import dev.kurama.api.core.hateoas.processor.RoleModelProcessor;
 import dev.kurama.api.core.rest.RoleController;
 import dev.kurama.api.core.service.RoleFacility;
@@ -66,5 +70,10 @@ public abstract class RoleControllerBase extends PactBase {
     doReturn(Optional.of(pactRole)).when(roleService).findRoleById(pactRole.getId());
     doReturn(newRole).when(roleService).create("NEW_PACT_ROLE");
     doThrow(new RoleExistsException("pactRole")).when(roleService).create("PACT_ROLE");
+    doReturn(pactRole).when(roleService).update(pactRole.getId(), RoleUpdateInput.builder().name("PACT_ROLE").build());
+    doThrow(new ImmutableRoleException("coreRoleId")).when(roleService).update(eq("coreRoleId"), any());
+    doThrow(new RoleNotFoundException("notFoundId")).when(roleService).update(eq("notFoundId"), any());
+    doThrow(new ImmutableRoleException("coreRoleId")).when(roleFacility).deleteRole("coreRoleId");
+    doThrow(new RoleNotFoundException("notFoundId")).when(roleFacility).deleteRole("notFoundId");
   }
 }
