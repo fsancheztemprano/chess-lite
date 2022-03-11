@@ -24,7 +24,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Role>;
 
-  displayedColumns = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
+  displayedColumns: string[] = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
 
   private createRoleMenuOption: MenuOption = {
     label: 'New Role',
@@ -106,9 +106,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
           })
           .pipe(
             switchMap((body: { name: string }) => {
-              return body?.name?.length
-                ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, { body })
-                : EMPTY;
+              return body?.name?.length ? this.dataSource.createRole(body.name) : EMPTY;
             }),
           );
       }),

@@ -43,4 +43,8 @@ export class RoleManagementService extends HalFormService {
   public updateRole(role: Role, body: RoleUpdateInput): Observable<unknown> {
     return role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_UPDATE_REL, { body });
   }
+
+  public createRole(rolePage: RolePage, name: string): Observable<Role> {
+    return rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, { body: { name } });
+  }
 }

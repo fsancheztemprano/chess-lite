@@ -118,4 +118,8 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
         },
       });
   }
+
+  createRole(name: string) {
+    return this.roleManagementService.createRole(this._rolePage$.value, name);
+  }
 }

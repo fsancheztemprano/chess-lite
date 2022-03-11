@@ -4,10 +4,12 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
+import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
 import dev.kurama.api.core.facade.RoleFacade;
 import dev.kurama.api.core.hateoas.assembler.RoleModelAssembler;
 import dev.kurama.api.core.hateoas.processor.RoleModelProcessor;
@@ -53,7 +55,16 @@ public abstract class RoleControllerBase extends PactBase {
       Role.builder().setRandomUUID().name("PACT_ROLE_2").authorities(pactRole.getAuthorities()).build(),
       Role.builder().setRandomUUID().name("PACT_ROLE_3").authorities(pactRole.getAuthorities()).build()), pageRequest,
       3);
+    Role newRole = Role.builder()
+      .id("newPactRoleId")
+      .name("NEW_PACT_ROLE")
+      .coreRole(false)
+      .canLogin(true)
+      .authorities(newHashSet(Authority.builder().setRandomUUID().name("pact:read").build()))
+      .build();
     doReturn(page).when(roleService).getAllRoles(any(), any());
     doReturn(Optional.of(pactRole)).when(roleService).findRoleById(pactRole.getId());
+    doReturn(newRole).when(roleService).create("NEW_PACT_ROLE");
+    doThrow(new RoleExistsException("pactRole")).when(roleService).create("PACT_ROLE");
   }
 }
