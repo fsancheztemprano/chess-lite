@@ -48,7 +48,9 @@ class AuthenticationFacadeTest {
 
   @Test
   void signup_should_call_user_service_signup() throws UserExistsException, SignupClosedException {
-    SignupInput input = SignupInput.builder().username("username").email("test@localhost")
+    SignupInput input = SignupInput.builder()
+      .username("username")
+      .email("test@localhost")
       .firstname("firstname")
       .lastname("lastname")
       .build();
@@ -88,7 +90,8 @@ class AuthenticationFacadeTest {
   void activate_account_should_call_service()
     throws ActivationTokenExpiredException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
     UserNotFoundException {
-    AccountActivationInput input = AccountActivationInput.builder().email("email@localhost")
+    AccountActivationInput input = AccountActivationInput.builder()
+      .email("email@localhost")
       .password("password")
       .token("test_token")
       .build();

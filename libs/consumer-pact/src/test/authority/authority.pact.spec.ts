@@ -1,7 +1,7 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AuthorityManagementRelations, RoleManagementRelations, TOKEN_KEY } from '@app/domain';
-import { ContentTypeEnum, HalFormClientModule } from '@hal-form-client';
+import { HalFormClientModule, Link } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { AuthorityManagementService } from 'apps/app/src/app/modules/administration/modules/role-management/services/authority-management.service';
 import { RoleManagementService } from 'apps/app/src/app/modules/administration/modules/role-management/services/role-management.service';
@@ -13,9 +13,8 @@ import { GetAllAuthoritiesPact, GetOneAuthorityPact } from './authority.pact';
 
 const provider: Pact = pactForResource('authority');
 
-describe.skip('Authority Pacts', () => {
+describe('Authority Pacts', () => {
   let service: AuthorityManagementService;
-  let http: HttpClient;
 
   beforeAll(() => provider.setup());
   afterEach(() => provider.verify());
@@ -43,8 +42,7 @@ describe.skip('Authority Pacts', () => {
         },
       },
     });
-    http = TestBed.inject(HttpClient);
-    const roleService = new RoleManagementService(http, administrationService);
+    const roleService = new RoleManagementService(TestBed.inject(HttpClient), administrationService);
     service = new AuthorityManagementService(roleService);
   });
 
@@ -78,17 +76,18 @@ describe.skip('Authority Pacts', () => {
   });
 
   describe('Get One Authority', () => {
-    const options = { headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } };
-
     it('successful', (done) => {
       const interaction: InteractionObject = GetOneAuthorityPact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['authority:read'] }));
       provider.addInteraction(interaction).then(() => {
-        http.get('/api/authority/authorityId', options).subscribe((authority) => {
-          expect(authority).toBeTruthy();
-          expect(authority).toEqual(interaction.willRespondWith.body);
-          done();
-        });
+        Link.ofUrl('/api/authority/pactUpdateAuthorityId')
+          .follow()
+          .subscribe((authority) => {
+            expect(authority).toBeTruthy();
+            expect(authority).toMatchObject(interaction.willRespondWith.body);
+            expect(authority.id).toEqual(interaction.willRespondWith.body.id);
+            done();
+          });
       });
     });
 
@@ -96,14 +95,16 @@ describe.skip('Authority Pacts', () => {
       const interaction: InteractionObject = GetOneAuthorityPact.unauthorized;
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
-        http.get('/api/authority/authorityId', options).subscribe({
-          error: (error: HttpErrorResponse) => {
-            expect(error).toBeTruthy();
-            expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
-            done();
-          },
-        });
+        Link.ofUrl('/api/authority/pactUpdateAuthorityId')
+          .follow()
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              done();
+            },
+          });
       });
     });
 
@@ -111,14 +112,16 @@ describe.skip('Authority Pacts', () => {
       const interaction: InteractionObject = GetOneAuthorityPact.not_found;
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
-        http.get('/api/authority/notFoundId', options).subscribe({
-          error: (error: HttpErrorResponse) => {
-            expect(error).toBeTruthy();
-            expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
-            done();
-          },
-        });
+        Link.ofUrl('/api/authority/notFoundId')
+          .follow()
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              done();
+            },
+          });
       });
     });
   });

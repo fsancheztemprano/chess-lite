@@ -30,8 +30,17 @@ export namespace GetAllAuthoritiesPact {
         _embedded: {
           authorityModels: [
             {
+              id: 'pactUpdateAuthorityId',
+              name: 'pact:update',
+              _links: {
+                self: { href: 'http://localhost/api/authority/pactUpdateAuthorityId' },
+                authorities: { href: 'http://localhost/api/authority' },
+              },
+              _templates: { default: { method: 'HEAD', properties: [] } },
+            },
+            {
               id: uuid(),
-              name: 'profile:update',
+              name: 'pact:read',
               _links: {
                 self: { href: withUuid('http://localhost/api/authority/{uuid}') },
                 authorities: { href: 'http://localhost/api/authority' },
@@ -40,243 +49,9 @@ export namespace GetAllAuthoritiesPact {
             },
             {
               id: uuid(),
-              name: 'profile:read',
+              name: 'pact:delete',
               _links: {
                 self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'profile:delete',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:read',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:create',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:update',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:update:role',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:update:authorities',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:delete',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:preferences:read',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'user:preferences:update',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'role:read',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'role:create',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'role:update',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'role:update:core',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'role:delete',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'authority:create',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'authority:read',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'authority:update',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'authority:delete',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'admin:root',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'admin:user-management:root',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'admin:role-management:root',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'service-logs:read',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'service-logs:delete',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'global-settings:read',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: uuid(),
-              name: 'global-settings:update',
-              _links: {
-                self: { href: withUuid('http://localhost/api/authority/{uuid}') },
-                authorities: { href: 'http://localhost/api/authority' },
-              },
-              _templates: { default: { method: 'HEAD', properties: [] } },
-            },
-            {
-              id: 'authorityId',
-              name: 'pact:test:read',
-              _links: {
-                self: { href: 'http://localhost/api/authority/authorityId' },
                 authorities: { href: 'http://localhost/api/authority' },
               },
               _templates: { default: { method: 'HEAD', properties: [] } },
@@ -290,7 +65,7 @@ export namespace GetAllAuthoritiesPact {
         },
         page: {
           size: 1000,
-          totalElements: 28,
+          totalElements: 3,
           totalPages: 1,
           number: 0,
         },
@@ -331,7 +106,7 @@ export namespace GetOneAuthorityPact {
     uponReceiving: 'get one authority',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/authority/authorityId',
+      path: '/api/authority/pactUpdateAuthorityId',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['authority:read'] })),
@@ -343,10 +118,10 @@ export namespace GetOneAuthorityPact {
         [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        id: 'authorityId',
-        name: 'pact:test:read',
+        id: 'pactUpdateAuthorityId',
+        name: 'pact:update',
         _links: {
-          self: { href: 'http://localhost/api/authority/authorityId' },
+          self: { href: 'http://localhost/api/authority/pactUpdateAuthorityId' },
           authorities: { href: 'http://localhost/api/authority' },
         },
         _templates: { default: { method: 'HEAD', properties: [] } },
@@ -359,7 +134,7 @@ export namespace GetOneAuthorityPact {
     uponReceiving: 'get one authority unauthorized',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/authority/authorityId',
+      path: '/api/authority/pactUpdateAuthorityId',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
@@ -389,7 +164,7 @@ export namespace GetOneAuthorityPact {
       status: 404,
       body: {
         reason: 'Not Found',
-        title: 'Identifier notFoundId was not found',
+        title: 'Authority with id: notFoundId not found',
       },
     },
   };

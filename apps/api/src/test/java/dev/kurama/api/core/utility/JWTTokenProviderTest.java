@@ -42,7 +42,10 @@ class JWTTokenProviderTest {
   void generateJWTToken() {
     Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
     Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
-    User user = User.builder().setRandomUUID().username("username").email("email@localhost")
+    User user = User.builder()
+      .setRandomUUID()
+      .username("username")
+      .email("email@localhost")
       .authorities(newHashSet(authority1, authority2))
       .build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
