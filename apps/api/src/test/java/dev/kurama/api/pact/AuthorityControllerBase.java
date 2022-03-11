@@ -1,6 +1,7 @@
 package dev.kurama.api.pact;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 
 import dev.kurama.api.core.domain.Authority;
@@ -38,7 +39,7 @@ public abstract class AuthorityControllerBase extends PactBase {
         Authority.builder().setRandomUUID().name("pact:delete").build()), pageRequest, 3);
 
     doReturn(page).when(authorityService).getAllAuthorities(pageRequest);
-    doReturn(Optional.empty()).when(authorityService).findAuthorityById("notFoundId");
-    doReturn(Optional.of(pactUpdateAuthority)).when(authorityService).findAuthorityById("pactUpdateAuthorityId");
+    doReturn(Optional.empty()).when(authorityService).findAuthorityById(anyString());
+    doReturn(Optional.of(pactUpdateAuthority)).when(authorityService).findAuthorityById(pactUpdateAuthority.getId());
   }
 }

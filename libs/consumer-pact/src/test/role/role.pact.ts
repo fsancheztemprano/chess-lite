@@ -2,9 +2,36 @@ import { HttpHeaderKey } from '@app/domain';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { eachLike, like, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
+import { eachLike, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer, withUuid } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
+
+const pactRole = {
+  id: 'pactRoleId',
+  name: 'PACT_ROLE',
+  authorities: [
+    { id: uuid(), name: 'pact:update' },
+    { id: uuid(), name: 'pact:delete' },
+    { id: uuid(), name: 'pact:read' },
+  ],
+  coreRole: false,
+  canLogin: true,
+  _links: {
+    self: {
+      href: 'http://localhost/api/role/pactRoleId',
+    },
+    roles: {
+      href: 'http://localhost/api/role{?search}',
+      templated: true,
+    },
+  },
+  _templates: {
+    default: {
+      method: 'HEAD',
+      properties: [],
+    },
+  },
+};
 
 export namespace GetAllRolesPact {
   export const successful: InteractionObject = {
@@ -26,50 +53,16 @@ export namespace GetAllRolesPact {
       body: {
         _embedded: {
           roleModels: [
+            { ...pactRole },
             {
               id: uuid(),
-              name: 'ADMIN_ROLE',
-              authorities: [
-                { id: uuid(), name: 'user:read' },
-                { id: uuid(), name: 'service-logs:read' },
-                { id: uuid(), name: 'user:create' },
-                { id: uuid(), name: 'profile:delete' },
-                { id: uuid(), name: 'service-logs:delete' },
-                { id: uuid(), name: 'profile:update' },
-                { id: uuid(), name: 'user:update' },
-                { id: uuid(), name: 'profile:read' },
-              ],
-              coreRole: true,
-              canLogin: false,
-              _links: {
-                self: {
-                  href: withUuid('http://localhost/api/role/{uuid}'),
-                },
-                roles: {
-                  href: 'http://localhost/api/role{?search}',
-                  templated: true,
-                },
-              },
-              _templates: {
-                default: {
-                  method: 'HEAD',
-                  properties: [],
-                },
-              },
-            },
-            {
-              id: 'defaultPactRoleId',
-              name: 'DEFAULT_PACT_ROLE',
-              authorities: [
-                { id: uuid(), name: 'profile:delete' },
-                { id: uuid(), name: 'profile:update' },
-                { id: uuid(), name: 'profile:read' },
-              ],
+              name: 'PACT_ROLE_2',
+              authorities: eachLike({ id: uuid(), name: 'pact:update' }, { min: 1 }),
               coreRole: false,
               canLogin: true,
               _links: {
                 self: {
-                  href: 'http://localhost/api/role/defaultPactRoleId',
+                  href: withUuid('http://localhost/api/role/{uuid}'),
                 },
                 roles: {
                   href: 'http://localhost/api/role{?search}',
@@ -85,114 +78,10 @@ export namespace GetAllRolesPact {
             },
             {
               id: uuid(),
-              name: 'LOCKED_ROLE',
-              authorities: like([]),
+              name: 'PACT_ROLE_3',
+              authorities: eachLike({ id: uuid(), name: 'pact:update' }, { min: 1 }),
               coreRole: false,
-              canLogin: false,
-              _links: {
-                self: {
-                  href: withUuid('http://localhost/api/role/{uuid}'),
-                },
-                roles: {
-                  href: 'http://localhost/api/role{?search}',
-                  templated: true,
-                },
-              },
-              _templates: {
-                default: {
-                  method: 'HEAD',
-                  properties: [],
-                },
-              },
-            },
-            {
-              id: uuid(),
-              name: 'MOD_ROLE',
-              authorities: [
-                { id: uuid(), name: 'user:read' },
-                { id: uuid(), name: 'profile:delete' },
-                { id: uuid(), name: 'profile:update' },
-                { id: uuid(), name: 'user:update' },
-                { id: uuid(), name: 'profile:read' },
-              ],
-              coreRole: true,
-              canLogin: false,
-              _links: {
-                self: {
-                  href: withUuid('http://localhost/api/role/{uuid}'),
-                },
-                roles: {
-                  href: 'http://localhost/api/role{?search}',
-                  templated: true,
-                },
-              },
-              _templates: {
-                default: {
-                  method: 'HEAD',
-                  properties: [],
-                },
-              },
-            },
-            {
-              id: uuid(),
-              name: 'SUPER_ADMIN_ROLE',
-              authorities: [
-                { id: uuid(), name: 'admin:role-management:root' },
-                { id: uuid(), name: 'admin:user-management:root' },
-                { id: uuid(), name: 'user:delete' },
-                { id: uuid(), name: 'role:read' },
-                { id: uuid(), name: 'global-settings:update' },
-                { id: uuid(), name: 'user:read' },
-                { id: uuid(), name: 'service-logs:read' },
-                { id: uuid(), name: 'authority:update' },
-                { id: uuid(), name: 'profile:delete' },
-                { id: uuid(), name: 'service-logs:delete' },
-                { id: uuid(), name: 'profile:update' },
-                { id: uuid(), name: 'role:update:core' },
-                { id: uuid(), name: 'authority:create' },
-                { id: uuid(), name: 'profile:read' },
-                { id: uuid(), name: 'user:update:role' },
-                { id: uuid(), name: 'role:update' },
-                { id: uuid(), name: 'user:update:authorities' },
-                { id: uuid(), name: 'user:preferences:update' },
-                { id: uuid(), name: 'role:delete' },
-                { id: uuid(), name: 'authority:delete' },
-                { id: uuid(), name: 'user:create' },
-                { id: uuid(), name: 'authority:read' },
-                { id: uuid(), name: 'role:create' },
-                { id: uuid(), name: 'global-settings:read' },
-                { id: uuid(), name: 'user:update' },
-                { id: uuid(), name: 'admin:root' },
-                { id: uuid(), name: 'user:preferences:read' },
-              ],
-              coreRole: true,
               canLogin: true,
-              _links: {
-                self: {
-                  href: withUuid('http://localhost/api/role/{uuid}'),
-                },
-                roles: {
-                  href: 'http://localhost/api/role{?search}',
-                  templated: true,
-                },
-              },
-              _templates: {
-                default: {
-                  method: 'HEAD',
-                  properties: [],
-                },
-              },
-            },
-            {
-              id: uuid(),
-              name: 'USER_ROLE',
-              authorities: [
-                { id: uuid(), name: 'profile:delete' },
-                { id: uuid(), name: 'profile:update' },
-                { id: uuid(), name: 'profile:read' },
-              ],
-              coreRole: true,
-              canLogin: false,
               _links: {
                 self: {
                   href: withUuid('http://localhost/api/role/{uuid}'),
@@ -213,12 +102,12 @@ export namespace GetAllRolesPact {
         },
         _links: {
           self: {
-            href: 'http://localhost/api/role?page=0&size=10&sort=name,asc',
+            href: 'http://localhost/api/role?page=0&size=10',
           },
         },
         page: {
           size: 10,
-          totalElements: 6,
+          totalElements: 3,
           totalPages: 1,
           number: 0,
         },
@@ -250,16 +139,16 @@ export namespace GetAllRolesPact {
       },
       body: {
         _embedded: {
-          roleModels: eachLike({ id: string(), name: string() }, { min: 5 }),
+          roleModels: eachLike({ id: string(), name: string() }, { min: 3 }),
         },
         _links: {
           self: {
-            href: 'http://localhost/api/role?page=0&size=10&sort=name,asc',
+            href: 'http://localhost/api/role?page=0&size=10',
           },
         },
         page: {
           size: 10,
-          totalElements: 6,
+          totalElements: 3,
           totalPages: 1,
           number: 0,
         },
@@ -308,30 +197,12 @@ export namespace GetAllRolesPact {
 }
 
 export namespace GetOneRolePact {
-  const expectedRole = {
-    id: 'defaultPactRoleId',
-    name: 'DEFAULT_PACT_ROLE',
-    authorities: eachLike({ id: uuid(), name: 'profile:delete' }, { min: 3 }),
-    coreRole: false,
-    canLogin: true,
-    _links: {
-      self: {
-        href: 'http://localhost/api/role/defaultPactRoleId',
-      },
-      roles: {
-        href: 'http://localhost/api/role{?search}',
-        templated: true,
-      },
-    },
-    _templates: { default: { method: 'HEAD', properties: [] } },
-  };
-
   export const successful: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get one role',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/role/defaultPactRoleId',
+      path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
@@ -342,7 +213,7 @@ export namespace GetOneRolePact {
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
-      body: { ...expectedRole },
+      body: { ...pactRole },
     },
   };
 
@@ -351,7 +222,7 @@ export namespace GetOneRolePact {
     uponReceiving: 'get one role with update',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/role/defaultPactRoleId',
+      path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:update'] })),
@@ -363,7 +234,7 @@ export namespace GetOneRolePact {
         [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        ...expectedRole,
+        ...pactRole,
         _templates: {
           default: { method: 'HEAD', properties: [] },
           update: {
@@ -393,7 +264,7 @@ export namespace GetOneRolePact {
     uponReceiving: 'get one role with delete',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/role/defaultPactRoleId',
+      path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:delete'] })),
@@ -405,7 +276,7 @@ export namespace GetOneRolePact {
         [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
-        ...expectedRole,
+        ...pactRole,
         _templates: {
           default: { method: 'HEAD', properties: [] },
           delete: {
@@ -432,7 +303,7 @@ export namespace GetOneRolePact {
       status: 404,
       body: {
         reason: 'Not Found',
-        title: 'Identifier notFoundId was not found',
+        title: 'Role with id: notFoundId not found',
       },
     },
   };
@@ -442,7 +313,7 @@ export namespace GetOneRolePact {
     uponReceiving: 'get one role unauthorized',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/role/defaultPactRoleId',
+      path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),

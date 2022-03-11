@@ -83,7 +83,7 @@ public abstract class AuthenticationControllerBase extends PactBase {
       .locked(true)
       .role(Role.builder().setRandomUUID().canLogin(true).build())
       .build())).when(userService).findUserByUsername("lockedUser");
-    doReturn(Optional.of(pactUser)).when(userService).findUserByUsername("pactUser");
+    doReturn(Optional.of(pactUser)).when(userService).findUserByUsername(pactUser.getUsername());
 
     doThrow(new UserNotFoundException("notFound@localhost")).when(userService)
       .requestActivationTokenByEmail("notFound@localhost");

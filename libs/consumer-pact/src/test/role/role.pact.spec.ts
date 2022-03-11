@@ -12,7 +12,7 @@ import { GetAllRolesPact, GetOneRolePact } from './role.pact';
 
 const provider: Pact = pactForResource('role');
 
-describe.skip('Role Pacts', () => {
+describe('Role Pacts', () => {
   let service: RoleManagementService;
 
   beforeAll(() => provider.setup());
@@ -77,7 +77,7 @@ describe.skip('Role Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchRoles().subscribe((rolePage) => {
-          expect(rolePage._embedded.roleModels).toBeTruthy();
+          expect(rolePage?._embedded?.roleModels).toBeTruthy();
           expect(rolePage._embedded.roleModels).toHaveLength(
             interaction.willRespondWith.body._embedded.roleModels.length,
           );
@@ -118,7 +118,7 @@ describe.skip('Role Pacts', () => {
       const interaction: InteractionObject = GetOneRolePact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
       provider.addInteraction(interaction).then(() => {
-        service.fetchOneRole('defaultPactRoleId').subscribe((role) => {
+        service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
           expect(role.id).toEqual(interaction.willRespondWith.body.id);
           expect(role.name).toEqual(interaction.willRespondWith.body.name);
@@ -132,7 +132,7 @@ describe.skip('Role Pacts', () => {
       const interaction: InteractionObject = GetOneRolePact.with_update;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:update'] }));
       provider.addInteraction(interaction).then(() => {
-        service.fetchOneRole('defaultPactRoleId').subscribe((role) => {
+        service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
           expect(role.id).toEqual(interaction.willRespondWith.body.id);
           expect(role.name).toEqual(interaction.willRespondWith.body.name);
@@ -146,7 +146,7 @@ describe.skip('Role Pacts', () => {
       const interaction: InteractionObject = GetOneRolePact.with_delete;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:delete'] }));
       provider.addInteraction(interaction).then(() => {
-        service.fetchOneRole('defaultPactRoleId').subscribe((role) => {
+        service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
           expect(role.id).toEqual(interaction.willRespondWith.body.id);
           expect(role.name).toEqual(interaction.willRespondWith.body.name);
@@ -175,7 +175,7 @@ describe.skip('Role Pacts', () => {
       const interaction: InteractionObject = GetOneRolePact.unauthorized;
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
-        service.fetchOneRole('defaultPactRoleId').subscribe({
+        service.fetchOneRole('pactRoleId').subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
