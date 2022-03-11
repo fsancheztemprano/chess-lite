@@ -12,9 +12,9 @@ const globalSettings: IResource = {
     id: 'defaultPactRoleId',
     name: 'DEFAULT_PACT_ROLE',
     authorities: [
-      { id: uuid(), name: 'profile:update' },
-      { id: uuid(), name: 'profile:read' },
-      { id: uuid(), name: 'profile:delete' },
+      { id: uuid(), name: 'pact:update' },
+      { id: uuid(), name: 'pact:read' },
+      { id: uuid(), name: 'pact:delete' },
     ],
     coreRole: false,
     canLogin: true,
