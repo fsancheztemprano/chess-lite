@@ -13,10 +13,14 @@ import org.springframework.web.context.WebApplicationContext;
 public abstract class PactBase {
 
   @Autowired
-  protected WebApplicationContext context;
+  private WebApplicationContext context;
 
   @BeforeEach
-  void setUp() throws Exception {
+  public void webMvcSetUp() throws Exception {
     webAppContextSetup(context);
+    beforeEach();
+  }
+
+  protected void beforeEach() throws Exception {
   }
 }

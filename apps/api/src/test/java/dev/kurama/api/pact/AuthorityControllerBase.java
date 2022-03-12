@@ -12,7 +12,6 @@ import dev.kurama.api.core.rest.AuthorityController;
 import dev.kurama.api.core.service.AuthorityService;
 import dev.kurama.support.ImportMappers;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -28,10 +27,7 @@ public abstract class AuthorityControllerBase extends PactBase {
   private AuthorityService authorityService;
 
   @Override
-  @BeforeEach
-  void setUp() throws Exception {
-    super.setUp();
-
+  protected void beforeEach() throws Exception {
     Authority pactUpdateAuthority = Authority.builder().id("pactUpdateAuthorityId").name("pact:update").build();
     PageRequest pageRequest = PageRequest.ofSize(1000);
     PageImpl<Authority> page = new PageImpl<>(

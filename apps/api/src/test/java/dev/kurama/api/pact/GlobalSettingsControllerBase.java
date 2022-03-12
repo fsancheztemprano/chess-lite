@@ -12,7 +12,6 @@ import dev.kurama.api.core.hateoas.processor.GlobalSettingsModelProcessor;
 import dev.kurama.api.core.rest.GlobalSettingsController;
 import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.support.ImportMappers;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -26,10 +25,7 @@ public abstract class GlobalSettingsControllerBase extends PactBase {
   private GlobalSettingsService globalSettingsService;
 
   @Override
-  @BeforeEach
-  void setUp() throws Exception {
-    super.setUp();
-
+  protected void beforeEach() throws Exception {
     GlobalSettings globalSettings = GlobalSettings.builder()
       .defaultRole(Role.builder()
         .id("defaultPactRoleId")

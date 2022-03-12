@@ -23,7 +23,6 @@ import dev.kurama.support.ImportMappers;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -42,9 +41,7 @@ public abstract class AuthenticationControllerBase extends PactBase {
   private AuthenticationManager authenticationManager;
 
   @Override
-  @BeforeEach
-  void setUp() throws Exception {
-    super.setUp();
+  protected void beforeEach() throws Exception {
     HashSet<Authority> authorities = newHashSet(Authority.builder().setRandomUUID().name("profile:read").build(),
       Authority.builder().setRandomUUID().name("profile:update").build(),
       Authority.builder().setRandomUUID().name("profile:delete").build());

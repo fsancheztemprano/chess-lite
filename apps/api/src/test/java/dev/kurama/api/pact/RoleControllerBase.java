@@ -22,7 +22,6 @@ import dev.kurama.api.core.service.RoleFacility;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.support.ImportMappers;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -41,10 +40,7 @@ public abstract class RoleControllerBase extends PactBase {
   private RoleFacility roleFacility;
 
   @Override
-  @BeforeEach
-  void setUp() throws Exception {
-    super.setUp();
-
+  protected void beforeEach() throws Exception {
     Role pactRole = Role.builder()
       .id("pactRoleId")
       .name("PACT_ROLE")
