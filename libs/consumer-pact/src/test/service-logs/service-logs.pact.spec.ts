@@ -8,7 +8,7 @@ import { AdministrationService } from '../../../../../apps/app/src/app/modules/a
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
-import { GetServiceLogsPact } from './service-logs.pact';
+import { DeleteServiceLogsPact, GetServiceLogsPact } from './service-logs.pact';
 
 const provider: Pact = pactForResource('serviceLogs');
 
@@ -70,6 +70,52 @@ describe('Service Logs Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken());
         service.getServiceLogs().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Delete Service Logs', () => {
+    let serviceLogs: ServiceLogs;
+
+    beforeEach(() => {
+      serviceLogs = new ServiceLogs({
+        logs: 'logs',
+        timestamp: '2022-03-12T11:23:31.493+00:00',
+        _links: { self: { href: '/api/administration/service-logs' } },
+        _templates: {
+          default: { method: 'HEAD', properties: [] },
+          deleteServiceLogs: { method: 'DELETE', properties: [] },
+        },
+      });
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = DeleteServiceLogsPact.successful;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['service-logs:delete'] }));
+        service.deleteServiceLogs(serviceLogs).subscribe((logs: ServiceLogs) => {
+          expect(logs).toBeTruthy();
+          expect(logs.logs).toBeTruthy();
+          expect(logs.timestamp).toBeTruthy();
+          expect(logs._links).toMatchObject(interaction.willRespondWith.body._links);
+          expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
+          done();
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = DeleteServiceLogsPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        service.deleteServiceLogs(serviceLogs).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

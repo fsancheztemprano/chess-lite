@@ -16,4 +16,8 @@ export class ServiceLogsService {
       switchMap((link) => link.follow()),
     );
   }
+
+  public deleteServiceLogs(serviceLogs: ServiceLogs) {
+    return serviceLogs.submitToTemplateOrThrow(AdministrationRelations.DELETE_SERVICE_LOGS_REL);
+  }
 }

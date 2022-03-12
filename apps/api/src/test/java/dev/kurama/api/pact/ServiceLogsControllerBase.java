@@ -26,5 +26,6 @@ public class ServiceLogsControllerBase extends PactBase {
     ServiceLogsModel serviceLogs = ServiceLogsModel.builder().logs("logs...").timestamp(new Date()).build();
 
     doReturn(serviceLogs).when(serviceLogsService).getServiceLogs();
+    doReturn(serviceLogs).when(serviceLogsService).deleteServiceLogs();
   }
 }
