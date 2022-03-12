@@ -10,8 +10,7 @@
   <button
     mat-raised-button
     color="primary"
-    [disabled]="(globalSettingsService.canUpdateGlobalSettings() | async) === false"
-  >
+    [disabled]="(globalSettingsService.canUpdateGlobalSettings() | async) === false">
     Change Default Role
   </button>
 </form>

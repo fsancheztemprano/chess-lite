@@ -17,6 +17,7 @@
     "paths": {
       "@app/consumer-pact": ["libs/consumer-pact/src/index.ts"],
       "@app/domain": ["libs/domain/src/index.ts"],
+      "@app/domain/mocks": ["libs/domain/src/index.mocks.ts"],
       "@hal-form-client": ["libs/hal-form-client/src/index.ts"],
       "@hal-form-client/testing": ["libs/hal-form-client/src/index.testing.ts"]
     }

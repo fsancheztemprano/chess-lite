@@ -7,8 +7,7 @@
             width="100%"
             alt="Upload Avatar"
             *ngIf="this.userService.getCurrentUser() | async as user"
-            src="{{ user.profileImageUrl }}"
-          />
+            src="{{ user.profileImageUrl }}" />
         </mat-card-content>
       </mat-card>
       <div>
@@ -18,8 +17,7 @@
           type="file"
           accept="image/*"
           formControlName="avatar"
-          (change)="onSubmit($event)"
-        />
+          (change)="onSubmit($event)" />
         <app-form-error [control]="form" name="avatar"></app-form-error>
       </div>
     </mat-card-content>
@@ -30,8 +28,7 @@
         aria-label="Upload Avatar"
         (click)="imageInput.click()"
         *ngLet="this.userService.isAllowedToUploadAvatar() | async as canUploadAvatar"
-        [disabled]="!canUploadAvatar"
-      >
+        [disabled]="!canUploadAvatar">
         <mat-icon>file_upload</mat-icon>
       </button>
     </mat-card-actions>

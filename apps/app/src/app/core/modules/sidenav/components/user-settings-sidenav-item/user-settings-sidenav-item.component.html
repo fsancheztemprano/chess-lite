@@ -14,8 +14,7 @@
             mat-list-item
             (click)="toggleSidenav.emit()"
             [routerLink]="item.link"
-            routerLinkActive="active-link"
-          >
+            routerLinkActive="active-link">
             <mat-icon aria-hidden="false" [attr.aria-label]="item.title">{{ item.icon }}</mat-icon>
             {{ item.title }}
           </a>

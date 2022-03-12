@@ -4,8 +4,7 @@
     [@wobble]="error === true"
     (@wobble.start)="error = false"
     [@bounceOut]="success === true"
-    (@bounceOut.done)="onSuccess()"
-  >
+    (@bounceOut.done)="onSuccess()">
     <mat-card-header>
       <mat-card-title>Enter your Email</mat-card-title>
     </mat-card-header>
@@ -21,8 +20,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="form.invalid || (activationTokenService.isAllowedToRequestToken() | async) === false"
-      >
+        [disabled]="form.invalid || (activationTokenService.isAllowedToRequestToken() | async) === false">
         Request Token
       </button>
     </mat-card-actions>

@@ -4,8 +4,7 @@
     [@wobble]="error === true"
     (@wobble.start)="error = false"
     [@bounceOut]="success === true"
-    (@bounceOut.done)="onSuccess()"
-  >
+    (@bounceOut.done)="onSuccess()">
     <mat-card-header>
       <mat-card-title>Activate your Account</mat-card-title>
     </mat-card-header>
@@ -42,8 +41,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="form.invalid || (activationTokenService.isAllowedToActivateAccount() | async) === false"
-      >
+        [disabled]="form.invalid || (activationTokenService.isAllowedToActivateAccount() | async) === false">
         Activate Account
       </button>
     </mat-card-actions>
