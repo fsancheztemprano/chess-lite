@@ -1,5 +1,6 @@
 import { HttpHeaderKey, UserManagementRelations } from '@app/domain';
 import {
+  createUserTemplate,
   defaultTemplate,
   deleteUserTemplate,
   requestActivationTokenTemplate,
@@ -10,7 +11,14 @@ import {
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { boolean, eachLike, iso8601DateTimeWithMillis, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
+import {
+  boolean,
+  eachLike,
+  email,
+  iso8601DateTimeWithMillis,
+  string,
+  uuid,
+} from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer, withUuid } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
 
@@ -212,6 +220,89 @@ export namespace GetUserPact {
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+}
+
+export namespace GetAllUsersPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get all users',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/user',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        _embedded: {
+          userModels: eachLike({ id: string(), username: string(), email: email() }, { min: 3 }),
+        },
+        _links: {
+          self: {
+            href: 'http://localhost/api/user?page=0&size=10',
+          },
+        },
+        page: { size: 10, totalElements: 3, totalPages: 1, number: 0 },
+        _templates: { ...defaultTemplate },
+      },
+    },
+  };
+
+  export const with_create: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get all users with create',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/user',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:create'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        _embedded: {
+          userModels: eachLike({ id: string(), username: string(), email: email() }, { min: 3 }),
+        },
+        _links: {
+          self: {
+            href: 'http://localhost/api/user?page=0&size=10',
+          },
+        },
+        page: { size: 10, totalElements: 3, totalPages: 1, number: 0 },
+        _templates: {
+          ...defaultTemplate,
+          ...createUserTemplate,
+        },
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get all users unauthorized',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/user',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
       },
     },
   };

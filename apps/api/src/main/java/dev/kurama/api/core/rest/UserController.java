@@ -50,7 +50,8 @@ public class UserController {
 
   @GetMapping()
   @PreAuthorize("hasAuthority('user:read')")
-  public ResponseEntity<PagedModel<UserModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+  public ResponseEntity<PagedModel<UserModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE, sort =
+    "username") Pageable pageable,
                                                       @RequestParam(value = "search", required = false) String search) {
     return ok().body(userFacade.getAll(pageable, search));
   }

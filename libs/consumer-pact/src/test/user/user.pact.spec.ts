@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ActivationTokenRelations, TOKEN_KEY, User, UserManagementRelations } from '@app/domain';
+import { ActivationTokenRelations, TOKEN_KEY, User, UserManagementRelations, UserPage } from '@app/domain';
 import { createUserTemplate, defaultTemplate } from '@app/domain/mocks';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
@@ -9,7 +9,7 @@ import { AdministrationService } from '../../../../../apps/app/src/app/modules/a
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
-import { GetUserPact } from './user.pact';
+import { GetAllUsersPact, GetUserPact } from './user.pact';
 
 const provider: Pact = pactForResource('user');
 
@@ -63,7 +63,7 @@ describe('User Pacts', () => {
   describe('Get User', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetUserPact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -144,6 +144,54 @@ describe('User Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.fetchUser('notFoundId').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Get All Users', () => {
+    it('successful', (done) => {
+      const interaction: InteractionObject = GetAllUsersPact.successful;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read'] }));
+      provider.addInteraction(interaction).then(() => {
+        service.fetchUsers().subscribe((userPage: UserPage) => {
+          expect(userPage).toBeTruthy();
+          expect(userPage._embedded).toBeTruthy();
+          expect(userPage._embedded.userModels).toHaveLength(3);
+          expect(userPage._links).toBeTruthy();
+          expect(userPage._templates?.default).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('with create', (done) => {
+      const interaction: InteractionObject = GetAllUsersPact.with_create;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:create'] }));
+      provider.addInteraction(interaction).then(() => {
+        service.fetchUsers().subscribe((userPage: UserPage) => {
+          expect(userPage).toBeTruthy();
+          expect(userPage._embedded).toBeTruthy();
+          expect(userPage._embedded.userModels).toHaveLength(3);
+          expect(userPage._links).toBeTruthy();
+          expect(userPage._templates?.default).toBeTruthy();
+          expect(userPage._templates?.[UserManagementRelations.USER_CREATE_REL]).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = GetAllUsersPact.unauthorized;
+      localStorage.setItem(TOKEN_KEY, jwtToken());
+      provider.addInteraction(interaction).then(() => {
+        service.fetchUsers().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
