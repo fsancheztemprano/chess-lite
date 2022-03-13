@@ -11,9 +11,10 @@ export interface SignupInput {
 }
 
 export enum HttpHeaderKey {
-  JWT_TOKEN = 'Jwt-Token',
-  CONTENT_TYPE = 'Content-Type',
   ACCESS_CONTROL_EXPOSE_HEADERS = 'Access-Control-Expose-Headers',
+  CONTENT_TYPE = 'Content-Type',
+  JWT_TOKEN = 'Jwt-Token',
+  LOCATION = 'Location',
 }
 
 export interface AccountActivationInput {

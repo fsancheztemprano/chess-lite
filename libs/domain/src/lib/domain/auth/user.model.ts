@@ -3,6 +3,21 @@ import { Page } from '../hateoas/pageable.model';
 import { Authority } from './authority.model';
 import { Role } from './role.model';
 
+export interface UserInput {
+  username: string;
+  email: string;
+  password: string;
+  firstname?: string;
+  lastname?: string;
+  profileImageUrl?: string;
+  roleId?: string;
+  authorityIds?: string[];
+  active?: boolean;
+  locked?: boolean;
+  expired?: boolean;
+  credentialsExpired?: boolean;
+}
+
 export class User extends Resource implements IResource {
   id?: string;
   email?: string;

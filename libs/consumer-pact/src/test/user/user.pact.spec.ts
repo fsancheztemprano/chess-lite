@@ -9,7 +9,7 @@ import { AdministrationService } from '../../../../../apps/app/src/app/modules/a
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
-import { GetAllUsersPact, GetUserPact } from './user.pact';
+import { CreateUserPact, GetAllUsersPact, GetUserPact } from './user.pact';
 
 const provider: Pact = pactForResource('user');
 
@@ -199,6 +199,70 @@ describe('User Pacts', () => {
             done();
           },
         });
+      });
+    });
+  });
+
+  describe('Create User', () => {
+    it('successful', (done) => {
+      const interaction: InteractionObject = CreateUserPact.successful;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:create'] }));
+      provider.addInteraction(interaction).then(() => {
+        service
+          .createUser({
+            username: 'createdUser',
+            password: 'createdUser',
+            email: 'createdUser@localhost',
+          })
+          .subscribe((user: User) => {
+            expect(user).toBeTruthy();
+            expect(user.id).toBe(interaction.willRespondWith.body.id.getValue());
+            expect(user._links).toBeTruthy();
+            expect(user._templates?.default).toBeTruthy();
+            done();
+          });
+      });
+    });
+
+    it('existing', (done) => {
+      const interaction: InteractionObject = CreateUserPact.existing;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:create'] }));
+      provider.addInteraction(interaction).then(() => {
+        service
+          .createUser({
+            username: 'pactUser',
+            password: 'pactUser',
+            email: 'pactUser@localhost',
+          })
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              done();
+            },
+          });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = CreateUserPact.unauthorized;
+      localStorage.setItem(TOKEN_KEY, jwtToken());
+      provider.addInteraction(interaction).then(() => {
+        service
+          .createUser({
+            username: 'createdUser',
+            password: 'createdUser',
+            email: 'createdUser@localhost',
+          })
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              done();
+            },
+          });
       });
     });
   });

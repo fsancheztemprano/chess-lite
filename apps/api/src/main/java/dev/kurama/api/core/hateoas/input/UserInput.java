@@ -10,15 +10,14 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class UserInput {
 
-  private String id;
   @Length(min = 5, max = 128)
   private String username;
   @Length(min = 6, max = 128)
   private String password;
-  private String firstname;
-  private String lastname;
   @Email
   private String email;
+  private String firstname;
+  private String lastname;
   private String profileImageUrl;
   private String roleId;
   private Set<String> authorityIds;

@@ -10,8 +10,9 @@ export class PactInterceptor implements HttpInterceptor {
   constructor(@Inject(PACT_BASE_URL) public pactBaseUrl: string) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const separator = request.url.charAt(0) === '/' ? '' : '/';
-    const url = this.pactBaseUrl + separator + request.url;
+    let url = request.url.replace('http://localhost', '');
+    const separator = url.charAt(0) === '?' || url.charAt(0) === '/' ? '' : '/';
+    url = this.pactBaseUrl + separator + url;
     return next.handle(request.clone({ url }));
   }
 }
@@ -23,9 +24,5 @@ export const PactInterceptorProvider = {
 };
 
 export function avengersAssemble(pactBaseUrl = ''): unknown[] {
-  const urlProvider = {
-    provide: PACT_BASE_URL,
-    useValue: pactBaseUrl,
-  };
-  return [urlProvider, PactInterceptorProvider, AuthInterceptorProvider];
+  return [{ provide: PACT_BASE_URL, useValue: pactBaseUrl }, PactInterceptorProvider, AuthInterceptorProvider];
 }

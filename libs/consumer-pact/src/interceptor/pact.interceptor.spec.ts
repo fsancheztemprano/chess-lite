@@ -4,6 +4,9 @@ import { TestBed } from '@angular/core/testing';
 import { PACT_BASE_URL, PactInterceptor, PactInterceptorProvider } from './pact.interceptor';
 
 describe('PactInterceptor', () => {
+  let http: HttpClient;
+  let httpTestingController: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -11,27 +14,32 @@ describe('PactInterceptor', () => {
         PactInterceptor,
         {
           provide: PACT_BASE_URL,
-          useValue: 'http://localhost:1234',
+          useValue: 'http://127.0.0.1:1234',
         },
         PactInterceptorProvider,
       ],
     });
+    http = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
+
+  afterEach(() => httpTestingController.verify());
 
   it('should be created', () => {
     const interceptor: PactInterceptor = TestBed.inject(PactInterceptor);
     expect(interceptor).toBeTruthy();
   });
 
-  it('should intercept a call and set the hostname, port and baseurl', () => {
-    const http: HttpClient = TestBed.inject(HttpClient);
-    const httpTestingController: HttpTestingController = TestBed.inject(HttpTestingController);
+  it.each(['/api/test', 'api/test', 'http://localhost/api/test'])(
+    'should intercept a call to %s and set the hostname, port and baseurl',
+    (url: string) => {
+      http.get(url).subscribe();
+      httpTestingController.match('http://127.0.0.1:1234/api/test');
+    },
+  );
 
-    http.get('/api/test').subscribe();
-    httpTestingController.match('http://localhost:1234/api/test');
-    http.get('api/test').subscribe();
-    httpTestingController.match('http://localhost:1234/api/test');
-
-    httpTestingController.verify();
+  it('should intercept a call to ?param=value and set the hostname, port and baseurl', () => {
+    http.get('?param=value').subscribe();
+    httpTestingController.match('http://127.0.0.1:1234?param=value');
   });
 });

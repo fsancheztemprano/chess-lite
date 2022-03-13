@@ -60,8 +60,7 @@ public class UserController {
   @PreAuthorize("hasAuthority('user:create')")
   public ResponseEntity<UserModel> create(@RequestBody UserInput userInput) throws UserExistsException {
     UserModel newUser = userFacade.create(userInput);
-    return created(fromCurrentRequestUri().path("/user/{userId}").buildAndExpand(newUser.getId()).toUri()).body(
-      newUser);
+    return created(fromCurrentRequestUri().path("/{userId}").buildAndExpand(newUser.getId()).toUri()).body(newUser);
   }
 
   @PatchMapping("/{userId}")

@@ -13,10 +13,6 @@ export const updateUserTemplate = {
       },
       { name: 'expired' },
       { name: 'firstname', type: 'text' },
-      {
-        name: 'id',
-        type: 'text',
-      },
       { name: 'lastname', type: 'text' },
       { name: 'locked' },
       {

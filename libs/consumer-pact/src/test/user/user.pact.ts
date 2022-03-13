@@ -307,3 +307,103 @@ export namespace GetAllUsersPact {
     },
   };
 }
+
+export namespace CreateUserPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create user',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/user',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:create'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        username: 'createdUser',
+        email: 'createdUser@localhost',
+        password: 'createdUser',
+      },
+    },
+    willRespondWith: {
+      status: 201,
+      headers: {
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.LOCATION]: withUuid('http://localhost/api/user/{uuid}'),
+      },
+      body: {
+        ...pactUser,
+        id: uuid(),
+        email: 'createdUser@localhost',
+        username: 'createdUser',
+        userPreferences: {
+          id: uuid(),
+          darkMode: false,
+          contentLanguage: 'en',
+          _links: {
+            [UserManagementRelations.USER_REL]: { href: withUuid('http://localhost/api/user/{uuid}') },
+            self: { href: withUuid('http://localhost/api/user/preferences/{uuid}') },
+          },
+          _templates: { ...defaultTemplate },
+        },
+        _links: {
+          ...pactUser._links,
+          self: { href: withUuid('http://localhost/api/user/{uuid}') },
+        },
+      },
+    },
+  };
+
+  export const existing: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create user existing',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/user',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:create'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        username: 'pactUser',
+        email: 'pactUser@localhost',
+        password: 'pactUser',
+      },
+    },
+    willRespondWith: {
+      status: 409,
+      body: {
+        reason: 'Conflict',
+        title: 'User with unique id: pactUser already exists',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create user unauthorized',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/user',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        username: 'createdUser',
+        email: 'createdUser@localhost',
+        password: 'createdUser',
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+}
