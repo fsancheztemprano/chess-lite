@@ -135,7 +135,8 @@ public class UserService {
     validateNewUsernameAndEmail(userInput.getUsername(), userInput.getEmail());
     var role = (isNotEmpty(userInput.getRoleId()) ? roleService.findRoleById(userInput.getRoleId())
       : Optional.<Role>empty()).orElseGet(() -> globalSettingsService.getGlobalSettings().getDefaultRole());
-    User user = User.builder().setRandomUUID()
+    User user = User.builder()
+      .setRandomUUID()
       .username(userInput.getUsername())
       .password(passwordEncoder.encode(userInput.getPassword()))
       .email(userInput.getEmail())

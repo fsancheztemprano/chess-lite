@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.pact.PactTemplate.pactUser;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
@@ -11,6 +12,7 @@ import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZ
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
 import dev.kurama.api.core.hateoas.processor.UserModelProcessor;
@@ -65,8 +67,7 @@ public class UserControllerBase extends PactBase {
       .locked(false)
       .expired(false)
       .credentialsExpired(false)
-      .userPreferences(UserPreferences.builder().setRandomUUID().build())
-      .build();
+      .userPreferences(UserPreferences.builder().setRandomUUID().build()).build();
     createdUser.getUserPreferences().setUser(createdUser);
 
     doReturn(Optional.of(pactUser)).when(userService).findUserById(pactUser.getId());
@@ -76,5 +77,12 @@ public class UserControllerBase extends PactBase {
       .createUser(argThat(input -> input.getUsername().equals(createdUser.getUsername())));
     doThrow(new UserExistsException(pactUser.getUsername())).when(userService)
       .createUser(argThat(input -> input.getUsername().equals(pactUser.getUsername())));
+    doReturn(pactUser).when(userService)
+      .updateUser(eq(pactUser.getId()),
+        argThat(input -> input.getFirstname() != null && input.getFirstname().equals("pactUserFirstname")));
+    doThrow(new UserNotFoundException("notFoundId")).when(userService).updateUser(eq("notFoundId"), any());
+    doThrow(new UserExistsException("existingUser@localhost")).when(userService)
+      .updateUser(eq(pactUser.getId()),
+        argThat(input -> input.getEmail() != null && input.getEmail().equals("existingUser@localhost")));
   }
 }

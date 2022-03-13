@@ -407,3 +407,101 @@ export namespace CreateUserPact {
     },
   };
 }
+
+export namespace UpdateUserPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update one user',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        firstname: 'pactUserFirstname',
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        ...pactUser,
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update one user not found',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/notFoundId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        firstname: 'notFoundFirstname',
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update one user unauthorized',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        firstname: 'pactUserFirstname',
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
+  export const existing: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update one user existing',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        email: 'existingUser@localhost',
+      },
+    },
+    willRespondWith: {
+      status: 409,
+      body: {
+        reason: 'Conflict',
+        title: 'User with unique id: existingUser@localhost already exists',
+      },
+    },
+  };
+}
