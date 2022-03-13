@@ -67,7 +67,8 @@ public class UserControllerBase extends PactBase {
       .locked(false)
       .expired(false)
       .credentialsExpired(false)
-      .userPreferences(UserPreferences.builder().setRandomUUID().build()).build();
+      .userPreferences(UserPreferences.builder().setRandomUUID().build())
+      .build();
     createdUser.getUserPreferences().setUser(createdUser);
 
     doReturn(Optional.of(pactUser)).when(userService).findUserById(pactUser.getId());
