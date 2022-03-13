@@ -98,7 +98,7 @@ export class UserManagementDetailService {
     return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_DELETE_REL)));
   }
 
-  deleteProfile() {
+  deleteUser() {
     return this.getUser().pipe(
       first(),
       filterNulls(),

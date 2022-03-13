@@ -5,6 +5,7 @@ import { ActivationTokenRelations, TOKEN_KEY, User, UserManagementRelations, Use
 import {
   createUserTemplate,
   defaultTemplate,
+  deleteUserTemplate,
   updateUserAuthoritiesTemplate,
   updateUserRoleTemplate,
   updateUserTemplate,
@@ -21,6 +22,7 @@ import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
 import {
   CreateUserPact,
+  DeleteUserPact,
   GetAllUsersPact,
   GetUserPact,
   UpdateUserAuthoritiesPact,
@@ -535,6 +537,76 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken());
         userDetailService.updateUserAuthorities(['pactAuthorityId']).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Delete User', () => {
+    beforeEach(() => {
+      userDetailService = TestBed.inject(UserManagementDetailService);
+      userDetailService.setUser(
+        new User({
+          _links: {
+            self: { href: 'http://localhost/api/user/pactUserId' },
+          },
+          _templates: {
+            ...defaultTemplate,
+            ...deleteUserTemplate,
+          },
+        }),
+      );
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = DeleteUserPact.successful;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:delete'] }));
+      provider.addInteraction(interaction).then(() => {
+        userDetailService.deleteUser().subscribe((user: User) => {
+          expect(user).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('user not found', (done) => {
+      const interaction: InteractionObject = DeleteUserPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:delete'] }));
+        userDetailService.setUser(
+          new User({
+            _links: {
+              self: { href: 'http://localhost/api/user/notFoundId' },
+            },
+            _templates: {
+              ...defaultTemplate,
+              ...deleteUserTemplate,
+            },
+          }),
+        );
+
+        userDetailService.deleteUser().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = DeleteUserPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        userDetailService.deleteUser().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

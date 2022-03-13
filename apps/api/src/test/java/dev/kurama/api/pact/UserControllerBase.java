@@ -95,5 +95,6 @@ public class UserControllerBase extends PactBase {
     doReturn(pactUser).when(userService)
       .updateUser(eq(pactUser.getId()),
         argThat(input -> input.getAuthorityIds() != null && input.getAuthorityIds().contains("pactAuthorityId")));
+    doThrow(new UserNotFoundException("notFoundId")).when(userService).deleteUserById("notFoundId");
   }
 }

@@ -30,7 +30,7 @@ export class UserManagementAccountDeleteComponent {
       .pipe(
         first(),
         filter((username) => !!username?.length),
-        switchMap(() => this.userManagementDetailService.deleteProfile()),
+        switchMap(() => this.userManagementDetailService.deleteUser()),
       )
       .subscribe({
         next: () => {
