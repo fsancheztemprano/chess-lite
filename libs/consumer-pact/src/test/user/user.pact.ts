@@ -505,3 +505,101 @@ export namespace UpdateUserPact {
     },
   };
 }
+
+export namespace UpdateUserRolePact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user role',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        roleId: 'pactRoleId',
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        ...pactUser,
+      },
+    },
+  };
+
+  export const user_not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user role, user not found',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/notFoundId/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        roleId: 'pactRoleId',
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+
+  export const role_not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user role, role not found',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        roleId: 'notFoundId',
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'Role with id: notFoundId not found',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user role, unauthorized',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId/role',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        roleId: 'pactRoleId',
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+}

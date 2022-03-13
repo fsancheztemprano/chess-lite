@@ -35,7 +35,7 @@ export class UserManagementRoleComponent {
   }
 
   onSubmit() {
-    this.userManagementDetailService.updateProfile(this.form.value).subscribe({
+    this.userManagementDetailService.updateUserRole(this.form.value.roleId).subscribe({
       next: () => this.toasterService.showToast({ message: 'Role updated successfully' }),
       error: () => this.toasterService.showToast({ message: 'An error has occurred' }),
     });

@@ -2,7 +2,7 @@ import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivationTokenRelations, TOKEN_KEY, User, UserManagementRelations, UserPage } from '@app/domain';
-import { createUserTemplate, defaultTemplate, updateUserTemplate } from '@app/domain/mocks';
+import { createUserTemplate, defaultTemplate, updateUserRoleTemplate, updateUserTemplate } from '@app/domain/mocks';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { stubMessageServiceProvider } from '../../../../../apps/app/src/app/core/services/message.service.stub';
@@ -14,7 +14,7 @@ import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
 
-import { CreateUserPact, GetAllUsersPact, GetUserPact, UpdateUserPact } from './user.pact';
+import { CreateUserPact, GetAllUsersPact, GetUserPact, UpdateUserPact, UpdateUserRolePact } from './user.pact';
 
 const provider: Pact = pactForResource('user');
 
@@ -297,7 +297,7 @@ describe('User Pacts', () => {
       const interaction: InteractionObject = UpdateUserPact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:update'] }));
       provider.addInteraction(interaction).then(() => {
-        userDetailService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
+        userDetailService.updateUser({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
           expect(user).toBeTruthy();
           expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
@@ -323,7 +323,7 @@ describe('User Pacts', () => {
           }),
         );
 
-        userDetailService.updateProfile({ firstname: 'notFoundFirstname' }).subscribe({
+        userDetailService.updateUser({ firstname: 'notFoundFirstname' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -338,7 +338,7 @@ describe('User Pacts', () => {
       const interaction: InteractionObject = UpdateUserPact.unauthorized;
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
-        userDetailService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe({
+        userDetailService.updateUser({ firstname: 'pactUserFirstname' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -353,7 +353,99 @@ describe('User Pacts', () => {
       const interaction: InteractionObject = UpdateUserPact.existing;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:update'] }));
       provider.addInteraction(interaction).then(() => {
-        userDetailService.updateProfile({ email: 'existingUser@localhost' }).subscribe({
+        userDetailService.updateUser({ email: 'existingUser@localhost' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Update User Role', () => {
+    beforeEach(() => {
+      userDetailService = TestBed.inject(UserManagementDetailService);
+      userDetailService.setUser(
+        new User({
+          _links: {
+            self: { href: 'http://localhost/api/user/pactUserId' },
+          },
+          _templates: {
+            ...defaultTemplate,
+            ...updateUserRoleTemplate,
+          },
+        }),
+      );
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = UpdateUserRolePact.successful;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:update:role'] }));
+      provider.addInteraction(interaction).then(() => {
+        userDetailService.updateUserRole('pactRoleId').subscribe((user: User) => {
+          expect(user).toBeTruthy();
+          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user._links).toBeTruthy();
+          expect(user._templates?.default).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('user not found', (done) => {
+      const interaction: InteractionObject = UpdateUserRolePact.user_not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:update:role'] }));
+        userDetailService.setUser(
+          new User({
+            _links: {
+              self: { href: 'http://localhost/api/user/notFoundId' },
+            },
+            _templates: {
+              ...defaultTemplate,
+              [UserManagementRelations.USER_UPDATE_ROLE_REL]: {
+                method: 'PATCH',
+                properties: [{ name: 'roleId', type: 'text' }],
+                target: 'http://localhost/api/user/notFoundId/role',
+              },
+            },
+          }),
+        );
+
+        userDetailService.updateUserRole('pactRoleId').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('role not found', (done) => {
+      const interaction: InteractionObject = UpdateUserRolePact.role_not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:update:role'] }));
+        userDetailService.updateUserRole('notFoundId').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = UpdateUserRolePact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        userDetailService.updateUserRole('pactRoleId').subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

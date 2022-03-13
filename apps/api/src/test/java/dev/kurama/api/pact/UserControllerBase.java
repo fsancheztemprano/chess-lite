@@ -12,6 +12,7 @@ import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZ
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
@@ -85,5 +86,11 @@ public class UserControllerBase extends PactBase {
     doThrow(new UserExistsException("existingUser@localhost")).when(userService)
       .updateUser(eq(pactUser.getId()),
         argThat(input -> input.getEmail() != null && input.getEmail().equals("existingUser@localhost")));
+    doReturn(pactUser).when(userService)
+      .updateUser(eq(pactUser.getId()),
+        argThat(input -> input.getRoleId() != null && input.getRoleId().equals("pactRoleId")));
+    doThrow(new RoleNotFoundException("notFoundId")).when(userService)
+      .updateUser(eq(pactUser.getId()),
+        argThat(input -> input.getRoleId() != null && input.getRoleId().equals("notFoundId")));
   }
 }

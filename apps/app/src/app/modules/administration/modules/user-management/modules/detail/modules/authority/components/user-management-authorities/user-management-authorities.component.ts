@@ -42,11 +42,11 @@ export class UserManagementAuthoritiesComponent implements OnInit {
 
   onSubmit() {
     this.userManagementDetailService
-      .updateProfile({
-        authorityIds: this.formArray.value
+      .updateUserAuthorities(
+        this.formArray.value
           .filter((authority: { active: boolean }) => authority.active)
           .map((authority: { id: string }) => authority.id),
-      })
+      )
       .subscribe({
         next: () => this.toasterService.showToast({ message: 'Authorities updated successfully' }),
         error: () => this.toasterService.showErrorToast({ title: 'An Error occurred' }),

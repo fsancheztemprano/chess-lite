@@ -66,11 +66,31 @@ export class UserManagementDetailService {
     return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL)));
   }
 
-  updateProfile(body: ManageUserProfileInput) {
+  updateUser(body: ManageUserProfileInput) {
     return this.getUser().pipe(
       first(),
       filterNulls(),
       switchMap((user) => user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body })),
+    );
+  }
+
+  updateUserRole(roleId: string) {
+    return this.getUser().pipe(
+      first(),
+      filterNulls(),
+      switchMap((user) =>
+        user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_ROLE_REL, { body: { roleId } }),
+      ),
+    );
+  }
+
+  updateUserAuthorities(authorityIds: string[]) {
+    return this.getUser().pipe(
+      first(),
+      filterNulls(),
+      switchMap((user) =>
+        user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL, { body: { authorityIds } }),
+      ),
     );
   }
 
