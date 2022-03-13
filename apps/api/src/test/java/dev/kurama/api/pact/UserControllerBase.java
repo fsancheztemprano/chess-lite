@@ -92,5 +92,8 @@ public class UserControllerBase extends PactBase {
     doThrow(new RoleNotFoundException("notFoundId")).when(userService)
       .updateUser(eq(pactUser.getId()),
         argThat(input -> input.getRoleId() != null && input.getRoleId().equals("notFoundId")));
+    doReturn(pactUser).when(userService)
+      .updateUser(eq(pactUser.getId()),
+        argThat(input -> input.getAuthorityIds() != null && input.getAuthorityIds().contains("pactAuthorityId")));
   }
 }

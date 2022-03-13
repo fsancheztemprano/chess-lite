@@ -603,3 +603,77 @@ export namespace UpdateUserRolePact {
     },
   };
 }
+
+export namespace UpdateUserAuthoritiesPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user authorities',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId/authorities',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        authorityIds: ['pactAuthorityId'],
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        ...pactUser,
+      },
+    },
+  };
+
+  export const user_not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user authorities, user not found',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/notFoundId/authorities',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        authorityIds: ['pactAuthorityId'],
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user authorities, unauthorized',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/pactUserId/authorities',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: {
+        authorityIds: ['pactAuthorityId'],
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+}
