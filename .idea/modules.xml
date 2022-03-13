@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/apps/api/api.iml" filepath="$PROJECT_DIR$/apps/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/app/app.iml" filepath="$PROJECT_DIR$/apps/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apps/app-e2e/app-e2e.iml" filepath="$PROJECT_DIR$/apps/app-e2e/app-e2e.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/consumer-pact/consumer-pact.iml" filepath="$PROJECT_DIR$/libs/consumer-pact/consumer-pact.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/domain/domain.iml" filepath="$PROJECT_DIR$/libs/domain/domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/hal-form-client/hal-form-client.iml" filepath="$PROJECT_DIR$/libs/hal-form-client/hal-form-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/um.iml" filepath="$PROJECT_DIR$/um.iml" />
+    </modules>
+  </component>
+</project>
