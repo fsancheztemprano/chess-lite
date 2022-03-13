@@ -735,3 +735,61 @@ export namespace DeleteUserPact {
     },
   };
 }
+
+export namespace RequestActivationTokenPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'request activation token',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/user/pactUserId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:update'] })),
+      },
+    },
+    willRespondWith: {
+      status: 204,
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'request activation token user not found',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/user/notFoundId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['user:update'] })),
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'request activation token unauthorized',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/user/pactUserId',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+}

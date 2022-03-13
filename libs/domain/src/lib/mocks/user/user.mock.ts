@@ -34,10 +34,7 @@ export const updateUserTemplate = {
 };
 
 export const requestActivationTokenTemplate = {
-  [ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL]: {
-    method: 'POST',
-    properties: [],
-  },
+  [ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL]: { method: 'POST', properties: [] },
 };
 
 export const deleteUserTemplate = {

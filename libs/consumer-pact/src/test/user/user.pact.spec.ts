@@ -6,6 +6,7 @@ import {
   createUserTemplate,
   defaultTemplate,
   deleteUserTemplate,
+  requestActivationTokenTemplate,
   updateUserAuthoritiesTemplate,
   updateUserRoleTemplate,
   updateUserTemplate,
@@ -25,6 +26,7 @@ import {
   DeleteUserPact,
   GetAllUsersPact,
   GetUserPact,
+  RequestActivationTokenPact,
   UpdateUserAuthoritiesPact,
   UpdateUserPact,
   UpdateUserRolePact,
@@ -607,6 +609,76 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken());
         userDetailService.deleteUser().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Request Activation Token', () => {
+    beforeEach(() => {
+      userDetailService = TestBed.inject(UserManagementDetailService);
+      userDetailService.setUser(
+        new User({
+          _links: {
+            self: { href: 'http://localhost/api/user/pactUserId' },
+          },
+          _templates: {
+            ...defaultTemplate,
+            ...requestActivationTokenTemplate,
+          },
+        }),
+      );
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = RequestActivationTokenPact.successful;
+      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:update'] }));
+      provider.addInteraction(interaction).then(() => {
+        userDetailService.sendActivationToken().subscribe((user: User) => {
+          expect(user).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('user not found', (done) => {
+      const interaction: InteractionObject = RequestActivationTokenPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:update'] }));
+        userDetailService.setUser(
+          new User({
+            _links: {
+              self: { href: 'http://localhost/api/user/notFoundId' },
+            },
+            _templates: {
+              ...defaultTemplate,
+              ...requestActivationTokenTemplate,
+            },
+          }),
+        );
+
+        userDetailService.sendActivationToken().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = RequestActivationTokenPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        userDetailService.sendActivationToken().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
