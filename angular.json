@@ -74,7 +74,8 @@
         "serve": {
           "builder": "@nxrocks/nx-spring-boot:serve",
           "options": {
-            "root": "apps/api"
+            "root": "apps/api",
+            "args": ["-DskipTests"]
           }
         },
         "buildJar": {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   CurrentUserRelations,
+  IUserPreferences,
   User,
   UserChangePasswordInput,
   UserPreferences,
@@ -103,7 +104,7 @@ export class UserSettingsService {
     );
   }
 
-  public updateUserPreferences(body: UserPreferences): Observable<UserPreferences> {
+  public updateUserPreferences(body: IUserPreferences): Observable<UserPreferences> {
     return this.getCurrentUserPreferences().pipe(
       first(),
       filterNulls(),

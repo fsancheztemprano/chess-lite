@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   ActivationTokenRelations,
+  IUserPreferences,
   ManageUserProfileInput,
   User,
   UserChangedMessage,
@@ -126,7 +127,7 @@ export class UserManagementDetailService {
     );
   }
 
-  updateUserPreferences(userPreferences: UserPreferences, body: UserPreferences): Observable<UserPreferences> {
+  updateUserPreferences(userPreferences: UserPreferences, body: IUserPreferences): Observable<UserPreferences> {
     return userPreferences.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body });
   }
 

@@ -54,6 +54,12 @@ export class UserPage extends Resource implements IResource {
   };
 }
 
+export class IUserPreferences implements IResource {
+  id?: string;
+  darkMode?: boolean;
+  contentLanguage?: string;
+}
+
 export class UserPreferences extends Resource implements IResource {
   id?: string;
   darkMode?: boolean;
