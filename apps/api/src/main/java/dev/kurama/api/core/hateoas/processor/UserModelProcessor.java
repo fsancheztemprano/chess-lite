@@ -56,7 +56,7 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
       .mapLinkIf(hasAuthority(USER_UPDATE), LinkRelation.of(SELF),
         link -> link.andAffordance(getSendActivationTokenAffordance(entity.getId())));
 
-    if (AuthorityUtils.isCurrentUsername(entity.getUsername())) {
+    if (AuthorityUtils.isCurrentUserId(entity.getId())) {
       boolean canUpdateOwnProfile = hasAuthority(PROFILE_UPDATE);
       entity.mapLinkIf(!hasAuthority(USER_READ) && hasAuthority(PROFILE_READ), LinkRelation.of(SELF),
           link -> getCurrentUserSelfLink())

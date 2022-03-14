@@ -3,8 +3,8 @@ import * as jwt from 'jsonwebtoken';
 
 export interface AuthUser {
   user?: {
-    id: string;
-    username: string;
+    id?: string;
+    username?: string;
   };
   authorities?: string[];
 }

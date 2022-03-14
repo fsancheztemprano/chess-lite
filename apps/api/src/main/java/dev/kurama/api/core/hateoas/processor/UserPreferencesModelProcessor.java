@@ -9,7 +9,7 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
-import static dev.kurama.api.core.utility.AuthorityUtils.isCurrentUsername;
+import static dev.kurama.api.core.utility.AuthorityUtils.isCurrentUserId;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
@@ -39,7 +39,7 @@ public class UserPreferencesModelProcessor implements RepresentationModelProcess
       .addIf(userPreferencesModel.getUser() != null, () -> getUserLink(userPreferencesModel.getUser().getId()))
       .mapLinkIf(hasAuthority(USER_PREFERENCES_UPDATE), LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(userPreferencesModel.getId())));
-    if (userPreferencesModel.getUser() != null && isCurrentUsername(userPreferencesModel.getUser().getUsername())) {
+    if (userPreferencesModel.getUser() != null && isCurrentUserId(userPreferencesModel.getUser().getId())) {
       return userPreferencesModel.mapLinkIf(!hasAuthority(USER_PREFERENCES_READ) && hasAuthority(PROFILE_READ),
           LinkRelation.of(SELF), link -> getCurrentUserPreferencesSelfLink())
         .mapLinkIf(!hasAuthority(USER_READ) && hasAuthority(PROFILE_READ), LinkRelation.of(USER_REL),

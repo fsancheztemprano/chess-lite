@@ -59,7 +59,7 @@ class UserPreferencesModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUser().getUsername())).thenReturn(false);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUserId(model.getUser().getId())).thenReturn(false);
     }
 
     @Test
@@ -106,7 +106,7 @@ class UserPreferencesModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUser().getUsername())).thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUserId(model.getUser().getId())).thenReturn(true);
       authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ)).thenReturn(true);
     }
 
