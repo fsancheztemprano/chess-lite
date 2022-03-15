@@ -13,6 +13,7 @@ export interface Session {
 })
 export class StubSessionService implements Partial<SessionService> {
   initialize = () => of(<User>{});
+  clearSession = () => of(<User>{});
 }
 
 export const stubSessionServiceProvider = {

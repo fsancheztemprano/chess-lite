@@ -332,3 +332,70 @@ export namespace ChangeUserProfilePasswordPact {
     },
   };
 }
+export namespace DeleteUserProfilePact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'delete user profile',
+    withRequest: {
+      method: HTTPMethod.DELETE,
+      path: '/api/user/profile',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: pactUser.id },
+            authorities: ['profile:read', 'profile:delete'],
+          }),
+        ),
+      },
+    },
+    willRespondWith: {
+      status: 204,
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'delete user profile unauthorized',
+    withRequest: {
+      method: HTTPMethod.DELETE,
+      path: '/api/user/profile',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ user: { id: pactUser.id } })),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'delete user profile not found',
+    withRequest: {
+      method: HTTPMethod.DELETE,
+      path: '/api/user/profile',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: ['profile:read', 'profile:delete'],
+          }),
+        ),
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+}

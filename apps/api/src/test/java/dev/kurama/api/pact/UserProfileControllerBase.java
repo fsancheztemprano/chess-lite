@@ -45,5 +45,6 @@ public class UserProfileControllerBase extends PactBase {
     doReturn(Optional.of(pactUser)).when(userService).findUserById("pactUserId");
     doReturn(pactUser).when(userService).updateUser(eq("pactUserId"), any());
     doThrow(new UserNotFoundException("notFoundId")).when(userService).updateUser(eq("notFoundId"), any());
+    doThrow(new UserNotFoundException("notFoundId")).when(userService).deleteUserById("notFoundId");
   }
 }

@@ -8,11 +8,21 @@ import { stubMessageServiceProvider } from '../../../../../apps/app/src/app/core
 import { stubPreferencesServiceProvider } from '../../../../../apps/app/src/app/core/services/preferences.service.stub';
 import { UserService } from '../../../../../apps/app/src/app/core/services/user.service';
 import { UserSettingsService } from '../../../../../apps/app/src/app/modules/user-settings/services/user-settings.service';
-import { changePasswordTemplate, updateProfileTemplate } from '../../../../domain/src/lib/mocks/user/user-profile.mock';
+import {
+  changePasswordTemplate,
+  deleteProfileTemplate,
+  updateProfileTemplate,
+} from '../../../../domain/src/lib/mocks/user/user-profile.mock';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
-import { ChangeUserProfilePasswordPact, GetUserProfilePact, UpdateUserProfilePact } from './user-profile.pact';
+import {
+  ChangeUserProfilePasswordPact,
+  DeleteUserProfilePact,
+  GetUserProfilePact,
+  UpdateUserProfilePact,
+} from './user-profile.pact';
+import { stubSessionServiceProvider } from '../../../../../apps/app/src/app/core/services/session.service.stub';
 
 const provider: Pact = pactForResource('userProfile');
 
@@ -31,6 +41,7 @@ describe('User Profile Pact', () => {
         avengersAssemble(provider.mockService.baseUrl),
         stubMessageServiceProvider,
         stubPreferencesServiceProvider,
+        stubSessionServiceProvider,
       ],
     });
     const halFormService = TestBed.inject(HalFormService);
@@ -267,6 +278,80 @@ describe('User Profile Pact', () => {
           }),
         );
         userSettingsService.changePassword({ password: 'password', newPassword: 'newPassword' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Delete User Profile', () => {
+    beforeEach(() => {
+      userService.setUser(
+        new User({
+          _links: {
+            [CurrentUserRelations.USER_PREFERENCES_REL]: {
+              href: 'http://localhost/api/user/profile/preferences',
+            },
+            self: {
+              href: 'http://localhost/api/user/profile',
+            },
+          },
+          _templates: {
+            ...defaultTemplate,
+            ...deleteProfileTemplate,
+          },
+        }),
+      );
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = DeleteUserProfilePact.successful;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(
+          TOKEN_KEY,
+          jwtToken({
+            user: { id: 'pactUserId' },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        );
+        userSettingsService.deleteAccount().subscribe((response: User) => {
+          expect(response).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = DeleteUserProfilePact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        userSettingsService.deleteAccount().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = DeleteUserProfilePact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(
+          TOKEN_KEY,
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        );
+        userSettingsService.deleteAccount().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
