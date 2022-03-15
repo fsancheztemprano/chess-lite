@@ -122,7 +122,8 @@ class UserPreferencesControllerIT {
       doReturn(expected).when(userPreferencesService).findUserPreferencesById(expected.getId());
 
       mockMvc.perform(get(format("%s/%s", USER_PREFERENCES_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
-          .headers(MockAuthorizedUser.builder().id(expected.getUser().getId())
+          .headers(MockAuthorizedUser.builder()
+            .id(expected.getUser().getId())
             .authorities(USER_PREFERENCES_READ, PROFILE_READ)
             .buildAuthorizationHeader(jwtTokenProvider)))
         .andExpect(status().isOk())
@@ -139,7 +140,8 @@ class UserPreferencesControllerIT {
       doReturn(expected).when(userPreferencesService).findUserPreferencesById(expected.getId());
 
       mockMvc.perform(get(format("%s/%s", USER_PREFERENCES_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
-          .headers(MockAuthorizedUser.builder().id(expected.getUser().getId())
+          .headers(MockAuthorizedUser.builder()
+            .id(expected.getUser().getId())
             .authorities(USER_PREFERENCES_READ, PROFILE_UPDATE)
             .buildAuthorizationHeader(jwtTokenProvider)))
         .andExpect(status().isOk())

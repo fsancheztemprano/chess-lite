@@ -180,3 +180,79 @@ export namespace GetUserProfilePact {
     },
   };
 }
+
+export namespace UpdateUserProfilePact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user profile',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/profile',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: pactUser.id },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        ),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: { firstname: 'pactUserFirstname' },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: { ...pactUser },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user profile unauthorized',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/profile',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ user: { id: pactUser.id } })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: { firstname: 'pactUserFirstname' },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user profile not found',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/profile',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        ),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: { firstname: 'pactUserFirstname' },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+}

@@ -1,9 +1,14 @@
 package dev.kurama.api.pact;
 
 import static dev.kurama.api.pact.PactTemplate.pactUser;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 
 import dev.kurama.api.core.domain.User;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
 import dev.kurama.api.core.facade.UserPreferencesFacade;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
@@ -39,5 +44,8 @@ public class UserProfileControllerBase extends PactBase {
     User pactUser = pactUser();
 
     doReturn(Optional.of(pactUser)).when(userService).findUserById("pactUserId");
+    doReturn(pactUser).when(userService)
+      .updateUser(eq("pactUserId"), argThat(input -> input.getFirstname().equals("pactUserFirstname")));
+    doThrow(new UserNotFoundException("notFoundId")).when(userService).updateUser(eq("notFoundId"), any());
   }
 }

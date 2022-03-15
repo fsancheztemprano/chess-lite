@@ -37,9 +37,9 @@ export class User extends Resource implements IResource {
 }
 
 export interface UserUpdateProfileInput {
-  firstname: string;
-  lastname: string;
-  profileImageUrl: string;
+  firstname?: string;
+  lastname?: string;
+  profileImageUrl?: string;
 }
 
 export interface UserChangePasswordInput {
