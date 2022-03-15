@@ -1,6 +1,7 @@
 package dev.kurama.api.core.facade;
 
 import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.hateoas.model.UserPreferencesModel;
 import dev.kurama.api.core.mapper.UserPreferencesMapper;
@@ -30,12 +31,13 @@ public class UserPreferencesFacade {
       userPreferencesService.updateUserPreferences(userPreferencesId, userPreferencesInput));
   }
 
-  public UserPreferencesModel findByUserId(String userId) {
+  public UserPreferencesModel findByUserId(String userId) throws UserNotFoundException {
     return userPreferencesMapper.userPreferencesToUserPreferencesModel(
       userPreferencesService.findUserPreferencesByUserId(userId));
   }
 
-  public UserPreferencesModel updateByUserId(String userId, UserPreferencesInput userPreferencesInput) {
+  public UserPreferencesModel updateByUserId(String userId, UserPreferencesInput userPreferencesInput)
+    throws UserNotFoundException {
     return userPreferencesMapper.userPreferencesToUserPreferencesModel(
       userPreferencesService.updateUserPreferencesByUserId(userId, userPreferencesInput));
   }

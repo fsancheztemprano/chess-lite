@@ -65,6 +65,7 @@ public class UserPreferencesModelProcessor implements RepresentationModelProcess
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
   }
 
+  @SneakyThrows
   public Link getCurrentUserPreferencesSelfLink() {
     return of(linkTo(methodOn(UserProfileController.class).getPreferences()).withSelfRel()).afford(HttpMethod.HEAD)
       .withName(HateoasRelations.DEFAULT)
@@ -76,6 +77,7 @@ public class UserPreferencesModelProcessor implements RepresentationModelProcess
     return afford(methodOn(UserPreferencesController.class).update(username, null));
   }
 
+  @SneakyThrows
   private @NonNull Affordance getUpdateCurrentUserPreferencesAffordance() {
     return afford(methodOn(UserProfileController.class).updatePreferences(null));
   }

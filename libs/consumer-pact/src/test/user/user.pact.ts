@@ -1,4 +1,4 @@
-import { HttpHeaderKey, UserManagementRelations } from '@app/domain';
+import { CurrentUserRelations, HttpHeaderKey, UserManagementRelations } from '@app/domain';
 import {
   createUserTemplate,
   defaultTemplate,
@@ -44,12 +44,12 @@ const pactUser = {
   expired: false,
   credentialsExpired: false,
   userPreferences: {
-    id: uuid(),
+    id: 'pactUserPreferencesId',
     darkMode: false,
     contentLanguage: 'en',
     _links: {
       [UserManagementRelations.USER_REL]: { href: 'http://localhost/api/user/pactUserId' },
-      self: { href: withUuid('http://localhost/api/user/preferences/{uuid}') },
+      self: { href: 'http://localhost/api/user/preferences/pactUserPreferencesId' },
     },
     _templates: { ...defaultTemplate },
   },
@@ -59,7 +59,7 @@ const pactUser = {
       templated: true,
     },
     [UserManagementRelations.USER_PREFERENCES_REL]: {
-      href: withUuid('http://localhost/api/user/preferences/{uuid}'),
+      href: 'http://localhost/api/user/preferences/pactUserPreferencesId',
     },
     self: {
       href: 'http://localhost/api/user/pactUserId',
@@ -350,6 +350,9 @@ export namespace CreateUserPact {
         _links: {
           ...pactUser._links,
           self: { href: withUuid('http://localhost/api/user/{uuid}') },
+          [CurrentUserRelations.USER_PREFERENCES_REL]: {
+            href: withUuid('http://localhost/api/user/preferences/{uuid}'),
+          },
         },
       },
     },

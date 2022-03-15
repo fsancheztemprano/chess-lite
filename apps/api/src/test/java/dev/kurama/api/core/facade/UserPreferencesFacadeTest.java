@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.hateoas.model.UserPreferencesModel;
 import dev.kurama.api.core.mapper.UserPreferencesMapper;
@@ -59,7 +60,7 @@ class UserPreferencesFacadeTest {
   }
 
   @Test
-  void should_find_by_user_id() {
+  void should_find_by_user_id() throws UserNotFoundException {
     String userId = randomUUID();
     UserPreferences preferences = UserPreferences.builder().setRandomUUID().darkMode(true).build();
     UserPreferencesModel expected = UserPreferencesModel.builder().id(preferences.getId()).darkMode(true).build();
@@ -74,7 +75,7 @@ class UserPreferencesFacadeTest {
   }
 
   @Test
-  void should_update_by_user_id() {
+  void should_update_by_user_id() throws UserNotFoundException {
     UserPreferencesInput input = UserPreferencesInput.builder().darkMode(true).build();
     UserPreferences preferences = UserPreferences.builder().setRandomUUID().darkMode(true).build();
     UserPreferencesModel expected = UserPreferencesModel.builder().id(preferences.getId()).darkMode(true).build();

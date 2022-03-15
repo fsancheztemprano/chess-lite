@@ -82,14 +82,15 @@ public class UserProfileController {
 
   @GetMapping(USER_PROFILE_PREFERENCES)
   @PreAuthorize("hasAuthority('profile:read')")
-  public ResponseEntity<UserPreferencesModel> getPreferences() {
+  public ResponseEntity<UserPreferencesModel> getPreferences() throws UserNotFoundException {
     return ok().body(userPreferencesFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }
 
 
   @PatchMapping(USER_PROFILE_PREFERENCES)
   @PreAuthorize("hasAuthority('profile:update')")
-  public ResponseEntity<UserPreferencesModel> updatePreferences(@RequestBody UserPreferencesInput userPreferencesInput) {
+  public ResponseEntity<UserPreferencesModel> updatePreferences(@RequestBody UserPreferencesInput userPreferencesInput)
+    throws UserNotFoundException {
     return ResponseEntity.ok()
       .body(userPreferencesFacade.updateByUserId(AuthorityUtils.getCurrentUserId(), userPreferencesInput));
   }

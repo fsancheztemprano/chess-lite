@@ -5,11 +5,11 @@ import static org.springframework.data.mapping.Alias.ofNullable;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserPreferencesChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.repository.UserPreferencesRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -34,12 +34,13 @@ public class UserPreferencesService {
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }
 
-  public UserPreferences findUserPreferencesByUserId(String userId) {
+  public UserPreferences findUserPreferencesByUserId(String userId) throws UserNotFoundException {
     return userPreferencesRepository.findUserPreferencesByUserId(userId)
-      .orElseThrow(() -> new UsernameNotFoundException(userId));
+      .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
-  public UserPreferences updateUserPreferencesByUserId(String username, UserPreferencesInput userPreferencesInput) {
+  public UserPreferences updateUserPreferencesByUserId(String username, UserPreferencesInput userPreferencesInput)
+    throws UserNotFoundException {
     var userPreferences = findUserPreferencesByUserId(username);
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }

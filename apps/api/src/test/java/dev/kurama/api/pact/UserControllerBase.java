@@ -1,5 +1,6 @@
 package dev.kurama.api.pact;
 
+import static com.github.jknack.handlebars.internal.lang3.StringUtils.isNotEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.pact.PactTemplate.pactUser;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,6 +25,7 @@ import dev.kurama.api.core.service.UserService;
 import dev.kurama.support.ImportMappers;
 import java.util.Date;
 import java.util.Optional;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -81,20 +83,21 @@ public class UserControllerBase extends PactBase {
       .createUser(argThat(input -> input.getUsername().equals(pactUser.getUsername())));
     doReturn(pactUser).when(userService)
       .updateUser(eq(pactUser.getId()),
-        argThat(input -> input.getFirstname() != null && input.getFirstname().equals("pactUserFirstname")));
+        argThat(input -> isNotEmpty(input.getFirstname()) && input.getFirstname().equals("pactUserFirstname")));
     doThrow(new UserNotFoundException("notFoundId")).when(userService).updateUser(eq("notFoundId"), any());
     doThrow(new UserExistsException("existingUser@localhost")).when(userService)
       .updateUser(eq(pactUser.getId()),
-        argThat(input -> input.getEmail() != null && input.getEmail().equals("existingUser@localhost")));
+        argThat(input -> isNotEmpty(input.getEmail()) && input.getEmail().equals("existingUser@localhost")));
     doReturn(pactUser).when(userService)
       .updateUser(eq(pactUser.getId()),
-        argThat(input -> input.getRoleId() != null && input.getRoleId().equals("pactRoleId")));
+        argThat(input -> isNotEmpty(input.getRoleId()) && input.getRoleId().equals("pactRoleId")));
     doThrow(new RoleNotFoundException("notFoundId")).when(userService)
       .updateUser(eq(pactUser.getId()),
-        argThat(input -> input.getRoleId() != null && input.getRoleId().equals("notFoundId")));
+        argThat(input -> isNotEmpty(input.getRoleId()) && input.getRoleId().equals("notFoundId")));
     doReturn(pactUser).when(userService)
-      .updateUser(eq(pactUser.getId()),
-        argThat(input -> input.getAuthorityIds() != null && input.getAuthorityIds().contains("pactAuthorityId")));
+      .updateUser(eq(pactUser.getId()), argThat(
+        input -> ObjectUtils.isNotEmpty(input.getAuthorityIds()) && input.getAuthorityIds()
+          .contains("pactAuthorityId")));
     doThrow(new UserNotFoundException("notFoundId")).when(userService).deleteUserById("notFoundId");
     doThrow(new UserNotFoundException("notFoundId")).when(userService).requestActivationTokenById("notFoundId");
   }

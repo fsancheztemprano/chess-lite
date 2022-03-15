@@ -1,6 +1,6 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { CurrentUserRelations, TOKEN_KEY, User } from '@app/domain';
+import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/domain';
 import { defaultTemplate } from '@app/domain/mocks';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
@@ -11,6 +11,7 @@ import { UserSettingsService } from '../../../../../apps/app/src/app/modules/use
 import {
   changePasswordTemplate,
   deleteProfileTemplate,
+  updateProfilePreferencesTemplate,
   updateProfileTemplate,
 } from '../../../../domain/src/lib/mocks/user/user-profile.mock';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
@@ -20,7 +21,9 @@ import {
   ChangeUserProfilePasswordPact,
   DeleteUserProfilePact,
   GetUserProfilePact,
+  GetUserProfilePreferencesPact,
   UpdateUserProfilePact,
+  UpdateUserProfilePreferencesPact,
 } from './user-profile.pact';
 import { stubSessionServiceProvider } from '../../../../../apps/app/src/app/core/services/session.service.stub';
 
@@ -148,14 +151,7 @@ describe('User Profile Pact', () => {
     beforeEach(() => {
       userService.setUser(
         new User({
-          _links: {
-            [CurrentUserRelations.USER_PREFERENCES_REL]: {
-              href: 'http://localhost/api/user/profile/preferences',
-            },
-            self: {
-              href: 'http://localhost/api/user/profile',
-            },
-          },
+          _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
             ...defaultTemplate,
             ...updateProfileTemplate,
@@ -218,14 +214,7 @@ describe('User Profile Pact', () => {
     beforeEach(() => {
       userService.setUser(
         new User({
-          _links: {
-            [CurrentUserRelations.USER_PREFERENCES_REL]: {
-              href: 'http://localhost/api/user/profile/preferences',
-            },
-            self: {
-              href: 'http://localhost/api/user/profile',
-            },
-          },
+          _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
             ...defaultTemplate,
             ...changePasswordTemplate,
@@ -293,14 +282,7 @@ describe('User Profile Pact', () => {
     beforeEach(() => {
       userService.setUser(
         new User({
-          _links: {
-            [CurrentUserRelations.USER_PREFERENCES_REL]: {
-              href: 'http://localhost/api/user/profile/preferences',
-            },
-            self: {
-              href: 'http://localhost/api/user/profile',
-            },
-          },
+          _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
             ...defaultTemplate,
             ...deleteProfileTemplate,
@@ -352,6 +334,137 @@ describe('User Profile Pact', () => {
           }),
         );
         userSettingsService.deleteAccount().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Get User Profile Preferences', () => {
+    beforeEach(() => {
+      userService.setUser(
+        new User({
+          _links: {
+            [CurrentUserRelations.USER_PREFERENCES_REL]: { href: 'http://localhost/api/user/profile/preferences' },
+            self: { href: 'http://localhost/api/user/profile' },
+          },
+          _templates: { ...defaultTemplate },
+        }),
+      );
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = GetUserProfilePreferencesPact.successful;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'pactUserId' }, authorities: ['profile:read'] }));
+        userService.fetchUserPreferences().subscribe((response: User) => {
+          expect(response).toBeTruthy();
+          expect(response.id).toBe(interaction.willRespondWith.body.id);
+          expect(response._links).toBeTruthy();
+          expect(response._templates?.default).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = GetUserProfilePreferencesPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        userService.fetchUserPreferences().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = GetUserProfilePreferencesPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'notFoundId' }, authorities: ['profile:read'] }));
+        userService.fetchUserPreferences().subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Update User Profile Preferences', () => {
+    beforeEach(() => {
+      userService.setUserPreferences(
+        new UserPreferences({
+          _links: {
+            [CurrentUserRelations.CURRENT_USER_REL]: { href: 'http://localhost/api/user/profile' },
+            self: { href: 'http://localhost/api/user/profile/preferences' },
+          },
+          _templates: {
+            ...defaultTemplate,
+            ...updateProfilePreferencesTemplate,
+          },
+        }),
+      );
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = UpdateUserProfilePreferencesPact.successful;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(
+          TOKEN_KEY,
+          jwtToken({
+            user: { id: 'pactUserId' },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        );
+        userSettingsService.updateUserPreferences({ darkMode: true }).subscribe((response: User) => {
+          expect(response).toBeTruthy();
+          expect(response.id).toBe(interaction.willRespondWith.body.id);
+          expect(response._links).toBeTruthy();
+          expect(response._templates?.default).toBeTruthy();
+          done();
+        });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = UpdateUserProfilePreferencesPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        userSettingsService.updateUserPreferences({ darkMode: true }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = UpdateUserProfilePreferencesPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(
+          TOKEN_KEY,
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        );
+        userSettingsService.updateUserPreferences({ darkMode: true }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

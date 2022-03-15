@@ -46,5 +46,13 @@ public class UserProfileControllerBase extends PactBase {
     doReturn(pactUser).when(userService).updateUser(eq("pactUserId"), any());
     doThrow(new UserNotFoundException("notFoundId")).when(userService).updateUser(eq("notFoundId"), any());
     doThrow(new UserNotFoundException("notFoundId")).when(userService).deleteUserById("notFoundId");
+
+    doReturn(pactUser.getUserPreferences()).when(userPreferencesService).findUserPreferencesByUserId(pactUser.getId());
+    doThrow(new UserNotFoundException("notFoundId")).when(userPreferencesService)
+      .findUserPreferencesByUserId("notFoundId");
+    doReturn(pactUser.getUserPreferences()).when(userPreferencesService)
+      .updateUserPreferencesByUserId(eq(pactUser.getId()), any());
+    doThrow(new UserNotFoundException("notFoundId")).when(userPreferencesService)
+      .updateUserPreferencesByUserId(eq("notFoundId"), any());
   }
 }

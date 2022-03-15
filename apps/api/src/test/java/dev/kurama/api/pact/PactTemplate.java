@@ -36,7 +36,8 @@ public class PactTemplate {
       .locked(false)
       .expired(false)
       .credentialsExpired(false)
-      .userPreferences(UserPreferences.builder().setRandomUUID().darkMode(false).contentLanguage("en").build())
+      .userPreferences(
+        UserPreferences.builder().id("pactUserPreferencesId").darkMode(false).contentLanguage("en").build())
       .build();
     pactUser.getUserPreferences().setUser(pactUser);
     return pactUser;

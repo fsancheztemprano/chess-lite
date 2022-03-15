@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserPreferencesChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.repository.UserPreferencesRepository;
 import java.util.Optional;
@@ -21,7 +22,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -82,7 +82,7 @@ class UserPreferencesServiceTest {
   class FindUserPreferencesByUserIdTests {
 
     @Test
-    void should_find_user_preferences_by_user_id() {
+    void should_find_user_preferences_by_user_id() throws UserNotFoundException {
       String userId = randomUUID();
       UserPreferences expected = UserPreferences.builder().setRandomUUID().build();
       when(userPreferencesRepository.findUserPreferencesByUserId(userId)).thenReturn(Optional.of(expected));
@@ -98,12 +98,12 @@ class UserPreferencesServiceTest {
       String userId = randomUUID();
       when(userPreferencesRepository.findUserPreferencesByUserId(userId)).thenReturn(Optional.empty());
 
-      assertThrows(UsernameNotFoundException.class, () -> userPreferencesService.findUserPreferencesByUserId(userId));
+      assertThrows(UserNotFoundException.class, () -> userPreferencesService.findUserPreferencesByUserId(userId));
     }
   }
 
   @Test
-  void update_user_preferences_by_user_id() {
+  void update_user_preferences_by_user_id() throws UserNotFoundException {
     UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).build();
     String userId = randomUUID();
     UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).build();

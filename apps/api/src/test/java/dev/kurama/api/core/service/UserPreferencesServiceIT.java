@@ -7,6 +7,7 @@ import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,7 @@ class UserPreferencesServiceIT {
   }
 
   @Test
-  void should_find_user_preferences_by_user_id() {
+  void should_find_user_preferences_by_user_id() throws UserNotFoundException {
     UserPreferences actual = service.findUserPreferencesByUserId(userPreferences.getUser().getId());
 
     assertThat(actual.getId()).isEqualTo(userPreferences.getId());
@@ -76,7 +77,7 @@ class UserPreferencesServiceIT {
   }
 
   @Test
-  void should_update_user_preferences_by_user_id() {
+  void should_update_user_preferences_by_user_id() throws UserNotFoundException {
     UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("cn").build();
 
     UserPreferences actual = service.updateUserPreferencesByUserId(this.userPreferences.getUser().getId(), input);

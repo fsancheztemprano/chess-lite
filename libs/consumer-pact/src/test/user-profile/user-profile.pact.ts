@@ -36,7 +36,7 @@ const pactUser = {
   expired: false,
   credentialsExpired: false,
   userPreferences: {
-    id: uuid(),
+    id: 'pactUserPreferencesId',
     darkMode: false,
     contentLanguage: 'en',
     user: {
@@ -332,6 +332,7 @@ export namespace ChangeUserProfilePasswordPact {
     },
   };
 }
+
 export namespace DeleteUserProfilePact {
   export const successful: InteractionObject = {
     state: 'stateless',
@@ -389,6 +390,152 @@ export namespace DeleteUserProfilePact {
           }),
         ),
       },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+}
+
+export namespace GetUserProfilePreferencesPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get user profile preferences',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/user/profile/preferences',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: pactUser.id },
+            authorities: ['profile:read'],
+          }),
+        ),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: { ...pactUser.userPreferences },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get user profile preferences unauthorized',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/user/profile/preferences',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ user: { id: pactUser.id } })),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get user profile preferences not found',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/user/profile/preferences',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: ['profile:read'],
+          }),
+        ),
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
+      },
+    },
+  };
+}
+
+export namespace UpdateUserProfilePreferencesPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user profile preferences',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/profile/preferences',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: pactUser.id },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        ),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: { darkMode: true },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: { ...pactUser.userPreferences },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user profile preferences unauthorized',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/profile/preferences',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ user: { id: pactUser.id } })),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: { darkMode: true },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user profile preferences not found',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/profile/preferences',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        ),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+      },
+      body: { darkMode: true },
     },
     willRespondWith: {
       status: 404,

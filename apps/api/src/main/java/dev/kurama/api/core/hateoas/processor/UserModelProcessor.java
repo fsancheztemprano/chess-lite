@@ -93,6 +93,7 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
     return linkTo(methodOn(UserPreferencesController.class).get(userPreferencesId)).withRel(USER_PREFERENCES_REL);
   }
 
+  @SneakyThrows
   public Link getCurrentUserPreferencesSelfLink() {
     return linkTo(methodOn(UserProfileController.class).getPreferences()).withRel(USER_PREFERENCES_REL);
   }

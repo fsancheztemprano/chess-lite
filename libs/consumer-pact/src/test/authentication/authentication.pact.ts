@@ -223,7 +223,7 @@ export namespace LoginPact {
         expired: false,
         credentialsExpired: false,
         userPreferences: {
-          id: uuid(),
+          id: 'pactUserPreferencesId',
           darkMode: false,
           contentLanguage: 'en',
           user: { id: 'pactUserId', username: 'pactUser' },
