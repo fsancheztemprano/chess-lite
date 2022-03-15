@@ -2,7 +2,6 @@ package dev.kurama.api.pact;
 
 import static dev.kurama.api.pact.PactTemplate.pactUser;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -44,8 +43,7 @@ public class UserProfileControllerBase extends PactBase {
     User pactUser = pactUser();
 
     doReturn(Optional.of(pactUser)).when(userService).findUserById("pactUserId");
-    doReturn(pactUser).when(userService)
-      .updateUser(eq("pactUserId"), argThat(input -> input.getFirstname().equals("pactUserFirstname")));
+    doReturn(pactUser).when(userService).updateUser(eq("pactUserId"), any());
     doThrow(new UserNotFoundException("notFoundId")).when(userService).updateUser(eq("notFoundId"), any());
   }
 }

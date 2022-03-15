@@ -8,11 +8,11 @@ import { stubMessageServiceProvider } from '../../../../../apps/app/src/app/core
 import { stubPreferencesServiceProvider } from '../../../../../apps/app/src/app/core/services/preferences.service.stub';
 import { UserService } from '../../../../../apps/app/src/app/core/services/user.service';
 import { UserSettingsService } from '../../../../../apps/app/src/app/modules/user-settings/services/user-settings.service';
-import { updateProfileTemplate } from '../../../../domain/src/lib/mocks/user/user-profile.mock';
+import { changePasswordTemplate, updateProfileTemplate } from '../../../../domain/src/lib/mocks/user/user-profile.mock';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
-import { GetUserProfilePact, UpdateUserProfilePact } from './user-profile.pact';
+import { ChangeUserProfilePasswordPact, GetUserProfilePact, UpdateUserProfilePact } from './user-profile.pact';
 
 const provider: Pact = pactForResource('userProfile');
 
@@ -192,6 +192,81 @@ describe('User Profile Pact', () => {
           }),
         );
         userSettingsService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+  });
+
+  describe('Change User Profile Password', () => {
+    beforeEach(() => {
+      userService.setUser(
+        new User({
+          _links: {
+            [CurrentUserRelations.USER_PREFERENCES_REL]: {
+              href: 'http://localhost/api/user/profile/preferences',
+            },
+            self: {
+              href: 'http://localhost/api/user/profile',
+            },
+          },
+          _templates: {
+            ...defaultTemplate,
+            ...changePasswordTemplate,
+          },
+        }),
+      );
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = ChangeUserProfilePasswordPact.successful;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
+        userSettingsService
+          .changePassword({
+            password: 'password',
+            newPassword: 'newPassword',
+          })
+          .subscribe((response: User) => {
+            expect(response).toBeTruthy();
+            expect(response.id).toBe(interaction.willRespondWith.body.id);
+            expect(response._links).toBeTruthy();
+            done();
+          });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = ChangeUserProfilePasswordPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        userSettingsService.changePassword({ password: 'password', newPassword: 'newPassword' }).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = ChangeUserProfilePasswordPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(
+          TOKEN_KEY,
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        );
+        userSettingsService.changePassword({ password: 'password', newPassword: 'newPassword' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
