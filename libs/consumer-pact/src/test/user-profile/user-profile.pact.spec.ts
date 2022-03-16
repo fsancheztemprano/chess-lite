@@ -6,6 +6,7 @@ import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { stubMessageServiceProvider } from '../../../../../apps/app/src/app/core/services/message.service.stub';
 import { stubPreferencesServiceProvider } from '../../../../../apps/app/src/app/core/services/preferences.service.stub';
+import { stubSessionServiceProvider } from '../../../../../apps/app/src/app/core/services/session.service.stub';
 import { UserService } from '../../../../../apps/app/src/app/core/services/user.service';
 import { UserSettingsService } from '../../../../../apps/app/src/app/modules/user-settings/services/user-settings.service';
 import {
@@ -13,19 +14,18 @@ import {
   deleteProfileTemplate,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
-} from '../../../../domain/src/lib/mocks/user/user-profile.mock';
+} from '../../../../domain/src/lib/mocks/user/user-profile-template.mock';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
 import {
-  ChangeUserProfilePasswordPact,
   DeleteUserProfilePact,
   GetUserProfilePact,
   GetUserProfilePreferencesPact,
   UpdateUserProfilePact,
+  UpdateUserProfilePasswordPact,
   UpdateUserProfilePreferencesPact,
 } from './user-profile.pact';
-import { stubSessionServiceProvider } from '../../../../../apps/app/src/app/core/services/session.service.stub';
 
 const provider: Pact = pactForResource('userProfile');
 
@@ -210,7 +210,7 @@ describe('User Profile Pact', () => {
     });
   });
 
-  describe('Change User Profile Password', () => {
+  describe('Update User Profile Password', () => {
     beforeEach(() => {
       userService.setUser(
         new User({
@@ -224,7 +224,7 @@ describe('User Profile Pact', () => {
     });
 
     it('successful', (done) => {
-      const interaction: InteractionObject = ChangeUserProfilePasswordPact.successful;
+      const interaction: InteractionObject = UpdateUserProfilePasswordPact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
         userSettingsService
@@ -242,7 +242,7 @@ describe('User Profile Pact', () => {
     });
 
     it('unauthorized', (done) => {
-      const interaction: InteractionObject = ChangeUserProfilePasswordPact.unauthorized;
+      const interaction: InteractionObject = UpdateUserProfilePasswordPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken());
         userSettingsService.changePassword({ password: 'password', newPassword: 'newPassword' }).subscribe({
@@ -257,7 +257,7 @@ describe('User Profile Pact', () => {
     });
 
     it('not found', (done) => {
-      const interaction: InteractionObject = ChangeUserProfilePasswordPact.not_found;
+      const interaction: InteractionObject = UpdateUserProfilePasswordPact.not_found;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(
           TOKEN_KEY,

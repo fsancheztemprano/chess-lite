@@ -1,10 +1,17 @@
 import { HttpHeaderKey } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { iso8601DateTimeWithMillis, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { jwt } from 'libs/consumer-pact/src/utils/pact.utils';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
+import {
+  changePasswordTemplate,
+  updateProfilePreferencesTemplate,
+  updateProfileTemplate,
+  uploadAvatarTemplate,
+} from '../../../../domain/src/lib/mocks/user/user-profile-template.mock';
+import { pactCurrentUser } from '../../mocks/user.mock';
 
 export namespace SignupPact {
   export const successful: InteractionObject = {
@@ -194,79 +201,19 @@ export namespace LoginPact {
         [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
       },
       body: {
-        id: 'pactUserId',
-        firstname: null,
-        lastname: null,
-        username: 'pactUser',
-        email: 'pactUser@localhost',
-        profileImageUrl: null,
-        lastLoginDateDisplay: null,
-        joinDate: iso8601DateTimeWithMillis(),
-        role: {
-          id: 'pactRoleId',
-          name: 'PACT_ROLE',
-          authorities: [
-            { id: uuid(), name: 'profile:read' },
-            { id: uuid(), name: 'profile:update' },
-            { id: uuid(), name: 'profile:delete' },
-          ],
-          coreRole: false,
-          canLogin: true,
-        },
-        authorities: [
-          { id: uuid(), name: 'profile:read' },
-          { id: uuid(), name: 'profile:update' },
-          { id: uuid(), name: 'profile:delete' },
-        ],
-        active: true,
-        locked: false,
-        expired: false,
-        credentialsExpired: false,
+        ...pactCurrentUser,
         userPreferences: {
-          id: 'pactUserPreferencesId',
-          darkMode: false,
-          contentLanguage: 'en',
-          user: { id: 'pactUserId', username: 'pactUser' },
-          _links: {
-            'current-user': { href: 'http://localhost/api/user/profile' },
-            self: { href: 'http://localhost/api/user/profile/preferences' },
-          },
+          ...pactCurrentUser.userPreferences,
           _templates: {
-            default: { method: 'HEAD', properties: [] },
-            updatePreferences: {
-              method: 'PATCH',
-              properties: [{ name: 'contentLanguage', minLength: 2, maxLength: 2, type: 'text' }, { name: 'darkMode' }],
-            },
+            ...defaultTemplate,
+            ...updateProfilePreferencesTemplate,
           },
-        },
-        _links: {
-          'user-preferences': { href: 'http://localhost/api/user/profile/preferences' },
-          self: { href: 'http://localhost/api/user/profile' },
         },
         _templates: {
-          default: { method: 'HEAD', properties: [] },
-          updateProfile: {
-            method: 'PATCH',
-            properties: [
-              { name: 'firstname', type: 'text' },
-              { name: 'lastname', type: 'text' },
-            ],
-          },
-          uploadAvatar: {
-            method: 'PATCH',
-            contentType: 'multipart/form-data',
-            properties: [],
-            target: 'http://localhost/api/user/profile/avatar',
-          },
-          deleteProfile: { method: 'DELETE', properties: [] },
-          changePassword: {
-            method: 'PATCH',
-            properties: [
-              { name: 'newPassword', minLength: 8, maxLength: 128, type: 'text' },
-              { name: 'password', minLength: 8, maxLength: 128, type: 'text' },
-            ],
-            target: 'http://localhost/api/user/profile/password',
-          },
+          ...defaultTemplate,
+          ...updateProfileTemplate,
+          ...uploadAvatarTemplate,
+          ...changePasswordTemplate,
         },
       },
     },

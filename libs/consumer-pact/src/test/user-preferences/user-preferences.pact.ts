@@ -3,27 +3,10 @@ import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { updateUserPreferencesTemplate } from '../../../../domain/src/lib/mocks/user/user-preferences.mock';
+import { updateUserPreferencesTemplate } from '../../../../domain/src/lib/mocks/user/user-preferences-template.mock';
+import { pactUser } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
-
-const pactUserPreferences = {
-  id: 'pactUserPreferencesId',
-  darkMode: false,
-  contentLanguage: 'en',
-  user: { id: 'pactUserId', username: 'pactUser' },
-  _links: {
-    user: {
-      href: 'http://localhost/api/user/pactUserId',
-    },
-    self: {
-      href: 'http://localhost/api/user/preferences/pactUserPreferencesId',
-    },
-  },
-  _templates: {
-    ...defaultTemplate,
-  },
-};
 
 export namespace GetUserPreferencesPact {
   export const successful: InteractionObject = {
@@ -40,7 +23,7 @@ export namespace GetUserPreferencesPact {
     willRespondWith: {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
-      body: { ...pactUserPreferences },
+      body: { ...pactUser.userPreferences },
     },
   };
 
@@ -59,7 +42,7 @@ export namespace GetUserPreferencesPact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
-        ...pactUserPreferences,
+        ...pactUser.userPreferences,
         _templates: {
           ...defaultTemplate,
           ...updateUserPreferencesTemplate,
@@ -128,7 +111,7 @@ export namespace UpdateUserPreferencesPact {
     willRespondWith: {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
-      body: { ...pactUserPreferences },
+      body: { ...pactUser.userPreferences },
     },
   };
 

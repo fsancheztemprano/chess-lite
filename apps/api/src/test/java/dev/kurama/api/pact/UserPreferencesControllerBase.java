@@ -29,12 +29,7 @@ public abstract class UserPreferencesControllerBase extends PactBase {
 
   @Override
   protected void beforeEach() throws Exception {
-    UserPreferences pactUserPreferences = UserPreferences.builder()
-      .id("pactUserPreferencesId")
-      .darkMode(false)
-      .contentLanguage("en")
-      .user(pactUser())
-      .build();
+    UserPreferences pactUserPreferences = pactUser().getUserPreferences();
 
     doReturn(pactUserPreferences).when(userPreferencesService).findUserPreferencesById(pactUserPreferences.getId());
     doThrow(new EntityNotFoundException("notFoundId", UserPreferences.class)).when(userPreferencesService)

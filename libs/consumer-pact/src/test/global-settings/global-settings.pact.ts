@@ -1,4 +1,5 @@
 import { HttpHeaderKey } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum, IResource } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
@@ -20,13 +21,9 @@ const globalSettings: IResource = {
     canLogin: true,
   },
   _links: {
-    self: {
-      href: 'http://localhost/api/global-settings',
-    },
+    self: { href: 'http://localhost/api/global-settings' },
   },
-  _templates: {
-    default: { method: 'HEAD', properties: [] },
-  },
+  _templates: { ...defaultTemplate },
 };
 
 export namespace GetGlobalSettingPact {

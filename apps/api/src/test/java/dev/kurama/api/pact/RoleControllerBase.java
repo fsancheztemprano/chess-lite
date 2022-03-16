@@ -62,6 +62,7 @@ public abstract class RoleControllerBase extends PactBase {
       .canLogin(true)
       .authorities(newHashSet(Authority.builder().setRandomUUID().name("pact:read").build()))
       .build();
+
     doReturn(page).when(roleService).getAllRoles(any(), any());
     doReturn(Optional.of(pactRole)).when(roleService).findRoleById(pactRole.getId());
     doReturn(newRole).when(roleService).create("NEW_PACT_ROLE");

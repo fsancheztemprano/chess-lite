@@ -11,62 +11,10 @@ import {
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import {
-  boolean,
-  eachLike,
-  email,
-  iso8601DateTimeWithMillis,
-  string,
-  uuid,
-} from '@pact-foundation/pact/src/dsl/matchers';
+import { eachLike, email, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
+import { pactUser } from '../../mocks/user.mock';
 import { bearer, withUuid } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
-
-const pactUser = {
-  id: 'pactUserId',
-  firstname: null,
-  lastname: null,
-  username: 'pactUser',
-  email: 'pactUser@localhost',
-  profileImageUrl: null,
-  lastLoginDateDisplay: null,
-  joinDate: iso8601DateTimeWithMillis(),
-  role: {
-    id: 'pactRoleId',
-    name: 'PACT_ROLE',
-    authorities: eachLike({ id: uuid(), name: string() }),
-    coreRole: boolean(),
-    canLogin: boolean(),
-  },
-  authorities: eachLike({ id: uuid(), name: string() }),
-  active: true,
-  locked: false,
-  expired: false,
-  credentialsExpired: false,
-  userPreferences: {
-    id: 'pactUserPreferencesId',
-    darkMode: false,
-    contentLanguage: 'en',
-    _links: {
-      [UserManagementRelations.USER_REL]: { href: 'http://localhost/api/user/pactUserId' },
-      self: { href: 'http://localhost/api/user/preferences/pactUserPreferencesId' },
-    },
-    _templates: { ...defaultTemplate },
-  },
-  _links: {
-    [UserManagementRelations.USERS_REL]: {
-      href: 'http://localhost/api/user{?search}',
-      templated: true,
-    },
-    [UserManagementRelations.USER_PREFERENCES_REL]: {
-      href: 'http://localhost/api/user/preferences/pactUserPreferencesId',
-    },
-    self: {
-      href: 'http://localhost/api/user/pactUserId',
-    },
-  },
-  _templates: { ...defaultTemplate },
-};
 
 export namespace GetUserPact {
   export const successful: InteractionObject = {

@@ -40,7 +40,7 @@ export interface ITemplatePropertyOption {
 export interface ITemplate {
   method?: HttpMethodEnum | string;
   title?: string;
-  contentType?: ContentTypeEnum;
+  contentType?: ContentTypeEnum | string;
   properties?: ITemplateProperty[];
   target?: string;
 }
@@ -50,7 +50,7 @@ export class Template implements ITemplate {
 
   method: HttpMethodEnum | string;
   title?: string;
-  contentType?: ContentTypeEnum;
+  contentType?: ContentTypeEnum | string;
   properties?: ITemplateProperty[];
   target?: string;
   targetLink?: Link;

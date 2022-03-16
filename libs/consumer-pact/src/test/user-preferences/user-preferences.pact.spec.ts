@@ -9,7 +9,7 @@ import { stubMessageServiceProvider } from '../../../../../apps/app/src/app/core
 import { stubToasterServiceProvider } from '../../../../../apps/app/src/app/core/services/toaster.service.stub';
 import { UserManagementDetailService } from '../../../../../apps/app/src/app/modules/administration/modules/user-management/modules/detail/services/user-management-detail.service';
 import { stubUserManagementServiceProvider } from '../../../../../apps/app/src/app/modules/administration/modules/user-management/services/user-management.service.stub';
-import { updateUserPreferencesTemplate } from '../../../../domain/src/lib/mocks/user/user-preferences.mock';
+import { updateUserPreferencesTemplate } from '../../../../domain/src/lib/mocks/user/user-preferences-template.mock';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
