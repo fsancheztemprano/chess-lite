@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import dev.kurama.support.TestEmailConfiguration;
@@ -32,7 +33,7 @@ class AuthenticationFacilityIT {
   private AuthenticationManager authenticationManager;
 
   @Test
-  void should_login() throws RoleCanNotLoginException {
+  void should_login() throws RoleCanNotLoginException, UserNotFoundException {
     User user = User.builder()
       .setRandomUUID()
       .username(randomAlphanumeric(8))

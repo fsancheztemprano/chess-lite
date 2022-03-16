@@ -61,7 +61,7 @@ class AuthenticationFacadeTest {
   }
 
   @Test
-  void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException {
+  void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException, UserNotFoundException {
     LoginInput loginInput = LoginInput.builder().username("username").password("password").build();
     User user = User.builder().setRandomUUID().username(loginInput.getUsername()).build();
     String token = "token";

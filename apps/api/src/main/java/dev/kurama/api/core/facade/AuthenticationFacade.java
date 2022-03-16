@@ -40,7 +40,7 @@ public class AuthenticationFacade {
     userService.signup(signupInput);
   }
 
-  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException {
+  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException, UserNotFoundException {
     Pair<User, String> authenticationInfo = authenticationFacility.login(loginInput.getUsername(),
       loginInput.getPassword());
     return AuthenticatedUserExcerpt.builder()

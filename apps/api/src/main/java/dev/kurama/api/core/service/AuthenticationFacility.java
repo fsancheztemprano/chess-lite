@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -28,9 +28,10 @@ public class AuthenticationFacility {
   @NonNull
   private final AuthenticationManager authenticationManager;
 
-  public ImmutablePair<User, String> login(String username, String password) throws RoleCanNotLoginException {
+  public ImmutablePair<User, String> login(String username, String password)
+    throws RoleCanNotLoginException, UserNotFoundException {
     verifyAuthentication(username, password);
-    var user = userService.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    var user = userService.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     if (!user.getRole().isCanLogin()) {
       throw new RoleCanNotLoginException(user.getRole().getName());
     }

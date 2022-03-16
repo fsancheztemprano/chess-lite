@@ -48,7 +48,8 @@ public class AuthenticationController {
   }
 
   @PostMapping(LOGIN_PATH)
-  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) throws RoleCanNotLoginException {
+  public ResponseEntity<UserModel> login(@RequestBody LoginInput user)
+    throws RoleCanNotLoginException, UserNotFoundException {
     var authenticatedUser = authenticationFacade.login(user);
     return ok().headers(authenticatedUser.getHeaders()).body(authenticatedUser.getUserModel());
   }

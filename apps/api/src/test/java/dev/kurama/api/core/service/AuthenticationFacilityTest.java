@@ -12,6 +12,7 @@ import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import java.util.Optional;
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,7 +42,7 @@ class AuthenticationFacilityTest {
 
 
   @Test
-  void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException {
+  void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException, UserNotFoundException {
     String testToken = "test_token";
     String username = "username";
     String password = "password";
