@@ -40,6 +40,7 @@ export namespace GetGlobalSettingPact {
     },
     willRespondWith: {
       status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: { ...globalSettings },
     },
   };
@@ -57,10 +58,11 @@ export namespace GetGlobalSettingPact {
     },
     willRespondWith: {
       status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...globalSettings,
         _templates: {
-          default: { method: 'HEAD', properties: [] },
+          ...defaultTemplate,
           update: { method: 'PATCH', properties: [{ name: 'defaultRoleId', type: 'text' }, { name: 'signupOpen' }] },
         },
       },
@@ -106,10 +108,11 @@ export namespace UpdateGlobalSettingPact {
     },
     willRespondWith: {
       status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...globalSettings,
         _templates: {
-          default: { method: 'HEAD', properties: [] },
+          ...defaultTemplate,
           update: { method: 'PATCH', properties: [{ name: 'defaultRoleId', type: 'text' }, { name: 'signupOpen' }] },
         },
       },

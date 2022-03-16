@@ -1,6 +1,7 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AdministrationRelations, ServiceLogs, TOKEN_KEY } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { ServiceLogsService } from '../../../../../apps/app/src/app/modules/administration/modules/service-logs/services/service-logs.service';
@@ -90,7 +91,7 @@ describe('Service Logs Pacts', () => {
         timestamp: '2022-03-12T11:23:31.493+00:00',
         _links: { self: { href: '/api/administration/service-logs' } },
         _templates: {
-          default: { method: 'HEAD', properties: [] },
+          ...defaultTemplate,
           deleteServiceLogs: { method: 'DELETE', properties: [] },
         },
       });

@@ -1,4 +1,5 @@
 import { HttpHeaderKey } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
@@ -10,7 +11,7 @@ const serviceLogs = {
   logs: string(),
   timestamp: iso8601DateTimeWithMillis(),
   _links: { self: { href: 'http://localhost/api/administration/service-logs' } },
-  _templates: { default: { method: 'HEAD', properties: [] } },
+  _templates: { ...defaultTemplate },
 };
 
 export namespace GetServiceLogsPact {
@@ -27,9 +28,7 @@ export namespace GetServiceLogsPact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: { ...serviceLogs },
     },
   };
@@ -47,13 +46,11 @@ export namespace GetServiceLogsPact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...serviceLogs,
         _templates: {
-          default: { method: 'HEAD', properties: [] },
+          ...defaultTemplate,
           deleteServiceLogs: {
             method: 'DELETE',
             properties: [],
@@ -98,9 +95,7 @@ export namespace DeleteServiceLogsPact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: { ...serviceLogs },
     },
   };

@@ -1,4 +1,5 @@
 import { HttpHeaderKey } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
@@ -18,9 +19,7 @@ export namespace GetRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -40,10 +39,7 @@ export namespace GetRootResource {
           },
         },
         _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
+          ...defaultTemplate,
           login: {
             method: 'POST',
             properties: [
@@ -143,9 +139,7 @@ export namespace GetRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -155,12 +149,7 @@ export namespace GetRootResource {
             href: 'http://localhost/api/user/profile',
           },
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -178,9 +167,7 @@ export namespace GetRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -190,12 +177,7 @@ export namespace GetRootResource {
             href: 'http://localhost/api/administration',
           },
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };

@@ -1,4 +1,5 @@
 import { HttpHeaderKey } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from 'libs/consumer-pact/src/utils/pact.utils';
@@ -58,21 +59,14 @@ export namespace GetAdministrationRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
             href: 'http://localhost/api/administration',
           },
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -90,9 +84,7 @@ export namespace GetAdministrationRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -102,12 +94,7 @@ export namespace GetAdministrationRootResource {
             href: 'http://localhost/api/administration/service-logs',
           },
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -125,9 +112,7 @@ export namespace GetAdministrationRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -137,12 +122,7 @@ export namespace GetAdministrationRootResource {
             href: 'http://localhost/api/global-settings',
           },
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -163,9 +143,7 @@ export namespace GetAdministrationRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -248,12 +226,7 @@ export namespace GetAdministrationRootResource {
             },
           },
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -276,9 +249,7 @@ export namespace GetAdministrationRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -325,12 +296,7 @@ export namespace GetAdministrationRootResource {
             },
           },
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };

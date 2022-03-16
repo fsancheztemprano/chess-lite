@@ -1,4 +1,5 @@
 import { HttpHeaderKey } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
@@ -47,9 +48,7 @@ export namespace GetAllRolesPact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           roleModels: [
@@ -111,12 +110,7 @@ export namespace GetAllRolesPact {
           totalPages: 1,
           number: 0,
         },
-        _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
-        },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -134,9 +128,7 @@ export namespace GetAllRolesPact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           roleModels: eachLike({ id: string(), name: string() }, { min: 3 }),
@@ -153,10 +145,7 @@ export namespace GetAllRolesPact {
           number: 0,
         },
         _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
+          ...defaultTemplate,
           create: {
             method: 'POST',
             properties: [
@@ -210,9 +199,7 @@ export namespace GetOneRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactRole },
     },
   };
@@ -230,13 +217,11 @@ export namespace GetOneRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactRole,
         _templates: {
-          default: { method: 'HEAD', properties: [] },
+          ...defaultTemplate,
           update: {
             method: 'PATCH',
             properties: [
@@ -272,13 +257,11 @@ export namespace GetOneRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactRole,
         _templates: {
-          default: { method: 'HEAD', properties: [] },
+          ...defaultTemplate,
           delete: {
             method: 'DELETE',
             properties: [],
@@ -347,9 +330,7 @@ export namespace CreateRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         id: 'newPactRoleId',
         name: 'NEW_PACT_ROLE',
@@ -365,7 +346,7 @@ export namespace CreateRolePact {
             templated: true,
           },
         },
-        _templates: { default: { method: 'HEAD', properties: [] } },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -437,9 +418,7 @@ export namespace UpdateRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactRole },
     },
   };

@@ -1,6 +1,7 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AuthorityManagementRelations, Role, RoleManagementRelations, RolePage, TOKEN_KEY } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { AdministrationService } from 'apps/app/src/app/modules/administration/services/administration.service';
@@ -193,10 +194,7 @@ describe('Role Pacts', () => {
     beforeEach(() => {
       rolePage = new RolePage({
         _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
+          ...defaultTemplate,
           create: {
             method: 'POST',
             properties: [
@@ -270,10 +268,7 @@ describe('Role Pacts', () => {
           },
         },
         _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
+          ...defaultTemplate,
           update: {
             method: 'PATCH',
             properties: [
@@ -370,10 +365,7 @@ describe('Role Pacts', () => {
           },
         },
         _templates: {
-          default: {
-            method: 'HEAD',
-            properties: [],
-          },
+          ...defaultTemplate,
           delete: {
             method: 'DELETE',
             properties: [],

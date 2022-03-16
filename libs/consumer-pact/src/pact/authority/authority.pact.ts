@@ -1,4 +1,5 @@
 import { HttpHeaderKey } from '@app/domain';
+import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
@@ -23,9 +24,7 @@ export namespace GetAllAuthoritiesPact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           authorityModels: [
@@ -36,7 +35,7 @@ export namespace GetAllAuthoritiesPact {
                 self: { href: 'http://localhost/api/authority/pactUpdateAuthorityId' },
                 authorities: { href: 'http://localhost/api/authority' },
               },
-              _templates: { default: { method: 'HEAD', properties: [] } },
+              _templates: { ...defaultTemplate },
             },
             {
               id: uuid(),
@@ -45,7 +44,7 @@ export namespace GetAllAuthoritiesPact {
                 self: { href: withUuid('http://localhost/api/authority/{uuid}') },
                 authorities: { href: 'http://localhost/api/authority' },
               },
-              _templates: { default: { method: 'HEAD', properties: [] } },
+              _templates: { ...defaultTemplate },
             },
             {
               id: uuid(),
@@ -54,7 +53,7 @@ export namespace GetAllAuthoritiesPact {
                 self: { href: withUuid('http://localhost/api/authority/{uuid}') },
                 authorities: { href: 'http://localhost/api/authority' },
               },
-              _templates: { default: { method: 'HEAD', properties: [] } },
+              _templates: { ...defaultTemplate },
             },
           ],
         },
@@ -70,7 +69,7 @@ export namespace GetAllAuthoritiesPact {
           number: 0,
         },
         _templates: {
-          default: { method: 'HEAD', properties: [] },
+          ...defaultTemplate,
         },
       },
     },
@@ -114,9 +113,7 @@ export namespace GetOneAuthorityPact {
     },
     willRespondWith: {
       status: 200,
-      headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-      },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
         id: 'pactUpdateAuthorityId',
         name: 'pact:update',
@@ -124,7 +121,7 @@ export namespace GetOneAuthorityPact {
           self: { href: 'http://localhost/api/authority/pactUpdateAuthorityId' },
           authorities: { href: 'http://localhost/api/authority' },
         },
-        _templates: { default: { method: 'HEAD', properties: [] } },
+        _templates: { ...defaultTemplate },
       },
     },
   };
