@@ -12,5 +12,3 @@ spring:
         cache:
           use_query_cache: false
           use_second_level_cache: false
-application:
-  run_data_init: false
