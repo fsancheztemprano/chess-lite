@@ -3,7 +3,6 @@ package dev.kurama.api.core.service;
 import static com.google.common.collect.Sets.newHashSet;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.domain.Authority;
 import dev.kurama.api.core.domain.Role;
@@ -11,23 +10,17 @@ import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.exists.RoleExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.RoleUpdateInput;
-import dev.kurama.api.support.MockEventLayer;
+import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "integration-test")
-@DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace = NONE)
+@ServiceLayerIntegrationTestConfig
 @Import({RoleService.class, AuthorityService.class})
-@MockEventLayer
 class RoleServiceIT {
 
   @Autowired

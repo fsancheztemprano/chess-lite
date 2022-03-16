@@ -8,7 +8,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
+import { AuthInterceptorProvider } from './auth/interceptors/auth.interceptor';
 import { GlobalErrorHandler } from './core/errors/global-error-handler.service';
 import { HttpErrorInterceptor } from './core/errors/http-error.interceptor';
 import { TranslocoRootModule } from './core/modules/transloco/transloco-root.module';
@@ -33,6 +33,7 @@ export function initializeApp(appInitService: AppInitializationService) {
     TranslocoRootModule,
   ],
   providers: [
+    AuthInterceptorProvider,
     AppInitializationService,
     {
       provide: APP_INITIALIZER,
@@ -41,7 +42,6 @@ export function initializeApp(appInitService: AppInitializationService) {
       multi: true,
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     RxStompService,
   ],

@@ -49,7 +49,7 @@ export class GlobalSettingsService {
   private _fetchGlobalSettings(): Observable<GlobalSettings> {
     return this.administrationService
       .getLinkOrThrow(GlobalSettingsRelations.GLOBAL_SETTINGS_REL)
-      .pipe(switchMap((link) => link.get()));
+      .pipe(switchMap((link) => link.follow()));
   }
 
   private _initializeGlobalSettings(): Observable<GlobalSettings> {
@@ -69,14 +69,11 @@ export class GlobalSettingsService {
     );
   }
 
-  updateGlobalSettings(globalSettingsUpdateInput: GlobalSettingsUpdateInput) {
+  updateGlobalSettings(body: GlobalSettingsUpdateInput) {
     return this.getGlobalSettings().pipe(
       first(),
       switchMap((globalSettings) =>
-        globalSettings.submitToTemplateOrThrow(
-          GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL,
-          globalSettingsUpdateInput,
-        ),
+        globalSettings.submitToTemplateOrThrow(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL, { body }),
       ),
     );
   }

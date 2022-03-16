@@ -1,6 +1,7 @@
 package dev.kurama.api.core.facade;
 
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.domain.Authority;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.core.hateoas.assembler.AuthorityModelAssembler;
 import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import dev.kurama.api.core.mapper.AuthorityMapper;
@@ -29,8 +30,8 @@ public class AuthorityFacade {
       authorityMapper.authorityPageToAuthorityModelPage(authorityService.getAllAuthorities(pageable)));
   }
 
-  public AuthorityModel findByAuthorityId(String authorityId) throws DomainEntityNotFoundException {
+  public AuthorityModel findByAuthorityId(String authorityId) throws EntityNotFoundException {
     return authorityMapper.authorityToAuthorityModel(authorityService.findAuthorityById(authorityId)
-      .orElseThrow(() -> new DomainEntityNotFoundException(authorityId)));
+      .orElseThrow(() -> new EntityNotFoundException(authorityId, Authority.class)));
   }
 }

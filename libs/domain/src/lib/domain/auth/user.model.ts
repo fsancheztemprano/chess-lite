@@ -3,6 +3,21 @@ import { Page } from '../hateoas/pageable.model';
 import { Authority } from './authority.model';
 import { Role } from './role.model';
 
+export interface UserInput {
+  username: string;
+  email: string;
+  password: string;
+  firstname?: string;
+  lastname?: string;
+  profileImageUrl?: string;
+  roleId?: string;
+  authorityIds?: string[];
+  active?: boolean;
+  locked?: boolean;
+  expired?: boolean;
+  credentialsExpired?: boolean;
+}
+
 export class User extends Resource implements IResource {
   id?: string;
   email?: string;
@@ -22,9 +37,9 @@ export class User extends Resource implements IResource {
 }
 
 export interface UserUpdateProfileInput {
-  firstname: string;
-  lastname: string;
-  profileImageUrl: string;
+  firstname?: string;
+  lastname?: string;
+  profileImageUrl?: string;
 }
 
 export interface UserChangePasswordInput {
@@ -34,9 +49,15 @@ export interface UserChangePasswordInput {
 
 export class UserPage extends Resource implements IResource {
   page?: Page;
-  _embedded!: {
+  override _embedded!: {
     userModels?: User[];
   };
+}
+
+export class IUserPreferences implements IResource {
+  id?: string;
+  darkMode?: boolean;
+  contentLanguage?: string;
 }
 
 export class UserPreferences extends Resource implements IResource {

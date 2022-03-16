@@ -25,8 +25,7 @@
     color="primary"
     type="submit"
     *subscribe="userSettingsService.isAllowedToUpdateUserPreferences(); let canUpdateUserPreferences"
-    [disabled]="!canUpdateUserPreferences"
-  >
+    [disabled]="!canUpdateUserPreferences">
     Save and Apply
   </button>
 </form>

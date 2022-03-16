@@ -14,15 +14,19 @@ public class UserInput {
   private String username;
   @Length(min = 6, max = 128)
   private String password;
-  private String firstname;
-  private String lastname;
   @Email
   private String email;
+  private String firstname;
+  private String lastname;
   private String profileImageUrl;
   private String roleId;
-  private Boolean active;
-  private Boolean locked;
-  private Boolean expired;
-  private Boolean credentialsExpired;
   private Set<String> authorityIds;
+  @Builder.Default
+  private Boolean active = true;
+  @Builder.Default
+  private Boolean locked = false;
+  @Builder.Default
+  private Boolean expired = false;
+  @Builder.Default
+  private Boolean credentialsExpired = false;
 }

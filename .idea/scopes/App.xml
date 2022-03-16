@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="App" pattern="(file[um]:libs/consumer-pact//*||file[um]:libs/domain//*||file[um]:libs/hal-form-client//*||file[um]:apps/app//*||file[um]:apps/app-e2e//*)&amp;&amp;!file[api]:*/" />
+</component>

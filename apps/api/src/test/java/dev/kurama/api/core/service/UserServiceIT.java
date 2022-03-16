@@ -3,44 +3,35 @@ package dev.kurama.api.core.service;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.domain.GlobalSettings;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
-import dev.kurama.api.support.MockEventLayer;
+import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "integration-test")
-@DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace = NONE)
+@ServiceLayerIntegrationTestConfig
 @Import({UserService.class, AuthorityService.class, ActivationTokenService.class, RoleService.class,
   GlobalSettingsService.class})
-@MockEventLayer
 class UserServiceIT {
 
   @Autowired
@@ -126,7 +117,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_signup() throws UsernameExistsException, EmailExistsException, SignupClosedException {
+  void should_signup() throws UserExistsException, SignupClosedException {
     SignupInput input = SignupInput.builder()
       .username(randomAlphanumeric(8))
       .firstname(randomAlphanumeric(8))
@@ -140,7 +131,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_create_user() throws UsernameExistsException, EmailExistsException {
+  void should_create_user() throws UserExistsException {
     Role role = entityManager.persist(Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build());
     UserInput input = UserInput.builder()
       .username(randomAlphanumeric(8))
@@ -163,8 +154,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_update_user()
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+  void should_update_user() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     Role role = entityManager.persist(Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build());
     UserInput input = UserInput.builder()
       .username(randomAlphanumeric(8))
@@ -192,7 +182,7 @@ class UserServiceIT {
   }
 
   @Test
-  void should_request_activation_token_by_email() throws ActivationTokenRecentException, EmailNotFoundException {
+  void should_request_activation_token_by_email() throws ActivationTokenRecentException, UserNotFoundException {
     service.requestActivationTokenByEmail(user3.getEmail());
 
     User actual = entityManager.find(User.class, user3.getId());
@@ -203,8 +193,8 @@ class UserServiceIT {
 
   @Test
   void should_activate_account()
-    throws ActivationTokenRecentException, ActivationTokenExpiredException, EmailNotFoundException,
-    ActivationTokenNotFoundException, ActivationTokenUserMismatchException {
+    throws ActivationTokenRecentException, ActivationTokenExpiredException, ActivationTokenNotFoundException,
+    ActivationTokenUserMismatchException, UserNotFoundException {
     User lockedUser = entityManager.persist(User.builder()
       .setRandomUUID()
       .username(randomAlphanumeric(8))

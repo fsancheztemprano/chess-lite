@@ -51,8 +51,7 @@
         color="primary"
         type="submit"
         *ngLet="this.userSettingsService.isAllowedToUpdateProfile() | async as canUpdateProfile"
-        [disabled]="!canUpdateProfile"
-      >
+        [disabled]="!canUpdateProfile">
         Save
       </button>
     </mat-card-actions>

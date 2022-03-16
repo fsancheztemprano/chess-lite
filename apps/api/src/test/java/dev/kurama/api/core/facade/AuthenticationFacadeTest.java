@@ -9,14 +9,13 @@ import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
@@ -48,11 +47,10 @@ class AuthenticationFacadeTest {
   private UserMapper userMapper;
 
   @Test
-  void signup_should_call_user_service_signup()
-    throws UsernameExistsException, EmailExistsException, SignupClosedException {
+  void signup_should_call_user_service_signup() throws UserExistsException, SignupClosedException {
     SignupInput input = SignupInput.builder()
       .username("username")
-      .email("test@example.com")
+      .email("test@localhost")
       .firstname("firstname")
       .lastname("lastname")
       .build();
@@ -63,7 +61,7 @@ class AuthenticationFacadeTest {
   }
 
   @Test
-  void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException {
+  void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException, UserNotFoundException {
     LoginInput loginInput = LoginInput.builder().username("username").password("password").build();
     User user = User.builder().setRandomUUID().username(loginInput.getUsername()).build();
     String token = "token";
@@ -80,8 +78,8 @@ class AuthenticationFacadeTest {
   }
 
   @Test
-  void request_activation_token_should_call_service() throws EmailNotFoundException, ActivationTokenRecentException {
-    String email = "email@example.com";
+  void request_activation_token_should_call_service() throws ActivationTokenRecentException, UserNotFoundException {
+    String email = "email@localhost";
 
     facade.requestActivationToken(email);
 
@@ -90,10 +88,10 @@ class AuthenticationFacadeTest {
 
   @Test
   void activate_account_should_call_service()
-    throws EmailNotFoundException, ActivationTokenExpiredException, ActivationTokenNotFoundException,
-    ActivationTokenUserMismatchException {
+    throws ActivationTokenExpiredException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
+    UserNotFoundException {
     AccountActivationInput input = AccountActivationInput.builder()
-      .email("email@example.com")
+      .email("email@localhost")
       .password("password")
       .token("test_token")
       .build();

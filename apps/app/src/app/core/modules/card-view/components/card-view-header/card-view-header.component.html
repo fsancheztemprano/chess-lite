@@ -10,20 +10,17 @@
     mat-tab-nav-bar
     mat-align-tabs="end"
     mat-stretch-tabs
-    [style]="'flex-grow:' + (headerService.tabsRatio | async)"
-  >
+    [style]="'flex-grow:' + (headerService.tabsRatio | async)">
     <a
       *ngFor="let tab of tabs"
       mat-tab-link
       [routerLink]="tab.target"
       routerLinkActive="active-link"
       #rla="routerLinkActive"
-      [active]="rla.isActive"
-    >
+      [active]="rla.isActive">
       {{ tab.label }}
     </a>
   </nav>
 </ng-container>
 <app-context-menu
-  *ngIf="(headerService.showContextMenu | async) && ('' | isMobile | async) === false"
-></app-context-menu>
+  *ngIf="(headerService.showContextMenu | async) && ('' | isMobile | async) === false"></app-context-menu>

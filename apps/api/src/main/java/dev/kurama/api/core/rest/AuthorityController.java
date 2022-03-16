@@ -4,7 +4,7 @@ import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
 import static org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE;
 import static org.springframework.http.ResponseEntity.ok;
 
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.core.facade.AuthorityFacade;
 import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import lombok.NonNull;
@@ -30,15 +30,14 @@ public class AuthorityController {
 
   @GetMapping()
   @PreAuthorize("hasAuthority('authority:read')")
-  public ResponseEntity<PagedModel<AuthorityModel>> getAll(
-    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
+  public ResponseEntity<PagedModel<AuthorityModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
     return ok().body(authorityFacade.getAll(pageable));
   }
 
   @GetMapping("/{authorityId}")
   @PreAuthorize("hasAuthority('authority:read')")
   public ResponseEntity<AuthorityModel> get(@PathVariable("authorityId") String authorityId)
-    throws DomainEntityNotFoundException {
+    throws EntityNotFoundException {
     return ok().body(authorityFacade.findByAuthorityId(authorityId));
   }
 }

@@ -6,7 +6,7 @@ import static dev.kurama.api.core.rest.AuthenticationController.LOGIN_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.SIGNUP_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.TOKEN_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
+import static dev.kurama.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -70,7 +70,7 @@ class AuthenticationControllerTest {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(facade).signup(input);
   }
@@ -100,7 +100,7 @@ class AuthenticationControllerTest {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(facade).requestActivationToken(input.getEmail());
   }
@@ -115,7 +115,7 @@ class AuthenticationControllerTest {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + ACTIVATE_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(facade).activateAccount(input);
   }

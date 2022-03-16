@@ -70,7 +70,7 @@ class UserModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUsername())).thenReturn(false);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUserId(model.getId())).thenReturn(false);
     }
 
     @Test
@@ -170,7 +170,7 @@ class UserModelProcessorTest {
 
     @BeforeEach
     void setUp() {
-      authorityUtils.when(() -> AuthorityUtils.isCurrentUsername(model.getUsername())).thenReturn(true);
+      authorityUtils.when(() -> AuthorityUtils.isCurrentUserId(model.getId())).thenReturn(true);
       authorityUtils.when(() -> AuthorityUtils.hasAuthority(PROFILE_READ)).thenReturn(true);
     }
 

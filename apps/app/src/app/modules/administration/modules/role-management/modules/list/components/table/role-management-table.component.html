@@ -1,6 +1,6 @@
 <table mat-table class="full-width-table" matSort aria-label="Elements">
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Role</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="name" scope="col">Role</th>
     <td mat-cell *matCellDef="let row">{{ row.name }}</td>
   </ng-container>
 
@@ -49,6 +49,5 @@
   [length]="(dataSource?.rolePage$ | async)?.page?.totalElements || 0"
   [pageSize]="10"
   [pageSizeOptions]="[5, 10, 20]"
-  aria-label="Select page"
->
+  aria-label="Select page">
 </mat-paginator>

@@ -39,7 +39,7 @@ export class LoginComponent implements OnDestroy {
 
   public onSubmit(): void {
     this.authService.login(this.loginForm.value).subscribe({
-      next: (user) => this.setStatus(!!user),
+      next: (session) => this.setStatus(!!session),
       error: () => this.setStatus(false),
     });
   }

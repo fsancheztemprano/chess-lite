@@ -9,9 +9,9 @@ import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PAT
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
-import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
+import static dev.kurama.support.JsonUtils.asJsonString;
+import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
+import static dev.kurama.support.TestUtils.getAuthorizationHeader;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -29,9 +29,9 @@ import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.hateoas.processor.UserPreferencesModelProcessor;
 import dev.kurama.api.core.service.UserPreferencesService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
-import dev.kurama.api.support.ImportMappers;
-import dev.kurama.api.support.ImportTestSecurityConfiguration;
-import dev.kurama.api.support.MockAuthorizedUser;
+import dev.kurama.support.ImportMappers;
+import dev.kurama.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.MockAuthorizedUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -75,11 +75,14 @@ class UserPreferencesControllerIT {
   class GetUserPreferencesITs {
 
     @Test
-    void should_return_forbidden_without_user_preferences_read_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(USER_PREFERENCES_PATH + "/id")).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_preferences_read_authority() throws Exception {
       mockMvc.perform(get(USER_PREFERENCES_PATH + "/id").headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -120,7 +123,7 @@ class UserPreferencesControllerIT {
 
       mockMvc.perform(get(format("%s/%s", USER_PREFERENCES_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .headers(MockAuthorizedUser.builder()
-            .username(expected.getUser().getUsername())
+            .id(expected.getUser().getId())
             .authorities(USER_PREFERENCES_READ, PROFILE_READ)
             .buildAuthorizationHeader(jwtTokenProvider)))
         .andExpect(status().isOk())
@@ -138,7 +141,7 @@ class UserPreferencesControllerIT {
 
       mockMvc.perform(get(format("%s/%s", USER_PREFERENCES_PATH, expected.getId())).accept(HAL_FORMS_JSON_VALUE)
           .headers(MockAuthorizedUser.builder()
-            .username(expected.getUser().getUsername())
+            .id(expected.getUser().getId())
             .authorities(USER_PREFERENCES_READ, PROFILE_UPDATE)
             .buildAuthorizationHeader(jwtTokenProvider)))
         .andExpect(status().isOk())
@@ -158,14 +161,17 @@ class UserPreferencesControllerIT {
     UserPreferencesInput input = UserPreferencesInput.builder().contentLanguage("jp").darkMode(true).build();
 
     @Test
-    void should_return_forbidden_without_user_preferences_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(
           patch(USER_PREFERENCES_PATH + "/id").contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)))
         .andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_user_preferences_update_authority() throws Exception {
       mockMvc.perform(patch(USER_PREFERENCES_PATH + "/id").contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))
-        .headers(getAuthorizationHeader(jwtTokenProvider, USER_PREFERENCES_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, USER_PREFERENCES_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test

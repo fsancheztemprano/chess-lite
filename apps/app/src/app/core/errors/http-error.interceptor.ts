@@ -18,7 +18,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           }
           this.toasterService.showToast({
             title: `${error.statusText} [${error.status}]`,
-            message: `${error.error.message} <br> ${error.error.time}`,
+            message: `${error.error.title} <br> ${error.error.time}`,
             type: ToastType.ERROR,
             override: { enableHtml: true },
           });

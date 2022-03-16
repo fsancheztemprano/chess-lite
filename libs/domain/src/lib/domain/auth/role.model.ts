@@ -18,7 +18,7 @@ export interface RoleUpdateInput {
 
 export class RolePage extends Resource implements IResource {
   page?: Page;
-  _embedded!: {
+  override _embedded!: {
     roleModels?: Role[];
   };
 }

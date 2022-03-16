@@ -5,16 +5,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
 import dev.kurama.api.core.exception.domain.exists.EntityExistsException;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
-import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
-import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -52,13 +50,18 @@ class ExceptionHandlersTest {
   }
 
   @Test
-  void bad_credentials_exception_should_return_bad_request() throws Exception {
-    mockMvc.perform(get("/badCredentialsException")).andExpect(status().isBadRequest());
+  void null_pointer_exception_should_return_bad_request() throws Exception {
+    mockMvc.perform(get("/NullPointerException")).andExpect(status().isBadRequest());
   }
 
   @Test
-  void access_denied_exception_should_return_internal_server_error() throws Exception {
-    mockMvc.perform(get("/accessDeniedException")).andExpect(status().isInternalServerError());
+  void illegal_argument_exception_should_return_bad_request() throws Exception {
+    mockMvc.perform(get("/IllegalArgumentException")).andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void bad_credentials_exception_should_return_bad_request() throws Exception {
+    mockMvc.perform(get("/badCredentialsException")).andExpect(status().isBadRequest());
   }
 
   @Test
@@ -92,23 +95,13 @@ class ExceptionHandlersTest {
   }
 
   @Test
-  void domain_entity_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/domainEntityNotFoundException")).andExpect(status().isNotFound());
+  void entity_not_found_exception_should_return_not_found() throws Exception {
+    mockMvc.perform(get("/entityNotFoundException")).andExpect(status().isNotFound());
   }
 
   @Test
-  void role_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/roleNotFoundException")).andExpect(status().isNotFound());
-  }
-
-  @Test
-  void user_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/userNotFoundException")).andExpect(status().isNotFound());
-  }
-
-  @Test
-  void email_not_found_exception_should_return_not_found() throws Exception {
-    mockMvc.perform(get("/emailNotFoundException")).andExpect(status().isNotFound());
+  void not_found_exception_should_return_not_found() throws Exception {
+    mockMvc.perform(get("/notFoundException")).andExpect(status().isNotFound());
   }
 
   @Test
@@ -135,6 +128,18 @@ class ExceptionHandlersTest {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/NullPointerException")
+    public void NullPointerException() {
+      throw new NullPointerException(null);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/IllegalArgumentException")
+    public void IllegalArgumentException() {
+      throw new IllegalArgumentException();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/accountDisabledException")
     public void accountDisabledException() {
       throw new DisabledException(null);
@@ -144,12 +149,6 @@ class ExceptionHandlersTest {
     @GetMapping(path = "/badCredentialsException")
     public void badCredentialsException() {
       throw new BadCredentialsException(null);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/accessDeniedException")
-    public void accessDeniedException() throws AccessDeniedException {
-      throw new AccessDeniedException(null);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -185,31 +184,19 @@ class ExceptionHandlersTest {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/entityExistsException")
     public void entityExistsException() throws EntityExistsException {
-      throw new EntityExistsException(null);
+      throw new EntityExistsException("id", User.class);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/domainEntityNotFoundException")
-    public void domainEntityNotFoundException() throws DomainEntityNotFoundException {
-      throw new DomainEntityNotFoundException(null);
+    @GetMapping(path = "/entityNotFoundException")
+    public void entityNotFoundException() throws EntityNotFoundException {
+      throw new EntityNotFoundException("id", User.class);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/roleNotFoundException")
-    public void roleNotFoundException() throws RoleNotFoundException {
-      throw new RoleNotFoundException(null);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/userNotFoundException")
-    public void userNotFoundException() throws UserNotFoundException {
-      throw new UserNotFoundException(null);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/emailNotFoundException")
-    public void emailNotFoundException() throws EmailNotFoundException {
-      throw new EmailNotFoundException(null);
+    @GetMapping(path = "/notFoundException")
+    public void notFoundException() throws EntityNotFoundException {
+      throw new NoSuchElementException(null);
     }
 
     @ResponseStatus(HttpStatus.OK)

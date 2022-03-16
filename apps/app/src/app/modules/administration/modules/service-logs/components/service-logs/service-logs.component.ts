@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdministrationRelations, ServiceLogs } from '@app/domain';
 import { BehaviorSubject } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { CoreService } from '../../../../../../core/services/core.service';
 import { ServiceLogsService } from '../../services/service-logs.service';
 
@@ -62,15 +62,8 @@ export class ServiceLogsComponent implements OnDestroy {
   }
 
   private deleteServiceLogs() {
-    return this.serviceLogs
-      .pipe(
-        first(),
-        switchMap((serviceLogs: ServiceLogs) =>
-          serviceLogs.submitToTemplateOrThrow(AdministrationRelations.DELETE_SERVICE_LOGS_REL),
-        ),
-      )
-      .subscribe((serviceLogs) => {
-        this.serviceLogs.next(serviceLogs);
-      });
+    return this.serviceLogsService.deleteServiceLogs(this.serviceLogs.value).subscribe((serviceLogs) => {
+      this.serviceLogs.next(serviceLogs);
+    });
   }
 }

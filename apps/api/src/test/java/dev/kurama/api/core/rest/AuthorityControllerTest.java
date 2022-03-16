@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import dev.kurama.api.core.exception.ExceptionHandlers;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.core.facade.AuthorityFacade;
 import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import dev.kurama.api.core.rest.AuthorityControllerTest.AuthorityControllerConfig;
@@ -88,7 +88,7 @@ class AuthorityControllerTest {
     @Test
     void get_one_authority_should_throw_if_id_does_not_exists() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(DomainEntityNotFoundException.class).when(facade).findByAuthorityId(notFoundId);
+      doThrow(EntityNotFoundException.class).when(facade).findByAuthorityId(notFoundId);
 
       mockMvc.perform(get(AUTHORITY_PATH + "/" + notFoundId)).andExpect(status().isNotFound());
     }

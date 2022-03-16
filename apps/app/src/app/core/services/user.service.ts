@@ -34,7 +34,7 @@ export class UserService {
   public fetchCurrentUser(): Observable<User> {
     return this.halFormService.getLinkOrThrow(CurrentUserRelations.CURRENT_USER_REL).pipe(
       first(),
-      switchMap((userLink) => userLink.get()),
+      switchMap((userLink) => userLink.follow()),
     );
   }
 
@@ -49,7 +49,9 @@ export class UserService {
   public fetchUserPreferences(): Observable<UserPreferences> {
     return this.getUser().pipe(
       first(),
-      switchMap((user: User | null) => user?.getLinkOrThrow(CurrentUserRelations.USER_PREFERENCES_REL).get() || EMPTY),
+      switchMap(
+        (user: User | null) => user?.getLinkOrThrow(CurrentUserRelations.USER_PREFERENCES_REL).follow() || EMPTY,
+      ),
     );
   }
 

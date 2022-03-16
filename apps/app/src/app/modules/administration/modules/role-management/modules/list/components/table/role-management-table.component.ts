@@ -24,7 +24,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Role>;
 
-  displayedColumns = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
+  displayedColumns: string[] = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
 
   private createRoleMenuOption: MenuOption = {
     label: 'New Role',
@@ -69,11 +69,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
           disabled: !role.isAllowedTo(RoleManagementRelations.ROLE_DELETE_REL),
         },
       })
-      .pipe(
-        switchMap((confirmRemoveRole) =>
-          confirmRemoveRole ? role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_DELETE_REL) : EMPTY,
-        ),
-      )
+      .pipe(switchMap((confirmRemoveRole) => (confirmRemoveRole ? this.dataSource.deleteRole(role) : EMPTY)))
       .subscribe({
         next: () => this.toasterService.showToast({ title: 'Role deleted successfully' }),
         error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),
@@ -105,10 +101,8 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
             ],
           })
           .pipe(
-            switchMap((dialogInputs: { name: string }) => {
-              return dialogInputs?.name?.length
-                ? rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, dialogInputs)
-                : EMPTY;
+            switchMap((body: { name: string }) => {
+              return body?.name?.length ? this.dataSource.createRole(body.name) : EMPTY;
             }),
           );
       }),

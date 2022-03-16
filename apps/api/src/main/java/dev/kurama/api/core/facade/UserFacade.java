@@ -2,8 +2,7 @@ package dev.kurama.api.core.facade;
 
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
@@ -40,7 +39,7 @@ public class UserFacade {
   @NonNull
   private final AuthenticationFacility authenticationFacility;
 
-  public UserModel create(UserInput userInput) throws UsernameExistsException, EmailExistsException {
+  public UserModel create(UserInput userInput) throws UserExistsException {
     return userMapper.userToUserModel(userService.createUser(userInput));
   }
 
@@ -59,12 +58,12 @@ public class UserFacade {
   }
 
   public UserModel update(String id, UserInput userInput)
-    throws UsernameExistsException, EmailExistsException, UserNotFoundException, RoleNotFoundException {
+    throws UserExistsException, UserNotFoundException, RoleNotFoundException {
     return userMapper.userToUserModel(userService.updateUser(id, userInput));
   }
 
   public UserModel updateProfile(String id, UserProfileUpdateInput userProfileUpdateInput)
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     return userMapper.userToUserModel(userService.updateUser(id, UserInput.builder()
       .firstname(userProfileUpdateInput.getFirstname())
       .lastname(userProfileUpdateInput.getLastname())
@@ -72,7 +71,7 @@ public class UserFacade {
   }
 
   public UserModel changePassword(String id, ChangeUserPasswordInput changeUserPasswordInput)
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     User user = userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
     authenticationFacility.verifyAuthentication(user.getUsername(), changeUserPasswordInput.getPassword());
     return userMapper.userToUserModel(
@@ -80,7 +79,7 @@ public class UserFacade {
   }
 
   public UserModel uploadAvatar(String id, MultipartFile avatar)
-    throws IOException, UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    throws IOException, UserNotFoundException, RoleNotFoundException, UserExistsException {
     String sb = "data:image/png;base64," + StringUtils.newStringUtf8(Base64.encodeBase64(avatar.getBytes(), false));
     return userMapper.userToUserModel(userService.updateUser(id, UserInput.builder().profileImageUrl(sb).build()));
   }

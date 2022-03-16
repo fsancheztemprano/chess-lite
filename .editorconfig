@@ -9,13 +9,14 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 end_of_line = crlf
 max_line_length = 120
-ij_any_keep_line_breaks = false
 
 [*.java]
+ij_java_keep_line_breaks = false
 ij_java_wrap_long_lines = true
 ij_java_method_call_chain_wrap = on_every_item
 ij_java_call_parameters_wrap = normal
 ij_java_binary_operation_wrap = on_every_item
+ij_java_method_parameters_wrap = on_every_item
 ij_java_align_multiline_chained_methods = false
 ij_java_align_multiline_parameters_in_calls = false
 ij_java_align_multiline_method_parentheses = true
@@ -41,7 +42,9 @@ ij_typescript_keep_simple_blocks_in_one_line = true
 ij_typescript_import_sort_module_name = true
 ij_typescript_import_use_node_resolution = true
 ij_typescript_import_sort_members = true
-ij_typescript_import_prefer_absolute_path = true
+ij_typescript_import_prefer_absolute_path = false
+ij_typescript_indent_chained_calls = true
+
 
 [test-setup.ts]
 ij_typescript_import_sort_module_name = false

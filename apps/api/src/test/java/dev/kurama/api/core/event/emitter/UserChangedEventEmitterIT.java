@@ -10,7 +10,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.UserChangedEvent;
 import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
-import dev.kurama.api.support.TestChannelInterceptor;
+import dev.kurama.support.TestChannelInterceptor;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
 import org.springframework.test.context.ActiveProfiles;
 
-
-@ActiveProfiles("integration-test")
+@ActiveProfiles(value = "integration-test")
 @SpringBootTest
 class UserChangedEventEmitterIT {
 

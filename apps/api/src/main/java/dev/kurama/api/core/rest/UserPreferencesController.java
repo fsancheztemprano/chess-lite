@@ -2,7 +2,7 @@ package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
 
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.core.facade.UserPreferencesFacade;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.hateoas.model.UserPreferencesModel;
@@ -30,7 +30,7 @@ public class UserPreferencesController {
   @GetMapping("/{userPreferencesId}")
   @PreAuthorize("hasAuthority('user:preferences:read')")
   public ResponseEntity<UserPreferencesModel> get(@PathVariable("userPreferencesId") String userPreferencesId)
-    throws DomainEntityNotFoundException {
+    throws EntityNotFoundException {
     return ResponseEntity.ok().body(userPreferencesFacade.findById(userPreferencesId));
   }
 
@@ -38,7 +38,7 @@ public class UserPreferencesController {
   @PreAuthorize("hasAuthority('user:preferences:update')")
   public ResponseEntity<UserPreferencesModel> update(@PathVariable("userPreferencesId") String userPreferencesId,
                                                      @RequestBody UserPreferencesInput userPreferencesInput)
-    throws DomainEntityNotFoundException {
+    throws EntityNotFoundException {
     return ResponseEntity.ok().body(userPreferencesFacade.updateById(userPreferencesId, userPreferencesInput));
   }
 }

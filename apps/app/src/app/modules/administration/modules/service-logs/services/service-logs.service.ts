@@ -13,7 +13,11 @@ export class ServiceLogsService {
   public getServiceLogs(): Observable<ServiceLogs> {
     return this.administrationService.getLinkOrThrow(AdministrationRelations.SERVICE_LOGS_REL).pipe(
       first(),
-      switchMap((link) => link.get()),
+      switchMap((link) => link.follow()),
     );
+  }
+
+  public deleteServiceLogs(serviceLogs: ServiceLogs) {
+    return serviceLogs.submitToTemplateOrThrow(AdministrationRelations.DELETE_SERVICE_LOGS_REL);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   ActivationTokenRelations,
+  IUserPreferences,
   ManageUserProfileInput,
   User,
   UserChangedMessage,
@@ -66,11 +67,31 @@ export class UserManagementDetailService {
     return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL)));
   }
 
-  updateProfile(profileInput: ManageUserProfileInput) {
+  updateUser(body: ManageUserProfileInput) {
     return this.getUser().pipe(
       first(),
       filterNulls(),
-      switchMap((user) => user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, profileInput)),
+      switchMap((user) => user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body })),
+    );
+  }
+
+  updateUserRole(roleId: string) {
+    return this.getUser().pipe(
+      first(),
+      filterNulls(),
+      switchMap((user) =>
+        user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_ROLE_REL, { body: { roleId } }),
+      ),
+    );
+  }
+
+  updateUserAuthorities(authorityIds: string[]) {
+    return this.getUser().pipe(
+      first(),
+      filterNulls(),
+      switchMap((user) =>
+        user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL, { body: { authorityIds } }),
+      ),
     );
   }
 
@@ -78,7 +99,7 @@ export class UserManagementDetailService {
     return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_DELETE_REL)));
   }
 
-  deleteProfile() {
+  deleteUser() {
     return this.getUser().pipe(
       first(),
       filterNulls(),
@@ -102,12 +123,12 @@ export class UserManagementDetailService {
     return this.getUser().pipe(
       first(),
       filterNulls(),
-      switchMap((user) => user.getLinkOrThrow(UserManagementRelations.USER_PREFERENCES_REL).get()),
+      switchMap((user) => user.getLinkOrThrow(UserManagementRelations.USER_PREFERENCES_REL).follow()),
     );
   }
 
-  updateUserPreferences(userPreferences: UserPreferences, changes: UserPreferences): Observable<UserPreferences> {
-    return userPreferences.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, changes);
+  updateUserPreferences(userPreferences: UserPreferences, body: IUserPreferences): Observable<UserPreferences> {
+    return userPreferences.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body });
   }
 
   private _initializeUser(userId: string): Observable<User> {

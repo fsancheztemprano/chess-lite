@@ -4,7 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
+import static dev.kurama.support.JsonUtils.asJsonString;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
@@ -23,8 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import dev.kurama.api.core.exception.ExceptionHandlers;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.UserFacade;
@@ -129,16 +128,7 @@ class UserControllerTest {
 
     @Test
     void should_throw_if_username_exists() throws Exception {
-      doThrow(UsernameExistsException.class).when(facade).create(input);
-
-      mockMvc.perform(post(USER_PATH).accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(input))).andExpect(status().isConflict());
-    }
-
-    @Test
-    void should_throw_if_email_exists() throws Exception {
-      doThrow(EmailExistsException.class).when(facade).create(input);
+      doThrow(UserExistsException.class).when(facade).create(input);
 
       mockMvc.perform(post(USER_PATH).accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -171,16 +161,7 @@ class UserControllerTest {
 
     @Test
     void should_throw_if_username_exists() throws Exception {
-      doThrow(UsernameExistsException.class).when(facade).update(user.getId(), input);
-
-      mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(input))).andExpect(status().isConflict());
-    }
-
-    @Test
-    void should_throw_if_email_exists() throws Exception {
-      doThrow(EmailExistsException.class).when(facade).update(user.getId(), input);
+      doThrow(UserExistsException.class).when(facade).update(user.getId(), input);
 
       mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)

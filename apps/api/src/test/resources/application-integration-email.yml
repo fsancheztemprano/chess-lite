@@ -1,0 +1,7 @@
+spring:
+  mail:
+    password: springboot
+    username: springboot
+    host: localhost
+    port: 3025
+    protocol: smtp

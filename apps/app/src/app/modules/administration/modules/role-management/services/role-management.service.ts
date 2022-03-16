@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Pageable, Role, RoleManagementRelations, RolePage } from '@app/domain';
+import { Pageable, Role, RoleManagementRelations, RolePage, RoleUpdateInput } from '@app/domain';
 import { HalFormService, Link } from '@hal-form-client';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';
 
@@ -11,7 +11,7 @@ import { AdministrationService } from '../../../services/administration.service'
 })
 export class RoleManagementService extends HalFormService {
   constructor(
-    protected readonly httpClient: HttpClient,
+    protected override readonly httpClient: HttpClient,
     private readonly administrationService: AdministrationService,
   ) {
     super(httpClient, '');
@@ -23,7 +23,7 @@ export class RoleManagementService extends HalFormService {
   public fetchRoles(pageable?: Pageable): Observable<RolePage> {
     return this.getLinkOrThrow(RoleManagementRelations.ROLES_REL).pipe(
       first(),
-      switchMap((link: Link) => link.get<RolePage>(pageable)),
+      switchMap((link: Link) => link.follow<RolePage>(pageable)),
     );
   }
 
@@ -34,11 +34,21 @@ export class RoleManagementService extends HalFormService {
   }
 
   public fetchOneRole(roleId: string): Observable<Role> {
-    return roleId.length
-      ? this.getLinkOrThrow(RoleManagementRelations.ROLE_REL).pipe(
-          first(),
-          switchMap((roleLink) => roleLink.get({ roleId })),
-        )
-      : throwError(() => `Invalid id ${roleId}`);
+    return this.getLinkOrThrow(RoleManagementRelations.ROLE_REL).pipe(
+      first(),
+      switchMap((roleLink) => roleLink.follow({ roleId })),
+    );
+  }
+
+  public updateRole(role: Role, body: RoleUpdateInput): Observable<Role> {
+    return role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_UPDATE_REL, { body });
+  }
+
+  public createRole(rolePage: RolePage, name: string): Observable<Role> {
+    return rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, { body: { name } });
+  }
+
+  deleteRole(role: Role): Observable<unknown> {
+    return role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_DELETE_REL);
   }
 }

@@ -2,8 +2,8 @@
   <mat-card-header>
     <mat-card-title>Send Activation Token</mat-card-title>
   </mat-card-header>
-  <mat-card-content
-    >Send the token to the user's email so he/she can reset the account password and unlock the account
+  <mat-card-content>
+    Send the token to the user's email so he/she can reset the account password and unlock the account
   </mat-card-content>
   <mat-card-actions align="end">
     <button
@@ -11,8 +11,7 @@
       color="warn"
       (click)="sendActivationToken()"
       *ngLet="userManagementDetailService.canSendActivationToken() | async as canSendActivationToken"
-      [disabled]="!canSendActivationToken"
-    >
+      [disabled]="!canSendActivationToken">
       Send Token
     </button>
   </mat-card-actions>

@@ -21,9 +21,9 @@ public class JWTAccessDeniedHandler implements AccessDeniedHandler {
   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception)
     throws IOException {
     var domainResponse = DomainResponse.builder()
-      .status(UNAUTHORIZED)
-      .code(UNAUTHORIZED.value())
-      .message(SecurityConstant.ACCESS_DENIED_MESSAGE)
+      .reason(UNAUTHORIZED.getReasonPhrase())
+      .status(UNAUTHORIZED.value())
+      .title(SecurityConstant.UNAUTHORIZED_MESSAGE)
       .build();
     response.setContentType(APPLICATION_JSON_VALUE);
     response.setStatus(UNAUTHORIZED.value());

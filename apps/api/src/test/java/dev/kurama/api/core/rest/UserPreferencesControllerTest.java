@@ -2,7 +2,7 @@ package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
+import static dev.kurama.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import dev.kurama.api.core.exception.ExceptionHandlers;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.core.facade.UserPreferencesFacade;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.hateoas.model.UserPreferencesModel;
@@ -70,7 +70,7 @@ class UserPreferencesControllerTest {
     @Test
     void should_throw_getting_user_preferences_if_id_does_not_exist() throws Exception {
       String notFoundId = randomUUID();
-      doThrow(DomainEntityNotFoundException.class).when(facade).findById(notFoundId);
+      doThrow(EntityNotFoundException.class).when(facade).findById(notFoundId);
 
       mockMvc.perform(get(USER_PREFERENCES_PATH + "/" + notFoundId)).andExpect(status().isNotFound());
 
@@ -102,7 +102,7 @@ class UserPreferencesControllerTest {
     void should_throw_updating_user_preferences_if_id_does_not_exist() throws Exception {
       String notFoundId = randomUUID();
       UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
-      doThrow(DomainEntityNotFoundException.class).when(facade).updateById(notFoundId, input);
+      doThrow(EntityNotFoundException.class).when(facade).updateById(notFoundId, input);
 
       mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + notFoundId).accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)

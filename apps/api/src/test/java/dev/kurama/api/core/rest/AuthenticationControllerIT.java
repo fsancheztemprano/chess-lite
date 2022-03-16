@@ -7,7 +7,7 @@ import static dev.kurama.api.core.rest.AuthenticationController.LOGIN_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.SIGNUP_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.TOKEN_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
+import static dev.kurama.support.JsonUtils.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
@@ -25,8 +25,8 @@ import dev.kurama.api.core.hateoas.input.RequestActivationTokenInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserService;
-import dev.kurama.api.support.ImportMappers;
-import dev.kurama.api.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.ImportMappers;
+import dev.kurama.support.ImportTestSecurityConfiguration;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ class AuthenticationControllerIT {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(userService, times(1)).signup(input);
   }
@@ -91,7 +91,7 @@ class AuthenticationControllerIT {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
 
     verify(userService, times(1)).requestActivationTokenByEmail(input.getEmail());
   }
@@ -106,7 +106,7 @@ class AuthenticationControllerIT {
 
     mockMvc.perform(post(AUTHENTICATION_PATH + ACTIVATE_PATH).accept(MediaType.APPLICATION_JSON)
       .contentType(MediaType.APPLICATION_JSON)
-      .content(asJsonString(input))).andExpect(status().isOk());
+      .content(asJsonString(input))).andExpect(status().isNoContent());
     verify(userService, times(1)).activateAccount(input);
   }
 }

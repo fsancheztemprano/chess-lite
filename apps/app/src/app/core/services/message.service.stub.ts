@@ -1,9 +1,10 @@
 import { ApplicationMessage, MessageDestination, UserChangedMessage } from '@app/domain';
 import { RxStompService } from '@stomp/ng2-stompjs';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, noop, Observable, Subject } from 'rxjs';
 import { MessageService } from './message.service';
 
 export class StubMessageService implements Partial<MessageService> {
+  disconnect = noop;
   public userChangedMessageSubject = new Subject<UserChangedMessage>();
   public userListChangedMessageSubject = new Subject<UserChangedMessage>();
 

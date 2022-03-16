@@ -4,8 +4,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.authority.AuthorityAuthority.AUTHORITY_READ;
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
+import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
+import static dev.kurama.support.TestUtils.getAuthorizationHeader;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
@@ -26,9 +26,9 @@ import dev.kurama.api.core.hateoas.assembler.AuthorityModelAssembler;
 import dev.kurama.api.core.hateoas.processor.AuthorityModelProcessor;
 import dev.kurama.api.core.service.AuthorityService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
-import dev.kurama.api.support.ImportMappers;
-import dev.kurama.api.support.ImportTestSecurityConfiguration;
-import dev.kurama.api.support.TestUtils;
+import dev.kurama.support.ImportMappers;
+import dev.kurama.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.TestUtils;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.junit.jupiter.api.Nested;
@@ -63,11 +63,14 @@ class AuthorityControllerIT {
   class GetAllAuthoritiesITs {
 
     @Test
-    void should_return_forbidden_without_authority_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH)).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_authority_read_authorization() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH).headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -94,12 +97,15 @@ class AuthorityControllerIT {
   class GetOneAuthorityITs {
 
     @Test
-    void should_return_forbidden_without_authority_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(AUTHORITY_PATH + "/authorityId")).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_authority_read_authorization() throws Exception {
       mockMvc.perform(
           get(AUTHORITY_PATH + "/authorityId").headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test

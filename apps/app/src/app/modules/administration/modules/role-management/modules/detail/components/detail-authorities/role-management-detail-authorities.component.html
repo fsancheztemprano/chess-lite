@@ -10,8 +10,8 @@
 <button
   mat-raised-button
   color="primary"
-  (click)="onSubmit()"
-  [disabled]="!role$ || !(role$ | async)?.isAllowedTo('update')"
->
+  *ngLet="role$ | async as role"
+  (click)="onSubmit(role)"
+  [disabled]="!role || !role?.isAllowedTo('update')">
   Save Authorities
 </button>

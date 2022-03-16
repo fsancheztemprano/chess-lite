@@ -9,7 +9,8 @@
         "clean": {
           "builder": "@nxrocks/nx-spring-boot:clean",
           "options": {
-            "root": "apps/api"
+            "root": "apps/api",
+            "args": ["-U", "-B"]
           }
         },
         "test": {
@@ -48,6 +49,22 @@
             "args": ["deploy", "-U", "-B", "-DskipTests", "-DskipITs", "-P frontend,herokudev"]
           }
         },
+        "pact": {
+          "builder": "@nxrocks/nx-spring-boot:clean",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "apps/api/target",
+            "root": "apps/api",
+            "args": [
+              "verify",
+              "-U",
+              "-B",
+              "-D it.test=\"dev.kurama.api.pact.**\"",
+              "-Dtest=\"dev.kurama.api.null.**\"",
+              "-DfailIfNoTests=false"
+            ]
+          }
+        },
         "run": {
           "builder": "@nxrocks/nx-spring-boot:run",
           "options": {
@@ -57,7 +74,8 @@
         "serve": {
           "builder": "@nxrocks/nx-spring-boot:serve",
           "options": {
-            "root": "apps/api"
+            "root": "apps/api",
+            "args": ["-DskipTests"]
           }
         },
         "buildJar": {
@@ -203,6 +221,29 @@
       },
       "tags": [],
       "implicitDependencies": ["app"]
+    },
+    "consumer-pact": {
+      "projectType": "library",
+      "root": "libs/consumer-pact",
+      "sourceRoot": "libs/consumer-pact/src",
+      "prefix": "pact",
+      "architect": {
+        "pact": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["apps/api/target/test-classes/pact"],
+          "options": {
+            "jestConfig": "libs/consumer-pact/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/consumer-pact/src/**/*.ts"]
+          }
+        }
+      },
+      "tags": []
     },
     "domain": {
       "projectType": "library",

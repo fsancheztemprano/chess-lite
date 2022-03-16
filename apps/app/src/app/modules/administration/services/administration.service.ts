@@ -15,11 +15,11 @@ import { switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AdministrationService extends HalFormService {
-  constructor(protected readonly httpClient: HttpClient, private readonly halFormService: HalFormService) {
+  constructor(protected override readonly httpClient: HttpClient, private readonly halFormService: HalFormService) {
     super(httpClient, '');
   }
 
-  initialize(): Observable<Resource> {
+  override initialize(): Observable<Resource> {
     return this.halFormService.getLink(AdministrationRelations.ADMINISTRATION_REL).pipe(
       switchMap((link) => {
         this._rootUrl = link?.href || '';

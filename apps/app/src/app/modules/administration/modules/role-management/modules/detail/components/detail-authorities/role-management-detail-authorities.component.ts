@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Authority, Role, RoleManagementRelations } from '@app/domain';
-import { submitToTemplateOrThrowPipe } from '@hal-form-client';
+import { Authority, Role } from '@app/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { ToasterService } from '../../../../../../../../core/services/toaster.service';
+import { RoleManagementService } from '../../../../services/role-management.service';
 
 @UntilDestroy()
 @Component({
@@ -20,7 +20,11 @@ export class RoleManagementDetailAuthoritiesComponent implements OnInit {
 
   public form = new FormArray([]);
 
-  constructor(private readonly route: ActivatedRoute, private readonly toasterService: ToasterService) {
+  constructor(
+    private readonly roleManagementService: RoleManagementService,
+    private readonly route: ActivatedRoute,
+    private readonly toasterService: ToasterService,
+  ) {
     this._getAuthorities();
   }
 
@@ -35,16 +39,13 @@ export class RoleManagementDetailAuthoritiesComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    this.role$
-      .pipe(
-        first(),
-        submitToTemplateOrThrowPipe(RoleManagementRelations.ROLE_UPDATE_REL, {
-          authorityIds: this.form.value
-            .filter((authority: { active: boolean }) => authority.active)
-            .map((authority: { id: string }) => authority.id),
-        }),
-      )
+  onSubmit(role: Role) {
+    this.roleManagementService
+      .updateRole(role, {
+        authorityIds: this.form.value
+          .filter((authority: { active: boolean }) => authority.active)
+          .map((authority: { id: string }) => authority.id),
+      })
       .subscribe({
         next: () => this.toasterService.showToast({ message: 'Authorities updated successfully' }),
         error: () => this.toasterService.showErrorToast({ title: 'An Error occurred' }),

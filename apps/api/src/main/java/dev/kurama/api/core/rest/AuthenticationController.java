@@ -1,17 +1,17 @@
 package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHENTICATION_PATH;
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.facade.AuthenticationFacade;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
@@ -41,16 +41,15 @@ public class AuthenticationController {
   @NonNull
   private final AuthenticationFacade authenticationFacade;
 
-
   @PostMapping(SIGNUP_PATH)
-  public ResponseEntity<?> signup(@RequestBody SignupInput user)
-    throws EmailExistsException, UsernameExistsException, SignupClosedException {
+  public ResponseEntity<?> signup(@RequestBody SignupInput user) throws UserExistsException, SignupClosedException {
     authenticationFacade.signup(user);
-    return ok().build();
+    return noContent().build();
   }
 
   @PostMapping(LOGIN_PATH)
-  public ResponseEntity<UserModel> login(@RequestBody LoginInput user) throws RoleCanNotLoginException {
+  public ResponseEntity<UserModel> login(@RequestBody LoginInput user)
+    throws RoleCanNotLoginException, UserNotFoundException {
     var authenticatedUser = authenticationFacade.login(user);
     return ok().headers(authenticatedUser.getHeaders()).body(authenticatedUser.getUserModel());
   }
@@ -58,16 +57,16 @@ public class AuthenticationController {
 
   @PostMapping(TOKEN_PATH)
   public ResponseEntity<?> requestActivationToken(@RequestBody RequestActivationTokenInput requestActivationTokenInput)
-    throws EmailNotFoundException, ActivationTokenRecentException {
+    throws ActivationTokenRecentException, UserNotFoundException {
     authenticationFacade.requestActivationToken(requestActivationTokenInput.getEmail());
-    return ok().build();
+    return noContent().build();
   }
 
   @PostMapping(ACTIVATE_PATH)
   public ResponseEntity<?> activateAccount(@RequestBody AccountActivationInput accountActivationInput)
-    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
-    ActivationTokenExpiredException {
+    throws ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException,
+    UserNotFoundException {
     authenticationFacade.activateAccount(accountActivationInput);
-    return ok().build();
+    return noContent().build();
   }
 }

@@ -5,14 +5,16 @@ export interface LoginInput {
 
 export interface SignupInput {
   username: string;
-  password: string;
   email: string;
   firstname?: string;
   lastname?: string;
 }
 
-export enum HttpHeaders {
-  'JWT_TOKEN' = 'Jwt-Token',
+export enum HttpHeaderKey {
+  ACCESS_CONTROL_EXPOSE_HEADERS = 'Access-Control-Expose-Headers',
+  CONTENT_TYPE = 'Content-Type',
+  JWT_TOKEN = 'Jwt-Token',
+  LOCATION = 'Location',
 }
 
 export interface AccountActivationInput {

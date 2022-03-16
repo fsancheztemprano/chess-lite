@@ -45,7 +45,7 @@ class JWTTokenProviderTest {
     User user = User.builder()
       .setRandomUUID()
       .username("username")
-      .email("email@example.com")
+      .email("email@localhost")
       .authorities(newHashSet(authority1, authority2))
       .build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
@@ -72,7 +72,7 @@ class JWTTokenProviderTest {
 
   @Test
   void isTokenValid() {
-    User user = User.builder().setRandomUUID().username("username").email("email@example.com").build();
+    User user = User.builder().setRandomUUID().username("username").email("email@localhost").build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
     String token = jwtTokenProvider.generateJWTToken(userPrincipal);
 
@@ -87,7 +87,7 @@ class JWTTokenProviderTest {
 
   @Test
   void getAuthentication() {
-    User user = User.builder().setRandomUUID().username("username").email("email@example.com").build();
+    User user = User.builder().setRandomUUID().username("username").email("email@localhost").build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
     String token = jwtTokenProvider.generateJWTToken(userPrincipal);
 

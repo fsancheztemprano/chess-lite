@@ -1,0 +1,14 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "extends": ["plugin:@nrwl/nx/angular"],
+      "rules": {
+        "@typescript-eslint/no-namespace": "off",
+        "@nrwl/nx/enforce-module-boundaries": "off"
+      }
+    }
+  ]
+}

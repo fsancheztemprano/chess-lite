@@ -11,8 +11,7 @@ import static org.mockito.Mockito.when;
 
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.assembler.UserModelAssembler;
@@ -54,7 +53,7 @@ class UserFacadeTest {
   private AuthenticationFacility authenticationFacility;
 
   @Test
-  void should_create_user() throws UsernameExistsException, EmailExistsException {
+  void should_create_user() throws UserExistsException {
     UserInput input = UserInput.builder().username("username").build();
     User user = User.builder().username(input.getUsername()).setRandomUUID().build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
@@ -109,8 +108,7 @@ class UserFacadeTest {
   }
 
   @Test
-  void should_update_user()
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+  void should_update_user() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     String id = randomUUID();
     UserInput input = UserInput.builder().username("username").build();
     User user = User.builder().username(input.getUsername()).setRandomUUID().build();
@@ -126,8 +124,7 @@ class UserFacadeTest {
   }
 
   @Test
-  void should_update_user_profile()
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+  void should_update_user_profile() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     String id = randomUUID();
     UserProfileUpdateInput input = UserProfileUpdateInput.builder().firstname("firstname").build();
     User user = User.builder().username(input.getFirstname()).setRandomUUID().build();
@@ -143,8 +140,7 @@ class UserFacadeTest {
   }
 
   @Test
-  void should_change_user_password()
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+  void should_change_user_password() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     String id = randomUUID();
     ChangeUserPasswordInput input = ChangeUserPasswordInput.builder()
       .password("Old_p4ss")
@@ -166,7 +162,7 @@ class UserFacadeTest {
 
   @Test
   void should_upload_user_avatar()
-    throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, IOException, EmailExistsException {
+    throws UserNotFoundException, RoleNotFoundException, UserExistsException, IOException {
     String id = randomUUID();
     MockMultipartFile avatar = new MockMultipartFile("avatar", "image".getBytes());
     User user = User.builder().id(id).username("username").build();

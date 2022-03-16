@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
-  <logger name="dev.kurama.api" level="INFO"/>
+  <logger name="dev.kurama" level="WARN"/>
   <logger name="org.springframework" level="WARN"/>
   <logger name="org.hibernate.orm.cache" level="ERROR"/>
   <logger name="root" level="WARN"/>

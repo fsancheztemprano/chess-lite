@@ -3,14 +3,12 @@ server:
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:12://somehostname:someport/somedbname
+    url: jdbc:tc:postgresql:14.2:////testdb
     hikari:
       maximum-pool-size: 2
-  mail:
-    password: springboot
-    username: springboot
-    host: localhost
-    port: 3025
-    protocol: smtp
-application:
-  run_data_init: false
+  jpa:
+    properties:
+      hibernate:
+        cache:
+          use_query_cache: false
+          use_second_level_cache: false

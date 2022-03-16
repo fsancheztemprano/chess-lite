@@ -4,9 +4,9 @@ import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTI
 import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
-import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
+import static dev.kurama.support.JsonUtils.asJsonString;
+import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
+import static dev.kurama.support.TestUtils.getAuthorizationHeader;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doReturn;
@@ -23,8 +23,8 @@ import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
 import dev.kurama.api.core.hateoas.processor.GlobalSettingsModelProcessor;
 import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
-import dev.kurama.api.support.ImportMappers;
-import dev.kurama.api.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.ImportMappers;
+import dev.kurama.support.ImportTestSecurityConfiguration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +55,15 @@ class GlobalSettingsControllerIT {
   class GetGlobalSettingsITs {
 
     @Test
-    void should_return_forbidden_without_global_settings_read_authorization() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(GLOBAL_SETTINGS_PATH)).andExpect(status().isForbidden());
+    }
 
+
+    @Test
+    void should_return_unauthorized_without_global_settings_read_authorization() throws Exception {
       mockMvc.perform(get(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -103,29 +107,28 @@ class GlobalSettingsControllerIT {
   @Nested
   class UpdateGlobalSettingsITs {
 
-    @Test
-    void should_return_forbidden_without_global_settings_update_authorization() throws Exception {
-      GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
-        .signupOpen(false)
-        .defaultRoleId(randomUUID())
-        .build();
+    private final GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
+      .signupOpen(true)
+      .defaultRoleId(randomUUID())
+      .build();
 
+    @Test
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).contentType(MediaType.APPLICATION_JSON).content(asJsonString(input)))
         .andExpect(status().isForbidden());
-
-      mockMvc.perform(
-        patch(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, GLOBAL_SETTINGS_READ))
-
-          .contentType(MediaType.APPLICATION_JSON).content(asJsonString(input))).andExpect(status().isForbidden());
     }
 
 
     @Test
+    void should_return_unauthorized_without_global_settings_update_authorization() throws Exception {
+      mockMvc.perform(
+        patch(GLOBAL_SETTINGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, GLOBAL_SETTINGS_READ))
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input))).andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void should_update_global_settings_given_global_settings_update_authority() throws Exception {
-      GlobalSettingsUpdateInput input = GlobalSettingsUpdateInput.builder()
-        .signupOpen(true)
-        .defaultRoleId(randomUUID())
-        .build();
       GlobalSettings expected = GlobalSettings.builder()
         .setRandomUUID()
         .signupOpen(false)

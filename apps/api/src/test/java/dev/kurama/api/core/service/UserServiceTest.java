@@ -2,6 +2,7 @@ package dev.kurama.api.core.service;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,13 +29,11 @@ import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.event.emitter.UserChangedEventEmitter;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
@@ -178,10 +177,9 @@ class UserServiceTest {
     }
 
     @Test
-    void should_signup()
-      throws UsernameExistsException, EmailExistsException, SignupClosedException, ActivationTokenRecentException {
+    void should_signup() throws UserExistsException, SignupClosedException, ActivationTokenRecentException {
       User expected = User.builder().setRandomUUID().email("email@email.com").build();
-      Role defaultRole = Role.builder().setRandomUUID().name("DEFAULT_ROLE").build();
+      Role defaultRole = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       SignupInput input = SignupInput.builder()
         .firstname("firstname")
         .lastname("lastname")
@@ -207,7 +205,7 @@ class UserServiceTest {
   class CreateUserTests {
 
     @Test
-    void should_create_user() throws UsernameExistsException, EmailExistsException {
+    void should_create_user() throws UserExistsException {
       Role role = Role.builder()
         .setRandomUUID()
         .name("ROLE_NAME")
@@ -254,7 +252,7 @@ class UserServiceTest {
     }
 
     @Test
-    void should_create_user_with_default_role() throws UsernameExistsException, EmailExistsException {
+    void should_create_user_with_default_role() throws UserExistsException {
       Role defaultRole = Role.builder()
         .setRandomUUID()
         .name("ROLE_NAME")
@@ -298,7 +296,7 @@ class UserServiceTest {
 
     @Test
     void should_update_user_except_role_and_authority()
-      throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+      throws UserNotFoundException, RoleNotFoundException, UserExistsException {
       UserInput input = UserInput.builder()
         .username("username-A")
         .password("passw0rd")
@@ -348,8 +346,7 @@ class UserServiceTest {
     }
 
     @Test
-    void should_update_user_role()
-      throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    void should_update_user_role() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
       Role currentRole = Role.builder().setRandomUUID().name("ROLE_A").build();
       Role targetRole = Role.builder().setRandomUUID().name("ROLE_B").build();
       UserInput input = UserInput.builder().roleId(targetRole.getId()).build();
@@ -375,8 +372,7 @@ class UserServiceTest {
     }
 
     @Test
-    void should_update_user_authorities()
-      throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+    void should_update_user_authorities() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
       Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
       Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
       Authority authority3 = Authority.builder().setRandomUUID().name("authority3").build();
@@ -404,7 +400,7 @@ class UserServiceTest {
 
     @Test
     void should_not_update_user_if_nothing_has_changed()
-      throws UserNotFoundException, RoleNotFoundException, UsernameExistsException, EmailExistsException {
+      throws UserNotFoundException, RoleNotFoundException, UserExistsException {
       Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
       Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
       Role role = Role.builder().setRandomUUID().name("ROLE_A").authorities(newHashSet(authority1, authority2)).build();
@@ -459,8 +455,8 @@ class UserServiceTest {
   }
 
   @Test
-  void request_activation_token_by_email() throws ActivationTokenRecentException, EmailNotFoundException {
-    User expected = User.builder().setRandomUUID().email("email@example.com").build();
+  void request_activation_token_by_email() throws ActivationTokenRecentException, UserNotFoundException {
+    User expected = User.builder().setRandomUUID().email("email@localhost").build();
     when(userRepository.findUserByEmail(expected.getEmail())).thenReturn(Optional.of(expected));
     doNothing().when(userService).requestActivationToken(expected);
 
@@ -472,14 +468,14 @@ class UserServiceTest {
 
   @Test
   void activate_account()
-    throws ActivationTokenExpiredException, EmailNotFoundException, ActivationTokenNotFoundException,
-    ActivationTokenUserMismatchException {
+    throws ActivationTokenExpiredException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
+    UserNotFoundException {
     AccountActivationInput input = AccountActivationInput.builder()
       .token(randomUUID())
       .password("passw0rd")
-      .email("email@example.com")
+      .email("email@localhost")
       .build();
-    User expected = User.builder().setRandomUUID().email("email@example.com").build();
+    User expected = User.builder().setRandomUUID().email("email@localhost").build();
     ActivationToken token = ActivationToken.builder().setRandomUUID().created(new Date()).attempts(0).build();
     when(userRepository.findUserByEmail(input.getEmail())).thenReturn(Optional.of(expected));
     when(activationTokenService.findActivationToken(input.getToken())).thenReturn(token);

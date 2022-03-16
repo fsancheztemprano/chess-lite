@@ -1,7 +1,6 @@
 package dev.kurama.api.core.service;
 
 import dev.kurama.api.core.domain.EmailTemplate;
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class EmailService {
       message.setSubject(emailTemplate.getSubject());
       message.setText(emailTemplate.getText(), true);
       emailSender.send(mimeMessage);
-    } catch (MessagingException ignored) {
+    } catch (Exception ignored) {
     }
   }
 }

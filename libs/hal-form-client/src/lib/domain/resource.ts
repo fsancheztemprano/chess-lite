@@ -2,7 +2,11 @@ import { Observable } from 'rxjs';
 import { HalFormsEntityName, noEntityError } from '../utils/exceptions.utils';
 import { HttpMethodEnum } from './http-method.enum';
 import { ILink, Link } from './link';
-import { ITemplate, Template } from './template';
+import { AffordanceOptions, ITemplate, Template } from './template';
+
+export const DEFAULT_LINK = 'self';
+
+export const DEFAULT_TEMPLATE = 'default';
 
 export interface IResource {
   _links?: {
@@ -39,6 +43,10 @@ export class Resource implements IResource {
 
   [key: string]: any;
 
+  public static of(raw: IResource) {
+    return new Resource(raw);
+  }
+
   constructor(raw: IResource) {
     if (!raw) {
       raw = {};
@@ -66,24 +74,24 @@ export class Resource implements IResource {
     }
   }
 
-  getLink(key: string = 'self'): Link | null {
-    if (!key || !key.length || !this._links || !this._links[key]) {
+  getLink(key?: string): Link | null {
+    key = key || DEFAULT_LINK;
+    if (!this._links || !this._links[key]) {
       return null;
     }
     return this._links[key];
   }
 
-  getLinkOrThrow(key: string = 'self', errorMessage?: string | Error): Link {
+  getLinkOrThrow(key?: string, errorMessage?: string | Error): Link {
     const link = this.getLink(key);
-    if (link) {
-      return link;
-    } else {
-      throw noEntityError(errorMessage, HalFormsEntityName.LINK, key);
+    if (!link) {
+      throw noEntityError(errorMessage, HalFormsEntityName.LINK, key || DEFAULT_LINK);
     }
+    return link;
   }
 
-  hasLink(key: string = 'self'): boolean {
-    return !!this.getLink(key)?.href;
+  hasLink(key?: string): boolean {
+    return !!this.getLink(key)?.href?.length;
   }
 
   getEmbedded<T = Resource>(key: string): T | T[] | null {
@@ -128,36 +136,34 @@ export class Resource implements IResource {
     return this.getEmbeddedOrThrow<T>(key) as T;
   }
 
-  getTemplate(key: string = 'default'): Template | null {
-    if (!key || !key.length || !this._templates || !this._templates[key]) {
+  getTemplate(key?: string): Template | null {
+    key = key || DEFAULT_TEMPLATE;
+    if (!this._templates || !this._templates[key]) {
       return null;
     }
     return this._templates[key];
   }
 
-  getTemplateOrThrow(key: string = 'default', errorMessage?: string | Error): Template {
+  getTemplateOrThrow(key?: string, errorMessage?: string | Error): Template {
     const template = this.getTemplate(key);
-    if (template) {
-      return template;
-    } else {
-      throw noEntityError(errorMessage, HalFormsEntityName.TEMPLATE, key);
+    if (!template) {
+      throw noEntityError(errorMessage, HalFormsEntityName.TEMPLATE, key || DEFAULT_TEMPLATE);
     }
+    return template;
   }
 
-  isAllowedTo(template: string = 'default'): boolean {
+  isAllowedTo(template?: string): boolean {
     return !!this.getTemplate(template);
   }
 
-  submit(method: HttpMethodEnum, payload?: any, params?: any): Observable<any> {
-    return new Template({ method }, this._links?.self).submit(payload, params);
+  submit<T extends Resource = Resource>(method: HttpMethodEnum | string, options?: AffordanceOptions): Observable<T> {
+    return new Template({ method }, this._links?.self).submit<T>(options);
   }
 
-  submitToTemplateOrThrow(
-    templateName: string,
-    payload?: any,
-    params?: any,
-    observe: 'body' | 'events' | 'response' = 'body',
-  ): Observable<Resource> {
-    return this.getTemplateOrThrow(templateName).submit(payload, params, observe || 'body');
+  submitToTemplateOrThrow<T extends Resource = Resource>(
+    template?: string,
+    options?: AffordanceOptions,
+  ): Observable<T> {
+    return this.getTemplateOrThrow(template).submit<T>(options);
   }
 }

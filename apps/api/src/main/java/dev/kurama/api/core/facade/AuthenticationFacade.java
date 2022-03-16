@@ -5,14 +5,13 @@ import static dev.kurama.api.core.utility.HttpUtils.getJwtHeader;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
-import dev.kurama.api.core.exception.domain.ActivationTokenNotFoundException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
-import dev.kurama.api.core.exception.domain.exists.EmailExistsException;
-import dev.kurama.api.core.exception.domain.exists.UsernameExistsException;
-import dev.kurama.api.core.exception.domain.not.found.EmailNotFoundException;
+import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.ActivationTokenNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
@@ -37,12 +36,11 @@ public class AuthenticationFacade {
   @NonNull
   private final UserMapper userMapper;
 
-  public void signup(SignupInput signupInput)
-    throws UsernameExistsException, EmailExistsException, SignupClosedException {
+  public void signup(SignupInput signupInput) throws UserExistsException, SignupClosedException {
     userService.signup(signupInput);
   }
 
-  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException {
+  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException, UserNotFoundException {
     Pair<User, String> authenticationInfo = authenticationFacility.login(loginInput.getUsername(),
       loginInput.getPassword());
     return AuthenticatedUserExcerpt.builder()
@@ -51,13 +49,13 @@ public class AuthenticationFacade {
       .build();
   }
 
-  public void requestActivationToken(String email) throws EmailNotFoundException, ActivationTokenRecentException {
+  public void requestActivationToken(String email) throws ActivationTokenRecentException, UserNotFoundException {
     userService.requestActivationTokenByEmail(email);
   }
 
   public void activateAccount(AccountActivationInput accountActivationInput)
-    throws EmailNotFoundException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
-    ActivationTokenExpiredException {
+    throws ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException,
+    UserNotFoundException {
     userService.activateAccount(accountActivationInput);
   }
 }

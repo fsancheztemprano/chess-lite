@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Pageable, User, UserManagementRelations, UserPage } from '@app/domain';
+import { Pageable, User, UserInput, UserManagementRelations, UserPage } from '@app/domain';
 import { HalFormService, Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { AdministrationService } from '../../../services/administration.service'
 })
 export class UserManagementService extends HalFormService {
   constructor(
-    protected readonly httpClient: HttpClient,
+    protected override readonly httpClient: HttpClient,
     private readonly administrationService: AdministrationService,
   ) {
     super(httpClient, '');
@@ -23,7 +23,7 @@ export class UserManagementService extends HalFormService {
   public fetchUsers(pageable?: Pageable): Observable<UserPage> {
     return this.getLinkOrThrow(UserManagementRelations.USERS_REL).pipe(
       first(),
-      switchMap((link: Link) => link.get<UserPage>(pageable)),
+      switchMap((link: Link) => link.follow<UserPage>(pageable)),
     );
   }
 
@@ -31,11 +31,11 @@ export class UserManagementService extends HalFormService {
     userId = userId || '0';
     return this.getLinkOrThrow(UserManagementRelations.USER_REL).pipe(
       first(),
-      switchMap((userLink) => userLink.get({ userId })),
+      switchMap((userLink) => userLink.follow({ userId })),
     );
   }
 
-  public createUser(user: User) {
-    return this.submitToTemplateOrThrow(UserManagementRelations.USER_CREATE_REL, user);
+  public createUser(body: UserInput): Observable<User> {
+    return this.submitToTemplateOrThrow(UserManagementRelations.USER_CREATE_REL, { body });
   }
 }

@@ -40,9 +40,9 @@ public class RoleController {
 
   @GetMapping()
   @PreAuthorize("hasAuthority('role:read')")
-  public ResponseEntity<PagedModel<RoleModel>> getAll(
-    @PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
-    @RequestParam(value = "search", required = false) String search) {
+  public ResponseEntity<PagedModel<RoleModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE, sort =
+    "name") Pageable pageable,
+                                                      @RequestParam(value = "search", required = false) String search) {
     return ok().body(roleFacade.getAll(pageable, search));
   }
 

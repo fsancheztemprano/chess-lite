@@ -2,28 +2,22 @@ package dev.kurama.api.core.service;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPreferences;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
-import dev.kurama.api.support.MockEventLayer;
+import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "integration-test")
-@DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace = NONE)
+@ServiceLayerIntegrationTestConfig
 @Import({UserPreferencesService.class})
-@MockEventLayer
 class UserPreferencesServiceIT {
 
   @Autowired
@@ -56,14 +50,14 @@ class UserPreferencesServiceIT {
   }
 
   @Test
-  void should_find_user_preferences_by_id() throws DomainEntityNotFoundException {
+  void should_find_user_preferences_by_id() throws EntityNotFoundException {
     assertThat(service.findUserPreferencesById(userPreferences.getId())).isNotNull()
       .extracting("id")
       .isEqualTo(userPreferences.getId());
   }
 
   @Test
-  void should_update_user_preferences() throws DomainEntityNotFoundException {
+  void should_update_user_preferences() throws EntityNotFoundException {
     UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("cn").build();
 
     UserPreferences actual = service.updateUserPreferences(this.userPreferences.getId(), input);
@@ -75,7 +69,7 @@ class UserPreferencesServiceIT {
   }
 
   @Test
-  void should_find_user_preferences_by_user_id() {
+  void should_find_user_preferences_by_user_id() throws UserNotFoundException {
     UserPreferences actual = service.findUserPreferencesByUserId(userPreferences.getUser().getId());
 
     assertThat(actual.getId()).isEqualTo(userPreferences.getId());
@@ -83,7 +77,7 @@ class UserPreferencesServiceIT {
   }
 
   @Test
-  void should_update_user_preferences_by_user_id() {
+  void should_update_user_preferences_by_user_id() throws UserNotFoundException {
     UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("cn").build();
 
     UserPreferences actual = service.updateUserPreferencesByUserId(this.userPreferences.getUser().getId(), input);

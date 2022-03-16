@@ -42,8 +42,7 @@
         color="primary"
         type="submit"
         *ngLet="userManagementDetailService.canUpdateProfile() | async as canUpdateProfile"
-        [disabled]="!form.valid || !canUpdateProfile"
-      >
+        [disabled]="!form.valid || !canUpdateProfile">
         Save
       </button>
     </mat-card-actions>

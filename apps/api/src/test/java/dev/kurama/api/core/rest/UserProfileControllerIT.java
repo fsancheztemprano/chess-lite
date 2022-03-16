@@ -7,10 +7,10 @@ import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_CHANGE_PASSWORD_PATH;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_UPLOAD_AVATAR_PATH;
-import static dev.kurama.api.support.JsonUtils.asJsonString;
-import static dev.kurama.api.support.TestConstant.MOCK_MVC_HOST;
-import static dev.kurama.api.support.TestUtils.getAuthorizationHeader;
-import static dev.kurama.api.support.TestUtils.getMockUser;
+import static dev.kurama.support.JsonUtils.asJsonString;
+import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
+import static dev.kurama.support.TestUtils.getAuthorizationHeader;
+import static dev.kurama.support.TestUtils.getMockUser;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -41,9 +41,9 @@ import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserPreferencesService;
 import dev.kurama.api.core.service.UserService;
 import dev.kurama.api.core.utility.JWTTokenProvider;
-import dev.kurama.api.support.ImportMappers;
-import dev.kurama.api.support.ImportTestSecurityConfiguration;
-import dev.kurama.api.support.MockAuthorizedUser;
+import dev.kurama.support.ImportMappers;
+import dev.kurama.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.MockAuthorizedUser;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -91,11 +91,14 @@ class UserProfileControllerIT {
   class GetUserProfileITs {
 
     @Test
-    void should_return_forbidden_without_profile_read_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(get(USER_PROFILE_PATH)).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_profile_read_authority() throws Exception {
       mockMvc.perform(get(USER_PROFILE_PATH).headers(getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH")))
-        .andExpect(status().isForbidden());
+        .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -170,15 +173,18 @@ class UserProfileControllerIT {
       .build();
 
     @Test
-    void should_return_forbidden_without_profile_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(patch(USER_PROFILE_PATH).contentType(APPLICATION_JSON_VALUE)
         .accept(HAL_FORMS_JSON_VALUE)
         .content(asJsonString(input))).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_profile_update_authority() throws Exception {
       mockMvc.perform(patch(USER_PROFILE_PATH).contentType(APPLICATION_JSON_VALUE)
         .accept(HAL_FORMS_JSON_VALUE)
         .content(asJsonString(input))
-        .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -207,15 +213,18 @@ class UserProfileControllerIT {
       .build();
 
     @Test
-    void should_return_forbidden_without_profile_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).contentType(APPLICATION_JSON_VALUE)
         .accept(HAL_FORMS_JSON_VALUE)
         .content(asJsonString(input))).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_profile_update_authority() throws Exception {
       mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).contentType(APPLICATION_JSON_VALUE)
         .accept(HAL_FORMS_JSON_VALUE)
         .content(asJsonString(input))
-        .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -242,16 +251,19 @@ class UserProfileControllerIT {
     MockMultipartFile avatar = new MockMultipartFile("avatar", "avatar.png", "image/png", "avatar_file".getBytes());
 
     @Test
-    void should_return_forbidden_without_profile_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar).with(request -> {
         request.setMethod(HttpMethod.PATCH.toString());
         return request;
       })).andExpect(status().isForbidden());
+    }
 
+    @Test
+    void should_return_unauthorized_without_profile_update_authority() throws Exception {
       mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar).with(request -> {
         request.setMethod(HttpMethod.PATCH.toString());
         return request;
-      }).headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isForbidden());
+      }).headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -279,11 +291,15 @@ class UserProfileControllerIT {
   class DeleteProfileITs {
 
     @Test
-    void should_return_forbidden_without_profile_update_authority() throws Exception {
+    void should_return_forbidden_without_authentication() throws Exception {
       mockMvc.perform(delete(USER_PROFILE_PATH).accept(HAL_FORMS_JSON_VALUE)).andExpect(status().isForbidden());
+    }
 
+
+    @Test
+    void should_return_unauthorized_without_profile_update_authority() throws Exception {
       mockMvc.perform(delete(USER_PROFILE_PATH).accept(HAL_FORMS_JSON_VALUE)
-        .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isForbidden());
+        .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -306,11 +322,14 @@ class UserProfileControllerIT {
     class GetProfilePreferencesITs {
 
       @Test
-      void should_return_forbidden_without_profile_update_authority() throws Exception {
+      void should_return_forbidden_without_authentication() throws Exception {
         mockMvc.perform(get(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES)).andExpect(status().isForbidden());
+      }
 
+      @Test
+      void should_return_unauthorized_without_profile_update_authority() throws Exception {
         mockMvc.perform(get(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).headers(
-          getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH"))).andExpect(status().isForbidden());
+          getAuthorizationHeader(jwtTokenProvider, "MOCK:AUTH"))).andExpect(status().isUnauthorized());
       }
 
       @Test
@@ -338,15 +357,19 @@ class UserProfileControllerIT {
         .build();
 
       @Test
-      void should_return_forbidden_without_profile_update_authority() throws Exception {
+      void should_return_forbidden_without_authentication() throws Exception {
         mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).contentType(APPLICATION_JSON_VALUE)
           .content(asJsonString(userPreferencesInput))
           .accept(HAL_FORMS_JSON_VALUE)).andExpect(status().isForbidden());
+      }
 
+
+      @Test
+      void should_return_unauthorized_without_profile_update_authority() throws Exception {
         mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).contentType(APPLICATION_JSON_VALUE)
           .content(asJsonString(userPreferencesInput))
           .accept(HAL_FORMS_JSON_VALUE)
-          .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isForbidden());
+          .headers(getAuthorizationHeader(jwtTokenProvider, PROFILE_READ))).andExpect(status().isUnauthorized());
       }
 
       @Test

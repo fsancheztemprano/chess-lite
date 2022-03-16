@@ -3,7 +3,6 @@
     <app-tiled-menu-tile
       *ngIf="tile.canShow === undefined || (tile.canShow | async)"
       [tileData]="tile"
-      [ngClass]="{ isMobile: isMobile }"
-    ></app-tiled-menu-tile>
+      [ngClass]="{ isMobile: isMobile }"></app-tiled-menu-tile>
   </ng-container>
 </div>

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import dev.kurama.api.core.domain.Authority;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.core.hateoas.assembler.AuthorityModelAssembler;
 import dev.kurama.api.core.hateoas.model.AuthorityModel;
 import dev.kurama.api.core.mapper.AuthorityMapper;
@@ -57,7 +57,7 @@ class AuthorityFacadeTest {
   }
 
   @Test
-  void should_find_and_map_by_authority_id() throws DomainEntityNotFoundException {
+  void should_find_and_map_by_authority_id() throws EntityNotFoundException {
     Authority authority = Authority.builder().name("test:auth").setRandomUUID().build();
     AuthorityModel expected = AuthorityModel.builder().name(authority.getName()).id(authority.getId()).build();
     when(authorityService.findAuthorityById(authority.getId())).thenReturn(Optional.of(authority));

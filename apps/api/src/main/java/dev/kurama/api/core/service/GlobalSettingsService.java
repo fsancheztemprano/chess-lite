@@ -11,6 +11,7 @@ import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,8 +57,10 @@ public class GlobalSettingsService {
     return globalSettings;
   }
 
+  @SneakyThrows
   private GlobalSettings createGlobalSettings() {
-    var defaultRole = roleService.findByName(DefaultAuthority.DEFAULT_ROLE).orElseThrow();
+    var defaultRole = roleService.findByName(DefaultAuthority.DEFAULT_ROLE)
+      .orElseThrow(() -> new RoleNotFoundException(DefaultAuthority.DEFAULT_ROLE));
     return this.globalSettingsRepository.saveAndFlush(
       GlobalSettings.builder().id(UNIQUE_ID).signupOpen(false).defaultRole(defaultRole).build());
   }

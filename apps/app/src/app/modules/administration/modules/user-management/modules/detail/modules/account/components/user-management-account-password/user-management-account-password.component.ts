@@ -36,7 +36,7 @@ export class UserManagementAccountPasswordComponent {
   }
 
   onSubmit() {
-    this.userManagementDetailService.updateProfile(this.form.value).subscribe({
+    this.userManagementDetailService.updateUser(this.form.value).subscribe({
       next: () => {
         this.toasterService.showToast({ message: 'Password updated successfully' });
         this.form.reset();

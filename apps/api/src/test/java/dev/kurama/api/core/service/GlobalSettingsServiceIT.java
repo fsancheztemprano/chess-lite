@@ -4,27 +4,20 @@ import static dev.kurama.api.core.domain.GlobalSettings.UNIQUE_ID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 import dev.kurama.api.core.authority.DefaultAuthority;
 import dev.kurama.api.core.domain.GlobalSettings;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
-import dev.kurama.api.support.MockEventLayer;
+import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles(value = "integration-test")
-@DataJpaTest(showSql = false)
-@AutoConfigureTestDatabase(replace = NONE)
+@ServiceLayerIntegrationTestConfig
 @Import({GlobalSettingsService.class, RoleService.class, AuthorityService.class})
-@MockEventLayer
 class GlobalSettingsServiceIT {
 
   @Autowired

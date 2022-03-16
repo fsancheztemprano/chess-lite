@@ -4,12 +4,12 @@ import static org.springframework.data.mapping.Alias.ofNullable;
 
 import dev.kurama.api.core.domain.UserPreferences;
 import dev.kurama.api.core.event.emitter.UserPreferencesChangedEventEmitter;
-import dev.kurama.api.core.exception.domain.not.found.DomainEntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
+import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.UserPreferencesInput;
 import dev.kurama.api.core.repository.UserPreferencesRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -23,23 +23,24 @@ public class UserPreferencesService {
   private final UserPreferencesChangedEventEmitter userPreferencesChangedEventEmitter;
 
 
-  public UserPreferences findUserPreferencesById(String userPreferencesId) throws DomainEntityNotFoundException {
+  public UserPreferences findUserPreferencesById(String userPreferencesId) throws EntityNotFoundException {
     return userPreferencesRepository.findById(userPreferencesId)
-      .orElseThrow(() -> new DomainEntityNotFoundException(userPreferencesId, UserPreferences.class));
+      .orElseThrow(() -> new EntityNotFoundException(userPreferencesId, UserPreferences.class));
   }
 
   public UserPreferences updateUserPreferences(String userPreferencesId, UserPreferencesInput userPreferencesInput)
-    throws DomainEntityNotFoundException {
+    throws EntityNotFoundException {
     var userPreferences = findUserPreferencesById(userPreferencesId);
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }
 
-  public UserPreferences findUserPreferencesByUserId(String userId) {
+  public UserPreferences findUserPreferencesByUserId(String userId) throws UserNotFoundException {
     return userPreferencesRepository.findUserPreferencesByUserId(userId)
-      .orElseThrow(() -> new UsernameNotFoundException(userId));
+      .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
-  public UserPreferences updateUserPreferencesByUserId(String username, UserPreferencesInput userPreferencesInput) {
+  public UserPreferences updateUserPreferencesByUserId(String username, UserPreferencesInput userPreferencesInput)
+    throws UserNotFoundException {
     var userPreferences = findUserPreferencesByUserId(username);
     return patchUserPreferences(userPreferences, userPreferencesInput);
   }
