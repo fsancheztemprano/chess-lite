@@ -6,7 +6,7 @@ import { InteractionObject, Pact } from '@pact-foundation/pact';
 import {
   GetGlobalSettingPact,
   UpdateGlobalSettingPact,
-} from 'libs/consumer-pact/src/test/global-settings/global-settings.pact';
+} from 'libs/consumer-pact/src/pact/global-settings/global-settings.pact';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';

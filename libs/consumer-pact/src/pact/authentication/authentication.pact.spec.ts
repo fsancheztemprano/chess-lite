@@ -11,7 +11,7 @@ import {
   ActivationTokenPact,
   LoginPact,
   SignupPact,
-} from 'libs/consumer-pact/src/test/authentication/authentication.pact';
+} from 'libs/consumer-pact/src/pact/authentication/authentication.pact';
 import { ActivationTokenService } from '../../../../../apps/app/src/app/auth/services/activation-token.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
