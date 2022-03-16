@@ -134,7 +134,7 @@
     "jest-preset-angular": "11.1.1",
     "jsonwebtoken": "8.5.1",
     "junit-report-merger": "3.0.5",
-    "npm-check-updates": "12.4.0",
+    "npm-check-updates": "12.5.3",
     "prettier": "2.5.1",
     "sonarqube-scanner": "2.8.1",
     "ts-jest": "27.1.3",
