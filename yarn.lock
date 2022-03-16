@@ -162,13 +162,25 @@
     rxjs "6.6.7"
     source-map "0.7.3"
 
-"@angular-devkit/schematics-cli@13.2.4":
-  version "13.2.4"
-  resolved "https://registry.npmjs.org/@angular-devkit/schematics-cli/-/schematics-cli-13.2.4.tgz"
-  integrity sha512-r40UoTn59B5thCynknPaoChVmVcIU2av4x4VGEGRjwqacsjlyHj3MxsS7tbVK2KG3+1V37TP95fgLyLgn/ltcQ==
+"@angular-devkit/core@13.2.6":
+  version "13.2.6"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-13.2.6.tgz#7032a7c474efacc564511cff0c21d1636404e437"
+  integrity sha512-8h2mWdBTN/dYwZuzKMg2IODlOWMdbJcpQG4XVrkk9ejCPP+3aX5Aa3glCe/voN6eBNiRfs8YDM0jxmpN2aWVtg==
   dependencies:
-    "@angular-devkit/core" "13.2.4"
-    "@angular-devkit/schematics" "13.2.4"
+    ajv "8.9.0"
+    ajv-formats "2.1.1"
+    fast-json-stable-stringify "2.1.0"
+    magic-string "0.25.7"
+    rxjs "6.6.7"
+    source-map "0.7.3"
+
+"@angular-devkit/schematics-cli@13.2.6":
+  version "13.2.6"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics-cli/-/schematics-cli-13.2.6.tgz#4eac0e70c73ba71f661f5912dc16ae441a3f763f"
+  integrity sha512-VdMLn4DoTswjk+1RL+pod8EwLkzh8pMT2OBJ9dhsITru1sr0/2nhsqRwZzZylAXjrFwdfPj1E/vfcAfSkmMGvw==
+  dependencies:
+    "@angular-devkit/core" "13.2.6"
+    "@angular-devkit/schematics" "13.2.6"
     ansi-colors "4.1.1"
     inquirer "8.2.0"
     minimist "1.2.5"
@@ -183,7 +195,7 @@
     ora "5.3.0"
     rxjs "6.6.3"
 
-"@angular-devkit/schematics@13.2.3", "@angular-devkit/schematics@~13.2.0":
+"@angular-devkit/schematics@13.2.3":
   version "13.2.3"
   resolved "https://registry.npmjs.org/@angular-devkit/schematics/-/schematics-13.2.3.tgz"
   integrity sha512-+dyC4iKV0huvpjiuz4uyjLNK3FsCIp/Ghv5lXvhG6yok/dCAubsJItJOxi6G16aVCzG/E9zbsDfm9fNMyVOkgQ==
@@ -200,6 +212,17 @@
   integrity sha512-VMhYa4cDu5yE31OvHncAd15Rmlchih/Sr6sxFsIwkg4xzRNIIZCtwqxVXgf0TiTN9zrvlvzK7nhPqTGNqqYb2A==
   dependencies:
     "@angular-devkit/core" "13.2.4"
+    jsonc-parser "3.0.0"
+    magic-string "0.25.7"
+    ora "5.4.1"
+    rxjs "6.6.7"
+
+"@angular-devkit/schematics@13.2.6", "@angular-devkit/schematics@~13.2.0":
+  version "13.2.6"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-13.2.6.tgz#c85778b73ede1fbcb6c3af7dde740cd0dc8bfb29"
+  integrity sha512-mPgSqdnZRuPSMeUA+T+mwVCrq2yhXpcYm1/Rjbhy09CyHs4wSrFv21WHCrE6shlvXpcmwr0n+I0DIeagAPmjUA==
+  dependencies:
+    "@angular-devkit/core" "13.2.6"
     jsonc-parser "3.0.0"
     magic-string "0.25.7"
     ora "5.4.1"
