@@ -13,22 +13,20 @@ describe('UserManagementTableComponent', () => {
   let component: UserManagementTableComponent;
   let fixture: ComponentFixture<UserManagementTableComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [UserManagementTableComponent],
-        imports: [
-          NoopAnimationsModule,
-          MatPaginatorModule,
-          MatSortModule,
-          MatTableModule,
-          RouterTestingModule,
-          MatIconModule,
-        ],
-        providers: [stubUserManagementTableDatasourceProvider, stubCoreServiceProvider],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [UserManagementTableComponent],
+      imports: [
+        NoopAnimationsModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTableModule,
+        RouterTestingModule,
+        MatIconModule,
+      ],
+      providers: [stubUserManagementTableDatasourceProvider, stubCoreServiceProvider],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserManagementTableComponent);

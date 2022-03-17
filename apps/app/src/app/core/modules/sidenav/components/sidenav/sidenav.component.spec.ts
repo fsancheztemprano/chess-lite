@@ -28,27 +28,25 @@ describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [SidenavComponent, StubUserSettingsSidenavItemComponent, StubAdministrationSidenavItemComponent],
-        imports: [
-          NoopAnimationsModule,
-          LayoutModule,
-          MatButtonModule,
-          MatIconModule,
-          MatListModule,
-          MatSidenavModule,
-          MatToolbarModule,
-          IsMobileModule,
-          NgLetModule,
-          RouterTestingModule,
-          HalFormClientTestingModule,
-        ],
-        providers: [stubSidenavServiceProvider, stubUserServiceProvider, stubSessionServiceProvider],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SidenavComponent, StubUserSettingsSidenavItemComponent, StubAdministrationSidenavItemComponent],
+      imports: [
+        NoopAnimationsModule,
+        LayoutModule,
+        MatButtonModule,
+        MatIconModule,
+        MatListModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        IsMobileModule,
+        NgLetModule,
+        RouterTestingModule,
+        HalFormClientTestingModule,
+      ],
+      providers: [stubSidenavServiceProvider, stubUserServiceProvider, stubSessionServiceProvider],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidenavComponent);
