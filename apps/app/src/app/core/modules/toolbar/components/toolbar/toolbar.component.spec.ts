@@ -31,22 +31,20 @@ describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          ToolbarComponent,
-          StubThemePickerComponent,
-          StubLocalePickerComponent,
-          StubContextMenuComponent,
-          StubSearchBarComponent,
-          StubBreadcrumbComponent,
-        ],
-        imports: [NoopAnimationsModule, MatButtonModule, MatIconModule, MatToolbarModule, IsMobileModule],
-        providers: [stubToolbarServiceProvider, stubSidenavServiceProvider, stubBreadcrumbServiceProvider],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ToolbarComponent,
+        StubThemePickerComponent,
+        StubLocalePickerComponent,
+        StubContextMenuComponent,
+        StubSearchBarComponent,
+        StubBreadcrumbComponent,
+      ],
+      imports: [NoopAnimationsModule, MatButtonModule, MatIconModule, MatToolbarModule, IsMobileModule],
+      providers: [stubToolbarServiceProvider, stubSidenavServiceProvider, stubBreadcrumbServiceProvider],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolbarComponent);
