@@ -3,7 +3,7 @@ import { TOKEN_KEY, User } from '@app/domain';
 import { HalFormService, Resource } from '@hal-form-client';
 import { catchError, EMPTY, Observable, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isTokenExpired } from '../../auth/utils/auth.utils';
+import { isTokenExpired } from '../../../../../../libs/ui/authorization/src/lib/utils/auth.utils';
 import { MessageService } from './message.service';
 import { UserService } from './user.service';
 

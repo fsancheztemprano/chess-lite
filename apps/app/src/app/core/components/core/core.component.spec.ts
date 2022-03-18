@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IsMobileModule } from '../../../shared/modules/is-mobile/is-mobile.module';
+import { IsMobileModule } from '@app/ui/shared';
 import { CardViewComponent } from '../../modules/card-view/components/card-view/card-view.component';
 import { SidenavComponent } from '../../modules/sidenav/components/sidenav/sidenav.component';
 import { ToolbarComponent } from '../../modules/toolbar/components/toolbar/toolbar.component';

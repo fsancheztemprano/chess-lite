@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { AuthGuard } from '../../../../../libs/ui/authorization/src/lib/guards/auth.guard';
 import { AdministrationGuard } from '../modules/administration/guards/administration.guard';
 import { UserSettingsGuard } from '../modules/user-settings/guards/user-settings.guard';
 import { CoreComponent } from './components/core/core.component';
@@ -10,7 +10,7 @@ const loadUserModule = () => import('../modules/user-settings/user-settings.modu
 const loadAdministrationModule = () =>
   import('../modules/administration/administration.module').then((m) => m.AdministrationModule);
 
-const loadAuthModule = () => import('../auth/auth.module').then((m) => m.AuthModule);
+const loadAuthModule = () => import('@app/ui/authorization').then((m) => m.AuthorizationModule);
 
 const loadHomeModule = () => import('../modules/home/home.module').then((m) => m.HomeModule);
 

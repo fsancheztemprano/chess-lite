@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { IsMobileModule } from '../shared/modules/is-mobile/is-mobile.module';
+import { IsMobileModule } from '@app/ui/shared';
 import { CoreComponent } from './components/core/core.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { CardViewModule } from './modules/card-view/card-view.module';

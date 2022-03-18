@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { TiledMenuTileData } from '@app/ui/shared';
 import { UserSettingsService } from '../../../../../modules/user-settings/services/user-settings.service';
-import { TiledMenuTileData } from '../../../../../shared/modules/tiled-menu/components/tiled-menu-tile/tiled-menu-tile.component';
 
 @Component({
   selector: 'app-user-settings-sidenav-item',

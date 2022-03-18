@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { StubTiledMenuModule } from '@app/ui/shared';
 import { HalFormClientModule } from '@hal-form-client';
 import { stubCoreServiceProvider } from '../../../../core/services/core.service.stub';
-import { StubTiledMenuModule } from '../../../../shared/modules/tiled-menu/components/tiled-menu/tiled-menu.component.stub';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {

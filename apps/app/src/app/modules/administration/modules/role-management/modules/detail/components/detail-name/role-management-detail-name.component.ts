@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Role, RoleManagementRelations } from '@app/domain';
+import { setTemplateValidators } from '@app/ui/shared';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { ToasterService } from '../../../../../../../../core/services/toaster.service';
-import { setTemplateValidators } from '../../../../../../../../shared/utils/forms/validators/set-template.validators';
 import { RoleManagementService } from '../../../../services/role-management.service';
 
 @UntilDestroy()

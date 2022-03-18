@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgLetModule } from '@app/ui/shared';
 import { stubToasterServiceProvider } from '../../../../../../../../core/services/toaster.service.stub';
-import { NgLetModule } from '../../../../../../../../shared/modules/ng-let/ng-let.module';
 import { stubRoleManagementServiceProvider } from '../../../../services/role-management.service.stub';
 
 import { RoleManagementDetailAuthoritiesComponent } from './role-management-detail-authorities.component';

@@ -4,7 +4,6 @@ import { ActivationTokenRelations, AuthRelations, HttpHeaderKey, SignupInput } f
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
-import { AuthService } from 'apps/app/src/app/auth/services/auth.service';
 import { stubSessionServiceProvider } from 'apps/app/src/app/core/services/session.service.stub';
 import {
   ActivateAccountPact,
@@ -12,7 +11,8 @@ import {
   LoginPact,
   SignupPact,
 } from 'libs/consumer-pact/src/pact/authentication/authentication.pact';
-import { ActivationTokenService } from '../../../../../apps/app/src/app/auth/services/activation-token.service';
+import { AuthService } from 'libs/ui/authorization/src/lib/services/auth.service';
+import { ActivationTokenService } from '../../../../ui/authorization/src/lib/services/activation-token.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 

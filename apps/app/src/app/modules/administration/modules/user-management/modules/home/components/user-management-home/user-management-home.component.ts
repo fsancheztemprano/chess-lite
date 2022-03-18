@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { UserManagementRelations } from '@app/domain';
+import { TiledMenuTileData } from '@app/ui/shared';
 import { CoreService } from '../../../../../../../../core/services/core.service';
-import { TiledMenuTileData } from '../../../../../../../../shared/modules/tiled-menu/components/tiled-menu-tile/tiled-menu-tile.component';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Component({

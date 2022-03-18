@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApplicationMessage, MessageDestination } from '@app/domain';
+import { filterNulls } from '@app/ui/shared';
 import { InjectableRxStompConfig, RxStompService } from '@stomp/ng2-stompjs';
 import { IMessage } from '@stomp/stompjs';
 import { filter, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as SockJS from 'sockjs-client';
-import { filterNulls } from '../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 
 enum RxStompState {
   CONNECTING = 0,

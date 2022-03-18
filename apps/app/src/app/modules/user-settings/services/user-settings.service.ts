@@ -7,12 +7,12 @@ import {
   UserPreferences,
   UserUpdateProfileInput,
 } from '@app/domain';
+import { filterNulls } from '@app/ui/shared';
 import { HalFormService, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
 import { Observable, switchMap } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { SessionService } from '../../../core/services/session.service';
 import { UserService } from '../../../core/services/user.service';
-import { filterNulls } from '../../../shared/utils/forms/rxjs/filter-null.rxjs.pipe';
 
 @Injectable({
   providedIn: 'root',

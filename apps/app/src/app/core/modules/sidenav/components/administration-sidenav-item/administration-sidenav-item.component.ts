@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { TiledMenuTileData } from '@app/ui/shared';
 import { AdministrationService } from '../../../../../modules/administration/services/administration.service';
-import { TiledMenuTileData } from '../../../../../shared/modules/tiled-menu/components/tiled-menu-tile/tiled-menu-tile.component';
 
 @Component({
   selector: 'app-administration-sidenav-item',

@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { IsMobileModule } from '../../../../../shared/modules/is-mobile/is-mobile.module';
+import { IsMobileModule } from '@app/ui/shared';
 import { StubContextMenuComponent } from '../../../context-menu/components/context-menu/context-menu.component.stub';
 import { stubSidenavServiceProvider } from '../../../sidenav/services/sidenav.service.stub';
 import { stubBreadcrumbServiceProvider } from '../../services/breadcrumb.service.stub';

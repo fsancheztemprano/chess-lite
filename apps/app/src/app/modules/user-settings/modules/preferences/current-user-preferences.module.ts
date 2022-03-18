@@ -6,9 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FormErrorModule } from '@app/ui/shared';
 import { SubscribeModule } from '@ngneat/subscribe';
 import { TranslocoModule } from '@ngneat/transloco';
-import { FormErrorModule } from '../../../../shared/modules/form-error/form-error.module';
 import { CurrentUserPreferencesComponent } from './components/user-preferences/current-user-preferences.component';
 import { CurrentUserPreferencesRoutingModule } from './current-user-preferences-routing.module';
 

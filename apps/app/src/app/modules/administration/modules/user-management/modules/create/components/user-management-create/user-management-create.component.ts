@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Role, UserManagementRelations } from '@app/domain';
+import { matchingControlsValidators, setTemplateValidatorsPipe } from '@app/ui/shared';
 import { noop, Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { CardViewHeaderService } from '../../../../../../../../core/modules/card-view/services/card-view-header.service';
 import { ToasterService } from '../../../../../../../../core/services/toaster.service';
-import { setTemplateValidatorsPipe } from '../../../../../../../../shared/utils/forms/rxjs/set-template-validators.rxjs.pipe';
-import { matchingControlsValidators } from '../../../../../../../../shared/utils/forms/validators/matching-controls.validator';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Component({
