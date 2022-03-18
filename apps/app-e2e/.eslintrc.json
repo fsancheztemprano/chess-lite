@@ -3,6 +3,7 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
+      "extends": ["plugin:cypress/recommended"],
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {}
     },
