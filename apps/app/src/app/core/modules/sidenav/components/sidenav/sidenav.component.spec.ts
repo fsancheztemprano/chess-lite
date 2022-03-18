@@ -8,7 +8,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HalFormClientTestingModule } from '@hal-form-client/testing';
+import { HalFormClientModule } from '@hal-form-client';
 import { IsMobileModule } from '../../../../../shared/modules/is-mobile/is-mobile.module';
 import { NgLetModule } from '../../../../../shared/modules/ng-let/ng-let.module';
 import { stubSessionServiceProvider } from '../../../../services/session.service.stub';
@@ -42,7 +42,7 @@ describe('SidenavComponent', () => {
         IsMobileModule,
         NgLetModule,
         RouterTestingModule,
-        HalFormClientTestingModule,
+        HalFormClientModule,
       ],
       providers: [stubSidenavServiceProvider, stubUserServiceProvider, stubSessionServiceProvider],
     }).compileComponents();

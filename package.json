@@ -62,6 +62,8 @@
     "docker:dev:stop": "docker-compose stop",
     "docker:dev:down": "docker-compose down -v",
     "validate": "npm run lint && nx format:check && npm run test && npm run build",
+    "validate:frontend": "npm run lint && nx format:check && npm run test:frontend && npm run pact:consumer && npm run build:frontend",
+    "validate:backend": "npm run test:backend",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find"
   },

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HalFormClientTestingModule } from '@hal-form-client/testing';
+import { HalFormClientModule } from '@hal-form-client';
 import { ActivationTokenService } from './activation-token.service';
 
 describe('ActivationTokenService', () => {
@@ -7,7 +7,7 @@ describe('ActivationTokenService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HalFormClientTestingModule],
+      imports: [HalFormClientModule],
     });
     service = TestBed.inject(ActivationTokenService);
   });

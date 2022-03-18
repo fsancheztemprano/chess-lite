@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HalFormClientTestingModule } from '@hal-form-client/testing';
+import { HalFormClientModule } from '@hal-form-client';
 import { stubCoreServiceProvider } from '../../../../core/services/core.service.stub';
 import { StubTiledMenuModule } from '../../../../shared/modules/tiled-menu/components/tiled-menu/tiled-menu.component.stub';
 import { HomeComponent } from './home.component';
@@ -10,7 +10,7 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StubTiledMenuModule, HalFormClientTestingModule],
+      imports: [StubTiledMenuModule, HalFormClientModule],
       declarations: [HomeComponent],
       providers: [stubCoreServiceProvider],
     }).compileComponents();
