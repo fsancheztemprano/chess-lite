@@ -4,7 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "extends": ["prettier", "plugin:github/typescript", "plugin:@nrwl/nx/angular"],
+      "extends": ["plugin:github/typescript", "plugin:@nrwl/nx/angular"],
       "rules": {
         "@typescript-eslint/no-namespace": "off",
         "@nrwl/nx/enforce-module-boundaries": "off"

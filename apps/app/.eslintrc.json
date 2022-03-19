@@ -3,14 +3,8 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
-      "plugins": ["github"],
       "files": ["*.ts"],
-      "extends": [
-        "prettier",
-        "plugin:github/typescript",
-        "plugin:@nrwl/nx/angular",
-        "plugin:@angular-eslint/template/process-inline-templates"
-      ],
+      "extends": ["plugin:@nrwl/nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
