@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { StubSidenavItemComponent } from '@app/ui/shared';
 import { HomeSidenavItemComponent } from './home-sidenav-item.component';
 
 describe('HomeSidenavItemComponent', () => {
@@ -8,7 +8,7 @@ describe('HomeSidenavItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HomeSidenavItemComponent],
+      declarations: [HomeSidenavItemComponent, StubSidenavItemComponent],
     }).compileComponents();
   });
 

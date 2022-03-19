@@ -12,34 +12,10 @@
       <span *ngIf="userService.getUser() | async as user">{{ user.firstname || user.username }}</span>
     </mat-toolbar>
     <mat-nav-list>
-      <app-home-sidenav-item></app-home-sidenav-item>
-      <app-user-settings-sidenav-item *ngIf="showUserLink() | async" (toggleSidenav)="toggleSidenav()">
-      </app-user-settings-sidenav-item>
-      <app-administration-sidenav-item
-        *ngIf="showAdministrationLink() | async"
-        (toggleSidenav)="toggleSidenav()"></app-administration-sidenav-item>
-      <a mat-list-item *ngIf="userService.getUser() | async" (click)="logout()">
-        <mat-icon aria-hidden="false" aria-label="Log Out">logout</mat-icon>
-        Log Out
-      </a>
-      <a
-        mat-list-item
-        *ngIf="showLoginLink() | async"
-        (click)="toggleSidenav()"
-        routerLink="/auth/login"
-        routerLinkActive="active-link">
-        <mat-icon aria-hidden="false" aria-label="Log In">login</mat-icon>
-        Log In
-      </a>
-      <a
-        mat-list-item
-        *ngIf="showSignupLink() | async"
-        (click)="toggleSidenav()"
-        routerLink="/auth/signup"
-        routerLinkActive="active-link">
-        <mat-icon aria-hidden="false" aria-label="Sign Up">assignment_ind</mat-icon>
-        Sign Up
-      </a>
+      <app-home-sidenav-item (toggleSidenav)="toggleSidenav()"></app-home-sidenav-item>
+      <app-user-settings-sidenav-item (toggleSidenav)="toggleSidenav()"></app-user-settings-sidenav-item>
+      <app-administration-sidenav-item (toggleSidenav)="toggleSidenav()"></app-administration-sidenav-item>
+      <app-authentication-sidenav-item (toggleSidenav)="toggleSidenav()"></app-authentication-sidenav-item>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

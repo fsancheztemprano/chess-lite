@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { StubSidenavItemComponent } from '@app/ui/shared';
+import { HalFormClientModule } from '@hal-form-client';
 import { stubUserSettingsServiceProvider } from '../../../services/user-settings.service.stub';
 import { UserSettingsSidenavItemComponent } from './user-settings-sidenav-item.component';
 
@@ -8,8 +10,8 @@ describe('UserSettingsSidenavItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [UserSettingsSidenavItemComponent],
+      imports: [HalFormClientModule],
+      declarations: [UserSettingsSidenavItemComponent, StubSidenavItemComponent],
       providers: [stubUserSettingsServiceProvider],
     }).compileComponents();
   });

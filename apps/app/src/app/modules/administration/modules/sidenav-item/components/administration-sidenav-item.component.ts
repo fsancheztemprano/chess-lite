@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuData } from '@app/domain';
+import { AdministrationRelations, MenuData } from '@app/domain';
+import { HalFormService } from '@hal-form-client';
+import { Observable } from 'rxjs';
 import { AdministrationService } from '../../../services/administration.service';
 
 @Component({
@@ -44,5 +46,13 @@ export class AdministrationSidenavItemComponent {
     },
   ];
 
-  constructor(public readonly router: Router, public readonly administrationService: AdministrationService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly halFormService: HalFormService,
+    private readonly administrationService: AdministrationService,
+  ) {}
+
+  public hasAdministrationLink(): Observable<boolean> {
+    return this.halFormService.hasLink(AdministrationRelations.ADMINISTRATION_REL);
+  }
 }

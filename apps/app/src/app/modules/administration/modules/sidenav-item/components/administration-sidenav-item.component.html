@@ -1,4 +1,5 @@
 <app-sidenav-item
+  *ngIf="hasAdministrationLink() | async"
   [expandable]="true"
   expandableTitle="Administration"
   expandableIcon="admin_panel_settings"

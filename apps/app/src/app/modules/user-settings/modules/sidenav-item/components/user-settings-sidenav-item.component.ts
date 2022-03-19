@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { MenuData } from '@app/domain';
+import { CurrentUserRelations, MenuData } from '@app/domain';
+import { HalFormService } from '@hal-form-client';
+import { Observable } from 'rxjs';
 import { UserSettingsService } from '../../../services/user-settings.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { UserSettingsService } from '../../../services/user-settings.service';
 })
 export class UserSettingsSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
+
   items: MenuData[] = [
     {
       icon: 'settings_applications',
@@ -49,5 +51,12 @@ export class UserSettingsSidenavItemComponent {
     },
   ];
 
-  constructor(public readonly router: Router, public readonly userSettingsService: UserSettingsService) {}
+  constructor(
+    private readonly userSettingsService: UserSettingsService,
+    private readonly halFormService: HalFormService,
+  ) {}
+
+  public hasCurrentUserLink(): Observable<boolean> {
+    return this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL);
+  }
 }

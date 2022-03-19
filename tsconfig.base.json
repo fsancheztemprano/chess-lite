@@ -25,5 +25,5 @@
       "@hal-form-client": ["libs/hal-form-client/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "node", "tmp", ".github", ".run", ".idea", ".angular", "apps/api"]
 }

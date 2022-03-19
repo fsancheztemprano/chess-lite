@@ -18,7 +18,7 @@
     <a
       *ngIf="item.canShow === undefined || (item.canShow | async)"
       mat-list-item
-      (click)="toggleSidenav.emit()"
+      (click)="toggleSidenav.emit(); item.callback && item.callback()"
       [routerLink]="item.link"
       routerLinkActive="active-link">
       <mat-icon aria-hidden="false" [attr.aria-label]="item.title">{{ item.icon }}</mat-icon>
