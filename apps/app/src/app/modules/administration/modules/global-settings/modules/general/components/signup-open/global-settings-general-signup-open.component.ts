@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ToasterService } from '@app/ui/shared';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { GlobalSettingsService } from '../../../../services/global-settings.service';
 
 @UntilDestroy()

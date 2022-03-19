@@ -6,11 +6,9 @@ import {
   UserPreferencesChangedMessage,
   UserPreferencesChangedMessageDestination,
 } from '@app/domain';
+import { MessageService, ToasterService, TranslationService } from '@app/ui/shared';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs/operators';
-import { MessageService } from '../../../../../../../../../../core/services/message.service';
-import { ToasterService } from '../../../../../../../../../../core/services/toaster.service';
-import { TranslationService } from '../../../../../../../../../../core/services/translation.service';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @UntilDestroy()

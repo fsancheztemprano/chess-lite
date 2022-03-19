@@ -10,6 +10,7 @@ import {
   RolePage,
   RolesListChangedMessageDestination,
 } from '@app/domain';
+import { MessageService, SearchService, ToasterService } from '@app/ui/shared';
 import {
   auditTime,
   BehaviorSubject,
@@ -24,9 +25,6 @@ import {
   throwError,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { SearchService } from '../../../../../../../../core/modules/toolbar/services/search.service';
-import { MessageService } from '../../../../../../../../core/services/message.service';
-import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { RoleManagementService } from '../../../../services/role-management.service';
 
 @Injectable({

@@ -6,9 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { stubCardViewHeaderServiceProvider, StubFormErrorComponent } from '@app/ui/shared';
 import { HalFormClientModule } from '@hal-form-client';
-import { stubCardViewHeaderServiceProvider } from '../../../../../../../../../apps/app/src/app/core/modules/card-view/services/card-view-header.service.stub';
-import { StubFormErrorComponent } from '../../../../../../../../../apps/app/src/app/shared/modules/form-error/components/form-error.component.stub';
 import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
 import { LoginComponent } from './login.component';
 

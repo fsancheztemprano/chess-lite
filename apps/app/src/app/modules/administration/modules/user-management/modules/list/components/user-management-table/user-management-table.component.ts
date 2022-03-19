@@ -4,9 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { User, UserManagementRelations, UserPage } from '@app/domain';
+import { CoreService, MenuOption } from '@app/ui/shared';
 import { map } from 'rxjs/operators';
-import { MenuOption } from '../../../../../../../../core/modules/context-menu/services/context-menu.service.model';
-import { CoreService } from '../../../../../../../../core/services/core.service';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 
 @Component({

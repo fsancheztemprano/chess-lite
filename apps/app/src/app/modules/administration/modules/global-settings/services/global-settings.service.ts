@@ -6,10 +6,9 @@ import {
   GlobalSettingsRelations,
   GlobalSettingsUpdateInput,
 } from '@app/domain';
+import { MessageService, ToasterService } from '@app/ui/shared';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { MessageService } from '../../../../../core/services/message.service';
-import { ToasterService } from '../../../../../core/services/toaster.service';
 import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({

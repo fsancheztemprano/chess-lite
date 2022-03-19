@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { fileSizeValidator } from '@app/ui/shared';
-import { CardViewHeaderService } from '../../../../../../core/modules/card-view/services/card-view-header.service';
-import { ToasterService } from '../../../../../../core/services/toaster.service';
+import { CardViewHeaderService, fileSizeValidator, ToasterService } from '@app/ui/shared';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @Component({

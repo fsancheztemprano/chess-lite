@@ -11,11 +11,9 @@ import {
   UserManagementRelations,
   UserPreferences,
 } from '@app/domain';
-import { filterNulls } from '@app/ui/shared';
+import { filterNulls, MessageService, ToasterService } from '@app/ui/shared';
 import { BehaviorSubject, EMPTY, first, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MessageService } from '../../../../../../../core/services/message.service';
-import { ToasterService } from '../../../../../../../core/services/toaster.service';
 import { UserManagementService } from '../../../services/user-management.service';
 
 @Injectable({

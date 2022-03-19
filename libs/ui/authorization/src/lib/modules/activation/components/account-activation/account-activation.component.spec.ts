@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StubFormErrorComponent } from '../../../../../../../../../apps/app/src/app/shared/modules/form-error/components/form-error.component.stub';
+import { StubFormErrorComponent } from '@app/ui/shared';
 import { stubActivationTokenServiceProvider } from '../../../../services/activation-token.service.stub';
 import { AccountActivationComponent } from './account-activation.component';
 

@@ -6,11 +6,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormErrorModule } from '@app/ui/shared';
+import {
+  FormErrorModule,
+  stubThemeServiceProvider,
+  stubToasterServiceProvider,
+  stubTranslationServiceProvider,
+} from '@app/ui/shared';
 import { SubscribeModule } from '@ngneat/subscribe';
-import { stubThemeServiceProvider } from '../../../../../../core/services/theme.service.stub';
-import { stubToasterServiceProvider } from '../../../../../../core/services/toaster.service.stub';
-import { stubTranslationServiceProvider } from '../../../../../../core/services/translation.service.stub';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { CurrentUserPreferencesComponent } from './current-user-preferences.component';
 

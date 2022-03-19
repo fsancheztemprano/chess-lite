@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { stubSessionServiceProvider, stubUserServiceProvider } from '@app/ui/shared';
 import { HalFormClientModule } from '@hal-form-client';
-import { stubSessionServiceProvider } from '../../../core/services/session.service.stub';
-import { stubUserServiceProvider } from '../../../core/services/user.service.stub';
 import { UserSettingsService } from './user-settings.service';
 
 describe('UserSettingsService', () => {

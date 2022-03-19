@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { stubSessionServiceProvider } from '@app/ui/shared';
 import { HalFormClientModule } from '@hal-form-client';
-import { stubSessionServiceProvider } from '../../../../../../apps/app/src/app/core/services/session.service.stub';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {

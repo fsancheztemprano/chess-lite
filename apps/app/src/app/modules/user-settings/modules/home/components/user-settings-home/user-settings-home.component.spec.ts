@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StubTiledMenuModule } from '@app/ui/shared';
-import { stubCoreServiceProvider } from '../../../../../../core/services/core.service.stub';
+import { stubCoreServiceProvider, StubTiledMenuModule } from '@app/ui/shared';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserSettingsHomeComponent } from './user-settings-home.component';
 

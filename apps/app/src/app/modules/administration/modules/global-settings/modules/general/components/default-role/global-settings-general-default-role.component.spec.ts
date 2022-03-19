@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubToasterServiceProvider } from '../../../../../../../../core/services/toaster.service.stub';
+import { stubToasterServiceProvider } from '@app/ui/shared';
 import { stubGlobalSettingsServiceProvider } from '../../../../services/global-settings.service.stub';
 
 import { GlobalSettingsGeneralDefaultRoleComponent } from './global-settings-general-default-role.component';

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const loadCoreModule = () => import('./core/core.module').then((m) => m.CoreModule);
+const loadCoreModule = () => import('@app/ui/core').then((m) => m.CoreModule);
 
 const routes: Routes = [
   {

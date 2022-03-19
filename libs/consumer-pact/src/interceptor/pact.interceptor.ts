@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { AuthInterceptorProvider } from 'libs/ui/authorization/src/lib/interceptors/auth.interceptor';
+import { AuthInterceptorProvider } from '@app/ui/authorization';
 import { Observable } from 'rxjs';
 
 export const PACT_BASE_URL = new InjectionToken<number>('Provided Pact Base Url');

@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { AdministrationRelations, AuthRelations, CurrentUserRelations } from '@app/domain';
-import { TiledMenuTileData } from '@app/ui/shared';
+import { CoreService, TiledMenuTileData } from '@app/ui/shared';
 import { HalFormService } from '@hal-form-client';
-import { CoreService } from '../../../../core/services/core.service';
 
 @Component({
   selector: 'app-home',

@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Role, RoleChangedMessage, RoleChangedMessageAction, RoleChangedMessageDestination } from '@app/domain';
+import { CardViewHeaderService, MessageService, ToasterService } from '@app/ui/shared';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, EMPTY, Observable, switchMap, tap } from 'rxjs';
-import { CardViewHeaderService } from '../../../../../../../../core/modules/card-view/services/card-view-header.service';
-import { MessageService } from '../../../../../../../../core/services/message.service';
-import { ToasterService } from '../../../../../../../../core/services/toaster.service';
 import { RoleManagementService } from '../../../../services/role-management.service';
 
 @UntilDestroy()

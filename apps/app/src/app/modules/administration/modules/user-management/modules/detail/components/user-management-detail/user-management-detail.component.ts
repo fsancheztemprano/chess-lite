@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CardViewHeaderService } from '../../../../../../../../core/modules/card-view/services/card-view-header.service';
+import { CardViewHeaderService } from '@app/ui/shared';
 
 @Component({
   selector: 'app-user-management-detail',

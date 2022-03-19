@@ -7,9 +7,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NgLetModule, StubFormErrorComponent } from '@app/ui/shared';
-import { stubCardViewHeaderServiceProvider } from '../../../../../../core/modules/card-view/services/card-view-header.service.stub';
-import { stubToasterServiceProvider } from '../../../../../../core/services/toaster.service.stub';
+import {
+  NgLetModule,
+  stubCardViewHeaderServiceProvider,
+  StubFormErrorComponent,
+  stubToasterServiceProvider,
+} from '@app/ui/shared';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserUpdateProfileComponent } from './user-update-profile.component';
 

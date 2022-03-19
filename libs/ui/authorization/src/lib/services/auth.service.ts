@@ -1,10 +1,10 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthRelations, HttpHeaderKey, LoginInput, SignupInput, User } from '@app/domain';
+import { Session, SessionService } from '@app/ui/shared';
 import { HalFormService, IResource, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { exhaustMap, first, map, switchMap } from 'rxjs/operators';
-import { Session, SessionService } from '../../../../../../apps/app/src/app/core/services/session.service';
 import { AuthorizationModule } from '../authorization.module';
 
 @Injectable({

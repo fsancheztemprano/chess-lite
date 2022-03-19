@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { matchingControlsValidators } from '@app/ui/shared';
+import { CardViewHeaderService, matchingControlsValidators, ToasterService } from '@app/ui/shared';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
-import { CardViewHeaderService } from '../../../../../../../../../apps/app/src/app/core/modules/card-view/services/card-view-header.service';
-import { ToasterService } from '../../../../../../../../../apps/app/src/app/core/services/toaster.service';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
 
 @Component({

@@ -5,9 +5,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ConfirmationDialogService, getStubbedDialogService, TextInputDialogService } from '@app/ui/shared';
-import { stubCoreServiceProvider } from '../../../../../../../../core/services/core.service.stub';
-import { stubToasterServiceProvider } from '../../../../../../../../core/services/toaster.service.stub';
+import {
+  ConfirmationDialogService,
+  getStubbedDialogService,
+  stubCoreServiceProvider,
+  stubToasterServiceProvider,
+  TextInputDialogService,
+} from '@app/ui/shared';
 
 import { RoleManagementTableComponent } from './role-management-table.component';
 import { stubRoleManagementTableDatasourceProvider } from './role-management-table.datasource.stub';
