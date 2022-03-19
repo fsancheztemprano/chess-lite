@@ -10,8 +10,8 @@ import { AuthenticationSidenavItemModule } from '@app/ui/feature/authentication'
 import { HomeSidenavItemModule } from '@app/ui/feature/home';
 import { IsMobileModule, NgLetModule } from '@app/ui/shared';
 import { TranslocoModule } from '@ngneat/transloco';
-import { UserSettingsSidenavItemModule } from '../../../../../../../apps/app/src/app/modules/user-settings/modules/sidenav-item/user-settings-sidenav-item.module';
 import { AdministrationSidenavItemModule } from '../../../../../feature/administration/src/lib/modules/sidenav-item/administration-sidenav-item.module';
+import { UserSettingsSidenavItemModule } from '../../../../../feature/user/src/lib/modules/sidenav-item/user-settings-sidenav-item.module';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 @NgModule({

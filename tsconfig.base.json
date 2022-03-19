@@ -22,6 +22,7 @@
       "@app/ui/feature/administration": ["libs/ui/feature/administration/src/index.ts"],
       "@app/ui/feature/authentication": ["libs/ui/feature/authentication/src/index.ts"],
       "@app/ui/feature/home": ["libs/ui/feature/home/src/index.ts"],
+      "@app/ui/feature/user": ["libs/ui/feature/user/src/index.ts"],
       "@app/ui/shared": ["libs/ui/shared/src/index.ts"],
       "@hal-form-client": ["libs/hal-form-client/src/index.ts"]
     }
