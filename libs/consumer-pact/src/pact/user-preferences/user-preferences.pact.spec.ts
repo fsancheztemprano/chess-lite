@@ -5,9 +5,9 @@ import { TOKEN_KEY, User, UserManagementRelations, UserPreferences } from '@app/
 import { defaultTemplate } from '@app/domain/mocks';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { UserManagementDetailService } from '../../../../../apps/app/src/app/modules/administration/modules/user-management/modules/detail/services/user-management-detail.service';
-import { stubUserManagementServiceProvider } from '../../../../../apps/app/src/app/modules/administration/modules/user-management/services/user-management.service.stub';
 import { updateUserPreferencesTemplate } from '../../../../domain/src/lib/mocks/user/user-preferences-template.mock';
+import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';
+import { stubUserManagementServiceProvider } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service.stub';
 import { stubMessageServiceProvider } from '../../../../ui/shared/src/lib/services/message.service.stub';
 import { stubToasterServiceProvider } from '../../../../ui/shared/src/lib/services/toaster.service.stub';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';

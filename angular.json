@@ -316,6 +316,32 @@
       },
       "tags": []
     },
+    "ui-feature-administration": {
+      "projectType": "library",
+      "root": "libs/ui/feature/administration",
+      "sourceRoot": "libs/ui/feature/administration/src",
+      "prefix": "lib",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui/feature/administration"],
+          "options": {
+            "jestConfig": "libs/ui/feature/administration/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui/feature/administration/src/**/*.ts",
+              "libs/ui/feature/administration/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
     "ui-feature-authentication": {
       "projectType": "library",
       "root": "libs/ui/feature/authentication",
