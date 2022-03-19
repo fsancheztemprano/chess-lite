@@ -17,8 +17,7 @@ const loadAdministrationModule = () =>
 
 const loadAuthModule = () => import('@app/ui/authorization').then((m) => m.AuthorizationModule);
 
-const loadHomeModule = () =>
-  import('../../../../../apps/app/src/app/modules/home/home.module').then((m) => m.HomeModule);
+const loadHomeModule = () => import('@app/ui/feature/home').then((m) => m.HomeModule);
 
 const routes: Routes = [
   {

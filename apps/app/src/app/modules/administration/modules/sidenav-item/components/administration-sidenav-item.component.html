@@ -1,25 +1,7 @@
-<mat-accordion class="sidenav-expansion">
-  <mat-expansion-panel class="mat-elevation-z0" (opened)="router.navigate(['administration'])">
-    <mat-expansion-panel-header>
-      <a mat-list-item class="disable-overlay" (click)="toggleSidenav.emit()">
-        <mat-icon aria-hidden="false" aria-label="Administration">admin_panel_settings</mat-icon>
-        Administration
-      </a>
-    </mat-expansion-panel-header>
-    <ng-template matExpansionPanelContent>
-      <mat-action-list>
-        <ng-container *ngFor="let item of items">
-          <a
-            *ngIf="item.canShow === undefined || (item.canShow | async)"
-            mat-list-item
-            (click)="toggleSidenav.emit()"
-            [routerLink]="item.link"
-            routerLinkActive="active-link">
-            <mat-icon aria-hidden="false" [attr.aria-label]="item.title">{{ item.icon }}</mat-icon>
-            {{ item.title }}
-          </a>
-        </ng-container>
-      </mat-action-list>
-    </ng-template>
-  </mat-expansion-panel>
-</mat-accordion>
+<app-sidenav-item
+  [expandable]="true"
+  expandableTitle="Administration"
+  expandableIcon="admin_panel_settings"
+  [expandableLink]="['administration']"
+  [items]="items"
+  (toggleSidenav)="toggleSidenav.emit()"></app-sidenav-item>

@@ -10,6 +10,7 @@ import { IsMobileModule, NgLetModule } from '@app/ui/shared';
 import { TranslocoModule } from '@ngneat/transloco';
 import { AdministrationSidenavItemModule } from '../../../../../../../apps/app/src/app/modules/administration/modules/sidenav-item/administration-sidenav-item.module';
 import { UserSettingsSidenavItemModule } from '../../../../../../../apps/app/src/app/modules/user-settings/modules/sidenav-item/user-settings-sidenav-item.module';
+import { HomeSidenavItemModule } from '../../../../../feature/home/src/lib/modules/sidenav-item/home-sidenav-item.module';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 @NgModule({
@@ -27,6 +28,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
     NgLetModule,
     AdministrationSidenavItemModule,
     UserSettingsSidenavItemModule,
+    HomeSidenavItemModule,
   ],
   exports: [SidenavComponent],
 })

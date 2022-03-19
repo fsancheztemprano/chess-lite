@@ -3,6 +3,7 @@ export * from './lib/modules/is-mobile';
 export * from './lib/modules/ng-let';
 export * from './lib/modules/tiled-menu';
 export * from './lib/modules/dialogs';
+export * from './lib/modules/sidenav-item';
 
 export * from './lib/services/theme.service';
 export * from './lib/services/theme.service.stub';

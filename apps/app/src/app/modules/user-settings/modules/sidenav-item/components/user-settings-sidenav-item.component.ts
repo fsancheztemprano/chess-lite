@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { TiledMenuTileData } from '@app/ui/shared';
+import { MenuData } from '@app/domain';
 import { UserSettingsService } from '../../../services/user-settings.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { UserSettingsService } from '../../../services/user-settings.service';
 })
 export class UserSettingsSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
-  items: TiledMenuTileData[] = [
+  items: MenuData[] = [
     {
       icon: 'settings_applications',
       title: 'Dashboard',

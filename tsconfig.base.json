@@ -20,6 +20,7 @@
       "@app/domain/mocks": ["libs/domain/src/index.mocks.ts"],
       "@app/ui/authorization": ["libs/ui/authorization/src/index.ts"],
       "@app/ui/core": ["libs/ui/core/src/index.ts"],
+      "@app/ui/feature/home": ["libs/ui/feature/home/src/index.ts"],
       "@app/ui/shared": ["libs/ui/shared/src/index.ts"],
       "@hal-form-client": ["libs/hal-form-client/src/index.ts"]
     }

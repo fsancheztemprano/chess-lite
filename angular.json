@@ -339,6 +339,29 @@
       },
       "tags": []
     },
+    "ui-feature-home": {
+      "projectType": "library",
+      "root": "libs/ui/feature/home",
+      "sourceRoot": "libs/ui/feature/home/src",
+      "prefix": "app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui/feature/home"],
+          "options": {
+            "jestConfig": "libs/ui/feature/home/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/ui/feature/home/src/**/*.ts", "libs/ui/feature/home/src/**/*.html"]
+          }
+        }
+      },
+      "tags": []
+    },
     "ui-shared": {
       "projectType": "library",
       "root": "libs/ui/shared",

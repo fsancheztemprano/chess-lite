@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { TiledMenuTileData } from '@app/ui/shared';
+import { MenuData } from '@app/domain';
 import { AdministrationService } from '../../../services/administration.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { AdministrationService } from '../../../services/administration.service'
 export class AdministrationSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
 
-  items: TiledMenuTileData[] = [
+  items: MenuData[] = [
     {
       icon: 'space_dashboard',
       title: 'Dashboard',
