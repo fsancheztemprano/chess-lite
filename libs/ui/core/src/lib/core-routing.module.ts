@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@app/ui/authorization';
+import { AuthGuard } from '@app/ui/feature/authorization';
 import { AdministrationGuard } from '../../../../../apps/app/src/app/modules/administration/guards/administration.guard';
 import { UserSettingsGuard } from '../../../../../apps/app/src/app/modules/user-settings/guards/user-settings.guard';
 import { CoreComponent } from './components/core/core.component';
@@ -15,7 +15,7 @@ const loadAdministrationModule = () =>
     (m) => m.AdministrationModule,
   );
 
-const loadAuthModule = () => import('@app/ui/authorization').then((m) => m.AuthorizationModule);
+const loadAuthModule = () => import('@app/ui/feature/authorization').then((m) => m.AuthorizationModule);
 
 const loadHomeModule = () => import('@app/ui/feature/home').then((m) => m.HomeModule);
 

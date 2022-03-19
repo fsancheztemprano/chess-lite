@@ -293,29 +293,6 @@
       },
       "tags": []
     },
-    "ui-authorization": {
-      "projectType": "library",
-      "root": "libs/ui/authorization",
-      "sourceRoot": "libs/ui/authorization/src",
-      "prefix": "app",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/ui/authorization"],
-          "options": {
-            "jestConfig": "libs/ui/authorization/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/ui/authorization/src/**/*.ts", "libs/ui/authorization/src/**/*.html"]
-          }
-        }
-      },
-      "tags": []
-    },
     "ui-core": {
       "projectType": "library",
       "root": "libs/ui/core",
@@ -334,6 +311,32 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/ui/core/src/**/*.ts", "libs/ui/core/src/**/*.html"]
+          }
+        }
+      },
+      "tags": []
+    },
+    "ui-feature-authorization": {
+      "projectType": "library",
+      "root": "libs/ui/feature/authorization",
+      "sourceRoot": "libs/ui/feature/authorization/src",
+      "prefix": "app",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui/feature/authorization"],
+          "options": {
+            "jestConfig": "libs/ui/feature/authorization/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui/feature/authorization/src/**/*.ts",
+              "libs/ui/feature/authorization/src/**/*.html"
+            ]
           }
         }
       },

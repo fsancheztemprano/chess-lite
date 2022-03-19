@@ -10,9 +10,9 @@ import {
   LoginPact,
   SignupPact,
 } from 'libs/consumer-pact/src/pact/authentication/authentication.pact';
-import { AuthService } from 'libs/ui/authorization/src/lib/services/auth.service';
+import { AuthService } from 'libs/ui/feature/authorization/src/lib/services/auth.service';
 import { stubSessionServiceProvider } from 'libs/ui/shared/src/lib/services/core/session.service.stub';
-import { ActivationTokenService } from '../../../../ui/authorization/src/lib/services/activation-token.service';
+import { ActivationTokenService } from '../../../../ui/feature/authorization/src/lib/services/activation-token.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 
