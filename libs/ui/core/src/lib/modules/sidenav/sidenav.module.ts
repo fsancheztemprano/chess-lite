@@ -6,12 +6,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { AdministrationSidenavItemModule } from '@app/ui/feature/administration';
 import { AuthenticationSidenavItemModule } from '@app/ui/feature/authentication';
 import { HomeSidenavItemModule } from '@app/ui/feature/home';
+import { UserSettingsSidenavItemModule } from '@app/ui/feature/user';
 import { IsMobileModule, NgLetModule } from '@app/ui/shared';
 import { TranslocoModule } from '@ngneat/transloco';
-import { AdministrationSidenavItemModule } from '../../../../../feature/administration/src/lib/modules/sidenav-item/administration-sidenav-item.module';
-import { UserSettingsSidenavItemModule } from '../../../../../feature/user/src/lib/modules/sidenav-item/user-settings-sidenav-item.module';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 @NgModule({

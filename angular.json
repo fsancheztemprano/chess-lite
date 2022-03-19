@@ -78,6 +78,18 @@
             "args": ["-DskipTests"]
           }
         },
+        "format": {
+          "builder": "@nxrocks/nx-spring-boot:format",
+          "options": {
+            "root": "apps/api"
+          }
+        },
+        "format-check": {
+          "builder": "@nxrocks/nx-spring-boot:format-check",
+          "options": {
+            "root": "apps/api"
+          }
+        },
         "buildJar": {
           "builder": "@nxrocks/nx-spring-boot:buildJar",
           "options": {
@@ -132,7 +144,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "685kb",
-                  "maximumError": "700kb"
+                  "maximumError": "1024kb"
                 },
                 {
                   "type": "anyComponentStyle",
