@@ -5,10 +5,10 @@ import { Session, SessionService } from '@app/ui/shared';
 import { HalFormService, IResource, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { exhaustMap, first, map, switchMap } from 'rxjs/operators';
-import { AuthorizationModule } from '../authorization.module';
+import { AuthenticationModule } from '../authentication.module';
 
 @Injectable({
-  providedIn: AuthorizationModule,
+  providedIn: AuthenticationModule,
 })
 export class AuthService {
   constructor(private readonly halFormService: HalFormService, private readonly sessionService: SessionService) {}

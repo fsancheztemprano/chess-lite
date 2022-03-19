@@ -1,4 +1,4 @@
-export * from './lib/authorization.module';
+export * from './lib/authentication.module';
 
 export * from './lib/interceptors/auth.interceptor';
 
