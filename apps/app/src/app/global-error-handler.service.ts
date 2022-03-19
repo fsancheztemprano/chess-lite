@@ -1,5 +1,5 @@
 import { ErrorHandler, Injectable, NgZone } from '@angular/core';
-import { ToasterService, ToastType } from '@app/ui/shared';
+import { ToasterService, ToastType } from '@app/ui/shared/app';
 import { environment } from '../environments/environment';
 
 @Injectable({

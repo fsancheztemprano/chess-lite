@@ -13,7 +13,6 @@ export interface IToastModel {
   title?: string;
   override?: Partial<IndividualConfig>;
   type?: ToastType;
-
   link?: string;
   linkCaption?: string;
 }

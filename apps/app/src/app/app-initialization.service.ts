@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SessionService } from '@app/ui/shared';
+import { SessionService } from '@app/ui/shared/app';
 import { HalFormService } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
-import { ToasterService, ToastType } from '@app/ui/shared';
+import { ToasterService, ToastType } from '@app/ui/shared/app';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../environments/environment';
 
