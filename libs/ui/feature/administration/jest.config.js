@@ -9,6 +9,16 @@ module.exports = {
     },
   },
   coverageDirectory: '../../../../coverage/libs/ui/feature/administration',
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'coverage/libs/ui/feature/administration',
+        outputName: 'jest-junit.xml',
+      },
+    ],
+  ],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

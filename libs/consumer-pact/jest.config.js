@@ -9,6 +9,16 @@ module.exports = {
     },
   },
   coverageDirectory: '../../coverage/pact/consumer-pact',
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'coverage/pact/consumer-pact',
+        outputName: 'jest-junit.xml',
+      },
+    ],
+  ],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

@@ -9,6 +9,16 @@ module.exports = {
     },
   },
   coverageDirectory: '../../coverage/libs/hal-form-client',
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'coverage/libs/hal-form-client',
+        outputName: 'jest-junit.xml',
+      },
+    ],
+  ],
   transform: {
     '^.+.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
