@@ -11,10 +11,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        if (!environment.production) {
+          console.warn(error);
+        }
         this.ngZone.run(() => {
-          if (!environment.production) {
-            console.warn(error);
-          }
           this.toasterService.showToast({
             title: `${error.statusText} [${error.status}]`,
             message: `${error.error.title} <br> ${error.error.time}`,

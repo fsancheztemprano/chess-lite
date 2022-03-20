@@ -8,7 +8,7 @@ import {
   UserManagementRelations,
 } from '@app/domain';
 import { HalFormService, Resource } from '@hal-form-client';
-import { Observable, throwError } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable({
@@ -27,6 +27,7 @@ export class AdministrationService extends HalFormService {
           ? super.initialize()
           : throwError(() => new Error('Administration Initialization Error'));
       }),
+      tap({ error: () => this.setRootResource(new Resource({})) }),
     );
   }
 

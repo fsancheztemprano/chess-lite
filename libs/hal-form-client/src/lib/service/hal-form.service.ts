@@ -34,7 +34,10 @@ export class HalFormService {
               }
             }
           },
-          error: (error) => console.error('Hal Form Client Initialization Error', error),
+          error: (error) => {
+            this.setRootResource(new Resource({}));
+            console.error('Hal Form Client Initialization Error', error);
+          },
         }),
         map((response) => {
           this.setRootResource(response.body || {});

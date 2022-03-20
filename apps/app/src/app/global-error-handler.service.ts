@@ -9,10 +9,10 @@ export class GlobalErrorHandler implements ErrorHandler {
   constructor(private readonly ngZone: NgZone, private readonly toasterService: ToasterService) {}
 
   handleError(error: Error): void {
+    if (!environment.production) {
+      console.warn(error);
+    }
     this.ngZone.run(() => {
-      if (!environment.production) {
-        console.warn(error);
-      }
       this.toasterService.showToast({ title: error.name, message: error.message, type: ToastType.ERROR });
     });
   }
