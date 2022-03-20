@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "root": "libs/consumer-pact",
+  "sourceRoot": "libs/consumer-pact/src",
+  "prefix": "pact",
+  "targets": {
+    "pact": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["apps/api/target/test-classes/pact"],
+      "options": {
+        "jestConfig": "libs/consumer-pact/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/consumer-pact/src/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

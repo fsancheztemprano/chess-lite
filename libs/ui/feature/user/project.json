@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "root": "libs/ui/feature/user",
+  "sourceRoot": "libs/ui/feature/user/src",
+  "prefix": "app",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/ui/feature/user"],
+      "options": {
+        "jestConfig": "libs/ui/feature/user/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/ui/feature/user/src/**/*.ts", "libs/ui/feature/user/src/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

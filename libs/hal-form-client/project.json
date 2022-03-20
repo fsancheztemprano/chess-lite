@@ -1,0 +1,24 @@
+{
+  "projectType": "library",
+  "root": "libs/hal-form-client",
+  "sourceRoot": "libs/hal-form-client/src",
+  "prefix": "app",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/hal-form-client"],
+      "options": {
+        "jestConfig": "libs/hal-form-client/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/hal-form-client/src/**/*.ts", "libs/hal-form-client/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": []
+}
