@@ -131,7 +131,7 @@ jobs:
           report-files: |
             ./apps/api/target/site/jacoco-ut/jacoco.xml
             ./apps/api/target/site/jacoco-it/jacoco.xml
-            ./coverage/apps/app/lcov.info
+            ./coverage/lcov.info
           report-types: |
             jacoco
             jacoco
