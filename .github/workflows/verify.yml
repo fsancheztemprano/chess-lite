@@ -155,7 +155,7 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: apps/api/target/site/jacoco-ut/jacoco.xml,apps/api/target/site/jacoco-it/jacoco.xml,coverage/apps/app/lcov.info
+          files: apps/api/target/site/jacoco-*/jacoco.xml,coverage/**/lcov.info
           verbose: true
 
       - name: Build

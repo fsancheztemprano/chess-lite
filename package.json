@@ -32,8 +32,7 @@
     "pact:consumer": "nx run-many --target=pact --projects=consumer-pact",
     "pact": "nx run-many --target=pact --projects=api",
     "test": "nx run-many --target=test --all",
-    "test:hal-client": "nx run-many --target=test --projects=hal-form-client",
-    "test:frontend": "nx run-many --target=test --projects=domain,app,ui-core,ui-shared,ui-feature-authentication,ui-feature-administration,ui-feature-home,ui-feature-user",
+    "test:frontend": "nx run-many --target=test --projects=hal-form-client,domain,app,ui-core,ui-shared,ui-feature-authentication,ui-feature-administration,ui-feature-home,ui-feature-user",
     "test:frontend:coverage": "npm run test:frontend -- --codeCoverage",
     "test:backend": "nx run-many --target=test --projects=api",
     "test:merge:ut": "jrm ./apps/api/target/surefire-reports/merged-uts.xml ./apps/api/target/surefire-reports/TEST*.xml",
@@ -62,7 +61,7 @@
     "docker:dev:stop": "docker-compose stop",
     "docker:dev:down": "docker-compose down -v",
     "validate": "npm run lint && nx format:check && npm run test && npm run build:frontend",
-    "validate:frontend": "npm run lint && nx format:check && npm run test:hal-client && npm run test:frontend && npm run pact:consumer && npm run build:frontend",
+    "validate:frontend": "npm run lint && nx format:check && npm run test:frontend && npm run pact:consumer && npm run build:frontend",
     "validate:backend": "npm run test:backend",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find"

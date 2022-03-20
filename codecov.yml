@@ -3,36 +3,6 @@ coverage:
     project:
       default:
         informational: true
-      frontend:
-        target: 40%
-        flags:
-          - frontend
-      backend-ut:
-        target: 70%
-        flags:
-          - backend-ut
-      backend-it:
-        target: 10%
-        flags:
-          - backend-it
     patch:
       default:
         informational: true
-flags:
-  frontend:
-    paths:
-      - src/apps/app/src
-  backend-ut:
-    paths:
-      - src/apps/api/src/main/java
-  backend-it:
-    paths:
-      - src/apps/api/src/main/java
-
-comment:
-  layout: 'reach, diff, flags, files'
-  behavior: default
-  require_changes: false
-  require_base: no
-  require_head: no
-  branches: null
