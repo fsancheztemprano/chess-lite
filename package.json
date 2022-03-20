@@ -38,7 +38,7 @@
     "test:merge:ut": "jrm ./apps/api/target/surefire-reports/merged-uts.xml \"./apps/api/target/surefire-reports/TEST*.xml\"",
     "test:merge:it": "jrm ./apps/api/target/failsafe-reports/merged-its.xml \"./apps/api/target/failsafe-reports/TEST*.xml\"",
     "test:merge:lcov": "lcov-result-merger \"coverage/**/lcov.info\" coverage/lcov.info",
-    "test:merge": "yarn run test:merge:ut && yarn run test:merge:it && test:merge:lcov",
+    "test:merge": "yarn run test:merge:ut && yarn run test:merge:it && yarn run test:merge:lcov",
     "scan": "sonar-scanner",
     "lint": "nx workspace-lint && nx run-many --target=lint --all",
     "e2e": "ng e2e",
