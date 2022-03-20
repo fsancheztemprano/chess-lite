@@ -6,9 +6,7 @@
       <script value="start:frontend"/>
     </scripts>
     <node-interpreter value="project"/>
-    <envs>
-      <env name="NX_TASKS_RUNNER_DYNAMIC_OUTPUT" value="false"/>
-    </envs>
+    <envs/>
     <method v="2"/>
   </configuration>
 </component>

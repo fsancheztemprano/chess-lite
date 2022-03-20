@@ -6,10 +6,19 @@
     "clean": {
       "executor": "@nxrocks/nx-spring-boot:clean",
       "options": {
+        "root": "apps/api"
+      }
+    },
+    "build": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
-          "-U",
-          "-B"
+          "compile"
         ]
       }
     },
@@ -23,13 +32,12 @@
         "root": "apps/api",
         "args": [
           "verify",
-          "-U",
-          "-B"
+          "-P pact"
         ]
       }
     },
-    "build": {
-      "executor": "@nxrocks/nx-spring-boot:build",
+    "pact": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
       "outputs": [
         "{options.outputPath}"
       ],
@@ -37,10 +45,11 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
-          "-U",
-          "-B",
-          "-DskipTests",
-          "-DskipITs"
+          "verify",
+          "-P pact",
+          "-D it.test=\"dev.kurama.api.pact.**\"",
+          "-Dtest=\"dev.kurama.api.null.**\"",
+          "-DfailIfNoTests=false"
         ]
       }
     },
@@ -54,8 +63,6 @@
         "root": "apps/api",
         "args": [
           "package",
-          "-U",
-          "-B",
           "-DskipTests",
           "-DskipITs",
           "-P frontend"
@@ -72,29 +79,9 @@
         "root": "apps/api",
         "args": [
           "deploy",
-          "-U",
-          "-B",
           "-DskipTests",
           "-DskipITs",
           "-P frontend,herokudev"
-        ]
-      }
-    },
-    "pact": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": [
-          "verify",
-          "-U",
-          "-B",
-          "-D it.test=\"dev.kurama.api.pact.**\"",
-          "-Dtest=\"dev.kurama.api.null.**\"",
-          "-DfailIfNoTests=false"
         ]
       }
     },
@@ -107,10 +94,7 @@
     "serve": {
       "executor": "@nxrocks/nx-spring-boot:serve",
       "options": {
-        "root": "apps/api",
-        "args": [
-          "-DskipTests"
-        ]
+        "root": "apps/api"
       }
     },
     "format": {

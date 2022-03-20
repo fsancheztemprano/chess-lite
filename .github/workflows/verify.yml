@@ -85,14 +85,6 @@ jobs:
           all: 'true'
           parallel: 'true'
 
-      - name: Test
-        uses: MansaGroup/nrwl-nx-action@v2.1.0
-        with:
-          targets: test
-          all: 'true'
-          parallel: 'true'
-          args: '--codeCoverage'
-
       - name: Build
         uses: MansaGroup/nrwl-nx-action@v2.1.0
         with:
@@ -100,6 +92,14 @@ jobs:
           all: 'true'
           parallel: 'true'
 
+
+      - name: Test
+        uses: MansaGroup/nrwl-nx-action@v2.1.0
+        with:
+          targets: test
+          all: 'true'
+          parallel: 'true'
+          args: '--codeCoverage'
       - name: Merge Test Reports
         run: npm run test:merge
         if: always()
