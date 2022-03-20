@@ -102,7 +102,7 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           name: Frontend Tests
-          path: coverage/apps/app/jest-junit.xml
+          path: coverage/**/jest-junit.xml
           reporter: jest-junit
           fail-on-error: false
 
@@ -111,7 +111,7 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           name: Backend Tests
-          path: apps/api/target/surefire-reports/merged-uts.xml,apps/api/target/failsafe-reports/merged-its.xml
+          path: apps/api/target/*-reports/merged-*ts.xml
           reporter: java-junit
           fail-on-error: false
 
@@ -120,9 +120,8 @@ jobs:
         if: env.dependabot-run == 'false' && always()
         with:
           files: |
-            apps/api/target/surefire-reports/merged-uts.xml
-            apps/api/target/failsafe-reports/merged-its.xml
-            coverage/apps/app/jest-junit.xml
+            apps/api/target/*-reports/merged-*ts.xml
+            coverage/**/jest-junit.xml
           fail_on: 'nothing'
 
       - name: Coverage Report
