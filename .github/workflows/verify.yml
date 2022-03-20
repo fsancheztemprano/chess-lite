@@ -131,11 +131,15 @@ jobs:
           report-files: |
             ./apps/api/target/site/jacoco-ut/jacoco.xml
             ./apps/api/target/site/jacoco-it/jacoco.xml
-            ./coverage/lcov.info
-          report-types: |
-            jacoco
-            jacoco
-            lcov
+            ./coverage/apps/app/lcov.info
+            ./coverage/libs/domain/lcov.info
+            ./coverage/libs/ui/core/lcov.info
+            ./coverage/libs/ui/shared/lcov.info
+            ./coverage/libs/ui/feature/administration/lcov.info
+            ./coverage/libs/ui/feature/authentication/lcov.info
+            ./coverage/libs/ui/feature/home/lcov.info
+            ./coverage/libs/ui/feature/user/lcov.info
+            ./coverage/libs/hal-form-client/lcov.info
           report-titles: |
             'Backend Unit Tests'
             'Backend Integration Tests'
