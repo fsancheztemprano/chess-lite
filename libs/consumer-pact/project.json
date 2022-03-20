@@ -6,7 +6,7 @@
   "targets": {
     "pact": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["apps/api/target/test-classes/pact"],
+      "outputs": ["apps/api/target/test-classes/pact", "coverage/pact"],
       "options": {
         "jestConfig": "libs/consumer-pact/jest.config.js",
         "passWithNoTests": true
