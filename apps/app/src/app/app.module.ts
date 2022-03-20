@@ -7,11 +7,11 @@ import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { AppInitializationService } from './app-initialization.service';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { GlobalErrorHandler } from './global-error-handler.service';
-import { HttpErrorInterceptor } from './http-error.interceptor';
+import { AppComponent } from './components/app.component';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { AppInitializationService } from './services/app-initialization.service';
+import { GlobalErrorHandler } from './services/global-error-handler.service';
 import { TranslocoRootModule } from './transloco-root.module';
 
 export function initializeApp(appInitService: AppInitializationService) {
