@@ -122,15 +122,6 @@ jobs:
           reporter: java-junit
           fail-on-error: false
 
-      - name: Publish Test Execution Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: env.dependabot-run == 'false' && always()
-        with:
-          files: |
-            apps/api/target/*-reports/merged-*ts.xml
-            coverage/**/jest-junit.xml
-          fail_on: 'nothing'
-
       - name: Coverage Report
         uses: frango9000/test-coverage-report@main
         with:
