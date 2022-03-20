@@ -140,6 +140,7 @@ jobs:
             ./coverage/libs/ui/feature/home/lcov.info
             ./coverage/libs/ui/feature/user/lcov.info
             ./coverage/libs/hal-form-client/lcov.info
+            ./coverage/pact/consumer-pact/lcov.info
           report-titles: |
             'Backend Unit Tests'
             'Backend Integration Tests'
