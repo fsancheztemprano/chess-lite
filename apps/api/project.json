@@ -29,7 +29,7 @@
       }
     },
     "build": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
+      "executor": "@nxrocks/nx-spring-boot:build",
       "outputs": [
         "{options.outputPath}"
       ],
@@ -37,7 +37,6 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
-          "verify",
           "-U",
           "-B",
           "-DskipTests",
