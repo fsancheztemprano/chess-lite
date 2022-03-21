@@ -60,14 +60,9 @@ jobs:
             ${{ env.cache-key }}
           save-on-hit: true
 
-      - name: Cache Sonar
-        uses: actions/cache@v2.1.7
-        with:
-          path: ~/.sonar/cache
-          key: sonar
-
       - name: Java Dependencies
-        run: mvn -f apps/api/pom.xml dependency:resolve dependency:resolve-plugins
+        working-directory: apps/api
+        run: mvn dependency:resolve dependency:resolve-plugins
 
       - name: Node Dependencies
         run: yarn install
