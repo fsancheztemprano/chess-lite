@@ -78,7 +78,7 @@
     "@angular/platform-browser-dynamic": "13.3.0",
     "@angular/router": "13.3.0",
     "@ngneat/subscribe": "3.0.1",
-    "@ngneat/transloco": "3.1.4",
+    "@ngneat/transloco": "3.2.0",
     "@ngneat/until-destroy": "9.0.0",
     "@nrwl/angular": "13.9.2",
     "@stomp/ng2-stompjs": "8.0.0",
