@@ -1,0 +1,138 @@
+{
+  "root": "apps/api",
+  "sourceRoot": "apps/api/src",
+  "projectType": "application",
+  "targets": {
+    "clean": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "build": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "compile"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "verify",
+          "-P pact"
+        ]
+      }
+    },
+    "pact": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "verify",
+          "-P pact",
+          "-D it.test=\"dev.kurama.api.pact.**\"",
+          "-Dtest=\"dev.kurama.api.null.**\"",
+          "-DfailIfNoTests=false"
+        ]
+      }
+    },
+    "package": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "package",
+          "-DskipTests",
+          "-DskipITs",
+          "-P frontend"
+        ]
+      }
+    },
+    "deploy": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "deploy",
+          "-DskipTests",
+          "-DskipITs",
+          "-P frontend,herokudev"
+        ]
+      }
+    },
+    "run": {
+      "executor": "@nxrocks/nx-spring-boot:run",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "serve": {
+      "executor": "@nxrocks/nx-spring-boot:serve",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "format": {
+      "executor": "@nxrocks/nx-spring-boot:format",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "format-check": {
+      "executor": "@nxrocks/nx-spring-boot:format-check",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "buildJar": {
+      "executor": "@nxrocks/nx-spring-boot:buildJar",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "buildWar": {
+      "executor": "@nxrocks/nx-spring-boot:buildWar",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "buildImage": {
+      "executor": "@nxrocks/nx-spring-boot:buildImage",
+      "options": {
+        "root": "apps/api"
+      }
+    },
+    "buildInfo": {
+      "executor": "@nxrocks/nx-spring-boot:buildInfo",
+      "options": {
+        "root": "apps/api"
+      }
+    }
+  },
+  "tags": []
+}

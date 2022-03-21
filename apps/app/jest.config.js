@@ -9,7 +9,6 @@ module.exports = {
     },
   },
   coverageDirectory: '../../coverage/apps/app',
-  coverageReporters: ['lcov'],
   reporters: [
     'default',
     [

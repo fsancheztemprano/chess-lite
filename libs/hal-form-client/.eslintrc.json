@@ -4,12 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "extends": [
-        "prettier",
-        "plugin:github/typescript",
-        "plugin:@nrwl/nx/angular",
-        "plugin:@angular-eslint/template/process-inline-templates"
-      ],
+      "extends": ["plugin:@nrwl/nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off"
       }

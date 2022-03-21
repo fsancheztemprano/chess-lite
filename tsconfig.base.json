@@ -18,9 +18,15 @@
       "@app/consumer-pact": ["libs/consumer-pact/src/index.ts"],
       "@app/domain": ["libs/domain/src/index.ts"],
       "@app/domain/mocks": ["libs/domain/src/index.mocks.ts"],
-      "@hal-form-client": ["libs/hal-form-client/src/index.ts"],
-      "@hal-form-client/testing": ["libs/hal-form-client/src/index.testing.ts"]
+      "@app/ui/core": ["libs/ui/core/src/index.ts"],
+      "@app/ui/feature/administration": ["libs/ui/feature/administration/src/index.ts"],
+      "@app/ui/feature/authentication": ["libs/ui/feature/authentication/src/index.ts"],
+      "@app/ui/feature/home": ["libs/ui/feature/home/src/index.ts"],
+      "@app/ui/feature/user": ["libs/ui/feature/user/src/index.ts"],
+      "@app/ui/shared": ["libs/ui/shared/src/index.ts"],
+      "@app/ui/shared/app": ["libs/ui/shared/src/index.app.ts"],
+      "@hal-form-client": ["libs/hal-form-client/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "node", "tmp", ".github", ".run", ".idea", ".angular", "apps/api"]
 }

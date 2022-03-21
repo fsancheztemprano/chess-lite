@@ -13,11 +13,11 @@ import {
 } from '@app/domain/mocks';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { stubMessageServiceProvider } from '../../../../../apps/app/src/app/core/services/message.service.stub';
-import { stubToasterServiceProvider } from '../../../../../apps/app/src/app/core/services/toaster.service.stub';
-import { UserManagementDetailService } from '../../../../../apps/app/src/app/modules/administration/modules/user-management/modules/detail/services/user-management-detail.service';
-import { UserManagementService } from '../../../../../apps/app/src/app/modules/administration/modules/user-management/services/user-management.service';
-import { AdministrationService } from '../../../../../apps/app/src/app/modules/administration/services/administration.service';
+import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';
+import { UserManagementService } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service';
+import { AdministrationService } from '../../../../ui/feature/administration/src/lib/services/administration.service';
+import { stubMessageServiceProvider } from '../../../../ui/shared/src/lib/services/message.service.stub';
+import { stubToasterServiceProvider } from '../../../../ui/shared/src/lib/services/toaster.service.stub';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

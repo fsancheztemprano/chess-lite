@@ -4,17 +4,17 @@ import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/dom
 import { defaultTemplate } from '@app/domain/mocks';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { stubMessageServiceProvider } from '../../../../../apps/app/src/app/core/services/message.service.stub';
-import { stubPreferencesServiceProvider } from '../../../../../apps/app/src/app/core/services/preferences.service.stub';
-import { stubSessionServiceProvider } from '../../../../../apps/app/src/app/core/services/session.service.stub';
-import { UserService } from '../../../../../apps/app/src/app/core/services/user.service';
-import { UserSettingsService } from '../../../../../apps/app/src/app/modules/user-settings/services/user-settings.service';
 import {
   changePasswordTemplate,
   deleteProfileTemplate,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
 } from '../../../../domain/src/lib/mocks/user/user-profile-template.mock';
+import { UserSettingsService } from '../../../../ui/feature/user/src/lib/services/user-settings.service';
+import { stubSessionServiceProvider } from '../../../../ui/shared/src/lib/services/core/session.service.stub';
+import { UserService } from '../../../../ui/shared/src/lib/services/core/user.service';
+import { stubMessageServiceProvider } from '../../../../ui/shared/src/lib/services/message.service.stub';
+import { stubPreferencesServiceProvider } from '../../../../ui/shared/src/lib/services/preferences.service.stub';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

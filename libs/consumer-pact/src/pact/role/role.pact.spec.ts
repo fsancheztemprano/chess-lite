@@ -4,9 +4,9 @@ import { AuthorityManagementRelations, Role, RoleManagementRelations, RolePage, 
 import { defaultTemplate } from '@app/domain/mocks';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { AdministrationService } from 'apps/app/src/app/modules/administration/services/administration.service';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
-import { RoleManagementService } from '../../../../../apps/app/src/app/modules/administration/modules/role-management/services/role-management.service';
+import { AdministrationService } from 'libs/ui/feature/administration/src/lib/services/administration.service';
+import { RoleManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { CreateRolePact, DeleteRolePact, GetAllRolesPact, GetOneRolePact, UpdateRolePact } from './role.pact';

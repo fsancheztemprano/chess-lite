@@ -7,7 +7,7 @@
     ".eslintrc.json": "*"
   },
   "affected": {
-    "defaultBase": "development"
+    "defaultBase": "refactor/UM-88"
   },
   "npmScope": "app",
   "tasksRunnerOptions": {
