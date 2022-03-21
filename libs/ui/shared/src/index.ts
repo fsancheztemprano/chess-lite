@@ -55,6 +55,6 @@ export * from './lib/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 
 export * from './lib/utils/auth/auth.utils';
 
-export * from './lib/testing/transloco-testing.module';
+export * from './lib/utils/transloco/transloco-testing.module';
 
 export * from './index.app';

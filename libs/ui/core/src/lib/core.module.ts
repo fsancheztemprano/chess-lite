@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { IsMobileModule } from '@app/ui/shared';
+import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
+import { scopeLoader } from '../../../../../tools/transloco/transloco.scope';
 import { CoreComponent } from './components/core/core.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { CardViewModule } from './modules/card-view/card-view.module';
@@ -18,6 +20,15 @@ import { ToolbarModule } from './modules/toolbar/toolbar.module';
     ContextMenuModule,
     ToolbarModule,
     SidenavModule,
+  ],
+  providers: [
+    {
+      provide: TRANSLOCO_SCOPE,
+      useValue: {
+        scope: 'core',
+        loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),
+      },
+    },
   ],
 })
 export class CoreModule {}

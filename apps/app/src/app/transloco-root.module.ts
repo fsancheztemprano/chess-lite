@@ -31,7 +31,6 @@ export class TranslocoHttpLoader implements TranslocoLoader {
         reRenderOnLangChange: true,
         missingHandler: {
           useFallbackTranslation: true,
-          logMissingKey: false,
         },
         prodMode: environment.production,
       }),

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { getTranslocoModule } from '../testing/transloco-testing.module';
+import { getTranslocoModule } from '../utils/transloco/transloco-testing.module';
 import { stubPreferencesServiceProvider } from './preferences.service.stub';
 import { TranslationService } from './translation.service';
 
