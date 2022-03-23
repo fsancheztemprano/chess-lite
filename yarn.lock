@@ -14557,10 +14557,10 @@ url-parse@^1.4.3, url-parse@^1.5.10:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-url-template@2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/url-template/-/url-template-2.0.8.tgz#fc565a3cccbff7730c775f5641f9555791439f21"
-  integrity sha1-/FZaPMy/93MMd19WQflVV5FDnyE=
+url-template@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/url-template/-/url-template-3.0.0.tgz#31b6d53d44d79912f6e5737d06f377d16e214a54"
+  integrity sha512-S6P5TcJ8GrGG+yzMZ8ojdtiGtQmQG+UOMelhE3X5uQrEEoq69aDQ05eASPQGj+CjsPVfumWKbH2HrjME46sk0g==
 
 url-to-options@^1.0.1:
   version "1.0.1"
