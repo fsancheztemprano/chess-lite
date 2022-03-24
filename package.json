@@ -80,7 +80,7 @@
     "@angular/router": "13.3.0",
     "@ngneat/subscribe": "3.0.1",
     "@ngneat/transloco": "4.0.0",
-    "@ngneat/until-destroy": "9.0.0",
+    "@ngneat/until-destroy": "9.0.1",
     "@nrwl/angular": "13.9.4",
     "@stomp/ng2-stompjs": "8.0.0",
     "angular-animations": "0.11.0",
