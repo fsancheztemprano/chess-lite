@@ -1,23 +1,20 @@
 import jwt_decode from 'jwt-decode';
 
-export function isTokenExpired(token: string | null): boolean {
+export function isTokenExpired(token: string): boolean {
   if (!token?.length) {
     return true;
   }
-  const decoded: { exp: number } = jwt_decode(token);
-  return token ? Date.now() > Number(decoded.exp) * 1000 : false;
+  return Date.now() >= getTokenExpiration(token).valueOf() * 1000;
 }
 
-export function decodeToken(token: string | null): Token | null {
-  if (!token?.length) {
-    return null;
-  }
-  return jwt_decode(token);
+export function getTokenExpiration(token: string): Date {
+  return new Date(jwt_decode<Token>(token).exp);
 }
 
 export interface Token {
-  aud: string;
+  user: { id: string; username: string };
   authorities: string[];
+  aud: string;
   exp: number;
   iat: number;
   iss: string;

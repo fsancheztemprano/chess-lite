@@ -40,7 +40,7 @@ class RootControllerTest {
   }
 
   @Test
-  void should_get_root_resource_as_unauthenticated_user() throws Exception {
+  void should_get_root_resource() throws Exception {
     RepresentationModel<?> rootResource = mock(RepresentationModel.class);
     doReturn(rootResource).when(assembler).assemble();
 

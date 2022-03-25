@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -80,7 +81,7 @@ class GlobalSettingsControllerTest {
 
       when(facade.updateGlobalSettings(input)).thenReturn(expected);
 
-      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input)))
         .andExpect(status().isOk())
@@ -97,7 +98,7 @@ class GlobalSettingsControllerTest {
         .build();
       when(facade.updateGlobalSettings(input)).thenThrow(RoleNotFoundException.class);
 
-      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(GLOBAL_SETTINGS_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isNotFound());
     }

@@ -41,11 +41,21 @@ public class AuthenticationFacade {
   }
 
   public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException, UserNotFoundException {
-    Pair<User, String> authenticationInfo = authenticationFacility.login(loginInput.getUsername(),
+    Pair<User, String> authenticationDetails = authenticationFacility.login(loginInput.getUsername(),
       loginInput.getPassword());
+
     return AuthenticatedUserExcerpt.builder()
-      .userModel(userMapper.userToUserModel(authenticationInfo.getLeft()))
-      .headers(getJwtHeader(authenticationInfo.getRight()))
+      .userModel(userMapper.userToUserModel(authenticationDetails.getLeft()))
+      .headers(getJwtHeader(authenticationDetails.getRight()))
+      .build();
+  }
+
+  public AuthenticatedUserExcerpt refreshToken(String userId) throws UserNotFoundException, RoleCanNotLoginException {
+    Pair<User, String> authenticationDetails = authenticationFacility.refreshToken(userId);
+
+    return AuthenticatedUserExcerpt.builder()
+      .userModel(userMapper.userToUserModel(authenticationDetails.getLeft()))
+      .headers(getJwtHeader(authenticationDetails.getRight()))
       .build();
   }
 

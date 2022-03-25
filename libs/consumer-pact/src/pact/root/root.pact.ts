@@ -7,7 +7,7 @@ import { bearer } from 'libs/consumer-pact/src/utils/pact.utils';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 
 export namespace GetRootResource {
-  export const as_unauthorized: InteractionObject = {
+  export const unauthorized: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get root resource as unauthorized user',
     withRequest: {
@@ -126,6 +126,34 @@ export namespace GetRootResource {
     },
   };
 
+  export const authorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get root resource as authorized',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        _links: {
+          self: {
+            href: 'http://localhost/api',
+          },
+          token: {
+            href: 'http://localhost/api/auth/token',
+          },
+        },
+        _templates: { ...defaultTemplate },
+      },
+    },
+  };
+
   export const with_profile_read: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get root resource with authority profile:read',
@@ -144,6 +172,9 @@ export namespace GetRootResource {
         _links: {
           self: {
             href: 'http://localhost/api',
+          },
+          token: {
+            href: 'http://localhost/api/auth/token',
           },
           'current-user': {
             href: 'http://localhost/api/user/profile',
@@ -172,6 +203,9 @@ export namespace GetRootResource {
         _links: {
           self: {
             href: 'http://localhost/api',
+          },
+          token: {
+            href: 'http://localhost/api/auth/token',
           },
           administration: {
             href: 'http://localhost/api/administration',

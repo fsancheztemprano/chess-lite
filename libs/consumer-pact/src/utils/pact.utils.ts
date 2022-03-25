@@ -1,14 +1,14 @@
 import { Pact } from '@pact-foundation/pact';
 import { term, UUID_V4_FORMAT } from '@pact-foundation/pact/src/dsl/matchers';
-import * as path from 'path';
+import { resolve } from 'path';
 
 export function pactForResource(resource: string, suffix = 'Controller'): Pact {
   return new Pact({
     consumer: `app-${resource}`,
     provider: 'api',
-    log: path.resolve(process.cwd(), 'libs', 'consumer-pact', 'logs', 'pact.log'),
+    log: resolve(process.cwd(), 'libs', 'consumer-pact', 'logs', 'pact.log'),
     logLevel: 'warn',
-    dir: path.resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact', resource + suffix),
+    dir: resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact', resource + suffix),
     cors: true,
     timeout: 10000,
     spec: 2,

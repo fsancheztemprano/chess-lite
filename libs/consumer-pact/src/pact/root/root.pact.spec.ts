@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { TOKEN_KEY } from '@app/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
-import { Pact } from '@pact-foundation/pact';
+import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { GetRootResource } from 'libs/consumer-pact/src/pact/root/root.pact';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
@@ -26,11 +26,23 @@ describe('Root Resource Pacts', () => {
   });
 
   describe('get root resource with authority', () => {
-    it('null', (done) => {
-      provider.addInteraction(GetRootResource.as_unauthorized).then(() => {
+    it('unauthorized', (done) => {
+      provider.addInteraction(GetRootResource.unauthorized).then(() => {
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResource.as_unauthorized.willRespondWith.body);
+          expect(resource).toMatchObject(GetRootResource.unauthorized.willRespondWith.body);
+          done();
+        });
+      });
+    });
+
+    it('authorized', (done) => {
+      const interaction: InteractionObject = GetRootResource.authorized;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken());
+        service.initialize().subscribe((resource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toMatchObject(interaction.willRespondWith.body);
           done();
         });
       });

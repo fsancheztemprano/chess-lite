@@ -38,6 +38,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -111,7 +112,7 @@ class RoleControllerTest {
       RoleCreateInput input = RoleCreateInput.builder().name("NEW_ROLE").build();
       when(facade.create(input.getName())).thenReturn(role);
 
-      mockMvc.perform(post(ROLE_PATH).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(post(ROLE_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(role.getId())));
 
@@ -122,7 +123,7 @@ class RoleControllerTest {
       RoleCreateInput input = RoleCreateInput.builder().name("EXISTING").build();
       doThrow(RoleExistsException.class).when(facade).create(input.getName());
 
-      mockMvc.perform(post(ROLE_PATH).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(post(ROLE_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isConflict());
     }
@@ -137,7 +138,7 @@ class RoleControllerTest {
     void should_update_a_role() throws Exception {
       when(facade.update(role.getId(), input)).thenReturn(role);
 
-      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId()).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId()).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(role.getId())));
     }
@@ -147,7 +148,7 @@ class RoleControllerTest {
       String notFoundId = randomUUID();
       doThrow(RoleNotFoundException.class).when(facade).update(notFoundId, input);
 
-      mockMvc.perform(patch(ROLE_PATH + "/" + notFoundId).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(ROLE_PATH + "/" + notFoundId).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isNotFound());
     }
@@ -156,7 +157,7 @@ class RoleControllerTest {
     void updating_immutable_role_should_throw_exception() throws Exception {
       doThrow(ImmutableRoleException.class).when(facade).update(role.getId(), input);
 
-      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId()).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(ROLE_PATH + "/" + role.getId()).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isForbidden());
     }

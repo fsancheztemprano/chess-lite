@@ -63,5 +63,16 @@ public abstract class AuthenticationControllerBase extends PactBase {
         .email("notFound@localhost")
         .token("notFoundTokenId")
         .build());
+
+    doReturn(Optional.of(User.builder()
+      .setRandomUUID()
+      .role(Role.builder().setRandomUUID().name("LOCKED_ROLE").canLogin(false).build())
+      .build())).when(userService).findUserById("lockedRoleUserId");
+    doReturn(Optional.of(User.builder()
+      .setRandomUUID()
+      .locked(true)
+      .role(Role.builder().setRandomUUID().canLogin(true).build())
+      .build())).when(userService).findUserById("lockedUserId");
+    doReturn(Optional.of(pactUser)).when(userService).findUserById(pactUser.getId());
   }
 }

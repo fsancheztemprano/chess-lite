@@ -2,6 +2,12 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/domain';
 import { defaultTemplate } from '@app/domain/mocks';
+import {
+  stubMessageServiceProvider,
+  stubPreferencesServiceProvider,
+  stubSessionServiceProvider,
+  UserService,
+} from '@app/ui/shared';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import {
@@ -11,10 +17,6 @@ import {
   updateProfileTemplate,
 } from '../../../../domain/src/lib/mocks/user/user-profile-template.mock';
 import { UserSettingsService } from '../../../../ui/feature/user/src/lib/services/user-settings.service';
-import { stubSessionServiceProvider } from '../../../../ui/shared/src/lib/services/core/session.service.stub';
-import { UserService } from '../../../../ui/shared/src/lib/services/core/user.service';
-import { stubMessageServiceProvider } from '../../../../ui/shared/src/lib/services/message.service.stub';
-import { stubPreferencesServiceProvider } from '../../../../ui/shared/src/lib/services/preferences.service.stub';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

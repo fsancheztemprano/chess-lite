@@ -3,7 +3,7 @@ import { defaultTemplate } from '@app/domain/mocks';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { jwt } from 'libs/consumer-pact/src/utils/pact.utils';
+import { bearer, jwt } from 'libs/consumer-pact/src/utils/pact.utils';
 import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 import {
   changePasswordTemplate,
@@ -215,6 +215,109 @@ export namespace LoginPact {
           ...uploadAvatarTemplate,
           ...changePasswordTemplate,
         },
+      },
+    },
+  };
+}
+
+export namespace RefreshTokenPact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'refresh token successful',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/auth/token',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: {
+        [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: HttpHeaderKey.JWT_TOKEN,
+        [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+      body: { ...pactCurrentUser },
+    },
+  };
+
+  export const locked_role: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'refresh token locked role',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/auth/token',
+      headers: {
+        Authorization: bearer(jwtToken({ user: { id: 'lockedRoleUserId' }, authorities: ['profile:read'] })),
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'LOCKED_ROLE is locked',
+      },
+    },
+  };
+
+  export const locked_user: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'refresh token locked user',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/auth/token',
+      headers: {
+        Authorization: bearer(jwtToken({ user: { id: 'lockedUserId' }, authorities: ['profile:read'] })),
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'User account is locked',
+      },
+    },
+  };
+
+  export const unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'refresh token unauthorized',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/auth/token',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      },
+    },
+    willRespondWith: {
+      status: 403,
+      body: {
+        reason: 'Forbidden',
+        title: 'Authentication required',
+      },
+    },
+  };
+
+  export const not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'refresh token user not found',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/auth/token',
+      headers: {
+        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ user: { id: 'notFoundId' } })),
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+        title: 'User with id: notFoundId not found',
       },
     },
   };
