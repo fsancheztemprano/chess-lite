@@ -4,7 +4,7 @@ export function isTokenExpired(token: string): boolean {
   if (!token?.length) {
     return true;
   }
-  return Date.now() >= getTokenExpiration(token).valueOf() * 1000;
+  return Date.now() - 1000 > getTokenExpiration(token).valueOf() * 1000;
 }
 
 export function getTokenExpiration(token: string): Date {

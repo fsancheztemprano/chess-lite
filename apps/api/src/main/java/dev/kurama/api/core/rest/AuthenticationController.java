@@ -75,7 +75,8 @@ public class AuthenticationController {
   @PreAuthorize("!isAuthenticated()")
   @PostMapping(ACTIVATE_PATH)
   public ResponseEntity<?> activateAccount(@RequestBody AccountActivationInput accountActivationInput)
-    throws ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException, UserNotFoundException {
+    throws ActivationTokenNotFoundException, ActivationTokenUserMismatchException, ActivationTokenExpiredException,
+    UserNotFoundException {
     authenticationFacade.activateAccount(accountActivationInput);
     return noContent().build();
   }

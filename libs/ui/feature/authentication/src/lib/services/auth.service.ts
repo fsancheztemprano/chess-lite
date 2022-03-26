@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthRelations, LoginInput, SignupInput, User } from '@app/domain';
-import { mapSession, Session, SessionService } from '@app/ui/shared';
+import { httpToSession, Session, SessionService } from '@app/ui/shared';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { exhaustMap, first, map, switchMap } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class AuthService {
     return this.halFormService.getTemplateOrThrow(AuthRelations.LOGIN_RELATION).pipe(
       first(),
       switchMap((template) => template.afford<User>({ body })),
-      map(mapSession),
+      map(httpToSession),
       exhaustMap((session: Session) => this.sessionService.initialize(session).pipe(map(() => session))),
     );
   }

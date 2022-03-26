@@ -7,7 +7,7 @@ export interface Session {
   user?: User;
 }
 
-export function mapSession(response: HttpResponse<User>): Session {
+export function httpToSession(response: HttpResponse<User>): Session {
   const token = response?.headers?.get(HttpHeaderKey.JWT_TOKEN) || '';
   const user = new User(response.body as IResource);
   return { token, user };
