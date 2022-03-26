@@ -73,7 +73,7 @@ public class UserFacade {
   public UserModel changePassword(String id, ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     User user = userService.findUserById(id).orElseThrow(() -> new UserNotFoundException(id));
-    authenticationFacility.verifyAuthentication(user.getUsername(), changeUserPasswordInput.getPassword());
+    authenticationFacility.validateCredentials(user.getUsername(), changeUserPasswordInput.getPassword());
     return userMapper.userToUserModel(
       userService.updateUser(id, UserInput.builder().password(changeUserPasswordInput.getNewPassword()).build()));
   }

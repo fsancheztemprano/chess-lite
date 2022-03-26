@@ -7,6 +7,7 @@ import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTI
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.SIGNUP_REL;
+import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -32,6 +33,7 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
     HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource()).link(getSelfLink());
 
     if (AuthorityUtils.isAuthenticated()) {
+      rootModel.link(getRefreshTokenLink());
       if (AuthorityUtils.hasAuthority(ADMIN_ROOT)) {
         rootModel.link(getAdministrationRootLink());
       }
@@ -54,6 +56,11 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
   @SneakyThrows
   private @NonNull Link getCurrentUserLink() {
     return linkTo(methodOn(UserProfileController.class).get()).withRel(CURRENT_USER_REL);
+  }
+
+  @SneakyThrows
+  private @NonNull Link getRefreshTokenLink() {
+    return linkTo(methodOn(AuthenticationController.class).refreshToken()).withRel(TOKEN_REL);
   }
 
   @SneakyThrows

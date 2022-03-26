@@ -154,7 +154,7 @@ class UserFacadeTest {
 
     UserModel actual = userFacade.changePassword(id, input);
 
-    verify(authenticationFacility).verifyAuthentication(user.getUsername(), input.getPassword());
+    verify(authenticationFacility).validateCredentials(user.getUsername(), input.getPassword());
     verify(userService).updateUser(eq(id), any(UserInput.class));
     verify(userMapper).userToUserModel(user);
     assertEquals(expected, actual);

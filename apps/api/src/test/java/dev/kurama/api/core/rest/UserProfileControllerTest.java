@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -112,7 +113,7 @@ class UserProfileControllerTest {
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
 
-          mockMvc.perform(patch(USER_PROFILE_PATH).accept(MediaType.APPLICATION_JSON)
+          mockMvc.perform(patch(USER_PROFILE_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
               .contentType(MediaType.APPLICATION_JSON)
               .content(asJsonString(input)))
             .andExpect(status().isOk())
@@ -126,7 +127,7 @@ class UserProfileControllerTest {
         try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
           utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
 
-          mockMvc.perform(patch(USER_PROFILE_PATH).accept(MediaType.APPLICATION_JSON)
+          mockMvc.perform(patch(USER_PROFILE_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJsonString(input))).andExpect(status().isNotFound());
         }
@@ -148,7 +149,7 @@ class UserProfileControllerTest {
           utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
 
           mockMvc.perform(
-              patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaType.APPLICATION_JSON)
+              patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(input)))
             .andExpect(status().isOk())
@@ -163,7 +164,7 @@ class UserProfileControllerTest {
           utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
 
           mockMvc.perform(
-            patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaType.APPLICATION_JSON)
+            patch(USER_PROFILE_PATH + USER_PROFILE_CHANGE_PASSWORD_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
               .contentType(MediaType.APPLICATION_JSON)
               .content(asJsonString(input))).andExpect(status().isNotFound());
         }
@@ -184,7 +185,7 @@ class UserProfileControllerTest {
           mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar).with(request -> {
               request.setMethod(HttpMethod.PATCH.toString());
               return request;
-            }).accept(MediaType.APPLICATION_JSON).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+            }).accept(MediaTypes.HAL_FORMS_JSON_VALUE).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id", equalTo(expected.getId())));
         }
@@ -199,7 +200,7 @@ class UserProfileControllerTest {
           mockMvc.perform(multipart(USER_PROFILE_PATH + USER_PROFILE_UPLOAD_AVATAR_PATH).file(avatar).with(request -> {
               request.setMethod(HttpMethod.PATCH.toString());
               return request;
-            }).accept(MediaType.APPLICATION_JSON).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+            }).accept(MediaTypes.HAL_FORMS_JSON_VALUE).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
             .andExpect(status().isNotFound());
         }
       }
@@ -261,7 +262,7 @@ class UserProfileControllerTest {
       try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
         utilities.when(AuthorityUtils::getCurrentUserId).thenReturn(expected.getId());
 
-        mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).accept(MediaType.APPLICATION_JSON)
+        mockMvc.perform(patch(USER_PROFILE_PATH + USER_PROFILE_PREFERENCES).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON)
             .content(asJsonString(input)))
           .andExpect(status().isOk())

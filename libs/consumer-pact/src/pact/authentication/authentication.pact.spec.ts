@@ -1,20 +1,24 @@
-import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ActivationTokenRelations, AuthRelations, HttpHeaderKey, SignupInput } from '@app/domain';
-import { HalFormClientModule, HalFormService } from '@hal-form-client';
+import { ActivationTokenRelations, AuthRelations, HttpHeaderKey, SignupInput, TOKEN_KEY } from '@app/domain';
+import { HalFormClientModule, HalFormService, IResource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
 import {
   ActivateAccountPact,
   ActivationTokenPact,
   LoginPact,
+  RefreshTokenPact,
   SignupPact,
 } from 'libs/consumer-pact/src/pact/authentication/authentication.pact';
 import { AuthService } from 'libs/ui/feature/authentication/src/lib/services/auth.service';
 import { stubSessionServiceProvider } from 'libs/ui/shared/src/lib/services/core/session.service.stub';
+import { switchMap } from 'rxjs';
 import { ActivationTokenService } from '../../../../ui/feature/authentication/src/lib/services/activation-token.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
+import { pactCurrentUser } from '../../mocks/user.mock';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.util';
 
 const provider: Pact = pactForResource('authentication');
 
@@ -187,7 +191,7 @@ describe('Authentication Pacts', () => {
         authService.login({ username: 'lockedRoleUser', password: 'lockedRoleUser' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
-            expect(error.status).toBe(401);
+            expect(error.status).toBe(interaction.willRespondWith.status);
             expect(error.error).toMatchObject(interaction.willRespondWith.body);
             done();
           },
@@ -201,7 +205,7 @@ describe('Authentication Pacts', () => {
         authService.login({ username: 'lockedUser', password: 'lockedUser' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
-            expect(error.status).toBe(401);
+            expect(error.status).toBe(interaction.willRespondWith.status);
             expect(error.error).toMatchObject(interaction.willRespondWith.body);
             done();
           },
@@ -220,6 +224,110 @@ describe('Authentication Pacts', () => {
           expect(session?.user?.id).toBe(interaction.willRespondWith.body.id);
           done();
         });
+      });
+    });
+  });
+
+  describe('refresh token', () => {
+    beforeEach(() => {
+      halFormService.setRootResource({
+        _links: {
+          self: {
+            href: '/api',
+          },
+          [AuthRelations.TOKEN_RELATION]: {
+            href: '/api/auth/token',
+          },
+        },
+      });
+    });
+
+    it('successful', (done) => {
+      const interaction: InteractionObject = RefreshTokenPact.successful;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: pactCurrentUser.id } }));
+        halFormService
+          .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
+          .pipe(switchMap((link) => link.fetch<IResource>()))
+          .subscribe((response: HttpResponse<IResource>) => {
+            expect(response).toBeTruthy();
+            expect(response.headers.get(HttpHeaderKey.JWT_TOKEN)).toBe(
+              (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
+            );
+            expect(response.body?.id).toBe(interaction.willRespondWith.body.id);
+            done();
+          });
+      });
+    });
+
+    it('locked role', (done) => {
+      const interaction: InteractionObject = RefreshTokenPact.locked_role;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'lockedRoleUserId' } }));
+        halFormService
+          .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
+          .pipe(switchMap((link) => link.fetch()))
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              done();
+            },
+          });
+      });
+    });
+
+    it('locked user', (done) => {
+      const interaction: InteractionObject = RefreshTokenPact.locked_user;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'lockedUserId' } }));
+        halFormService
+          .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
+          .pipe(switchMap((link) => link.fetch()))
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              done();
+            },
+          });
+      });
+    });
+
+    it('unauthorized', (done) => {
+      const interaction: InteractionObject = RefreshTokenPact.unauthorized;
+      provider.addInteraction(interaction).then(() => {
+        halFormService
+          .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
+          .pipe(switchMap((link) => link.fetch()))
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              done();
+            },
+          });
+      });
+    });
+
+    it('not found', (done) => {
+      const interaction: InteractionObject = RefreshTokenPact.not_found;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'notFoundId' } }));
+        halFormService
+          .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
+          .pipe(switchMap((link) => link.fetch()))
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              done();
+            },
+          });
       });
     });
   });

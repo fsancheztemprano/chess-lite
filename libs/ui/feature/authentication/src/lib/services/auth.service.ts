@@ -1,8 +1,7 @@
-import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthRelations, HttpHeaderKey, LoginInput, SignupInput, User } from '@app/domain';
-import { Session, SessionService } from '@app/ui/shared';
-import { HalFormService, IResource, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
+import { AuthRelations, LoginInput, SignupInput, User } from '@app/domain';
+import { httpToSession, Session, SessionService } from '@app/ui/shared';
+import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { exhaustMap, first, map, switchMap } from 'rxjs/operators';
 import { AuthenticationModule } from '../authentication.module';
@@ -24,12 +23,8 @@ export class AuthService {
   public login(body: LoginInput): Observable<Session | null> {
     return this.halFormService.getTemplateOrThrow(AuthRelations.LOGIN_RELATION).pipe(
       first(),
-      switchMap((template) => template.afford<Session>({ body })),
-      map((response: HttpResponse<IResource>) => {
-        const token = response?.headers?.get(HttpHeaderKey.JWT_TOKEN) || '';
-        const user = new User(response.body as IResource);
-        return { token, user };
-      }),
+      switchMap((template) => template.afford<User>({ body })),
+      map(httpToSession),
       exhaustMap((session: Session) => this.sessionService.initialize(session).pipe(map(() => session))),
     );
   }

@@ -8,10 +8,12 @@ import static dev.kurama.api.core.rest.AuthenticationController.SIGNUP_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.TOKEN_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,14 +27,17 @@ import dev.kurama.api.core.hateoas.input.RequestActivationTokenInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserService;
+import dev.kurama.api.core.utility.JWTTokenProvider;
 import dev.kurama.support.ImportMappers;
 import dev.kurama.support.ImportTestSecurityConfiguration;
+import dev.kurama.support.MockAuthorizedUser;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,6 +51,9 @@ class AuthenticationControllerIT {
   @Autowired
   private MockMvc mockMvc;
 
+  @Autowired
+  private JWTTokenProvider jwtTokenProvider;
+
   @MockBean
   private UserService userService;
 
@@ -57,11 +65,11 @@ class AuthenticationControllerIT {
     SignupInput input = SignupInput.builder()
       .firstname("firstname")
       .lastname("lastname")
-      .username("username")
+      .username(randomAlphanumeric(8))
       .email("em@i.l")
       .build();
 
-    mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaType.APPLICATION_JSON)
+    mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
       .contentType(MediaType.APPLICATION_JSON)
       .content(asJsonString(input))).andExpect(status().isNoContent());
 
@@ -70,13 +78,13 @@ class AuthenticationControllerIT {
 
   @Test
   void should_login_and_return_user_and_jwt_header() throws Exception {
-    LoginInput input = LoginInput.builder().username("username").password(randomUUID()).build();
+    LoginInput input = LoginInput.builder().username(randomAlphanumeric(8)).password(randomUUID()).build();
 
-    User user = User.builder().setRandomUUID().username("username").build();
+    User user = User.builder().setRandomUUID().username(randomAlphanumeric(8)).build();
     String token = randomUUID();
     doReturn(Pair.of(user, token)).when(authenticationFacility).login(input.getUsername(), input.getPassword());
 
-    mockMvc.perform(post(AUTHENTICATION_PATH + LOGIN_PATH).accept(MediaType.APPLICATION_JSON)
+    mockMvc.perform(post(AUTHENTICATION_PATH + LOGIN_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input)))
       .andExpect(status().isOk())
@@ -86,10 +94,27 @@ class AuthenticationControllerIT {
   }
 
   @Test
+  void should_refresh_token_and_return_user_and_jwt_header() throws Exception {
+    User expected = User.builder().setRandomUUID().username(randomAlphanumeric(8)).build();
+    String token = randomUUID();
+    doReturn(Pair.of(expected, token)).when(authenticationFacility).refreshToken(expected.getId());
+
+    mockMvc.perform(get(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
+        .headers(MockAuthorizedUser.builder()
+          .username(expected.getUsername())
+          .id(expected.getId())
+          .buildAuthorizationHeader(jwtTokenProvider)))
+      .andExpect(status().isOk())
+      .andExpect(header().stringValues(JWT_TOKEN_HEADER, token))
+      .andExpect(jsonPath("$.id", equalTo(expected.getId())))
+      .andExpect(jsonPath("$.username", equalTo(expected.getUsername())));
+  }
+
+  @Test
   void should_request_activation_token() throws Exception {
     RequestActivationTokenInput input = RequestActivationTokenInput.builder().email("em@i.l").build();
 
-    mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaType.APPLICATION_JSON)
+    mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
       .contentType(MediaType.APPLICATION_JSON)
       .content(asJsonString(input))).andExpect(status().isNoContent());
 
@@ -104,7 +129,7 @@ class AuthenticationControllerIT {
       .token(randomUUID())
       .build();
 
-    mockMvc.perform(post(AUTHENTICATION_PATH + ACTIVATE_PATH).accept(MediaType.APPLICATION_JSON)
+    mockMvc.perform(post(AUTHENTICATION_PATH + ACTIVATE_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
       .contentType(MediaType.APPLICATION_JSON)
       .content(asJsonString(input))).andExpect(status().isNoContent());
     verify(userService, times(1)).activateAccount(input);

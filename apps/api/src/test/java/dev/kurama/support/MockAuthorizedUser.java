@@ -31,6 +31,10 @@ public class MockAuthorizedUser {
 
   public static class MockAuthorizedUserBuilder {
 
+    public MockAuthorizedUserBuilder() {
+      authorities = new String[0];
+    }
+
     public MockAuthorizedUserBuilder authorities(String... authorities) {
       this.authorities = authorities;
       return this;

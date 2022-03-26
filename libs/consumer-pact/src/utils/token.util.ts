@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import * as jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 export interface AuthUser {
   user?: {
@@ -18,7 +18,7 @@ export function jwtToken(authUser: AuthUser = {}): string {
     },
     authorities,
   };
-  return jwt.sign(payload, 'secret', {
+  return sign(payload, 'secret', {
     algorithm: 'HS512',
     issuer: 'api',
     audience: 'app',

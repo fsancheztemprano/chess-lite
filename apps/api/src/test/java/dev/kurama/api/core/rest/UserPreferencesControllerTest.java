@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -90,7 +91,7 @@ class UserPreferencesControllerTest {
         .build();
       when(facade.updateById(expected.getId(), input)).thenReturn(expected);
 
-      mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + expected.getId()).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + expected.getId()).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input)))
         .andExpect(status().isOk())
@@ -104,7 +105,7 @@ class UserPreferencesControllerTest {
       UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
       doThrow(EntityNotFoundException.class).when(facade).updateById(notFoundId, input);
 
-      mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + notFoundId).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + notFoundId).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isNotFound());
 

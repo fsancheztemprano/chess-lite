@@ -18,6 +18,6 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   private _guard(): boolean | UrlTree {
-    return isTokenExpired(localStorage.getItem(TOKEN_KEY)) ? true : this.router.createUrlTree(['']);
+    return isTokenExpired(localStorage.getItem(TOKEN_KEY) || '') ? true : this.router.createUrlTree(['']);
   }
 }

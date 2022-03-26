@@ -30,19 +30,30 @@ public class AuthenticationFacility {
 
   public ImmutablePair<User, String> login(String username, String password)
     throws RoleCanNotLoginException, UserNotFoundException {
-    verifyAuthentication(username, password);
+    validateCredentials(username, password);
     var user = userService.findUserByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+    validateAuthentication(user);
+    return authenticateUser(user);
+  }
+
+  public ImmutablePair<User, String> refreshToken(String userId)
+    throws UserNotFoundException, RoleCanNotLoginException {
+    var user = userService.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    validateAuthentication(user);
+    return authenticateUser(user);
+  }
+
+  public void validateCredentials(String username, String password) {
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  }
+
+  private void validateAuthentication(User user) throws RoleCanNotLoginException {
     if (!user.getRole().isCanLogin()) {
       throw new RoleCanNotLoginException(user.getRole().getName());
     }
     if (user.isLocked()) {
-      throw new LockedException(username);
+      throw new LockedException(user.getUsername());
     }
-    return authenticateUser(user);
-  }
-
-  public void verifyAuthentication(String username, String password) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
   }
 
   private ImmutablePair<User, String> authenticateUser(User user) {

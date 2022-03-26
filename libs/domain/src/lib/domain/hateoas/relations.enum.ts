@@ -44,6 +44,7 @@ export enum AdministrationRelations {
 
 export enum AuthRelations {
   LOGIN_RELATION = 'login',
+  TOKEN_RELATION = 'token',
   SIGNUP_RELATION = 'signup',
 }
 

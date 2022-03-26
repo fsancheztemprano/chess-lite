@@ -1,5 +1,6 @@
 package dev.kurama.api.core.facade;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -71,6 +72,21 @@ class AuthenticationFacadeTest {
     when(userMapper.userToUserModel(user)).thenReturn(userModel);
 
     AuthenticatedUserExcerpt authenticatedUserExcerpt = facade.login(loginInput);
+
+    assertThat(authenticatedUserExcerpt).isNotNull().hasFieldOrPropertyWithValue("userModel", userModel);
+    assertThat(Objects.requireNonNull(authenticatedUserExcerpt.getHeaders().get(SecurityConstant.JWT_TOKEN_HEADER))
+      .get(0)).isEqualTo(token);
+  }
+
+  @Test
+  void refresh_token_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException, UserNotFoundException {
+    User user = User.builder().setRandomUUID().username(randomAlphanumeric(8)).build();
+    String token = "token";
+    doReturn(Pair.of(user, token)).when(authenticationFacility).refreshToken(user.getId());
+    UserModel userModel = UserModel.builder().username(user.getUsername()).build();
+    when(userMapper.userToUserModel(user)).thenReturn(userModel);
+
+    AuthenticatedUserExcerpt authenticatedUserExcerpt = facade.refreshToken(user.getId());
 
     assertThat(authenticatedUserExcerpt).isNotNull().hasFieldOrPropertyWithValue("userModel", userModel);
     assertThat(Objects.requireNonNull(authenticatedUserExcerpt.getHeaders().get(SecurityConstant.JWT_TOKEN_HEADER))

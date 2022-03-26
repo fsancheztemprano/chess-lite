@@ -43,6 +43,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -118,7 +119,7 @@ class UserControllerTest {
     void should_create_a_user() throws Exception {
       doReturn(user).when(facade).create(input);
 
-      mockMvc.perform(post(USER_PATH).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(post(USER_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
           .contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input)))
         .andExpect(status().isCreated())
@@ -130,7 +131,7 @@ class UserControllerTest {
     void should_throw_if_username_exists() throws Exception {
       doThrow(UserExistsException.class).when(facade).create(input);
 
-      mockMvc.perform(post(USER_PATH).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(post(USER_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isConflict());
     }
@@ -145,7 +146,7 @@ class UserControllerTest {
     void should_update_a_user() throws Exception {
       doReturn(user).when(facade).update(user.getId(), input);
 
-      mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(user.getId())));
     }
@@ -154,7 +155,7 @@ class UserControllerTest {
     void should_throw_if_user_does_not_exist() throws Exception {
       doThrow(UserNotFoundException.class).when(facade).update(user.getId(), input);
 
-      mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isNotFound());
     }
@@ -163,7 +164,7 @@ class UserControllerTest {
     void should_throw_if_username_exists() throws Exception {
       doThrow(UserExistsException.class).when(facade).update(user.getId(), input);
 
-      mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(format("%s/%s", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isConflict());
     }
@@ -178,7 +179,7 @@ class UserControllerTest {
     void should_update_user_role() throws Exception {
       doReturn(user).when(facade).update(eq(user.getId()), any(UserInput.class));
 
-      mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(user.getId())));
     }
@@ -187,7 +188,7 @@ class UserControllerTest {
     void should_throw_if_user_does_not_exist() throws Exception {
       doThrow(UserNotFoundException.class).when(facade).update(eq(user.getId()), any(UserInput.class));
 
-      mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isNotFound());
     }
@@ -196,7 +197,7 @@ class UserControllerTest {
     void should_throw_if_role_does_not_exist() throws Exception {
       doThrow(RoleNotFoundException.class).when(facade).update(eq(user.getId()), any(UserInput.class));
 
-      mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
+      mockMvc.perform(patch(format("%s/%s/role", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(input))).andExpect(status().isNotFound());
     }
@@ -212,18 +213,20 @@ class UserControllerTest {
     void should_update_user_authorities() throws Exception {
       doReturn(user).when(facade).update(eq(user.getId()), any(UserInput.class));
 
-      mockMvc.perform(patch(format("%s/%s/authorities", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(user.getId())));
+      mockMvc.perform(
+        patch(format("%s/%s/authorities", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input))).andExpect(status().isOk()).andExpect(jsonPath("$.id", equalTo(user.getId())));
     }
 
     @Test
     void should_throw_if_user_does_not_exist() throws Exception {
       doThrow(UserNotFoundException.class).when(facade).update(eq(user.getId()), any(UserInput.class));
 
-      mockMvc.perform(patch(format("%s/%s/authorities", USER_PATH, user.getId())).accept(MediaType.APPLICATION_JSON)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(input))).andExpect(status().isNotFound());
+      mockMvc.perform(
+        patch(format("%s/%s/authorities", USER_PATH, user.getId())).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(asJsonString(input))).andExpect(status().isNotFound());
     }
   }
 
