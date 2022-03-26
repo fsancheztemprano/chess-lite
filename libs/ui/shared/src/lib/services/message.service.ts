@@ -87,7 +87,10 @@ export class MessageService {
   }
 
   private _setAuthenticationHeaders() {
-    this.RX_STOMP_CONFIG.connectHeaders = { Authorization: 'Bearer ' + localStorage.getItem(TOKEN_KEY) };
-    this.RX_STOMP_CONFIG.disconnectHeaders = { Authorization: 'Bearer ' + localStorage.getItem(TOKEN_KEY) };
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token) {
+      this.RX_STOMP_CONFIG.connectHeaders = { Authorization: 'Bearer ' + token };
+      this.RX_STOMP_CONFIG.disconnectHeaders = { Authorization: 'Bearer ' + token };
+    }
   }
 }
