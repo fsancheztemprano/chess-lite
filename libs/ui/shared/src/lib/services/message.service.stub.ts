@@ -30,7 +30,9 @@ export const stubMessageServiceProvider = {
   useClass: StubMessageService,
 };
 
-export class StubRxStompService implements Partial<RxStompService> {}
+export class StubRxStompService implements Partial<RxStompService> {
+  configure = () => void 0;
+}
 
 export const stubRxStompServiceProvider = {
   provide: RxStompService,
