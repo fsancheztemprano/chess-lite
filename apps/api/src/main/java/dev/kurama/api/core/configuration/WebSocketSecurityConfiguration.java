@@ -4,6 +4,7 @@ import dev.kurama.api.core.authority.GlobalSettingsAuthority;
 import dev.kurama.api.core.authority.RoleAuthority;
 import dev.kurama.api.core.authority.UserAuthority;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
 import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
 
@@ -12,7 +13,10 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
 
   @Override
   protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-    messages.simpSubscribeDestMatchers("/ami/user")
+    messages.simpTypeMatchers(SimpMessageType.CONNECT, SimpMessageType.CONNECT_ACK, SimpMessageType.DISCONNECT_ACK,
+        SimpMessageType.DISCONNECT, SimpMessageType.UNSUBSCRIBE, SimpMessageType.HEARTBEAT)
+      .permitAll()
+      .simpSubscribeDestMatchers("/ami/user")
       .hasAuthority(UserAuthority.USER_READ)
       .simpSubscribeDestMatchers("/ami/user/**")
       .hasAuthority(UserAuthority.PROFILE_READ)

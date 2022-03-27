@@ -1,11 +1,11 @@
 import { IndividualConfig } from 'ngx-toastr/toastr/toastr-config';
 
 export enum ToastType {
-  SUCCESS = 'success',
-  INFO = 'info',
-  LINK = 'link',
-  WARNING = 'warning',
-  ERROR = 'error',
+  SUCCESS = 'toast-success',
+  INFO = 'toast-info',
+  LINK = 'toast-link',
+  WARNING = 'toast-warning',
+  ERROR = 'toast-error',
 }
 
 export interface IToastModel {

@@ -35,9 +35,9 @@ export class SessionService {
   public initialize(options?: Session): Observable<Resource> {
     const token: string | null = options?.token || localStorage.getItem(TOKEN_KEY);
     if (SessionService._validateToken(token)) {
-      localStorage.setItem(TOKEN_KEY, token!);
-      return this._initializeRoot().pipe(
-        tap(() => this.messageService.connect()),
+      return this.messageService.disconnect().pipe(
+        tap(() => localStorage.setItem(TOKEN_KEY, token!)),
+        switchMap(() => this._initializeRoot()),
         switchMap(() => (options?.user ? of(options.user) : this.userService.fetchCurrentUser())),
         tap((fetchedUser) => this.userService.initializeUser(fetchedUser)),
         tap(() => this._tokenWatchdog(token!)),
@@ -47,11 +47,14 @@ export class SessionService {
   }
 
   public clearSession(): Observable<Resource> {
-    this.userService.clearUser();
-    this.messageService.disconnect();
-    this.tokenWatchdog?.unsubscribe();
-    localStorage.removeItem(TOKEN_KEY);
-    return this._initializeRoot();
+    return this.messageService.disconnect().pipe(
+      tap(() => {
+        this.userService.clearUser();
+        this.tokenWatchdog?.unsubscribe();
+        localStorage.removeItem(TOKEN_KEY);
+      }),
+      switchMap(() => this._initializeRoot()),
+    );
   }
 
   private _tokenWatchdog(token: string): void {
@@ -83,9 +86,10 @@ export class SessionService {
 
   private _initializeRoot(): Observable<Resource> {
     return this.halFormService.initialize().pipe(
+      tap(() => this.messageService.connect()),
       catchError(() => {
         this.serviceWatchdog?.unsubscribe();
-        this.serviceWatchdog = timer(new Date(Date.now() + 5000))
+        this.serviceWatchdog = timer(new Date(Date.now() + 6000))
           .pipe(switchMap(() => this.initialize()))
           .subscribe(() => this.serviceWatchdog?.unsubscribe());
         return EMPTY;
