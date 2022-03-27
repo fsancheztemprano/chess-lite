@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthRelations, TOKEN_KEY, User } from '@app/domain';
 import { HalFormService, Link, Resource } from '@hal-form-client';
 import jwt_decode from 'jwt-decode';
-import { catchError, Observable, of, Subscription, tap, timer } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subscription, tap, timer } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { isTokenExpired, Token } from '../../utils/auth/auth.utils';
 import { MessageService } from '../message.service';
@@ -13,7 +13,8 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class SessionService {
-  private watchdog?: Subscription;
+  private tokenWatchdog?: Subscription;
+  private serviceWatchdog?: Subscription;
 
   constructor(
     private readonly messageService: MessageService,
@@ -34,27 +35,30 @@ export class SessionService {
   public initialize(options?: Session): Observable<Resource> {
     const token: string | null = options?.token || localStorage.getItem(TOKEN_KEY);
     if (SessionService._validateToken(token)) {
-      localStorage.setItem(TOKEN_KEY, token!);
-      this.messageService.connect();
-      return this.halFormService.initialize().pipe(
+      return this.messageService.disconnect().pipe(
+        tap(() => localStorage.setItem(TOKEN_KEY, token!)),
+        switchMap(() => this._initializeRoot()),
         switchMap(() => (options?.user ? of(options.user) : this.userService.fetchCurrentUser())),
         tap((fetchedUser) => this.userService.initializeUser(fetchedUser)),
         tap(() => this._tokenWatchdog(token!)),
         catchError(() => this.clearSession()),
       );
-    } else return this.halFormService.initialize();
+    } else return this._initializeRoot();
   }
 
   public clearSession(): Observable<Resource> {
-    this.userService.clearUser();
-    this.messageService.disconnect();
-    this.watchdog?.unsubscribe();
-    localStorage.removeItem(TOKEN_KEY);
-    return this.halFormService.initialize();
+    return this.messageService.disconnect().pipe(
+      tap(() => {
+        this.userService.clearUser();
+        this.tokenWatchdog?.unsubscribe();
+        localStorage.removeItem(TOKEN_KEY);
+      }),
+      switchMap(() => this._initializeRoot()),
+    );
   }
 
-  private _tokenWatchdog(token: string) {
-    this.watchdog?.unsubscribe();
+  private _tokenWatchdog(token: string): void {
+    this.tokenWatchdog?.unsubscribe();
     const decoded: Token = jwt_decode<Token>(token);
     const minNextUpdate: number = Date.now() + 3000;
     const maxNextUpdate: number = (decoded.exp - 1) * 1000;
@@ -67,7 +71,7 @@ export class SessionService {
       nextUpdate = new Date(threshold);
     }
 
-    this.watchdog = (
+    this.tokenWatchdog = (
       nextUpdate
         ? timer(nextUpdate).pipe(
             switchMap(() => this.halFormService.getLinkOrThrow(AuthRelations.TOKEN_RELATION).pipe(first())),
@@ -78,5 +82,18 @@ export class SessionService {
           )
         : this.clearSession()
     ).subscribe();
+  }
+
+  private _initializeRoot(): Observable<Resource> {
+    return this.halFormService.initialize().pipe(
+      tap(() => this.messageService.connect()),
+      catchError(() => {
+        this.serviceWatchdog?.unsubscribe();
+        this.serviceWatchdog = timer(new Date(Date.now() + 6000))
+          .pipe(switchMap(() => this.initialize()))
+          .subscribe(() => this.serviceWatchdog?.unsubscribe());
+        return EMPTY;
+      }),
+    );
   }
 }

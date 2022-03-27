@@ -1,12 +1,12 @@
 import { ApplicationMessage, MessageDestination, UserChangedMessage } from '@app/domain';
 import { RxStompService } from '@stomp/ng2-stompjs';
-import { EMPTY, noop, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { MessageService } from './message.service';
 
 export class StubMessageService implements Partial<MessageService> {
-  disconnect = noop;
   public userChangedMessageSubject = new Subject<UserChangedMessage>();
   public userListChangedMessageSubject = new Subject<UserChangedMessage>();
+  disconnect = () => of(void 0);
 
   subscribeToMessages<T extends ApplicationMessage>(destination: string | MessageDestination): Observable<T> {
     return this.handleDestination(destination) as Observable<T>;
@@ -30,7 +30,9 @@ export const stubMessageServiceProvider = {
   useClass: StubMessageService,
 };
 
-export class StubRxStompService implements Partial<RxStompService> {}
+export class StubRxStompService implements Partial<RxStompService> {
+  configure = () => void 0;
+}
 
 export const stubRxStompServiceProvider = {
   provide: RxStompService,
