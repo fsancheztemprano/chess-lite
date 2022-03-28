@@ -2283,10 +2283,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@ngneat/subscribe@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/@ngneat/subscribe/-/subscribe-3.0.1.tgz"
-  integrity sha512-YO4qxnwYROZsdhhSrJ6RHEBccmM7bFMQP+ws5NPmRGwK0+BQXtOV/OYzXm4wDZP4j3XJV9UTriEcqzGckjQiuw==
+"@ngneat/subscribe@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@ngneat/subscribe/-/subscribe-3.0.2.tgz#9495f9620dd89879a87ff0b779c1a60cffafdb8c"
+  integrity sha512-sRQEzM2PrWvFOCH0VUNBZLmMkp2VGQ9JrrGno8ykOejoUKk4t38WTrlQT5gNryw4H6EZZiCxu87bdcPzC1QIng==
   dependencies:
     tslib "^2.0.0"
 
