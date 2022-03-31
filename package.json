@@ -103,7 +103,7 @@
     "@angular/compiler-cli": "13.3.0",
     "@angular/language-service": "13.3.0",
     "@jest/reporters": "27.5.1",
-    "@ngneat/transloco-keys-manager": "3.3.3",
+    "@ngneat/transloco-keys-manager": "3.3.5",
     "@nrwl/cli": "13.9.4",
     "@nrwl/cypress": "13.9.4",
     "@nrwl/devkit": "13.9.4",
