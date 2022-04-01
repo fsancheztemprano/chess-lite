@@ -4,7 +4,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormErrorModule, NgLetModule, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { FormErrorModule } from '@app/ui/shared/common';
+import { NgLetModule } from '@app/ui/shared/core';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementRoleComponent } from './user-management-role.component';
 

@@ -10,7 +10,7 @@ import { AdministrationSidenavItemModule } from '@app/ui/feature/administration'
 import { AuthenticationSidenavItemModule } from '@app/ui/feature/authentication';
 import { HomeSidenavItemModule } from '@app/ui/feature/home';
 import { UserSettingsSidenavItemModule } from '@app/ui/feature/user';
-import { IsMobileModule, NgLetModule } from '@app/ui/shared';
+import { IsMobileModule, NgLetModule } from '@app/ui/shared/core';
 import { TranslocoModule } from '@ngneat/transloco';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 

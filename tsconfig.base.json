@@ -23,8 +23,9 @@
       "@app/ui/feature/authentication": ["libs/ui/feature/authentication/src/index.ts"],
       "@app/ui/feature/home": ["libs/ui/feature/home/src/index.ts"],
       "@app/ui/feature/user": ["libs/ui/feature/user/src/index.ts"],
-      "@app/ui/shared": ["libs/ui/shared/src/index.ts"],
-      "@app/ui/shared/app": ["libs/ui/shared/src/index.app.ts"],
+      "@app/ui/shared/app": ["libs/ui/shared/app/src/index.ts"],
+      "@app/ui/shared/common": ["libs/ui/shared/common/src/index.ts"],
+      "@app/ui/shared/core": ["libs/ui/shared/core/src/index.ts"],
       "@app/ui/store": ["libs/ui/store/src/index.ts"],
       "@hal-form-client": ["libs/hal-form-client/src/index.ts"]
     }

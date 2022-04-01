@@ -6,7 +6,7 @@ import {
   UserPreferencesChangedMessage,
   UserPreferencesChangedMessageDestination,
 } from '@app/domain';
-import { MessageService, ToasterService } from '@app/ui/shared';
+import { MessageService, ToasterService } from '@app/ui/shared/app';
 import { LocalizationRepository } from '@app/ui/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs/operators';

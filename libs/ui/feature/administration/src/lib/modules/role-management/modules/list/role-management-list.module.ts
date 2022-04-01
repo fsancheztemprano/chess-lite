@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { ConfirmationDialogModule, TextInputDialogModule } from '@app/ui/shared';
+import { ConfirmationDialogModule, TextInputDialogModule } from '@app/ui/shared/common';
 import { RoleManagementTableComponent } from './components/table/role-management-table.component';
 import { RoleManagementListRoutingModule } from './role-management-list-routing.module';
 

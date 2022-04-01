@@ -4,13 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Role, RoleManagementRelations, RolePage } from '@app/domain';
-import {
-  ConfirmationDialogService,
-  CoreService,
-  MenuOption,
-  TextInputDialogService,
-  ToasterService,
-} from '@app/ui/shared';
+import { ToasterService } from '@app/ui/shared/app';
+import { ConfirmationDialogService, TextInputDialogService } from '@app/ui/shared/common';
+import { CoreService, MenuOption } from '@app/ui/shared/core';
 import { EMPTY, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { RoleManagementTableDatasource } from './role-management-table.datasource';

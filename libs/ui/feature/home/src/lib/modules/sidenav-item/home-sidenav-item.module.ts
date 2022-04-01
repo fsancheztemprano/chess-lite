@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SidenavItemModule } from '@app/ui/shared';
+import { SidenavItemModule } from '@app/ui/shared/common';
 import { HomeSidenavItemComponent } from './components/home-sidenav-item.component';
 
 @NgModule({

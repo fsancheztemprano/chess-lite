@@ -10,7 +10,8 @@ import {
   RolePage,
   RolesListChangedMessageDestination,
 } from '@app/domain';
-import { MessageService, SearchService, ToasterService } from '@app/ui/shared';
+import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { SearchService } from '@app/ui/shared/core';
 import {
   auditTime,
   BehaviorSubject,

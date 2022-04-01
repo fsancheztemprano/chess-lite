@@ -5,7 +5,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubCoreServiceProvider } from '@app/ui/shared';
+import { stubCoreServiceProvider } from '@app/ui/shared/core';
 import { UserManagementTableComponent } from './user-management-table.component';
 import { stubUserManagementTableDatasourceProvider } from './user-management-table.datasource.stub';
 

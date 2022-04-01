@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { stubCoreServiceProvider, StubTiledMenuModule } from '@app/ui/shared';
+import { stubCoreServiceProvider, StubTiledMenuModule } from '@app/ui/shared/core';
 import { HalFormClientModule } from '@hal-form-client';
 import { HomeComponent } from './home.component';
 

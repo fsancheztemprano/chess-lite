@@ -4,7 +4,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FormErrorModule, NgLetModule, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { FormErrorModule } from '@app/ui/shared/common';
+import { NgLetModule } from '@app/ui/shared/core';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementAccountPasswordComponent } from './user-management-account-password.component';
 

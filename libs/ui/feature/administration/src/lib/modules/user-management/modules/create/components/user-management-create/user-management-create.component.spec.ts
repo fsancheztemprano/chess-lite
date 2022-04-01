@@ -8,7 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormErrorModule, stubCardViewHeaderServiceProvider, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { FormErrorModule } from '@app/ui/shared/common';
+import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
 import { UserManagementCreateComponent } from './user-management-create.component';
 

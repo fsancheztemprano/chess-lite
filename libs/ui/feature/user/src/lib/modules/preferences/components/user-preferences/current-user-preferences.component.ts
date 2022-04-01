@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { filterNulls, patchFormPipe, ToasterService } from '@app/ui/shared';
+import { filterNulls, ToasterService } from '@app/ui/shared/app';
+import { patchFormPipe } from '@app/ui/shared/common';
 import { LocalizationRepository } from '@app/ui/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserSettingsService } from '../../../../services/user-settings.service';

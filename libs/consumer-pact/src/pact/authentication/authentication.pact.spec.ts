@@ -12,7 +12,7 @@ import {
   SignupPact,
 } from 'libs/consumer-pact/src/pact/authentication/authentication.pact';
 import { AuthService } from 'libs/ui/feature/authentication/src/lib/services/auth.service';
-import { stubSessionServiceProvider } from 'libs/ui/shared/src/lib/services/core/session.service.stub';
+import { stubSessionServiceProvider } from 'libs/ui/shared/app/src/lib/services/session.service.stub';
 import { switchMap } from 'rxjs';
 import { ActivationTokenService } from '../../../../ui/feature/authentication/src/lib/services/activation-token.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';

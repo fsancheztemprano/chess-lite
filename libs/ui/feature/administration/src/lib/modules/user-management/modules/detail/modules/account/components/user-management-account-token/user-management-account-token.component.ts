@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ToasterService } from '@app/ui/shared';
+import { ToasterService } from '@app/ui/shared/app';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @Component({

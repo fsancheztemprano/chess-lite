@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CardViewHeaderService } from '@app/ui/shared';
+import { CardViewHeaderService } from '@app/ui/shared/core';
 
 @Component({
   selector: 'app-card-view-header',

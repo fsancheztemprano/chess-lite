@@ -2,7 +2,7 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/domain';
 import { defaultTemplate } from '@app/domain/mocks';
-import { SessionService, stubMessageServiceProvider } from '@app/ui/shared';
+import { SessionService, stubMessageServiceProvider } from '@app/ui/shared/app';
 import { SessionRepository } from '@app/ui/store';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';

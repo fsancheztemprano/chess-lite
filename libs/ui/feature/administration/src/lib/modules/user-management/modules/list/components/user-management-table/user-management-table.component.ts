@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { User, UserManagementRelations, UserPage } from '@app/domain';
-import { CoreService, MenuOption } from '@app/ui/shared';
+import { CoreService, MenuOption } from '@app/ui/shared/core';
 import { map } from 'rxjs/operators';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { IsMobileModule } from '@app/ui/shared';
+import { IsMobileModule } from '@app/ui/shared/core';
 import { EffectsNgModule } from '@ngneat/effects-ng';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { scopeLoader } from '../../../../../tools/transloco/transloco.scope';

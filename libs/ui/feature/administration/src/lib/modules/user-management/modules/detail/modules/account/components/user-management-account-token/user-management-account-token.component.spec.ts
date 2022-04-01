@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { NgLetModule, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { NgLetModule } from '@app/ui/shared/core';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementAccountTokenComponent } from './user-management-account-token.component';
 

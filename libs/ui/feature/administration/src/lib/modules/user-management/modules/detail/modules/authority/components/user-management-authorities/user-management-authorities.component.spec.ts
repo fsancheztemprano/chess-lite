@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgLetModule, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { NgLetModule } from '@app/ui/shared/core';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementAuthoritiesComponent } from './user-management-authorities.component';
 

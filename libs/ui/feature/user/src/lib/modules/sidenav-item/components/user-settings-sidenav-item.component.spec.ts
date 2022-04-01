@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StubSidenavItemComponent } from '@app/ui/shared';
+import { StubSidenavItemComponent } from '@app/ui/shared/common';
 import { HalFormClientModule } from '@hal-form-client';
 import { stubUserSettingsServiceProvider } from '../../../services/user-settings.service.stub';
 import { UserSettingsSidenavItemComponent } from './user-settings-sidenav-item.component';

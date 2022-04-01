@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ContextMenuService, MenuOption } from '@app/ui/shared';
+import { ContextMenuService, MenuOption } from '@app/ui/shared/core';
 import { take } from 'rxjs';
 
 @Component({

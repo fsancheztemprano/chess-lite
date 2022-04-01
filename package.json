@@ -32,7 +32,7 @@
     "pact:consumer": "nx run-many --target=pact --projects=consumer-pact",
     "pact": "nx run-many --target=pact --projects=api",
     "test": "nx run-many --target=test --all",
-    "test:frontend": "nx run-many --target=test --projects=hal-form-client,domain,app,ui-core,ui-shared,ui-feature-authentication,ui-feature-administration,ui-feature-home,ui-feature-user",
+    "test:frontend": "nx run-many --target=test --all --exclude=api",
     "test:frontend:coverage": "yarn run test:frontend --codeCoverage",
     "test:backend": "nx run-many --target=test --projects=api",
     "test:merge:ut": "jrm ./apps/api/target/surefire-reports/merged-uts.xml \"./apps/api/target/surefire-reports/TEST*.xml\"",

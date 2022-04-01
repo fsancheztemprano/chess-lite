@@ -7,7 +7,8 @@ import {
   UserPreferences,
   UserUpdateProfileInput,
 } from '@app/domain';
-import { clearSession, filterNulls } from '@app/ui/shared';
+import { filterNulls } from '@app/ui/shared/app';
+import { clearSession } from '@app/ui/shared/core';
 import { SessionRepository } from '@app/ui/store';
 import { HalFormService, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';

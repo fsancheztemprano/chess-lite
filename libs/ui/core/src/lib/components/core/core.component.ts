@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
-import { CoreComponentStyle, CoreService } from '@app/ui/shared';
+import { CoreComponentStyle, CoreService } from '@app/ui/shared/core';
 import { ThemeRepository } from '@app/ui/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 

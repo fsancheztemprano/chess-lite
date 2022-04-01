@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ToasterService } from '@app/ui/shared';
+import { ToasterService } from '@app/ui/shared/app';
 import { filter } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';

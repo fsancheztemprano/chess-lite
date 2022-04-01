@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CardViewHeaderService, ToasterService } from '@app/ui/shared';
+import { ToasterService } from '@app/ui/shared/app';
+import { CardViewHeaderService } from '@app/ui/shared/core';
 import { first, switchMap } from 'rxjs/operators';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confirm/user-remove-account-confirm.component';

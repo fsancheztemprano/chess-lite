@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Role } from '@app/domain';
-import { ToasterService } from '@app/ui/shared';
+import { ToasterService } from '@app/ui/shared/app';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';

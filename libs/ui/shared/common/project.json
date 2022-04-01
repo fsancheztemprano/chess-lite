@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "root": "libs/ui/shared/common",
+  "sourceRoot": "libs/ui/shared/common/src",
+  "prefix": "app",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/ui/shared/common"],
+      "options": {
+        "jestConfig": "libs/ui/shared/common/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/ui/shared/common/src/**/*.ts", "libs/ui/shared/common/src/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

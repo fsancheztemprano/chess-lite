@@ -8,7 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { IsMobileModule } from '@app/ui/shared';
+import { IsMobileModule } from '@app/ui/shared/core';
 import { SubscribeModule } from '@ngneat/subscribe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ContextMenuModule } from '../context-menu/context-menu.module';

@@ -11,13 +11,12 @@ import {
   updateUserRoleTemplate,
   updateUserTemplate,
 } from '@app/domain/mocks';
+import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';
 import { UserManagementService } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service';
 import { AdministrationService } from '../../../../ui/feature/administration/src/lib/services/administration.service';
-import { stubMessageServiceProvider } from '../../../../ui/shared/src/lib/services/message.service.stub';
-import { stubToasterServiceProvider } from '../../../../ui/shared/src/lib/services/toaster.service.stub';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

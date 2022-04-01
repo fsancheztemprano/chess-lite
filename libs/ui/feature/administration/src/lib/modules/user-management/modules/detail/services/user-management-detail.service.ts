@@ -11,7 +11,7 @@ import {
   UserManagementRelations,
   UserPreferences,
 } from '@app/domain';
-import { filterNulls, MessageService, ToasterService } from '@app/ui/shared';
+import { filterNulls, MessageService, ToasterService } from '@app/ui/shared/app';
 import { BehaviorSubject, EMPTY, first, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserManagementService } from '../../../services/user-management.service';

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubSessionServiceProvider, StubSidenavItemComponent } from '@app/ui/shared';
+import { stubSessionServiceProvider } from '@app/ui/shared/app';
+import { StubSidenavItemComponent } from '@app/ui/shared/common';
 import { HalFormClientModule } from '@hal-form-client';
 import { AuthenticationSidenavItemComponent } from './authentication-sidenav-item.component';
 

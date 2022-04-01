@@ -12,7 +12,9 @@
     "ui-feature-authentication": "libs/ui/feature/authentication",
     "ui-feature-home": "libs/ui/feature/home",
     "ui-feature-user": "libs/ui/feature/user",
-    "ui-shared": "libs/ui/shared",
+    "ui-shared-app": "libs/ui/shared/app",
+    "ui-shared-common": "libs/ui/shared/common",
+    "ui-shared-core": "libs/ui/shared/core",
     "ui-store": "libs/ui/store"
   }
 }

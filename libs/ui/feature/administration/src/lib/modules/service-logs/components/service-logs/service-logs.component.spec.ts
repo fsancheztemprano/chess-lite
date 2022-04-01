@@ -3,7 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubCoreServiceProvider } from '@app/ui/shared';
+import { stubCoreServiceProvider } from '@app/ui/shared/core';
 import { stubServiceLogsServiceProvider } from '../../services/service-logs.service.stub';
 import { ServiceLogsComponent } from './service-logs.component';
 
