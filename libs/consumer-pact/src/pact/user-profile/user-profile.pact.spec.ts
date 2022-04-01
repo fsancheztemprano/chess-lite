@@ -2,12 +2,8 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/domain';
 import { defaultTemplate } from '@app/domain/mocks';
-import {
-  stubMessageServiceProvider,
-  stubPreferencesServiceProvider,
-  stubSessionServiceProvider,
-  UserService,
-} from '@app/ui/shared';
+import { SessionService, stubMessageServiceProvider } from '@app/ui/shared';
+import { SessionRepository } from '@app/ui/store';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import {
@@ -32,7 +28,8 @@ import {
 const provider: Pact = pactForResource('userProfile');
 
 describe('User Profile Pact', () => {
-  let userService: UserService;
+  let sessionService: SessionService;
+  let sessionRepository: SessionRepository;
   let userSettingsService: UserSettingsService;
 
   beforeAll(() => provider.setup());
@@ -42,12 +39,7 @@ describe('User Profile Pact', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, HalFormClientModule],
-      providers: [
-        avengersAssemble(provider.mockService.baseUrl),
-        stubMessageServiceProvider,
-        stubPreferencesServiceProvider,
-        stubSessionServiceProvider,
-      ],
+      providers: [avengersAssemble(provider.mockService.baseUrl), stubMessageServiceProvider],
     });
     const halFormService = TestBed.inject(HalFormService);
     halFormService.setRootResource({
@@ -62,7 +54,8 @@ describe('User Profile Pact', () => {
       _templates: { ...defaultTemplate },
     });
 
-    userService = TestBed.inject(UserService);
+    sessionRepository = TestBed.inject(SessionRepository);
+    sessionService = TestBed.inject(SessionService);
     userSettingsService = TestBed.inject(UserSettingsService);
   });
 
@@ -71,7 +64,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read'] }));
-        userService.fetchCurrentUser().subscribe((response: User) => {
+        sessionService['_fetchUser']().subscribe((response: User) => {
           expect(response).toBeTruthy();
           expect(response.id).toBe(interaction.willRespondWith.body.id);
           expect(response._links).toBeTruthy();
@@ -88,7 +81,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.with_update;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
-        userService.fetchCurrentUser().subscribe((response: User) => {
+        sessionService['_fetchUser']().subscribe((response: User) => {
           expect(response).toBeTruthy();
           expect(response.id).toBe(interaction.willRespondWith.body.id);
           expect(response._templates?.default).toBeTruthy();
@@ -108,7 +101,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.with_delete;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read', 'profile:delete'] }));
-        userService.fetchCurrentUser().subscribe((response: User) => {
+        sessionService['_fetchUser']().subscribe((response: User) => {
           expect(response).toBeTruthy();
           expect(response.id).toBe(interaction.willRespondWith.body.id);
           expect(response._templates?.default).toBeTruthy();
@@ -122,7 +115,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.unauthorized;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken());
-        userService.fetchCurrentUser().subscribe({
+        sessionService['_fetchUser']().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -137,7 +130,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.not_found;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'notFoundId' }, authorities: ['profile:read'] }));
-        userService.fetchCurrentUser().subscribe({
+        sessionService['_fetchUser']().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -151,7 +144,7 @@ describe('User Profile Pact', () => {
 
   describe('Update User Profile', () => {
     beforeEach(() => {
-      userService.setUser(
+      sessionRepository.updateUser(
         new User({
           _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
@@ -214,7 +207,7 @@ describe('User Profile Pact', () => {
 
   describe('Update User Profile Password', () => {
     beforeEach(() => {
-      userService.setUser(
+      sessionRepository.updateUser(
         new User({
           _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
@@ -282,7 +275,7 @@ describe('User Profile Pact', () => {
 
   describe('Delete User Profile', () => {
     beforeEach(() => {
-      userService.setUser(
+      sessionRepository.updateUser(
         new User({
           _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
@@ -349,7 +342,7 @@ describe('User Profile Pact', () => {
 
   describe('Get User Profile Preferences', () => {
     beforeEach(() => {
-      userService.setUser(
+      sessionRepository.updateUser(
         new User({
           _links: {
             [CurrentUserRelations.USER_PREFERENCES_REL]: { href: 'http://localhost/api/user/profile/preferences' },
@@ -364,7 +357,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePreferencesPact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'pactUserId' }, authorities: ['profile:read'] }));
-        userService.fetchUserPreferences().subscribe((response: User) => {
+        sessionService['_fetchUserPreferences']().subscribe((response: User) => {
           expect(response).toBeTruthy();
           expect(response.id).toBe(interaction.willRespondWith.body.id);
           expect(response._links).toBeTruthy();
@@ -378,7 +371,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePreferencesPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken());
-        userService.fetchUserPreferences().subscribe({
+        sessionService['_fetchUserPreferences']().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -393,7 +386,7 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePreferencesPact.not_found;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'notFoundId' }, authorities: ['profile:read'] }));
-        userService.fetchUserPreferences().subscribe({
+        sessionService['_fetchUserPreferences']().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -407,7 +400,7 @@ describe('User Profile Pact', () => {
 
   describe('Update User Profile Preferences', () => {
     beforeEach(() => {
-      userService.setUserPreferences(
+      sessionRepository.updateUserPreferences(
         new UserPreferences({
           _links: {
             [CurrentUserRelations.CURRENT_USER_REL]: { href: 'http://localhost/api/user/profile' },

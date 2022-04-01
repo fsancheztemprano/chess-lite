@@ -17,6 +17,7 @@ import { LocalePickerComponent } from './components/locale-picker/locale-picker.
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ThemePickerComponent } from './components/theme-picker/theme-picker.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { Iso3166Pipe } from './pipes/iso3166.pipe';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     ToolbarComponent,
     SearchBarComponent,
     BreadcrumbComponent,
+    Iso3166Pipe,
   ],
   imports: [
     CommonModule,

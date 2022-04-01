@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { ThemeService } from '@app/ui/shared';
+import { ThemeRepository } from '@app/ui/store';
 
 @Component({
   selector: 'app-theme-picker',
@@ -9,18 +9,18 @@ import { ThemeService } from '@app/ui/shared';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemePickerComponent implements OnInit {
-  darkMode = false;
+  public darkMode = false;
 
-  constructor(private readonly themeService: ThemeService, private readonly cdr: ChangeDetectorRef) {}
+  constructor(private readonly themeRepository: ThemeRepository, private readonly cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.themeService.getDarkMode().subscribe((darkMode) => {
+    this.themeRepository.darkMode$.subscribe((darkMode) => {
       this.darkMode = darkMode;
       this.cdr.detectChanges();
     });
   }
 
   onToggle($event: MatSlideToggleChange) {
-    this.themeService.setDarkMode($event.checked);
+    this.themeRepository.updateDarkMode($event.checked);
   }
 }

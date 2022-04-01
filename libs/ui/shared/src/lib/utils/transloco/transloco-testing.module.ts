@@ -1,6 +1,6 @@
 import { TranslocoTestingModule, TranslocoTestingOptions } from '@ngneat/transloco';
 
-export function getTranslocoModule(options: TranslocoTestingOptions = {}) {
+export function getTranslocoModule(options: TranslocoTestingOptions = {}): TranslocoTestingModule {
   return TranslocoTestingModule.forRoot({
     langs: { en: {}, es: {} },
     translocoConfig: {

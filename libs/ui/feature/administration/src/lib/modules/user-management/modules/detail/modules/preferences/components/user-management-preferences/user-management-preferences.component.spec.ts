@@ -6,12 +6,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-  FormErrorModule,
-  stubMessageServiceProvider,
-  stubToasterServiceProvider,
-  stubTranslationServiceProvider,
-} from '@app/ui/shared';
+import { FormErrorModule, stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubLocalizationRepositoryProvider } from '@app/ui/store';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementPreferencesComponent } from './user-management-preferences.component';
 
@@ -34,7 +30,7 @@ describe('UserManagementPreferencesComponent', () => {
       declarations: [UserManagementPreferencesComponent],
       providers: [
         stubUserManagementDetailServiceProvider,
-        stubTranslationServiceProvider,
+        stubLocalizationRepositoryProvider,
         stubToasterServiceProvider,
         stubMessageServiceProvider,
       ],

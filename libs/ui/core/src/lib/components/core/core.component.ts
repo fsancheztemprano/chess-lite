@@ -1,6 +1,7 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
-import { CoreComponentStyle, CoreService, ThemeService } from '@app/ui/shared';
+import { CoreComponentStyle, CoreService } from '@app/ui/shared';
+import { ThemeRepository } from '@app/ui/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -17,7 +18,7 @@ export class CoreComponent implements OnInit {
 
   constructor(
     private readonly overlay: OverlayContainer,
-    private readonly themeService: ThemeService,
+    private readonly themeRepository: ThemeRepository,
     private readonly coreService: CoreService,
   ) {}
 
@@ -27,18 +28,15 @@ export class CoreComponent implements OnInit {
   }
 
   private _subscribeToThemeChanges(): void {
-    this.themeService
-      .getDarkMode()
-      .pipe(untilDestroyed(this))
-      .subscribe((darkMode) => {
-        const darkClassName = 'dark-mode';
-        this.darkModeClass = darkMode;
-        if (darkMode) {
-          this.overlay.getContainerElement().classList.add(darkClassName);
-        } else {
-          this.overlay.getContainerElement().classList.remove(darkClassName);
-        }
-      });
+    this.themeRepository.darkMode$.pipe(untilDestroyed(this)).subscribe((darkMode) => {
+      const darkClassName = 'dark-mode';
+      this.darkModeClass = darkMode;
+      if (darkMode) {
+        this.overlay.getContainerElement().classList.add(darkClassName);
+      } else {
+        this.overlay.getContainerElement().classList.remove(darkClassName);
+      }
+    });
   }
 
   private _subscribeToCoreStyle() {

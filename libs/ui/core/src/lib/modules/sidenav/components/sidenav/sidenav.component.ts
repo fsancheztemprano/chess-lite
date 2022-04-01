@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { SidenavService, UserService } from '@app/ui/shared';
+import { SidenavService } from '@app/ui/shared';
+import { SessionRepository } from '@app/ui/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -13,7 +14,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class SidenavComponent {
   @ViewChild('sidenav') sidenav: MatSidenav | undefined;
 
-  constructor(public readonly sidenavService: SidenavService, public readonly userService: UserService) {
+  constructor(public readonly sidenavService: SidenavService, public readonly sessionRepository: SessionRepository) {
     this._subscribeToSidenavOpenEvent();
   }
 

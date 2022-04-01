@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthRelations, CurrentUserRelations, MenuData } from '@app/domain';
-import { SessionService } from '@app/ui/shared';
+import { clearSession } from '@app/ui/shared';
 import { HalFormService } from '@hal-form-client';
+import { Actions } from '@ngneat/effects-ng';
 
 @Component({
   selector: 'app-authentication-sidenav-item',
@@ -15,7 +16,7 @@ export class AuthenticationSidenavItemComponent {
 
   constructor(
     private readonly halFormService: HalFormService,
-    private readonly sessionService: SessionService,
+    private readonly actions: Actions,
     private readonly router: Router,
   ) {}
 
@@ -41,6 +42,7 @@ export class AuthenticationSidenavItemComponent {
   ];
 
   public logout(): void {
-    this.sessionService.clearSession().subscribe(() => this.router.navigate(['auth', 'login']));
+    this.actions.dispatch(clearSession());
+    this.router.navigate(['auth', 'login']);
   }
 }

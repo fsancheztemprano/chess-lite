@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { TranslationService } from '@app/ui/shared';
+import { LocalizationRepository } from '@app/ui/store';
 
 @Component({
   selector: 'app-locale-picker',
@@ -14,5 +14,5 @@ export class LocalePickerComponent {
   public readonly menuFlagWidth = 30;
   public readonly menuFlagHeight = 20;
 
-  constructor(public readonly translationService: TranslationService) {}
+  constructor(public readonly localizationRepository: LocalizationRepository) {}
 }

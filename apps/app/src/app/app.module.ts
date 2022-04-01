@@ -2,8 +2,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthInterceptorProvider, TranslationService } from '@app/ui/shared/app';
-import { HalFormClientModule, HalFormService } from '@hal-form-client';
+import { AuthInterceptorProvider } from '@app/ui/shared/app';
+import { HalFormClientModule } from '@hal-form-client';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -37,7 +37,7 @@ export function initializeApp(appInitService: AppInitializationService) {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
-      deps: [AppInitializationService, HalFormService, TranslationService],
+      deps: [AppInitializationService],
       multi: true,
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },

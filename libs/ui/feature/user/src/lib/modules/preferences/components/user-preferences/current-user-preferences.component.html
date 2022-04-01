@@ -11,8 +11,8 @@
     <mat-form-field appearance="fill">
       <mat-label>Content Language</mat-label>
       <mat-select formControlName="contentLanguage">
-        <mat-option *ngFor="let language of translationService.availableLanguages" [value]="language.id">
-          {{ t('core.locale.' + language.id) }}
+        <mat-option *ngFor="let language of localizationRepository.availableLanguages" [value]="language">
+          {{ t('core.locale.' + language) }}
         </mat-option>
       </mat-select>
       <mat-error>

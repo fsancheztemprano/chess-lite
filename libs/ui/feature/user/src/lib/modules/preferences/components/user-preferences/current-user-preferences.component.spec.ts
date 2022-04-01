@@ -6,12 +6,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-  FormErrorModule,
-  stubThemeServiceProvider,
-  stubToasterServiceProvider,
-  stubTranslationServiceProvider,
-} from '@app/ui/shared';
+import { FormErrorModule, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubLocalizationRepositoryProvider } from '@app/ui/store';
 import { SubscribeModule } from '@ngneat/subscribe';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { CurrentUserPreferencesComponent } from './current-user-preferences.component';
@@ -34,12 +30,7 @@ describe('CurrentUserPreferencesComponent', () => {
         SubscribeModule,
       ],
       declarations: [CurrentUserPreferencesComponent],
-      providers: [
-        stubThemeServiceProvider,
-        stubToasterServiceProvider,
-        stubTranslationServiceProvider,
-        stubUserSettingsServiceProvider,
-      ],
+      providers: [stubToasterServiceProvider, stubUserSettingsServiceProvider, stubLocalizationRepositoryProvider],
     }).compileComponents();
   });
 

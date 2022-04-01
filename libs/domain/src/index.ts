@@ -19,3 +19,5 @@ export * from './lib/domain/administration/user-management-model';
 export * from './lib/domain/administration/global-settings.model';
 
 export * from './lib/domain/ui/menu.model';
+export * from './lib/domain/ui/preferences.model';
+export * from './lib/domain/ui/session.model';
