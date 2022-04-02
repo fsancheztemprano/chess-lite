@@ -127,9 +127,12 @@ jobs:
             ./apps/api/target/site/jacoco-ut/jacoco.xml
             ./apps/api/target/site/jacoco-it/jacoco.xml
             ./coverage/apps/app/lcov.info
-            ./coverage/libs/domain/lcov.info
             ./coverage/libs/ui/core/lcov.info
-            ./coverage/libs/ui/shared/lcov.info
+            ./coverage/libs/ui/shared/app/lcov.info
+            ./coverage/libs/ui/shared/common/lcov.info
+            ./coverage/libs/ui/shared/core/lcov.info
+            ./coverage/libs/ui/shared/domain/lcov.info
+            ./coverage/libs/ui/shared/store/lcov.info
             ./coverage/libs/ui/feature/administration/lcov.info
             ./coverage/libs/ui/feature/authentication/lcov.info
             ./coverage/libs/ui/feature/home/lcov.info
