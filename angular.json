@@ -5,7 +5,6 @@
     "app": "apps/app",
     "app-e2e": "apps/app-e2e",
     "consumer-pact": "libs/consumer-pact",
-    "domain": "libs/domain",
     "hal-form-client": "libs/hal-form-client",
     "ui-core": "libs/ui/core",
     "ui-feature-administration": "libs/ui/feature/administration",
@@ -15,6 +14,8 @@
     "ui-shared-app": "libs/ui/shared/app",
     "ui-shared-common": "libs/ui/shared/common",
     "ui-shared-core": "libs/ui/shared/core",
-    "ui-store": "libs/ui/store"
+    "ui-shared-domain": "libs/ui/shared/domain",
+    "ui-shared-store": "libs/ui/shared/store",
+    "ui-shared-testing": "libs/ui/shared/testing"
   }
 }

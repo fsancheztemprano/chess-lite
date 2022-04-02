@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Authority } from '@app/domain';
+import { Authority } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 import { AuthorityManagementService } from '../services/authority-management.service';
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { ThemeRepository } from '@app/ui/store';
+import { ThemeRepository } from '@app/ui/shared/store';
 
 @Component({
   selector: 'app-theme-picker',

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MenuData } from '@app/domain';
+import { MenuData } from '@app/ui/shared/domain';
 import { SidenavItemComponent } from './sidenav-item.component';
 
 @Component({ selector: 'app-sidenav-item', template: '' })

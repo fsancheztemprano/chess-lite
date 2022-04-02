@@ -1,3 +1,3 @@
-import { MenuData } from '@app/domain';
+import { MenuData } from '@app/ui/shared/domain';
 
 export type TiledMenuTileData = MenuData;

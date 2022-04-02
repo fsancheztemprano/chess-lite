@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApplicationMessage, MessageDestination, TOKEN_KEY } from '@app/domain';
+import { ApplicationMessage, MessageDestination, TOKEN_KEY } from '@app/ui/shared/domain';
 import { InjectableRxStompConfig, RxStompService } from '@stomp/ng2-stompjs';
 import { IMessage } from '@stomp/stompjs';
 import { filter, from, Observable, of } from 'rxjs';

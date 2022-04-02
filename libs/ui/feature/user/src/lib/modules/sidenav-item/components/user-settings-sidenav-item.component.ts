@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
-import { CurrentUserRelations, MenuData } from '@app/domain';
+import { CurrentUserRelations, MenuData } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { UserSettingsService } from '../../../services/user-settings.service';

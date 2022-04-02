@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { patchFormPipe } from '@app/ui/shared/common';
-import { LocalizationRepository } from '@app/ui/store';
+import { LocalizationRepository } from '@app/ui/shared/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 

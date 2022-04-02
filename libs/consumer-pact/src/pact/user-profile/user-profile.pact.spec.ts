@@ -1,17 +1,17 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/domain';
-import { defaultTemplate } from '@app/domain/mocks';
 import { SessionService, stubMessageServiceProvider } from '@app/ui/shared/app';
-import { SessionRepository } from '@app/ui/store';
-import { HalFormClientModule, HalFormService } from '@hal-form-client';
-import { InteractionObject, Pact } from '@pact-foundation/pact';
+import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/ui/shared/domain';
+import { SessionRepository } from '@app/ui/shared/store';
 import {
   changePasswordTemplate,
+  defaultTemplate,
   deleteProfileTemplate,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
-} from '../../../../domain/src/lib/mocks/user/user-profile-template.mock';
+} from '@app/ui/testing';
+import { HalFormClientModule, HalFormService } from '@hal-form-client';
+import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { UserSettingsService } from '../../../../ui/feature/user/src/lib/services/user-settings.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';

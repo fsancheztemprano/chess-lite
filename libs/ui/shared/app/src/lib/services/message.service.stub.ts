@@ -1,4 +1,4 @@
-import { ApplicationMessage, MessageDestination, UserChangedMessage } from '@app/domain';
+import { ApplicationMessage, MessageDestination, UserChangedMessage } from '@app/ui/shared/domain';
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { MessageService } from './message.service';

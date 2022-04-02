@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '@app/domain';
+import { User } from '@app/ui/shared/domain';
 import { of } from 'rxjs';
 import { SessionService } from './session.service';
 

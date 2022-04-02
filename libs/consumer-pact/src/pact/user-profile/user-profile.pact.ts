@@ -1,15 +1,15 @@
-import { HttpHeaderKey } from '@app/domain';
-import { defaultTemplate } from '@app/domain/mocks';
-import { ContentTypeEnum } from '@hal-form-client';
-import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HttpHeaderKey } from '@app/ui/shared/domain';
 import {
   changePasswordTemplate,
+  defaultTemplate,
   deleteProfileTemplate,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
   uploadAvatarTemplate,
-} from '../../../../domain/src/lib/mocks/user/user-profile-template.mock';
+} from '@app/ui/testing';
+import { ContentTypeEnum } from '@hal-form-client';
+import { InteractionObject } from '@pact-foundation/pact';
+import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

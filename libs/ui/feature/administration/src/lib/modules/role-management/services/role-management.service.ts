@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Pageable, Role, RoleManagementRelations, RolePage, RoleUpdateInput } from '@app/domain';
+import { Pageable, Role, RoleManagementRelations, RolePage, RoleUpdateInput } from '@app/ui/shared/domain';
 import { HalFormService, Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';

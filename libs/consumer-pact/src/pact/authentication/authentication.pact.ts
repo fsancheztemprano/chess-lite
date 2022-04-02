@@ -1,17 +1,17 @@
-import { HttpHeaderKey } from '@app/domain';
-import { defaultTemplate } from '@app/domain/mocks';
-import { ContentTypeEnum } from '@hal-form-client';
-import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { bearer, jwt } from 'libs/consumer-pact/src/utils/pact.utils';
-import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
+import { HttpHeaderKey } from '@app/ui/shared/domain';
 import {
   changePasswordTemplate,
+  defaultTemplate,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
   uploadAvatarTemplate,
-} from '../../../../domain/src/lib/mocks/user/user-profile-template.mock';
+} from '@app/ui/testing';
+import { ContentTypeEnum } from '@hal-form-client';
+import { InteractionObject } from '@pact-foundation/pact';
+import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
+import { bearer, jwt } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.util';
 
 export namespace SignupPact {
   export const successful: InteractionObject = {

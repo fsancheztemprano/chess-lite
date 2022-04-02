@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GlobalSettings } from '@app/domain';
+import { GlobalSettings } from '@app/ui/shared/domain';
 import { of } from 'rxjs';
 import { GlobalSettingsService } from './global-settings.service';
 

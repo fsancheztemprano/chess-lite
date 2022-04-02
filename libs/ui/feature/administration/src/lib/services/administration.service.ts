@@ -6,7 +6,7 @@ import {
   RoleManagementRelations,
   ServiceLogsRelations,
   UserManagementRelations,
-} from '@app/domain';
+} from '@app/ui/shared/domain';
 import { HalFormService, Resource } from '@hal-form-client';
 import { Observable, tap, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

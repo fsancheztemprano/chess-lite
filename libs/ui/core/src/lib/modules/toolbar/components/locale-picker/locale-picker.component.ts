@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { LocalizationRepository } from '@app/ui/store';
+import { LocalizationRepository } from '@app/ui/shared/store';
 
 @Component({
   selector: 'app-locale-picker',

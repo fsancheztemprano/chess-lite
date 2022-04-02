@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
+import { MessageService, ToasterService } from '@app/ui/shared/app';
 import {
   GlobalSettings,
   GlobalSettingsChangedMessage,
   GlobalSettingsChangedMessageDestination,
   GlobalSettingsRelations,
   GlobalSettingsUpdateInput,
-} from '@app/domain';
-import { MessageService, ToasterService } from '@app/ui/shared/app';
+} from '@app/ui/shared/domain';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { AdministrationService } from '../../../services/administration.service';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
-import { UserManagementRelations } from '@app/domain';
+import { UserManagementRelations } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 import { AdministrationService } from '../../../services/administration.service';
 

@@ -11,8 +11,8 @@ import {
   UserPreferences,
   UserPreferencesChangedMessage,
   UserPreferencesChangedMessageDestination,
-} from '@app/domain';
-import { SessionRepository } from '@app/ui/store';
+} from '@app/ui/shared/domain';
+import { SessionRepository } from '@app/ui/shared/store';
 import { HalFormService, Link, Resource } from '@hal-form-client';
 import jwt_decode from 'jwt-decode';
 import { catchError, EMPTY, filter, Observable, of, Subscription, tap, timer } from 'rxjs';

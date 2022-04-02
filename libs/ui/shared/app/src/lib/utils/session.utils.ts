@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { HttpHeaderKey, Session, User } from '@app/domain';
+import { HttpHeaderKey, Session, User } from '@app/ui/shared/domain';
 import { IResource } from '@hal-form-client';
 
 export function httpToSession(response: HttpResponse<User>): Session {

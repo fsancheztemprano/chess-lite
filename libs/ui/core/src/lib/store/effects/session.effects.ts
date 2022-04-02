@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Session } from '@app/domain';
 import { SessionService } from '@app/ui/shared/app';
 import { clearSession, initialize } from '@app/ui/shared/core';
+import { Session } from '@app/ui/shared/domain';
 import { createEffect, ofType } from '@ngneat/effects';
 import { switchMap, tap } from 'rxjs';
 

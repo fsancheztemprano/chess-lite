@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Role, RoleChangedMessage, RolesListChangedMessageDestination } from '@app/domain';
 import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { Role, RoleChangedMessage, RolesListChangedMessageDestination } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { concat, EMPTY, of, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';

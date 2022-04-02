@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Role } from '@app/domain';
 import { stubMessageServiceProvider } from '@app/ui/shared/app';
 import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
+import { Role } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 import { stubRoleManagementServiceProvider } from '../../../../services/role-management.service.stub';
 import { RoleManagementDetailCanLoginComponent } from '../../modules/can-login/components/can-login/role-management-detail-can-login.component';

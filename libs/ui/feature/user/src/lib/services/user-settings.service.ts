@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { filterNulls } from '@app/ui/shared/app';
+import { clearSession } from '@app/ui/shared/core';
 import {
   CurrentUserRelations,
   IUserPreferences,
@@ -6,10 +8,8 @@ import {
   UserChangePasswordInput,
   UserPreferences,
   UserUpdateProfileInput,
-} from '@app/domain';
-import { filterNulls } from '@app/ui/shared/app';
-import { clearSession } from '@app/ui/shared/core';
-import { SessionRepository } from '@app/ui/store';
+} from '@app/ui/shared/domain';
+import { SessionRepository } from '@app/ui/shared/store';
 import { HalFormService, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
 import { Observable } from 'rxjs';

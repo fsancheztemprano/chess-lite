@@ -1,7 +1,8 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivationTokenRelations, TOKEN_KEY, User, UserManagementRelations, UserPage } from '@app/domain';
+import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
+import { ActivationTokenRelations, TOKEN_KEY, User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
 import {
   createUserTemplate,
   defaultTemplate,
@@ -10,8 +11,7 @@ import {
   updateUserAuthoritiesTemplate,
   updateUserRoleTemplate,
   updateUserTemplate,
-} from '@app/domain/mocks';
-import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
+} from '@app/ui/testing';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';

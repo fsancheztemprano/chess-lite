@@ -2,8 +2,6 @@ export * from './dialogs.module';
 
 export * from './model/dialogs.model';
 
-export * from './modules/shared-dialog/dialog.service.stub';
-
 export * from './modules/confirmation-dialog/confirmation-dialog.module';
 export * from './modules/confirmation-dialog/components/confirmation-dialog/confirmation-dialog.component';
 export * from './modules/confirmation-dialog/services/confirmation-dialog.service';

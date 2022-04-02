@@ -1,7 +1,7 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AdministrationRelations, ServiceLogs, TOKEN_KEY } from '@app/domain';
-import { defaultTemplate } from '@app/domain/mocks';
+import { AdministrationRelations, ServiceLogs, TOKEN_KEY } from '@app/ui/shared/domain';
+import { defaultTemplate } from '@app/ui/testing';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { ServiceLogsService } from '../../../../ui/feature/administration/src/lib/modules/service-logs/services/service-logs.service';

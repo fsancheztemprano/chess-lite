@@ -8,8 +8,8 @@ export * from './lib/utils/forms/rxjs/patch-form.rxjs.pipe';
 export * from './lib/utils/forms/rxjs/set-resource-validators.rxjs.pipe';
 export * from './lib/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 
-export * from './lib/utils/transloco/transloco-testing.module';
-
 export * from './lib/modules/form-error';
 export * from './lib/modules/dialogs';
 export * from './lib/modules/sidenav-item';
+
+export * from './index.testing';

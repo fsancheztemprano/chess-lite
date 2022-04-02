@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Authority } from '@app/domain';
 import { ToasterService } from '@app/ui/shared/app';
+import { Authority } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';

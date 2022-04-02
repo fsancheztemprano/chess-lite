@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Role, UserManagementRelations } from '@app/domain';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setTemplateValidatorsPipe } from '@app/ui/shared/common';
 import { CardViewHeaderService } from '@app/ui/shared/core';
+import { Role, UserManagementRelations } from '@app/ui/shared/domain';
 import { noop, Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { UserManagementService } from '../../../../services/user-management.service';

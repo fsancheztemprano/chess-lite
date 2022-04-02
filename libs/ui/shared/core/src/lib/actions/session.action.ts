@@ -1,4 +1,4 @@
-import { Session } from '@app/domain';
+import { Session } from '@app/ui/shared/domain';
 import { actionsFactory, props } from '@ngneat/effects';
 
 const sessionActions = actionsFactory('Session');

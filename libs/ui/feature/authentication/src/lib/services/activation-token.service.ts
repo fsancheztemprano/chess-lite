@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AccountActivationInput, ActivationTokenRelations } from '@app/domain';
+import { AccountActivationInput, ActivationTokenRelations } from '@app/ui/shared/domain';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
 

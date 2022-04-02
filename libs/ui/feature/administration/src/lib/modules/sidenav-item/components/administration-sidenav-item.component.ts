@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdministrationRelations, MenuData } from '@app/domain';
+import { AdministrationRelations, MenuData } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { AdministrationService } from '../../../services/administration.service';

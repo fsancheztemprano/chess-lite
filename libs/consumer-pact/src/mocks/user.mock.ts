@@ -1,5 +1,5 @@
-import { CurrentUserRelations, UserManagementRelations } from '@app/domain';
-import { defaultTemplate } from '@app/domain/mocks';
+import { CurrentUserRelations, UserManagementRelations } from '@app/ui/shared/domain';
+import { defaultTemplate } from '@app/ui/testing';
 import { boolean, eachLike, iso8601DateTimeWithMillis, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 
 export const pactUser = {

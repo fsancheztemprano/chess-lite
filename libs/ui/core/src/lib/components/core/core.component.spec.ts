@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IsMobileModule, stubCoreServiceProvider } from '@app/ui/shared/core';
-import { stubThemeRepositoryProvider } from '@app/ui/store';
+import { stubThemeRepositoryProvider } from '@app/ui/shared/store';
 import { CardViewComponent } from '../../modules/card-view/components/card-view/card-view.component';
 import { SidenavComponent } from '../../modules/sidenav/components/sidenav/sidenav.component';
 import { ToolbarComponent } from '../../modules/toolbar/components/toolbar/toolbar.component';

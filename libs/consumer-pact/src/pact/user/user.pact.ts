@@ -1,4 +1,4 @@
-import { CurrentUserRelations, HttpHeaderKey, UserManagementRelations } from '@app/domain';
+import { CurrentUserRelations, HttpHeaderKey, UserManagementRelations } from '@app/ui/shared/domain';
 import {
   createUserTemplate,
   defaultTemplate,
@@ -7,7 +7,7 @@ import {
   updateUserAuthoritiesTemplate,
   updateUserRoleTemplate,
   updateUserTemplate,
-} from '@app/domain/mocks';
+} from '@app/ui/testing';
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CurrentUserRelations } from '@app/domain';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setResourceValidatorsPipe } from '@app/ui/shared/common';
 import { CardViewHeaderService } from '@app/ui/shared/core';
+import { CurrentUserRelations } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 

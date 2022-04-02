@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
-import { CurrentUserRelations } from '@app/domain';
+import { CurrentUserRelations } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
 import { Observable } from 'rxjs';
 

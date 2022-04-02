@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserPage } from '@app/domain';
+import { UserPage } from '@app/ui/shared/domain';
 import { BehaviorSubject, noop, of } from 'rxjs';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 

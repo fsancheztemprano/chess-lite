@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AdministrationRelations, ServiceLogs } from '@app/domain';
 import { CoreService } from '@app/ui/shared/core';
+import { AdministrationRelations, ServiceLogs } from '@app/ui/shared/domain';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ServiceLogsService } from '../../services/service-logs.service';
