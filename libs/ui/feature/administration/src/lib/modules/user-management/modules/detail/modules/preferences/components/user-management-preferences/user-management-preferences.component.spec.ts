@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
 import { FormErrorModule } from '@app/ui/shared/common';
-import { stubLocalizationRepositoryProvider } from '@app/ui/shared/store';
+import { stubLocalizationRepositoryProvider } from '@app/ui/shared/core';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementPreferencesComponent } from './user-management-preferences.component';
 

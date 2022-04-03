@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { clearSession } from '@app/ui/shared/core';
+import { clearSession } from '@app/ui/shared/app';
 import { AuthRelations, CurrentUserRelations, MenuData } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';

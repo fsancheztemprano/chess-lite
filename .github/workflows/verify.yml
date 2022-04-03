@@ -132,7 +132,6 @@ jobs:
             ./coverage/libs/ui/shared/common/lcov.info
             ./coverage/libs/ui/shared/core/lcov.info
             ./coverage/libs/ui/shared/domain/lcov.info
-            ./coverage/libs/ui/shared/store/lcov.info
             ./coverage/libs/ui/feature/administration/lcov.info
             ./coverage/libs/ui/feature/authentication/lcov.info
             ./coverage/libs/ui/feature/home/lcov.info

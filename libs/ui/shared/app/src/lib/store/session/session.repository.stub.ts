@@ -5,14 +5,14 @@ import { SessionRepository } from './session.repository';
 
 @Injectable({ providedIn: 'root' })
 export class StubSessionRepository implements Partial<SessionRepository> {
-  user$ = new BehaviorSubject<User | null>(null);
-  userPreferences$ = new BehaviorSubject<UserPreferences | null>(null);
+  user$ = new BehaviorSubject<User | undefined>(undefined);
+  userPreferences$ = new BehaviorSubject<UserPreferences | undefined>(undefined);
 
-  updateUser(user: User | null) {
+  updateUser(user: User | undefined) {
     this.user$.next(user);
   }
 
-  updateUserPreferences(userPreferences: UserPreferences | null) {
+  updateUserPreferences(userPreferences: UserPreferences) {
     this.userPreferences$.next(userPreferences);
   }
 }

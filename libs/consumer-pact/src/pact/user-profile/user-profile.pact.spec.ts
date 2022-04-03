@@ -1,12 +1,12 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { SessionService, stubMessageServiceProvider } from '@app/ui/shared/app';
+import { SessionRepository, SessionService, stubMessageServiceProvider } from '@app/ui/shared/app';
 import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/ui/shared/domain';
-import { SessionRepository } from '@app/ui/shared/store';
 import {
   changePasswordTemplate,
   defaultTemplate,
   deleteProfileTemplate,
+  stubActionsProvider,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
 } from '@app/ui/testing';
@@ -39,7 +39,7 @@ describe('User Profile Pact', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, HalFormClientModule],
-      providers: [avengersAssemble(provider.mockService.baseUrl), stubMessageServiceProvider],
+      providers: [avengersAssemble(provider.mockService.baseUrl), stubMessageServiceProvider, stubActionsProvider],
     });
     const halFormService = TestBed.inject(HalFormService);
     halFormService.setRootResource({
@@ -144,15 +144,15 @@ describe('User Profile Pact', () => {
 
   describe('Update User Profile', () => {
     beforeEach(() => {
-      sessionRepository.updateUser(
-        new User({
+      sessionRepository.updateSession({
+        user: new User({
           _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
             ...defaultTemplate,
             ...updateProfileTemplate,
           },
         }),
-      );
+      });
     });
 
     it('successful', (done) => {
@@ -207,15 +207,15 @@ describe('User Profile Pact', () => {
 
   describe('Update User Profile Password', () => {
     beforeEach(() => {
-      sessionRepository.updateUser(
-        new User({
+      sessionRepository.updateSession({
+        user: new User({
           _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
             ...defaultTemplate,
             ...changePasswordTemplate,
           },
         }),
-      );
+      });
     });
 
     it('successful', (done) => {
@@ -275,15 +275,15 @@ describe('User Profile Pact', () => {
 
   describe('Delete User Profile', () => {
     beforeEach(() => {
-      sessionRepository.updateUser(
-        new User({
+      sessionRepository.updateSession({
+        user: new User({
           _links: { self: { href: 'http://localhost/api/user/profile' } },
           _templates: {
             ...defaultTemplate,
             ...deleteProfileTemplate,
           },
         }),
-      );
+      });
     });
 
     it('successful', (done) => {
@@ -342,15 +342,15 @@ describe('User Profile Pact', () => {
 
   describe('Get User Profile Preferences', () => {
     beforeEach(() => {
-      sessionRepository.updateUser(
-        new User({
+      sessionRepository.updateSession({
+        user: new User({
           _links: {
             [CurrentUserRelations.USER_PREFERENCES_REL]: { href: 'http://localhost/api/user/profile/preferences' },
             self: { href: 'http://localhost/api/user/profile' },
           },
           _templates: { ...defaultTemplate },
         }),
-      );
+      });
     });
 
     it('successful', (done) => {
@@ -400,8 +400,8 @@ describe('User Profile Pact', () => {
 
   describe('Update User Profile Preferences', () => {
     beforeEach(() => {
-      sessionRepository.updateUserPreferences(
-        new UserPreferences({
+      sessionRepository.updateSession({
+        userPreferences: new UserPreferences({
           _links: {
             [CurrentUserRelations.CURRENT_USER_REL]: { href: 'http://localhost/api/user/profile' },
             self: { href: 'http://localhost/api/user/profile/preferences' },
@@ -411,7 +411,7 @@ describe('User Profile Pact', () => {
             ...updateProfilePreferencesTemplate,
           },
         }),
-      );
+      });
     });
 
     it('successful', (done) => {

@@ -12,11 +12,13 @@ import {
   UserPreferencesChangedMessage,
   UserPreferencesChangedMessageDestination,
 } from '@app/ui/shared/domain';
-import { SessionRepository } from '@app/ui/shared/store';
 import { HalFormService, Link, Resource } from '@hal-form-client';
+import { Actions } from '@ngneat/effects-ng';
 import jwt_decode from 'jwt-decode';
 import { catchError, EMPTY, filter, Observable, of, Subscription, tap, timer } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
+import { updateSession } from '../store/session/session.action';
+import { SessionRepository } from '../store/session/session.repository';
 import { isTokenExpired, Token } from '../utils/auth.utils';
 import { httpToSession } from '../utils/session.utils';
 import { MessageService } from './message.service';
@@ -34,6 +36,7 @@ export class SessionService {
     private readonly messageService: MessageService,
     private readonly halFormService: HalFormService,
     private readonly sessionRepository: SessionRepository,
+    private readonly actions: Actions,
   ) {
     SessionService._validateToken(localStorage.getItem(TOKEN_KEY));
   }
@@ -54,7 +57,7 @@ export class SessionService {
         switchMap(() => this._initializeRoot()),
         switchMap(() =>
           options?.user
-            ? of(options.user).pipe(tap((user: User) => this.sessionRepository.updateUser(user)))
+            ? of(options.user).pipe(tap((user: User) => this.actions.dispatch(updateSession({ user }))))
             : this._fetchUser(),
         ),
         tap((user) => {
@@ -73,7 +76,7 @@ export class SessionService {
         this.tokenWatchdog?.unsubscribe();
         this.userUpdates?.unsubscribe();
         this.userPreferencesUpdates?.unsubscribe();
-        this.sessionRepository.updateUser(null);
+        this.actions.dispatch(updateSession({}));
         localStorage.removeItem(TOKEN_KEY);
       }),
       switchMap(() => this._initializeRoot()),
@@ -124,7 +127,7 @@ export class SessionService {
     return this.halFormService.getLinkOrThrow(CurrentUserRelations.CURRENT_USER_REL).pipe(
       first(),
       switchMap((userLink) => userLink.follow()),
-      tap((user: User) => this.sessionRepository.updateUser(user)),
+      tap((user: User) => this.actions.dispatch(updateSession({ user }))),
     );
   }
 
@@ -132,9 +135,9 @@ export class SessionService {
     return this.sessionRepository.user$.pipe(
       first(),
       switchMap(
-        (user: User | null) => user?.getLinkOrThrow(CurrentUserRelations.USER_PREFERENCES_REL).follow() || EMPTY,
+        (user: User | undefined) => user?.getLinkOrThrow(CurrentUserRelations.USER_PREFERENCES_REL).follow() || EMPTY,
       ),
-      tap((userPreferences: UserPreferences) => this.sessionRepository.updateUserPreferences(userPreferences)),
+      tap((userPreferences: UserPreferences) => this.actions.dispatch(updateSession({ userPreferences }))),
     );
   }
 

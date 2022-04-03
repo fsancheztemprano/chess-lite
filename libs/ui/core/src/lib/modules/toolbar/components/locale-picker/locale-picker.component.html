@@ -14,7 +14,7 @@
     <button
       mat-menu-item
       *ngFor="let language of localizationRepository.availableLanguages"
-      (click)="localizationRepository.updateContentLanguage(language)">
+      (click)="updateContentLanguage(language)">
       <img
         alt="{{ language }}"
         src="./assets/flags/{{ language | iso3166 }}.png"

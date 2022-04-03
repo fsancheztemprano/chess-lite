@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { SessionRepository } from '@app/ui/shared/app';
 import { SidenavService } from '@app/ui/shared/core';
-import { SessionRepository } from '@app/ui/shared/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()

@@ -10,7 +10,8 @@ import { CardViewModule } from './modules/card-view/card-view.module';
 import { ContextMenuModule } from './modules/context-menu/context-menu.module';
 import { SidenavModule } from './modules/sidenav/sidenav.module';
 import { ToolbarModule } from './modules/toolbar/toolbar.module';
-import { SessionEffects } from './store/effects/session.effects';
+import { LocalizationEffects } from './store/effects/localization.effects';
+import { ThemeEffects } from './store/effects/theme.effects';
 
 @NgModule({
   declarations: [CoreComponent],
@@ -22,7 +23,7 @@ import { SessionEffects } from './store/effects/session.effects';
     ContextMenuModule,
     ToolbarModule,
     SidenavModule,
-    EffectsNgModule.forFeature([SessionEffects]),
+    EffectsNgModule.forFeature([LocalizationEffects, ThemeEffects]),
   ],
   providers: [
     {

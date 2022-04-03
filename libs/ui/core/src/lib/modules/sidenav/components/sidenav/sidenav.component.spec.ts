@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { stubSessionRepositoryProvider } from '@app/ui/shared/app';
 import { IsMobileModule, NgLetModule, stubSidenavServiceProvider } from '@app/ui/shared/core';
-import { stubSessionRepositoryProvider } from '@app/ui/shared/store';
 import { SidenavComponent } from './sidenav.component';
 
 @Component({ selector: 'app-home-sidenav-item', template: '' })

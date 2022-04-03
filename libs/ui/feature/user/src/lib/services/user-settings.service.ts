@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { filterNulls } from '@app/ui/shared/app';
-import { clearSession } from '@app/ui/shared/core';
+import { clearSession, filterNulls, SessionRepository, updateSession } from '@app/ui/shared/app';
 import {
   CurrentUserRelations,
   IUserPreferences,
@@ -9,7 +8,6 @@ import {
   UserPreferences,
   UserUpdateProfileInput,
 } from '@app/ui/shared/domain';
-import { SessionRepository } from '@app/ui/shared/store';
 import { HalFormService, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
 import { Observable } from 'rxjs';
@@ -25,17 +23,17 @@ export class UserSettingsService {
     private readonly actions: Actions,
   ) {}
 
-  public getCurrentUser(): Observable<User | null> {
+  public getCurrentUser(): Observable<User | undefined> {
     return this.sessionRepository.user$;
   }
 
-  public getCurrentUserPreferences(): Observable<UserPreferences | null> {
+  public getCurrentUserPreferences(): Observable<UserPreferences | undefined> {
     return this.sessionRepository.userPreferences$;
   }
 
   public isAllowedToUpdateProfile(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | null) => !!user?.isAllowedTo(CurrentUserRelations.UPDATE_PROFILE_REL)),
+      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.UPDATE_PROFILE_REL)),
     );
   }
 
@@ -44,13 +42,13 @@ export class UserSettingsService {
       first(),
       filterNulls(),
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, { body }),
-      tap((user) => this.sessionRepository.updateUser(user)),
+      tap((user) => this.actions.dispatch(updateSession({ user }))),
     );
   }
 
   public isAllowedToDeleteAccount(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | null) => !!user?.isAllowedTo(CurrentUserRelations.DELETE_ACCOUNT_REL)),
+      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.DELETE_ACCOUNT_REL)),
     );
   }
 
@@ -65,7 +63,7 @@ export class UserSettingsService {
 
   public isAllowedToChangePassword(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | null) => !!user?.isAllowedTo(CurrentUserRelations.CHANGE_PASSWORD_REL)),
+      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.CHANGE_PASSWORD_REL)),
     );
   }
 
@@ -79,7 +77,7 @@ export class UserSettingsService {
 
   public isAllowedToUploadAvatar(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | null) => !!user?.isAllowedTo(CurrentUserRelations.UPLOAD_AVATAR_REL)),
+      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.UPLOAD_AVATAR_REL)),
     );
   }
 
@@ -91,13 +89,13 @@ export class UserSettingsService {
       first(),
       filterNulls(),
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, { body }),
-      tap((user) => this.sessionRepository.updateUser(user)),
+      tap((user) => this.actions.dispatch(updateSession({ user }))),
     );
   }
 
   public hasLinkToUserPreferences(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | null) => !!user?.hasLink(CurrentUserRelations.USER_PREFERENCES_REL)),
+      map((user: User | undefined) => !!user?.hasLink(CurrentUserRelations.USER_PREFERENCES_REL)),
     );
   }
 
@@ -106,13 +104,16 @@ export class UserSettingsService {
       first(),
       filterNulls(),
       submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PREFERENCES_REL, { body }),
+      tap((userPreferences: UserPreferences) => {
+        this.actions.dispatch(updateSession({ userPreferences }));
+      }),
     );
   }
 
   public isAllowedToUpdateUserPreferences(): Observable<boolean> {
     return this.getCurrentUserPreferences().pipe(
       map(
-        (userPreferences: UserPreferences | null) =>
+        (userPreferences: UserPreferences | undefined) =>
           !!userPreferences?.isAllowedTo(CurrentUserRelations.UPDATE_PREFERENCES_REL),
       ),
     );

@@ -1,6 +1,6 @@
 import { User, UserPreferences } from '@app/ui/shared/domain';
 
 export interface SessionProps {
-  user: User | null;
-  userPreferences: UserPreferences | null;
+  user?: User;
+  userPreferences?: UserPreferences;
 }

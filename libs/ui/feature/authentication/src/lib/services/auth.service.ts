@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { httpToSession } from '@app/ui/shared/app';
-import { initialize } from '@app/ui/shared/core';
+import { httpToSession, initialize } from '@app/ui/shared/app';
 import { AuthRelations, LoginInput, Session, SignupInput, User } from '@app/ui/shared/domain';
 import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';

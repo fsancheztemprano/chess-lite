@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { SessionService } from '@app/ui/shared/app';
+import { initialize } from '@app/ui/shared/app';
+import { Actions } from '@ngneat/effects-ng';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppInitializationService {
-  constructor(private readonly sessionService: SessionService) {}
+  constructor(private readonly actions: Actions) {}
 
   initialize(): Observable<unknown> {
-    this.sessionService.initialize().subscribe();
+    this.actions.dispatch(initialize({}));
     return of(void 0);
   }
 }

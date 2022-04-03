@@ -8,3 +8,6 @@ export * from './lib/services/toolbar/search.service.stub';
 export * from './lib/services/toolbar/toolbar.service.stub';
 
 export * from './lib/modules/tiled-menu/components/tiled-menu/tiled-menu.component.stub';
+
+export * from './lib/store/localization/localization.repository.stub';
+export * from './lib/store/theme/theme.repository.stub';

@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { patchFormPipe } from '@app/ui/shared/common';
-import { LocalizationRepository } from '@app/ui/shared/store';
+import { LocalizationRepository } from '@app/ui/shared/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
@@ -34,10 +34,6 @@ export class CurrentUserPreferencesComponent {
 
   onSubmit() {
     this.userSettingsService.updateUserPreferences(this.form.value).subscribe({
-      next: (userPreferences) => {
-        this.localizationRepository.updateContentLanguage(userPreferences.contentLanguage!);
-        this.toasterService.showToast({ message: 'User Preferences Saved Successfully' });
-      },
       error: () => this.toasterService.showErrorToast({ message: 'An Error Occurred' }),
     });
   }
