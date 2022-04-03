@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { IsMobileModule } from '@app/ui/shared';
+import { IsMobileModule } from '@app/ui/shared/core';
+import { EffectsNgModule } from '@ngneat/effects-ng';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { scopeLoader } from '../../../../../tools/transloco/transloco.scope';
 import { CoreComponent } from './components/core/core.component';
@@ -9,6 +10,8 @@ import { CardViewModule } from './modules/card-view/card-view.module';
 import { ContextMenuModule } from './modules/context-menu/context-menu.module';
 import { SidenavModule } from './modules/sidenav/sidenav.module';
 import { ToolbarModule } from './modules/toolbar/toolbar.module';
+import { LocalizationEffects } from './store/effects/localization.effects';
+import { ThemeEffects } from './store/effects/theme.effects';
 
 @NgModule({
   declarations: [CoreComponent],
@@ -20,6 +23,7 @@ import { ToolbarModule } from './modules/toolbar/toolbar.module';
     ContextMenuModule,
     ToolbarModule,
     SidenavModule,
+    EffectsNgModule.forFeature([LocalizationEffects, ThemeEffects]),
   ],
   providers: [
     {

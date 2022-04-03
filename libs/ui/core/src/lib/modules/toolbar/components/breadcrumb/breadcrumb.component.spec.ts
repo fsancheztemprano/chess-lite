@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { stubBreadcrumbServiceProvider } from '@app/ui/shared';
+import { stubBreadcrumbServiceProvider } from '@app/ui/shared/core';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
 describe('BreadcrumbComponent', () => {

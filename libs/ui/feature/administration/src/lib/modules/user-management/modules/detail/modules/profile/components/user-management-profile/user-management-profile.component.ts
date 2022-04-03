@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UserManagementRelations } from '@app/domain';
-import { setTemplateValidators, ToasterService } from '@app/ui/shared';
+import { ToasterService } from '@app/ui/shared/app';
+import { setTemplateValidators } from '@app/ui/shared/common';
+import { UserManagementRelations } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 

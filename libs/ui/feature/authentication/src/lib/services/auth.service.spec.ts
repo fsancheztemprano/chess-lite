@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubSessionServiceProvider } from '@app/ui/shared';
+import { stubSessionServiceProvider } from '@app/ui/shared/app';
 import { HalFormClientModule } from '@hal-form-client';
 import { AuthService } from './auth.service';
 

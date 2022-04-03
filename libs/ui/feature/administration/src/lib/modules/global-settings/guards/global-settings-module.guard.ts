@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { GlobalSettingsRelations } from '@app/domain';
+import { GlobalSettingsRelations } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 import { AdministrationService } from '../../../services/administration.service';
 

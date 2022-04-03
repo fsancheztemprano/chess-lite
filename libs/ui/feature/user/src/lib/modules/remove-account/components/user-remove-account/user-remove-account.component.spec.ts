@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgLetModule, stubCardViewHeaderServiceProvider, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { NgLetModule, stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserRemoveAccountComponent } from './user-remove-account.component';
 

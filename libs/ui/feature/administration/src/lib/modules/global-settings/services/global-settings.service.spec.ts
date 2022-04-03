@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared';
+import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
 import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
 
 import { GlobalSettingsService } from './global-settings.service';

@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Role, RoleChangedMessage, RoleChangedMessageAction, RoleChangedMessageDestination } from '@app/domain';
-import { CardViewHeaderService, MessageService, ToasterService } from '@app/ui/shared';
+import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { CardViewHeaderService } from '@app/ui/shared/core';
+import {
+  Role,
+  RoleChangedMessage,
+  RoleChangedMessageAction,
+  RoleChangedMessageDestination,
+} from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, EMPTY, Observable, switchMap, tap } from 'rxjs';
 import { RoleManagementService } from '../../../../services/role-management.service';

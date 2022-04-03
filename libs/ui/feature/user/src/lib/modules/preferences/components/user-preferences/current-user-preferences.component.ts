@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { filterNulls, patchFormPipe, ThemeService, ToasterService, TranslationService } from '@app/ui/shared';
+import { filterNulls, ToasterService } from '@app/ui/shared/app';
+import { patchFormPipe } from '@app/ui/shared/common';
+import { LocalizationRepository } from '@app/ui/shared/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
@@ -19,11 +21,10 @@ export class CurrentUserPreferencesComponent {
   });
 
   constructor(
-    readonly userSettingsService: UserSettingsService,
-    public readonly translationService: TranslationService,
+    public readonly userSettingsService: UserSettingsService,
+    public readonly localizationRepository: LocalizationRepository,
     private readonly route: ActivatedRoute,
     private readonly toasterService: ToasterService,
-    private readonly themeService: ThemeService,
   ) {
     this.userSettingsService
       .getCurrentUserPreferences()
@@ -33,12 +34,7 @@ export class CurrentUserPreferencesComponent {
 
   onSubmit() {
     this.userSettingsService.updateUserPreferences(this.form.value).subscribe({
-      next: (userPreferences) => {
-        this.themeService.setDarkMode(!!userPreferences.darkMode);
-        this.translationService.setActiveLanguage(userPreferences.contentLanguage);
-        this.toasterService.showToast({ message: 'User Preferences Saved Successfully' });
-      },
-      error: () => this.toasterService.showToast({ message: 'An Error Occurred' }),
+      error: () => this.toasterService.showErrorToast({ message: 'An Error Occurred' }),
     });
   }
 }

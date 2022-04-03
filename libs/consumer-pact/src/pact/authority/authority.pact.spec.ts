@@ -1,14 +1,14 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AuthorityManagementRelations, RoleManagementRelations, TOKEN_KEY } from '@app/domain';
+import { AuthorityManagementRelations, RoleManagementRelations, TOKEN_KEY } from '@app/ui/shared/domain';
 import { HalFormClientModule, Link } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
-import { AuthorityManagementService } from 'libs/ui/feature/administration/src/lib/modules/role-management/services/authority-management.service';
-import { RoleManagementService } from 'libs/ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
-import { AdministrationService } from 'libs/ui/feature/administration/src/lib/services/administration.service';
+import { AuthorityManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/authority-management.service';
+import { RoleManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
+import { AdministrationService } from '../../../../ui/feature/administration/src/lib/services/administration.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.util';
 import { GetAllAuthoritiesPact, GetOneAuthorityPact } from './authority.pact';
 
 const provider: Pact = pactForResource('authority');

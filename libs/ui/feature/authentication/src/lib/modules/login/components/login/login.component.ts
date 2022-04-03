@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CardViewHeaderService, setTemplateValidatorsPipe } from '@app/ui/shared';
+import { setTemplateValidatorsPipe } from '@app/ui/shared/common';
+import { CardViewHeaderService } from '@app/ui/shared/core';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
 import { AuthService } from '../../../../services/auth.service';

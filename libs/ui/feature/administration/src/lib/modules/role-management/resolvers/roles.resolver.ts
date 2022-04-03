@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Role } from '@app/domain';
+import { Role } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 import { RoleManagementService } from '../services/role-management.service';
 

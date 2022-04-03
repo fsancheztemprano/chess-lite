@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { filterNulls, MessageService, ToasterService } from '@app/ui/shared/app';
 import {
   ActivationTokenRelations,
   IUserPreferences,
@@ -10,8 +11,7 @@ import {
   UserChangedMessageDestination,
   UserManagementRelations,
   UserPreferences,
-} from '@app/domain';
-import { filterNulls, MessageService, ToasterService } from '@app/ui/shared';
+} from '@app/ui/shared/domain';
 import { BehaviorSubject, EMPTY, first, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserManagementService } from '../../../services/user-management.service';

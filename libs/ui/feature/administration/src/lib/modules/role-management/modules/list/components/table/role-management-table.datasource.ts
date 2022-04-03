@@ -2,6 +2,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
+import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { SearchService } from '@app/ui/shared/core';
 import {
   Role,
   RoleChangedMessage,
@@ -9,8 +11,7 @@ import {
   RoleManagementRelations,
   RolePage,
   RolesListChangedMessageDestination,
-} from '@app/domain';
-import { MessageService, SearchService, ToasterService } from '@app/ui/shared';
+} from '@app/ui/shared/domain';
 import {
   auditTime,
   BehaviorSubject,

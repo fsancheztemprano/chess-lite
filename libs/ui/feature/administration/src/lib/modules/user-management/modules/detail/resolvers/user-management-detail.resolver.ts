@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { User } from '@app/domain';
+import { User } from '@app/ui/shared/domain';
 import { filter, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { UserManagementDetailService } from '../services/user-management-detail.service';

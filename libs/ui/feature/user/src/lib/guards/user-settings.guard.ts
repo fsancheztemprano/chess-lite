@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
+import { CurrentUserRelations } from '@app/ui/shared/domain';
+import { HalFormService } from '@hal-form-client';
 import { Observable } from 'rxjs';
-import { UserSettingsService } from '../services/user-settings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserSettingsGuard implements CanLoad, CanActivate {
-  constructor(private readonly userService: UserSettingsService) {}
+  constructor(private readonly halFormsService: HalFormService) {}
 
   canActivate(): Observable<boolean> {
     return this._guard();
@@ -18,6 +19,6 @@ export class UserSettingsGuard implements CanLoad, CanActivate {
   }
 
   private _guard(): Observable<boolean> {
-    return this.userService.hasCurrentUserLink();
+    return this.halFormsService.hasLink(CurrentUserRelations.CURRENT_USER_REL);
   }
 }

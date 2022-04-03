@@ -1,41 +1,41 @@
 <table mat-table class="full-width-table" matSort aria-label="Elements">
   <ng-container matColumnDef="username">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Username</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="username" scope="col">Username</th>
     <td mat-cell *matCellDef="let row">{{ row.username }}</td>
   </ng-container>
 
   <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">email</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="email" scope="col">Email</th>
     <td mat-cell *matCellDef="let row">{{ row.email }}</td>
   </ng-container>
 
   <ng-container matColumnDef="firstname">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Firstname</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="firstname" scope="col">Firstname</th>
     <td mat-cell *matCellDef="let row">{{ row.firstname }}</td>
   </ng-container>
 
   <ng-container matColumnDef="lastname">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Lastname</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="lastname" scope="col">Lastname</th>
     <td mat-cell *matCellDef="let row">{{ row.lastname }}</td>
   </ng-container>
 
   <ng-container matColumnDef="lastLoginDateDisplay">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Last Login</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="lastLoginDateDisplay" scope="col">Last Login</th>
     <td mat-cell *matCellDef="let row">{{ row.lastLoginDateDisplay | date }}</td>
   </ng-container>
 
   <ng-container matColumnDef="joinDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Since</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="joinDate" scope="col">Since</th>
     <td mat-cell *matCellDef="let row">{{ row.joinDate | date }}</td>
   </ng-container>
 
   <ng-container matColumnDef="role">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">RoleModel</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="role" scope="col">RoleModel</th>
     <td mat-cell *matCellDef="let row">{{ row.role.name }}</td>
   </ng-container>
 
   <ng-container matColumnDef="active">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="active" scope="col">
       <mat-icon>verified</mat-icon>
     </th>
     <td mat-cell *matCellDef="let row">
@@ -44,7 +44,7 @@
   </ng-container>
 
   <ng-container matColumnDef="locked">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="locked" scope="col">
       <mat-icon>lock</mat-icon>
     </th>
     <td mat-cell *matCellDef="let row">

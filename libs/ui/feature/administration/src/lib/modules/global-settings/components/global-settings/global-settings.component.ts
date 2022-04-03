@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CardViewHeaderService } from '@app/ui/shared';
+import { CardViewHeaderService } from '@app/ui/shared/core';
 
 @Component({
   selector: 'app-global-settings',

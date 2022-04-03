@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService, TiledMenuTileData } from '@app/ui/shared';
+import { CoreService, TiledMenuTileData } from '@app/ui/shared/core';
 import { AdministrationService } from '../../../../services/administration.service';
 
 @Component({

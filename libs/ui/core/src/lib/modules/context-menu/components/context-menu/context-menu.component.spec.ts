@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { stubContextMenuServiceProvider } from '@app/ui/shared';
+import { stubContextMenuServiceProvider } from '@app/ui/shared/core';
 import { ContextMenuComponent } from './context-menu.component';
 
 describe('ContextMenuComponent', () => {

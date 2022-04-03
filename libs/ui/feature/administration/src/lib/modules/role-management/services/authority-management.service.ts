@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Authority, AuthorityManagementRelations } from '@app/domain';
+import { Authority, AuthorityManagementRelations } from '@app/ui/shared/domain';
 import { Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubToasterServiceProvider } from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
 import { GlobalErrorHandler } from './global-error-handler.service';
 
 describe('GlobalErrorHandlerService', () => {

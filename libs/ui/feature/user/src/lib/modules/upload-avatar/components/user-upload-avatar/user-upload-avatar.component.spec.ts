@@ -3,12 +3,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  NgLetModule,
-  stubCardViewHeaderServiceProvider,
-  StubFormErrorComponent,
-  stubToasterServiceProvider,
-} from '@app/ui/shared';
+import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { StubFormErrorComponent } from '@app/ui/shared/common';
+import { NgLetModule, stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserUploadAvatarComponent } from './user-upload-avatar.component';
 

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Role, RoleManagementRelations } from '@app/domain';
-import { setTemplateValidators, ToasterService } from '@app/ui/shared';
+import { ToasterService } from '@app/ui/shared/app';
+import { setTemplateValidators } from '@app/ui/shared/common';
+import { Role, RoleManagementRelations } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { RoleManagementService } from '../../../../services/role-management.service';

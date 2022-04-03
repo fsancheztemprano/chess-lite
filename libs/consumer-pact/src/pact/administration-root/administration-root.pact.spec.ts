@@ -1,14 +1,14 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AdministrationRelations, TOKEN_KEY } from '@app/domain';
+import { AdministrationRelations, TOKEN_KEY } from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { GetAdministrationRootResource } from 'libs/consumer-pact/src/pact/administration-root/administration-root.pact';
-import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
-import { AdministrationService } from 'libs/ui/feature/administration/src/lib/services/administration.service';
 import { noop } from 'rxjs';
+import { AdministrationService } from '../../../../ui/feature/administration/src/lib/services/administration.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.util';
+import { GetAdministrationRootResource } from './administration-root.pact';
 
 const provider: Pact = pactForResource('administrationRoot');
 

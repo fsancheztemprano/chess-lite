@@ -1,5 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { stubUserSettingsServiceProvider } from '../services/user-settings.service.stub';
+import { HalFormClientModule } from '@hal-form-client';
 import { UserSettingsGuard } from './user-settings.guard';
 
 describe('UserSettingsGuard', () => {
@@ -7,7 +8,7 @@ describe('UserSettingsGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubUserSettingsServiceProvider],
+      imports: [HalFormClientModule, HttpClientTestingModule],
     });
     guard = TestBed.inject(UserSettingsGuard);
   });

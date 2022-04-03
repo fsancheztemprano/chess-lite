@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RolePage } from '@app/domain';
+import { RolePage } from '@app/ui/shared/domain';
 import { BehaviorSubject, noop, of } from 'rxjs';
 import { RoleManagementTableDatasource } from './role-management-table.datasource';
 

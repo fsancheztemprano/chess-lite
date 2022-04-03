@@ -1,24 +1,24 @@
 import { HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ActivationTokenRelations, AuthRelations, HttpHeaderKey, SignupInput, TOKEN_KEY } from '@app/domain';
+import { stubSessionServiceProvider } from '@app/ui/shared/app';
+import { ActivationTokenRelations, AuthRelations, HttpHeaderKey, SignupInput, TOKEN_KEY } from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService, IResource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
+import { switchMap } from 'rxjs';
+import { ActivationTokenService } from '../../../../ui/feature/authentication/src/lib/services/activation-token.service';
+import { AuthService } from '../../../../ui/feature/authentication/src/lib/services/auth.service';
+import { avengersAssemble } from '../../interceptor/pact.interceptor';
+import { pactCurrentUser } from '../../mocks/user.mock';
+import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.util';
 import {
   ActivateAccountPact,
   ActivationTokenPact,
   LoginPact,
   RefreshTokenPact,
   SignupPact,
-} from 'libs/consumer-pact/src/pact/authentication/authentication.pact';
-import { AuthService } from 'libs/ui/feature/authentication/src/lib/services/auth.service';
-import { stubSessionServiceProvider } from 'libs/ui/shared/src/lib/services/core/session.service.stub';
-import { switchMap } from 'rxjs';
-import { ActivationTokenService } from '../../../../ui/feature/authentication/src/lib/services/activation-token.service';
-import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactCurrentUser } from '../../mocks/user.mock';
-import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+} from './authentication.pact';
 
 const provider: Pact = pactForResource('authentication');
 

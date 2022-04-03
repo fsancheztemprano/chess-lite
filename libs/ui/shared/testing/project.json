@@ -1,0 +1,23 @@
+{
+  "projectType": "library",
+  "root": "libs/ui/shared/testing",
+  "sourceRoot": "libs/ui/shared/testing/src",
+  "prefix": "app",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/ui/shared/testing"],
+      "options": {
+        "jestConfig": "libs/ui/shared/testing/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/ui/shared/testing/src/**/*.ts", "libs/ui/shared/testing/src/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

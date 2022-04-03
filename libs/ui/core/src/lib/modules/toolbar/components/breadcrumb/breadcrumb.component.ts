@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BreadcrumbService } from '@app/ui/shared';
+import { BreadcrumbService } from '@app/ui/shared/core';
 
 @Component({
   selector: 'app-breadcrumb',

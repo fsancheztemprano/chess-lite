@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SearchService } from '@app/ui/shared';
+import { SearchService } from '@app/ui/shared/core';
 
 @Component({
   selector: 'app-search-bar',

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
-import { MenuData } from '@app/domain';
+import { MenuData } from '@app/ui/shared/domain';
 
 @Component({
   selector: 'app-home-sidenav-item',

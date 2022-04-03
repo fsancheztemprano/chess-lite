@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User, UserPreferences } from '@app/domain';
+import { User, UserPreferences } from '@app/ui/shared/domain';
 import { of } from 'rxjs';
 import { UserManagementDetailService } from './user-management-detail.service';
 

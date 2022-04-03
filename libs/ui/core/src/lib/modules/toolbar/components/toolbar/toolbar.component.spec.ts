@@ -9,7 +9,7 @@ import {
   stubBreadcrumbServiceProvider,
   stubSidenavServiceProvider,
   stubToolbarServiceProvider,
-} from '@app/ui/shared';
+} from '@app/ui/shared/core';
 import { StubContextMenuComponent } from '../../../context-menu/components/context-menu/context-menu.component.stub';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { LocalePickerComponent } from '../locale-picker/locale-picker.component';

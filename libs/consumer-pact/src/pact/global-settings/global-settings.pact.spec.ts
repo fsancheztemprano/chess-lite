@@ -1,15 +1,12 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { GlobalSettings, TOKEN_KEY } from '@app/domain';
+import { GlobalSettings, TOKEN_KEY } from '@app/ui/shared/domain';
 import { HalFormClientModule, Link, Template } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import {
-  GetGlobalSettingPact,
-  UpdateGlobalSettingPact,
-} from 'libs/consumer-pact/src/pact/global-settings/global-settings.pact';
-import { jwtToken } from 'libs/consumer-pact/src/utils/token.util';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.util';
+import { GetGlobalSettingPact, UpdateGlobalSettingPact } from './global-settings.pact';
 
 const provider: Pact = pactForResource('globalSettings');
 

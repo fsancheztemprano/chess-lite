@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BreadcrumbService, SidenavService, ToolbarService } from '@app/ui/shared';
+import { BreadcrumbService, SidenavService, ToolbarService } from '@app/ui/shared/core';
 
 @Component({
   selector: 'app-toolbar',

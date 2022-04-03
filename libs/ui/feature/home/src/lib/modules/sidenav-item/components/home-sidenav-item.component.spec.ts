@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StubSidenavItemComponent } from '@app/ui/shared';
+import { StubSidenavItemComponent } from '@app/ui/shared/common';
 import { HomeSidenavItemComponent } from './home-sidenav-item.component';
 
 describe('HomeSidenavItemComponent', () => {

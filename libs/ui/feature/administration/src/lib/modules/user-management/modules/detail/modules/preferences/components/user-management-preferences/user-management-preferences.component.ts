@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { LocalizationRepository } from '@app/ui/shared/core';
 import {
   UserManagementRelations,
   UserPreferences,
   UserPreferencesChangedMessage,
   UserPreferencesChangedMessageDestination,
-} from '@app/domain';
-import { MessageService, ToasterService, TranslationService } from '@app/ui/shared';
+} from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs/operators';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
@@ -27,7 +28,7 @@ export class UserManagementPreferencesComponent {
 
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
-    public readonly translationService: TranslationService,
+    public readonly localizationRepository: LocalizationRepository,
     private readonly toasterService: ToasterService,
     private readonly messageService: MessageService,
   ) {

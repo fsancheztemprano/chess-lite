@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Role } from '@app/domain';
+import { Role } from '@app/ui/shared/domain';
 import { catchError, Observable, throwError } from 'rxjs';
 import { RoleManagementService } from '../services/role-management.service';
 

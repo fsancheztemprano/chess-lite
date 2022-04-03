@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubSessionServiceProvider, stubUserServiceProvider } from '@app/ui/shared';
+import { stubSessionRepositoryProvider, stubSessionServiceProvider } from '@app/ui/shared/app';
 import { HalFormClientModule } from '@hal-form-client';
 import { UserSettingsService } from './user-settings.service';
 
@@ -9,7 +9,7 @@ describe('UserSettingsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HalFormClientModule],
-      providers: [stubUserServiceProvider, stubSessionServiceProvider],
+      providers: [stubSessionRepositoryProvider, stubSessionServiceProvider],
     });
     service = TestBed.inject(UserSettingsService);
   });

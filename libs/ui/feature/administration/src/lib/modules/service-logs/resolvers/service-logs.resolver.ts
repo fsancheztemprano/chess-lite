@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { ServiceLogs } from '@app/domain';
+import { ServiceLogs } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 import { ServiceLogsService } from '../services/service-logs.service';
 
