@@ -7,10 +7,9 @@ import {
   User,
   UserChangedMessage,
   UserChangedMessageAction,
-  UserChangedMessageDestination,
   UserPreferences,
   UserPreferencesChangedMessage,
-  UserPreferencesChangedMessageDestination,
+  WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import { HalFormService, Link, Resource } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
@@ -62,7 +61,7 @@ export class SessionService {
         ),
         tap((user) => {
           this._subscribeToUserChanges(user);
-          this._subscribeToUserPreferencesChanges(user.userPreferences!);
+          this._subscribeToUserPreferencesChanges(new UserPreferences(user.userPreferences!));
           this._tokenWatchdog(token!);
         }),
         catchError(() => this.clearSession()),
@@ -143,24 +142,26 @@ export class SessionService {
 
   private _subscribeToUserChanges(user: User) {
     this.userUpdates?.unsubscribe();
-    this.userUpdates = this.messageService
-      .subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(user.id))
-      .pipe(
-        filter((message: UserChangedMessage) => message.action !== UserChangedMessageAction.CREATED),
-        switchMap((message: UserChangedMessage) =>
-          message.action === UserChangedMessageAction.DELETED ? this.clearSession() : this._fetchUser(),
-        ),
-      )
-      .subscribe();
+    if (user.hasLink(WEBSOCKET_REL)) {
+      this.userUpdates = this.messageService
+        .subscribeToMessages<UserChangedMessage>(user.getLink(WEBSOCKET_REL)!.href)
+        .pipe(
+          filter((message: UserChangedMessage) => message.action !== UserChangedMessageAction.CREATED),
+          switchMap((message: UserChangedMessage) =>
+            message.action === UserChangedMessageAction.DELETED ? this.clearSession() : this._fetchUser(),
+          ),
+        )
+        .subscribe();
+    }
   }
 
   private _subscribeToUserPreferencesChanges(userPreferences: UserPreferences) {
     this.userPreferencesUpdates?.unsubscribe();
-    this.userPreferencesUpdates = this.messageService
-      .subscribeToMessages<UserPreferencesChangedMessage>(
-        new UserPreferencesChangedMessageDestination(userPreferences.id),
-      )
-      .pipe(switchMap(() => this._fetchUserPreferences()))
-      .subscribe();
+    if (userPreferences.hasLink(WEBSOCKET_REL)) {
+      this.userPreferencesUpdates = this.messageService
+        .subscribeToMessages<UserPreferencesChangedMessage>(userPreferences.getLink(WEBSOCKET_REL)!.href)
+        .pipe(switchMap(() => this._fetchUserPreferences()))
+        .subscribe();
+    }
   }
 }

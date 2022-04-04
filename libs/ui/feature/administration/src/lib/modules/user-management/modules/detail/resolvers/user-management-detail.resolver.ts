@@ -12,7 +12,7 @@ export class UserManagementDetailResolver implements Resolve<User> {
   constructor(private readonly userManagementDetailService: UserManagementDetailService) {}
 
   resolve(): Observable<User> {
-    return this.userManagementDetailService.getUser().pipe(
+    return this.userManagementDetailService.user$.pipe(
       filter((user) => !!user?.username?.length),
       first(),
     );

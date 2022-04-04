@@ -26,12 +26,9 @@ export class UserManagementAccountPasswordComponent {
     public readonly userManagementDetailService: UserManagementDetailService,
     private readonly toasterService: ToasterService,
   ) {
-    this.userManagementDetailService
-      .getUser()
+    this.userManagementDetailService.user$
       .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        setTemplateValidators(this.form, user.getTemplate(UserManagementRelations.USER_UPDATE_REL));
-      });
+      .subscribe((user) => setTemplateValidators(this.form, user.getTemplate(UserManagementRelations.USER_UPDATE_REL)));
   }
 
   onSubmit() {

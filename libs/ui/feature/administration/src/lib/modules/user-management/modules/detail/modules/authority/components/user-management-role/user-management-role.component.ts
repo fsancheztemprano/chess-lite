@@ -28,8 +28,7 @@ export class UserManagementRoleComponent {
     private readonly route: ActivatedRoute,
     private readonly toasterService: ToasterService,
   ) {
-    this.userManagementDetailService
-      .getUser()
+    this.userManagementDetailService.user$
       .pipe(untilDestroyed(this))
       .subscribe((user) => this.form.patchValue({ roleId: user.role?.id }));
   }

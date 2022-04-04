@@ -8,9 +8,9 @@ import {
   User,
   UserChangedMessage,
   UserChangedMessageAction,
-  UserChangedMessageDestination,
   UserManagementRelations,
   UserPreferences,
+  WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import { BehaviorSubject, EMPTY, first, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -31,50 +31,45 @@ export class UserManagementDetailService {
     private readonly toasterService: ToasterService,
   ) {}
 
-  public fetchUser(userId: string) {
-    return this.userManagementService.fetchUser(userId);
-  }
-
   public initialize(userId: string): Observable<User> {
-    this._userChanges.unsubscribe();
-    return this._initializeUser(userId).pipe(tap(() => this._subscribeToUserChanges(userId)));
+    return this._fetchUser(userId).pipe(tap((user) => this._subscribeToUserChanges(user)));
   }
 
-  public deactivate(): void {
-    this._userChanges.unsubscribe();
+  public tearDown(): void {
+    this._userChanges?.unsubscribe();
     this.setUser(new User({}));
   }
 
-  getUser(): Observable<User> {
+  public get user$(): Observable<User> {
     return this._user.asObservable();
   }
 
-  setUser(user: User): void {
+  public setUser(user: User): void {
     this._user.next(user);
   }
 
-  canUpdateProfile(): Observable<boolean> {
-    return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_REL)));
+  public canUpdateProfile(): Observable<boolean> {
+    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_REL)));
   }
 
-  canUpdateRole(): Observable<boolean> {
-    return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_ROLE_REL)));
+  public canUpdateRole(): Observable<boolean> {
+    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_ROLE_REL)));
   }
 
-  canUpdateAuthorities(): Observable<boolean> {
-    return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL)));
+  public canUpdateAuthorities(): Observable<boolean> {
+    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL)));
   }
 
-  updateUser(body: ManageUserProfileInput) {
-    return this.getUser().pipe(
+  public updateUser(body: ManageUserProfileInput) {
+    return this.user$.pipe(
       first(),
       filterNulls(),
       switchMap((user) => user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body })),
     );
   }
 
-  updateUserRole(roleId: string) {
-    return this.getUser().pipe(
+  public updateUserRole(roleId: string) {
+    return this.user$.pipe(
       first(),
       filterNulls(),
       switchMap((user) =>
@@ -83,8 +78,8 @@ export class UserManagementDetailService {
     );
   }
 
-  updateUserAuthorities(authorityIds: string[]) {
-    return this.getUser().pipe(
+  public updateUserAuthorities(authorityIds: string[]) {
+    return this.user$.pipe(
       first(),
       filterNulls(),
       switchMap((user) =>
@@ -93,66 +88,67 @@ export class UserManagementDetailService {
     );
   }
 
-  canDeleteAccount(): Observable<boolean> {
-    return this.getUser().pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_DELETE_REL)));
+  public canDeleteAccount(): Observable<boolean> {
+    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_DELETE_REL)));
   }
 
-  deleteUser() {
-    return this.getUser().pipe(
+  public deleteUser(): Observable<unknown> {
+    return this.user$.pipe(
       first(),
       filterNulls(),
       switchMap((user) => user.submitToTemplateOrThrow(UserManagementRelations.USER_DELETE_REL)),
     );
   }
 
-  canSendActivationToken(): Observable<boolean> {
-    return this.getUser().pipe(map((user) => user.isAllowedTo(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL)));
+  public canSendActivationToken(): Observable<boolean> {
+    return this.user$.pipe(map((user) => user.isAllowedTo(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL)));
   }
 
-  sendActivationToken() {
-    return this.getUser().pipe(
+  public sendActivationToken(): Observable<unknown> {
+    return this.user$.pipe(
       first(),
       filterNulls(),
       switchMap((user) => user.submitToTemplateOrThrow(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL)),
     );
   }
 
-  fetchUserPreferences(): Observable<UserPreferences> {
-    return this.getUser().pipe(
+  public fetchUserPreferences(): Observable<UserPreferences> {
+    return this.user$.pipe(
       first(),
       filterNulls(),
       switchMap((user) => user.getLinkOrThrow(UserManagementRelations.USER_PREFERENCES_REL).follow()),
     );
   }
 
-  updateUserPreferences(userPreferences: UserPreferences, body: IUserPreferences): Observable<UserPreferences> {
+  public updateUserPreferences(userPreferences: UserPreferences, body: IUserPreferences): Observable<UserPreferences> {
     return userPreferences.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body });
   }
 
-  private _initializeUser(userId: string): Observable<User> {
-    return this.fetchUser(userId).pipe(
+  private _fetchUser(userId: string): Observable<User> {
+    return this.userManagementService.fetchUser(userId).pipe(
       tap((user) => {
         this.setUser(user);
       }),
     );
   }
 
-  private _subscribeToUserChanges(userId: string) {
-    this._userChanges = this.messageService
-      .subscribeToMessages<UserChangedMessage>(new UserChangedMessageDestination(userId))
-      .pipe(
-        switchMap((userChangedEvent) => {
-          if (userChangedEvent.action === UserChangedMessageAction.UPDATED) {
-            return this._initializeUser(userChangedEvent.userId).pipe(
-              tap((user) => this.toasterService.showToast({ title: `User ${user.username} has received an update.` })),
-            );
-          } else {
-            this.toasterService.showToast({ title: `User account ${userChangedEvent.userId} was removed.` });
-            this.router.navigate(['user-management']);
-            return EMPTY;
-          }
-        }),
-      )
-      .subscribe();
+  private _subscribeToUserChanges(user: User): void {
+    this._userChanges?.unsubscribe();
+    if (user.hasLink(WEBSOCKET_REL)) {
+      this._userChanges = this.messageService
+        .subscribeToMessages<UserChangedMessage>(user.getLink(WEBSOCKET_REL)!.href)
+        .pipe(
+          switchMap((userChangedEvent) => {
+            if (userChangedEvent.action === UserChangedMessageAction.UPDATED) {
+              return this._fetchUser(userChangedEvent.userId);
+            } else {
+              this.toasterService.showToast({ title: `User account ${userChangedEvent.userId} was removed.` });
+              this.router.navigate(['user-management']);
+              return EMPTY;
+            }
+          }),
+        )
+        .subscribe();
+    }
   }
 }

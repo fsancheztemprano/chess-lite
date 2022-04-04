@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { MessageService } from '@app/ui/shared/app';
 import { SearchService } from '@app/ui/shared/core';
 import {
   User,
@@ -10,7 +10,7 @@ import {
   UserChangedMessageAction,
   UserManagementRelations,
   UserPage,
-  UsersListChangedMessageDestination,
+  WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import {
   auditTime,
@@ -42,7 +42,6 @@ export class UserManagementTableDatasource extends DataSource<User> {
   constructor(
     private readonly userManagementService: UserManagementService,
     private readonly messageService: MessageService,
-    private readonly toasterService: ToasterService,
     private readonly searchService: SearchService,
   ) {
     super();
@@ -50,7 +49,6 @@ export class UserManagementTableDatasource extends DataSource<User> {
 
   connect(): Observable<User[]> {
     this.searchService.showSearchBar();
-    this._subscribeToUserListChanges();
     return this.paginator && this.sort
       ? combineLatest([
           this.paginator.page.pipe(
@@ -79,7 +77,10 @@ export class UserManagementTableDatasource extends DataSource<User> {
               search: search,
             });
           }),
-          tap((userPage: UserPage) => this._userPage$.next(userPage)),
+          tap((userPage: UserPage) => {
+            this._userPage$.next(userPage);
+            this._subscribeToUserPageChanges(userPage);
+          }),
           map((userPage: UserPage) =>
             userPage.hasEmbeddedCollection(UserManagementRelations.USER_MODEL_LIST_REL)
               ? userPage.getEmbeddedCollection(UserManagementRelations.USER_MODEL_LIST_REL)
@@ -95,25 +96,25 @@ export class UserManagementTableDatasource extends DataSource<User> {
 
   disconnect(): void {
     this._userPage$.complete();
-    this._userListMessagesSubscription.unsubscribe();
+    this._userListMessagesSubscription?.unsubscribe();
   }
 
-  private _subscribeToUserListChanges() {
-    this._userListMessagesSubscription.unsubscribe();
-    this._userListMessagesSubscription = this.messageService
-      .subscribeToMessages<UserChangedMessage>(new UsersListChangedMessageDestination())
-      .pipe(
-        filter((userChangedEvent) => userChangedEvent.action !== UserChangedMessageAction.CREATED),
-        filter(
-          (userChangedEvent) =>
-            this._userPage$.value._embedded.userModels?.some((user) => userChangedEvent.userId === user.id) || false,
-        ),
-      )
-      .subscribe({
-        next: () => {
-          this.toasterService.showToast({ message: 'An update was received from the service.' });
-          this._userListChanges.next();
-        },
-      });
+  private _subscribeToUserPageChanges(userPage: UserPage) {
+    if (
+      (!this._userListMessagesSubscription || this._userListMessagesSubscription.closed) &&
+      userPage.hasLink(WEBSOCKET_REL)
+    ) {
+      this._userListMessagesSubscription?.unsubscribe();
+      this._userListMessagesSubscription = this.messageService
+        .subscribeToMessages<UserChangedMessage>(userPage.getLink(WEBSOCKET_REL)!.href)
+        .pipe(
+          filter((userChangedEvent) => userChangedEvent.action !== UserChangedMessageAction.CREATED),
+          filter(
+            (userChangedEvent) =>
+              this._userPage$.value._embedded.userModels?.some((user) => userChangedEvent.userId === user.id) || false,
+          ),
+        )
+        .subscribe(() => this._userListChanges.next());
+    }
   }
 }

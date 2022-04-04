@@ -16,7 +16,7 @@ export class GlobalSettingsGuard implements CanActivate, CanDeactivate<GlobalSet
   }
 
   canDeactivate(): boolean {
-    this.globalSettingsService.deactivate();
+    this.globalSettingsService.tearDown();
     return true;
   }
 }

@@ -19,7 +19,7 @@ export class UserManagementDetailGuard implements CanActivate, CanDeactivate<Use
   }
 
   canDeactivate(): boolean {
-    this.userManagementDetailService.deactivate();
+    this.userManagementDetailService.tearDown();
     return true;
   }
 }

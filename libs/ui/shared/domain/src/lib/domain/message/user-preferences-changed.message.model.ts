@@ -1,4 +1,4 @@
-import { ApplicationMessage, MessageDestination } from './message.model';
+import { ApplicationMessage } from './message.model';
 
 export interface UserPreferencesChangedMessage extends ApplicationMessage {
   userPreferencesId: string;
@@ -7,12 +7,4 @@ export interface UserPreferencesChangedMessage extends ApplicationMessage {
 
 export enum UserPreferencesChangedMessageAction {
   UPDATED = 'UPDATED',
-}
-
-export class UserPreferencesChangedMessageDestination implements MessageDestination {
-  constructor(private readonly userPreferencesId: string = '0') {}
-
-  getDestination(): string {
-    return `/ami/user-preferences/${this.userPreferencesId}`;
-  }
 }

@@ -1,7 +1,10 @@
 package dev.kurama.api.core.hateoas.processor;
 
+import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_READ;
 import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
+import static dev.kurama.api.core.message.GlobalSettingsChangedMessageSender.GLOBAL_SETTINGS_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
@@ -26,7 +29,8 @@ public class GlobalSettingsModelProcessor implements RepresentationModelProcesso
   public @NonNull GlobalSettingsModel process(@NonNull GlobalSettingsModel globalSettingsModel) {
     return globalSettingsModel.add(getSelfLink())
       .mapLinkIf(hasAuthority(GLOBAL_SETTINGS_UPDATE), LinkRelation.of(SELF),
-        link -> link.andAffordance(getUpdateAffordance()));
+        link -> link.andAffordance(getUpdateAffordance()))
+      .addIf(hasAuthority(GLOBAL_SETTINGS_READ), this::getWebSocket);
   }
 
   @SneakyThrows
@@ -37,5 +41,9 @@ public class GlobalSettingsModelProcessor implements RepresentationModelProcesso
   @SneakyThrows
   private @NonNull Affordance getUpdateAffordance() {
     return afford(methodOn(GlobalSettingsController.class).update(null));
+  }
+
+  private @NonNull Link getWebSocket() {
+    return Link.of(GLOBAL_SETTINGS_CHANGED_CHANNEL).withRel(WEBSOCKET_REL);
   }
 }

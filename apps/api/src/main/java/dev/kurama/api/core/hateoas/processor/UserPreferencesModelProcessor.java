@@ -6,11 +6,15 @@ import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_READ;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_UPDATE;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
+import static dev.kurama.api.core.message.UserPreferencesChangedMessageSender.USERS_PREFERENCES_CHANGED_CHANNEL;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAnyAuthority;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.core.utility.AuthorityUtils.isCurrentUserId;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
+import static java.lang.String.format;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -34,20 +38,21 @@ import org.springframework.stereotype.Component;
 public class UserPreferencesModelProcessor implements RepresentationModelProcessor<UserPreferencesModel> {
 
   @Override
-  public @NonNull UserPreferencesModel process(@NonNull UserPreferencesModel userPreferencesModel) {
-    userPreferencesModel.add(getSelfLink(userPreferencesModel.getId()))
-      .addIf(userPreferencesModel.getUser() != null, () -> getUserLink(userPreferencesModel.getUser().getId()))
+  public @NonNull UserPreferencesModel process(@NonNull UserPreferencesModel entity) {
+    entity.add(getSelfLink(entity.getId()))
+      .addIf(entity.getUser() != null, () -> getUserLink(entity.getUser().getId()))
       .mapLinkIf(hasAuthority(USER_PREFERENCES_UPDATE), LinkRelation.of(SELF),
-        link -> link.andAffordance(getUpdateAffordance(userPreferencesModel.getId())));
-    if (userPreferencesModel.getUser() != null && isCurrentUserId(userPreferencesModel.getUser().getId())) {
-      return userPreferencesModel.mapLinkIf(!hasAuthority(USER_PREFERENCES_READ) && hasAuthority(PROFILE_READ),
-          LinkRelation.of(SELF), link -> getCurrentUserPreferencesSelfLink())
+        link -> link.andAffordance(getUpdateAffordance(entity.getId())))
+      .addIf(hasAnyAuthority(USER_PREFERENCES_READ, PROFILE_READ), () -> getWebSocket(entity.getId()));
+    if (entity.getUser() != null && isCurrentUserId(entity.getUser().getId())) {
+      return entity.mapLinkIf(!hasAuthority(USER_PREFERENCES_READ) && hasAuthority(PROFILE_READ), LinkRelation.of(SELF),
+          link -> getCurrentUserPreferencesSelfLink())
         .mapLinkIf(!hasAuthority(USER_READ) && hasAuthority(PROFILE_READ), LinkRelation.of(USER_REL),
           link -> getProfileLink())
         .mapLinkIf(hasAuthority(PROFILE_UPDATE), LinkRelation.of(SELF),
           link -> link.andAffordance(getUpdateCurrentUserPreferencesAffordance()));
     }
-    return userPreferencesModel;
+    return entity;
   }
 
   @SneakyThrows
@@ -81,4 +86,9 @@ public class UserPreferencesModelProcessor implements RepresentationModelProcess
   private @NonNull Affordance getUpdateCurrentUserPreferencesAffordance() {
     return afford(methodOn(UserProfileController.class).updatePreferences(null));
   }
+
+  private @NonNull Link getWebSocket(String id) {
+    return Link.of(format(USERS_PREFERENCES_CHANGED_CHANNEL, id)).withRel(WEBSOCKET_REL);
+  }
+
 }

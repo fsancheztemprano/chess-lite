@@ -10,10 +10,14 @@ import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE_AUTHORITIE
 import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE_ROLE;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_READ;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_PREFERENCES_REL;
+import static dev.kurama.api.core.message.UserChangedMessageSender.USER_CHANGED_CHANNEL;
+import static dev.kurama.api.core.utility.AuthorityUtils.hasAnyAuthority;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
+import static java.lang.String.format;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -41,7 +45,6 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
 
   @Override
   public @NonNull UserModel process(@NonNull UserModel entity) {
-    userPreferencesModelProcessor.process(entity.getUserPreferences());
     entity.add(getSelfLink(entity.getId()))
       .addIf(hasAuthority(USER_READ), this::getParentLink)
       .add(getPreferencesLink(entity.getUserPreferences().getId()))
@@ -54,7 +57,8 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
       .mapLinkIf(hasAuthority(USER_UPDATE_AUTHORITIES), LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAuthoritiesAffordance(entity.getId())))
       .mapLinkIf(hasAuthority(USER_UPDATE), LinkRelation.of(SELF),
-        link -> link.andAffordance(getSendActivationTokenAffordance(entity.getId())));
+        link -> link.andAffordance(getSendActivationTokenAffordance(entity.getId())))
+      .addIf(hasAnyAuthority(USER_READ, PROFILE_READ), () -> getWebSocket(entity.getId()));
 
     if (AuthorityUtils.isCurrentUserId(entity.getId())) {
       boolean canUpdateOwnProfile = hasAuthority(PROFILE_UPDATE);
@@ -71,6 +75,8 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
         .mapLinkIf((hasAuthority(PROFILE_DELETE)), LinkRelation.of(SELF),
           link -> link.andAffordance(getDeleteProfileAffordance()));
     }
+
+    userPreferencesModelProcessor.process(entity.getUserPreferences());
     return entity;
   }
 
@@ -81,6 +87,10 @@ public class UserModelProcessor implements RepresentationModelProcessor<UserMode
 
   private @NonNull Link getParentLink() {
     return linkTo(methodOn(UserController.class).getAll(null, null)).withRel(USERS_REL);
+  }
+
+  private @NonNull Link getWebSocket(String id) {
+    return Link.of(format(USER_CHANGED_CHANNEL, id)).withRel(WEBSOCKET_REL);
   }
 
   @SneakyThrows

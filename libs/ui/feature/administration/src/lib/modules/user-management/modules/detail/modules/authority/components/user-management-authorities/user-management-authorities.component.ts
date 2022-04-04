@@ -27,17 +27,14 @@ export class UserManagementAuthoritiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userManagementDetailService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        this.formArray.controls.forEach((control) => {
-          const hasAuthority = user?.authorities?.some((authority) => authority.id === control.value.id);
-          if (control.value.active != hasAuthority) {
-            control.patchValue({ active: hasAuthority });
-          }
-        });
-      });
+    this.userManagementDetailService.user$.pipe(untilDestroyed(this)).subscribe((user) =>
+      this.formArray.controls.forEach((control) => {
+        const hasAuthority = user?.authorities?.some((authority) => authority.id === control.value.id);
+        if (control.value.active != hasAuthority) {
+          control.patchValue({ active: hasAuthority });
+        }
+      }),
+    );
   }
 
   onSubmit() {
