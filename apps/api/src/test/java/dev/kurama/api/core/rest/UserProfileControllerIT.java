@@ -4,6 +4,7 @@ import static dev.kurama.api.core.authority.UserAuthority.PROFILE_DELETE;
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
+import static dev.kurama.api.core.message.UserChangedMessageSender.USER_CHANGED_CHANNEL;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_CHANGE_PASSWORD_PATH;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_UPLOAD_AVATAR_PATH;
@@ -11,6 +12,7 @@ import static dev.kurama.support.JsonUtils.asJsonString;
 import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
 import static dev.kurama.support.TestUtils.getAuthorizationHeader;
 import static dev.kurama.support.TestUtils.getMockUser;
+import static java.lang.String.format;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -56,7 +58,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-
 
 @ImportTestSecurityConfiguration
 @WebMvcTest(controllers = UserProfileController.class)
@@ -115,10 +116,11 @@ class UserProfileControllerIT {
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
         .andExpect(jsonPath("$.role.id", equalTo(expected.getRole().getId())))
         .andExpect(jsonPath("$.userPreferences.id", equalTo(expected.getUserPreferences().getId())))
-        .andExpect(jsonPath("$._links.*", hasSize(2)))
+        .andExpect(jsonPath("$._links.*", hasSize(3)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + USER_PROFILE_PATH)))
         .andExpect(jsonPath("$._links.user-preferences.href",
           equalTo(MOCK_MVC_HOST + USER_PROFILE_PATH + USER_PROFILE_PREFERENCES)))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(format(USER_CHANGED_CHANNEL, expected.getId()))))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
     }
