@@ -1,9 +1,12 @@
 package dev.kurama.api.core.hateoas.processor;
 
+import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_READ;
 import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
+import static dev.kurama.api.core.message.GlobalSettingsChangedMessageSender.GLOBAL_SETTINGS_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
@@ -53,6 +56,16 @@ class GlobalSettingsModelProcessorTest {
   }
 
   @Test
+  void should_have_websocket_link() {
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(GLOBAL_SETTINGS_READ)).thenReturn(true);
+    GlobalSettingsModel actual = processor.process(this.model);
+
+    assertThat(actual.getLinks()).hasSize(2);
+    assertThat(actual.getLink(WEBSOCKET_REL)).isPresent()
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(GLOBAL_SETTINGS_CHANGED_CHANNEL));
+  }
+
+  @Test
   void should_have_default_affordance() {
     GlobalSettingsModel actual = processor.process(this.model);
 
@@ -61,7 +74,6 @@ class GlobalSettingsModelProcessorTest {
       .extracting("name", "httpMethod")
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET));
-
   }
 
   @Test
@@ -76,6 +88,5 @@ class GlobalSettingsModelProcessorTest {
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("get", HttpMethod.GET))
       .anySatisfy(reqs -> assertThat(reqs.toList()).contains("update", HttpMethod.PATCH));
-
   }
 }

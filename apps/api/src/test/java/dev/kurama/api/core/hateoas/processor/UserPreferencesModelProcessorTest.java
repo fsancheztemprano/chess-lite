@@ -2,14 +2,17 @@ package dev.kurama.api.core.hateoas.processor;
 
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
+import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_READ;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_REL;
+import static dev.kurama.api.core.message.UserPreferencesChangedMessageSender.USERS_PREFERENCES_CHANGED_CHANNEL;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.lang.String.format;
@@ -73,6 +76,17 @@ class UserPreferencesModelProcessorTest {
       assertThat(actual.getLink(USER_REL)).isPresent()
         .hasValueSatisfying(
           link -> assertThat(link.getHref()).isEqualTo(format("%s/%s", USER_PATH, model.getUser().getId())));
+    }
+
+    @Test
+    void should_have_user_preferences_websocket_link() {
+      authorityUtils.when(() -> AuthorityUtils.hasAnyAuthority(USER_PREFERENCES_READ, PROFILE_READ)).thenReturn(true);
+      UserPreferencesModel actual = processor.process(model);
+
+      assertThat(actual.getLinks()).hasSize(3);
+      assertThat(actual.getLink(WEBSOCKET_REL)).isPresent()
+        .hasValueSatisfying(
+          link -> assertThat(link.getHref()).isEqualTo(format(USERS_PREFERENCES_CHANGED_CHANNEL, model.getId())));
     }
 
     @Test
