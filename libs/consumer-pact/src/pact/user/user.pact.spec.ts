@@ -569,8 +569,8 @@ describe('User Pacts', () => {
       const interaction: InteractionObject = DeleteUserPact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:delete'] }));
       provider.addInteraction(interaction).then(() => {
-        userDetailService.deleteUser().subscribe((user: User) => {
-          expect(user).toBeTruthy();
+        userDetailService.deleteUser().subscribe((response) => {
+          expect(response).toBeTruthy();
           done();
         });
       });
@@ -639,8 +639,8 @@ describe('User Pacts', () => {
       const interaction: InteractionObject = RequestActivationTokenPact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:update'] }));
       provider.addInteraction(interaction).then(() => {
-        userDetailService.sendActivationToken().subscribe((user: User) => {
-          expect(user).toBeTruthy();
+        userDetailService.sendActivationToken().subscribe((response) => {
+          expect(response).toBeTruthy();
           done();
         });
       });

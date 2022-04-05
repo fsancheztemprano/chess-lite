@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { stubMessageServiceProvider } from '@app/ui/shared/app';
 import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { Role } from '@app/ui/shared/domain';
+import { StubRouteDataProvider } from '@app/ui/testing';
 import { Observable } from 'rxjs';
 import { stubRoleManagementServiceProvider } from '../../../../services/role-management.service.stub';
 import { RoleManagementDetailCanLoginComponent } from '../../modules/can-login/components/can-login/role-management-detail-can-login.component';
@@ -41,7 +42,12 @@ describe('RoleManagementDetailComponent', () => {
         StubRoleManagementDetailNameComponent,
         StubRoleManagementDetailCanLoginComponent,
       ],
-      providers: [stubCardViewHeaderServiceProvider, stubMessageServiceProvider, stubRoleManagementServiceProvider],
+      providers: [
+        StubRouteDataProvider({ role: new Role({}) }),
+        stubCardViewHeaderServiceProvider,
+        stubMessageServiceProvider,
+        stubRoleManagementServiceProvider,
+      ],
     }).compileComponents();
   });
 

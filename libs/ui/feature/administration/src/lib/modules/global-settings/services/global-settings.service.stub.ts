@@ -7,7 +7,10 @@ import { GlobalSettingsService } from './global-settings.service';
   providedIn: 'root',
 })
 export class StubGlobalSettingsService implements Partial<GlobalSettingsService> {
-  getGlobalSettings = () => of(new GlobalSettings({}));
+  get globalSettings$() {
+    return of(new GlobalSettings({}));
+  }
+
   canUpdateGlobalSettings = () => of(true);
 }
 

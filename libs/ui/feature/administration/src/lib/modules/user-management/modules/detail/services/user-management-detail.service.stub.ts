@@ -5,7 +5,10 @@ import { UserManagementDetailService } from './user-management-detail.service';
 
 @Injectable({ providedIn: 'root' })
 export class StubUserManagementDetailService implements Partial<UserManagementDetailService> {
-  getUser = () => of(new User({}));
+  get user$() {
+    return of(new User({}));
+  }
+
   fetchUserPreferences = () => of(new UserPreferences({}));
   canUpdateProfile = () => of(true);
   canUpdateAuthorities = () => of(true);
