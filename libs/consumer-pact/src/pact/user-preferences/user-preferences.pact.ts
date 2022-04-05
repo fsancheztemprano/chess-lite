@@ -3,7 +3,7 @@ import { defaultTemplate, updateUserPreferencesTemplate } from '@app/ui/testing'
 import { ContentTypeEnum } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { pactUser } from '../../mocks/user.mock';
+import { pactUserPreferences } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';
 
@@ -22,7 +22,7 @@ export namespace GetUserPreferencesPact {
     willRespondWith: {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
-      body: { ...pactUser.userPreferences },
+      body: { ...pactUserPreferences },
     },
   };
 
@@ -41,7 +41,7 @@ export namespace GetUserPreferencesPact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
       body: {
-        ...pactUser.userPreferences,
+        ...pactUserPreferences,
         _templates: {
           ...defaultTemplate,
           ...updateUserPreferencesTemplate,
@@ -100,7 +100,7 @@ export namespace UpdateUserPreferencesPact {
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:preferences:update'] })),
+        Authorization: bearer(jwtToken({ authorities: ['user:preferences:read', 'user:preferences:update'] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
       },
       body: {
@@ -110,7 +110,7 @@ export namespace UpdateUserPreferencesPact {
     willRespondWith: {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
-      body: { ...pactUser.userPreferences },
+      body: { ...pactUserPreferences },
     },
   };
 

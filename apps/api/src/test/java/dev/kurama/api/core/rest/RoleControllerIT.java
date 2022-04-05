@@ -6,6 +6,8 @@ import static dev.kurama.api.core.authority.RoleAuthority.ROLE_DELETE;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
+import static dev.kurama.api.core.message.RoleChangedMessageSender.ROLES_CHANGED_CHANNEL;
+import static dev.kurama.api.core.message.RoleChangedMessageSender.ROLE_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
 import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
@@ -14,7 +16,6 @@ import static java.lang.String.format;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -99,8 +100,12 @@ class RoleControllerIT {
       mockMvc.perform(
           get(ROLE_PATH).accept(HAL_FORMS_JSON_VALUE).headers(getAuthorizationHeader(jwtTokenProvider, ROLE_READ)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$._links.*", hasSize(4)))
-        .andExpect(jsonPath("$._links..href", everyItem(startsWith(MOCK_MVC_HOST + ROLE_PATH))))
+        .andExpect(jsonPath("$._links.*", hasSize(5)))
+        .andExpect(jsonPath("$._links.self.href", startsWith(MOCK_MVC_HOST + ROLE_PATH)))
+        .andExpect(jsonPath("$._links.first.href", startsWith(MOCK_MVC_HOST + ROLE_PATH)))
+        .andExpect(jsonPath("$._links.prev.href", startsWith(MOCK_MVC_HOST + ROLE_PATH)))
+        .andExpect(jsonPath("$._links.last.href", startsWith(MOCK_MVC_HOST + ROLE_PATH)))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(ROLES_CHANGED_CHANNEL)))
         .andExpect(jsonPath("$._embedded.roleModels", hasSize(2)))
         .andExpect(
           jsonPath("$._embedded.roleModels[*].id", allOf(contains(roles.get(0).getId(), roles.get(1).getId()))))
@@ -116,7 +121,7 @@ class RoleControllerIT {
       mockMvc.perform(get(ROLE_PATH).accept(HAL_FORMS_JSON_VALUE)
           .headers(getAuthorizationHeader(jwtTokenProvider, ROLE_READ, ROLE_CREATE)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$._links.*", hasSize(4)))
+        .andExpect(jsonPath("$._links.*", hasSize(5)))
         .andExpect(jsonPath("$._templates.*", hasSize(2)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())))
         .andExpect(jsonPath("$._templates.create.method", equalTo(HttpMethod.POST.toString())))
@@ -148,10 +153,11 @@ class RoleControllerIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
         .andExpect(jsonPath("$.name", equalTo(expected.getName())))
-        .andExpect(jsonPath("$._links.*", hasSize(2)))
+        .andExpect(jsonPath("$._links.*", hasSize(3)))
         .andExpect(
           jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + format("%s/%s", ROLE_PATH, expected.getId()))))
         .andExpect(jsonPath("$._links.roles.href", startsWith(MOCK_MVC_HOST + ROLE_PATH)))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(format(ROLE_CHANGED_CHANNEL, expected.getId()))))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
     }
@@ -165,7 +171,7 @@ class RoleControllerIT {
           .headers(getAuthorizationHeader(jwtTokenProvider, ROLE_READ, ROLE_UPDATE)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-        .andExpect(jsonPath("$._links.*", hasSize(2)))
+        .andExpect(jsonPath("$._links.*", hasSize(3)))
         .andExpect(jsonPath("$._templates.*", hasSize(2)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())))
         .andExpect(jsonPath("$._templates.update.method", equalTo(HttpMethod.PATCH.toString())));
@@ -180,7 +186,7 @@ class RoleControllerIT {
           .headers(getAuthorizationHeader(jwtTokenProvider, ROLE_READ, ROLE_DELETE)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-        .andExpect(jsonPath("$._links.*", hasSize(2)))
+        .andExpect(jsonPath("$._links.*", hasSize(3)))
         .andExpect(jsonPath("$._templates.*", hasSize(2)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())))
         .andExpect(jsonPath("$._templates.delete.method", equalTo(HttpMethod.DELETE.toString())));

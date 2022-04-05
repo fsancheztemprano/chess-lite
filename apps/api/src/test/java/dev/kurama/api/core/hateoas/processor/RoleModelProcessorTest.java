@@ -7,7 +7,9 @@ import static dev.kurama.api.core.authority.RoleAuthority.ROLE_UPDATE_CORE;
 import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
+import static dev.kurama.api.core.message.RoleChangedMessageSender.ROLE_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,6 +56,16 @@ class RoleModelProcessorTest {
     assertThat(actual.getLink(ROLES_REL)).isPresent()
       .hasValueSatisfying(link -> assertThat(link.getHref()).startsWith(ROLE_PATH));
 
+  }
+
+  @Test
+  void should_have_websocket_link() {
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ)).thenReturn(true);
+    RoleModel actual = processor.process(model);
+
+    assertThat(actual.getLinks()).hasSize(3);
+    assertThat(actual.getLink(WEBSOCKET_REL)).isPresent()
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(format(ROLE_CHANGED_CHANNEL, model.getId())));
   }
 
   @Test

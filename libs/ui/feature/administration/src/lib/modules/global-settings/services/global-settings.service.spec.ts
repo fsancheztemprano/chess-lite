@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
+import { stubMessageServiceProvider } from '@app/ui/shared/app';
 import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
 
 import { GlobalSettingsService } from './global-settings.service';
@@ -9,7 +9,7 @@ describe('GlobalSettingsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubAdministrationServiceProvider, stubMessageServiceProvider, stubToasterServiceProvider],
+      providers: [stubAdministrationServiceProvider, stubMessageServiceProvider],
     });
     service = TestBed.inject(GlobalSettingsService);
   });

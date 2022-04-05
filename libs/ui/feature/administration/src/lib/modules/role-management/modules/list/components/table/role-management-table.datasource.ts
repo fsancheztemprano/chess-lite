@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { MessageService } from '@app/ui/shared/app';
 import { SearchService } from '@app/ui/shared/core';
 import {
   Role,
@@ -10,7 +10,7 @@ import {
   RoleChangedMessageAction,
   RoleManagementRelations,
   RolePage,
-  RolesListChangedMessageDestination,
+  WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import {
   auditTime,
@@ -42,7 +42,6 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
   constructor(
     private readonly roleManagementService: RoleManagementService,
     private readonly messageService: MessageService,
-    private readonly toasterService: ToasterService,
     private readonly searchService: SearchService,
   ) {
     super();
@@ -50,7 +49,6 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
 
   connect(): Observable<Role[]> {
     this.searchService.showSearchBar();
-    this._subscribeToRoleListChanges();
     return this.paginator && this.sort
       ? combineLatest([
           this.paginator.page.pipe(
@@ -79,7 +77,10 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
               search: search,
             });
           }),
-          tap((rolePage: RolePage) => this._rolePage$.next(rolePage)),
+          tap((rolePage: RolePage) => {
+            this._rolePage$.next(rolePage);
+            this._subscribeToRoleListChanges(rolePage);
+          }),
           map((rolePage: RolePage) =>
             rolePage.hasEmbeddedCollection(RoleManagementRelations.ROLE_MODEL_LIST_REL)
               ? rolePage.getEmbeddedCollection(RoleManagementRelations.ROLE_MODEL_LIST_REL)
@@ -95,27 +96,27 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
 
   disconnect(): void {
     this._rolePage$.next(new RolePage({}));
-    this._roleListMessagesSubscription.unsubscribe();
+    this._roleListMessagesSubscription?.unsubscribe();
   }
 
-  private _subscribeToRoleListChanges() {
-    this._roleListMessagesSubscription.unsubscribe();
-    this._roleListMessagesSubscription = this.messageService
-      .subscribeToMessages<RoleChangedMessage>(new RolesListChangedMessageDestination())
-      .pipe(
-        filter(
-          (roleChangedEvent) =>
-            roleChangedEvent.action === RoleChangedMessageAction.CREATED ||
-            this._rolePage$.value._embedded.roleModels?.some((role) => roleChangedEvent.roleId === role.id) ||
-            false,
-        ),
-      )
-      .subscribe({
-        next: () => {
-          this.toasterService.showToast({ message: 'An update was received from the service.' });
-          this._roleListChanges.next();
-        },
-      });
+  private _subscribeToRoleListChanges(rolePage: RolePage) {
+    if (
+      (!this._roleListMessagesSubscription || this._roleListMessagesSubscription.closed) &&
+      rolePage.hasLink(WEBSOCKET_REL)
+    ) {
+      this._roleListMessagesSubscription?.unsubscribe();
+      this._roleListMessagesSubscription = this.messageService
+        .subscribeToMessages<RoleChangedMessage>(rolePage.getLink(WEBSOCKET_REL)!.href)
+        .pipe(
+          filter(
+            (roleChangedEvent) =>
+              roleChangedEvent.action === RoleChangedMessageAction.CREATED ||
+              this._rolePage$.value._embedded.roleModels?.some((role) => roleChangedEvent.roleId === role.id) ||
+              false,
+          ),
+        )
+        .subscribe(() => this._roleListChanges.next());
+    }
   }
 
   createRole(name: string): Observable<Role> {

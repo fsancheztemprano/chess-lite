@@ -94,6 +94,8 @@ describe('User Pacts', () => {
           expect(user).toBeTruthy();
           expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
+          expect(user._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
+          expect(user._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
           expect(user._templates?.default).toBeTruthy();
           done();
         });
@@ -190,6 +192,8 @@ describe('User Pacts', () => {
           expect(userPage._embedded).toBeTruthy();
           expect(userPage._embedded.userModels).toHaveLength(3);
           expect(userPage._links).toBeTruthy();
+          expect(userPage._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
+          expect(userPage._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
           expect(userPage._templates?.default).toBeTruthy();
           done();
         });
@@ -569,8 +573,8 @@ describe('User Pacts', () => {
       const interaction: InteractionObject = DeleteUserPact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:read', 'user:delete'] }));
       provider.addInteraction(interaction).then(() => {
-        userDetailService.deleteUser().subscribe((user: User) => {
-          expect(user).toBeTruthy();
+        userDetailService.deleteUser().subscribe((response) => {
+          expect(response).toBeTruthy();
           done();
         });
       });
@@ -639,8 +643,8 @@ describe('User Pacts', () => {
       const interaction: InteractionObject = RequestActivationTokenPact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:update'] }));
       provider.addInteraction(interaction).then(() => {
-        userDetailService.sendActivationToken().subscribe((user: User) => {
-          expect(user).toBeTruthy();
+        userDetailService.sendActivationToken().subscribe((response) => {
+          expect(response).toBeTruthy();
           done();
         });
       });

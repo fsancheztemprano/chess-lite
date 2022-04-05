@@ -13,8 +13,10 @@ import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PAT
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USERS_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.USER_PREFERENCES_REL;
+import static dev.kurama.api.core.message.UserChangedMessageSender.USER_CHANGED_CHANNEL;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.lang.String.format;
@@ -83,6 +85,16 @@ class UserModelProcessorTest {
       assertThat(actual.getLink(USER_PREFERENCES_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(
           format("%s/%s", USER_PREFERENCES_PATH, model.getUserPreferences().getId())));
+    }
+
+    @Test
+    void should_have_websocket_link() {
+      authorityUtils.when(() -> AuthorityUtils.hasAnyAuthority(USER_READ, PROFILE_READ)).thenReturn(true);
+      UserModel actual = processor.process(model);
+
+      assertThat(actual.getLinks()).hasSize(3);
+      assertThat(actual.getLink(WEBSOCKET_REL)).isPresent()
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(format(USER_CHANGED_CHANNEL, model.getId())));
     }
 
     @Test

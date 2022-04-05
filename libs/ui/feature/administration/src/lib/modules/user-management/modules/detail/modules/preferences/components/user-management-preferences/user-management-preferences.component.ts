@@ -6,7 +6,7 @@ import {
   UserManagementRelations,
   UserPreferences,
   UserPreferencesChangedMessage,
-  UserPreferencesChangedMessageDestination,
+  WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs/operators';
@@ -51,15 +51,15 @@ export class UserManagementPreferencesComponent {
   }
 
   private _subscribeToUserPreferencesChanges(userPreferences: UserPreferences) {
-    this.messageService
-      .subscribeToMessages<UserPreferencesChangedMessage>(
-        new UserPreferencesChangedMessageDestination(userPreferences.id),
-      )
-      .pipe(
-        untilDestroyed(this),
-        switchMap(() => this.userManagementDetailService.fetchUserPreferences()),
-      )
-      .subscribe((fetchedUserPreferences) => this._setUserPreferences(fetchedUserPreferences));
+    if (userPreferences.hasLink(WEBSOCKET_REL)) {
+      this.messageService
+        .subscribeToMessages<UserPreferencesChangedMessage>(userPreferences.getLink(WEBSOCKET_REL)!.href)
+        .pipe(
+          untilDestroyed(this),
+          switchMap(() => this.userManagementDetailService.fetchUserPreferences()),
+        )
+        .subscribe((fetchedUserPreferences) => this._setUserPreferences(fetchedUserPreferences));
+    }
   }
 
   isAllowedToUpdateUserPreferences() {

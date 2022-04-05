@@ -193,9 +193,8 @@ export namespace GetAllUsersPact {
           userModels: eachLike({ id: string(), username: string(), email: email() }, { min: 3 }),
         },
         _links: {
-          self: {
-            href: 'http://localhost/api/user?page=0&size=10',
-          },
+          self: { href: 'http://localhost/api/user?page=0&size=10' },
+          ws: { href: '/ami/user' },
         },
         page: { size: 10, totalElements: 3, totalPages: 1, number: 0 },
         _templates: { ...defaultTemplate },
@@ -301,6 +300,7 @@ export namespace CreateUserPact {
           [CurrentUserRelations.USER_PREFERENCES_REL]: {
             href: withUuid('http://localhost/api/user/preferences/{uuid}'),
           },
+          ws: { href: withUuid('/ami/user/{uuid}') },
         },
       },
     },

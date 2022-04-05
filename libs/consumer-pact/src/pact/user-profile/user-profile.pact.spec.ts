@@ -64,14 +64,16 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read'] }));
-        sessionService['_fetchUser']().subscribe((response: User) => {
-          expect(response).toBeTruthy();
-          expect(response.id).toBe(interaction.willRespondWith.body.id);
-          expect(response._links).toBeTruthy();
-          expect(response._templates?.default).toBeTruthy();
-          expect(response.userPreferences).toBeTruthy();
-          expect(response.userPreferences?._templates).toBeTruthy();
-          expect(response.userPreferences?._templates?.default).toBeTruthy();
+        sessionService['_fetchUser']().subscribe((user: User) => {
+          expect(user).toBeTruthy();
+          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user._links).toBeTruthy();
+          expect(user._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
+          expect(user._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(user._templates?.default).toBeTruthy();
+          expect(user.userPreferences).toBeTruthy();
+          expect(user.userPreferences?._templates).toBeTruthy();
+          expect(user.userPreferences?._templates?.default).toBeTruthy();
           done();
         });
       });
@@ -81,17 +83,17 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.with_update;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
-        sessionService['_fetchUser']().subscribe((response: User) => {
-          expect(response).toBeTruthy();
-          expect(response.id).toBe(interaction.willRespondWith.body.id);
-          expect(response._templates?.default).toBeTruthy();
-          expect(response._templates?.[CurrentUserRelations.UPDATE_PROFILE_REL]).toBeTruthy();
-          expect(response._templates?.[CurrentUserRelations.UPLOAD_AVATAR_REL]).toBeTruthy();
-          expect(response._templates?.[CurrentUserRelations.CHANGE_PASSWORD_REL]).toBeTruthy();
-          expect(response.userPreferences).toBeTruthy();
-          expect(response.userPreferences?._templates).toBeTruthy();
-          expect(response.userPreferences?._templates?.default).toBeTruthy();
-          expect(response.userPreferences?._templates?.[CurrentUserRelations.UPDATE_PREFERENCES_REL]).toBeTruthy();
+        sessionService['_fetchUser']().subscribe((user: User) => {
+          expect(user).toBeTruthy();
+          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user._templates?.default).toBeTruthy();
+          expect(user._templates?.[CurrentUserRelations.UPDATE_PROFILE_REL]).toBeTruthy();
+          expect(user._templates?.[CurrentUserRelations.UPLOAD_AVATAR_REL]).toBeTruthy();
+          expect(user._templates?.[CurrentUserRelations.CHANGE_PASSWORD_REL]).toBeTruthy();
+          expect(user.userPreferences).toBeTruthy();
+          expect(user.userPreferences?._templates).toBeTruthy();
+          expect(user.userPreferences?._templates?.default).toBeTruthy();
+          expect(user.userPreferences?._templates?.[CurrentUserRelations.UPDATE_PREFERENCES_REL]).toBeTruthy();
           done();
         });
       });
@@ -101,11 +103,11 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePact.with_delete;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read', 'profile:delete'] }));
-        sessionService['_fetchUser']().subscribe((response: User) => {
-          expect(response).toBeTruthy();
-          expect(response.id).toBe(interaction.willRespondWith.body.id);
-          expect(response._templates?.default).toBeTruthy();
-          expect(response._templates?.[CurrentUserRelations.DELETE_ACCOUNT_REL]).toBeTruthy();
+        sessionService['_fetchUser']().subscribe((user: User) => {
+          expect(user).toBeTruthy();
+          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user._templates?.default).toBeTruthy();
+          expect(user._templates?.[CurrentUserRelations.DELETE_ACCOUNT_REL]).toBeTruthy();
           done();
         });
       });
@@ -159,10 +161,10 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = UpdateUserProfilePact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
-        userSettingsService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe((response: User) => {
-          expect(response).toBeTruthy();
-          expect(response.id).toBe(interaction.willRespondWith.body.id);
-          expect(response._links).toBeTruthy();
+        userSettingsService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
+          expect(user).toBeTruthy();
+          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user._links).toBeTruthy();
           done();
         });
       });
@@ -357,11 +359,13 @@ describe('User Profile Pact', () => {
       const interaction: InteractionObject = GetUserProfilePreferencesPact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'pactUserId' }, authorities: ['profile:read'] }));
-        sessionService['_fetchUserPreferences']().subscribe((response: User) => {
-          expect(response).toBeTruthy();
-          expect(response.id).toBe(interaction.willRespondWith.body.id);
-          expect(response._links).toBeTruthy();
-          expect(response._templates?.default).toBeTruthy();
+        sessionService['_fetchUserPreferences']().subscribe((userPreferences: User) => {
+          expect(userPreferences).toBeTruthy();
+          expect(userPreferences.id).toBe(interaction.willRespondWith.body.id);
+          expect(userPreferences._links).toBeTruthy();
+          expect(userPreferences._templates?.default).toBeTruthy();
+          expect(userPreferences._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
+          expect(userPreferences._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
           done();
         });
       });

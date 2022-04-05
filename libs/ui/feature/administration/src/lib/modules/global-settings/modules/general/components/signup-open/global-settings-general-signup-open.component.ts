@@ -18,13 +18,10 @@ export class GlobalSettingsGeneralSignupOpenComponent {
     private readonly toasterService: ToasterService,
     private readonly cdr: ChangeDetectorRef,
   ) {
-    this.globalSettingsService
-      .getGlobalSettings()
-      .pipe(untilDestroyed(this))
-      .subscribe((globalSettings) => {
-        this.signupOpen = globalSettings.signupOpen;
-        this.cdr.markForCheck();
-      });
+    this.globalSettingsService.globalSettings$.pipe(untilDestroyed(this)).subscribe((globalSettings) => {
+      this.signupOpen = globalSettings.signupOpen;
+      this.cdr.markForCheck();
+    });
   }
 
   onToggle($event: { checked: boolean }) {

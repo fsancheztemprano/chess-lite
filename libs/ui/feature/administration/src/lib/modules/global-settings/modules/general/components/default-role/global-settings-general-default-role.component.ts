@@ -28,8 +28,7 @@ export class GlobalSettingsGeneralDefaultRoleComponent {
     private readonly route: ActivatedRoute,
     private readonly toasterService: ToasterService,
   ) {
-    this.globalSettingsService
-      .getGlobalSettings()
+    this.globalSettingsService.globalSettings$
       .pipe(untilDestroyed(this))
       .subscribe((globalSettings) => this.form.patchValue({ defaultRoleId: globalSettings.defaultRole?.id }));
   }

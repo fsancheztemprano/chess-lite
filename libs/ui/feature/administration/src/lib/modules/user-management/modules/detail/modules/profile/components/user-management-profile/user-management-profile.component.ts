@@ -30,13 +30,10 @@ export class UserManagementProfileComponent {
     public readonly userManagementDetailService: UserManagementDetailService,
     private readonly toasterService: ToasterService,
   ) {
-    this.userManagementDetailService
-      .getUser()
-      .pipe(untilDestroyed(this))
-      .subscribe((user) => {
-        setTemplateValidators(this.form, user.getTemplate(UserManagementRelations.USER_UPDATE_REL));
-        this.form.patchValue(user);
-      });
+    this.userManagementDetailService.user$.pipe(untilDestroyed(this)).subscribe((user) => {
+      setTemplateValidators(this.form, user.getTemplate(UserManagementRelations.USER_UPDATE_REL));
+      this.form.patchValue(user);
+    });
   }
 
   onSubmit() {

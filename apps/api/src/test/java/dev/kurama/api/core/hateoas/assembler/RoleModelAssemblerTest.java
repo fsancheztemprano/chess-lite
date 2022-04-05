@@ -2,9 +2,12 @@ package dev.kurama.api.core.hateoas.assembler;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.authority.RoleAuthority.ROLE_CREATE;
+import static dev.kurama.api.core.authority.RoleAuthority.ROLE_READ;
 import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
+import static dev.kurama.api.core.message.RoleChangedMessageSender.ROLES_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.PageRequest.of;
@@ -69,6 +72,18 @@ class RoleModelAssemblerTest {
       .anySatisfy(name -> assertThat(name).hasToString("last"))
       .anySatisfy(name -> assertThat(name).hasToString("prev"))
       .anySatisfy(name -> assertThat(name).hasToString("next"));
+  }
+
+  @Test
+  void should_add_websocket_link_if_user_has_role_read_authority() {
+    authorityUtils.when(() -> AuthorityUtils.hasAuthority(ROLE_READ)).thenReturn(true);
+    PageImpl<RoleModel> pagedRoles = new PageImpl<>(newArrayList(), of(0, 1), 0);
+
+    PagedModel<RoleModel> actual = assembler.toPagedModel(pagedRoles);
+
+    assertThat(actual.getLinks()).hasSize(2);
+    assertThat(actual.getLink(WEBSOCKET_REL)).isPresent()
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(ROLES_CHANGED_CHANNEL));
   }
 
   @Test

@@ -2,12 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ToasterService } from '@app/ui/shared/app';
 import { CardViewHeaderService } from '@app/ui/shared/core';
-import {
-  Role,
-  RoleChangedMessage,
-  RoleChangedMessageAction,
-  RoleChangedMessageDestination,
-} from '@app/ui/shared/domain';
+import { Role, RoleChangedMessage, RoleChangedMessageAction, WEBSOCKET_REL } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, EMPTY, Observable, switchMap, tap } from 'rxjs';
 import { RoleManagementService } from '../../../../services/role-management.service';
@@ -34,7 +29,7 @@ export class RoleManagementDetailComponent implements OnDestroy {
       title: 'Edit Role',
       navigationLink: ['administration', 'role-management'],
     });
-    this._subscribeToRoleChanges(this.route.snapshot.data.role?.id);
+    this._subscribeToRoleChanges(this.route.snapshot.data.role);
   }
 
   get role(): Observable<Role> {
@@ -45,26 +40,25 @@ export class RoleManagementDetailComponent implements OnDestroy {
     this.headerService.resetHeader();
   }
 
-  private _subscribeToRoleChanges(roleId: string) {
-    this.messageService
-      .subscribeToMessages<RoleChangedMessage>(new RoleChangedMessageDestination(roleId))
-      .pipe(
-        untilDestroyed(this),
-        switchMap((roleChangedEvent) => {
-          if (roleChangedEvent.action === RoleChangedMessageAction.UPDATED) {
-            return this.roleManagementService.fetchOneRole(roleChangedEvent.roleId).pipe(
-              tap((role) => {
-                this._role.next(role);
-                this.toasterService.showToast({ title: `This Role has received an update.` });
-              }),
-            );
-          } else {
-            this.toasterService.showToast({ title: `Role ${roleChangedEvent.roleId} was removed.` });
-            this.router.navigate(['administration', 'role-management']);
-            return EMPTY;
-          }
-        }),
-      )
-      .subscribe();
+  private _subscribeToRoleChanges(role: Role) {
+    if (role.hasLink(WEBSOCKET_REL)) {
+      this.messageService
+        .subscribeToMessages<RoleChangedMessage>(role.getLink(WEBSOCKET_REL)!.href)
+        .pipe(
+          untilDestroyed(this),
+          switchMap((roleChangedEvent) => {
+            if (roleChangedEvent.action === RoleChangedMessageAction.UPDATED) {
+              return this.roleManagementService
+                .fetchOneRole(roleChangedEvent.roleId)
+                .pipe(tap((updatedRole) => this._role.next(updatedRole)));
+            } else {
+              this.toasterService.showToast({ title: `Role ${roleChangedEvent.roleId} was removed.` });
+              this.router.navigate(['administration', 'role-management']);
+              return EMPTY;
+            }
+          }),
+        )
+        .subscribe();
+    }
   }
 }

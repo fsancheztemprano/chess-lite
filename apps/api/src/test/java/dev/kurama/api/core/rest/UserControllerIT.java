@@ -9,6 +9,8 @@ import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE_AUTHORITIE
 import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE_ROLE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
+import static dev.kurama.api.core.message.UserChangedMessageSender.USERS_CHANGED_CHANNEL;
+import static dev.kurama.api.core.message.UserChangedMessageSender.USER_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
 import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
@@ -20,7 +22,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -120,12 +121,13 @@ class UserControllerIT {
         .andExpect(jsonPath("$.userPreferences.id", equalTo(expected.getUserPreferences().getId())))
         .andExpect(jsonPath("$.role.id", equalTo(expected.getRole().getId())))
         .andExpect(jsonPath("$.authorities.*", hasSize(2)))
-        .andExpect(jsonPath("$._links.*", hasSize(3)))
+        .andExpect(jsonPath("$._links.*", hasSize(4)))
         .andExpect(
           jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + format("%s/%s", USER_PATH, expected.getId()))))
         .andExpect(jsonPath("$._links.user-preferences.href",
           equalTo(MOCK_MVC_HOST + format("%s/%s", USER_PREFERENCES_PATH, expected.getUserPreferences().getId()))))
         .andExpect(jsonPath("$._links.users.href", startsWith(MOCK_MVC_HOST + USER_PATH)))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(format(USER_CHANGED_CHANNEL, expected.getId()))))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
     }
@@ -208,8 +210,12 @@ class UserControllerIT {
       mockMvc.perform(
           get(USER_PATH).accept(HAL_FORMS_JSON_VALUE).headers(getAuthorizationHeader(jwtTokenProvider, USER_READ)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$._links.*", hasSize(4)))
-        .andExpect(jsonPath("$._links..href", everyItem(startsWith(MOCK_MVC_HOST + USER_PATH))))
+        .andExpect(jsonPath("$._links.*", hasSize(5)))
+        .andExpect(jsonPath("$._links.self.href", startsWith(MOCK_MVC_HOST + USER_PATH)))
+        .andExpect(jsonPath("$._links.first.href", startsWith(MOCK_MVC_HOST + USER_PATH)))
+        .andExpect(jsonPath("$._links.prev.href", startsWith(MOCK_MVC_HOST + USER_PATH)))
+        .andExpect(jsonPath("$._links.last.href", startsWith(MOCK_MVC_HOST + USER_PATH)))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(USERS_CHANGED_CHANNEL)))
         .andExpect(jsonPath("$._embedded.userModels", hasSize(2)))
         .andExpect(
           jsonPath("$._embedded.userModels[*].id", allOf(contains(users.get(0).getId(), users.get(1).getId()))))
@@ -225,7 +231,7 @@ class UserControllerIT {
       mockMvc.perform(get(USER_PATH).accept(HAL_FORMS_JSON_VALUE)
           .headers(getAuthorizationHeader(jwtTokenProvider, USER_READ, USER_CREATE)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$._links.*", hasSize(4)))
+        .andExpect(jsonPath("$._links.*", hasSize(5)))
         .andExpect(jsonPath("$._templates.*", hasSize(2)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())))
         .andExpect(jsonPath("$._templates.create.method", equalTo(HttpMethod.POST.toString())))

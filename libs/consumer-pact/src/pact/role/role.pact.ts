@@ -100,9 +100,8 @@ export namespace GetAllRolesPact {
           ],
         },
         _links: {
-          self: {
-            href: 'http://localhost/api/role?page=0&size=10',
-          },
+          self: { href: 'http://localhost/api/role?page=0&size=10' },
+          ws: { href: '/ami/role' },
         },
         page: {
           size: 10,
@@ -200,7 +199,13 @@ export namespace GetOneRolePact {
     willRespondWith: {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
-      body: { ...pactRole },
+      body: {
+        ...pactRole,
+        _links: {
+          ...pactRole._links,
+          ws: { href: '/ami/role/pactRoleId' },
+        },
+      },
     },
   };
 

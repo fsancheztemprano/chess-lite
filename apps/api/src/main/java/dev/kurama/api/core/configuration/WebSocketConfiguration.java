@@ -1,6 +1,10 @@
 package dev.kurama.api.core.configuration;
 
+import static dev.kurama.api.core.constant.WebsocketConstant.ROOT_WEBSOCKET_CHANNEL;
+import static dev.kurama.api.core.constant.WebsocketConstant.ROOT_WEBSOCKET_PATH;
+
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.common.net.HttpHeaders;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import java.util.List;
@@ -31,12 +35,12 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/ami");
+    config.enableSimpleBroker(ROOT_WEBSOCKET_CHANNEL);
   }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/websocket").withSockJS();
+    registry.addEndpoint(ROOT_WEBSOCKET_PATH).withSockJS();
   }
 
   @Override
@@ -45,7 +49,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
       @Override
       public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        List<String> tokenList = accessor.getNativeHeader("Authorization");
+        List<String> tokenList = accessor.getNativeHeader(HttpHeaders.AUTHORIZATION);
         String authorizationHeader = null;
         if (tokenList == null || tokenList.isEmpty()) {
           return message;

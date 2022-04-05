@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MessageService, ToasterService } from '@app/ui/shared/app';
+import { MessageService } from '@app/ui/shared/app';
 import {
+  ApplicationMessage,
   GlobalSettings,
-  GlobalSettingsChangedMessage,
-  GlobalSettingsChangedMessageDestination,
   GlobalSettingsRelations,
   GlobalSettingsUpdateInput,
+  WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
@@ -24,56 +24,52 @@ export class GlobalSettingsService {
   constructor(
     private readonly administrationService: AdministrationService,
     private readonly messageService: MessageService,
-    private readonly toasterService: ToasterService,
   ) {}
 
-  getGlobalSettings(): Observable<GlobalSettings> {
+  get globalSettings$(): Observable<GlobalSettings> {
     return this._globalSettings.asObservable();
   }
 
-  setGlobalSettings(globalSettings: GlobalSettings): void {
-    this._globalSettings.next(globalSettings);
-  }
-
   public initialize(): Observable<GlobalSettings> {
-    this._globalSettingsChanges.unsubscribe();
-    return this._initializeGlobalSettings().pipe(tap(() => this._subscribeToGlobalSettingsChanges()));
+    return this._initializeGlobalSettings().pipe(
+      tap((globalSettings) => this._subscribeToGlobalSettingsChanges(globalSettings)),
+    );
   }
 
-  public deactivate(): void {
-    this._globalSettingsChanges.unsubscribe();
-    this.setGlobalSettings(new GlobalSettings({}));
+  public tearDown(): void {
+    this._globalSettingsChanges?.unsubscribe();
+    this._globalSettings.next(new GlobalSettings({}));
   }
 
-  private _fetchGlobalSettings(): Observable<GlobalSettings> {
-    return this.administrationService
-      .getLinkOrThrow(GlobalSettingsRelations.GLOBAL_SETTINGS_REL)
-      .pipe(switchMap((link) => link.follow()));
-  }
-
-  private _initializeGlobalSettings(): Observable<GlobalSettings> {
-    return this._fetchGlobalSettings().pipe(tap((globalSettings) => this.setGlobalSettings(globalSettings)));
-  }
-
-  private _subscribeToGlobalSettingsChanges() {
-    this._globalSettingsChanges = this.messageService
-      .subscribeToMessages<GlobalSettingsChangedMessage>(new GlobalSettingsChangedMessageDestination())
-      .pipe(switchMap(() => this._initializeGlobalSettings()))
-      .subscribe(() => this.toasterService.showToast({ title: `Global Settings were updated.` }));
-  }
-
-  canUpdateGlobalSettings() {
-    return this.getGlobalSettings().pipe(
+  public canUpdateGlobalSettings() {
+    return this.globalSettings$.pipe(
       map((globalSettings) => globalSettings.isAllowedTo(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL)),
     );
   }
 
-  updateGlobalSettings(body: GlobalSettingsUpdateInput) {
-    return this.getGlobalSettings().pipe(
+  public updateGlobalSettings(body: GlobalSettingsUpdateInput) {
+    return this.globalSettings$.pipe(
       first(),
       switchMap((globalSettings) =>
         globalSettings.submitToTemplateOrThrow(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL, { body }),
       ),
     );
+  }
+
+  private _initializeGlobalSettings(): Observable<GlobalSettings> {
+    return this.administrationService
+      .getLinkOrThrow(GlobalSettingsRelations.GLOBAL_SETTINGS_REL)
+      .pipe(switchMap((link) => link.follow()))
+      .pipe(tap((globalSettings) => this._globalSettings.next(globalSettings)));
+  }
+
+  private _subscribeToGlobalSettingsChanges(globalSettings: GlobalSettings) {
+    this._globalSettingsChanges?.unsubscribe();
+    if (globalSettings.hasLink(WEBSOCKET_REL)) {
+      this._globalSettingsChanges = this.messageService
+        .subscribeToMessages<ApplicationMessage>(globalSettings.getLink(WEBSOCKET_REL)!.href)
+        .pipe(switchMap(() => this._initializeGlobalSettings()))
+        .subscribe();
+    }
   }
 }

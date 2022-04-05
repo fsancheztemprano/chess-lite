@@ -6,4 +6,5 @@ export * from './lib/mocks/hateoas/hateoas-template.mock';
 
 export * from './lib/transloco/transloco-testing.module';
 
-export * from './lib/stubs/services/actions.service.stub';
+export * from './lib/stubs/services/actions.stub';
+export * from './lib/stubs/services/activated-route.stub';

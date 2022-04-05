@@ -7,6 +7,7 @@ import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFER
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
+import static dev.kurama.api.core.message.UserPreferencesChangedMessageSender.USERS_PREFERENCES_CHANGED_CHANNEL;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
@@ -95,11 +96,12 @@ class UserPreferencesControllerIT {
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
         .andExpect(jsonPath("$.darkMode", equalTo(expected.isDarkMode())))
         .andExpect(jsonPath("$.contentLanguage", equalTo(expected.getContentLanguage())))
-        .andExpect(jsonPath("$._links.*", hasSize(2)))
+        .andExpect(jsonPath("$._links.*", hasSize(3)))
         .andExpect(jsonPath("$._links.self.href",
           equalTo(MOCK_MVC_HOST + format("%s/%s", USER_PREFERENCES_PATH, expected.getId()))))
         .andExpect(jsonPath("$._links.user.href",
           equalTo(MOCK_MVC_HOST + format("%s/%s", USER_PATH, expected.getUser().getId()))))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(format(USERS_PREFERENCES_CHANGED_CHANNEL, expected.getId()))))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
     }
@@ -128,7 +130,7 @@ class UserPreferencesControllerIT {
             .buildAuthorizationHeader(jwtTokenProvider)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-        .andExpect(jsonPath("$._links.*", hasSize(2)))
+        .andExpect(jsonPath("$._links.*", hasSize(3)))
         .andExpect(jsonPath("$._links.self.href",
           equalTo(MOCK_MVC_HOST + format("%s/%s", USER_PREFERENCES_PATH, expected.getId()))))
         .andExpect(jsonPath("$._links.current-user.href", equalTo(MOCK_MVC_HOST + USER_PROFILE_PATH)));
@@ -146,7 +148,7 @@ class UserPreferencesControllerIT {
             .buildAuthorizationHeader(jwtTokenProvider)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(expected.getId())))
-        .andExpect(jsonPath("$._links.*", hasSize(2)))
+        .andExpect(jsonPath("$._links.*", hasSize(3)))
         .andExpect(jsonPath("$._templates.*", hasSize(2)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())))
         .andExpect(jsonPath("$._templates.updatePreferences.method", equalTo(HttpMethod.PATCH.toString())))

@@ -1,4 +1,4 @@
-import { ApplicationMessage, MessageDestination } from './message.model';
+import { ApplicationMessage } from './message.model';
 
 export interface UserChangedMessage extends ApplicationMessage {
   userId: string;
@@ -9,18 +9,4 @@ export enum UserChangedMessageAction {
   CREATED = 'CREATED',
   UPDATED = 'UPDATED',
   DELETED = 'DELETED',
-}
-
-export class UsersListChangedMessageDestination implements MessageDestination {
-  getDestination(): string {
-    return '/ami/user';
-  }
-}
-
-export class UserChangedMessageDestination implements MessageDestination {
-  constructor(private readonly userId: string = '0') {}
-
-  getDestination(): string {
-    return `/ami/user/${this.userId}`;
-  }
 }

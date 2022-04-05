@@ -3,6 +3,7 @@ package dev.kurama.api.core.rest;
 import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_READ;
 import static dev.kurama.api.core.authority.GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.GLOBAL_SETTINGS_PATH;
+import static dev.kurama.api.core.message.GlobalSettingsChangedMessageSender.GLOBAL_SETTINGS_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
 import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
@@ -80,8 +81,9 @@ class GlobalSettingsControllerIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.signupOpen", equalTo(expected.isSignupOpen())))
         .andExpect(jsonPath("$.defaultRole.id", equalTo(expected.getDefaultRole().getId())))
-        .andExpect(jsonPath("$._links.*", hasSize(1)))
+        .andExpect(jsonPath("$._links.*", hasSize(2)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + GLOBAL_SETTINGS_PATH)))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(GLOBAL_SETTINGS_CHANGED_CHANNEL)))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
     }
@@ -143,8 +145,9 @@ class GlobalSettingsControllerIT {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.signupOpen", equalTo(expected.isSignupOpen())))
         .andExpect(jsonPath("$.defaultRole.id", equalTo(expected.getDefaultRole().getId())))
-        .andExpect(jsonPath("$._links.*", hasSize(1)))
+        .andExpect(jsonPath("$._links.*", hasSize(2)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + GLOBAL_SETTINGS_PATH)))
+        .andExpect(jsonPath("$._links.ws.href", equalTo(GLOBAL_SETTINGS_CHANGED_CHANNEL)))
         .andExpect(jsonPath("$._templates.*", hasSize(2)))
         .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())))
         .andExpect(jsonPath("$._templates.update.method", equalTo(HttpMethod.PATCH.toString())));
