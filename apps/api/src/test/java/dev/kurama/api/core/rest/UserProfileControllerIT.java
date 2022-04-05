@@ -5,6 +5,7 @@ import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
 import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static dev.kurama.api.core.message.UserChangedMessageSender.USER_CHANGED_CHANNEL;
+import static dev.kurama.api.core.message.UserPreferencesChangedMessageSender.USERS_PREFERENCES_CHANGED_CHANNEL;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_CHANGE_PASSWORD_PATH;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_UPLOAD_AVATAR_PATH;
@@ -346,7 +347,11 @@ class UserProfileControllerIT {
               .authorities(PROFILE_READ)
               .buildAuthorizationHeader(jwtTokenProvider)))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$.id", equalTo(expected.getUserPreferences().getId())));
+          .andExpect(jsonPath("$.id", equalTo(expected.getUserPreferences().getId())))
+          .andExpect(
+            jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + USER_PROFILE_PATH + USER_PROFILE_PREFERENCES)))
+          .andExpect(jsonPath("$._links.ws.href",
+            equalTo(format(USERS_PREFERENCES_CHANGED_CHANNEL, expected.getUserPreferences().getId()))));
       }
     }
 

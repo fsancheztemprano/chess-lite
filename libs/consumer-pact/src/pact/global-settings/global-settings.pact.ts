@@ -41,7 +41,13 @@ export namespace GetGlobalSettingPact {
     willRespondWith: {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
-      body: { ...globalSettings },
+      body: {
+        ...globalSettings,
+        _links: {
+          ...globalSettings._links,
+          ws: { href: '/ami/global-settings' },
+        },
+      },
     },
   };
 

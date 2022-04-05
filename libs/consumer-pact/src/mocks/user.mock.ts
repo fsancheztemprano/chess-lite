@@ -41,9 +41,8 @@ export const pactUser = {
     [UserManagementRelations.USER_PREFERENCES_REL]: {
       href: 'http://localhost/api/user/preferences/pactUserPreferencesId',
     },
-    self: {
-      href: 'http://localhost/api/user/pactUserId',
-    },
+    self: { href: 'http://localhost/api/user/pactUserId' },
+    ws: { href: '/ami/user/pactUserId' },
   },
   _templates: { ...defaultTemplate },
 };
@@ -56,17 +55,23 @@ export const pactCurrentUser = {
       [CurrentUserRelations.CURRENT_USER_REL]: {
         href: 'http://localhost/api/user/profile',
       },
-      self: {
-        href: 'http://localhost/api/user/profile/preferences',
-      },
+      self: { href: 'http://localhost/api/user/profile/preferences' },
+      ws: { href: '/ami/user-preferences/pactUserPreferencesId' },
     },
   },
   _links: {
     [CurrentUserRelations.USER_PREFERENCES_REL]: {
       href: 'http://localhost/api/user/profile/preferences',
     },
-    self: {
-      href: 'http://localhost/api/user/profile',
-    },
+    self: { href: 'http://localhost/api/user/profile' },
+    ws: { href: '/ami/user/pactUserId' },
+  },
+};
+
+export const pactUserPreferences = {
+  ...pactUser.userPreferences,
+  _links: {
+    ...pactUser.userPreferences._links,
+    ws: { href: '/ami/user-preferences/pactUserPreferencesId' },
   },
 };
