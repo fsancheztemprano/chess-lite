@@ -151,7 +151,7 @@ jobs:
           global-coverage-warn-min: 60
 
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/api/target/site/**/jacoco.xml,coverage/**/lcov.info
