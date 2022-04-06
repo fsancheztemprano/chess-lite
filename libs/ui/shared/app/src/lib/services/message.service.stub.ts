@@ -1,5 +1,4 @@
 import { ApplicationMessage, MessageDestination, UserChangedMessage } from '@app/ui/shared/domain';
-import { RxStompService } from '@stomp/ng2-stompjs';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { MessageService } from './message.service';
 
@@ -28,13 +27,4 @@ export class StubMessageService implements Partial<MessageService> {
 export const stubMessageServiceProvider = {
   provide: MessageService,
   useClass: StubMessageService,
-};
-
-export class StubRxStompService implements Partial<RxStompService> {
-  configure = () => void 0;
-}
-
-export const stubRxStompServiceProvider = {
-  provide: RxStompService,
-  useClass: StubRxStompService,
 };

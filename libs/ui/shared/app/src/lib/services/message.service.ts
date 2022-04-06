@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApplicationMessage, MessageDestination, TOKEN_KEY } from '@app/ui/shared/domain';
-import { InjectableRxStompConfig, RxStompService } from '@stomp/ng2-stompjs';
+import { RxStomp } from '@stomp/rx-stomp';
+import { RxStompConfig } from '@stomp/rx-stomp/esm6/rx-stomp-config';
 import { IMessage } from '@stomp/stompjs';
 import { filter, from, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,8 +11,8 @@ import { filterNulls } from '../utils/filter-null.rxjs.pipe';
 @Injectable({
   providedIn: 'root',
 })
-export class MessageService {
-  private readonly RX_STOMP_CONFIG: InjectableRxStompConfig = {
+export class MessageService extends RxStomp {
+  private readonly RX_STOMP_CONFIG: RxStompConfig = {
     webSocketFactory: () => {
       return new SockJS(`/websocket`);
     },
@@ -27,8 +28,9 @@ export class MessageService {
       : (destination as string);
   }
 
-  constructor(private readonly rxStompService: RxStompService) {
-    this.rxStompService.configure(this.RX_STOMP_CONFIG);
+  constructor() {
+    super();
+    this.configure(this.RX_STOMP_CONFIG);
   }
 
   subscribeToMessages<T extends ApplicationMessage>(destination: string | MessageDestination): Observable<T> {
@@ -40,25 +42,25 @@ export class MessageService {
   }
 
   private _subscribeToDestination(destination: string | MessageDestination): Observable<IMessage> {
-    return this.rxStompService.watch(MessageService.getDestinationString(destination));
+    return this.watch(MessageService.getDestinationString(destination));
   }
 
   public connect(): void {
     this._setAuthenticationHeaders();
-    this.rxStompService.activate();
+    this.activate();
   }
 
   public disconnect(): Observable<void> {
-    if (this.rxStompService.active) {
+    if (this.active) {
       this._setAuthenticationHeaders();
-      return from(this.rxStompService.deactivate());
+      return from(this.deactivate());
     }
     return of(void 0);
   }
 
   private _setAuthenticationHeaders() {
     const token = localStorage.getItem(TOKEN_KEY);
-    this.rxStompService.configure({
+    this.configure({
       connectHeaders: token ? { Authorization: 'Bearer ' + token } : undefined,
       disconnectHeaders: token ? { Authorization: 'Bearer ' + token } : undefined,
     });
