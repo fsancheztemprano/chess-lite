@@ -5,21 +5,22 @@ import { RxStompConfig } from '@stomp/rx-stomp/esm6/rx-stomp-config';
 import { IMessage } from '@stomp/stompjs';
 import { filter, from, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as SockJS from 'sockjs-client';
 import { filterNulls } from '../utils/filter-null.rxjs.pipe';
 
-@Injectable({
-  providedIn: 'root',
-})
+const prepareBrokerURL = (path: string): string => {
+  const url = new URL(path, window.location.href);
+  url.protocol = url.protocol.replace('http', 'ws');
+  return url.href;
+};
+
+@Injectable({ providedIn: 'root' })
 export class MessageService extends RxStomp {
   private readonly RX_STOMP_CONFIG: RxStompConfig = {
-    webSocketFactory: () => {
-      return new SockJS(`/websocket`);
-    },
+    brokerURL: prepareBrokerURL('/websocket'),
     connectionTimeout: 10000,
     heartbeatIncoming: 0,
     heartbeatOutgoing: 20000,
-    reconnectDelay: 3000, // Wait in milliseconds before attempting auto reconnect
+    reconnectDelay: 1000, // Wait in milliseconds before attempting auto reconnect
   };
 
   public static getDestinationString(destination: string | MessageDestination): string {

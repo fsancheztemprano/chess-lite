@@ -8,7 +8,6 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "allowedCommonJsDependencies": ["sockjs-client"],
         "outputPath": "dist/apps/app",
         "index": "apps/app/src/index.html",
         "main": "apps/app/src/main.ts",

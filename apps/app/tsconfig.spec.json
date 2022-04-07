@@ -4,9 +4,8 @@
     "resolveJsonModule": true,
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["jest", "node"],
-    "allowJs": true
+    "types": ["jest", "node"]
   },
   "files": ["src/test-setup.ts"],
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "include": ["**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"]
 }
