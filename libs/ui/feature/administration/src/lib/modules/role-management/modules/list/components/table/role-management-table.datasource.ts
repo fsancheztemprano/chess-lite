@@ -106,7 +106,7 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
     ) {
       this._roleListMessagesSubscription?.unsubscribe();
       this._roleListMessagesSubscription = this.messageService
-        .subscribeToMessages<RoleChangedMessage>(rolePage.getLink(WEBSOCKET_REL)!.href)
+        .multicast<RoleChangedMessage>(rolePage.getLink(WEBSOCKET_REL)!.href)
         .pipe(
           filter(
             (roleChangedEvent) =>

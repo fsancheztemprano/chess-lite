@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApplicationMessage, MessageDestination, TOKEN_KEY } from '@app/ui/shared/domain';
+import { ApplicationMessage, TOKEN_KEY } from '@app/ui/shared/domain';
 import { RxStomp } from '@stomp/rx-stomp';
 import { RxStompConfig } from '@stomp/rx-stomp/esm6/rx-stomp-config';
-import { IMessage } from '@stomp/stompjs';
-import { filter, from, Observable, of } from 'rxjs';
+import { filter, from, Observable, of, share } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { filterNulls } from '../utils/filter-null.rxjs.pipe';
 
@@ -22,33 +21,31 @@ export class MessageService extends RxStomp {
     heartbeatOutgoing: 20000,
     reconnectDelay: 1000, // Wait in milliseconds before attempting auto reconnect
   };
-
-  public static getDestinationString(destination: string | MessageDestination): string {
-    return (destination as MessageDestination)?.getDestination
-      ? (destination as MessageDestination)?.getDestination()
-      : (destination as string);
-  }
+  private multicasts: Map<string, Observable<ApplicationMessage>> = new Map<string, Observable<ApplicationMessage>>();
 
   constructor() {
     super();
     this.configure(this.RX_STOMP_CONFIG);
   }
 
-  subscribeToMessages<T extends ApplicationMessage>(destination: string | MessageDestination): Observable<T> {
-    return this._subscribeToDestination(destination).pipe(
-      filter((message) => !!message?.body),
-      map((message) => JSON.parse(message.body)),
-      filterNulls(),
-    );
-  }
-
-  private _subscribeToDestination(destination: string | MessageDestination): Observable<IMessage> {
-    return this.watch(MessageService.getDestinationString(destination));
-  }
-
   public connect(): void {
     this._setAuthenticationHeaders();
     this.activate();
+  }
+
+  public multicast<T extends ApplicationMessage = ApplicationMessage>(destination: string): Observable<T> {
+    if (!this.multicasts.has(destination)) {
+      this.multicasts.set(
+        destination,
+        this.watch(destination).pipe(
+          share(),
+          filter((message) => !!message?.body),
+          map((message) => JSON.parse(message.body)),
+          filterNulls(),
+        ),
+      );
+    }
+    return this.multicasts.get(destination) as Observable<T>;
   }
 
   public disconnect(): Observable<void> {

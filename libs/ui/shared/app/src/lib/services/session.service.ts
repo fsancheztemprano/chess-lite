@@ -144,7 +144,7 @@ export class SessionService {
     this.userUpdates?.unsubscribe();
     if (user.hasLink(WEBSOCKET_REL)) {
       this.userUpdates = this.messageService
-        .subscribeToMessages<UserChangedMessage>(user.getLink(WEBSOCKET_REL)!.href)
+        .multicast<UserChangedMessage>(user.getLink(WEBSOCKET_REL)!.href)
         .pipe(
           filter((message: UserChangedMessage) => message.action !== UserChangedMessageAction.CREATED),
           switchMap((message: UserChangedMessage) =>
@@ -159,7 +159,7 @@ export class SessionService {
     this.userPreferencesUpdates?.unsubscribe();
     if (userPreferences.hasLink(WEBSOCKET_REL)) {
       this.userPreferencesUpdates = this.messageService
-        .subscribeToMessages<UserPreferencesChangedMessage>(userPreferences.getLink(WEBSOCKET_REL)!.href)
+        .multicast<UserPreferencesChangedMessage>(userPreferences.getLink(WEBSOCKET_REL)!.href)
         .pipe(switchMap(() => this._fetchUserPreferences()))
         .subscribe();
     }

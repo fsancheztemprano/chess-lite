@@ -21,7 +21,7 @@ export class GlobalSettingsAccessRestrictionsComponent {
       concat(
         of(rolePage),
         rolePage.hasLink(WEBSOCKET_REL)
-          ? this.messageService.subscribeToMessages<RoleChangedMessage>(rolePage.getLink(WEBSOCKET_REL)!.href).pipe(
+          ? this.messageService.multicast<RoleChangedMessage>(rolePage.getLink(WEBSOCKET_REL)!.href).pipe(
               untilDestroyed(this),
               switchMap(() => this.roleManagementService.fetchRoles({ size: 1000 })),
             )

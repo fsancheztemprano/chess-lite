@@ -136,7 +136,7 @@ export class UserManagementDetailService {
     this._userChanges?.unsubscribe();
     if (user.hasLink(WEBSOCKET_REL)) {
       this._userChanges = this.messageService
-        .subscribeToMessages<UserChangedMessage>(user.getLink(WEBSOCKET_REL)!.href)
+        .multicast<UserChangedMessage>(user.getLink(WEBSOCKET_REL)!.href)
         .pipe(
           switchMap((userChangedEvent) => {
             if (userChangedEvent.action === UserChangedMessageAction.UPDATED) {

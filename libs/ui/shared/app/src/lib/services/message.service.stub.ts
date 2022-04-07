@@ -1,4 +1,4 @@
-import { ApplicationMessage, MessageDestination, UserChangedMessage } from '@app/ui/shared/domain';
+import { ApplicationMessage, UserChangedMessage } from '@app/ui/shared/domain';
 import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { MessageService } from './message.service';
 
@@ -7,13 +7,12 @@ export class StubMessageService implements Partial<MessageService> {
   public userListChangedMessageSubject = new Subject<UserChangedMessage>();
   disconnect = () => of(void 0);
 
-  subscribeToMessages<T extends ApplicationMessage>(destination: string | MessageDestination): Observable<T> {
+  multicast<T extends ApplicationMessage>(destination: string): Observable<T> {
     return this.handleDestination(destination) as Observable<T>;
   }
 
-  handleDestination(destination: string | MessageDestination): Observable<ApplicationMessage> {
-    const messageDestination = MessageService.getDestinationString(destination);
-    switch (messageDestination) {
+  handleDestination(destination: string): Observable<ApplicationMessage> {
+    switch (destination) {
       case `/ami/user`:
         return this.userListChangedMessageSubject.asObservable();
       case `/ami/user/u1`:

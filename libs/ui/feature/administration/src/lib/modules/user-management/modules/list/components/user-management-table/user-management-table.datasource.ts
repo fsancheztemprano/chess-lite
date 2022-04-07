@@ -106,7 +106,7 @@ export class UserManagementTableDatasource extends DataSource<User> {
     ) {
       this._userListMessagesSubscription?.unsubscribe();
       this._userListMessagesSubscription = this.messageService
-        .subscribeToMessages<UserChangedMessage>(userPage.getLink(WEBSOCKET_REL)!.href)
+        .multicast<UserChangedMessage>(userPage.getLink(WEBSOCKET_REL)!.href)
         .pipe(
           filter((userChangedEvent) => userChangedEvent.action !== UserChangedMessageAction.CREATED),
           filter(
