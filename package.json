@@ -111,7 +111,7 @@
     "@jest/reporters": "27.5.1",
     "@ngneat/elf-cli": "3.0.0",
     "@ngneat/elf-cli-ng": "1.0.0",
-    "@ngneat/transloco-keys-manager": "3.3.6",
+    "@ngneat/transloco-keys-manager": "3.4.0",
     "@nrwl/cli": "13.9.6",
     "@nrwl/cypress": "13.9.6",
     "@nrwl/devkit": "13.9.6",
