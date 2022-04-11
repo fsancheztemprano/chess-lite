@@ -32,7 +32,7 @@ jobs:
         uses: tj-actions/branch-names@v5
 
       - name: Use Java 11
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
