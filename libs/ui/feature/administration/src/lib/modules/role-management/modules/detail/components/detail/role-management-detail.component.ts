@@ -43,7 +43,7 @@ export class RoleManagementDetailComponent implements OnDestroy {
   private _subscribeToRoleChanges(role: Role) {
     if (role.hasLink(WEBSOCKET_REL)) {
       this.messageService
-        .subscribeToMessages<RoleChangedMessage>(role.getLink(WEBSOCKET_REL)!.href)
+        .multicast<RoleChangedMessage>(role.getLink(WEBSOCKET_REL)!.href)
         .pipe(
           untilDestroyed(this),
           switchMap((roleChangedEvent) => {

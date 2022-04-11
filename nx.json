@@ -7,7 +7,7 @@
     ".eslintrc.json": "*"
   },
   "affected": {
-    "defaultBase": "refactor/UM-88"
+    "defaultBase": "development"
   },
   "npmScope": "app",
   "tasksRunnerOptions": {
@@ -15,7 +15,7 @@
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
         "cacheableOperations": ["build", "lint", "test", "pact", "e2e"],
-        "parallel": 1
+        "parallel": 3
       }
     }
   },

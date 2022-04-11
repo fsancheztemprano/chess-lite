@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptorProvider } from '@app/ui/shared/app';
 import { HalFormClientModule } from '@hal-form-client';
 import { EffectsNgModule } from '@ngneat/effects-ng';
-import { RxStompService } from '@stomp/ng2-stompjs';
 import { ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
@@ -45,7 +44,6 @@ export function initializeApp(appInitService: AppInitializationService) {
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-    RxStompService,
   ],
   bootstrap: [AppComponent],
 })

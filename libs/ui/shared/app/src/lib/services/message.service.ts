@@ -1,66 +1,70 @@
 import { Injectable } from '@angular/core';
-import { ApplicationMessage, MessageDestination, TOKEN_KEY } from '@app/ui/shared/domain';
-import { InjectableRxStompConfig, RxStompService } from '@stomp/ng2-stompjs';
-import { IMessage } from '@stomp/stompjs';
-import { filter, from, Observable, of } from 'rxjs';
+import { ApplicationMessage, HotSocket, TOKEN_KEY } from '@app/ui/shared/domain';
+import { RxStomp } from '@stomp/rx-stomp';
+import { RxStompConfig } from '@stomp/rx-stomp/esm6/rx-stomp-config';
+import { filter, from, Observable, of, share } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as SockJS from 'sockjs-client';
 import { filterNulls } from '../utils/filter-null.rxjs.pipe';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class MessageService {
-  private readonly RX_STOMP_CONFIG: InjectableRxStompConfig = {
-    webSocketFactory: () => {
-      return new SockJS(`/websocket`);
-    },
+const prepareBrokerURL = (path: string): string => {
+  const url = new URL(path, window.location.href);
+  url.protocol = url.protocol.replace('http', 'ws');
+  return url.href;
+};
+
+@Injectable({ providedIn: 'root' })
+export class MessageService extends RxStomp {
+  private readonly RX_STOMP_CONFIG: RxStompConfig = {
+    brokerURL: prepareBrokerURL('/websocket'),
     connectionTimeout: 10000,
     heartbeatIncoming: 0,
     heartbeatOutgoing: 20000,
-    reconnectDelay: 3000, // Wait in milliseconds before attempting auto reconnect
+    reconnectDelay: 1000, // Wait in milliseconds before attempting auto reconnect
   };
+  private multicasts: Map<string, Observable<ApplicationMessage>> = new Map<string, Observable<ApplicationMessage>>();
 
-  public static getDestinationString(destination: string | MessageDestination): string {
-    return (destination as MessageDestination)?.getDestination
-      ? (destination as MessageDestination)?.getDestination()
-      : (destination as string);
-  }
-
-  constructor(private readonly rxStompService: RxStompService) {
-    this.rxStompService.configure(this.RX_STOMP_CONFIG);
-  }
-
-  subscribeToMessages<T extends ApplicationMessage>(destination: string | MessageDestination): Observable<T> {
-    return this._subscribeToDestination(destination).pipe(
-      filter((message) => !!message?.body),
-      map((message) => JSON.parse(message.body)),
-      filterNulls(),
-    );
-  }
-
-  private _subscribeToDestination(destination: string | MessageDestination): Observable<IMessage> {
-    return this.rxStompService.watch(MessageService.getDestinationString(destination));
+  constructor() {
+    super();
+    this.configure(this.RX_STOMP_CONFIG);
   }
 
   public connect(): void {
     this._setAuthenticationHeaders();
-    this.rxStompService.activate();
+    this.activate();
+  }
+
+  public multicast<T extends ApplicationMessage = ApplicationMessage>(destination: string): Observable<T> {
+    if (!this.multicasts.has(destination)) {
+      this.multicasts.set(
+        destination,
+        this.watch(destination).pipe(
+          share(),
+          filter((message) => !!message?.body),
+          map((message) => JSON.parse(message.body)),
+          filterNulls(),
+        ),
+      );
+    }
+    return this.multicasts.get(destination) as Observable<T>;
   }
 
   public disconnect(): Observable<void> {
-    if (this.rxStompService.active) {
+    if (this.active) {
       this._setAuthenticationHeaders();
-      return from(this.rxStompService.deactivate());
+      return from(this.deactivate());
     }
     return of(void 0);
   }
 
   private _setAuthenticationHeaders() {
     const token = localStorage.getItem(TOKEN_KEY);
-    this.rxStompService.configure({
+    this.configure({
       connectHeaders: token ? { Authorization: 'Bearer ' + token } : undefined,
       disconnectHeaders: token ? { Authorization: 'Bearer ' + token } : undefined,
     });
+  }
+
+  public hotSocket(channel: string, size = 1) {
+    return new HotSocket(this.multicast(channel), size);
   }
 }

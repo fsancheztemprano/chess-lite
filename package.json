@@ -88,12 +88,11 @@
     "@ngneat/transloco": "4.0.0",
     "@ngneat/until-destroy": "9.0.1",
     "@nrwl/angular": "13.9.6",
-    "@stomp/ng2-stompjs": "8.0.0",
+    "@stomp/rx-stomp": "1.1.4",
     "angular-animations": "0.11.0",
     "jwt-decode": "3.1.2",
     "ngx-toastr": "14.2.2",
     "rxjs": "7.5.5",
-    "sockjs-client": "1.6.0",
     "tslib": "2.3.1",
     "url-template": "2.0.8",
     "zone.js": "0.11.5"

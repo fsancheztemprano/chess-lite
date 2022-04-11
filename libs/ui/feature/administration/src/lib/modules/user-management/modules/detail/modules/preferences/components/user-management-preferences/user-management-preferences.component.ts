@@ -53,7 +53,7 @@ export class UserManagementPreferencesComponent {
   private _subscribeToUserPreferencesChanges(userPreferences: UserPreferences) {
     if (userPreferences.hasLink(WEBSOCKET_REL)) {
       this.messageService
-        .subscribeToMessages<UserPreferencesChangedMessage>(userPreferences.getLink(WEBSOCKET_REL)!.href)
+        .multicast<UserPreferencesChangedMessage>(userPreferences.getLink(WEBSOCKET_REL)!.href)
         .pipe(
           untilDestroyed(this),
           switchMap(() => this.userManagementDetailService.fetchUserPreferences()),

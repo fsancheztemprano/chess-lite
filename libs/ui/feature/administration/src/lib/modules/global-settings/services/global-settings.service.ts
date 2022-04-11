@@ -67,7 +67,7 @@ export class GlobalSettingsService {
     this._globalSettingsChanges?.unsubscribe();
     if (globalSettings.hasLink(WEBSOCKET_REL)) {
       this._globalSettingsChanges = this.messageService
-        .subscribeToMessages<ApplicationMessage>(globalSettings.getLink(WEBSOCKET_REL)!.href)
+        .multicast<ApplicationMessage>(globalSettings.getLink(WEBSOCKET_REL)!.href)
         .pipe(switchMap(() => this._initializeGlobalSettings()))
         .subscribe();
     }

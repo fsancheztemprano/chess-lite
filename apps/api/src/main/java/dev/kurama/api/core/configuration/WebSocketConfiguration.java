@@ -36,11 +36,13 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
     config.enableSimpleBroker(ROOT_WEBSOCKET_CHANNEL);
+    config.setApplicationDestinationPrefixes("/ws/");
   }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint(ROOT_WEBSOCKET_PATH).withSockJS();
+    registry.addEndpoint(ROOT_WEBSOCKET_PATH).setAllowedOrigins("*");
+    registry.addEndpoint(ROOT_WEBSOCKET_PATH).setAllowedOrigins("*").withSockJS();
   }
 
   @Override
