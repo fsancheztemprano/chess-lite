@@ -143,7 +143,7 @@
     "jest-preset-angular": "11.1.1",
     "jsonwebtoken": "8.5.1",
     "junit-report-merger": "3.0.5",
-    "ng-packagr": "13.3.0",
+    "ng-packagr": "13.3.1",
     "npm-check-updates": "12.5.7",
     "nx": "13.9.6",
     "prettier": "2.6.2",
