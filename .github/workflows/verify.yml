@@ -32,7 +32,7 @@ jobs:
         uses: tj-actions/branch-names@v5
 
       - name: Use Java 11
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
@@ -151,7 +151,7 @@ jobs:
           global-coverage-warn-min: 60
 
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/api/target/site/**/jacoco.xml,coverage/**/lcov.info
@@ -166,14 +166,14 @@ jobs:
 
       - name: Upload Development Backend Artifact
         if: env.upload-dev-artifacts && env.dependabot-run == 'false'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: backend
           path: apps/api/target/*.jar
 
       - name: Upload Development Frontend Artifact
         if: env.upload-dev-artifacts && env.dependabot-run == 'false'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: frontend
           path: dist/apps/app
