@@ -86,7 +86,7 @@
     "@ngneat/elf-persist-state": "1.1.1",
     "@ngneat/subscribe": "3.0.2",
     "@ngneat/transloco": "4.0.0",
-    "@ngneat/until-destroy": "9.0.1",
+    "@ngneat/until-destroy": "9.0.2",
     "@nrwl/angular": "13.9.6",
     "@stomp/rx-stomp": "1.1.4",
     "angular-animations": "0.11.0",
