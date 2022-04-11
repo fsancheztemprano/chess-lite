@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApplicationMessage, TOKEN_KEY } from '@app/ui/shared/domain';
+import { ApplicationMessage, HotSocket, TOKEN_KEY } from '@app/ui/shared/domain';
 import { RxStomp } from '@stomp/rx-stomp';
 import { RxStompConfig } from '@stomp/rx-stomp/esm6/rx-stomp-config';
 import { filter, from, Observable, of, share } from 'rxjs';
@@ -62,5 +62,9 @@ export class MessageService extends RxStomp {
       connectHeaders: token ? { Authorization: 'Bearer ' + token } : undefined,
       disconnectHeaders: token ? { Authorization: 'Bearer ' + token } : undefined,
     });
+  }
+
+  public hotSocket(channel: string, size = 1) {
+    return new HotSocket(this.multicast(channel), size);
   }
 }
