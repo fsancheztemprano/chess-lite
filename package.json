@@ -91,7 +91,7 @@
     "@stomp/rx-stomp": "1.1.4",
     "angular-animations": "0.11.0",
     "jwt-decode": "3.1.2",
-    "ngx-toastr": "14.2.3",
+    "ngx-toastr": "14.2.4",
     "rxjs": "7.5.5",
     "tslib": "2.3.1",
     "url-template": "2.0.8",
