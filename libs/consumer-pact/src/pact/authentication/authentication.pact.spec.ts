@@ -43,7 +43,7 @@ describe('Authentication Pacts', () => {
 
   describe('signup', () => {
     beforeEach(() => {
-      halFormService.setRootResource({
+      halFormService.setResource({
         _links: {
           self: {
             href: '/api',
@@ -150,7 +150,7 @@ describe('Authentication Pacts', () => {
 
   describe('login', () => {
     beforeEach(() => {
-      halFormService.setRootResource({
+      halFormService.setResource({
         _links: {
           self: {
             href: '/api',
@@ -230,7 +230,7 @@ describe('Authentication Pacts', () => {
 
   describe('refresh token', () => {
     beforeEach(() => {
-      halFormService.setRootResource({
+      halFormService.setResource({
         _links: {
           self: {
             href: '/api',
@@ -334,7 +334,7 @@ describe('Authentication Pacts', () => {
 
   describe('Activation token', () => {
     beforeEach(() => {
-      halFormService.setRootResource({
+      halFormService.setResource({
         _links: {
           self: {
             href: '/api',
@@ -383,7 +383,7 @@ describe('Authentication Pacts', () => {
 
   describe('Activate account', () => {
     beforeEach(() => {
-      halFormService.setRootResource({
+      halFormService.setResource({
         _links: {
           self: {
             href: '/api',

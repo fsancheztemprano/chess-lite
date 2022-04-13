@@ -51,7 +51,7 @@ describe('User Pacts', () => {
       ],
     });
     const administrationService: AdministrationService = TestBed.inject(AdministrationService);
-    administrationService.setRootResource({
+    administrationService.setResource({
       _links: {
         self: {
           href: '/api/administration',

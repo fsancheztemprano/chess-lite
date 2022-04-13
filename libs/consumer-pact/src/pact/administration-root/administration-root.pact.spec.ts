@@ -25,7 +25,7 @@ describe('Administration Root Resource Pacts', () => {
       providers: [avengersAssemble(provider.mockService.baseUrl)],
     });
     const halFormService: HalFormService = TestBed.inject(HalFormService);
-    halFormService.setRootResource({
+    halFormService.setResource({
       _links: {
         self: {
           href: '/api',

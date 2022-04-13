@@ -17,7 +17,7 @@ export class UserManagementService extends HalFormService {
     super(httpClient, '');
     this.administrationService
       .getEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL)
-      .subscribe((resource) => this.setRootResource(resource));
+      .subscribe((resource) => this.setResource(resource));
   }
 
   public fetchUsers(pageable?: Pageable): Observable<UserPage> {

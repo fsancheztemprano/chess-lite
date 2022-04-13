@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as parser from 'url-template';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
 import { ContentTypeEnum } from './content-type.enum';
@@ -42,8 +42,7 @@ export class Link implements ILink {
     if (this.templated && !params) {
       return null;
     }
-    const template = parser.parse(this.href);
-    return template.expand(params);
+    return parser.parse(this.href).expand(params);
   }
 
   follow<T extends Resource = Resource>(params?: any): Observable<T> {
@@ -53,13 +52,11 @@ export class Link implements ILink {
   fetch<T>(params?: any): Observable<HttpResponse<T>> {
     const url: string | null = this.parseUrl(params || {});
     return url
-      ? this.http
-          .get<T>(url, {
-            headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
-            observe: 'response',
-            responseType: 'json',
-          })
-          .pipe(first())
+      ? this.http.get<T>(url, {
+          headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
+          observe: 'response',
+          responseType: 'json',
+        })
       : throwError(() => new Error(`Un-parsable Url ${url}, ${this.href},  ${params}`));
   }
 }

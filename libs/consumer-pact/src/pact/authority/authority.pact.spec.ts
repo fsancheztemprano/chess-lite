@@ -27,7 +27,7 @@ describe('Authority Pacts', () => {
     });
 
     const administrationService: AdministrationService = TestBed.inject(AdministrationService);
-    administrationService.setRootResource({
+    administrationService.setResource({
       _embedded: {
         [RoleManagementRelations.ROLE_MANAGEMENT_REL]: {
           _links: {

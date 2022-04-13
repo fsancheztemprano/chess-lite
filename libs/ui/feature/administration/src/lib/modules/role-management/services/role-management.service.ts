@@ -17,7 +17,7 @@ export class RoleManagementService extends HalFormService {
     super(httpClient, '');
     this.administrationService
       .getEmbeddedObject(RoleManagementRelations.ROLE_MANAGEMENT_REL)
-      .subscribe((resource) => this.setRootResource(resource));
+      .subscribe((resource) => this.setResource(resource));
   }
 
   public fetchRoles(pageable?: Pageable): Observable<RolePage> {
