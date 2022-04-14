@@ -1,7 +1,10 @@
+import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientModule } from '../hal-form-client.module';
+import { ContentTypeEnum } from './content-type.enum';
 import { Link } from './link';
+import { Resource } from './resource';
 
 describe('Link', () => {
   let httpTestingController: HttpTestingController;
@@ -124,4 +127,104 @@ describe('Link', () => {
       );
     });
   });
+
+  describe('fetch', () => {
+    it('should fetch resource', (done) => {
+      Link.ofUrl('/api/ve/users/1')
+        .fetch<{ id: string }>()
+        .subscribe((response: HttpResponse<{ id: string }>) => {
+          expect(response).toBeTruthy();
+          expect(response.body).toBeTruthy();
+          expect(response.body?.id).toBe('1');
+
+          done();
+        });
+
+      const testRequest = httpTestingController.expectOne('/api/ve/users/1');
+      expect(testRequest.request.headers.get('Accept')).toBe(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS);
+      testRequest.flush({ id: '1' });
+    });
+
+    it('should fetch resource overriding headers', (done) => {
+      Link.of({ href: '/api/ve/users/1', headers: { Accept: ContentTypeEnum.APPLICATION_JSON } })
+        .fetch<{ id: string }>()
+        .subscribe((response: HttpResponse<{ id: string }>) => {
+          expect(response).toBeTruthy();
+          expect(response.body).toBeTruthy();
+          expect(response.body?.id).toBe('1');
+
+          done();
+        });
+
+      const testRequest = httpTestingController.expectOne('/api/ve/users/1');
+      expect(testRequest.request.headers.get('Accept')).toBe(ContentTypeEnum.APPLICATION_JSON);
+      testRequest.flush({ id: '1' });
+    });
+
+    it('should parse parameters and fetch resource', (done) => {
+      Link.ofUrl('/api/ve/users/{userId}')
+        .fetch<{ id: string }>({ userId: '1' })
+        .subscribe((response: HttpResponse<{ id: string }>) => {
+          expect(response).toBeTruthy();
+          expect(response.body).toBeTruthy();
+          expect(response.body?.id).toBe('1');
+
+          done();
+        });
+
+      const testRequest = httpTestingController.expectOne('/api/ve/users/1');
+      expect(testRequest.request.headers.get('Accept')).toBe(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS);
+      testRequest.flush({ id: '1' });
+    });
+
+    it('should throw error if urs is un-parsable', (done) => {
+      Link.of({ href: '/api/ve/users/{userId}', templated: true })
+        .fetch<{ id: string }>(null)
+        .subscribe({
+          error: (error) => {
+            expect(error).toBeTruthy();
+            expect(error.message).toBe('Un-parsable Url null, /api/ve/users/{userId},  null');
+            done();
+          },
+        });
+
+      httpTestingController.expectNone('/api/ve/users/');
+    });
+  });
+
+  describe('follow', () => {
+    it('should fetch and instantiate a new resource', (done) => {
+      Link.ofUrl('/api/v1/users/1')
+        .follow<MockResource>()
+        .subscribe((resource: MockResource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toBeInstanceOf(Resource);
+          expect(resource.id).toBe('1');
+          expect(resource.hasLink()).toBeTruthy();
+          done();
+        });
+
+      httpTestingController.expectOne('/api/v1/users/1').flush({
+        id: '1',
+        _links: { self: { href: '/api/v1/users/1' } },
+      });
+    });
+
+    it('should fetch and return an empty resource if response is empty', (done) => {
+      Link.ofUrl('/api/v1/users/1')
+        .follow<MockResource>()
+        .subscribe((resource: MockResource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toBeInstanceOf(Resource);
+          expect(resource.hasLink()).toBeFalsy();
+          done();
+        });
+
+      httpTestingController.expectOne('/api/v1/users/1').flush(null);
+    });
+  });
 });
+
+class MockResource extends Resource {
+  id?: string;
+}

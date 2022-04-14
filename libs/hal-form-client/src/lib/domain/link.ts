@@ -11,6 +11,7 @@ export interface ILink {
   templated?: boolean;
   type?: string;
   name?: string;
+  headers?: HttpHeaders | { [p: string]: string | string[] };
 }
 
 export class Link implements ILink {
@@ -20,7 +21,6 @@ export class Link implements ILink {
   templated?: boolean;
   type?: string;
   name?: string;
-
   headers?: HttpHeaders | { [p: string]: string | string[] };
 
   public static of(raw: ILink): Link {
@@ -36,6 +36,7 @@ export class Link implements ILink {
     this.templated = raw.templated;
     this.type = raw.type;
     this.name = raw.name;
+    this.headers = raw.headers;
   }
 
   parseUrl(params: any): string | null {
@@ -50,7 +51,7 @@ export class Link implements ILink {
   }
 
   fetch<T>(params?: any): Observable<HttpResponse<T>> {
-    const url: string | null = this.parseUrl(params || {});
+    const url: string | null = this.parseUrl(params);
     return url
       ? this.http.get<T>(url, {
           headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
