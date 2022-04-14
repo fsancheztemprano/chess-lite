@@ -12,9 +12,9 @@ import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
   providedIn: 'root',
 })
 export class HalFormService {
-  private _rootResource: BehaviorSubject<Resource> = new BehaviorSubject<Resource>(new Resource({}));
+  protected _rootResource: BehaviorSubject<Resource> = new BehaviorSubject<Resource>(new Resource({}));
 
-  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected _rootUrl = '') {}
+  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected _rootUrl: string) {}
 
   initialize(): Observable<Resource> {
     return this.httpClient

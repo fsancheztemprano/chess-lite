@@ -44,6 +44,21 @@ describe('HalFormService', () => {
         .flush(mockResource, { headers: { 'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS } });
     });
 
+    it('should initialize the root resource on null body', (done) => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      service.initialize().subscribe((resource: Resource) => {
+        expect(resource).toBeTruthy();
+        expect(service['_rootResource'].value).toBe(resource);
+        expect(warnSpy).toHaveBeenCalledWith(`Provided url /api is not Hal Form Compliant`);
+        done();
+      });
+
+      httpTestingController
+        .expectOne('/api')
+        .flush(null, { headers: { 'Content-Type': ContentType.APPLICATION_JSON_HAL } });
+      warnSpy.mockRestore();
+    });
+
     it('should warn if response is not hal compliant', (done) => {
       const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
