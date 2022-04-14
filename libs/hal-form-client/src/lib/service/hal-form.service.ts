@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
-import { ContentTypeEnum } from '../domain/content-type.enum';
+import { ContentType } from '../domain/domain';
 import { Link } from '../domain/link';
 import { IResource, Resource } from '../domain/resource';
 import { Template } from '../domain/template';
@@ -19,16 +19,16 @@ export class HalFormService {
   initialize(): Observable<Resource> {
     return this.httpClient
       .get<Resource>(this._rootUrl, {
-        headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+        headers: { Accept: ContentType.APPLICATION_JSON_HAL_FORMS },
         observe: 'response',
       })
       .pipe(
         first(),
         tap({
           next: (response) => {
-            if (!response.headers.get('Content-Type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS)) {
+            if (!response.headers.get('Content-Type')?.includes(ContentType.APPLICATION_JSON_HAL_FORMS)) {
               console.warn(`Provided url ${this._rootUrl} is not Hal Form Compliant`);
-              if (!response.headers.get('Content-Type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL)) {
+              if (!response.headers.get('Content-Type')?.includes(ContentType.APPLICATION_JSON_HAL)) {
                 console.warn(`Provided url ${this._rootUrl} is not Hal Compliant`);
               }
             }

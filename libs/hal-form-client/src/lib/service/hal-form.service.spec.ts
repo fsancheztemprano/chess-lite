@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ContentTypeEnum } from '../domain/content-type.enum';
+import { ContentType } from '../domain/domain';
 import { IResource, Resource } from '../domain/resource';
 import { HalFormClientModule } from '../hal-form-client.module';
 import { HalFormService } from './hal-form.service';
@@ -41,7 +41,7 @@ describe('HalFormService', () => {
 
       httpTestingController
         .expectOne('/api')
-        .flush(mockResource, { headers: { 'Content-Type': ContentTypeEnum.APPLICATION_JSON_HAL_FORMS } });
+        .flush(mockResource, { headers: { 'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS } });
     });
 
     it('should warn if response is not hal compliant', (done) => {

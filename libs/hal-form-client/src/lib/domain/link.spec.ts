@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientModule } from '../hal-form-client.module';
-import { ContentTypeEnum } from './content-type.enum';
+import { ContentType } from './domain';
 import { Link } from './link';
 import { Resource } from './resource';
 
@@ -48,12 +48,12 @@ describe('Link', () => {
         });
 
       const testRequest = httpTestingController.expectOne('/api/ve/users/1');
-      expect(testRequest.request.headers.get('Accept')).toBe(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS);
+      expect(testRequest.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
       testRequest.flush({ id: '1' });
     });
 
     it('should fetch resource overriding headers', (done) => {
-      Link.of({ href: '/api/ve/users/1', headers: { Accept: ContentTypeEnum.APPLICATION_JSON } })
+      Link.of({ href: '/api/ve/users/1', headers: { Accept: ContentType.APPLICATION_JSON } })
         .fetch<{ id: string }>()
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
@@ -64,7 +64,7 @@ describe('Link', () => {
         });
 
       const testRequest = httpTestingController.expectOne('/api/ve/users/1');
-      expect(testRequest.request.headers.get('Accept')).toBe(ContentTypeEnum.APPLICATION_JSON);
+      expect(testRequest.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON);
       testRequest.flush({ id: '1' });
     });
 
@@ -80,7 +80,7 @@ describe('Link', () => {
         });
 
       const testRequest = httpTestingController.expectOne('/api/ve/users/1');
-      expect(testRequest.request.headers.get('Accept')).toBe(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS);
+      expect(testRequest.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
       testRequest.flush({ id: '1' });
     });
   });

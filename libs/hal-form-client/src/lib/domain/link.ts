@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
 import { parseUrl } from '../utils/url-template.utils';
-import { ContentTypeEnum } from './content-type.enum';
+import { ContentType } from './domain';
 import { Resource } from './resource';
 
 export interface ILink {
@@ -45,7 +45,7 @@ export class Link implements ILink {
 
   fetch<T>(parameters?: any): Observable<HttpResponse<T>> {
     return this.http.get<T>(parseUrl(this.href, parameters), {
-      headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
+      headers: { ...{ Accept: ContentType.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
       observe: 'response',
       responseType: 'json',
     });

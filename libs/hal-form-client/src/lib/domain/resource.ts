@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { HalFormsEntityName, noEntityError } from '../utils/exceptions.utils';
+import { HalFormsEntityName } from './domain';
 import { ILink, Link } from './link';
 import { AffordanceOptions, ITemplate, Template } from './template';
 
@@ -25,6 +25,20 @@ export interface IResource {
   [key: string]: any;
 }
 
+function noEntityError(errorMessage: string | Error | undefined, entity: HalFormsEntityName, key: string): Error {
+  let error;
+  if (errorMessage) {
+    if (typeof errorMessage === 'string') {
+      error = Error(errorMessage);
+    } else {
+      error = errorMessage;
+    }
+  } else {
+    error = Error(`Can not find ${entity}: ${key}`);
+  }
+  return error;
+}
+
 export class Resource implements IResource {
   _links?: {
     self: Link;
@@ -42,11 +56,11 @@ export class Resource implements IResource {
 
   [key: string]: any;
 
-  public static of(raw: IResource) {
+  public static of(raw?: IResource) {
     return new Resource(raw);
   }
 
-  constructor(raw: IResource) {
+  constructor(raw?: IResource) {
     if (!raw) {
       raw = {};
     }
@@ -66,9 +80,7 @@ export class Resource implements IResource {
     if (raw._templates) {
       this._templates = {} as any;
       for (const key of Object.keys(raw._templates)) {
-        if (this._templates) {
-          this._templates[key] = new Template({ target: this._links?.self.href, ...raw._templates[key] });
-        }
+        this._templates![key] = new Template({ target: this._links?.self?.href, ...raw._templates[key] });
       }
     }
   }

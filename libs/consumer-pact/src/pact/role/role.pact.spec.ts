@@ -317,7 +317,7 @@ describe('Role Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:create'] }));
       provider.addInteraction(interaction).then(() => {
         const coreRole = JSON.parse(JSON.stringify(pactRole));
-        coreRole._links.self.href = '/api/role/coreRoleId';
+        coreRole._templates.update.target = '/api/role/coreRoleId';
         service.updateRole(new Role(coreRole), { name: 'PACT_ROLE' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -349,7 +349,7 @@ describe('Role Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
         const notFoundRole = JSON.parse(JSON.stringify(pactRole));
-        notFoundRole._links.self.href = '/api/role/notFoundId';
+        notFoundRole._templates.update.target = '/api/role/notFoundId';
         service.updateRole(new Role(notFoundRole), { name: 'PACT_ROLE' }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -398,7 +398,7 @@ describe('Role Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
       provider.addInteraction(interaction).then(() => {
         const coreRole = JSON.parse(JSON.stringify(pactRole));
-        coreRole._links.self.href = '/api/role/coreRoleId';
+        coreRole._templates.delete.target = '/api/role/coreRoleId';
         service.deleteRole(new Role(coreRole)).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -430,7 +430,7 @@ describe('Role Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
       provider.addInteraction(interaction).then(() => {
         const notFoundRole = JSON.parse(JSON.stringify(pactRole));
-        notFoundRole._links.self.href = '/api/role/notFoundId';
+        notFoundRole._templates.delete.target = '/api/role/notFoundId';
         service.deleteRole(new Role(notFoundRole)).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();

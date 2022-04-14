@@ -2,8 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientModule } from '../hal-form-client.module';
-import { ContentTypeEnum } from './content-type.enum';
-import { HttpMethodEnum } from './http-method.enum';
+import { ContentType, HttpMethod } from './domain';
 import { Resource } from './resource';
 import { ITemplate, Template } from './template';
 
@@ -25,20 +24,20 @@ describe('Template', () => {
   afterEach(() => httpTestingController.verify());
 
   it('should create', () => {
-    expect(new Template({ method: HttpMethodEnum.PATCH })).toBeTruthy();
-    expect(Template.of({ method: HttpMethodEnum.PATCH })).toBeTruthy();
+    expect(new Template({ method: HttpMethod.PATCH })).toBeTruthy();
+    expect(Template.of({ method: HttpMethod.PATCH })).toBeTruthy();
   });
 
   it('should create with default method', () => {
-    expect(new Template({}).method).toBe(HttpMethodEnum.GET);
+    expect(new Template({}).method).toBe(HttpMethod.GET);
   });
 
   it('should create with template properties', () => {
     const iTemplate: ITemplate = {
-      method: HttpMethodEnum.PATCH,
+      method: HttpMethod.PATCH,
       target: '/api/v1/users/1',
       title: 'Update User',
-      contentType: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+      contentType: ContentType.APPLICATION_JSON_HAL_FORMS,
       properties: [
         {
           name: 'firstName',
@@ -128,7 +127,7 @@ describe('Template', () => {
   describe('afford', () => {
     it('should afford template', (done) => {
       Template.of({
-        method: HttpMethodEnum.PATCH,
+        method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
         .afford<MockResource>({ body: { name: 'new name' } })
@@ -141,20 +140,20 @@ describe('Template', () => {
       httpTestingController
         .expectOne((request) => {
           return (
-            request.method === HttpMethodEnum.PATCH &&
+            request.method === HttpMethod.PATCH &&
             request.url === '/api/v1/users/1' &&
             request.body?.name === 'new name' &&
             request.headers.keys().length === 2 &&
-            request.headers.get('Content-type') === ContentTypeEnum.APPLICATION_JSON &&
-            request.headers.get('Accept') === ContentTypeEnum.APPLICATION_JSON_HAL_FORMS
+            request.headers.get('Content-type') === ContentType.APPLICATION_JSON &&
+            request.headers.get('Accept') === ContentType.APPLICATION_JSON_HAL_FORMS
           );
         })
         .flush({ name: 'new name' });
-    });
+    };);
 
     it('should afford null template', (done) => {
       Template.of({
-        method: HttpMethodEnum.PATCH,
+        method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
         .afford<MockResource>()
@@ -167,11 +166,11 @@ describe('Template', () => {
       httpTestingController
         .expectOne((request) => {
           return (
-            request.method === HttpMethodEnum.PATCH &&
+            request.method === HttpMethod.PATCH &&
             request.url === '/api/v1/users/1' &&
             request.body === null &&
             request.headers.keys().length === 1 &&
-            request.headers.get('Accept') === ContentTypeEnum.APPLICATION_JSON_HAL_FORMS
+            request.headers.get('Accept') === ContentType.APPLICATION_JSON_HAL_FORMS
           );
         })
         .flush({ id: '1' });
@@ -179,12 +178,12 @@ describe('Template', () => {
 
     it('should afford template overriding headers', (done) => {
       Template.of({
-        method: HttpMethodEnum.PATCH,
+        method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
         .afford<MockResource>({
           body: { name: 'new name' },
-          headers: { 'Content-type': ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+          headers: { 'Content-type': ContentType.APPLICATION_JSON_HAL_FORMS },
         })
         .subscribe((response: HttpResponse<MockResource>) => {
           expect(response).toBeTruthy();
@@ -195,10 +194,10 @@ describe('Template', () => {
       httpTestingController
         .expectOne((request) => {
           return (
-            request.method === HttpMethodEnum.PATCH &&
+            request.method === HttpMethod.PATCH &&
             request.url === '/api/v1/users/1' &&
             request.body?.name === 'new name' &&
-            request.headers.get('Content-type') === ContentTypeEnum.APPLICATION_JSON_HAL_FORMS
+            request.headers.get('Content-type') === ContentType.APPLICATION_JSON_HAL_FORMS
           );
         })
         .flush({ name: 'new name' });
@@ -206,7 +205,7 @@ describe('Template', () => {
 
     it('should parse target and afford template', (done) => {
       Template.of({
-        method: HttpMethodEnum.PATCH,
+        method: HttpMethod.PATCH,
         target: '/api/v1/users/{userId}',
       })
         .afford<MockResource>({ body: { name: 'new name' }, params: { userId: 1 } })
@@ -219,7 +218,7 @@ describe('Template', () => {
       httpTestingController
         .expectOne((request) => {
           return (
-            request.method === HttpMethodEnum.PATCH &&
+            request.method === HttpMethod.PATCH &&
             request.url === '/api/v1/users/1' &&
             request.body?.name === 'new name'
           );
@@ -246,7 +245,7 @@ describe('Template', () => {
   describe('submit', () => {
     it('should submit and instantiate the response', () => {
       Template.of({
-        method: HttpMethodEnum.PATCH,
+        method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
         .submit<MockResource>({ body: { name: 'new name' } })
@@ -260,10 +259,10 @@ describe('Template', () => {
       httpTestingController
         .expectOne((request) => {
           return (
-            request.method === HttpMethodEnum.PATCH &&
+            request.method === HttpMethod.PATCH &&
             request.url === '/api/v1/users/1' &&
             request.body?.name === 'new name' &&
-            request.headers.get('Content-type') === ContentTypeEnum.APPLICATION_JSON
+            request.headers.get('Content-type') === ContentType.APPLICATION_JSON
           );
         })
         .flush({ name: 'new name', _links: { self: { href: '/api/v1/users/1' } } });
@@ -271,7 +270,7 @@ describe('Template', () => {
 
     it('should submit and return an empty resource if response is empty', () => {
       Template.of({
-        method: HttpMethodEnum.PATCH,
+        method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
         .submit<MockResource>({ body: { name: 'new name' } })
@@ -284,10 +283,10 @@ describe('Template', () => {
       httpTestingController
         .expectOne((request) => {
           return (
-            request.method === HttpMethodEnum.PATCH &&
+            request.method === HttpMethod.PATCH &&
             request.url === '/api/v1/users/1' &&
             request.body?.name === 'new name' &&
-            request.headers.get('Content-type') === ContentTypeEnum.APPLICATION_JSON
+            request.headers.get('Content-type') === ContentType.APPLICATION_JSON
           );
         })
         .flush(null);

@@ -6,7 +6,7 @@ import {
   updateProfileTemplate,
   uploadAvatarTemplate,
 } from '@app/ui/testing';
-import { ContentTypeEnum } from '@hal-form-client';
+import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
@@ -21,8 +21,8 @@ export namespace SignupPact {
       method: HTTPMethod.POST,
       path: '/api/auth/signup',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         username: 'janeDoe',
@@ -41,8 +41,8 @@ export namespace SignupPact {
       method: HTTPMethod.POST,
       path: '/api/auth/signup',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         username: 'username1',
@@ -64,8 +64,8 @@ export namespace SignupPact {
       method: HTTPMethod.POST,
       path: '/api/auth/signup',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         username: 'username2',
@@ -88,8 +88,8 @@ export namespace SignupPact {
       method: HTTPMethod.POST,
       path: '/api/auth/signup',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         email: 'username3@localhost',
@@ -111,8 +111,8 @@ export namespace SignupPact {
       method: HTTPMethod.POST,
       path: '/api/auth/signup',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         username: 'pactUser',
@@ -137,8 +137,8 @@ export namespace LoginPact {
       method: HTTPMethod.POST,
       path: '/api/auth/login',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         username: 'lockedRoleUser',
@@ -161,8 +161,8 @@ export namespace LoginPact {
       method: HTTPMethod.POST,
       path: '/api/auth/login',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         username: 'lockedUser',
@@ -185,8 +185,8 @@ export namespace LoginPact {
       method: HTTPMethod.POST,
       path: '/api/auth/login',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         username: 'pactUser',
@@ -197,7 +197,7 @@ export namespace LoginPact {
       status: 200,
       headers: {
         [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: HttpHeaderKey.JWT_TOKEN,
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
         [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
       },
       body: {
@@ -228,7 +228,7 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
       },
     },
@@ -237,7 +237,7 @@ export namespace RefreshTokenPact {
       headers: {
         [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: HttpHeaderKey.JWT_TOKEN,
         [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: { ...pactCurrentUser },
     },
@@ -251,7 +251,7 @@ export namespace RefreshTokenPact {
       path: '/api/auth/token',
       headers: {
         Authorization: bearer(jwtToken({ user: { id: 'lockedRoleUserId' }, authorities: ['profile:read'] })),
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
     willRespondWith: {
@@ -271,7 +271,7 @@ export namespace RefreshTokenPact {
       path: '/api/auth/token',
       headers: {
         Authorization: bearer(jwtToken({ user: { id: 'lockedUserId' }, authorities: ['profile:read'] })),
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
     willRespondWith: {
@@ -290,7 +290,7 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
     willRespondWith: {
@@ -309,7 +309,7 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: 'notFoundId' } })),
       },
     },
@@ -331,8 +331,8 @@ export namespace ActivationTokenPact {
       method: HTTPMethod.POST,
       path: '/api/auth/token',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         email: 'notFound@localhost',
@@ -354,8 +354,8 @@ export namespace ActivationTokenPact {
       method: HTTPMethod.POST,
       path: '/api/auth/token',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         email: 'lockedRoleUser@localhost',
@@ -375,8 +375,8 @@ export namespace ActivateAccountPact {
       method: HTTPMethod.POST,
       path: '/api/auth/activate',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         password: 'notFoundPassword',
@@ -400,8 +400,8 @@ export namespace ActivateAccountPact {
       method: HTTPMethod.POST,
       path: '/api/auth/activate',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         password: 'activationUser',

@@ -3,8 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
 import { parseUrl } from '../utils/url-template.utils';
-import { ContentTypeEnum } from './content-type.enum';
-import { HttpMethodEnum } from './http-method.enum';
+import { ContentType, HttpMethod } from './domain';
 import { ILink } from './link';
 import { Resource } from './resource';
 
@@ -39,9 +38,9 @@ export interface ITemplatePropertyOption {
 }
 
 export interface ITemplate {
-  method?: HttpMethodEnum | string;
+  method?: HttpMethod | string;
   title?: string;
-  contentType?: ContentTypeEnum | string;
+  contentType?: ContentType | string;
   properties?: ITemplateProperty[];
   target?: string;
 }
@@ -56,9 +55,9 @@ export interface AffordanceOptions {
 export class Template implements ITemplate {
   private readonly http: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
-  method: HttpMethodEnum | string;
+  method: HttpMethod | string;
   title?: string;
-  contentType?: ContentTypeEnum | string;
+  contentType?: ContentType | string;
   properties?: ITemplateProperty[];
   target?: string;
 
@@ -67,7 +66,7 @@ export class Template implements ITemplate {
   }
 
   constructor(raw: ITemplate) {
-    this.method = raw.method || HttpMethodEnum.GET;
+    this.method = raw.method || HttpMethod.GET;
     this.target = raw.target;
     if (raw.contentType) {
       this.contentType = raw.contentType;
@@ -90,9 +89,9 @@ export class Template implements ITemplate {
     if (!this.target?.length) {
       return throwError(() => new Error('Template has no target'));
     }
-    const headers: any = { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS };
-    if (options?.body && this.contentType !== ContentTypeEnum.MULTIPART_FILE) {
-      headers['Content-Type'] = this.contentType || ContentTypeEnum.APPLICATION_JSON;
+    const headers: any = { Accept: ContentType.APPLICATION_JSON_HAL_FORMS };
+    if (options?.body && this.contentType !== ContentType.MULTIPART_FILE) {
+      headers['Content-Type'] = this.contentType || ContentType.APPLICATION_JSON;
     }
     return this.http.request<T>(this.method, parseUrl(this.target, options?.params), {
       headers: { ...headers, ...options?.headers },
