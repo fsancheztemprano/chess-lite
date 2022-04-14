@@ -28,7 +28,7 @@ describe('Global Settings Pacts', () => {
       const interaction: InteractionObject = GetGlobalSettingPact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['global-settings:read'] }));
-        Link.ofUrl('/api/global-settings')
+        Link.ofHref('/api/global-settings')
           .fetch<GlobalSettings>()
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
@@ -47,7 +47,7 @@ describe('Global Settings Pacts', () => {
       const interaction: InteractionObject = GetGlobalSettingPact.with_update;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ["global-settings:read', 'global-settings:update"] }));
-        Link.ofUrl('/api/global-settings')
+        Link.ofHref('/api/global-settings')
           .fetch<GlobalSettings>()
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
@@ -62,7 +62,7 @@ describe('Global Settings Pacts', () => {
       const interaction: InteractionObject = GetGlobalSettingPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken());
-        Link.ofUrl('/api/global-settings')
+        Link.ofHref('/api/global-settings')
           .fetch<GlobalSettings>()
           .subscribe({
             error: (error: HttpErrorResponse) => {

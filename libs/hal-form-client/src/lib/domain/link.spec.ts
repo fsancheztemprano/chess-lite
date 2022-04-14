@@ -6,6 +6,10 @@ import { ContentTypeEnum } from './content-type.enum';
 import { Link } from './link';
 import { Resource } from './resource';
 
+class MockResource extends Resource {
+  id?: string;
+}
+
 describe('Link', () => {
   let httpTestingController: HttpTestingController;
 
@@ -29,14 +33,14 @@ describe('Link', () => {
     expect(link.templated).toBe(true);
   });
 
-  describe('parseUrl', () => {
+  describe('parseHref', () => {
     it('should disregard params if not templated', () => {
-      expect(new Link({ href: '/api/v1/users' }).parseUrl({ id: 'userid' })).toBe('/api/v1/users');
+      expect(new Link({ href: '/api/v1/users' }).parseHref({ id: 'userid' })).toBe('/api/v1/users');
     });
 
     it('should disregard params if not needed', () => {
       expect(
-        new Link({ href: '/api/v1/users/{userId}' }).parseUrl({
+        new Link({ href: '/api/v1/users/{userId}' }).parseHref({
           userId: 'userid',
           extra: 'extra',
         }),
@@ -44,7 +48,7 @@ describe('Link', () => {
     });
 
     it('should return return expanded ur with null parameters', () => {
-      expect(new Link({ href: '/api/v1/users/{userId}', templated: true }).parseUrl(null)).toBe('/api/v1/users/');
+      expect(new Link({ href: '/api/v1/users/{userId}', templated: true }).parseHref(null)).toBe('/api/v1/users/');
     });
 
     it('should return templates of params not available on parsing', () => {
@@ -52,61 +56,61 @@ describe('Link', () => {
         new Link({
           href: '/api/v1/users/{userId}/posts/{postId}',
           templated: true,
-        }).parseUrl({ userId: 'userId' }),
+        }).parseHref({ userId: 'userId' }),
       ).toBe('/api/v1/users/userId/posts/');
     });
 
-    it('should return parsed templated url', () => {
+    it('should return parsed templated href', () => {
       expect(
         new Link({
           href: '/api/v1/users/{userId}',
           templated: true,
-        }).parseUrl({ userId: 'userId' }),
+        }).parseHref({ userId: 'userId' }),
       ).toBe('/api/v1/users/userId');
     });
 
-    it('should return parsed templated url with a query parameter', () => {
+    it('should return parsed templated href with a query parameter', () => {
       expect(
         new Link({
           href: '/api/v1/users/{userId}{?locale}',
           templated: true,
-        }).parseUrl({ userId: 'userId', locale: 'en' }),
+        }).parseHref({ userId: 'userId', locale: 'en' }),
       ).toBe('/api/v1/users/userId?locale=en');
     });
 
-    it('should return parsed templated url with multiple query parameters', () => {
+    it('should return parsed templated href with multiple query parameters', () => {
       expect(
         new Link({
           href: '/api/v1/users/{?locale,status}',
           templated: true,
-        }).parseUrl({ userId: 'userId', locale: 'en', status: 'active' }),
+        }).parseHref({ userId: 'userId', locale: 'en', status: 'active' }),
       ).toBe('/api/v1/users/?locale=en&status=active');
     });
 
-    it('should return parsed templated url with nested query parameters', () => {
+    it('should return parsed templated href with nested query parameters', () => {
       expect(
         new Link({
           href: '/api/v1/users{?locale,filters*}',
           templated: true,
-        }).parseUrl({ filters: { locale: 'en', status: 'active' } }),
+        }).parseHref({ filters: { locale: 'en', status: 'active' } }),
       ).toBe('/api/v1/users?locale=en&status=active');
     });
 
-    it('should return parsed templated url with query parameters containing alphanumeric characters', () => {
+    it('should return parsed templated href with query parameters containing alphanumeric characters', () => {
       expect(
         new Link({
           href: '/api/v1/users{?characters}',
           templated: true,
-        }).parseUrl({ characters: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' }),
+        }).parseHref({ characters: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' }),
       ).toBe('/api/v1/users?characters=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
     });
 
-    it('should return parsed templated url with query parameters containing special characters', () => {
+    it('should return parsed templated href with query parameters containing special characters', () => {
       expect(
         new Link({
           href: '/api/v1/users{?characters}',
           templated: true,
-        }).parseUrl({
+        }).parseHref({
           characters: ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ €‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿',
         }),
       ).toBe(
@@ -114,12 +118,12 @@ describe('Link', () => {
       );
     });
 
-    it('should return parsed templated url with query parameters containing accented characters', () => {
+    it('should return parsed templated href with query parameters containing accented characters', () => {
       expect(
         new Link({
           href: '/api/v1/users{?characters}',
           templated: true,
-        }).parseUrl({
+        }).parseHref({
           characters: 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ',
         }),
       ).toBe(
@@ -130,7 +134,7 @@ describe('Link', () => {
 
   describe('fetch', () => {
     it('should fetch resource', (done) => {
-      Link.ofUrl('/api/ve/users/1')
+      Link.ofHref('/api/ve/users/1')
         .fetch<{ id: string }>()
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
@@ -162,7 +166,7 @@ describe('Link', () => {
     });
 
     it('should parse parameters and fetch resource', (done) => {
-      Link.ofUrl('/api/ve/users/{userId}')
+      Link.ofHref('/api/ve/users/{userId}')
         .fetch<{ id: string }>({ userId: '1' })
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
@@ -180,7 +184,7 @@ describe('Link', () => {
 
   describe('follow', () => {
     it('should fetch and instantiate a new resource', (done) => {
-      Link.ofUrl('/api/v1/users/1')
+      Link.ofHref('/api/v1/users/1')
         .follow<MockResource>()
         .subscribe((resource: MockResource) => {
           expect(resource).toBeTruthy();
@@ -197,7 +201,7 @@ describe('Link', () => {
     });
 
     it('should fetch and return an empty resource if response is empty', (done) => {
-      Link.ofUrl('/api/v1/users/1')
+      Link.ofHref('/api/v1/users/1')
         .follow<MockResource>()
         .subscribe((resource: MockResource) => {
           expect(resource).toBeTruthy();
@@ -210,7 +214,3 @@ describe('Link', () => {
     });
   });
 });
-
-class MockResource extends Resource {
-  id?: string;
-}

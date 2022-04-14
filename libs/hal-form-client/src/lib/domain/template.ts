@@ -96,7 +96,7 @@ export class Template implements ITemplate {
     if (options?.body && this.contentType !== ContentTypeEnum.MULTIPART_FILE) {
       headers['Content-Type'] = this.contentType || ContentTypeEnum.APPLICATION_JSON;
     }
-    const url = this.targetLink.parseUrl(options?.params || {});
+    const url = this.targetLink.parseHref(options?.params || {});
     return url
       ? this.http
           .request<T>(this.method, url, {

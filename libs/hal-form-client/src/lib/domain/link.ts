@@ -27,7 +27,7 @@ export class Link implements ILink {
     return new Link(raw);
   }
 
-  public static ofUrl(href: string): Link {
+  public static ofHref(href: string): Link {
     return new Link({ href });
   }
 
@@ -39,7 +39,7 @@ export class Link implements ILink {
     this.headers = raw.headers;
   }
 
-  parseUrl(parameters?: any): string {
+  parseHref(parameters?: any): string {
     return parser.parse(this.href).expand(parameters || {});
   }
 
@@ -48,7 +48,7 @@ export class Link implements ILink {
   }
 
   fetch<T>(parameters?: any): Observable<HttpResponse<T>> {
-    return this.http.get<T>(this.parseUrl(parameters) as string, {
+    return this.http.get<T>(this.parseHref(parameters) as string, {
       headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
       observe: 'response',
       responseType: 'json',
