@@ -43,8 +43,8 @@ describe('Link', () => {
       ).not.toContain('extra');
     });
 
-    it('should return null parsing a templated url with missing params', () => {
-      expect(new Link({ href: '/api/v1/users/{userId}', templated: true }).parseUrl(null)).toBeNull();
+    it('should return return expanded ur with null parameters', () => {
+      expect(new Link({ href: '/api/v1/users/{userId}', templated: true }).parseUrl(null)).toBe('/api/v1/users/');
     });
 
     it('should return templates of params not available on parsing', () => {
@@ -175,20 +175,6 @@ describe('Link', () => {
       const testRequest = httpTestingController.expectOne('/api/ve/users/1');
       expect(testRequest.request.headers.get('Accept')).toBe(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS);
       testRequest.flush({ id: '1' });
-    });
-
-    it('should throw error if urs is un-parsable', (done) => {
-      Link.of({ href: '/api/ve/users/{userId}', templated: true })
-        .fetch<{ id: string }>(null)
-        .subscribe({
-          error: (error) => {
-            expect(error).toBeTruthy();
-            expect(error.message).toBe('Un-parsable Url null, /api/ve/users/{userId},  null');
-            done();
-          },
-        });
-
-      httpTestingController.expectNone('/api/ve/users/');
     });
   });
 
