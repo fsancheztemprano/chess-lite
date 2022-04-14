@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { ContentTypeEnum } from '../domain/content-type.enum';
 import { Link } from '../domain/link';
 import { IResource, Resource } from '../domain/resource';
-import { AffordanceOptions, Template } from '../domain/template';
+import { Template } from '../domain/template';
 import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
 
 @Injectable({
@@ -99,13 +99,6 @@ export class HalFormService {
 
   public getTemplateOrThrow(template?: string): Observable<Template> {
     return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
-  }
-
-  public submitToTemplateOrThrow<T extends Resource = Resource>(
-    template?: string,
-    options?: AffordanceOptions,
-  ): Observable<T> {
-    return this.getResourceOnce().pipe(switchMap((resource) => resource.submitToTemplateOrThrow<T>(template, options)));
   }
 
   public isAllowedTo(template?: string): Observable<boolean> {

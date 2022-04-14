@@ -196,20 +196,6 @@ describe('HalFormService', () => {
     });
   });
 
-  it('should map to resource.submitToTemplateOrThrow', (done) => {
-    service.setResource({ ...mockResource, _templates: { default: {}, update: { method: 'PATCH' } } });
-    const resourceSpy = jest.spyOn(service['_rootResource'].value, 'submitToTemplateOrThrow');
-
-    service.submitToTemplateOrThrow('update').subscribe({
-      next: () => expect(resourceSpy).toHaveBeenCalledWith('update'),
-      complete: () => done(),
-    });
-
-    httpTestingController
-      .expectOne((request) => request.url === 'http://localhost:8888/api' && request.method === 'PATCH')
-      .flush({});
-  });
-
   it('should map to resource.isAllowedTo', (done) => {
     const resourceSpy = jest.spyOn(service['_rootResource'].value, 'isAllowedTo');
 

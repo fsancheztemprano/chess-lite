@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
+import { parseUrl } from '../utils/url-template.utils';
 import { ContentTypeEnum } from './content-type.enum';
-import { HTTP_METHODS, HttpMethodEnum } from './http-method.enum';
-import { ILink, Link } from './link';
+import { HttpMethodEnum } from './http-method.enum';
+import { ILink } from './link';
 import { Resource } from './resource';
 
 export interface ITemplateProperty {
@@ -45,6 +46,13 @@ export interface ITemplate {
   target?: string;
 }
 
+export interface AffordanceOptions {
+  body?: any;
+  params?: any;
+  observe?: 'body' | 'events' | 'response';
+  headers?: HttpHeaders | { [p: string]: string | string[] };
+}
+
 export class Template implements ITemplate {
   private readonly http: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
@@ -53,15 +61,14 @@ export class Template implements ITemplate {
   contentType?: ContentTypeEnum | string;
   properties?: ITemplateProperty[];
   target?: string;
-  targetLink?: Link;
 
-  public static of(raw: ITemplate, link?: Link): Template {
-    return new Template(raw, link);
+  public static of(raw: ITemplate): Template {
+    return new Template(raw);
   }
 
-  constructor(raw: ITemplate, link?: Link) {
+  constructor(raw: ITemplate) {
     this.method = raw.method || HttpMethodEnum.GET;
-    this.properties = raw.properties;
+    this.target = raw.target;
     if (raw.contentType) {
       this.contentType = raw.contentType;
     }
@@ -70,14 +77,8 @@ export class Template implements ITemplate {
       this.title = raw.title;
     }
 
-    if (raw.target) {
-      this.target = raw.target;
-      this.targetLink = new Link({
-        href: raw.target,
-        templated: raw.target.includes('{') && raw.target.includes('}'),
-      });
-    } else if (link) {
-      this.targetLink = link;
+    if (raw.properties) {
+      this.properties = raw.properties;
     }
   }
 
@@ -86,26 +87,18 @@ export class Template implements ITemplate {
   }
 
   afford<T>(options?: AffordanceOptions): Observable<HttpResponse<T>> {
-    if (!this.targetLink?.href?.length) {
-      return throwError(() => new Error('Invalid link'));
-    }
-    if (!HTTP_METHODS.includes(this.method.toUpperCase())) {
-      return throwError(() => new Error(`Method ${this.method} is not supported`));
+    if (!this.target?.length) {
+      return throwError(() => new Error('Template has no target'));
     }
     const headers: any = { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS };
     if (options?.body && this.contentType !== ContentTypeEnum.MULTIPART_FILE) {
       headers['Content-Type'] = this.contentType || ContentTypeEnum.APPLICATION_JSON;
     }
-    const url = this.targetLink.parseHref(options?.params || {});
-    return url
-      ? this.http
-          .request<T>(this.method, url, {
-            headers: { ...headers, ...options?.headers },
-            body: options?.body,
-            observe: 'response',
-          })
-          .pipe(first())
-      : throwError(() => new Error(`Un-parsable Url ${this.targetLink?.href},  ${options?.params}`));
+    return this.http.request<T>(this.method, parseUrl(this.target, options?.params), {
+      headers: { ...headers, ...options?.headers },
+      body: options?.body,
+      observe: 'response',
+    });
   }
 
   public getProperty(name: string): ITemplateProperty | undefined {
@@ -116,23 +109,15 @@ export class Template implements ITemplate {
     if (!property || !key) {
       return this;
     }
-    const find: any = this.getProperty(property);
-
-    if (find) {
-      find[key] = value;
+    const existing: any = this.getProperty(property);
+    if (existing) {
+      existing[key] = value;
     } else {
       if (!this.properties) {
         this.properties = [];
       }
-      this.properties.push({ [key]: value } as any);
+      this.properties.push({ name: property, [key]: value } as any);
     }
     return this;
   }
-}
-
-export interface AffordanceOptions {
-  body?: any;
-  params?: any;
-  observe?: 'body' | 'events' | 'response';
-  headers?: HttpHeaders | { [p: string]: string | string[] };
 }

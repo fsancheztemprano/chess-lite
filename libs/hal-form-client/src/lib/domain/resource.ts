@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { HalFormsEntityName, noEntityError } from '../utils/exceptions.utils';
-import { HttpMethodEnum } from './http-method.enum';
 import { ILink, Link } from './link';
 import { AffordanceOptions, ITemplate, Template } from './template';
 
@@ -68,7 +67,7 @@ export class Resource implements IResource {
       this._templates = {} as any;
       for (const key of Object.keys(raw._templates)) {
         if (this._templates) {
-          this._templates[key] = new Template(raw._templates[key], this._links?.self);
+          this._templates[key] = new Template({ target: this._links?.self.href, ...raw._templates[key] });
         }
       }
     }
@@ -154,10 +153,6 @@ export class Resource implements IResource {
 
   isAllowedTo(template?: string): boolean {
     return !!this.getTemplate(template);
-  }
-
-  submit<T extends Resource = Resource>(method: HttpMethodEnum | string, options?: AffordanceOptions): Observable<T> {
-    return new Template({ method }, this._links?.self).submit<T>(options);
   }
 
   submitToTemplateOrThrow<T extends Resource = Resource>(

@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as parser from 'url-template';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
+import { parseUrl } from '../utils/url-template.utils';
 import { ContentTypeEnum } from './content-type.enum';
 import { Resource } from './resource';
 
@@ -39,16 +39,12 @@ export class Link implements ILink {
     this.headers = raw.headers;
   }
 
-  parseHref(parameters?: any): string {
-    return parser.parse(this.href).expand(parameters || {});
-  }
-
   follow<T extends Resource = Resource>(parameters?: any): Observable<T> {
     return this.fetch<T>(parameters).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
   }
 
   fetch<T>(parameters?: any): Observable<HttpResponse<T>> {
-    return this.http.get<T>(this.parseHref(parameters) as string, {
+    return this.http.get<T>(parseUrl(this.href, parameters), {
       headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
       observe: 'response',
       responseType: 'json',
