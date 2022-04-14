@@ -99,7 +99,7 @@ describe('Role Pacts', () => {
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:create'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchRoles().subscribe((rolePage) => {
-          expect(rolePage?.isAllowedTo('create')).toBe(true);
+          expect(rolePage?.hasTemplate('create')).toBe(true);
           done();
         });
       });
@@ -145,7 +145,7 @@ describe('Role Pacts', () => {
           expect(role).toBeTruthy();
           expect(role.id).toEqual(interaction.willRespondWith.body.id);
           expect(role.name).toEqual(interaction.willRespondWith.body.name);
-          expect(role.isAllowedTo(RoleManagementRelations.ROLE_UPDATE_REL)).toBeTruthy();
+          expect(role.hasTemplate(RoleManagementRelations.ROLE_UPDATE_REL)).toBeTruthy();
           done();
         });
       });
@@ -159,7 +159,7 @@ describe('Role Pacts', () => {
           expect(role).toBeTruthy();
           expect(role.id).toEqual(interaction.willRespondWith.body.id);
           expect(role.name).toEqual(interaction.willRespondWith.body.name);
-          expect(role.isAllowedTo(RoleManagementRelations.ROLE_DELETE_REL)).toBeTruthy();
+          expect(role.hasTemplate(RoleManagementRelations.ROLE_DELETE_REL)).toBeTruthy();
           done();
         });
       });

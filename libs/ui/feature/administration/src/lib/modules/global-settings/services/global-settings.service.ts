@@ -43,7 +43,7 @@ export class GlobalSettingsService {
 
   public canUpdateGlobalSettings() {
     return this.globalSettings$.pipe(
-      map((globalSettings) => globalSettings.isAllowedTo(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL)),
+      map((globalSettings) => globalSettings.hasTemplate(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL)),
     );
   }
 

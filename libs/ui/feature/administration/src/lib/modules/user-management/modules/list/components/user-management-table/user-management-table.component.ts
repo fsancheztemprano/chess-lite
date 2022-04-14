@@ -37,7 +37,7 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
     icon: 'person_add',
     callback: () => this.router.navigate(['administration', 'user-management', 'create']),
     disabled: this.dataSource.userPage$.pipe(
-      map((userPage: UserPage) => !userPage.isAllowedTo(UserManagementRelations.USER_CREATE_REL)),
+      map((userPage: UserPage) => !userPage.hasTemplate(UserManagementRelations.USER_CREATE_REL)),
     ),
   };
 

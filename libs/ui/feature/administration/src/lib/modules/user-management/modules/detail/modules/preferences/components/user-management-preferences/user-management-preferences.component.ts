@@ -63,6 +63,6 @@ export class UserManagementPreferencesComponent {
   }
 
   isAllowedToUpdateUserPreferences() {
-    return !!this.userPreferences?.isAllowedTo(UserManagementRelations.USER_UPDATE_REL);
+    return !!this.userPreferences?.hasTemplate(UserManagementRelations.USER_UPDATE_REL);
   }
 }

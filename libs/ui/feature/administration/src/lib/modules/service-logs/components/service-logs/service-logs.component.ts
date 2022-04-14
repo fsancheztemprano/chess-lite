@@ -51,7 +51,7 @@ export class ServiceLogsComponent implements OnDestroy {
         label: 'Delete',
         callback: () => this.deleteServiceLogs(),
         disabled: this.serviceLogs.pipe(
-          map((serviceLogs) => !serviceLogs.isAllowedTo(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
+          map((serviceLogs) => !serviceLogs.hasTemplate(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
         ),
       },
     ]);

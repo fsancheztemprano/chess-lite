@@ -33,7 +33,7 @@ export class UserSettingsService {
 
   public isAllowedToUpdateProfile(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.UPDATE_PROFILE_REL)),
+      map((user: User | undefined) => !!user?.hasTemplate(CurrentUserRelations.UPDATE_PROFILE_REL)),
     );
   }
 
@@ -48,7 +48,7 @@ export class UserSettingsService {
 
   public isAllowedToDeleteAccount(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.DELETE_ACCOUNT_REL)),
+      map((user: User | undefined) => !!user?.hasTemplate(CurrentUserRelations.DELETE_ACCOUNT_REL)),
     );
   }
 
@@ -63,7 +63,7 @@ export class UserSettingsService {
 
   public isAllowedToChangePassword(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.CHANGE_PASSWORD_REL)),
+      map((user: User | undefined) => !!user?.hasTemplate(CurrentUserRelations.CHANGE_PASSWORD_REL)),
     );
   }
 
@@ -77,7 +77,7 @@ export class UserSettingsService {
 
   public isAllowedToUploadAvatar(): Observable<boolean> {
     return this.getCurrentUser().pipe(
-      map((user: User | undefined) => !!user?.isAllowedTo(CurrentUserRelations.UPLOAD_AVATAR_REL)),
+      map((user: User | undefined) => !!user?.hasTemplate(CurrentUserRelations.UPLOAD_AVATAR_REL)),
     );
   }
 
@@ -114,7 +114,7 @@ export class UserSettingsService {
     return this.getCurrentUserPreferences().pipe(
       map(
         (userPreferences: UserPreferences | undefined) =>
-          !!userPreferences?.isAllowedTo(CurrentUserRelations.UPDATE_PREFERENCES_REL),
+          !!userPreferences?.hasTemplate(CurrentUserRelations.UPDATE_PREFERENCES_REL),
       ),
     );
   }

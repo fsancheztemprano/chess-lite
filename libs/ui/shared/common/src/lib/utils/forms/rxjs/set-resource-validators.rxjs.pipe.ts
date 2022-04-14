@@ -11,7 +11,7 @@ export function setResourceValidatorsPipe(
   return (observable: Observable<Resource>) => {
     return observable.pipe(
       tap((resource) => {
-        if (resource && resource.isAllowedTo(templateName)) {
+        if (resource && resource.hasTemplate(templateName)) {
           for (const control in formGroup.controls) {
             const propertyValidators = getPropertyValidators(resource.getTemplate(templateName), control);
             if (propertyValidators.length) {

@@ -5,7 +5,7 @@ import { RoleManagementTableDatasource } from './role-management-table.datasourc
 
 @Injectable({ providedIn: 'root' })
 export class StubRoleManagementTableDatasource implements Partial<RoleManagementTableDatasource> {
-  rolePage$ = of({ isAllowedTo: () => true }) as BehaviorSubject<RolePage>;
+  rolePage$ = of({ hasTemplate: () => true }) as BehaviorSubject<RolePage>;
   disconnect = noop;
   connect = () => of([]);
 }

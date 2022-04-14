@@ -29,7 +29,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
     icon: 'add',
     observable: this.createRole(),
     disabled: this.dataSource.rolePage$.pipe(
-      map((rolePage: RolePage) => !rolePage.isAllowedTo(RoleManagementRelations.ROLE_CREATE_REL)),
+      map((rolePage: RolePage) => !rolePage.hasTemplate(RoleManagementRelations.ROLE_CREATE_REL)),
     ),
   };
 
@@ -64,7 +64,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
         acceptButton: {
           text: 'REMOVE ROLE',
           color: 'warn',
-          disabled: !role.isAllowedTo(RoleManagementRelations.ROLE_DELETE_REL),
+          disabled: !role.hasTemplate(RoleManagementRelations.ROLE_DELETE_REL),
         },
       })
       .pipe(switchMap((confirmRemoveRole) => (confirmRemoveRole ? this.dataSource.deleteRole(role) : EMPTY)))
@@ -85,7 +85,7 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
             acceptButton: {
               text: 'CREATE ROLE',
               color: 'primary',
-              disabled: !rolePage.isAllowedTo(RoleManagementRelations.ROLE_CREATE_REL),
+              disabled: !rolePage.hasTemplate(RoleManagementRelations.ROLE_CREATE_REL),
             },
             template: rolePage.getTemplate(RoleManagementRelations.ROLE_CREATE_REL),
             inputs: [

@@ -149,7 +149,7 @@ describe('Template', () => {
           );
         })
         .flush({ name: 'new name' });
-    };);
+    });
 
     it('should afford null template', (done) => {
       Template.of({

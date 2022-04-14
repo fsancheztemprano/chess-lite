@@ -49,15 +49,15 @@ export class UserManagementDetailService {
   }
 
   public canUpdateProfile(): Observable<boolean> {
-    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_REL)));
+    return this.user$.pipe(map((user) => user.hasTemplate(UserManagementRelations.USER_UPDATE_REL)));
   }
 
   public canUpdateRole(): Observable<boolean> {
-    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_ROLE_REL)));
+    return this.user$.pipe(map((user) => user.hasTemplate(UserManagementRelations.USER_UPDATE_ROLE_REL)));
   }
 
   public canUpdateAuthorities(): Observable<boolean> {
-    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL)));
+    return this.user$.pipe(map((user) => user.hasTemplate(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL)));
   }
 
   public updateUser(body: ManageUserProfileInput) {
@@ -89,7 +89,7 @@ export class UserManagementDetailService {
   }
 
   public canDeleteAccount(): Observable<boolean> {
-    return this.user$.pipe(map((user) => user.isAllowedTo(UserManagementRelations.USER_DELETE_REL)));
+    return this.user$.pipe(map((user) => user.hasTemplate(UserManagementRelations.USER_DELETE_REL)));
   }
 
   public deleteUser(): Observable<unknown> {
@@ -101,7 +101,7 @@ export class UserManagementDetailService {
   }
 
   public canSendActivationToken(): Observable<boolean> {
-    return this.user$.pipe(map((user) => user.isAllowedTo(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL)));
+    return this.user$.pipe(map((user) => user.hasTemplate(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL)));
   }
 
   public sendActivationToken(): Observable<unknown> {

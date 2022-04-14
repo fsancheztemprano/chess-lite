@@ -80,7 +80,7 @@ export class Resource implements IResource {
     if (raw._templates) {
       this._templates = {} as any;
       for (const key of Object.keys(raw._templates)) {
-        this._templates![key] = new Template({ target: this._links?.self?.href, ...raw._templates[key] });
+        this._templates![key] = new Template({ target: this._links!.self?.href, ...raw._templates[key] });
       }
     }
   }
@@ -163,7 +163,7 @@ export class Resource implements IResource {
     return template;
   }
 
-  isAllowedTo(template?: string): boolean {
+  hasTemplate(template?: string): boolean {
     return !!this.getTemplate(template);
   }
 
