@@ -211,10 +211,10 @@ describe('HalFormService', () => {
     });
   });
 
-  it('should map to resource.isAllowedTo', (done) => {
+  it('should map to resource.hasTemplate', (done) => {
     const resourceSpy = jest.spyOn(service['_rootResource'].value, 'hasTemplate');
 
-    service.isAllowedTo('update').subscribe(() => {
+    service.hasTemplate('update').subscribe(() => {
       expect(resourceSpy).toHaveBeenCalledWith('update');
       done();
     });

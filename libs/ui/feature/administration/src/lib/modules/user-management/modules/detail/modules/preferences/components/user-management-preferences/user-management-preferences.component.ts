@@ -45,6 +45,10 @@ export class UserManagementPreferencesComponent {
     });
   }
 
+  public hasTemplateToUpdateUserPreferences() {
+    return !!this.userPreferences?.hasTemplate(UserManagementRelations.USER_UPDATE_REL);
+  }
+
   private _setUserPreferences(userPreferences: UserPreferences) {
     this.userPreferences = userPreferences;
     this.form.patchValue(userPreferences);
@@ -60,9 +64,5 @@ export class UserManagementPreferencesComponent {
         )
         .subscribe((fetchedUserPreferences) => this._setUserPreferences(fetchedUserPreferences));
     }
-  }
-
-  isAllowedToUpdateUserPreferences() {
-    return !!this.userPreferences?.hasTemplate(UserManagementRelations.USER_UPDATE_REL);
   }
 }

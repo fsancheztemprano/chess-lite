@@ -38,7 +38,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="signupForm.invalid || (authService.isAllowedToSignup() | async) === false">
+        [disabled]="signupForm.invalid || (authService.hasTemplateToSignup() | async) === false">
         Sign Up
       </button>
     </mat-card-actions>

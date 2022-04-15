@@ -24,7 +24,7 @@
     mat-raised-button
     color="primary"
     type="submit"
-    *subscribe="userSettingsService.isAllowedToUpdateUserPreferences(); let canUpdateUserPreferences"
+    *subscribe="userSettingsService.hasTemplateToUpdateUserPreferences(); let canUpdateUserPreferences"
     [disabled]="!canUpdateUserPreferences">
     Save and Apply
   </button>

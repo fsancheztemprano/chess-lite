@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setTemplateValidatorsPipe } from '@app/ui/shared/common';
 import { CardViewHeaderService } from '@app/ui/shared/core';
-import { Role, UserManagementRelations } from '@app/ui/shared/domain';
+import { Role, RoleManagementRelations, RolePage, UserManagementRelations } from '@app/ui/shared/domain';
 import { noop, Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { UserManagementService } from '../../../../services/user-management.service';
@@ -16,9 +16,10 @@ import { UserManagementService } from '../../../../services/user-management.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementCreateComponent implements OnDestroy {
-  roles: Observable<Role[]> = this.activatedRoute.data.pipe(
-    startWith({ roles: [] }),
+  roles$: Observable<Role[]> = this.activatedRoute.data.pipe(
     map((data) => data.roles),
+    map((rolePage: RolePage) => rolePage.getEmbeddedCollection<Role>(RoleManagementRelations.ROLE_MODEL_LIST_REL)),
+    startWith([]),
   );
 
   public form = new FormGroup(
@@ -63,9 +64,7 @@ export class UserManagementCreateComponent implements OnDestroy {
     this.userManagementService.createUser(this.form.value).subscribe({
       next: (user) => {
         this.toaster.showToast({ message: 'User Created Successfully' });
-        setTimeout(() => {
-          this.router.navigate([...this.routeUp, 'edit', user.id]);
-        }, 2000);
+        this.router.navigate([...this.routeUp, 'edit', user.id]);
       },
       error: () => noop,
     });

@@ -50,7 +50,7 @@
         mat-raised-button
         color="primary"
         type="submit"
-        *ngLet="this.userSettingsService.isAllowedToUpdateProfile() | async as canUpdateProfile"
+        *ngLet="this.userSettingsService.hasTemplateToUpdateProfile() | async as canUpdateProfile"
         [disabled]="!canUpdateProfile">
         Save
       </button>

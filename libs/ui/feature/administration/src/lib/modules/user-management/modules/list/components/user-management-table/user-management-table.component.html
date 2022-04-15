@@ -55,7 +55,7 @@
   <ng-container matColumnDef="edit">
     <th mat-header-cell *matHeaderCellDef scope="col"></th>
     <td mat-cell *matCellDef="let row">
-      <a mat-stroked-button [routerLink]="['../', 'edit', row.id, 'profile']" [disabled]="!row.isAllowedTo('update')">
+      <a mat-stroked-button [routerLink]="['../', 'edit', row.id, 'profile']" [disabled]="!row.hasTemplate('update')">
         <mat-icon>edit</mat-icon>
       </a>
     </td>

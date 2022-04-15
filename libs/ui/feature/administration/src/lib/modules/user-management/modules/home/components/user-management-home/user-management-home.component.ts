@@ -23,7 +23,7 @@ export class UserManagementHomeComponent implements OnDestroy {
       title: 'Create User',
       subtitle: 'Create a new User Account.',
       link: 'create',
-      canShow: this.userManagementService.isAllowedTo(UserManagementRelations.USER_CREATE_REL),
+      canShow: this.userManagementService.hasTemplate(UserManagementRelations.USER_CREATE_REL),
     },
   ];
 

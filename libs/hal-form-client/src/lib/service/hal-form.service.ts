@@ -101,7 +101,7 @@ export class HalFormService {
     return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
   }
 
-  public isAllowedTo(template?: string): Observable<boolean> {
+  public hasTemplate(template?: string): Observable<boolean> {
     return this.getResource().pipe(map((resource) => resource.hasTemplate(template)));
   }
 }

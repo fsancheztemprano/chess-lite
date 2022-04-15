@@ -17,8 +17,8 @@ export class AuthService {
     return this.halFormService.getTemplate(AuthRelations.LOGIN_RELATION);
   }
 
-  public isAllowedToLogin(): Observable<boolean> {
-    return this.halFormService.isAllowedTo(AuthRelations.LOGIN_RELATION);
+  public hasTemplateToLogin(): Observable<boolean> {
+    return this.halFormService.hasTemplate(AuthRelations.LOGIN_RELATION);
   }
 
   public login(body: LoginInput): Observable<Session | null> {
@@ -34,8 +34,8 @@ export class AuthService {
     return this.halFormService.getTemplate(AuthRelations.SIGNUP_RELATION);
   }
 
-  public isAllowedToSignup(): Observable<boolean> {
-    return this.halFormService.isAllowedTo(AuthRelations.SIGNUP_RELATION);
+  public hasTemplateToSignup(): Observable<boolean> {
+    return this.halFormService.hasTemplate(AuthRelations.SIGNUP_RELATION);
   }
 
   public signup(body: SignupInput): Observable<User | null> {

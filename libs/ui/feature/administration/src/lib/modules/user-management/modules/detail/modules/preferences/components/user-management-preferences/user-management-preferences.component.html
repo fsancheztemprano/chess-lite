@@ -20,5 +20,7 @@
       </mat-error>
     </mat-form-field>
   </div>
-  <button mat-raised-button color="primary" type="submit" [disabled]="!isAllowedToUpdateUserPreferences()">Save</button>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!hasTemplateToUpdateUserPreferences()">
+    Save
+  </button>
 </form>
