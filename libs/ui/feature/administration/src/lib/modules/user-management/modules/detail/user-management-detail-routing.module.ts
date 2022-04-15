@@ -28,7 +28,7 @@ const routes: Routes = [
       {
         path: 'profile',
         loadChildren: loadUserManagementProfileModule,
-        data: { breadcrumb: 'Profile' },
+        data: { breadcrumb: 'Profile', parentOffset: 1 },
       },
       {
         path: 'authority',

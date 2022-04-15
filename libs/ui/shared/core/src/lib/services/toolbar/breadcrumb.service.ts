@@ -35,6 +35,7 @@ export class BreadcrumbService {
           breadcrumbs.push({
             label: this._getBreadcrumbLabel(route),
             url: breadcrumbUrl,
+            parentOffset: route.data?.parentOffset,
           });
         }
       }
@@ -49,6 +50,15 @@ export class BreadcrumbService {
 
   getBreadcrumbs$(): Observable<Breadcrumb[]> {
     return this._breadcrumbs$.asObservable();
+  }
+
+  getNavigationUp$(): Observable<string> {
+    return this.getBreadcrumbs$().pipe(
+      map((breadcrumbs) => {
+        const current = breadcrumbs[breadcrumbs.length - 1];
+        return breadcrumbs[breadcrumbs.length - 2 - (current?.parentOffset || 0)]?.url || '';
+      }),
+    );
   }
 
   getShowBreadCrumbs$(): Observable<boolean> {
@@ -75,4 +85,5 @@ export class BreadcrumbService {
 export interface Breadcrumb {
   label: string;
   url: string;
+  parentOffset?: number;
 }

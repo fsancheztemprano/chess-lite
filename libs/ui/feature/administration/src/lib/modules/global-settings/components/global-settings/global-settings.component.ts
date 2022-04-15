@@ -11,7 +11,6 @@ export class GlobalSettingsComponent implements OnDestroy {
   constructor(private readonly cardViewHeaderService: CardViewHeaderService) {
     this.cardViewHeaderService.setHeader({
       title: 'Global Settings',
-      navigationLink: ['../'],
       tabs: [
         {
           label: 'General Settings',

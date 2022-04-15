@@ -1,5 +1,5 @@
 <a [routerLink]="headerService.navigationLink | async" mat-icon-button aria-label="Options">
-  <mat-icon>chevron_left</mat-icon>
+  <mat-icon>keyboard_return</mat-icon>
 </a>
 <div class="header-title" [style]="'flex-grow:' + (headerService.titleRatio | async)">
   {{ headerService.title | async }}

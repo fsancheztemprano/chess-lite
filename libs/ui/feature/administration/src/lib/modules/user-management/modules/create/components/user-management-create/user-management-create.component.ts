@@ -40,8 +40,6 @@ export class UserManagementCreateComponent implements OnDestroy {
     [matchingControlsValidators('password', 'password2')],
   );
 
-  private readonly routeUp = ['administration', 'user-management'];
-
   constructor(
     public readonly userManagementService: UserManagementService,
     private readonly headerService: CardViewHeaderService,
@@ -49,7 +47,7 @@ export class UserManagementCreateComponent implements OnDestroy {
     private readonly router: Router,
     private readonly toaster: ToasterService,
   ) {
-    this.headerService.setHeader({ title: 'New User', navigationLink: this.routeUp });
+    this.headerService.setHeader({ title: 'New User' });
     this.userManagementService
       .getTemplate(UserManagementRelations.USER_CREATE_REL)
       .pipe(first(), setTemplateValidatorsPipe(this.form))
@@ -64,7 +62,7 @@ export class UserManagementCreateComponent implements OnDestroy {
     this.userManagementService.createUser(this.form.value).subscribe({
       next: (user) => {
         this.toaster.showToast({ message: 'User Created Successfully' });
-        this.router.navigate([...this.routeUp, 'edit', user.id]);
+        this.router.navigate(['administration', 'user-management', 'edit', user.id]);
       },
       error: () => noop,
     });

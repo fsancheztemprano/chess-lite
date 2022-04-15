@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BreadcrumbService } from '../toolbar/breadcrumb.service';
 import { HeaderConfig, TabLink } from './card-view-header.service.model';
 
 @Injectable({
@@ -7,7 +9,7 @@ import { HeaderConfig, TabLink } from './card-view-header.service.model';
 })
 export class CardViewHeaderService {
   private readonly DEFAULT_CONFIG = {
-    navigationLink: [''],
+    navigationLink: null,
     showContextMenu: false,
     tabs: [],
     tabsRatio: 1,
@@ -15,7 +17,7 @@ export class CardViewHeaderService {
     titleRatio: 1,
   };
 
-  private readonly _navigationLink: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+  private readonly _navigationLink: BehaviorSubject<string[] | null> = new BehaviorSubject<string[] | null>(
     this.DEFAULT_CONFIG.navigationLink,
   );
   private readonly _title: BehaviorSubject<string> = new BehaviorSubject<string>(this.DEFAULT_CONFIG.title);
@@ -26,8 +28,18 @@ export class CardViewHeaderService {
     this.DEFAULT_CONFIG.showContextMenu,
   );
 
+  constructor(private readonly breadcrumbService: BreadcrumbService) {}
+
   get navigationLink(): Observable<string[]> {
-    return this._navigationLink.asObservable();
+    return this._navigationLink
+      .asObservable()
+      .pipe(
+        switchMap((navigationLink) =>
+          navigationLink
+            ? of(navigationLink as string[])
+            : this.breadcrumbService.getNavigationUp$().pipe(map((upLink) => [upLink])),
+        ),
+      );
   }
 
   get title(): Observable<string> {

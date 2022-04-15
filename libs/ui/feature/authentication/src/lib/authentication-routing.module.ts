@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'login',
     loadChildren: loadLoginModule,
     canActivate: [AuthGuard],
-    data: { breadcrumb: 'Login' },
+    data: { breadcrumb: 'Login', parentOffset: 1 },
   },
   {
     path: 'signup',
