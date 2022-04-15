@@ -128,7 +128,7 @@ export class Template implements ITemplate {
       if (prop.readOnly) {
         return true;
       }
-      if (prop.required && !body[prop.name]) {
+      if (prop.required && body[prop.name] == null) {
         return false;
       }
       if (prop.regex && body[prop.name] && !body[prop.name].match(prop.regex)) {

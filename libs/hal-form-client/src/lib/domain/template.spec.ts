@@ -324,6 +324,35 @@ describe('Template', () => {
       ).toBeTruthy();
     });
 
+    it.each(['', ' ', 0, [], ['']])(
+      'should return true if required property is provided and nullish: %p',
+      (nullish) => {
+        expect(
+          Template.of({
+            properties: [
+              {
+                name: 'username',
+                required: true,
+              },
+            ],
+          }).isAllowedTo({ username: nullish }),
+        ).toBeTruthy();
+      },
+    );
+
+    it.each([null, undefined])('should return false if required property is %p', (nullish) => {
+      expect(
+        Template.of({
+          properties: [
+            {
+              name: 'username',
+              required: true,
+            },
+          ],
+        }).isAllowedTo({ username: nullish }),
+      ).toBeFalsy();
+    });
+
     it('should return false if required property is not provided', () => {
       expect(
         Template.of({
