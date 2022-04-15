@@ -15,7 +15,7 @@ export class UserManagementHomeComponent implements OnDestroy {
       icon: 'contacts',
       title: 'User List',
       subtitle: 'List of all users',
-      link: 'list',
+      link: 'users',
       canShow: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
     },
     {
