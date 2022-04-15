@@ -15,7 +15,7 @@ export class UserManagementHomeComponent implements OnDestroy {
       icon: 'contacts',
       title: 'User List',
       subtitle: 'List of all users',
-      link: 'list',
+      link: 'users',
       canShow: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
     },
     {
@@ -23,7 +23,7 @@ export class UserManagementHomeComponent implements OnDestroy {
       title: 'Create User',
       subtitle: 'Create a new User Account.',
       link: 'create',
-      canShow: this.userManagementService.isAllowedTo(UserManagementRelations.USER_CREATE_REL),
+      canShow: this.userManagementService.hasTemplate(UserManagementRelations.USER_CREATE_REL),
     },
   ];
 

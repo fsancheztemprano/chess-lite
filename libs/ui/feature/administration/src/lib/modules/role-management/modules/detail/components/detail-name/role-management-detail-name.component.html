@@ -9,7 +9,7 @@
     mat-raised-button
     type="submit"
     color="primary"
-    [disabled]="!role || form.invalid || !role.isAllowedTo('update')">
+    [disabled]="!role || form.invalid || !role.hasTemplate('update')">
     Change Name
   </button>
 </form>

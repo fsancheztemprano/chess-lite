@@ -1,6 +1,6 @@
 import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
-import { ContentTypeEnum, IResource } from '@hal-form-client';
+import { ContentType, IResource } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { uuid } from '@pact-foundation/pact/src/dsl/matchers';
@@ -34,13 +34,13 @@ export namespace GetGlobalSettingPact {
       method: HTTPMethod.GET,
       path: '/api/global-settings',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['global-settings:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...globalSettings,
         _links: {
@@ -58,13 +58,13 @@ export namespace GetGlobalSettingPact {
       method: HTTPMethod.GET,
       path: '/api/global-settings',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['global-settings:read', 'global-settings:update'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...globalSettings,
         _templates: {
@@ -82,7 +82,7 @@ export namespace GetGlobalSettingPact {
       method: HTTPMethod.GET,
       path: '/api/global-settings',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -104,8 +104,8 @@ export namespace UpdateGlobalSettingPact {
       method: HTTPMethod.PATCH,
       path: '/api/global-settings',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['global-settings:update'] })),
       },
       body: {
@@ -114,7 +114,7 @@ export namespace UpdateGlobalSettingPact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...globalSettings,
         _templates: {
@@ -132,8 +132,8 @@ export namespace UpdateGlobalSettingPact {
       method: HTTPMethod.PATCH,
       path: '/api/global-settings',
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
       body: {

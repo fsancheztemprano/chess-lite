@@ -1,6 +1,6 @@
 import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate, updateUserPreferencesTemplate } from '@app/ui/testing';
-import { ContentTypeEnum } from '@hal-form-client';
+import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactUserPreferences } from '../../mocks/user.mock';
@@ -15,13 +15,13 @@ export namespace GetUserPreferencesPact {
       method: HTTPMethod.GET,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:preferences:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactUserPreferences },
     },
   };
@@ -33,13 +33,13 @@ export namespace GetUserPreferencesPact {
       method: HTTPMethod.GET,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:preferences:read', 'user:preferences:update'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUserPreferences,
         _templates: {
@@ -57,7 +57,7 @@ export namespace GetUserPreferencesPact {
       method: HTTPMethod.GET,
       path: '/api/user/preferences/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:preferences:read'] })),
       },
     },
@@ -77,7 +77,7 @@ export namespace GetUserPreferencesPact {
       method: HTTPMethod.GET,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -99,9 +99,9 @@ export namespace UpdateUserPreferencesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:preferences:read', 'user:preferences:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         darkMode: true,
@@ -109,7 +109,7 @@ export namespace UpdateUserPreferencesPact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactUserPreferences },
     },
   };
@@ -121,9 +121,9 @@ export namespace UpdateUserPreferencesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/preferences/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:preferences:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         darkMode: true,
@@ -145,9 +145,9 @@ export namespace UpdateUserPreferencesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         darkMode: true,

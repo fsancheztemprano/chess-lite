@@ -1,6 +1,6 @@
 import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
-import { ContentTypeEnum } from '@hal-form-client';
+import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { uuid } from '@pact-foundation/pact/src/dsl/matchers';
@@ -18,13 +18,13 @@ export namespace GetAllAuthoritiesPact {
         size: '1000',
       },
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['authority:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           authorityModels: [
@@ -85,7 +85,7 @@ export namespace GetAllAuthoritiesPact {
         size: '1000',
       },
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -107,13 +107,13 @@ export namespace GetOneAuthorityPact {
       method: HTTPMethod.GET,
       path: '/api/authority/pactUpdateAuthorityId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['authority:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         id: 'pactUpdateAuthorityId',
         name: 'pact:update',
@@ -133,7 +133,7 @@ export namespace GetOneAuthorityPact {
       method: HTTPMethod.GET,
       path: '/api/authority/pactUpdateAuthorityId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -153,7 +153,7 @@ export namespace GetOneAuthorityPact {
       method: HTTPMethod.GET,
       path: '/api/authority/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['authority:read'] })),
       },
     },

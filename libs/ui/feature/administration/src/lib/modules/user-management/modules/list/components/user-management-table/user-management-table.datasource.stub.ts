@@ -5,7 +5,7 @@ import { UserManagementTableDatasource } from './user-management-table.datasourc
 
 @Injectable({ providedIn: 'root' })
 export class StubUserManagementTableDatasource implements Partial<UserManagementTableDatasource> {
-  userPage$ = of({ isAllowedTo: () => true }) as BehaviorSubject<UserPage>;
+  userPage$ = of({ hasTemplate: () => true }) as BehaviorSubject<UserPage>;
   disconnect = noop;
   connect = () => of([]);
 }

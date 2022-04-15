@@ -34,7 +34,7 @@
       <mat-form-field appearance="fill">
         <mat-label>Role</mat-label>
         <mat-select formControlName="roleId">
-          <mat-option *ngFor="let role of roles | async" [value]="role.id">
+          <mat-option *ngFor="let role of roles$ | async" [value]="role.id">
             {{ role.name }}
           </mat-option>
         </mat-select>
@@ -64,7 +64,7 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="!form.valid || !!!(userManagementService.isAllowedTo('create') | async)">
+        [disabled]="!form.valid || !!!(userManagementService.hasTemplate('create') | async)">
         Save
       </button>
     </mat-card-actions>

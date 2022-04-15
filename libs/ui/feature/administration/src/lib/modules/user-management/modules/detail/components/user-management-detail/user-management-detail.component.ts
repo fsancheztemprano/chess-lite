@@ -10,10 +10,9 @@ import { CardViewHeaderService } from '@app/ui/shared/core';
 })
 export class UserManagementDetailComponent implements OnDestroy {
   constructor(private readonly headerService: CardViewHeaderService, private readonly route: ActivatedRoute) {
-    const baseRoute = ['administration', 'user-management', 'edit', route.snapshot?.params?.userId];
+    const baseRoute = ['administration', 'user-management', 'users', route.snapshot?.params?.userId];
     this.headerService.setHeader({
       title: 'Edit User',
-      navigationLink: [baseRoute[0], baseRoute[1], 'list'],
       tabs: [
         {
           label: 'Profile',

@@ -42,7 +42,7 @@ describe('User Profile Pact', () => {
       providers: [avengersAssemble(provider.mockService.baseUrl), stubMessageServiceProvider, stubActionsProvider],
     });
     const halFormService = TestBed.inject(HalFormService);
-    halFormService.setRootResource({
+    halFormService.setResource({
       _links: {
         self: {
           href: 'http://localhost/api',

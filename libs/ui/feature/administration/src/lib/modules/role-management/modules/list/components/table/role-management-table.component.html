@@ -33,7 +33,7 @@
       <a mat-icon-button [routerLink]="[row.id]">
         <mat-icon>edit</mat-icon>
       </a>
-      <button mat-icon-button [disabled]="!row.isAllowedTo('delete')" (click)="deleteRole(row)">
+      <button mat-icon-button [disabled]="!row.hasTemplate('delete')" (click)="deleteRole(row)">
         <mat-icon>delete</mat-icon>
       </button>
     </td>

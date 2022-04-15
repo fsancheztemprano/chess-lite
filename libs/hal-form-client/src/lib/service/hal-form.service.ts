@@ -2,51 +2,50 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
-import { ContentTypeEnum } from '../domain/content-type.enum';
+import { ContentType } from '../domain/domain';
 import { Link } from '../domain/link';
 import { IResource, Resource } from '../domain/resource';
-import { AffordanceOptions, Template } from '../domain/template';
+import { Template } from '../domain/template';
 import { ROOT_RESOURCE_URL } from '../hal-form-client.module';
-import { submitToTemplateOrThrowPipe } from '../utils/rxjs.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HalFormService {
-  private _rootResource: BehaviorSubject<Resource> = new BehaviorSubject<Resource>(new Resource({}));
+  protected _rootResource: BehaviorSubject<Resource> = new BehaviorSubject<Resource>(new Resource({}));
 
-  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected _rootUrl = '') {}
+  constructor(protected readonly httpClient: HttpClient, @Inject(ROOT_RESOURCE_URL) protected _rootUrl: string) {}
 
   initialize(): Observable<Resource> {
     return this.httpClient
       .get<Resource>(this._rootUrl, {
-        headers: { Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+        headers: { Accept: ContentType.APPLICATION_JSON_HAL_FORMS },
         observe: 'response',
       })
       .pipe(
         first(),
         tap({
           next: (response) => {
-            if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL_FORMS)) {
+            if (!response.headers.get('Content-Type')?.includes(ContentType.APPLICATION_JSON_HAL_FORMS)) {
               console.warn(`Provided url ${this._rootUrl} is not Hal Form Compliant`);
-              if (!response.headers.get('Content-type')?.includes(ContentTypeEnum.APPLICATION_JSON_HAL)) {
+              if (!response.headers.get('Content-Type')?.includes(ContentType.APPLICATION_JSON_HAL)) {
                 console.warn(`Provided url ${this._rootUrl} is not Hal Compliant`);
               }
             }
           },
           error: (error) => {
-            this.setRootResource(new Resource({}));
+            this.setResource(new Resource({}));
             console.error('Hal Form Client Initialization Error', error);
           },
         }),
         map((response) => {
-          this.setRootResource(response.body || {});
+          this.setResource(response.body || {});
           return this._rootResource.value;
         }),
       );
   }
 
-  public setRootResource(resource: IResource) {
+  public setResource(resource: IResource) {
     this._rootResource.next(new Resource(resource));
   }
 
@@ -102,11 +101,7 @@ export class HalFormService {
     return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
   }
 
-  public submitToTemplateOrThrow(template?: string, options?: AffordanceOptions): Observable<Resource> {
-    return this.getResource().pipe(submitToTemplateOrThrowPipe(template, options));
-  }
-
-  public isAllowedTo(template?: string): Observable<boolean> {
-    return this.getResource().pipe(map((resource) => resource.isAllowedTo(template)));
+  public hasTemplate(template?: string): Observable<boolean> {
+    return this.getResource().pipe(map((resource) => resource.hasTemplate(template)));
   }
 }

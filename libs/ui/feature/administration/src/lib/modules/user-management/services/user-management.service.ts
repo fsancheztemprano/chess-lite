@@ -17,7 +17,7 @@ export class UserManagementService extends HalFormService {
     super(httpClient, '');
     this.administrationService
       .getEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL)
-      .subscribe((resource) => this.setRootResource(resource));
+      .subscribe((resource) => this.setResource(resource));
   }
 
   public fetchUsers(pageable?: Pageable): Observable<UserPage> {
@@ -36,6 +36,8 @@ export class UserManagementService extends HalFormService {
   }
 
   public createUser(body: UserInput): Observable<User> {
-    return this.submitToTemplateOrThrow(UserManagementRelations.USER_CREATE_REL, { body });
+    return this.getResourceOnce().pipe(
+      switchMap((resource) => resource.getTemplateOrThrow(UserManagementRelations.USER_CREATE_REL).submit({ body })),
+    );
   }
 }

@@ -7,7 +7,7 @@ export class StubUserManagementService implements Partial<UserManagementService>
   hasEmbeddedObject = () => of(true);
   getTemplate = () => of(null);
   hasLink = () => of(true);
-  isAllowedTo = () => of(true);
+  hasTemplate = () => of(true);
 }
 
 export const stubUserManagementServiceProvider = {

@@ -7,7 +7,7 @@ import {
   updateProfileTemplate,
   uploadAvatarTemplate,
 } from '@app/ui/testing';
-import { ContentTypeEnum } from '@hal-form-client';
+import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
@@ -22,13 +22,13 @@ export namespace GetUserProfilePact {
       method: HTTPMethod.GET,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id }, authorities: ['profile:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactCurrentUser },
     },
   };
@@ -40,7 +40,7 @@ export namespace GetUserProfilePact {
       method: HTTPMethod.GET,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
@@ -51,7 +51,7 @@ export namespace GetUserProfilePact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactCurrentUser,
         userPreferences: {
@@ -78,7 +78,7 @@ export namespace GetUserProfilePact {
       method: HTTPMethod.GET,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
@@ -89,7 +89,7 @@ export namespace GetUserProfilePact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactCurrentUser,
         _templates: {
@@ -107,7 +107,7 @@ export namespace GetUserProfilePact {
       method: HTTPMethod.GET,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
       },
     },
@@ -127,7 +127,7 @@ export namespace GetUserProfilePact {
       method: HTTPMethod.GET,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: 'notFoundId' }, authorities: ['profile:read'] })),
       },
     },
@@ -149,20 +149,20 @@ export namespace UpdateUserProfilePact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
             authorities: ['profile:read', 'profile:update'],
           }),
         ),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { firstname: 'pactUserFirstname' },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactCurrentUser },
     },
   };
@@ -174,9 +174,9 @@ export namespace UpdateUserProfilePact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { firstname: 'pactUserFirstname' },
     },
@@ -196,14 +196,14 @@ export namespace UpdateUserProfilePact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
             authorities: ['profile:read', 'profile:update'],
           }),
         ),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { firstname: 'pactUserFirstname' },
     },
@@ -225,20 +225,20 @@ export namespace UpdateUserProfilePasswordPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile/password',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
             authorities: ['profile:read', 'profile:update'],
           }),
         ),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { password: 'password', newPassword: 'newPassword' },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactCurrentUser },
     },
   };
@@ -250,9 +250,9 @@ export namespace UpdateUserProfilePasswordPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile/password',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { password: 'password', newPassword: 'newPassword' },
     },
@@ -272,14 +272,14 @@ export namespace UpdateUserProfilePasswordPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile/password',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
             authorities: ['profile:read', 'profile:update'],
           }),
         ),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { password: 'password', newPassword: 'newPassword' },
     },
@@ -301,7 +301,7 @@ export namespace DeleteUserProfilePact {
       method: HTTPMethod.DELETE,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
@@ -322,7 +322,7 @@ export namespace DeleteUserProfilePact {
       method: HTTPMethod.DELETE,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
       },
     },
@@ -342,7 +342,7 @@ export namespace DeleteUserProfilePact {
       method: HTTPMethod.DELETE,
       path: '/api/user/profile',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
@@ -369,7 +369,7 @@ export namespace GetUserProfilePreferencesPact {
       method: HTTPMethod.GET,
       path: '/api/user/profile/preferences',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
@@ -380,7 +380,7 @@ export namespace GetUserProfilePreferencesPact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactCurrentUser.userPreferences },
     },
   };
@@ -392,7 +392,7 @@ export namespace GetUserProfilePreferencesPact {
       method: HTTPMethod.GET,
       path: '/api/user/profile/preferences',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
       },
     },
@@ -412,7 +412,7 @@ export namespace GetUserProfilePreferencesPact {
       method: HTTPMethod.GET,
       path: '/api/user/profile/preferences',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
@@ -439,20 +439,20 @@ export namespace UpdateUserProfilePreferencesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile/preferences',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
             authorities: ['profile:read', 'profile:update'],
           }),
         ),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { darkMode: true },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactCurrentUser.userPreferences },
     },
   };
@@ -464,9 +464,9 @@ export namespace UpdateUserProfilePreferencesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile/preferences',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { darkMode: true },
     },
@@ -486,14 +486,14 @@ export namespace UpdateUserProfilePreferencesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/profile/preferences',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
             authorities: ['profile:read', 'profile:update'],
           }),
         ),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: { darkMode: true },
     },

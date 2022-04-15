@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
-import { Role } from '@app/ui/shared/domain';
+import { Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,6 +18,7 @@ import { GlobalSettingsService } from '../../../../services/global-settings.serv
 export class GlobalSettingsGeneralDefaultRoleComponent {
   roles?: Observable<Role[]> = this.route.parent?.parent?.data.pipe(
     map((data) => data.roles),
+    map((rolePage: RolePage) => rolePage.getEmbeddedCollection<Role>(RoleManagementRelations.ROLE_MODEL_LIST_REL)),
     startWith([]),
   );
 

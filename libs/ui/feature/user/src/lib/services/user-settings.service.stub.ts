@@ -5,12 +5,12 @@ import { UserSettingsService } from './user-settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class StubUserSettingsService implements Partial<UserSettingsService> {
-  isAllowedToUpdateProfile = () => of(true);
-  isAllowedToChangePassword = () => of(true);
-  isAllowedToDeleteAccount = () => of(true);
-  isAllowedToUploadAvatar = () => of(true);
-  isAllowedToUpdateUserPreferences = () => of(true);
-  isAllowedTo = () => of(true);
+  hasTemplateToUpdateProfile = () => of(true);
+  hasTemplateToChangePassword = () => of(true);
+  hasTemplateToDeleteAccount = () => of(true);
+  hasTemplateToUploadAvatar = () => of(true);
+  hasTemplateToUpdateUserPreferences = () => of(true);
+  hasTemplate = () => of(true);
   hasLinkToUserPreferences = () => of(true);
   getCurrentUsername = () => of('currentUsername');
   getCurrentUser = () => of(new User({}));

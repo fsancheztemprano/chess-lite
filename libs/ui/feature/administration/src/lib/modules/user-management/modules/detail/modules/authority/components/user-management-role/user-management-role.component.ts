@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
-import { Role } from '@app/ui/shared/domain';
+import { Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,9 +16,10 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementRoleComponent {
-  roles: Observable<Role[]> = this.route.data.pipe(
-    startWith({ roles: [] }),
+  roles$: Observable<Role[]> = this.route.data.pipe(
     map((data) => data.roles),
+    map((rolePage: RolePage) => rolePage.getEmbeddedCollection<Role>(RoleManagementRelations.ROLE_MODEL_LIST_REL)),
+    startWith([]),
   );
 
   public form = new FormGroup({ roleId: new FormControl('') });

@@ -1,6 +1,6 @@
 import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
-import { ContentTypeEnum } from '@hal-form-client';
+import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../utils/pact.utils';
@@ -14,7 +14,7 @@ export namespace GetAdministrationRootResource {
       method: HTTPMethod.GET,
       path: '/api/administration',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
     willRespondWith: {
@@ -33,7 +33,7 @@ export namespace GetAdministrationRootResource {
       method: HTTPMethod.GET,
       path: '/api/administration',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -53,13 +53,13 @@ export namespace GetAdministrationRootResource {
       method: HTTPMethod.GET,
       path: '/api/administration',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['admin:root'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -78,13 +78,13 @@ export namespace GetAdministrationRootResource {
       method: HTTPMethod.GET,
       path: '/api/administration',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['admin:root', 'service-logs:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -106,13 +106,13 @@ export namespace GetAdministrationRootResource {
       method: HTTPMethod.GET,
       path: '/api/administration',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['admin:root', 'global-settings:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -135,7 +135,7 @@ export namespace GetAdministrationRootResource {
       method: HTTPMethod.GET,
       path: '/api/administration',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({ authorities: ['admin:root', 'admin:user-management:root', 'user:read', 'user:create'] }),
         ),
@@ -143,7 +143,7 @@ export namespace GetAdministrationRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {
@@ -239,7 +239,7 @@ export namespace GetAdministrationRootResource {
       method: HTTPMethod.GET,
       path: '/api/administration',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
             authorities: ['admin:root', 'admin:role-management:root', 'role:read', 'role:create', 'authority:read'],
@@ -249,7 +249,7 @@ export namespace GetAdministrationRootResource {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
           self: {

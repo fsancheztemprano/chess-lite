@@ -27,7 +27,7 @@ describe('Authority Pacts', () => {
     });
 
     const administrationService: AdministrationService = TestBed.inject(AdministrationService);
-    administrationService.setRootResource({
+    administrationService.setResource({
       _embedded: {
         [RoleManagementRelations.ROLE_MANAGEMENT_REL]: {
           _links: {
@@ -80,7 +80,7 @@ describe('Authority Pacts', () => {
       const interaction: InteractionObject = GetOneAuthorityPact.successful;
       localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['authority:read'] }));
       provider.addInteraction(interaction).then(() => {
-        Link.ofUrl('/api/authority/pactUpdateAuthorityId')
+        Link.ofHref('/api/authority/pactUpdateAuthorityId')
           .follow()
           .subscribe((authority) => {
             expect(authority).toBeTruthy();
@@ -95,7 +95,7 @@ describe('Authority Pacts', () => {
       const interaction: InteractionObject = GetOneAuthorityPact.unauthorized;
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
-        Link.ofUrl('/api/authority/pactUpdateAuthorityId')
+        Link.ofHref('/api/authority/pactUpdateAuthorityId')
           .follow()
           .subscribe({
             error: (error: HttpErrorResponse) => {
@@ -112,7 +112,7 @@ describe('Authority Pacts', () => {
       const interaction: InteractionObject = GetOneAuthorityPact.not_found;
       localStorage.setItem(TOKEN_KEY, jwtToken());
       provider.addInteraction(interaction).then(() => {
-        Link.ofUrl('/api/authority/notFoundId')
+        Link.ofHref('/api/authority/notFoundId')
           .follow()
           .subscribe({
             error: (error: HttpErrorResponse) => {

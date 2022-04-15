@@ -27,7 +27,7 @@ export class AdministrationService extends HalFormService {
           ? super.initialize()
           : throwError(() => new Error('Administration Initialization Error'));
       }),
-      tap({ error: () => this.setRootResource(new Resource({})) }),
+      tap({ error: () => this.setResource(new Resource({})) }),
     );
   }
 

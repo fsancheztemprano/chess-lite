@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { first, map } from 'rxjs/operators';
-import * as parser from 'url-template';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
-import { ContentTypeEnum } from './content-type.enum';
+import { parseUrl } from '../utils/url-template.utils';
+import { ContentType } from './domain';
 import { Resource } from './resource';
 
 export interface ILink {
@@ -11,6 +11,7 @@ export interface ILink {
   templated?: boolean;
   type?: string;
   name?: string;
+  headers?: HttpHeaders | { [p: string]: string | string[] };
 }
 
 export class Link implements ILink {
@@ -20,14 +21,13 @@ export class Link implements ILink {
   templated?: boolean;
   type?: string;
   name?: string;
-
   headers?: HttpHeaders | { [p: string]: string | string[] };
 
   public static of(raw: ILink): Link {
     return new Link(raw);
   }
 
-  public static ofUrl(href: string): Link {
+  public static ofHref(href: string): Link {
     return new Link({ href });
   }
 
@@ -36,30 +36,18 @@ export class Link implements ILink {
     this.templated = raw.templated;
     this.type = raw.type;
     this.name = raw.name;
+    this.headers = raw.headers;
   }
 
-  parseUrl(params: any): string | null {
-    if (this.templated && !params) {
-      return null;
-    }
-    const template = parser.parse(this.href);
-    return template.expand(params);
+  follow<T extends Resource = Resource>(parameters?: any): Observable<T> {
+    return this.fetch<T>(parameters).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
   }
 
-  follow<T extends Resource = Resource>(params?: any): Observable<T> {
-    return this.fetch<T>(params).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
-  }
-
-  fetch<T>(params?: any): Observable<HttpResponse<T>> {
-    const url: string | null = this.parseUrl(params || {});
-    return url
-      ? this.http
-          .get<T>(url, {
-            headers: { ...{ Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
-            observe: 'response',
-            responseType: 'json',
-          })
-          .pipe(first())
-      : throwError(() => new Error(`Un-parsable Url ${url}, ${this.href},  ${params}`));
+  fetch<T>(parameters?: any): Observable<HttpResponse<T>> {
+    return this.http.get<T>(parseUrl(this.href, parameters), {
+      headers: { ...{ Accept: ContentType.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
+      observe: 'response',
+      responseType: 'json',
+    });
   }
 }

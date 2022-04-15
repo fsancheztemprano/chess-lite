@@ -1,6 +1,6 @@
 import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
-import { ContentTypeEnum } from '@hal-form-client';
+import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { eachLike, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
@@ -42,13 +42,13 @@ export namespace GetAllRolesPact {
       method: HTTPMethod.GET,
       path: '/api/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           roleModels: [
@@ -121,13 +121,13 @@ export namespace GetAllRolesPact {
       method: HTTPMethod.GET,
       path: '/api/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:create'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           roleModels: eachLike({ id: string(), name: string() }, { min: 3 }),
@@ -170,7 +170,7 @@ export namespace GetAllRolesPact {
       method: HTTPMethod.GET,
       path: '/api/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -192,13 +192,13 @@ export namespace GetOneRolePact {
       method: HTTPMethod.GET,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactRole,
         _links: {
@@ -216,13 +216,13 @@ export namespace GetOneRolePact {
       method: HTTPMethod.GET,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:update'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactRole,
         _templates: {
@@ -256,13 +256,13 @@ export namespace GetOneRolePact {
       method: HTTPMethod.GET,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:delete'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactRole,
         _templates: {
@@ -283,7 +283,7 @@ export namespace GetOneRolePact {
       method: HTTPMethod.GET,
       path: '/api/role/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
       },
     },
@@ -303,7 +303,7 @@ export namespace GetOneRolePact {
       method: HTTPMethod.GET,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -325,9 +325,9 @@ export namespace CreateRolePact {
       method: HTTPMethod.POST,
       path: '/api/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:create'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         name: 'NEW_PACT_ROLE',
@@ -335,7 +335,7 @@ export namespace CreateRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         id: 'newPactRoleId',
         name: 'NEW_PACT_ROLE',
@@ -363,9 +363,9 @@ export namespace CreateRolePact {
       method: HTTPMethod.POST,
       path: '/api/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:create'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         name: 'PACT_ROLE',
@@ -387,9 +387,9 @@ export namespace CreateRolePact {
       method: HTTPMethod.POST,
       path: '/api/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         name: 'NEW_PACT_ROLE',
@@ -413,9 +413,9 @@ export namespace UpdateRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         name: 'PACT_ROLE',
@@ -423,7 +423,7 @@ export namespace UpdateRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactRole },
     },
   };
@@ -435,9 +435,9 @@ export namespace UpdateRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/role/coreRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         name: 'PACT_ROLE',
@@ -459,9 +459,9 @@ export namespace UpdateRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         name: 'PACT_ROLE',
@@ -483,9 +483,9 @@ export namespace UpdateRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/role/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         name: 'PACT_ROLE',
@@ -509,7 +509,7 @@ export namespace DeleteRolePact {
       method: HTTPMethod.DELETE,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
       },
     },
@@ -525,7 +525,7 @@ export namespace DeleteRolePact {
       method: HTTPMethod.DELETE,
       path: '/api/role/coreRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
       },
     },
@@ -545,7 +545,7 @@ export namespace DeleteRolePact {
       method: HTTPMethod.DELETE,
       path: '/api/role/pactRoleId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -565,7 +565,7 @@ export namespace DeleteRolePact {
       method: HTTPMethod.DELETE,
       path: '/api/role/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
       },
     },

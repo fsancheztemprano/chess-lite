@@ -134,5 +134,8 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": [
+    "consumer-pact"
+  ]
 }

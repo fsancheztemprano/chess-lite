@@ -8,7 +8,7 @@ import {
   updateUserRoleTemplate,
   updateUserTemplate,
 } from '@app/ui/testing';
-import { ContentTypeEnum } from '@hal-form-client';
+import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { eachLike, email, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
@@ -24,13 +24,13 @@ export namespace GetUserPact {
       method: HTTPMethod.GET,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...pactUser },
     },
   };
@@ -42,13 +42,13 @@ export namespace GetUserPact {
       method: HTTPMethod.GET,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUser,
         _templates: {
@@ -67,13 +67,13 @@ export namespace GetUserPact {
       method: HTTPMethod.GET,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:delete'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUser,
         _templates: {
@@ -91,13 +91,13 @@ export namespace GetUserPact {
       method: HTTPMethod.GET,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUser,
         _templates: {
@@ -115,13 +115,13 @@ export namespace GetUserPact {
       method: HTTPMethod.GET,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUser,
         _templates: {
@@ -139,7 +139,7 @@ export namespace GetUserPact {
       method: HTTPMethod.GET,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -159,7 +159,7 @@ export namespace GetUserPact {
       method: HTTPMethod.GET,
       path: '/api/user/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read'] })),
       },
     },
@@ -181,13 +181,13 @@ export namespace GetAllUsersPact {
       method: HTTPMethod.GET,
       path: '/api/user',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           userModels: eachLike({ id: string(), username: string(), email: email() }, { min: 3 }),
@@ -209,13 +209,13 @@ export namespace GetAllUsersPact {
       method: HTTPMethod.GET,
       path: '/api/user',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:create'] })),
       },
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           userModels: eachLike({ id: string(), username: string(), email: email() }, { min: 3 }),
@@ -241,7 +241,7 @@ export namespace GetAllUsersPact {
       method: HTTPMethod.GET,
       path: '/api/user',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -263,9 +263,9 @@ export namespace CreateUserPact {
       method: HTTPMethod.POST,
       path: '/api/user',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:create'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         username: 'createdUser',
@@ -276,7 +276,7 @@ export namespace CreateUserPact {
     willRespondWith: {
       status: 201,
       headers: {
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
         [HttpHeaderKey.LOCATION]: withUuid('http://localhost/api/user/{uuid}'),
       },
       body: {
@@ -313,9 +313,9 @@ export namespace CreateUserPact {
       method: HTTPMethod.POST,
       path: '/api/user',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:create'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         username: 'pactUser',
@@ -339,9 +339,9 @@ export namespace CreateUserPact {
       method: HTTPMethod.POST,
       path: '/api/user',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         username: 'createdUser',
@@ -367,9 +367,9 @@ export namespace UpdateUserPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         firstname: 'pactUserFirstname',
@@ -377,7 +377,7 @@ export namespace UpdateUserPact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUser,
       },
@@ -391,9 +391,9 @@ export namespace UpdateUserPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         firstname: 'notFoundFirstname',
@@ -415,9 +415,9 @@ export namespace UpdateUserPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         firstname: 'pactUserFirstname',
@@ -439,9 +439,9 @@ export namespace UpdateUserPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         email: 'existingUser@localhost',
@@ -465,9 +465,9 @@ export namespace UpdateUserRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         roleId: 'pactRoleId',
@@ -475,7 +475,7 @@ export namespace UpdateUserRolePact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUser,
       },
@@ -489,9 +489,9 @@ export namespace UpdateUserRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/user/notFoundId/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         roleId: 'pactRoleId',
@@ -513,9 +513,9 @@ export namespace UpdateUserRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         roleId: 'notFoundId',
@@ -537,9 +537,9 @@ export namespace UpdateUserRolePact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId/role',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         roleId: 'pactRoleId',
@@ -563,9 +563,9 @@ export namespace UpdateUserAuthoritiesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId/authorities',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         authorityIds: ['pactAuthorityId'],
@@ -573,7 +573,7 @@ export namespace UpdateUserAuthoritiesPact {
     },
     willRespondWith: {
       status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS },
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pactUser,
       },
@@ -587,9 +587,9 @@ export namespace UpdateUserAuthoritiesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/notFoundId/authorities',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         authorityIds: ['pactAuthorityId'],
@@ -611,9 +611,9 @@ export namespace UpdateUserAuthoritiesPact {
       method: HTTPMethod.PATCH,
       path: '/api/user/pactUserId/authorities',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
-        [HttpHeaderKey.CONTENT_TYPE]: ContentTypeEnum.APPLICATION_JSON,
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
         authorityIds: ['pactAuthorityId'],
@@ -637,7 +637,7 @@ export namespace DeleteUserPact {
       method: HTTPMethod.DELETE,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:delete'] })),
       },
     },
@@ -653,7 +653,7 @@ export namespace DeleteUserPact {
       method: HTTPMethod.DELETE,
       path: '/api/user/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:delete'] })),
       },
     },
@@ -673,7 +673,7 @@ export namespace DeleteUserPact {
       method: HTTPMethod.DELETE,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },
@@ -695,7 +695,7 @@ export namespace RequestActivationTokenPact {
       method: HTTPMethod.POST,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:update'] })),
       },
     },
@@ -711,7 +711,7 @@ export namespace RequestActivationTokenPact {
       method: HTTPMethod.POST,
       path: '/api/user/notFoundId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken({ authorities: ['user:update'] })),
       },
     },
@@ -731,7 +731,7 @@ export namespace RequestActivationTokenPact {
       method: HTTPMethod.POST,
       path: '/api/user/pactUserId',
       headers: {
-        Accept: ContentTypeEnum.APPLICATION_JSON_HAL_FORMS,
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
       },
     },

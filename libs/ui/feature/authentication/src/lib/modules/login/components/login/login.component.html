@@ -27,7 +27,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="loginForm.invalid || (authService.isAllowedToLogin() | async) === false">
+        [disabled]="loginForm.invalid || (authService.hasTemplateToLogin() | async) === false">
         Log In
       </button>
     </mat-card-actions>

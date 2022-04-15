@@ -25,10 +25,7 @@ export class RoleManagementDetailComponent implements OnDestroy {
     private readonly toasterService: ToasterService,
     private readonly router: Router,
   ) {
-    this.headerService.setHeader({
-      title: 'Edit Role',
-      navigationLink: ['administration', 'role-management'],
-    });
+    this.headerService.setHeader({ title: 'Edit Role' });
     this._subscribeToRoleChanges(this.route.snapshot.data.role);
   }
 

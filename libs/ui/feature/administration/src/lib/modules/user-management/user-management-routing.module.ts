@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RolesResolver } from '../role-management/resolvers/roles.resolver';
+import { UserManagementDetailGuard } from './modules/detail/guards/user-management-detail.guard';
+import { UserManagementDetailResolver } from './modules/detail/resolvers/user-management-detail.resolver';
 
 const loadUserManagementHomeModule = () =>
   import('./modules/home/user-management-home.module').then((m) => m.UserManagementHomeModule);
@@ -20,20 +22,29 @@ const routes: Routes = [
     loadChildren: loadUserManagementHomeModule,
   },
   {
-    path: 'list',
-    loadChildren: loadUserManagementListModule,
-    data: { breadcrumb: 'Users' },
+    path: 'users',
+    children: [
+      {
+        path: '',
+        loadChildren: loadUserManagementListModule,
+        data: { breadcrumb: 'Users' },
+        pathMatch: 'full',
+      },
+      {
+        path: ':userId',
+        loadChildren: loadUserManagementDetailModule,
+        canActivate: [UserManagementDetailGuard],
+        canDeactivate: [UserManagementDetailGuard],
+        resolve: { user: UserManagementDetailResolver },
+        data: { breadcrumb: (data: { user: { username: string } }) => `${data.user.username}` },
+      },
+    ],
   },
   {
     path: 'create',
     loadChildren: loadUserManagementCreateModule,
     resolve: { roles: RolesResolver },
     data: { breadcrumb: 'New User' },
-  },
-  {
-    path: 'edit',
-    loadChildren: loadUserManagementDetailModule,
-    data: { breadcrumb: 'User' },
   },
   { path: '**', redirectTo: '' },
 ];

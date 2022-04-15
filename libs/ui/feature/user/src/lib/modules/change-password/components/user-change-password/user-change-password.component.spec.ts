@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
 import { StubFormErrorComponent } from '@app/ui/shared/common';
-import { NgLetModule } from '@app/ui/shared/core';
+import { NgLetModule, stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { UserChangePasswordComponent } from './user-change-password.component';
 
@@ -25,7 +25,7 @@ describe('UserChangePasswordComponent', () => {
         NgLetModule,
       ],
       declarations: [UserChangePasswordComponent, StubFormErrorComponent],
-      providers: [stubUserSettingsServiceProvider, stubToasterServiceProvider],
+      providers: [stubUserSettingsServiceProvider, stubToasterServiceProvider, stubCardViewHeaderServiceProvider],
     }).compileComponents();
   });
 
