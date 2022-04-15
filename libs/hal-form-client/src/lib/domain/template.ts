@@ -119,4 +119,22 @@ export class Template implements ITemplate {
     }
     return this;
   }
+
+  isAllowedTo(body: any): boolean {
+    if (!this.properties) {
+      return true;
+    }
+    return this.properties.every((prop) => {
+      if (prop.readOnly) {
+        return true;
+      }
+      if (prop.required && !body[prop.name]) {
+        return false;
+      }
+      if (prop.regex && body[prop.name] && !body[prop.name].match(prop.regex)) {
+        return false;
+      }
+      return true;
+    });
+  }
 }

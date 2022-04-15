@@ -21,4 +21,7 @@
       <map />
     </option>
   </component>
+  <component name="TaskProjectConfiguration">
+    <server type="JIRA" url="https://kurama-dev.atlassian.net" />
+  </component>
 </project>

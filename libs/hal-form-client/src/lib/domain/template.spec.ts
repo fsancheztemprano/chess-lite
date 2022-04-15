@@ -292,4 +292,88 @@ describe('Template', () => {
         .flush(null);
     });
   });
+
+  describe('isAllowedTo', () => {
+    it('should return true when no properties', () => {
+      expect(Template.of({}).isAllowedTo({ username: 'username' })).toBeTruthy();
+    });
+
+    it('should return true for readonly property', () => {
+      expect(
+        Template.of({
+          properties: [
+            {
+              name: 'username',
+              readOnly: true,
+            },
+          ],
+        }).isAllowedTo({ name: 'name', username: 'username' }),
+      ).toBeTruthy();
+    });
+
+    it('should return true if required property is provided', () => {
+      expect(
+        Template.of({
+          properties: [
+            {
+              name: 'username',
+              required: true,
+            },
+          ],
+        }).isAllowedTo({ username: 'new username' }),
+      ).toBeTruthy();
+    });
+
+    it('should return false if required property is not provided', () => {
+      expect(
+        Template.of({
+          properties: [
+            {
+              name: 'username',
+              required: true,
+            },
+          ],
+        }).isAllowedTo({ lastname: 'new lastname' }),
+      ).toBeFalsy();
+    });
+
+    it('should return true if provided value matches regex property', () => {
+      expect(
+        Template.of({
+          properties: [
+            {
+              name: 'username',
+              regex: '^[a-zA-Z]+$',
+            },
+          ],
+        }).isAllowedTo({ username: 'newusername' }),
+      ).toBeTruthy();
+    });
+
+    it('should return false if provided value does not match regex property', () => {
+      expect(
+        Template.of({
+          properties: [
+            {
+              name: 'username',
+              regex: '^[a-zA-Z]+$',
+            },
+          ],
+        }).isAllowedTo({ username: 'newusername0' }),
+      ).toBeFalsy();
+    });
+
+    it('should return true if regex property has no provided value', () => {
+      expect(
+        Template.of({
+          properties: [
+            {
+              name: 'username',
+              regex: '^[a-zA-Z]+$',
+            },
+          ],
+        }).isAllowedTo({}),
+      ).toBeTruthy();
+    });
+  });
 });
