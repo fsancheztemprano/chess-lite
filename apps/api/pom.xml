@@ -23,7 +23,7 @@
   </ciManagement>
   <properties>
     <java.version>11</java.version>
-    <org.projectlombok.version>1.18.22</org.projectlombok.version>
+    <org.projectlombok.version>1.18.24</org.projectlombok.version>
     <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
