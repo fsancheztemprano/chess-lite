@@ -76,14 +76,38 @@
       ],
       "options": {
         "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": [
-          "deploy",
-          "-DskipTests",
-          "-DskipITs",
-          "-P frontend"
-        ]
-      }
+        "root": "apps/api"
+      },
+      "configurations": {
+        "production": {
+          "args": [
+            "deploy",
+            "-DskipTests",
+            "-DskipITs",
+            "-P frontend",
+            "-P heroku-production"
+          ]
+        },
+        "development": {
+          "args": [
+            "deploy",
+            "-DskipTests",
+            "-DskipITs",
+            "-P frontend",
+            "-P heroku-development"
+          ]
+        },
+        "feature": {
+          "args": [
+            "deploy",
+            "-DskipTests",
+            "-DskipITs",
+            "-P frontend",
+            "-P heroku-feature"
+          ]
+        }
+      },
+      "defaultConfiguration": "development"
     },
     "run": {
       "executor": "@nxrocks/nx-spring-boot:run",

@@ -1,18 +1,30 @@
 name: Deploy
 
 on:
-  push:
-    branches:
-      - development
-
-jobs:
-  verify:
-    uses: frango9000/fullstack-template/.github/workflows/verify.yml@development
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+      url:
+        required: true
+        type: string
+      type:
+        required: false
+        type: string
+        default: 'testing'
     secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      HEROKU_API_KEY:
+        required: true
+      JIRA_URL:
+        required: true
+      JIRA_CLIENT_ID:
+        required: true
+      JIRA_CLIENT_SECRET:
+        required: true
+jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: verify
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -62,9 +74,9 @@ jobs:
         with:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
-          env: development
+          env: ${{ inputs.env }}
 
-      - name: Deploy to Heroku Dev
+      - name: Deploy to Heroku
         uses: MansaGroup/nrwl-nx-action@v2.1.0
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -73,6 +85,7 @@ jobs:
           all: 'true'
           parallel: 'false'
           affected: 'false'
+          args: '--configuration=${{ inputs.env }}'
 
       - name: Upload Deployed Artifact
         uses: actions/upload-artifact@v3
@@ -87,9 +100,9 @@ jobs:
           step: finish
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
+          env: ${{ steps.deployment.outputs.env }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env_url: https://boiling-shore-06894.herokuapp.com/
-          env: development
+          env_url: ${{ inputs.url }}
 
       - name: Failed Deployment
         if: failure()
@@ -116,28 +129,28 @@ jobs:
           echo "Jira Keys: ${{steps.jira_keys.outputs.jira-keys}}"
 
       - name: Push Deployment Info to Jira
+        if: steps.jira_keys.outputs.jira-keys != ''
         id: push_deployment_info_to_jira
         uses: HighwayThree/jira-upload-deployment-info@master
-        with: #cloud-id: '${{ secrets.CLOUD_ID }}'
+        with:
           cloud-instance-base-url: '${{ secrets.JIRA_URL }}'
           client-id: '${{ secrets.JIRA_CLIENT_ID }}'
           client-secret: '${{ secrets.JIRA_CLIENT_SECRET }}'
           deployment-sequence-number: '${{ github.run_id }}'
           update-sequence-number: '${{ github.run_id }}'
-          issue-keys: "UM-61"
-          #issue-keys: "${{ steps.jira_keys.outputs.jira-keys }}"
-          display-name: "Development"
-          url: https://boiling-shore-06894.herokuapp.com/
-          description: "Test Development"
+          issue-keys: "${{ steps.jira_keys.outputs.jira-keys }}"
+          display-name: ${{ inputs.env }}
+          url: ${{ inputs.url }}
+          description: ${{ inputs.env }}
           last-updated: '${{github.event.head_commit.timestamp}}'
-          label: 'Test Development'
+          label: ${{ inputs.env }}
           state: '${{env.DEPLOY_STATE}}'
           pipeline-id: '${{ github.repository }} ${{ github.workflow }}'
           pipeline-display-name: 'Workflow: ${{ github.workflow }} (#${{ github.run_number }})'
           pipeline-url: '${{github.event.repository.url}}/actions/runs/${{github.run_id}}'
-          environment-id: 'development'
-          environment-display-name: 'Development'
-          environment-type: 'testing'
+          environment-id: ${{ inputs.env }}
+          environment-display-name: ${{ inputs.env }}
+          environment-type: ${{ inputs.type }}
 
       - name: Confirm Jira Deploy Output
         if: success()

@@ -599,7 +599,7 @@
     </profile>
 
     <profile>
-      <id>heroku</id>
+      <id>heroku-production</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -626,7 +626,7 @@
 
 
     <profile>
-      <id>heroku-dev</id>
+      <id>heroku-development</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -652,7 +652,7 @@
     </profile>
 
     <profile>
-      <id>heroku-feat</id>
+      <id>heroku-feature</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
