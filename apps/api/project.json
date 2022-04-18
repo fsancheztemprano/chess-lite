@@ -81,7 +81,7 @@
           "deploy",
           "-DskipTests",
           "-DskipITs",
-          "-P frontend,herokudev"
+          "-P frontend"
         ]
       }
     },

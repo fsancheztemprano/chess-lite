@@ -95,7 +95,7 @@ jobs:
         if: failure()
         run: echo "DEPLOY_STATE=failed" >> $GITHUB_ENV
 
-      - name: Successfull Deployment
+      - name: Successful Deployment
         if: success()
         run: echo "DEPLOY_STATE=successful" >> $GITHUB_ENV
 

@@ -1,7 +1,6 @@
 application:
   jwt:
-    secret: ${JWT_SECRET}
-  host_url: 'https://boiling-shore-06894.herokuapp.com/app'
+    secret: ${JWT_SECRET:'secret'}
   run_data_init: true
 spring:
   datasource:
