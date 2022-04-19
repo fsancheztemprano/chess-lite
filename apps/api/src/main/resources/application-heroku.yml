@@ -1,7 +1,7 @@
 application:
   jwt:
-    secret: ${JWT_SECRET}
-  host_url: 'https://boiling-shore-06894.herokuapp.com/app'
+    secret: ${JWT_SECRET:'secret'}
+  host_url: 'https://${HEROKU_APP_NAME}.herokuapp.com/app' # https://devcenter.heroku.com/articles/dyno-metadata
   run_data_init: true
 spring:
   datasource:

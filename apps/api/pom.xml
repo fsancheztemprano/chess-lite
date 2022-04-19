@@ -252,11 +252,6 @@
           <version>1.12.1</version>
         </plugin>
         <plugin>
-          <groupId>com.heroku.sdk</groupId>
-          <artifactId>heroku-maven-plugin</artifactId>
-          <version>3.0.4</version>
-        </plugin>
-        <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.8</version>
@@ -281,6 +276,25 @@
           <artifactId>spring-cloud-contract-maven-plugin</artifactId>
           <version>${spring-cloud-contract.version}</version>
         </plugin>
+        <plugin>
+          <groupId>com.heroku.sdk</groupId>
+          <artifactId>heroku-maven-plugin</artifactId>
+          <version>3.0.4</version>
+          <configuration>
+            <appName>boiling-shore-06894-feat</appName>
+            <jdkVersion>11</jdkVersion>
+            <includeTarget>false</includeTarget>
+            <includes>
+              <include>target/${project.artifactId}-${project.version}.jar</include>
+            </includes>
+            <processTypes>
+              <web>
+                java $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.jar --spring.profiles.active=heroku
+              </web>
+            </processTypes>
+          </configuration>
+        </plugin>
+
       </plugins>
     </pluginManagement>
 
@@ -585,7 +599,7 @@
     </profile>
 
     <profile>
-      <id>herokudev</id>
+      <id>heroku-production</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -596,16 +610,59 @@
             <artifactId>heroku-maven-plugin</artifactId>
             <configuration>
               <appName>boiling-shore-06894</appName>
-              <jdkVersion>11</jdkVersion>
-              <includeTarget>false</includeTarget>
-              <includes>
-                <include>target/${project.artifactId}-${project.version}.jar</include>
-              </includes>
-              <processTypes>
-                <web>
-                  java $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.jar --spring.profiles.active=herokudev
-                </web>
-              </processTypes>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>deploy-only</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
+    <profile>
+      <id>heroku-development</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.heroku.sdk</groupId>
+            <artifactId>heroku-maven-plugin</artifactId>
+            <configuration>
+              <appName>boiling-shore-06894-dev</appName>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>deploy-only</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>heroku-feature</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.heroku.sdk</groupId>
+            <artifactId>heroku-maven-plugin</artifactId>
+            <configuration>
+              <appName>boiling-shore-06894-feat</appName>
             </configuration>
             <executions>
               <execution>
