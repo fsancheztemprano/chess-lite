@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'app',
-  preset: '../../jest.preset.js',
+  displayName: 'ui-feature-administration',
+
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -8,13 +8,13 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/app',
+  coverageDirectory: '../../../../coverage/libs/ui/feature/administration',
   reporters: [
     'default',
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage/apps/app',
+        outputDirectory: 'coverage/libs/ui/feature/administration',
         outputName: 'jest-junit.xml',
       },
     ],
@@ -28,4 +28,5 @@ module.exports = {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
+  preset: '..\\..\\..\\..\\jest.preset.ts',
 };

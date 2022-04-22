@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'hal-form-client',
-  preset: '../../jest.preset.js',
+  displayName: 'ui-core',
+
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -8,13 +8,13 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/libs/hal-form-client',
+  coverageDirectory: '../../../coverage/libs/ui/core',
   reporters: [
     'default',
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage/libs/hal-form-client',
+        outputDirectory: 'coverage/libs/ui/core',
         outputName: 'jest-junit.xml',
       },
     ],
@@ -28,4 +28,5 @@ module.exports = {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
+  preset: '..\\..\\..\\jest.preset.ts',
 };

@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'ui-feature-authentication',
-  preset: '../../../../jest.preset.js',
+  displayName: 'app',
+
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -8,13 +8,13 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../../../coverage/libs/ui/feature/authentication',
+  coverageDirectory: '../../coverage/apps/app',
   reporters: [
     'default',
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage/libs/ui/feature/authentication',
+        outputDirectory: 'coverage/apps/app',
         outputName: 'jest-junit.xml',
       },
     ],
@@ -28,4 +28,5 @@ module.exports = {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
+  preset: '..\\..\\jest.preset.ts',
 };

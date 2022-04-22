@@ -1,6 +1,6 @@
 module.exports = {
-  displayName: 'ui-core',
-  preset: '../../../jest.preset.js',
+  displayName: 'ui-shared-testing',
+
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -8,13 +8,13 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../../coverage/libs/ui/core',
+  coverageDirectory: '../../../../coverage/libs/ui/shared/testing',
   reporters: [
     'default',
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage/libs/ui/core',
+        outputDirectory: 'coverage/libs/ui/shared/testing',
         outputName: 'jest-junit.xml',
       },
     ],
@@ -28,4 +28,5 @@ module.exports = {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
+  preset: '..\\..\\..\\..\\jest.preset.ts',
 };
