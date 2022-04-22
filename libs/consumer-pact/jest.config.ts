@@ -1,6 +1,6 @@
 module.exports = {
   displayName: 'consumer-pact',
-
+  preset: '../../jest.preset.ts',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -29,5 +29,4 @@ module.exports = {
     'jest-preset-angular/build/serializers/html-comment',
   ],
   testTimeout: 30000,
-  preset: '..\\..\\jest.preset.ts',
 };

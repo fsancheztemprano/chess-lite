@@ -1,6 +1,6 @@
 module.exports = {
   displayName: 'ui-shared-core',
-
+  preset: '../../../../jest.preset.ts',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -28,5 +28,4 @@ module.exports = {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
-  preset: '..\\..\\..\\..\\jest.preset.ts',
 };
