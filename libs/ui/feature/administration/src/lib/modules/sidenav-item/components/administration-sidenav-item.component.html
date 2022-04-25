@@ -1,8 +1,10 @@
-<app-sidenav-item
-  *ngIf="hasAdministrationLink() | async"
-  [expandable]="true"
-  expandableTitle="Administration"
-  expandableIcon="admin_panel_settings"
-  [expandableLink]="['administration']"
-  [items]="items"
-  (toggleSidenav)="toggleSidenav.emit()"></app-sidenav-item>
+<ng-container *transloco="let t">
+  <app-sidenav-item
+    *ngIf="hasAdministrationLink() | async"
+    [expandable]="true"
+    [expandableTitle]="t('core.sidenav.administration.title')"
+    expandableIcon="admin_panel_settings"
+    [expandableLink]="['administration']"
+    [items]="items"
+    (toggleSidenav)="toggleSidenav.emit()"></app-sidenav-item>
+</ng-container>

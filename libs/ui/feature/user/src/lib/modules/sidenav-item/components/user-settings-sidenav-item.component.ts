@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { CurrentUserRelations, MenuData } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
+import { TranslocoService } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 import { UserSettingsService } from '../../../services/user-settings.service';
 
@@ -13,39 +14,39 @@ import { UserSettingsService } from '../../../services/user-settings.service';
 export class UserSettingsSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
 
-  items: MenuData[] = [
+  public readonly items: MenuData[] = [
     {
       icon: 'settings_applications',
-      title: 'Dashboard',
+      title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.dashboard'),
       link: '/user',
     },
     {
       icon: 'account_box',
-      title: 'Profile',
+      title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.profile'),
       link: '/user/profile',
       canShow: this.userSettingsService.hasTemplateToUpdateProfile(),
     },
     {
       icon: 'account_circle',
-      title: 'Upload Avatar',
+      title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.upload-avatar'),
       link: '/user/avatar',
       canShow: this.userSettingsService.hasTemplateToUploadAvatar(),
     },
     {
       icon: 'password',
-      title: 'Change Password',
+      title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.change-password'),
       link: '/user/password',
       canShow: this.userSettingsService.hasTemplateToChangePassword(),
     },
     {
       icon: 'delete_forever',
-      title: 'Delete Account',
+      title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.delete-account'),
       link: '/user/delete',
       canShow: this.userSettingsService.hasTemplateToDeleteAccount(),
     },
     {
       icon: 'manage_accounts',
-      title: 'Preferences',
+      title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.preferences'),
       link: '/user/preferences',
       canShow: this.userSettingsService.hasLinkToUserPreferences(),
     },
@@ -54,6 +55,7 @@ export class UserSettingsSidenavItemComponent {
   constructor(
     private readonly userSettingsService: UserSettingsService,
     private readonly halFormService: HalFormService,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   public hasCurrentUserLink(): Observable<boolean> {

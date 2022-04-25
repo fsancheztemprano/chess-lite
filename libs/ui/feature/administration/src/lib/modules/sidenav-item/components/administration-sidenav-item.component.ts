@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
 import { Router } from '@angular/router';
 import { AdministrationRelations, MenuData } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
+import { TranslocoService } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 import { AdministrationService } from '../../../services/administration.service';
 
@@ -17,30 +18,30 @@ export class AdministrationSidenavItemComponent {
   items: MenuData[] = [
     {
       icon: 'space_dashboard',
-      title: 'Dashboard',
+      title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.dashboard'),
       link: '/administration',
     },
     {
       icon: 'manage_accounts',
-      title: 'User Management',
+      title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.user-management'),
       link: '/administration/user-management',
       canShow: this.administrationService.hasUserManagementEmbedded(),
     },
     {
       icon: 'military_tech',
-      title: 'Role Management',
+      title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.role-management'),
       link: '/administration/role-management',
       canShow: this.administrationService.hasRoleManagementEmbedded(),
     },
     {
       icon: 'cabin',
-      title: 'Service Logs',
+      title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.service-logs'),
       link: '/administration/service-logs',
       canShow: this.administrationService.hasServiceLogsLink(),
     },
     {
       icon: 'vpn_lock',
-      title: 'Global Settings',
+      title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.global-settings'),
       link: '/administration/global-settings',
       canShow: this.administrationService.hasGlobalSettingsLink(),
     },
@@ -50,6 +51,7 @@ export class AdministrationSidenavItemComponent {
     private readonly router: Router,
     private readonly halFormService: HalFormService,
     private readonly administrationService: AdministrationService,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   public hasAdministrationLink(): Observable<boolean> {

@@ -1,8 +1,10 @@
-<app-sidenav-item
-  *ngIf="hasCurrentUserLink() | async"
-  [expandable]="true"
-  expandableTitle="User Settings"
-  expandableIcon="person"
-  [expandableLink]="['user']"
-  [items]="items"
-  (toggleSidenav)="toggleSidenav.emit()"></app-sidenav-item>
+<ng-container *transloco="let t">
+  <app-sidenav-item
+    *ngIf="hasCurrentUserLink() | async"
+    [expandable]="true"
+    [expandableTitle]="t('core.sidenav.user-settings.title')"
+    expandableIcon="person"
+    [expandableLink]="['user']"
+    [items]="items"
+    (toggleSidenav)="toggleSidenav.emit()"></app-sidenav-item>
+</ng-container>

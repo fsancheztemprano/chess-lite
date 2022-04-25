@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { MenuData } from '@app/ui/shared/domain';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-home-sidenav-item',
@@ -12,8 +13,10 @@ export class HomeSidenavItemComponent {
   public items: MenuData[] = [
     {
       icon: 'home',
-      title: 'Home',
+      title$: this.translocoService.selectTranslate('core.sidenav.home.title'),
       link: '/',
     },
   ];
+
+  constructor(private readonly translocoService: TranslocoService) {}
 }

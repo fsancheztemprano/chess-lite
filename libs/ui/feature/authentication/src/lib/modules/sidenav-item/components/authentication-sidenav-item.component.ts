@@ -4,6 +4,7 @@ import { clearSession } from '@app/ui/shared/app';
 import { AuthRelations, CurrentUserRelations, MenuData } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-authentication-sidenav-item',
@@ -18,24 +19,25 @@ export class AuthenticationSidenavItemComponent {
     private readonly halFormService: HalFormService,
     private readonly actions: Actions,
     private readonly router: Router,
+    private readonly translocoService: TranslocoService,
   ) {}
 
   items: MenuData[] = [
     {
       icon: 'logout',
-      title: 'Log Out',
-      canShow: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
+      title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.logout'),
       callback: this.logout.bind(this),
+      canShow: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
     },
     {
       icon: 'login',
-      title: 'Log In',
+      title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.login'),
       link: '/auth/login',
       canShow: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
     },
     {
       icon: 'assignment_ind',
-      title: 'Sign Up',
+      title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.signup'),
       link: '/auth/signup',
       canShow: this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION),
     },

@@ -22,7 +22,7 @@
       [routerLink]="item.link"
       routerLinkActive="active-link">
       <mat-icon aria-hidden="false" [attr.aria-label]="item.title">{{ item.icon }}</mat-icon>
-      {{ item.title }}
+      {{ item.title || (item.title$ && item.title$ | async) }}
     </a>
   </ng-container>
 </ng-template>

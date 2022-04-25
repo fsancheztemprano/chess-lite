@@ -1,9 +1,11 @@
 <a [routerLink]="tileData.link" class="tiled-menu-tile mat-raised-button" [@hover]="isMouseOver">
   <mat-icon>{{ tileData.icon }}</mat-icon>
   <div class="tiled-menu-tile-text-container">
-    <span class="tiled-menu-tile-title mat-title">{{ tileData.title }}</span>
-    <span class="tiled-menu-tile-subtitle mat-subheading-2" *ngIf="tileData.subtitle?.length">{{
-      tileData.subtitle
+    <span class="tiled-menu-tile-title mat-title">{{
+      tileData.title || (tileData.title$ && tileData.title$ | async)
+    }}</span>
+    <span class="tiled-menu-tile-subtitle mat-subheading-2" *ngIf="tileData.subtitle || tileData.subtitle$">{{
+      tileData.subtitle || (tileData.subtitle$ && tileData.subtitle$ | async)
     }}</span>
   </div>
 </a>
