@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService, TiledMenuTileData } from '@app/ui/shared/core';
-import { UserManagementRelations } from '@app/ui/shared/domain';
+import { CoreService } from '@app/ui/shared/core';
+import { MenuData, UserManagementRelations } from '@app/ui/shared/domain';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Component({
@@ -10,19 +10,19 @@ import { UserManagementService } from '../../../../services/user-management.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementHomeComponent implements OnDestroy {
-  tiles: TiledMenuTileData[] = [
+  tiles: MenuData[] = [
     {
       icon: 'contacts',
       title: 'User List',
       subtitle: 'List of all users',
-      link: 'users',
+      route: 'users',
       canShow: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
     },
     {
       icon: 'person_add',
       title: 'Create User',
       subtitle: 'Create a new User Account.',
-      link: 'create',
+      route: 'create',
       canShow: this.userManagementService.hasTemplate(UserManagementRelations.USER_CREATE_REL),
     },
   ];

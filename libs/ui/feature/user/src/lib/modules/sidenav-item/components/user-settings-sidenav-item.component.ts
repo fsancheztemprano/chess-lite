@@ -18,36 +18,36 @@ export class UserSettingsSidenavItemComponent {
     {
       icon: 'settings_applications',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.dashboard'),
-      link: '/user',
+      route: '/user',
     },
     {
       icon: 'account_box',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.profile'),
-      link: '/user/profile',
+      route: '/user/profile',
       canShow: this.userSettingsService.hasTemplateToUpdateProfile(),
     },
     {
       icon: 'account_circle',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.upload-avatar'),
-      link: '/user/avatar',
+      route: '/user/avatar',
       canShow: this.userSettingsService.hasTemplateToUploadAvatar(),
     },
     {
       icon: 'password',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.change-password'),
-      link: '/user/password',
+      route: '/user/password',
       canShow: this.userSettingsService.hasTemplateToChangePassword(),
     },
     {
       icon: 'delete_forever',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.delete-account'),
-      link: '/user/delete',
+      route: '/user/delete',
       canShow: this.userSettingsService.hasTemplateToDeleteAccount(),
     },
     {
       icon: 'manage_accounts',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.preferences'),
-      link: '/user/preferences',
+      route: '/user/preferences',
       canShow: this.userSettingsService.hasLinkToUserPreferences(),
     },
   ];

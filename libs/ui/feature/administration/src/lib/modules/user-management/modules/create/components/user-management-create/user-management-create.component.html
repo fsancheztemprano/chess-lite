@@ -64,7 +64,8 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="!form.valid || !!!(userManagementService.hasTemplate('create') | async)">
+        [disabled]="!form.valid || !!!(userManagementService.hasTemplate('create') | async)"
+      >
         Save
       </button>
     </mat-card-actions>

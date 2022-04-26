@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubCoreServiceProvider, StubTiledMenuModule } from '@app/ui/shared/core';
+import { StubTiledMenuModule } from '@app/ui/shared/common';
+import { stubCoreServiceProvider } from '@app/ui/shared/core';
 import { stubAdministrationServiceProvider } from '../../../../services/administration.service.stub';
 import { AdministrationHomeComponent } from './administration-home.component';
 

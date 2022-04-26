@@ -14,7 +14,7 @@ export class HomeSidenavItemComponent {
     {
       icon: 'home',
       title$: this.translocoService.selectTranslate('core.sidenav.home.title'),
-      link: '/',
+      route: '/',
     },
   ];
 

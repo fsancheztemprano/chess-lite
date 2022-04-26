@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { MenuData } from '@app/ui/shared/domain';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { CoreContextMenuService } from '../modules/core-context-menu/services/core-context-menu.service';
 import { CardViewHeaderService } from './card-view/card-view-header.service';
 import { HeaderConfig } from './card-view/card-view-header.service.model';
-import { ContextMenuService } from './context-menu/context-menu.service';
-import { MenuOption } from './context-menu/context-menu.service.model';
 import { ToolbarService } from './toolbar/toolbar.service';
 
 export type CoreComponentStyle = 'raw' | 'card';
@@ -18,7 +18,7 @@ export class CoreService {
   constructor(
     private readonly _toolbarService: ToolbarService,
     private readonly _cardViewHeaderService: CardViewHeaderService,
-    private readonly _contextMenuService: ContextMenuService,
+    private readonly _contextMenuService: CoreContextMenuService,
   ) {}
 
   getCoreStyle(): Observable<CoreComponentStyle> {
@@ -42,7 +42,7 @@ export class CoreService {
     return this._cardViewHeaderService;
   }
 
-  get contextMenuService(): ContextMenuService {
+  get contextMenuService(): CoreContextMenuService {
     return this._contextMenuService;
   }
 
@@ -50,7 +50,7 @@ export class CoreService {
     this.cardViewHeaderService.setHeader(header);
   }
 
-  setContextMenuOptions(options?: MenuOption[]): void {
+  setContextMenuOptions(options?: MenuData[]): void {
     this.contextMenuService.setOptions(options);
   }
 

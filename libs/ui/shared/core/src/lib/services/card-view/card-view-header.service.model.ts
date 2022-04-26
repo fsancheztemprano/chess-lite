@@ -6,8 +6,8 @@ export interface TabLink {
 export interface HeaderConfig {
   navigationLink?: string[];
   title?: string;
-  titleRation?: number;
+  titleRatio?: number;
   tabs?: TabLink[];
-  tabsRation?: number;
+  tabsRatio?: number;
   showContextMenu?: boolean;
 }

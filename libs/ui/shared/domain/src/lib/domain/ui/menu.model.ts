@@ -6,7 +6,9 @@ export interface MenuData {
   title$?: Observable<string>;
   subtitle?: string;
   subtitle$?: Observable<string>;
-  link?: string;
+  disabled$?: Observable<boolean>;
   canShow?: Observable<boolean>;
-  callback?: () => void;
+  callback?: (parameters?: never) => void;
+  parameters?: never;
+  route?: string;
 }

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IsMobileModule } from '@app/ui/shared/core';
+import { IsMobileModule, StubCoreContextMenuComponent } from '@app/ui/shared/core';
 import { CardViewHeaderComponent } from './card-view-header.component';
 
 describe('CardViewHeaderComponent', () => {
@@ -12,7 +12,7 @@ describe('CardViewHeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [IsMobileModule, MatIconModule, RouterTestingModule, MatTabsModule],
-      declarations: [CardViewHeaderComponent],
+      declarations: [CardViewHeaderComponent, StubCoreContextMenuComponent],
     }).compileComponents();
   });
 

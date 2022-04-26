@@ -25,7 +25,8 @@
     color="primary"
     type="submit"
     *subscribe="userSettingsService.hasTemplateToUpdateUserPreferences(); let canUpdateUserPreferences"
-    [disabled]="!canUpdateUserPreferences">
+    [disabled]="!canUpdateUserPreferences"
+  >
     Save and Apply
   </button>
 </form>

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService, TiledMenuTileData } from '@app/ui/shared/core';
+import { CoreService } from '@app/ui/shared/core';
+import { MenuData } from '@app/ui/shared/domain';
 import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @Component({
@@ -9,40 +10,40 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSettingsHomeComponent implements OnDestroy {
-  tiles: TiledMenuTileData[] = [
+  tiles: MenuData[] = [
     {
       icon: 'account_box',
       title: 'User Profile',
       subtitle: 'Edit your profile',
-      link: 'profile',
+      route: 'profile',
       canShow: this.userSettingsService.hasTemplateToUpdateProfile(),
     },
     {
       icon: 'account_circle',
       title: 'Upload Avatar',
       subtitle: 'Change your profile picture',
-      link: 'avatar',
+      route: 'avatar',
       canShow: this.userSettingsService.hasTemplateToUploadAvatar(),
     },
     {
       icon: 'password',
       title: 'Change Password',
       subtitle: 'Secure your account',
-      link: 'password',
+      route: 'password',
       canShow: this.userSettingsService.hasTemplateToChangePassword(),
     },
     {
       icon: 'delete_forever',
       title: 'Delete Account',
       subtitle: 'Remove your account',
-      link: 'delete',
+      route: 'delete',
       canShow: this.userSettingsService.hasTemplateToDeleteAccount(),
     },
     {
       icon: 'manage_accounts',
       title: 'Account Preferences',
       subtitle: 'Modify your application preferences',
-      link: 'preferences',
+      route: 'preferences',
       canShow: this.userSettingsService.hasLinkToUserPreferences(),
     },
   ];

@@ -4,7 +4,8 @@
     [@wobble]="signupError === true"
     (@wobble.start)="signupError = false"
     [@bounceOut]="signupSuccess === true"
-    (@bounceOut.done)="onSignupSuccess()">
+    (@bounceOut.done)="onSignupSuccess()"
+  >
     <mat-card-header>
       <mat-card-title>New Account Details</mat-card-title>
     </mat-card-header>
@@ -38,7 +39,8 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="signupForm.invalid || (authService.hasTemplateToSignup() | async) === false">
+        [disabled]="signupForm.invalid || (authService.hasTemplateToSignup() | async) === false"
+      >
         Sign Up
       </button>
     </mat-card-actions>

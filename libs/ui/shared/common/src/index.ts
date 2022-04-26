@@ -11,5 +11,6 @@ export * from './lib/utils/forms/rxjs/set-template-validators.rxjs.pipe';
 export * from './lib/modules/form-error';
 export * from './lib/modules/dialogs';
 export * from './lib/modules/sidenav-item';
+export * from './lib/modules/tiled-menu';
 
 export * from './index.testing';

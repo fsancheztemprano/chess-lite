@@ -11,7 +11,8 @@
     mat-raised-button
     color="primary"
     *ngLet="userManagementDetailService.canUpdateRole() | async as canUpdateRole"
-    [disabled]="!form.valid || !canUpdateRole">
+    [disabled]="!form.valid || !canUpdateRole"
+  >
     Save
   </button>
 </form>

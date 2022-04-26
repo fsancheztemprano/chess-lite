@@ -12,6 +12,7 @@
   color="primary"
   *ngLet="role$ | async as role"
   (click)="onSubmit(role)"
-  [disabled]="!role || !role?.hasTemplate('update')">
+  [disabled]="!role || !role?.hasTemplate('update')"
+>
   Save Authorities
 </button>

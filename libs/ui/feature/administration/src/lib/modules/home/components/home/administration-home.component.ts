@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService, TiledMenuTileData } from '@app/ui/shared/core';
+import { CoreService } from '@app/ui/shared/core';
+import { MenuData } from '@app/ui/shared/domain';
 import { AdministrationService } from '../../../../services/administration.service';
 
 @Component({
@@ -9,33 +10,33 @@ import { AdministrationService } from '../../../../services/administration.servi
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdministrationHomeComponent implements OnDestroy {
-  tiles: TiledMenuTileData[] = [
+  tiles: MenuData[] = [
     {
       icon: 'manage_accounts',
       title: 'User Management',
       subtitle: 'Manage User Accounts',
-      link: 'user-management',
+      route: 'user-management',
       canShow: this.administrationService.hasUserManagementEmbedded(),
     },
     {
       icon: 'military_tech',
       title: 'Role Management',
       subtitle: 'Manage Roles',
-      link: 'role-management',
+      route: 'role-management',
       canShow: this.administrationService.hasRoleManagementEmbedded(),
     },
     {
       icon: 'cabin',
       title: 'Service Logs',
       subtitle: 'Have a look at the service logs.',
-      link: 'service-logs',
+      route: 'service-logs',
       canShow: this.administrationService.hasServiceLogsLink(),
     },
     {
       icon: 'vpn_lock',
       title: 'Global Settings',
       subtitle: 'Global Settings',
-      link: 'global-settings',
+      route: 'global-settings',
       canShow: this.administrationService.hasGlobalSettingsLink(),
     },
   ];

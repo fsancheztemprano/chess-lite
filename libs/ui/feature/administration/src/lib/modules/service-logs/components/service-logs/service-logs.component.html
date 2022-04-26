@@ -2,7 +2,8 @@
   class="body-content-text-area"
   appearance="outline"
   floatLabel="always"
-  *ngIf="serviceLogs | async as serviceLog">
+  *ngIf="serviceLogs | async as serviceLog"
+>
   <mat-label>{{ serviceLog?.timestamp | date: 'short' }}</mat-label>
   <textarea
     [value]="serviceLog?.logs"
@@ -11,5 +12,6 @@
     matInput
     title="Service Logs"
     cdkAutosizeMinRows="12"
-    placeholder="Service Logs"></textarea>
+    placeholder="Service Logs"
+  ></textarea>
 </mat-form-field>

@@ -5,8 +5,8 @@ import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { ConfirmationDialogService, TextInputDialogService } from '@app/ui/shared/common';
-import { CoreService, MenuOption } from '@app/ui/shared/core';
-import { Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
+import { CoreService } from '@app/ui/shared/core';
+import { MenuData, Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
 import { EMPTY, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { RoleManagementTableDatasource } from './role-management-table.datasource';
@@ -24,11 +24,11 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
 
-  private createRoleMenuOption: MenuOption = {
-    label: 'New Role',
+  private createRoleMenuOption: MenuData = {
+    title: 'New Role',
     icon: 'add',
-    observable: this.createRole(),
-    disabled: this.dataSource.rolePage$.pipe(
+    callback: () => this.createRole(),
+    disabled$: this.dataSource.rolePage$.pipe(
       map((rolePage: RolePage) => !rolePage.hasTemplate(RoleManagementRelations.ROLE_CREATE_REL)),
     ),
   };
@@ -75,39 +75,41 @@ export class RoleManagementTableComponent implements AfterViewInit, OnDestroy {
   }
 
   private createRole() {
-    return this.dataSource.rolePage$.pipe(
-      first(),
-      switchMap((rolePage: RolePage) => {
-        return this.textInputDialogService
-          .openDialog({
-            title: 'Create Role',
-            caption: 'Enter a name for the new Role',
-            acceptButton: {
-              text: 'CREATE ROLE',
-              color: 'primary',
-              disabled: !rolePage.hasTemplate(RoleManagementRelations.ROLE_CREATE_REL),
-            },
-            template: rolePage.getTemplate(RoleManagementRelations.ROLE_CREATE_REL),
-            inputs: [
-              {
-                key: 'name',
-                options: {
-                  label: 'Role Name',
-                  placeholder: 'ROLE_SUPER_USER',
-                },
+    return this.dataSource.rolePage$
+      .pipe(
+        first(),
+        switchMap((rolePage: RolePage) => {
+          return this.textInputDialogService
+            .openDialog({
+              title: 'Create Role',
+              caption: 'Enter a name for the new Role',
+              acceptButton: {
+                text: 'CREATE ROLE',
+                color: 'primary',
+                disabled: !rolePage.hasTemplate(RoleManagementRelations.ROLE_CREATE_REL),
               },
-            ],
-          })
-          .pipe(
-            switchMap((body: { name: string }) => {
-              return body?.name?.length ? this.dataSource.createRole(body.name) : EMPTY;
-            }),
-          );
-      }),
-      tap({
-        next: () => this.toasterService.showToast({ title: 'Role Created successfully' }),
-        error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),
-      }),
-    );
+              template: rolePage.getTemplate(RoleManagementRelations.ROLE_CREATE_REL),
+              inputs: [
+                {
+                  key: 'name',
+                  options: {
+                    label: 'Role Name',
+                    placeholder: 'ROLE_SUPER_USER',
+                  },
+                },
+              ],
+            })
+            .pipe(
+              switchMap((body: { name: string }) => {
+                return body?.name?.length ? this.dataSource.createRole(body.name) : EMPTY;
+              }),
+            );
+        }),
+        tap({
+          next: () => this.toasterService.showToast({ title: 'Role Created successfully' }),
+          error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),
+        }),
+      )
+      .subscribe();
   }
 }

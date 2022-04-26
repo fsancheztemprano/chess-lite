@@ -32,13 +32,13 @@ export class AuthenticationSidenavItemComponent {
     {
       icon: 'login',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.login'),
-      link: '/auth/login',
+      route: '/auth/login',
       canShow: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
     },
     {
       icon: 'assignment_ind',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.signup'),
-      link: '/auth/signup',
+      route: '/auth/signup',
       canShow: this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION),
     },
   ];

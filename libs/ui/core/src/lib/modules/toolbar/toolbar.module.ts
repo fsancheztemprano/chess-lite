@@ -8,10 +8,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { IsMobileModule } from '@app/ui/shared/core';
+import { CoreContextMenuModule, IsMobileModule } from '@app/ui/shared/core';
 import { SubscribeModule } from '@ngneat/subscribe';
 import { TranslocoModule } from '@ngneat/transloco';
-import { ContextMenuModule } from '../context-menu/context-menu.module';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LocalePickerComponent } from './components/locale-picker/locale-picker.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
@@ -33,7 +32,6 @@ import { Iso3166Pipe } from './pipes/iso3166.pipe';
     TranslocoModule,
     MatToolbarModule,
     MatIconModule,
-    ContextMenuModule,
     IsMobileModule,
     MatButtonModule,
     MatSlideToggleModule,
@@ -42,6 +40,7 @@ import { Iso3166Pipe } from './pipes/iso3166.pipe';
     MatInputModule,
     SubscribeModule,
     RouterModule,
+    CoreContextMenuModule,
   ],
   exports: [ToolbarComponent],
 })

@@ -4,7 +4,8 @@
     [@wobble]="loginError === true"
     (@wobble.start)="loginError = false"
     [@bounceOut]="loginSuccess === true"
-    (@bounceOut.done)="onLoginSuccess()">
+    (@bounceOut.done)="onLoginSuccess()"
+  >
     <mat-card-header>
       <mat-card-title>Enter your Credentials</mat-card-title>
     </mat-card-header>
@@ -27,7 +28,8 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="loginForm.invalid || (authService.hasTemplateToLogin() | async) === false">
+        [disabled]="loginForm.invalid || (authService.hasTemplateToLogin() | async) === false"
+      >
         Log In
       </button>
     </mat-card-actions>

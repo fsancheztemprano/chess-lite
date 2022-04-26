@@ -9,7 +9,8 @@
       color="warn"
       (click)="openDialog()"
       *ngLet="userManagementDetailService.canDeleteAccount() | async as canDeleteAccount"
-      [disabled]="!canDeleteAccount">
+      [disabled]="!canDeleteAccount"
+    >
       Delete this account
     </button>
   </mat-card-actions>

@@ -74,8 +74,8 @@ export class CardViewHeaderService {
     this._navigationLink.next(header?.navigationLink || this.DEFAULT_CONFIG.navigationLink);
     this._title.next(header?.title || this.DEFAULT_CONFIG.title);
     this._tabs.next(header?.tabs || this.DEFAULT_CONFIG.tabs);
-    this._titleRatio.next(header?.titleRation || this.DEFAULT_CONFIG.titleRatio);
-    this._tabsRatio.next(header?.tabsRation || this.DEFAULT_CONFIG.tabsRatio);
+    this._titleRatio.next(header?.titleRatio || this.DEFAULT_CONFIG.titleRatio);
+    this._tabsRatio.next(header?.tabsRatio || this.DEFAULT_CONFIG.tabsRatio);
     this._showContextMenu.next(!!header?.showContextMenu);
   }
 }

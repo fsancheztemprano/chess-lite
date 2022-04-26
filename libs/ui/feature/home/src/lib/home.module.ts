@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TiledMenuModule } from '@app/ui/shared/core';
+import { TiledMenuModule } from '@app/ui/shared/common';
 import { TRANSLOCO_SCOPE, TranslocoModule } from '@ngneat/transloco';
 import { scopeLoader } from '../../../../../../tools/transloco/transloco.scope';
 import { HomeComponent } from './components/home/home.component';

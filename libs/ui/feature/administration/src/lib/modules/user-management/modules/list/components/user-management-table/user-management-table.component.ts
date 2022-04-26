@@ -3,8 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { CoreService, MenuOption } from '@app/ui/shared/core';
-import { User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
+import { CoreService } from '@app/ui/shared/core';
+import { MenuData, User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
 import { map } from 'rxjs/operators';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 
@@ -32,11 +32,11 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
     'edit',
   ];
 
-  private createUserMenuOption: MenuOption = {
-    label: 'New User',
+  private createUserMenuOption: MenuData = {
+    title: 'New User',
     icon: 'person_add',
     callback: () => this.router.navigate(['administration', 'user-management', 'create']),
-    disabled: this.dataSource.userPage$.pipe(
+    disabled$: this.dataSource.userPage$.pipe(
       map((userPage: UserPage) => !userPage.hasTemplate(UserManagementRelations.USER_CREATE_REL)),
     ),
   };

@@ -19,30 +19,30 @@ export class AdministrationSidenavItemComponent {
     {
       icon: 'space_dashboard',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.dashboard'),
-      link: '/administration',
+      route: '/administration',
     },
     {
       icon: 'manage_accounts',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.user-management'),
-      link: '/administration/user-management',
+      route: '/administration/user-management',
       canShow: this.administrationService.hasUserManagementEmbedded(),
     },
     {
       icon: 'military_tech',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.role-management'),
-      link: '/administration/role-management',
+      route: '/administration/role-management',
       canShow: this.administrationService.hasRoleManagementEmbedded(),
     },
     {
       icon: 'cabin',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.service-logs'),
-      link: '/administration/service-logs',
+      route: '/administration/service-logs',
       canShow: this.administrationService.hasServiceLogsLink(),
     },
     {
       icon: 'vpn_lock',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.global-settings'),
-      link: '/administration/global-settings',
+      route: '/administration/global-settings',
       canShow: this.administrationService.hasGlobalSettingsLink(),
     },
   ];

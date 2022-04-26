@@ -7,7 +7,6 @@ import { scopeLoader } from '../../../../../tools/transloco/transloco.scope';
 import { CoreComponent } from './components/core/core.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { CardViewModule } from './modules/card-view/card-view.module';
-import { ContextMenuModule } from './modules/context-menu/context-menu.module';
 import { SidenavModule } from './modules/sidenav/sidenav.module';
 import { ToolbarModule } from './modules/toolbar/toolbar.module';
 import { LocalizationEffects } from './store/effects/localization.effects';
@@ -20,7 +19,6 @@ import { ThemeEffects } from './store/effects/theme.effects';
     CoreRoutingModule,
     IsMobileModule,
     CardViewModule,
-    ContextMenuModule,
     ToolbarModule,
     SidenavModule,
     EffectsNgModule.forFeature([LocalizationEffects, ThemeEffects]),

@@ -5,8 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { IsMobileModule } from '@app/ui/shared/core';
-import { ContextMenuModule } from '../context-menu/context-menu.module';
+import { CoreContextMenuModule, IsMobileModule } from '@app/ui/shared/core';
 import { CardViewHeaderComponent } from './components/card-view-header/card-view-header.component';
 import { CardViewComponent } from './components/card-view/card-view.component';
 
@@ -19,8 +18,8 @@ import { CardViewComponent } from './components/card-view/card-view.component';
     MatIconModule,
     MatTabsModule,
     IsMobileModule,
-    ContextMenuModule,
     MatButtonModule,
+    CoreContextMenuModule,
   ],
   exports: [CardViewComponent],
 })

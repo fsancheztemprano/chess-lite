@@ -43,14 +43,14 @@ export class ServiceLogsComponent implements OnDestroy {
     this.coreService.setContextMenuOptions([
       {
         icon: 'refresh',
-        label: 'Refresh',
+        title: 'Refresh',
         callback: () => this.refreshServiceLogs(),
       },
       {
         icon: 'delete',
-        label: 'Delete',
+        title: 'Delete',
         callback: () => this.deleteServiceLogs(),
-        disabled: this.serviceLogs.pipe(
+        disabled$: this.serviceLogs.pipe(
           map((serviceLogs) => !serviceLogs.hasTemplate(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
         ),
       },

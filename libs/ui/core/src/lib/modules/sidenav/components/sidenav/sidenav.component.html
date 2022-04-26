@@ -6,7 +6,8 @@
     [attr.role]="isMobile ? 'dialog' : 'navigation'"
     [mode]="isMobile ? 'over' : 'side'"
     [opened]="this.sidenavService.isOpen$ | async"
-    *transloco="let t">
+    *transloco="let t"
+  >
     <mat-toolbar>
       {{ t('core.welcome') }}&nbsp;
       <span *ngIf="sessionRepository.user$ | async as user">{{ user.firstname || user.username }}</span>

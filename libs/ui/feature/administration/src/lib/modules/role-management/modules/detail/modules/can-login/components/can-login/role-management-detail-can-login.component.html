@@ -5,7 +5,8 @@
     [checked]="role.canLogin"
     (change)="onToggle(role, $event)"
     [disabled]="!role.hasTemplate('update')"
-    color="primary"></mat-slide-toggle>
+    color="primary"
+  ></mat-slide-toggle>
   <mat-icon>lock_open</mat-icon>
   <span *ngIf="showRoleName">{{ role.name }}</span>
 </ng-container>
