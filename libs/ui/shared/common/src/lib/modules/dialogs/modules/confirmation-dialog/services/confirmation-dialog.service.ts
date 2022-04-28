@@ -3,10 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { ConfirmationDialogData } from '../../../model/dialogs.model';
 import { ConfirmationDialogComponent } from '../components/confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationDialogModule } from '../confirmation-dialog.module';
 
 @Injectable({
-  providedIn: ConfirmationDialogModule,
+  providedIn: 'root',
 })
 export class ConfirmationDialogService {
   constructor(private readonly dialog: MatDialog) {}

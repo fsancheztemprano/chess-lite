@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AdministrationRelations, ServiceLogs } from '@app/ui/shared/domain';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
-import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
   providedIn: 'root',

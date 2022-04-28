@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { UserSettingsService } from '../../../../services/user-settings.service';
+import { UserSettingsService } from '@app/ui/shared/core';
 
 @Component({
   selector: 'app-user-remove-account-confirm',

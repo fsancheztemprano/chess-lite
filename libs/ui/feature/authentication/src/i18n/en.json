@@ -1,1 +1,14 @@
-{}
+{
+  "login": {
+    "header": "Login",
+    "title": "Enter your Credentials",
+    "placeholder": {
+      "username": "Username",
+      "password": "Password"
+    },
+    "button": {
+      "recover-account": "Recover Account",
+      "login": "Log in"
+    }
+  }
+}

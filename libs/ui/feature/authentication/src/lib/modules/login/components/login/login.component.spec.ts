@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StubFormErrorComponent } from '@app/ui/shared/common';
+import { StubCoreCardViewComponent, StubFormErrorComponent } from '@app/ui/shared/common';
 import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { HalFormClientModule } from '@hal-form-client';
 import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
@@ -27,7 +27,7 @@ describe('LoginComponent', () => {
         NoopAnimationsModule,
         HalFormClientModule,
       ],
-      declarations: [LoginComponent, StubFormErrorComponent],
+      declarations: [LoginComponent, StubFormErrorComponent, StubCoreCardViewComponent],
       providers: [stubAuthServiceProvider, stubCardViewHeaderServiceProvider],
     }).compileComponents();
   });

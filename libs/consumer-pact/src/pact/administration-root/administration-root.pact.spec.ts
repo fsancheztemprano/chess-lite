@@ -1,10 +1,10 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AdministrationRelations, TOKEN_KEY } from '@app/ui/shared/domain';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { noop } from 'rxjs';
-import { AdministrationService } from '../../../../ui/feature/administration/src/lib/services/administration.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

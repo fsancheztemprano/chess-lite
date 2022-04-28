@@ -7,9 +7,9 @@ import {
   GlobalSettingsUpdateInput,
   WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
   providedIn: 'root',

@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToasterService } from '@app/ui/shared/app';
 import { fileSizeValidator } from '@app/ui/shared/common';
-import { CardViewHeaderService } from '@app/ui/shared/core';
-import { UserSettingsService } from '../../../../services/user-settings.service';
+import { CardViewHeaderService, UserSettingsService } from '@app/ui/shared/core';
 
 @Component({
   selector: 'app-user-upload-avatar',

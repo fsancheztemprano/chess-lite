@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-header>
+    <ng-container *ngIf="showNavigationLink">
+      <a *ngIf="navigationLink$ | async as link" [routerLink]="link" mat-icon-button aria-label="Options">
+        <mat-icon [style]="'transform: scaleY(' + iconScaleY + ')'">{{ icon }}</mat-icon>
+      </a>
+    </ng-container>
+    <div class="header-title" [style]="'flex-grow:' + titleRatio">
+      {{ title }}
+    </div>
+    <ng-container *ngIf="tabs">
+      <nav *ngIf="tabs.length" mat-tab-nav-bar mat-align-tabs="end" mat-stretch-tabs [style]="'flex-grow:' + tabsRatio">
+        <a
+          *ngFor="let tab of tabs"
+          mat-tab-link
+          [routerLink]="tab.route"
+          routerLinkActive="active-link"
+          #rla="routerLinkActive"
+          [active]="rla.isActive"
+        >
+          {{ tab.title }}
+        </a>
+      </nav>
+    </ng-container>
+    <app-core-context-menu *ngIf="showContextMenu && ('' | isMobile | async) === false"></app-core-context-menu>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+</mat-card>

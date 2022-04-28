@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { CoreService } from '@app/ui/shared/core';
 import { MenuData } from '@app/ui/shared/domain';
-import { AdministrationService } from '../../../../services/administration.service';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
 
 @Component({
   selector: 'app-administration-home',

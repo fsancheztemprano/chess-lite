@@ -3,9 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { patchFormPipe } from '@app/ui/shared/common';
-import { LocalizationRepository } from '@app/ui/shared/core';
+import { LocalizationRepository, UserSettingsService } from '@app/ui/shared/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @UntilDestroy()
 @Component({

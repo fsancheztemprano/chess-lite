@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdministrationGuard } from '@app/ui/feature/administration';
 import { AuthGuard } from '@app/ui/feature/authentication';
 import { UserSettingsGuard } from '@app/ui/feature/user';
+import { AdministrationGuard } from '@app/ui/shared/feature/administration';
 import { CoreComponent } from './components/core/core.component';
 
 const loadUserModule = () => import('@app/ui/feature/user').then((m) => m.UserModule);

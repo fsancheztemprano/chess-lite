@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
+import { stubAdministrationServiceProvider } from '@app/ui/shared/feature/administration';
 
 import { ServiceLogsGuard } from './service-logs.guard';
 

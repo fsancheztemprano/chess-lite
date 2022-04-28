@@ -6,16 +6,24 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { AdministrationSidenavItemModule } from '@app/ui/feature/administration';
-import { AuthenticationSidenavItemModule } from '@app/ui/feature/authentication';
-import { HomeSidenavItemModule } from '@app/ui/feature/home';
-import { UserSettingsSidenavItemModule } from '@app/ui/feature/user';
 import { IsMobileModule, NgLetModule } from '@app/ui/shared/core';
 import { TranslocoModule } from '@ngneat/transloco';
+import { SidenavItemComponent } from './components/sidenav-item/sidenav-item.component';
+import { AdministrationSidenavItemComponent } from './components/sidenav-items/administration/administration-sidenav-item.component';
+import { AuthenticationSidenavItemComponent } from './components/sidenav-items/authentication/authentication-sidenav-item.component';
+import { HomeSidenavItemComponent } from './components/sidenav-items/home/home-sidenav-item.component';
+import { UserSettingsSidenavItemComponent } from './components/sidenav-items/user-settings/user-settings-sidenav-item.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 @NgModule({
-  declarations: [SidenavComponent],
+  declarations: [
+    SidenavComponent,
+    SidenavItemComponent,
+    AdministrationSidenavItemComponent,
+    AuthenticationSidenavItemComponent,
+    HomeSidenavItemComponent,
+    UserSettingsSidenavItemComponent,
+  ],
   imports: [
     CommonModule,
     TranslocoModule,
@@ -27,10 +35,6 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
     MatToolbarModule,
     IsMobileModule,
     NgLetModule,
-    HomeSidenavItemModule,
-    AdministrationSidenavItemModule,
-    UserSettingsSidenavItemModule,
-    AuthenticationSidenavItemModule,
   ],
   exports: [SidenavComponent],
 })

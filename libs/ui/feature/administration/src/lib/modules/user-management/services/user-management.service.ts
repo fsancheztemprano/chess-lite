@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pageable, User, UserInput, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { HalFormService, Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
-import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
   providedIn: 'root',

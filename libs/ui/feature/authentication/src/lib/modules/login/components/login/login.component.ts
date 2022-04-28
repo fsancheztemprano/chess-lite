@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { setTemplateValidatorsPipe } from '@app/ui/shared/common';
-import { CardViewHeaderService } from '@app/ui/shared/core';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
 import { AuthService } from '../../../../services/auth.service';
@@ -14,7 +13,7 @@ import { AuthService } from '../../../../services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [wobbleAnimation(), bounceOutAnimation()],
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
   public loginForm = new FormGroup({
     username: new FormControl(''),
     password: new FormControl(''),
@@ -27,14 +26,8 @@ export class LoginComponent implements OnDestroy {
     public readonly authService: AuthService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
-    private readonly headerService: CardViewHeaderService,
   ) {
-    this.headerService.setHeader({ title: 'Login' });
     this.authService.getLoginTemplate().pipe(first(), setTemplateValidatorsPipe(this.loginForm)).subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
   }
 
   public onSubmit(): void {

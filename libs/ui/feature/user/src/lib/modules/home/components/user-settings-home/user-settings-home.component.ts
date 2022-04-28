@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService } from '@app/ui/shared/core';
+import { CoreService, UserSettingsService } from '@app/ui/shared/core';
 import { MenuData } from '@app/ui/shared/domain';
-import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @Component({
   selector: 'app-user-settings-home',
