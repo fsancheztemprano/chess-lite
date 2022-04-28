@@ -1,1 +1,31 @@
-{}
+{
+  "login": {
+    "header": "Iniciar Sesión",
+    "title": "Introduce tus Credenciales",
+    "placeholder": {
+      "username": "Usuario",
+      "password": "Contraseña"
+    },
+    "button": {
+      "recover-account": "Recuperar Cuenta",
+      "login": "Iniciar Sesión"
+    }
+  },
+  "token-request": {
+    "header": "Recuperación de Cuenta",
+    "title": "Introduce tu Email",
+    "placeholder": {
+      "email": "Email"
+    },
+    "button": {
+      "request": "Recuperar Cuenta"
+    },
+    "toast": {
+      "success": {
+        "title": "Token de Recuperación Enviada",
+        "message": "Por favor revisa tu email y abre el link para recuperar tu cuenta."
+      },
+      "error": "Por favor revisa tu email o intentalo mas tarde"
+    }
+  }
+}
