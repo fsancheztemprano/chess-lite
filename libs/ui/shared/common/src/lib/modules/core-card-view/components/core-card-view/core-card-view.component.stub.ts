@@ -3,7 +3,7 @@ import { MenuData } from '@app/ui/shared/domain';
 import { Observable, of } from 'rxjs';
 import { CoreCardViewComponent } from './core-card-view.component';
 
-@Component({ selector: 'app-core-card-view', template: '' })
+@Component({ selector: 'app-core-card-view', template: '<ng-content></ng-content>' })
 export class StubCoreCardViewComponent implements Partial<CoreCardViewComponent> {
   @Input() icon = 'keyboard_return';
   @Input() iconScaleY = -1;

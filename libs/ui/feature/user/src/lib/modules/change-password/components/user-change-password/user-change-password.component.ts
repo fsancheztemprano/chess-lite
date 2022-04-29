@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setResourceValidatorsPipe } from '@app/ui/shared/common';
-import { CardViewHeaderService, UserSettingsService } from '@app/ui/shared/core';
+import { UserSettingsService } from '@app/ui/shared/core';
 import { CurrentUserRelations } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -13,7 +14,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./user-change-password.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserChangePasswordComponent implements OnDestroy {
+export class UserChangePasswordComponent {
   public form = new FormGroup(
     {
       password: new FormControl(''),
@@ -24,10 +25,11 @@ export class UserChangePasswordComponent implements OnDestroy {
     [matchingControlsValidators('password', 'password2'), matchingControlsValidators('newPassword', 'newPassword2')],
   );
 
+  public readonly TRANSLOCO_SCOPE = 'user.change-password';
+
   constructor(
     public readonly userSettingsService: UserSettingsService,
     private readonly toasterService: ToasterService,
-    private readonly headerService: CardViewHeaderService,
   ) {
     this.userSettingsService
       .getCurrentUser()
@@ -37,21 +39,11 @@ export class UserChangePasswordComponent implements OnDestroy {
         setResourceValidatorsPipe(this.form, CurrentUserRelations.CHANGE_PASSWORD_REL),
       )
       .subscribe();
-    this.headerService.setHeader({ title: 'Change Password' });
-  }
-
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
   }
 
   onSubmit() {
     this.userSettingsService.changePassword(this.form.value).subscribe({
-      next: () => this.toasterService.showToast({ title: 'Password Changed Successfully' }),
-      error: () =>
-        this.toasterService.showErrorToast({
-          title: 'An Error Occurred',
-          message: 'Password was not changed.',
-        }),
+      next: () => this.toasterService.showToast({ title: translate('user.change-password.toast.success') }),
     });
   }
 }

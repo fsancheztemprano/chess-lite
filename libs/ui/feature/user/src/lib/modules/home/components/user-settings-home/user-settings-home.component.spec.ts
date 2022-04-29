@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StubTiledMenuModule } from '@app/ui/shared/common';
 import { stubCoreServiceProvider, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { UserSettingsHomeComponent } from './user-settings-home.component';
 
 describe('UserSettingsHomeComponent', () => {
@@ -9,7 +10,7 @@ describe('UserSettingsHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StubTiledMenuModule],
+      imports: [StubTiledMenuModule, getTranslocoModule()],
       declarations: [UserSettingsHomeComponent],
       providers: [stubCoreServiceProvider, stubUserSettingsServiceProvider],
     }).compileComponents();

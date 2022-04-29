@@ -1,0 +1,39 @@
+{
+  "home": {
+    "profile": {
+      "title": "User Profile",
+      "description": "Edit your profile"
+    },
+    "avatar": {
+      "title": "Upload Avatar",
+      "description": "Change your profile picture"
+    },
+    "password": {
+      "title": "Change Password",
+      "description": "Secure your account"
+    },
+    "delete": {
+      "title": "Delete Account",
+      "description": "Remove your account"
+    },
+    "preferences": {
+      "title": "Account Preferences",
+      "description": "Modify your application preferences"
+    }
+  },
+  "change-password": {
+    "header": "Change Password",
+    "placeholder": {
+      "password": "Current Password",
+      "password2": "Current Password Again",
+      "newPassword": "New Password",
+      "newPassword2": "New Password Again"
+    },
+    "button": {
+      "change": "Save"
+    },
+    "toast": {
+      "success": "Password changed successfully"
+    }
+  }
+}

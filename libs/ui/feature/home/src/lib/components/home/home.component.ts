@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService } from '@app/ui/shared/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AdministrationRelations, AuthRelations, CurrentUserRelations, MenuData } from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
 import { TranslocoService } from '@ngneat/transloco';
@@ -10,7 +9,7 @@ import { TranslocoService } from '@ngneat/transloco';
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent {
   tiles: MenuData[] = [
     {
       icon: 'person',
@@ -42,15 +41,5 @@ export class HomeComponent implements OnDestroy {
     },
   ];
 
-  constructor(
-    private readonly coreService: CoreService,
-    private readonly halFormService: HalFormService,
-    private readonly translocoService: TranslocoService,
-  ) {
-    this.coreService.setCoreStyle('raw');
-  }
-
-  ngOnDestroy(): void {
-    this.coreService.reset();
-  }
+  constructor(private readonly halFormService: HalFormService, private readonly translocoService: TranslocoService) {}
 }
