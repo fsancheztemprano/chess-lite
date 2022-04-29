@@ -27,5 +27,44 @@
       },
       "error": "Por favor revisa tu email o intentalo mas tarde"
     }
+  },
+  "signup": {
+    "header": "Registro",
+    "title": "Detalles de la Cuenta",
+    "placeholder": {
+      "firstname": "Nombre",
+      "lastname": "Apellido",
+      "email": "Email",
+      "username": "Usuario"
+    },
+    "button": {
+      "signup": "Continuar"
+    },
+    "toast": {
+      "success": {
+        "title": "Correo de Activación Enviado",
+        "message": "Por favor revisa tu correo y sigue el link para activar tu cuenta."
+      }
+    }
+  },
+  "activation": {
+    "header": "Activación de Cuentas",
+    "title": "Activa tu Cuenta",
+    "placeholder": {
+      "token": "Token",
+      "email": "Email",
+      "password": "Contraseña Nueva",
+      "password2": "Contraseña Nueva"
+    },
+    "button": {
+      "activate": "Activar"
+    },
+    "toast": {
+      "success": {
+        "title": "Cuenta activada",
+        "message": "Ahora puedes iniciar sesión."
+      },
+      "error": "Datos inválidos, ten en cuenta que el código de activación tiene limite de uso."
+    }
   }
 }

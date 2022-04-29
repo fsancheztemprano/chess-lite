@@ -52,8 +52,8 @@ export class TokenRequestComponent {
   private setStatus(status: boolean) {
     if (status) {
       this.toasterService.showToast({
-        title: translate(`${this.TRANSLOCO_SCOPE}.toast.title`),
-        message: translate(`${this.TRANSLOCO_SCOPE}.toast.message`),
+        title: translate(`${this.TRANSLOCO_SCOPE}.toast.success.title`),
+        message: translate(`${this.TRANSLOCO_SCOPE}.toast.success.message`),
       });
     } else {
       this.toasterService.showErrorToast({

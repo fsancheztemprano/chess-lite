@@ -7,8 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
-import { StubFormErrorComponent } from '@app/ui/shared/common';
-import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
+import { CoreCardViewModule, StubFormErrorComponent } from '@app/ui/shared/common';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
 import { SignupComponent } from './signup.component';
 
@@ -20,9 +20,16 @@ describe('SignupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ...MaterialModules, NoopAnimationsModule, ReactiveFormsModule],
+      imports: [
+        RouterTestingModule,
+        ...MaterialModules,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        getTranslocoModule(),
+        CoreCardViewModule,
+      ],
       declarations: [SignupComponent, StubFormErrorComponent],
-      providers: [stubAuthServiceProvider, stubCardViewHeaderServiceProvider, stubToasterServiceProvider],
+      providers: [stubAuthServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 
