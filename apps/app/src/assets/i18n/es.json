@@ -1,1 +1,8 @@
-{}
+{
+  "core": {
+    "locale": {
+      "en": "Inglés",
+      "es": "Castellano"
+    }
+  }
+}

@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
-import { CardViewHeaderService, UserSettingsService } from '@app/ui/shared/core';
+import { UserSettingsService } from '@app/ui/shared/core';
+import { filterNil } from '@ngneat/elf';
+import { translate } from '@ngneat/transloco';
 import { first, switchMap } from 'rxjs/operators';
 import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confirm/user-remove-account-confirm.component';
 
@@ -12,38 +14,33 @@ import { UserRemoveAccountConfirmComponent } from '../user-remove-account-confir
   styleUrls: ['./user-remove-account.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserRemoveAccountComponent implements OnDestroy {
+export class UserRemoveAccountComponent {
+  public readonly TRANSLOCO_SCOPE = 'user.remove-account';
+
   constructor(
     public readonly userSettingsService: UserSettingsService,
-    private readonly headerService: CardViewHeaderService,
     private readonly toasterService: ToasterService,
     private readonly dialogService: MatDialog,
     private readonly router: Router,
-  ) {
-    this.headerService.setHeader({ title: 'Remove Account' });
-  }
-
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
-  }
+  ) {}
 
   openDialog(): void {
-    const matDialogRef = this.dialogService.open(UserRemoveAccountConfirmComponent, {
-      width: '350px',
-    });
-    matDialogRef
+    this.dialogService
+      .open(UserRemoveAccountConfirmComponent, {
+        width: '350px',
+      })
       .afterClosed()
       .pipe(
         first(),
+        filterNil(),
         switchMap(() => this.userSettingsService.deleteAccount()),
       )
       .subscribe({
         next: () => {
-          this.toasterService.showToast({ title: 'Account and all associated data were removed.' });
+          this.toasterService.showToast({ title: translate(`${this.TRANSLOCO_SCOPE}.toast.success`) });
           this.router.navigate(['auth', 'signup']);
         },
-        error: () =>
-          this.toasterService.showErrorToast({ title: 'An Error Occurred', message: 'Account was not removed.' }),
+        error: () => this.toasterService.showErrorToast({ title: translate(`${this.TRANSLOCO_SCOPE}.toast.error`) }),
       });
   }
 }

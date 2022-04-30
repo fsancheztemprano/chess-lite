@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FormErrorModule } from '@app/ui/shared/common';
+import { CoreCardViewModule, FormErrorModule } from '@app/ui/shared/common';
 import { SubscribeModule } from '@ngneat/subscribe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { CurrentUserPreferencesComponent } from './components/user-preferences/current-user-preferences.component';
@@ -26,6 +26,8 @@ import { CurrentUserPreferencesRoutingModule } from './current-user-preferences-
     MatSlideToggleModule,
     FormErrorModule,
     SubscribeModule,
+    CoreCardViewModule,
+    TranslocoModule,
   ],
 })
 export class CurrentUserPreferencesModule {}

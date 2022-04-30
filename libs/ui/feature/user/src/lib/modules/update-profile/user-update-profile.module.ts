@@ -8,8 +8,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormErrorModule } from '@app/ui/shared/common';
+import { CoreCardViewModule, FormErrorModule } from '@app/ui/shared/common';
 import { NgLetModule } from '@app/ui/shared/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { UserUpdateProfileComponent } from './components/user-update-profile/user-update-profile.component';
 import { UserUpdateProfileRoutingModule } from './user-update-profile-routing.module';
 
@@ -28,6 +29,8 @@ import { UserUpdateProfileRoutingModule } from './user-update-profile-routing.mo
     MatDatepickerModule,
     MatNativeDateModule,
     NgLetModule,
+    CoreCardViewModule,
+    TranslocoModule,
   ],
   providers: [MatDatepickerModule],
 })

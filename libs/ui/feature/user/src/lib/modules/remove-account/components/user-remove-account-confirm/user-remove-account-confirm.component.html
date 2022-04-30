@@ -1,24 +1,26 @@
-<h2 mat-dialog-title>Delete Account?</h2>
-<mat-dialog-content>
-  This action cannot be undone. This will permanently delete your account, and remove all data associations.
-  <br />
-  <br />
-  Please type your username to confirm.
-  <br />
-  <br />
-  <mat-form-field>
-    <input matInput type="text" placeholder="Type your username" required #usernameInput />
-  </mat-form-field>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" mat-dialog-close>Cancel</button>
-  <button
-    mat-raised-button
-    color="warn"
-    *ngLet="userService.getCurrentUser() | async as user"
-    [disabled]="!user || !usernameInput.value.length || user.username !== usernameInput.value"
-    [mat-dialog-close]="user"
-  >
-    Delete
-  </button>
-</mat-dialog-actions>
+<ng-container *transloco="let t; read: 'user.remove-account.dialog'">
+  <h2 mat-dialog-title>{{ t('title') }}</h2>
+  <mat-dialog-content>
+    {{ t('warning') }}
+    <br />
+    <br />
+    {{ t('description') }}
+    <br />
+    <br />
+    <mat-form-field>
+      <input matInput type="text" [placeholder]="t('placeholder')" required #usernameInput />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" [mat-dialog-close]="null">{{ t('button.cancel') }}</button>
+    <button
+      mat-raised-button
+      color="warn"
+      *ngLet="userService.getCurrentUser() | async as user"
+      [disabled]="!user || !usernameInput.value.length || user.username !== usernameInput.value"
+      [mat-dialog-close]="user"
+    >
+      {{ t('button.confirm') }}
+    </button>
+  </mat-dialog-actions>
+</ng-container>

@@ -1,9 +1,5 @@
 {
   "welcome": "Bienvenido",
-  "locale": {
-    "en": "Inglés",
-    "es": "Castellano"
-  },
   "sidenav": {
     "home": {
       "title": "Inicio"
