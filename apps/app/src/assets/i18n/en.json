@@ -3,6 +3,9 @@
     "locale": {
       "en": "English",
       "es": "Spanish"
+    },
+    "context-menu": {
+      "title": "Options"
     }
   }
 }

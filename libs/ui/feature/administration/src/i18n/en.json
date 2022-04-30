@@ -1,0 +1,28 @@
+{
+  "home": {
+    "user-management": {
+      "title": "User Management",
+      "description": "Manage User Accounts"
+    },
+    "role-management": {
+      "title": "Role Management",
+      "description": "Manage Roles"
+    },
+    "service-logs": {
+      "title": "Service Logs",
+      "description": "Have a look at the service logs."
+    },
+    "global-settings": {
+      "title": "Global Settings",
+      "description": "Global Settings"
+    }
+  },
+  "service-logs": {
+    "header": "Service Logs",
+    "logs": "Service Logs",
+    "context": {
+      "refresh": "Refresh",
+      "delete": "Delete"
+    }
+  }
+}

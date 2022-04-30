@@ -3,7 +3,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubCoreServiceProvider } from '@app/ui/shared/core';
+import { stubCoreContextMenuServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubServiceLogsServiceProvider } from '../../services/service-logs.service.stub';
 import { ServiceLogsComponent } from './service-logs.component';
 
@@ -13,9 +14,9 @@ describe('ServiceLogsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule],
+      imports: [RouterTestingModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule, getTranslocoModule()],
       declarations: [ServiceLogsComponent],
-      providers: [stubServiceLogsServiceProvider, stubCoreServiceProvider],
+      providers: [stubServiceLogsServiceProvider, stubCoreContextMenuServiceProvider],
     }).compileComponents();
   });
 
