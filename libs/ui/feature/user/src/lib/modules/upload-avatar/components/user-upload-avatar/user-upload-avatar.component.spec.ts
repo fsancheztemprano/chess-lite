@@ -3,9 +3,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { stubToasterServiceProvider } from '@app/ui/shared/app';
-import { StubFormErrorComponent } from '@app/ui/shared/common';
-import { NgLetModule, stubCardViewHeaderServiceProvider, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
+import { StubCoreCardViewComponent, StubFormErrorComponent } from '@app/ui/shared/common';
+import { NgLetModule, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { UserUploadAvatarComponent } from './user-upload-avatar.component';
 
 describe('UserUploadAvatarComponent', () => {
@@ -14,9 +14,9 @@ describe('UserUploadAvatarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, NgLetModule],
-      declarations: [UserUploadAvatarComponent, StubFormErrorComponent],
-      providers: [stubUserSettingsServiceProvider, stubCardViewHeaderServiceProvider, stubToasterServiceProvider],
+      imports: [ReactiveFormsModule, MatCardModule, MatButtonModule, MatIconModule, NgLetModule, getTranslocoModule()],
+      declarations: [UserUploadAvatarComponent, StubFormErrorComponent, StubCoreCardViewComponent],
+      providers: [stubUserSettingsServiceProvider],
     }).compileComponents();
   });
 
