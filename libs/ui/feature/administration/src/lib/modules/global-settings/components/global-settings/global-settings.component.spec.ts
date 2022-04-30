@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { StubCoreCardViewComponent } from '@app/ui/shared/common';
 import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 
 import { GlobalSettingsComponent } from './global-settings.component';
 
@@ -10,8 +12,8 @@ describe('GlobalSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [GlobalSettingsComponent],
+      imports: [RouterTestingModule, getTranslocoModule()],
+      declarations: [GlobalSettingsComponent, StubCoreCardViewComponent],
       providers: [stubCardViewHeaderServiceProvider],
     }).compileComponents();
   });

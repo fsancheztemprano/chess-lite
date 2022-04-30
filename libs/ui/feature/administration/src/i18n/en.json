@@ -24,5 +24,12 @@
       "refresh": "Refresh",
       "delete": "Delete"
     }
+  },
+  "global-settings": {
+    "header": "Global Settings",
+    "tabs": {
+      "general-settings": "General Settings",
+      "access-restrictions": "Access Restrictions"
+    }
   }
 }

@@ -33,6 +33,10 @@
       .tabs-container {
         flex-grow: 1;
       }
+
+      nav {
+        height: 50px;
+      }
     }
 
     mat-card-content {

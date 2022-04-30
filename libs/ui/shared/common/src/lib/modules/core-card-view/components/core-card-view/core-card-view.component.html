@@ -18,7 +18,7 @@
           #rla="routerLinkActive"
           [active]="rla.isActive"
         >
-          {{ tab.title }}
+          {{ tab.title || (tab.title$ && tab.title$ | async) }}
         </a>
       </nav>
     </ng-container>

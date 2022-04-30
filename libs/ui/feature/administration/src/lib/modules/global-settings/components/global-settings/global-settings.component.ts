@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CardViewHeaderService } from '@app/ui/shared/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MenuData } from '@app/ui/shared/domain';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-global-settings',
@@ -7,24 +8,18 @@ import { CardViewHeaderService } from '@app/ui/shared/core';
   styleUrls: ['./global-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GlobalSettingsComponent implements OnDestroy {
-  constructor(private readonly cardViewHeaderService: CardViewHeaderService) {
-    this.cardViewHeaderService.setHeader({
-      title: 'Global Settings',
-      tabs: [
-        {
-          label: 'General Settings',
-          target: ['administration', 'global-settings', 'general'],
-        },
-        {
-          label: 'Access Restrictions',
-          target: ['administration', 'global-settings', 'access-restrictions'],
-        },
-      ],
-    });
-  }
+export class GlobalSettingsComponent {
+  public readonly TRANSLOCO_SCOPE = 'administration.global-settings';
+  public readonly tabs: MenuData[] = [
+    {
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.general-settings`),
+      route: '/administration/global-settings/general',
+    },
+    {
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.access-restrictions`),
+      route: '/administration/global-settings/access-restrictions',
+    },
+  ];
 
-  ngOnDestroy(): void {
-    this.cardViewHeaderService.resetHeader();
-  }
+  constructor(private readonly translocoService: TranslocoService) {}
 }
