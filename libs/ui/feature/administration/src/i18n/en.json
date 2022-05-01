@@ -30,6 +30,20 @@
     "tabs": {
       "general-settings": "General Settings",
       "access-restrictions": "Access Restrictions"
+    },
+    "general": {
+      "default-role": {
+        "label": "Default Role",
+        "button": "Set Default Role",
+        "toast": "Default Role updated"
+      },
+      "signup-open": {
+        "title": "New Member Signup",
+        "toast": "Global Signup Settings Changed"
+      },
+      "access-restrictions": {
+        "title": "Role Login Configuration"
+      }
     }
   }
 }

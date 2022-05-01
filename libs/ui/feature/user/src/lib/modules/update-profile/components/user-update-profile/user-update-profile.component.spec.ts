@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
 import { StubCoreCardViewComponent, StubFormErrorComponent } from '@app/ui/shared/common';
-import { NgLetModule, stubCardViewHeaderServiceProvider, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
+import { NgLetModule, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
 import { getTranslocoModule } from '@app/ui/testing';
 import { UserUpdateProfileComponent } from './user-update-profile.component';
 
@@ -32,12 +32,7 @@ describe('UserUpdateProfileComponent', () => {
         getTranslocoModule(),
       ],
       declarations: [UserUpdateProfileComponent, StubFormErrorComponent, StubCoreCardViewComponent],
-      providers: [
-        MatDatepickerModule,
-        stubUserSettingsServiceProvider,
-        stubCardViewHeaderServiceProvider,
-        stubToasterServiceProvider,
-      ],
+      providers: [MatDatepickerModule, stubUserSettingsServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

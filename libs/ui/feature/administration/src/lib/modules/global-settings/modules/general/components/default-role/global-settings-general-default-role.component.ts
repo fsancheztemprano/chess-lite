@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,13 +17,14 @@ import { GlobalSettingsService } from '../../../../services/global-settings.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GlobalSettingsGeneralDefaultRoleComponent {
-  roles?: Observable<Role[]> = this.route.parent?.parent?.data.pipe(
+  public readonly roles?: Observable<Role[]> = this.route.parent?.parent?.data.pipe(
     map((data) => data.roles),
     map((rolePage: RolePage) => rolePage.getEmbeddedCollection<Role>(RoleManagementRelations.ROLE_MODEL_LIST_REL)),
     startWith([]),
   );
 
-  public form = new FormGroup({ defaultRoleId: new FormControl('') });
+  public readonly form = new FormGroup({ defaultRoleId: new FormControl('') });
+  public readonly TRANSLOCO_SCOPE = 'administration.global-settings.general.default-role';
 
   constructor(
     public readonly globalSettingsService: GlobalSettingsService,
@@ -34,10 +36,9 @@ export class GlobalSettingsGeneralDefaultRoleComponent {
       .subscribe((globalSettings) => this.form.patchValue({ defaultRoleId: globalSettings.defaultRole?.id }));
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     this.globalSettingsService.updateGlobalSettings(this.form.value).subscribe({
-      next: () => this.toasterService.showToast({ message: 'Global Settings Saved Successfully' }),
-      error: () => this.toasterService.showErrorToast({ message: 'An Error has Occurred' }),
+      next: () => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast`) }),
     });
   }
 }

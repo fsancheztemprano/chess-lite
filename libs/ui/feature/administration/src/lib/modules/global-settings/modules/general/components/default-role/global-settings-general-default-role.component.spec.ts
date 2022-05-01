@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubGlobalSettingsServiceProvider } from '../../../../services/global-settings.service.stub';
 
 import { GlobalSettingsGeneralDefaultRoleComponent } from './global-settings-general-default-role.component';
@@ -23,6 +24,7 @@ describe('GlobalSettingsGeneralDefaultRoleComponent', () => {
         MatFormFieldModule,
         MatSelectModule,
         MatButtonModule,
+        getTranslocoModule(),
       ],
       declarations: [GlobalSettingsGeneralDefaultRoleComponent],
       providers: [stubGlobalSettingsServiceProvider, stubToasterServiceProvider],

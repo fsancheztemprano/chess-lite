@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ToasterService } from '@app/ui/shared/app';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { translate } from '@ngneat/transloco';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { GlobalSettingsService } from '../../../../services/global-settings.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-global-settings-general-signup-open',
   templateUrl: './global-settings-general-signup-open.component.html',
@@ -11,23 +12,20 @@ import { GlobalSettingsService } from '../../../../services/global-settings.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GlobalSettingsGeneralSignupOpenComponent {
-  public signupOpen?: boolean;
+  public readonly signupOpen$?: Observable<boolean | undefined> = this.globalSettingsService.globalSettings$.pipe(
+    map((globalSettings) => globalSettings.signupOpen),
+  );
+
+  public readonly TRANSLOCO_SCOPE = 'administration.global-settings.general.signup-open';
 
   constructor(
     public readonly globalSettingsService: GlobalSettingsService,
     private readonly toasterService: ToasterService,
-    private readonly cdr: ChangeDetectorRef,
-  ) {
-    this.globalSettingsService.globalSettings$.pipe(untilDestroyed(this)).subscribe((globalSettings) => {
-      this.signupOpen = globalSettings.signupOpen;
-      this.cdr.markForCheck();
-    });
-  }
+  ) {}
 
-  onToggle($event: { checked: boolean }) {
+  public onToggle($event: { checked: boolean }): void {
     this.globalSettingsService.updateGlobalSettings({ signupOpen: $event.checked }).subscribe({
-      next: () => this.toasterService.showToast({ message: 'Global Settings Saved Successfully' }),
-      error: () => this.toasterService.showErrorToast({ message: 'An Error has Occurred' }),
+      next: () => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast`) }),
     });
   }
 }
