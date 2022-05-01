@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ToasterService } from '@app/ui/shared/app';
 import { setTemplateValidators } from '@app/ui/shared/common';
 import { Role, RoleManagementRelations } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { RoleManagementService } from '../../../../services/role-management.service';
@@ -15,9 +16,10 @@ import { RoleManagementService } from '../../../../services/role-management.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleManagementDetailNameComponent implements OnInit {
-  @Input() role$!: Observable<Role>;
+  @Input() role$?: Observable<Role>;
 
-  form = new FormGroup({
+  public readonly TRANSLOCO_SCOPE = 'administration.role-management.detail';
+  public readonly form = new FormGroup({
     name: new FormControl(''),
   });
 
@@ -36,10 +38,9 @@ export class RoleManagementDetailNameComponent implements OnInit {
     });
   }
 
-  onSubmit(role: Role) {
-    this.roleManagementService.updateRole(role, this.form.value).subscribe({
-      next: () => this.toasterService.showToast({ title: 'Role updated successfully' }),
-      error: () => this.toasterService.showErrorToast({ title: 'An error has occurred' }),
-    });
+  onSubmit(role?: Role) {
+    this.roleManagementService
+      .updateRole(role!, this.form.value)
+      .subscribe(() => this.toasterService.showToast({ title: translate(`${this.TRANSLOCO_SCOPE}.toast.updated`) }));
   }
 }

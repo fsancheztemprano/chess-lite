@@ -36,7 +36,7 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
   public sort: MatSort | undefined;
   private readonly _rolePage$: BehaviorSubject<RolePage> = new BehaviorSubject<RolePage>(new RolePage({}));
   private readonly _roleListChanges: Subject<void> = new Subject();
-  private _roleListMessagesSubscription: Subscription = new Subscription();
+  private _roleListMessagesSubscription?: Subscription;
 
   constructor(
     private readonly roleManagementService: RoleManagementService,
@@ -94,8 +94,7 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
   }
 
   disconnect(): void {
-    this._rolePage$.complete();
-    this._roleListChanges.complete();
+    this._rolePage$.next(new RolePage({}));
     this._roleListMessagesSubscription?.unsubscribe();
   }
 

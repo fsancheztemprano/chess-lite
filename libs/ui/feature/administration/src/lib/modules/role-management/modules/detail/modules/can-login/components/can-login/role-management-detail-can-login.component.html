@@ -1,5 +1,9 @@
 <ng-container *ngIf="role$ | async as role">
-  <span *ngIf="showCanLoginLabel">Has Login Access</span>
+  <span *ngIf="showCanLoginLabel">
+    <ng-container *transloco="let t">{{
+      t('administration.role-management.detail.placeholder.can-login')
+    }}</ng-container>
+  </span>
   <mat-icon>lock</mat-icon>
   <mat-slide-toggle
     [checked]="role.canLogin"

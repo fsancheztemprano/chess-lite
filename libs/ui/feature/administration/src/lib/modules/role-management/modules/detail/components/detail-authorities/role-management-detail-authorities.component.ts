@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { Authority, Role } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
@@ -16,9 +17,10 @@ import { RoleManagementService } from '../../../../services/role-management.serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleManagementDetailAuthoritiesComponent implements OnInit {
-  @Input() role$!: Observable<Role>;
+  @Input() role$?: Observable<Role>;
 
-  public form = new FormArray([]);
+  public readonly TRANSLOCO_SCOPE = 'administration.role-management.detail';
+  public readonly form = new FormArray([]);
 
   constructor(
     private readonly roleManagementService: RoleManagementService,
@@ -46,10 +48,9 @@ export class RoleManagementDetailAuthoritiesComponent implements OnInit {
           .filter((authority: { active: boolean }) => authority.active)
           .map((authority: { id: string }) => authority.id),
       })
-      .subscribe({
-        next: () => this.toasterService.showToast({ message: 'Authorities updated successfully' }),
-        error: () => this.toasterService.showErrorToast({ title: 'An Error occurred' }),
-      });
+      .subscribe(() =>
+        this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.updated-authorities`) }),
+      );
   }
 
   private _getAuthorities() {

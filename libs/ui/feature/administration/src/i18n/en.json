@@ -81,6 +81,22 @@
         },
         "toast": "Role created successfully"
       }
+    },
+    "detail": {
+      "header": "Edit Role",
+      "placeholder": {
+        "name": "Name",
+        "can-login": "Has Login Access"
+      },
+      "button": {
+        "change-name": "Change name",
+        "save-authorities": "Save Authorities"
+      },
+      "toast": {
+        "deleted": "Role {{roleId}} was removed.",
+        "updated": "Role updated successfully",
+        "updated-authorities": "Authorities updated successfully"
+      }
     }
   }
 }

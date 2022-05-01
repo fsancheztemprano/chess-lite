@@ -1,16 +1,18 @@
-<form [formGroup]="form" novalidate (ngSubmit)="onSubmit(role)" *ngIf="role$ | async as role">
-  <mat-form-field>
-    <input matInput placeholder="Name" formControlName="name" required />
-    <mat-error>
-      <app-form-error [control]="form.controls.name" name="name"></app-form-error>
-    </mat-error>
-  </mat-form-field>
-  <button
-    mat-raised-button
-    type="submit"
-    color="primary"
-    [disabled]="!role || form.invalid || !role.hasTemplate('update')"
-  >
-    Change Name
-  </button>
-</form>
+<ng-container *transloco="let t; read: TRANSLOCO_SCOPE">
+  <form [formGroup]="form" novalidate (ngSubmit)="onSubmit(role)" *ngIf="role$ | async as role">
+    <mat-form-field>
+      <input matInput [placeholder]="t('placeholder.name')" formControlName="name" required />
+      <mat-error>
+        <app-form-error [control]="form.controls.name" name="name"></app-form-error>
+      </mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      type="submit"
+      color="primary"
+      [disabled]="!role || form.invalid || !role.hasTemplate('update')"
+    >
+      {{ t('button.change-name') }}
+    </button>
+  </form>
+</ng-container>

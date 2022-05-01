@@ -14,5 +14,5 @@
   (click)="onSubmit(role)"
   [disabled]="!role || !role?.hasTemplate('update')"
 >
-  Save Authorities
+  <ng-container *transloco="let t; read: TRANSLOCO_SCOPE">{{ t('button.save-authorities') }}</ng-container>
 </button>

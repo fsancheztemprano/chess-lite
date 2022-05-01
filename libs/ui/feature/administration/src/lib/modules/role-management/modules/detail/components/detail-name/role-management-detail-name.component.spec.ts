@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubRoleManagementServiceProvider } from '../../../../services/role-management.service.stub';
 
 import { RoleManagementDetailNameComponent } from './role-management-detail-name.component';
@@ -9,6 +10,7 @@ describe('RoleManagementDetailNameComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [getTranslocoModule()],
       declarations: [RoleManagementDetailNameComponent],
       providers: [stubRoleManagementServiceProvider],
     }).compileComponents();
