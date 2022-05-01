@@ -45,5 +45,42 @@
         "title": "Role Login Configuration"
       }
     }
+  },
+  "role-management": {
+    "table": {
+      "header": "Role Management",
+      "context": {
+        "add": "New Role"
+      },
+      "columns": {
+        "name": "Role",
+        "authorities": "Authorities",
+        "actions": "Actions"
+      },
+      "delete-dialog": {
+        "title": "Remove Role",
+        "caption": "Do you really want to remove this role? Users with this role will get the default role.",
+        "button": {
+          "accept": "REMOVE ROLE",
+          "reject": "CLOSE"
+        },
+        "toast": "Role deleted successfully"
+      },
+      "create-dialog": {
+        "title": "Create Role",
+        "caption": "Enter a name for the new Role",
+        "input": {
+          "name": {
+            "label": "Role Name",
+            "placeholder": "ROLE_SUPER_USER"
+          }
+        },
+        "button": {
+          "accept": "CREATE ROLE",
+          "reject": "CLOSE"
+        },
+        "toast": "Role created successfully"
+      }
+    }
   }
 }

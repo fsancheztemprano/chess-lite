@@ -42,7 +42,7 @@ export class RoleManagementService extends HalFormService {
     return rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, { body: { name } });
   }
 
-  deleteRole(role: Role): Observable<unknown> {
+  public deleteRole(role: Role): Observable<unknown> {
     return role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_DELETE_REL);
   }
 }
