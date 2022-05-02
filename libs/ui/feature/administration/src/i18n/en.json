@@ -98,5 +98,63 @@
         "updated-authorities": "Authorities updated successfully"
       }
     }
+  },
+  "user-management": {
+    "home": {
+      "tiles": {
+        "table": {
+          "title": "User List",
+          "subtitle": "List of all users"
+        },
+        "detail": {
+          "title": "Create User",
+          "subtitle": "Create a new User Account"
+        }
+      }
+    },
+    "table": {
+      "header": "User Management",
+      "context": {
+        "add": "New User"
+      },
+      "columns": {
+        "username": "Username",
+        "email": "Email",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "lastLoginDateDisplay": "Last Login",
+        "joinDate": "Since",
+        "role": "RoleModel"
+      }
+    },
+    "detail": {
+      "header": "Edit User",
+      "placeholder": {},
+      "button": {},
+      "toast": {}
+    },
+    "create": {
+      "header": "New User",
+      "placeholder": {
+        "username": "Username",
+        "email": "Email",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "profileImageUrl": "Profile Image",
+        "role": "Role",
+        "password": "Password",
+        "password2": "Repeat Password",
+        "active": "Active",
+        "locked": "Locked",
+        "expired": "Expired",
+        "credentialsExpired": "Expired Credentials"
+      },
+      "button": {
+        "create": "Create User"
+      },
+      "toast": {
+        "created": "User created successfully"
+      }
+    }
   }
 }

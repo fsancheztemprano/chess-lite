@@ -19,8 +19,8 @@ import { RoleManagementTableDatasource } from './role-management-table.datasourc
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoleManagementTableComponent implements OnDestroy {
-  public readonly displayedColumns: string[] = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
   public readonly TRANSLOCO_SCOPE = 'administration.role-management.table';
+  public readonly displayedColumns: string[] = ['name', 'authorities', 'canLogin', 'coreRole', 'actions'];
 
   constructor(
     public readonly dataSource: RoleManagementTableDatasource,

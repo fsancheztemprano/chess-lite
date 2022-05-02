@@ -6,7 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormErrorModule } from '@app/ui/shared/common';
+import { CoreCardViewModule, FormErrorModule } from '@app/ui/shared/common';
+import { TranslocoModule } from '@ngneat/transloco';
 import { UserManagementCreateComponent } from './components/user-management-create/user-management-create.component';
 import { UserManagementCreateRoutingModule } from './user-management-create-routing.module';
 
@@ -22,6 +23,8 @@ import { UserManagementCreateRoutingModule } from './user-management-create-rout
     MatCardModule,
     MatSelectModule,
     MatButtonModule,
+    CoreCardViewModule,
+    TranslocoModule,
   ],
 })
 export class UserManagementCreateModule {}

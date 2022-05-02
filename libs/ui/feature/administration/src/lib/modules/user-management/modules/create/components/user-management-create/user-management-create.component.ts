@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setTemplateValidatorsPipe } from '@app/ui/shared/common';
-import { CardViewHeaderService } from '@app/ui/shared/core';
 import { Role, RoleManagementRelations, RolePage, UserManagementRelations } from '@app/ui/shared/domain';
-import { noop, Observable, startWith } from 'rxjs';
+import { translate } from '@ngneat/transloco';
+import { Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { UserManagementService } from '../../../../services/user-management.service';
 
@@ -15,8 +15,8 @@ import { UserManagementService } from '../../../../services/user-management.serv
   styleUrls: ['./user-management-create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserManagementCreateComponent implements OnDestroy {
-  roles$: Observable<Role[]> = this.activatedRoute.data.pipe(
+export class UserManagementCreateComponent {
+  public readonly roles$: Observable<Role[]> = this.activatedRoute.data.pipe(
     map((data) => data.roles),
     map((rolePage: RolePage) => rolePage.getEmbeddedCollection<Role>(RoleManagementRelations.ROLE_MODEL_LIST_REL)),
     startWith([]),
@@ -39,32 +39,24 @@ export class UserManagementCreateComponent implements OnDestroy {
     },
     [matchingControlsValidators('password', 'password2')],
   );
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.create';
 
   constructor(
     public readonly userManagementService: UserManagementService,
-    private readonly headerService: CardViewHeaderService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly toaster: ToasterService,
   ) {
-    this.headerService.setHeader({ title: 'New User' });
     this.userManagementService
       .getTemplate(UserManagementRelations.USER_CREATE_REL)
       .pipe(first(), setTemplateValidatorsPipe(this.form))
       .subscribe();
   }
 
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
-  }
-
   onSubmit() {
-    this.userManagementService.createUser(this.form.value).subscribe({
-      next: (user) => {
-        this.toaster.showToast({ message: 'User Created Successfully' });
-        this.router.navigate(['administration', 'user-management', 'edit', user.id]);
-      },
-      error: () => noop,
+    this.userManagementService.createUser(this.form.value).subscribe((user) => {
+      this.toaster.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.created`) });
+      this.router.navigate(['administration', 'user-management', 'user', user.id]);
     });
   }
 }

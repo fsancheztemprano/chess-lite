@@ -34,10 +34,10 @@ import { UserManagementService } from '../../../../services/user-management.serv
 export class UserManagementTableDatasource extends DataSource<User> {
   public paginator: MatPaginator | undefined;
   public sort: MatSort | undefined;
-  private _userPage$: BehaviorSubject<UserPage> = new BehaviorSubject<UserPage>(new UserPage({}));
-  private _userListChanges: Subject<void> = new Subject();
 
-  private _userListMessagesSubscription: Subscription = new Subscription();
+  private readonly _userPage$: BehaviorSubject<UserPage> = new BehaviorSubject<UserPage>(new UserPage({}));
+  private readonly _userListChanges: Subject<void> = new Subject();
+  private _userListMessagesSubscription?: Subscription;
 
   constructor(
     private readonly userManagementService: UserManagementService,
