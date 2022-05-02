@@ -1,6 +1,6 @@
-<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()" *transloco="let t; read: TRANSLOCO_SCOPE">
   <mat-form-field appearance="fill">
-    <mat-label>Role</mat-label>
+    <mat-label>{{ t('label') }}</mat-label>
     <mat-select formControlName="roleId">
       <mat-option *ngFor="let role of roles$ | async" [value]="role.id">
         {{ role.name }}
@@ -13,6 +13,6 @@
     *ngLet="userManagementDetailService.canUpdateRole() | async as canUpdateRole"
     [disabled]="!form.valid || !canUpdateRole"
   >
-    Save
+    {{ t('button.save') }}
   </button>
 </form>

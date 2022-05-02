@@ -10,5 +10,5 @@ export interface MenuData {
   canShow?: Observable<boolean>;
   callback?: (parameters?: never) => void;
   parameters?: never;
-  route?: string;
+  route?: string[] | string | null;
 }

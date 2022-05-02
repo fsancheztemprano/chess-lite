@@ -12,6 +12,7 @@ import {
   UserPreferences,
   WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { BehaviorSubject, EMPTY, first, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserManagementService } from '../../../services/user-management.service';
@@ -142,7 +143,11 @@ export class UserManagementDetailService {
             if (userChangedEvent.action === UserChangedMessageAction.UPDATED) {
               return this._fetchUser(userChangedEvent.userId);
             } else {
-              this.toasterService.showToast({ title: `User account ${userChangedEvent.userId} was removed.` });
+              this.toasterService.showToast({
+                title: translate('administration.user-management.detail.toast.deleted', {
+                  userId: userChangedEvent.userId,
+                }),
+              });
               this.router.navigate(['user-management']);
               return EMPTY;
             }

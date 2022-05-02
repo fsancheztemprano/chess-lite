@@ -12,6 +12,7 @@
   color="primary"
   (click)="onSubmit()"
   [disabled]="(userManagementDetailService.canUpdateAuthorities() | async) === false"
+  *transloco="let t; read: TRANSLOCO_SCOPE"
 >
-  Save Authorities
+  {{ t('button.save') }}
 </button>

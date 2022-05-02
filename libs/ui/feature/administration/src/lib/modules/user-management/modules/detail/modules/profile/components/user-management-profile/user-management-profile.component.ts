@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ToasterService } from '@app/ui/shared/app';
 import { setTemplateValidators } from '@app/ui/shared/common';
 import { UserManagementRelations } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
@@ -14,7 +15,8 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementProfileComponent {
-  public form = new FormGroup({
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.profile';
+  public readonly form = new FormGroup({
     username: new FormControl(''),
     email: new FormControl(''),
     firstname: new FormControl(''),
@@ -36,10 +38,9 @@ export class UserManagementProfileComponent {
     });
   }
 
-  onSubmit() {
-    this.userManagementDetailService.updateUser(this.form.value).subscribe({
-      next: () => this.toasterService.showToast({ message: 'User Profile Updated Successfully' }),
-      error: () => this.toasterService.showErrorToast({ message: 'An error occurred' }),
-    });
+  onSubmit(): void {
+    this.userManagementDetailService
+      .updateUser(this.form.value)
+      .subscribe(() => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.updated`) }));
   }
 }

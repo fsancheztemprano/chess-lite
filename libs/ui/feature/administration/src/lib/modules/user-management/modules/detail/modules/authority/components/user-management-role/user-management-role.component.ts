@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,13 +17,14 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementRoleComponent {
-  roles$: Observable<Role[]> = this.route.data.pipe(
+  public readonly roles$: Observable<Role[]> = this.route.data.pipe(
     map((data) => data.roles),
     map((rolePage: RolePage) => rolePage.getEmbeddedCollection<Role>(RoleManagementRelations.ROLE_MODEL_LIST_REL)),
     startWith([]),
   );
 
-  public form = new FormGroup({ roleId: new FormControl('') });
+  public readonly form = new FormGroup({ roleId: new FormControl('') });
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.authority.role';
 
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
@@ -35,9 +37,8 @@ export class UserManagementRoleComponent {
   }
 
   onSubmit() {
-    this.userManagementDetailService.updateUserRole(this.form.value.roleId).subscribe({
-      next: () => this.toasterService.showToast({ message: 'Role updated successfully' }),
-      error: () => this.toasterService.showToast({ message: 'An error has occurred' }),
-    });
+    this.userManagementDetailService
+      .updateUserRole(this.form.value.roleId)
+      .subscribe(() => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.saved`) }));
   }
 }

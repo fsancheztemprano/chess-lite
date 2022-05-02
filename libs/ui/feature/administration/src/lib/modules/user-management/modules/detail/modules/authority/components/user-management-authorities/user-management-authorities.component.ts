@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { Authority } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
@@ -16,7 +17,8 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAuthoritiesComponent implements OnInit {
-  public formArray = new FormArray([]);
+  public readonly formArray = new FormArray([]);
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.authority.authorities';
 
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
@@ -44,10 +46,7 @@ export class UserManagementAuthoritiesComponent implements OnInit {
           .filter((authority: { active: boolean }) => authority.active)
           .map((authority: { id: string }) => authority.id),
       )
-      .subscribe({
-        next: () => this.toasterService.showToast({ message: 'Authorities updated successfully' }),
-        error: () => this.toasterService.showErrorToast({ title: 'An Error occurred' }),
-      });
+      .subscribe(() => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.saved`) }));
   }
 
   private _getAuthorities() {

@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorModule } from '@app/ui/shared/common';
 import { NgLetModule } from '@app/ui/shared/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { UserManagementProfileComponent } from './components/user-management-profile/user-management-profile.component';
 import { UserManagementProfileRoutingModule } from './user-management-profile-routing.module';
 
@@ -28,6 +29,7 @@ import { UserManagementProfileRoutingModule } from './user-management-profile-ro
     MatCheckboxModule,
     MatButtonModule,
     NgLetModule,
+    TranslocoModule,
   ],
   providers: [MatDatepickerModule],
 })

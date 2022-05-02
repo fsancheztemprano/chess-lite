@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormErrorModule } from '@app/ui/shared/common';
 import { NgLetModule } from '@app/ui/shared/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { UserManagementAuthoritiesComponent } from './components/user-management-authorities/user-management-authorities.component';
 import { UserManagementAuthorityComponent } from './components/user-management-authority/user-management-authority.component';
 import { UserManagementRoleComponent } from './components/user-management-role/user-management-role.component';
@@ -24,6 +25,7 @@ import { UserManagementAuthorityRoutingModule } from './user-management-authorit
     ReactiveFormsModule,
     MatCheckboxModule,
     NgLetModule,
+    TranslocoModule,
   ],
 })
 export class UserManagementAuthorityModule {}

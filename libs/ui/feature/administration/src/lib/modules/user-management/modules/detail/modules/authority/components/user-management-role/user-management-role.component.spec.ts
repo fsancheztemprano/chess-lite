@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
 import { FormErrorModule } from '@app/ui/shared/common';
 import { NgLetModule } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementRoleComponent } from './user-management-role.component';
 
@@ -24,6 +25,7 @@ describe('UserManagementRoleComponent', () => {
         ReactiveFormsModule,
         NoopAnimationsModule,
         NgLetModule,
+        getTranslocoModule(),
       ],
       declarations: [UserManagementRoleComponent],
       providers: [stubToasterServiceProvider, stubUserManagementDetailServiceProvider],

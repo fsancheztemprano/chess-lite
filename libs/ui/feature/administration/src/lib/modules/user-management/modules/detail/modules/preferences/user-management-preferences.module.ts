@@ -24,6 +24,7 @@ import { UserManagementPreferencesRoutingModule } from './user-management-prefer
     MatSelectModule,
     MatButtonModule,
     FormErrorModule,
+    TranslocoModule,
   ],
 })
 export class UserManagementPreferencesModule {}

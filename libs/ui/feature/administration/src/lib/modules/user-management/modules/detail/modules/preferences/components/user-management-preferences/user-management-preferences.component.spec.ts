@@ -9,6 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
 import { FormErrorModule } from '@app/ui/shared/common';
 import { stubLocalizationRepositoryProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementPreferencesComponent } from './user-management-preferences.component';
 
@@ -27,6 +28,7 @@ describe('UserManagementPreferencesComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         FormErrorModule,
+        getTranslocoModule(),
       ],
       declarations: [UserManagementPreferencesComponent],
       providers: [

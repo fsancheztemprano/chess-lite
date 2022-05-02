@@ -8,6 +8,7 @@ import {
   UserPreferencesChangedMessage,
   WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs/operators';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
@@ -20,11 +21,12 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementPreferencesComponent {
-  public form = new FormGroup({
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.preferences';
+  public readonly form = new FormGroup({
     darkMode: new FormControl(false),
     contentLanguage: new FormControl('en'),
   });
-  private userPreferences!: UserPreferences;
+  private userPreferences?: UserPreferences;
 
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
@@ -39,10 +41,9 @@ export class UserManagementPreferencesComponent {
   }
 
   onSubmit() {
-    this.userManagementDetailService.updateUserPreferences(this.userPreferences, this.form.value).subscribe({
-      next: () => this.toasterService.showToast({ message: 'User Preferences Saved Successfully' }),
-      error: () => this.toasterService.showErrorToast({ message: 'An Error has Occurred' }),
-    });
+    this.userManagementDetailService
+      .updateUserPreferences(this.userPreferences!, this.form.value)
+      .subscribe(() => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.saved`) }));
   }
 
   public hasTemplateToUpdateUserPreferences() {

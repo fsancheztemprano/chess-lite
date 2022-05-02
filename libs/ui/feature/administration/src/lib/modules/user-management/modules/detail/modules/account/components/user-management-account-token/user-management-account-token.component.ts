@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ToasterService } from '@app/ui/shared/app';
+import { translate } from '@ngneat/transloco';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
 @Component({
@@ -9,15 +10,16 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAccountTokenComponent {
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.account.token';
+
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
-    readonly toasterService: ToasterService,
+    private readonly toasterService: ToasterService,
   ) {}
 
   sendActivationToken() {
-    this.userManagementDetailService.sendActivationToken().subscribe({
-      next: () => this.toasterService.showToast({ message: 'Activation token sent.' }),
-      error: () => this.toasterService.showErrorToast({ message: 'Error requesting activation' }),
-    });
+    this.userManagementDetailService
+      .sendActivationToken()
+      .subscribe(() => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.sent`) }));
   }
 }

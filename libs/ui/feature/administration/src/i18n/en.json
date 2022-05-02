@@ -129,9 +129,101 @@
     },
     "detail": {
       "header": "Edit User",
-      "placeholder": {},
-      "button": {},
-      "toast": {}
+      "tabs": {
+        "profile": "Profile",
+        "preferences": "Preferences",
+        "authority": "Authority",
+        "account": "Account"
+      },
+      "profile": {
+        "placeholder": {
+          "username": "Username",
+          "email": "Email",
+          "firstname": "Firstname",
+          "lastname": "Lastname",
+          "profileImageUrl": "Profile Image",
+          "active": "Active",
+          "locked": "Locked",
+          "expired": "Expired",
+          "credentialsExpired": "Expired Credentials"
+        },
+        "button": {
+          "save": "Save"
+        },
+        "toast": {
+          "updated": "User Profile Updated Successfully"
+        }
+      },
+      "preferences": {
+        "label": {
+          "theme": "Theme",
+          "content-language": "Content Language"
+        },
+        "button": {
+          "save": "Save"
+        },
+        "toast": {
+          "saved": "User Preferences Saved Successfully"
+        }
+      },
+      "authority": {
+        "role": {
+          "label": "Role",
+          "button": {
+            "save": "Save Role"
+          },
+          "toast": {
+            "saved": "User Role Saved Successfully"
+          }
+        },
+        "authorities": {
+          "label": "Authorities",
+          "button": {
+            "save": "Save Authorities"
+          },
+          "toast": {
+            "saved": "User Authorities Saved Successfully"
+          }
+        }
+      },
+      "account": {
+        "password": {
+          "title": "Change Password",
+          "placeholder": {
+            "password": "New Password",
+            "password2": "New Password Again"
+          },
+          "toast": {
+            "updated": "Password updated successfully"
+          },
+          "button": {
+            "save": "Change Password"
+          }
+        },
+        "token": {
+          "title": "Send Activation Token",
+          "description": "Send the token to the user's email so he/she can reset the account password and unlock the account",
+          "button": {
+            "send": "Send Token"
+          },
+          "toast": {
+            "sent": "Activation token sent"
+          }
+        },
+        "delete": {
+          "title": "Remove Account",
+          "description": "Once you delete an account, it can't be recovered. Please be sure",
+          "button": {
+            "delete": "Delete this account"
+          },
+          "toast": {
+            "sent": "Activation token sent"
+          }
+        }
+      },
+      "toast": {
+        "deleted": "User account {{userId}} was removed."
+      }
     },
     "create": {
       "header": "New User",
