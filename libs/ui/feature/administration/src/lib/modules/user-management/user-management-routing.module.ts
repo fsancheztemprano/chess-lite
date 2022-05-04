@@ -23,11 +23,11 @@ const routes: Routes = [
   },
   {
     path: 'users',
+    data: { breadcrumb: { i18n: 'administration.user-management.users' } },
     children: [
       {
         path: '',
         loadChildren: loadUserManagementListModule,
-        data: { breadcrumb: 'Users' },
         pathMatch: 'full',
       },
       {
@@ -36,7 +36,7 @@ const routes: Routes = [
         canActivate: [UserManagementDetailGuard],
         canDeactivate: [UserManagementDetailGuard],
         resolve: { user: UserManagementDetailResolver },
-        data: { breadcrumb: (data: { user: { username: string } }) => `${data.user.username}` },
+        data: { breadcrumb: { title: (data: { user: { username: string } }) => `${data.user.username}` } },
       },
     ],
   },
@@ -44,7 +44,7 @@ const routes: Routes = [
     path: 'create',
     loadChildren: loadUserManagementCreateModule,
     resolve: { roles: RolesResolver },
-    data: { breadcrumb: 'New User' },
+    data: { breadcrumb: { i18n: 'administration.user-management.new-user' } },
   },
   { path: '**', redirectTo: '' },
 ];

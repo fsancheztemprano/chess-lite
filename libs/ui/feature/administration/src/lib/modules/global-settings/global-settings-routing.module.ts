@@ -23,12 +23,12 @@ const routes: Routes = [
       {
         path: 'general',
         loadChildren: loadGlobalSettingsGeneralModule,
-        data: { breadcrumb: 'General Settings', parentOffset: 1 },
+        data: { breadcrumb: { i18n: 'administration.global-settings.general-settings', parentOffset: 1 } },
       },
       {
         path: 'access-restrictions',
         loadChildren: loadGlobalSettingsAccessRestrictionsModule,
-        data: { breadcrumb: 'Access Restrictions' },
+        data: { breadcrumb: { i18n: 'administration.global-settings.access-restrictions' } },
       },
       { path: '', redirectTo: 'general' },
       { path: '**', redirectTo: 'general' },
