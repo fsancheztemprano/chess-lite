@@ -19,7 +19,7 @@
       <a
         *ngIf="item.visible$ === undefined || (item.visible$ | async)"
         mat-list-item
-        (click)="toggleSidenav.emit(); item.callback && item.callback()"
+        (click)="toggleSidenav.emit(); optionClick(item, $event)"
         [routerLink]="item.route"
         routerLinkActive="active-link"
       >

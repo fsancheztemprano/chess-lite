@@ -36,7 +36,7 @@ export class HomeComponent {
       icon: 'assignment_ind',
       title$: this.translocoService.selectTranslate('home.main.tiles.signup.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.signup.description'),
-      route: 'auth/signup',
+      route: ['/auth', 'signup'],
       visible$: this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION),
     },
   ];

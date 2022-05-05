@@ -17,4 +17,12 @@ export class SidenavItemComponent {
   @Input() expandableLink: string[] = [];
 
   constructor(public readonly router: Router) {}
+
+  optionClick(option: MenuData, $event: MouseEvent): void {
+    if (option.callback && !option.route?.length) {
+      $event.stopPropagation();
+      $event.preventDefault();
+      option.parameters !== undefined ? option.callback(option.parameters) : option.callback();
+    }
+  }
 }

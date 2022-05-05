@@ -13,11 +13,11 @@ export class GlobalSettingsComponent {
   public readonly tabs: MenuData[] = [
     {
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.general-settings`),
-      route: '/administration/global-settings/general',
+      route: ['/administration', 'global-settings', 'general'],
     },
     {
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.access-restrictions`),
-      route: '/administration/global-settings/access-restrictions',
+      route: ['/administration', 'global-settings', 'access-restrictions'],
     },
   ];
 

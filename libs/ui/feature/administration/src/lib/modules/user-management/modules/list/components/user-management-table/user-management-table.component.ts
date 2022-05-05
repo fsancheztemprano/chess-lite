@@ -38,7 +38,7 @@ export class UserManagementTableComponent implements OnDestroy {
       {
         title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.add`),
         icon: 'person_add',
-        route: 'administration/user-management/create',
+        route: ['/administration', 'user-management', 'create'],
         disabled$: this.dataSource.userPage$.pipe(
           map((userPage: UserPage) => !userPage.hasTemplate(UserManagementRelations.USER_CREATE_REL)),
         ),
