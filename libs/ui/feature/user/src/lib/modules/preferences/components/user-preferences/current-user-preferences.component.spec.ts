@@ -7,10 +7,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
-import { FormErrorModule } from '@app/ui/shared/common';
-import { stubLocalizationRepositoryProvider } from '@app/ui/shared/core';
+import { FormErrorModule, StubCoreCardViewComponent } from '@app/ui/shared/common';
+import { stubLocalizationRepositoryProvider, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { SubscribeModule } from '@ngneat/subscribe';
-import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
 import { CurrentUserPreferencesComponent } from './current-user-preferences.component';
 
 describe('CurrentUserPreferencesComponent', () => {
@@ -29,8 +29,9 @@ describe('CurrentUserPreferencesComponent', () => {
         MatSelectModule,
         FormErrorModule,
         SubscribeModule,
+        getTranslocoModule(),
       ],
-      declarations: [CurrentUserPreferencesComponent],
+      declarations: [CurrentUserPreferencesComponent, StubCoreCardViewComponent],
       providers: [stubToasterServiceProvider, stubUserSettingsServiceProvider, stubLocalizationRepositoryProvider],
     }).compileComponents();
   });

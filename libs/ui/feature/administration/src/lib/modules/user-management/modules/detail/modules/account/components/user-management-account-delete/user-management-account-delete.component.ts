@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
+import { translate } from '@ngneat/transloco';
 import { filter } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
@@ -14,6 +15,8 @@ import { UserManagementAccountDeleteConfirmComponent } from '../user-management-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAccountDeleteComponent {
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.account.delete';
+
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
     private readonly dialogService: MatDialog,
@@ -34,10 +37,9 @@ export class UserManagementAccountDeleteComponent {
       )
       .subscribe({
         next: () => {
-          this.toasterService.showToast({ message: 'Account Removed Successfully' });
+          this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.deleted`) });
           this.router.navigate(['administration', 'user-management']);
         },
-        error: () => this.toasterService.showToast({ message: 'An Error has occurred' }),
       });
   }
 }

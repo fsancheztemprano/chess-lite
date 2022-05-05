@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { setTemplateValidatorsPipe } from '@app/ui/shared/common';
-import { CardViewHeaderService } from '@app/ui/shared/core';
+import { translate } from '@ngneat/transloco';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
@@ -15,30 +15,25 @@ import { ActivationTokenService } from '../../../../services/activation-token.se
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [wobbleAnimation(), bounceOutAnimation()],
 })
-export class TokenRequestComponent implements OnDestroy {
+export class TokenRequestComponent {
   public form = new FormGroup({
     email: new FormControl(''),
   });
 
   public success = false;
   public error = false;
+  public readonly TRANSLOCO_SCOPE = 'authentication.token-request';
 
   constructor(
     public readonly activationTokenService: ActivationTokenService,
-    private readonly headerService: CardViewHeaderService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
     private readonly toasterService: ToasterService,
   ) {
-    this.headerService.setHeader({ title: 'Activation Token Request' });
     this.activationTokenService
       .getRequestActivationTokenTemplate()
       .pipe(first(), setTemplateValidatorsPipe(this.form))
       .subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
   }
 
   onSubmit() {
@@ -48,25 +43,25 @@ export class TokenRequestComponent implements OnDestroy {
     });
   }
 
+  onSuccess() {
+    if (this.success) {
+      this.router.navigate(['/auth', 'activate']);
+    }
+  }
+
   private setStatus(status: boolean) {
     if (status) {
       this.toasterService.showToast({
-        title: 'Activation Token Sent',
-        message: 'Please check your email and follow the link to activate your account so you can login again',
+        title: translate(`${this.TRANSLOCO_SCOPE}.toast.success.title`),
+        message: translate(`${this.TRANSLOCO_SCOPE}.toast.success.message`),
       });
     } else {
-      this.toasterService.showToast({
-        title: 'Please check your email or try again later',
+      this.toasterService.showErrorToast({
+        title: translate(`${this.TRANSLOCO_SCOPE}.toast.error`),
       });
     }
     this.success = status;
     this.error = !status;
     this.cdr.markForCheck();
-  }
-
-  onSuccess() {
-    if (this.success) {
-      this.router.navigate(['/auth', 'activate']);
-    }
   }
 }

@@ -1,36 +1,44 @@
-<form [formGroup]="form" novalidate>
-  <mat-card class="mat-elevation-z10">
-    <mat-card-content>
-      <mat-card class="mat-elevation-z10">
-        <mat-card-content>
-          <img
-            width="100%"
-            alt="Upload Avatar"
-            *ngIf="this.userService.getCurrentUser() | async as user"
-            src="{{ user.profileImageUrl }}" />
-        </mat-card-content>
-      </mat-card>
-      <div>
-        <input
-          #imageInput
-          style="display: none"
-          type="file"
-          accept="image/*"
-          formControlName="avatar"
-          (change)="onSubmit($event)" />
-        <app-form-error [control]="form" name="avatar"></app-form-error>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button
-        mat-fab
-        color="primary"
-        aria-label="Upload Avatar"
-        (click)="imageInput.click()"
-        *ngLet="this.userService.hasTemplateToUploadAvatar() | async as canUploadAvatar"
-        [disabled]="!canUploadAvatar">
-        <mat-icon>file_upload</mat-icon>
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+<app-core-card-view *transloco="let t; read: 'user.avatar'" [title]="t('header')">
+  <form [formGroup]="form" novalidate>
+    <mat-card class="mat-elevation-z10">
+      <mat-card-content>
+        <mat-card class="mat-elevation-z10">
+          <mat-card-content>
+            <img
+              width="100%"
+              alt="Avatar"
+              *ngIf="(this.userService.getCurrentUser() | async)?.profileImageUrl as profileImageUrl; else noAvatar"
+              src="{{ profileImageUrl }}"
+            />
+            <ng-template #noAvatar>
+              <mat-icon>person_outline</mat-icon>
+            </ng-template>
+          </mat-card-content>
+        </mat-card>
+        <div>
+          <input
+            #imageInput
+            style="display: none"
+            type="file"
+            accept="image/*"
+            formControlName="avatar"
+            (change)="onSubmit($event)"
+          />
+          <app-form-error [control]="form" name="avatar"></app-form-error>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-fab
+          color="primary"
+          [attr.aria-label]="t('upload')"
+          (click)="imageInput.click()"
+          *ngLet="this.userService.hasTemplateToUploadAvatar() | async as canUploadAvatar"
+          [disabled]="!canUploadAvatar"
+        >
+          <mat-icon>file_upload</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</app-core-card-view>

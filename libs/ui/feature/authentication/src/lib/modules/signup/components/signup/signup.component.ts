@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { setTemplateValidatorsPipe } from '@app/ui/shared/common';
-import { CardViewHeaderService } from '@app/ui/shared/core';
+import { translate } from '@ngneat/transloco';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
 import { AuthService } from '../../../../services/auth.service';
@@ -15,7 +15,7 @@ import { AuthService } from '../../../../services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [wobbleAnimation(), bounceOutAnimation()],
 })
-export class SignupComponent implements OnDestroy {
+export class SignupComponent {
   public signupForm = new FormGroup({
     username: new FormControl(''),
     email: new FormControl(''),
@@ -25,20 +25,15 @@ export class SignupComponent implements OnDestroy {
 
   public signupSuccess = false;
   public signupError = false;
+  public readonly TRANSLOCO_SCOPE = 'authentication.signup';
 
   constructor(
     public readonly authService: AuthService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef,
-    private readonly headerService: CardViewHeaderService,
     private readonly toasterService: ToasterService,
   ) {
-    this.headerService.setHeader({ title: 'Sign Up' });
     this.authService.getSignupTemplate().pipe(first(), setTemplateValidatorsPipe(this.signupForm)).subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
   }
 
   public onSubmit(): void {
@@ -51,12 +46,8 @@ export class SignupComponent implements OnDestroy {
   private setStatus(status: boolean) {
     if (status) {
       this.toasterService.showToast({
-        title: 'Activation Token Sent',
-        message: 'Please check your email and follow the link to activate your account so you can login.',
-      });
-    } else {
-      this.toasterService.showToast({
-        title: 'Please check your info or try again later',
+        title: translate(`${this.TRANSLOCO_SCOPE}.toast.success.title`),
+        message: translate(`${this.TRANSLOCO_SCOPE}.toast.success.message`),
       });
     }
     this.signupSuccess = status;

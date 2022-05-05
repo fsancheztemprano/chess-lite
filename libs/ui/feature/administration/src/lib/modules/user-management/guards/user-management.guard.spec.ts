@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { stubAdministrationServiceProvider } from '../../../services/administration.service.stub';
+import { stubAdministrationServiceProvider } from '@app/ui/shared/feature/administration';
 import { UserManagementGuard } from './user-management.guard';
 
 describe('UserManagementGuard', () => {

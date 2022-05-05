@@ -1,7 +1,36 @@
 {
   "welcome": "Welcome",
-  "locale": {
-    "en": "English",
-    "es": "Spanish"
+  "sidenav": {
+    "home": {
+      "title": "Home"
+    },
+    "user-settings": {
+      "title": "User Settings",
+      "subtitle": {
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "upload-avatar": "Upload Avatar",
+        "change-password": "Change Password",
+        "delete-account": "Delete Account",
+        "preferences": "Preferences"
+      }
+    },
+    "authentication": {
+      "subtitle": {
+        "logout": "Log Out",
+        "login": "Log In",
+        "signup": "Sign Up"
+      }
+    },
+    "administration": {
+      "title": "Administration",
+      "subtitle": {
+        "dashboard": "Dashboard",
+        "user-management": "User Management",
+        "role-management": "Role Management",
+        "service-logs": "Service Logs",
+        "global-settings": "Global Settings"
+      }
+    }
   }
 }

@@ -2,13 +2,12 @@
   <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenavService.toggle()">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
-  <app-breadcrumb *ngIf="breadcrumbService.getBreadcrumbs$() | async; else title"></app-breadcrumb>
-  <ng-template #title
-    ><span>{{ toolbarService.title | async }}</span></ng-template
-  >
+  <app-breadcrumb *ngIf="breadcrumbService.getShowBreadCrumbs$() | async"></app-breadcrumb>
   <div class="flex-stretch"></div>
   <app-search-bar></app-search-bar>
   <app-locale-picker *ngIf="toolbarService.showLocalePicker | async"></app-locale-picker>
   <app-theme-picker *ngIf="toolbarService.showThemePicker | async"></app-theme-picker>
-  <app-context-menu *ngIf="(toolbarService.showContextMenu | async) && ('' | isMobile | async)"></app-context-menu>
+  <app-core-context-menu
+    *ngIf="(toolbarService.showContextMenu | async) && ('' | isMobile | async)"
+  ></app-core-context-menu>
 </mat-toolbar>

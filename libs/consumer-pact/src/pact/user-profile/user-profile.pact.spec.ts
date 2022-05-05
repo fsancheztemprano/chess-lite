@@ -1,6 +1,7 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { SessionRepository, SessionService, stubMessageServiceProvider } from '@app/ui/shared/app';
+import { UserSettingsService } from '@app/ui/shared/core';
 import { CurrentUserRelations, TOKEN_KEY, User, UserPreferences } from '@app/ui/shared/domain';
 import {
   changePasswordTemplate,
@@ -12,7 +13,6 @@ import {
 } from '@app/ui/testing';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { UserSettingsService } from '../../../../ui/feature/user/src/lib/services/user-settings.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

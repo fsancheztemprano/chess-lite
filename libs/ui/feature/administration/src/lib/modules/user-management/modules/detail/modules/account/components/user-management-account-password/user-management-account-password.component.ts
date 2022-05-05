@@ -14,6 +14,7 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAccountPasswordComponent {
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.account.password';
   public form = new FormGroup(
     {
       password: new FormControl(''),
@@ -32,12 +33,9 @@ export class UserManagementAccountPasswordComponent {
   }
 
   onSubmit() {
-    this.userManagementDetailService.updateUser(this.form.value).subscribe({
-      next: () => {
-        this.toasterService.showToast({ message: 'Password updated successfully' });
-        this.form.reset();
-      },
-      error: () => this.toasterService.showToast({ message: 'An error occurred.' }),
+    this.userManagementDetailService.updateUser(this.form.value).subscribe(() => {
+      this.toasterService.showToast({ message: `${this.TRANSLOCO_SCOPE}.toast.updated` });
+      this.form.reset();
     });
   }
 }

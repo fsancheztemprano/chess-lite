@@ -12,6 +12,7 @@
   color="primary"
   *ngLet="role$ | async as role"
   (click)="onSubmit(role)"
-  [disabled]="!role || !role?.hasTemplate('update')">
-  Save Authorities
+  [disabled]="!role || !role?.hasTemplate('update')"
+>
+  <ng-container *transloco="let t; read: TRANSLOCO_SCOPE">{{ t('button.save-authorities') }}</ng-container>
 </button>

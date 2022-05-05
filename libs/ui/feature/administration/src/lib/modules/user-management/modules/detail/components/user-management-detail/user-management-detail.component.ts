@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CardViewHeaderService } from '@app/ui/shared/core';
+import { MenuData } from '@app/ui/shared/domain';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-user-management-detail',
@@ -8,33 +9,27 @@ import { CardViewHeaderService } from '@app/ui/shared/core';
   styleUrls: ['./user-management-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserManagementDetailComponent implements OnDestroy {
-  constructor(private readonly headerService: CardViewHeaderService, private readonly route: ActivatedRoute) {
-    const baseRoute = ['administration', 'user-management', 'users', route.snapshot?.params?.userId];
-    this.headerService.setHeader({
-      title: 'Edit User',
-      tabs: [
-        {
-          label: 'Profile',
-          target: [...baseRoute, 'profile'],
-        },
-        {
-          label: 'Preferences',
-          target: [...baseRoute, 'preferences'],
-        },
-        {
-          label: 'Authority',
-          target: [...baseRoute, 'authority'],
-        },
-        {
-          label: 'Account',
-          target: [...baseRoute, 'account'],
-        },
-      ],
-    });
-  }
+export class UserManagementDetailComponent {
+  private readonly baseRoute = ['/administration', 'user-management', 'users', this.route.snapshot?.params?.userId];
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail';
+  public readonly tabs: MenuData[] = [
+    {
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.profile`),
+      route: [...this.baseRoute, 'profile'],
+    },
+    {
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.preferences`),
+      route: [...this.baseRoute, 'preferences'],
+    },
+    {
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.authority`),
+      route: [...this.baseRoute, 'authority'],
+    },
+    {
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.account`),
+      route: [...this.baseRoute, 'account'],
+    },
+  ];
 
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
-  }
+  constructor(private readonly route: ActivatedRoute, private readonly translocoService: TranslocoService) {}
 }

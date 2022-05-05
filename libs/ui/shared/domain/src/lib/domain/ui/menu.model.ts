@@ -1,10 +1,12 @@
 import { Observable } from 'rxjs';
 
 export interface MenuData {
-  icon: string;
-  title: string;
-  subtitle?: string;
-  link?: string;
-  canShow?: Observable<boolean>;
-  callback?: () => void;
+  icon?: string;
+  title$?: Observable<string>;
+  subtitle$?: Observable<string>;
+  disabled$?: Observable<boolean>;
+  visible$?: Observable<boolean>;
+  callback?: (parameters?: never) => void;
+  parameters?: never;
+  route?: string[] | string | null;
 }

@@ -15,7 +15,7 @@ import { RoleManagementService } from '../../../../../role-management/services/r
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GlobalSettingsAccessRestrictionsComponent {
-  roles$ = this.route.parent?.parent?.data.pipe(
+  public readonly roles$ = this.route.parent?.parent?.data.pipe(
     map((data) => data.roles),
     switchMap((rolePage: RolePage) =>
       concat(

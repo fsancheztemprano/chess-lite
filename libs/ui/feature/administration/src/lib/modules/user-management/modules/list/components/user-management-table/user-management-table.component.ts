@@ -1,10 +1,10 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { CoreService, MenuOption } from '@app/ui/shared/core';
+import { CoreContextMenuService } from '@app/ui/shared/core';
 import { User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
+import { TranslocoService } from '@ngneat/transloco';
 import { map } from 'rxjs/operators';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 
@@ -14,12 +14,9 @@ import { UserManagementTableDatasource } from './user-management-table.datasourc
   styleUrls: ['./user-management-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<User>;
-
-  displayedColumns = [
+export class UserManagementTableComponent implements OnDestroy {
+  public readonly TRANSLOCO_SCOPE = 'administration.user-management.table';
+  public readonly displayedColumns = [
     'username',
     'email',
     'firstname',
@@ -32,32 +29,36 @@ export class UserManagementTableComponent implements AfterViewInit, OnDestroy {
     'edit',
   ];
 
-  private createUserMenuOption: MenuOption = {
-    label: 'New User',
-    icon: 'person_add',
-    callback: () => this.router.navigate(['administration', 'user-management', 'create']),
-    disabled: this.dataSource.userPage$.pipe(
-      map((userPage: UserPage) => !userPage.hasTemplate(UserManagementRelations.USER_CREATE_REL)),
-    ),
-  };
-
   constructor(
     public readonly dataSource: UserManagementTableDatasource,
-    private readonly coreService: CoreService,
-    private readonly router: Router,
+    private readonly coreContextMenuService: CoreContextMenuService,
+    private readonly translocoService: TranslocoService,
   ) {
-    this.coreService.setCardViewHeader({ title: 'User Management' });
-    this.coreService.setShowContextMenu(true);
-    this.coreService.setContextMenuOptions([this.createUserMenuOption]);
+    this.coreContextMenuService.setOptions([
+      {
+        title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.add`),
+        icon: 'person_add',
+        route: ['/administration', 'user-management', 'create'],
+        disabled$: this.dataSource.userPage$.pipe(
+          map((userPage: UserPage) => !userPage.hasTemplate(UserManagementRelations.USER_CREATE_REL)),
+        ),
+      },
+    ]);
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
+  }
+
+  @ViewChild(MatSort) set sort(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+
+  @ViewChild(MatTable) set table(table: MatTable<User> | undefined) {
+    if (table) table.dataSource = this.dataSource;
   }
 
   ngOnDestroy(): void {
-    this.coreService.reset();
+    this.coreContextMenuService.resetOptions();
   }
 }

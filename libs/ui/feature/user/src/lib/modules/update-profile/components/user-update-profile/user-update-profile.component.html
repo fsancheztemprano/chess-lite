@@ -1,60 +1,69 @@
-<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
-  <mat-card>
-    <mat-card-content>
-      <mat-form-field>
-        <input matInput placeholder="Username" formControlName="username" required readonly />
-        <mat-error>
-          <app-form-error [control]="form.controls.username" name="username"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="email" placeholder="Email" formControlName="email" required readonly />
-        <mat-error>
-          <app-form-error [control]="form.controls.email" name="email"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Firstname" formControlName="firstname" />
-        <mat-error>
-          <app-form-error [control]="form.controls.firstname" name="firstname"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Lastname" formControlName="lastname" />
-        <mat-error>
-          <app-form-error [control]="form.controls.lastname" name="lastname"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Last Login</mat-label>
-        <input matInput formControlName="lastLoginDateDisplay" [matDatepicker]="lastLoginDatePicker" />
-        <mat-datepicker-toggle matSuffix [for]="lastLoginDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #lastLoginDatePicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Member Since</mat-label>
-        <input matInput formControlName="joinDate" [matDatepicker]="joinDatePicker" />
-        <mat-datepicker-toggle matSuffix [for]="joinDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #joinDatePicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field formGroupName="role">
-        <input matInput placeholder="RoleModel" formControlName="name" />
-      </mat-form-field>
-      <mat-checkbox formControlName="active">Active</mat-checkbox>
-      <mat-checkbox formControlName="locked">Locked</mat-checkbox>
-      <mat-checkbox formControlName="expired">Expired</mat-checkbox>
-      <mat-checkbox formControlName="credentialsExpired">Expired Credentials</mat-checkbox>
-    </mat-card-content>
-    <mat-card-actions [align]="'end'">
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        *ngLet="this.userSettingsService.hasTemplateToUpdateProfile() | async as canUpdateProfile"
-        [disabled]="!canUpdateProfile">
-        Save
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</form>
-<div class="spacer"></div>
+<app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
+  <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput [placeholder]="t('placeholder.username')" formControlName="username" required readonly />
+          <mat-error>
+            <app-form-error [control]="form.controls.username" name="username"></app-form-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="email"
+            [placeholder]="t('placeholder.email')"
+            formControlName="email"
+            required
+            readonly
+          />
+          <mat-error>
+            <app-form-error [control]="form.controls.email" name="email"></app-form-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [placeholder]="t('placeholder.firstname')" formControlName="firstname" />
+          <mat-error>
+            <app-form-error [control]="form.controls.firstname" name="firstname"></app-form-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [placeholder]="t('placeholder.lastname')" formControlName="lastname" />
+          <mat-error>
+            <app-form-error [control]="form.controls.lastname" name="lastname"></app-form-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('placeholder.lastLoginDateDisplay') }}</mat-label>
+          <input matInput formControlName="lastLoginDateDisplay" [matDatepicker]="lastLoginDatePicker" />
+          <mat-datepicker-toggle matSuffix [for]="lastLoginDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #lastLoginDatePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('placeholder.joinDate') }}</mat-label>
+          <input matInput formControlName="joinDate" [matDatepicker]="joinDatePicker" />
+          <mat-datepicker-toggle matSuffix [for]="joinDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #joinDatePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field formGroupName="role">
+          <input matInput [placeholder]="t('placeholder.role')" formControlName="name" />
+        </mat-form-field>
+        <mat-checkbox formControlName="active">{{ t('placeholder.active') }}</mat-checkbox>
+        <mat-checkbox formControlName="locked">{{ t('placeholder.locked') }}</mat-checkbox>
+        <mat-checkbox formControlName="expired">{{ t('placeholder.expired') }}</mat-checkbox>
+        <mat-checkbox formControlName="credentialsExpired">{{ t('placeholder.credentialsExpired') }}</mat-checkbox>
+      </mat-card-content>
+      <mat-card-actions [align]="'end'">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          *ngLet="this.userSettingsService.hasTemplateToUpdateProfile() | async as canUpdateProfile"
+          [disabled]="!canUpdateProfile"
+        >
+          {{ t('button.save') }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</app-core-card-view>

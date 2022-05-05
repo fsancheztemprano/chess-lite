@@ -15,11 +15,13 @@
     [color]="data.dismissButton?.color"
     [icon]="data.dismissButton?.icon"
     [disabled]="data.dismissButton?.disabled"
-    [text]="data.dismissButton?.text || 'CLOSE'"></app-dialog-actions-button>
+    [text]="data.dismissButton?.text || 'CLOSE'"
+  ></app-dialog-actions-button>
   <app-dialog-actions-button
     [color]="data.acceptButton?.color"
     [icon]="data.acceptButton?.icon"
     [disabled]="data.acceptButton?.disabled || form.invalid"
     [text]="data.acceptButton?.text || 'ACCEPT'"
-    [output]="form.getRawValue()"></app-dialog-actions-button>
+    [output]="form.getRawValue()"
+  ></app-dialog-actions-button>
 </div>

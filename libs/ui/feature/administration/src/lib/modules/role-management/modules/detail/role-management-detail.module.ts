@@ -5,8 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormErrorModule } from '@app/ui/shared/common';
+import { CoreCardViewModule, FormErrorModule } from '@app/ui/shared/common';
 import { NgLetModule } from '@app/ui/shared/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { RoleManagementDetailAuthoritiesComponent } from './components/detail-authorities/role-management-detail-authorities.component';
 import { RoleManagementDetailNameComponent } from './components/detail-name/role-management-detail-name.component';
 import { RoleManagementDetailComponent } from './components/detail/role-management-detail.component';
@@ -30,6 +31,8 @@ import { RoleManagementDetailRoutingModule } from './role-management-detail-rout
     MatButtonModule,
     MatCheckboxModule,
     NgLetModule,
+    CoreCardViewModule,
+    TranslocoModule,
   ],
 })
 export class RoleManagementDetailModule {}

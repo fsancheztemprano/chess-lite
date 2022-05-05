@@ -1,6 +1,6 @@
-<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+<form [formGroup]="form" novalidate (ngSubmit)="onSubmit()" *transloco="let t; read: TRANSLOCO_SCOPE">
   <mat-form-field appearance="fill">
-    <mat-label>Default Role</mat-label>
+    <mat-label>{{ t('label') }}</mat-label>
     <mat-select formControlName="defaultRoleId">
       <mat-option *ngFor="let role of roles | async" [value]="role.id">
         {{ role.name }}
@@ -10,7 +10,8 @@
   <button
     mat-raised-button
     color="primary"
-    [disabled]="(globalSettingsService.canUpdateGlobalSettings() | async) === false">
-    Change Default Role
+    [disabled]="(globalSettingsService.canUpdateGlobalSettings() | async) === false"
+  >
+    {{ t('button') }}
   </button>
 </form>

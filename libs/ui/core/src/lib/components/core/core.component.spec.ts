@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IsMobileModule, stubCoreServiceProvider, stubThemeRepositoryProvider } from '@app/ui/shared/core';
-import { CardViewComponent } from '../../modules/card-view/components/card-view/card-view.component';
+import { IsMobileModule, stubThemeRepositoryProvider } from '@app/ui/shared/core';
 import { SidenavComponent } from '../../modules/sidenav/components/sidenav/sidenav.component';
 import { ToolbarComponent } from '../../modules/toolbar/components/toolbar/toolbar.component';
 import { CoreComponent } from './core.component';
@@ -14,9 +13,6 @@ class StubToolbarComponent implements Partial<ToolbarComponent> {}
 @Component({ selector: 'app-sidenav', template: '' })
 class StubSidenavComponent implements Partial<SidenavComponent> {}
 
-@Component({ selector: 'app-card-view', template: '' })
-class StubCardViewComponent implements Partial<CardViewComponent> {}
-
 describe('CoreComponent', () => {
   let component: CoreComponent;
   let fixture: ComponentFixture<CoreComponent>;
@@ -24,8 +20,8 @@ describe('CoreComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, IsMobileModule, MatCardModule],
-      declarations: [CoreComponent, StubToolbarComponent, StubSidenavComponent, StubCardViewComponent],
-      providers: [stubThemeRepositoryProvider, stubCoreServiceProvider],
+      declarations: [CoreComponent, StubToolbarComponent, StubSidenavComponent],
+      providers: [stubThemeRepositoryProvider],
     }).compileComponents();
   });
 

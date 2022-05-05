@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { patchFormPipe, setResourceValidatorsPipe } from '@app/ui/shared/common';
-import { CardViewHeaderService } from '@app/ui/shared/core';
+import { UserSettingsService } from '@app/ui/shared/core';
 import { CurrentUserRelations } from '@app/ui/shared/domain';
+import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @UntilDestroy()
 @Component({
@@ -14,7 +14,7 @@ import { UserSettingsService } from '../../../../services/user-settings.service'
   styleUrls: ['./user-update-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserUpdateProfileComponent implements OnDestroy {
+export class UserUpdateProfileComponent {
   public form = new FormGroup({
     username: new FormControl({ value: '', disabled: true }),
     email: new FormControl({ value: '', disabled: true }),
@@ -31,10 +31,10 @@ export class UserUpdateProfileComponent implements OnDestroy {
     expired: new FormControl({ value: false, disabled: true }),
     credentialsExpired: new FormControl({ value: false, disabled: true }),
   });
+  public readonly TRANSLOCO_SCOPE = 'user.profile';
 
   constructor(
     public readonly userSettingsService: UserSettingsService,
-    private readonly headerService: CardViewHeaderService,
     private readonly toasterService: ToasterService,
   ) {
     this.userSettingsService
@@ -46,17 +46,11 @@ export class UserUpdateProfileComponent implements OnDestroy {
         setResourceValidatorsPipe(this.form, CurrentUserRelations.UPDATE_PROFILE_REL),
       )
       .subscribe();
-    this.headerService.setHeader({ title: 'User Profile' });
-  }
-
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
   }
 
   onSubmit() {
     this.userSettingsService.updateProfile(this.form.value).subscribe({
-      next: () => this.toasterService.showToast({ message: 'User Profile Saved Successfully' }),
-      error: () => this.toasterService.showErrorToast({ message: 'An Error Occurred' }),
+      next: () => this.toasterService.showToast({ message: translate('user.profile.toast.success') }),
     });
   }
 }

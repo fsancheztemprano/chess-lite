@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService, TiledMenuTileData } from '@app/ui/shared/core';
-import { UserManagementRelations } from '@app/ui/shared/domain';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MenuData, UserManagementRelations } from '@app/ui/shared/domain';
+import { TranslocoService } from '@ngneat/transloco';
 import { UserManagementService } from '../../../../services/user-management.service';
 
 @Component({
@@ -9,32 +9,27 @@ import { UserManagementService } from '../../../../services/user-management.serv
   styleUrls: ['./user-management-home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserManagementHomeComponent implements OnDestroy {
-  tiles: TiledMenuTileData[] = [
+export class UserManagementHomeComponent {
+  private readonly TRANSLOCO_SCOPE = 'administration.user-management.home.tiles';
+  public readonly tiles: MenuData[] = [
     {
       icon: 'contacts',
-      title: 'User List',
-      subtitle: 'List of all users',
-      link: 'users',
-      canShow: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.table.title`),
+      subtitle$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.table.subtitle`),
+      route: 'users',
+      visible$: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
     },
     {
       icon: 'person_add',
-      title: 'Create User',
-      subtitle: 'Create a new User Account.',
-      link: 'create',
-      canShow: this.userManagementService.hasTemplate(UserManagementRelations.USER_CREATE_REL),
+      title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.detail.title`),
+      subtitle$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.detail.subtitle`),
+      route: 'create',
+      visible$: this.userManagementService.hasTemplate(UserManagementRelations.USER_CREATE_REL),
     },
   ];
 
   constructor(
-    private readonly coreService: CoreService,
     private readonly userManagementService: UserManagementService,
-  ) {
-    this.coreService.setCoreStyle('raw');
-  }
-
-  ngOnDestroy(): void {
-    this.coreService.reset();
-  }
+    private readonly translocoService: TranslocoService,
+  ) {}
 }

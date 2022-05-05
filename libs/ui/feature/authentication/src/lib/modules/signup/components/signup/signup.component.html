@@ -1,47 +1,52 @@
-<form [formGroup]="signupForm" novalidate (ngSubmit)="onSubmit()">
-  <mat-card
-    class="mat-elevation-z24"
-    [@wobble]="signupError === true"
-    (@wobble.start)="signupError = false"
-    [@bounceOut]="signupSuccess === true"
-    (@bounceOut.done)="onSignupSuccess()">
-    <mat-card-header>
-      <mat-card-title>New Account Details</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field>
-        <input matInput placeholder="Firstname" formControlName="firstname" />
-        <mat-error>
-          <app-form-error [control]="signupForm.controls.firstname" name="firstname"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Lastname" formControlName="lastname" />
-        <mat-error>
-          <app-form-error [control]="signupForm.controls.lastname" name="lastname"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="email" placeholder="Email" formControlName="email" required />
-        <mat-error>
-          <app-form-error [control]="signupForm.controls.email" name="email"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Username" formControlName="username" required />
-        <mat-error>
-          <app-form-error [control]="signupForm.controls.username" name="username"></app-form-error>
-        </mat-error>
-      </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions [align]="'end'">
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="signupForm.invalid || (authService.hasTemplateToSignup() | async) === false">
-        Sign Up
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</form>
-<div class="spacer"></div>
+<app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
+  <div class="card-view-content">
+    <form [formGroup]="signupForm" novalidate (ngSubmit)="onSubmit()">
+      <mat-card
+        class="mat-elevation-z24"
+        [@wobble]="signupError === true"
+        (@wobble.start)="signupError = false"
+        [@bounceOut]="signupSuccess === true"
+        (@bounceOut.done)="onSignupSuccess()"
+      >
+        <mat-card-header>
+          <mat-card-title>{{ t('title') }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <input matInput [placeholder]="t('placeholder.firstname')" formControlName="firstname" />
+            <mat-error>
+              <app-form-error [control]="signupForm.controls.firstname" name="firstname"></app-form-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [placeholder]="t('placeholder.lastname')" formControlName="lastname" />
+            <mat-error>
+              <app-form-error [control]="signupForm.controls.lastname" name="lastname"></app-form-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="email" [placeholder]="t('placeholder.email')" formControlName="email" required />
+            <mat-error>
+              <app-form-error [control]="signupForm.controls.email" name="email"></app-form-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [placeholder]="t('placeholder.username')" formControlName="username" required />
+            <mat-error>
+              <app-form-error [control]="signupForm.controls.username" name="username"></app-form-error>
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions [align]="'end'">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="signupForm.invalid || (authService.hasTemplateToSignup() | async) === false"
+          >
+            {{ t('button.signup') }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+</app-core-card-view>

@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormErrorModule } from '@app/ui/shared/common';
 import { NgLetModule } from '@app/ui/shared/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { UserManagementAccountDeleteConfirmComponent } from './components/user-management-account-delete-confirm/user-management-account-delete-confirm.component';
 import { UserManagementAccountDeleteComponent } from './components/user-management-account-delete/user-management-account-delete.component';
 import { UserManagementAccountPasswordComponent } from './components/user-management-account-password/user-management-account-password.component';
@@ -34,6 +35,7 @@ import { UserManagementAccountRoutingModule } from './user-management-account-ro
     ReactiveFormsModule,
     FormErrorModule,
     NgLetModule,
+    TranslocoModule,
   ],
 })
 export class UserManagementAccountModule {}

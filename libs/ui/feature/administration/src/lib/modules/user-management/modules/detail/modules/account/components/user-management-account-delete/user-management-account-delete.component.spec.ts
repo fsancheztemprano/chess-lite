@@ -4,6 +4,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
 import { NgLetModule } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementAccountDeleteComponent } from './user-management-account-delete.component';
 
@@ -13,7 +14,7 @@ describe('UserManagementAccountDeleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, RouterTestingModule, MatCardModule, NgLetModule],
+      imports: [MatDialogModule, RouterTestingModule, MatCardModule, NgLetModule, getTranslocoModule()],
       declarations: [UserManagementAccountDeleteComponent],
       providers: [stubToasterServiceProvider, stubUserManagementDetailServiceProvider],
     }).compileComponents();

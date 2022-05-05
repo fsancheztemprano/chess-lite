@@ -1,1 +1,52 @@
-{}
+{
+  "core": {
+    "locale": {
+      "en": "English",
+      "es": "Spanish"
+    },
+    "context-menu": {
+      "title": "Options"
+    },
+    "breadcrumb": {
+      "home": {
+        "title": "Home"
+      },
+      "authentication": {
+        "title": "Authentication",
+        "login": "Login",
+        "signup": "Signup",
+        "activation": "Activation",
+        "token-request": "Account Recovery"
+      },
+      "user-settings": {
+        "title": "User Settings",
+        "profile": "User Profile",
+        "delete": "Delete",
+        "password": "Password",
+        "avatar": "Avatar",
+        "preferences": "Preferences"
+      },
+      "administration": {
+        "title": "Administration",
+        "user-management": {
+          "title": "User Management",
+          "users": "Users",
+          "new-user": "New User",
+          "profile": "Profile",
+          "authority": "Authority",
+          "account": "Account",
+          "preferences": "Preferences"
+        },
+        "service-logs": "Service Logs",
+        "global-settings": {
+          "title": "Global Settings",
+          "general-settings": "General",
+          "access-restrictions": "Access Restrictions"
+        },
+        "role-management": {
+          "title": "Role Management"
+        }
+      }
+    }
+  }
+}

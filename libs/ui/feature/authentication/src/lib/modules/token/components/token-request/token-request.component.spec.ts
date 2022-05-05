@@ -6,7 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StubFormErrorComponent } from '@app/ui/shared/common';
+import { StubCoreCardViewComponent, StubFormErrorComponent } from '@app/ui/shared/common';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubActivationTokenServiceProvider } from '../../../../services/activation-token.service.stub';
 import { TokenRequestComponent } from './token-request.component';
 
@@ -24,8 +25,9 @@ describe('TokenRequestComponent', () => {
         MatInputModule,
         MatFormFieldModule,
         MatButtonModule,
+        getTranslocoModule(),
       ],
-      declarations: [TokenRequestComponent, StubFormErrorComponent],
+      declarations: [TokenRequestComponent, StubFormErrorComponent, StubCoreCardViewComponent],
       providers: [stubActivationTokenServiceProvider],
     }).compileComponents();
   });

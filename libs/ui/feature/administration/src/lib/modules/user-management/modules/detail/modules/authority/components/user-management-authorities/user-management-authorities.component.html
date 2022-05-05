@@ -11,6 +11,8 @@
   mat-raised-button
   color="primary"
   (click)="onSubmit()"
-  [disabled]="(userManagementDetailService.canUpdateAuthorities() | async) === false">
-  Save Authorities
+  [disabled]="(userManagementDetailService.canUpdateAuthorities() | async) === false"
+  *transloco="let t; read: TRANSLOCO_SCOPE"
+>
+  {{ t('button.save') }}
 </button>

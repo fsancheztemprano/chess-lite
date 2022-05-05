@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
 import { ActivationTokenRelations, TOKEN_KEY, User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
 import {
   createUserTemplate,
   defaultTemplate,
@@ -16,7 +17,6 @@ import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';
 import { UserManagementService } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service';
-import { AdministrationService } from '../../../../ui/feature/administration/src/lib/services/administration.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.util';

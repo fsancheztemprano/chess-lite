@@ -1,0 +1,95 @@
+{
+  "home": {
+    "profile": {
+      "title": "User Profile",
+      "description": "Edit your profile"
+    },
+    "avatar": {
+      "title": "Upload Avatar",
+      "description": "Change your profile picture"
+    },
+    "password": {
+      "title": "Change Password",
+      "description": "Secure your account"
+    },
+    "delete": {
+      "title": "Delete Account",
+      "description": "Remove your account"
+    },
+    "preferences": {
+      "title": "Account Preferences",
+      "description": "Modify your application preferences"
+    }
+  },
+  "change-password": {
+    "header": "Change Password",
+    "placeholder": {
+      "password": "Current Password",
+      "password2": "Current Password Again",
+      "newPassword": "New Password",
+      "newPassword2": "New Password Again"
+    },
+    "button": {
+      "change": "Save"
+    },
+    "toast": {
+      "success": "Password changed successfully"
+    }
+  },
+  "preferences": {
+    "header": "User Preferences",
+    "theme": "Theme",
+    "content-language": "Content Language",
+    "button": {
+      "save": "Save and Apply"
+    }
+  },
+  "remove-account": {
+    "header": "Remove Account",
+    "title": "Danger Zone",
+    "description": "Once you delete an account, it can't be recovered. Please be sure before you continue.",
+    "button": {
+      "delete": "Delete Account"
+    },
+    "dialog": {
+      "title": "Remove Account?",
+      "warning": "This action cannot be undone. This will permanently delete your account, and remove all data associations.",
+      "description": "Please type your username to confirm.",
+      "placeholder": "Type your username",
+      "button": {
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      }
+    },
+    "toast": {
+      "success": "Account and all associated data was removed.",
+      "error": "Account was not removed."
+    }
+  },
+  "profile": {
+    "header": "User Profile",
+    "placeholder": {
+      "username": "Username",
+      "email": "Email",
+      "firstname": "Firstname",
+      "lastname": "Lastname",
+      "lastLoginDateDisplay": "Last Login",
+      "joinDate": "Member Since",
+      "role": "Role",
+      "active": "Active",
+      "locked": "Locked",
+      "expired": "Expired",
+      "credentialsExpired": "Expired Credentials"
+    },
+    "button": {
+      "save": "Save"
+    },
+    "toast": {
+      "success": "User Profile Saved Successfully."
+    }
+  },
+  "avatar": {
+    "header": "Upload Avatar",
+    "upload": "Upload"
+  }
+}

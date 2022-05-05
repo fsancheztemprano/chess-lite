@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { stubCoreServiceProvider, StubTiledMenuModule } from '@app/ui/shared/core';
-import { stubAdministrationServiceProvider } from '../../../../services/administration.service.stub';
+import { StubTiledMenuModule } from '@app/ui/shared/common';
+import { stubAdministrationServiceProvider } from '@app/ui/shared/feature/administration';
+import { getTranslocoModule } from '@app/ui/testing';
 import { AdministrationHomeComponent } from './administration-home.component';
 
 describe('AdministrationHomeComponent', () => {
@@ -10,9 +11,9 @@ describe('AdministrationHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, StubTiledMenuModule],
+      imports: [RouterTestingModule, StubTiledMenuModule, getTranslocoModule()],
       declarations: [AdministrationHomeComponent],
-      providers: [stubCoreServiceProvider, stubAdministrationServiceProvider],
+      providers: [stubAdministrationServiceProvider],
     }).compileComponents();
   });
 

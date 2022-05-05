@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad } from '@angular/router';
 import { UserManagementRelations } from '@app/ui/shared/domain';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { Observable } from 'rxjs';
-import { AdministrationService } from '../../../services/administration.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,0 +1,35 @@
+<button
+  [attr.aria-label]="title"
+  mat-button
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  [matTooltip]="title"
+  matTooltipClass="big-font-tooltip"
+  [disabled]="disabled || !menuOptions?.length"
+  (click)="preventNavigation($event)"
+>
+  <mat-icon>{{ icon }}</mat-icon>
+</button>
+<mat-menu
+  #menu="matMenu"
+  [xPosition]="xPosition"
+  [yPosition]="yPosition"
+  [overlapTrigger]="overlapTrigger"
+  [class]="class"
+>
+  <ng-container *ngFor="let option of menuOptions; let first = first; let last = last; let index = index">
+    <a
+      *ngIf="option.title$ | async as title"
+      [attr.aria-label]="title"
+      mat-menu-item
+      class="option-button option-button-{{ index }}"
+      [ngClass]="{ 'option-button-first': first, 'option-button-last': last }"
+      [disabled]="!option.disabled$ ? false : (option.disabled$ | async)"
+      [routerLink]="option.route"
+      (click)="optionClick(option, $event)"
+    >
+      <mat-icon *ngIf="option.icon">{{ option.icon }}</mat-icon>
+      <span>{{ title }}</span>
+    </a>
+  </ng-container>
+</mat-menu>

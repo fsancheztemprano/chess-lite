@@ -1,16 +1,19 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title class="mat-error">Danger Zone</mat-card-title>
-  </mat-card-header>
-  <mat-card-content> Once you delete an account, it can't be recovered. Please be sure.</mat-card-content>
-  <mat-card-actions align="end">
-    <button
-      mat-stroked-button
-      color="warn"
-      (click)="openDialog()"
-      *ngLet="this.userSettingsService.hasTemplateToDeleteAccount() | async as canDeleteAccount"
-      [disabled]="!canDeleteAccount">
-      Delete this account
-    </button>
-  </mat-card-actions>
-</mat-card>
+<app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="mat-error">{{ t('title') }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>{{ t('description') }}</mat-card-content>
+    <mat-card-actions align="end">
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="openDialog()"
+        *ngLet="this.userSettingsService.hasTemplateToDeleteAccount() | async as canDeleteAccount"
+        [disabled]="!canDeleteAccount"
+      >
+        {{ t('button.delete') }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</app-core-card-view>

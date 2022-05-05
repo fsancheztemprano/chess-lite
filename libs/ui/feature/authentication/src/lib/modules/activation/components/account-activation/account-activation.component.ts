@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators } from '@app/ui/shared/common';
-import { CardViewHeaderService } from '@app/ui/shared/core';
+import { translate } from '@ngneat/transloco';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
 
@@ -14,7 +14,7 @@ import { ActivationTokenService } from '../../../../services/activation-token.se
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [wobbleAnimation(), bounceOutAnimation()],
 })
-export class AccountActivationComponent implements OnDestroy {
+export class AccountActivationComponent {
   public form = new FormGroup(
     {
       token: new FormControl(''),
@@ -26,21 +26,16 @@ export class AccountActivationComponent implements OnDestroy {
   );
   public success = false;
   public error = false;
+  public readonly TRANSLOCO_SCOPE = 'authentication.activation';
 
   constructor(
     public readonly activationTokenService: ActivationTokenService,
-    private readonly headerService: CardViewHeaderService,
     private readonly cdr: ChangeDetectorRef,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly toasterService: ToasterService,
   ) {
-    this.headerService.setHeader({ title: 'Activate Account' });
     this.route.queryParams.subscribe((params) => this.form.patchValue(params));
-  }
-
-  ngOnDestroy(): void {
-    this.headerService.resetHeader();
   }
 
   onSuccess() {
@@ -59,12 +54,12 @@ export class AccountActivationComponent implements OnDestroy {
   private setStatus(status: boolean) {
     if (status) {
       this.toasterService.showToast({
-        title: 'Account Activated',
-        message: 'You can now login.',
+        title: translate(`${this.TRANSLOCO_SCOPE}.toast.success.title`),
+        message: translate(`${this.TRANSLOCO_SCOPE}.toast.success.message`),
       });
     } else {
-      this.toasterService.showToast({
-        title: 'Invalid data, mind that the token is only valid for a few attempts.',
+      this.toasterService.showErrorToast({
+        title: translate(`${this.TRANSLOCO_SCOPE}.toast.error`),
       });
     }
     this.success = status;

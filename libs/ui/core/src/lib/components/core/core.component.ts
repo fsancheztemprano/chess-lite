@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
-import { CoreComponentStyle, CoreService, ThemeRepository } from '@app/ui/shared/core';
+import { ThemeRepository } from '@app/ui/shared/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -13,17 +13,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class CoreComponent implements OnInit {
   @HostBinding('class.dark-mode') darkModeClass = false;
 
-  public style: CoreComponentStyle = 'card';
-
-  constructor(
-    private readonly overlay: OverlayContainer,
-    private readonly themeRepository: ThemeRepository,
-    private readonly coreService: CoreService,
-  ) {}
+  constructor(private readonly overlay: OverlayContainer, private readonly themeRepository: ThemeRepository) {}
 
   ngOnInit(): void {
     this._subscribeToThemeChanges();
-    this._subscribeToCoreStyle();
   }
 
   private _subscribeToThemeChanges(): void {
@@ -36,12 +29,5 @@ export class CoreComponent implements OnInit {
         this.overlay.getContainerElement().classList.remove(darkClassName);
       }
     });
-  }
-
-  private _subscribeToCoreStyle() {
-    this.coreService
-      .getCoreStyle()
-      .pipe(untilDestroyed(this))
-      .subscribe((style: CoreComponentStyle) => (this.style = style));
   }
 }

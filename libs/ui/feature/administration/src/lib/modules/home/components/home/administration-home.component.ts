@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { CoreService, TiledMenuTileData } from '@app/ui/shared/core';
-import { AdministrationService } from '../../../../services/administration.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MenuData } from '@app/ui/shared/domain';
+import { AdministrationService } from '@app/ui/shared/feature/administration';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-administration-home',
@@ -8,43 +9,40 @@ import { AdministrationService } from '../../../../services/administration.servi
   styleUrls: ['./administration-home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdministrationHomeComponent implements OnDestroy {
-  tiles: TiledMenuTileData[] = [
+export class AdministrationHomeComponent {
+  tiles: MenuData[] = [
     {
       icon: 'manage_accounts',
-      title: 'User Management',
-      subtitle: 'Manage User Accounts',
-      link: 'user-management',
-      canShow: this.administrationService.hasUserManagementEmbedded(),
+      title$: this.translocoService.selectTranslate('administration.home.user-management.title'),
+      subtitle$: this.translocoService.selectTranslate('administration.home.user-management.description'),
+      route: 'user-management',
+      visible$: this.administrationService.hasUserManagementEmbedded(),
     },
     {
       icon: 'military_tech',
-      title: 'Role Management',
-      subtitle: 'Manage Roles',
-      link: 'role-management',
-      canShow: this.administrationService.hasRoleManagementEmbedded(),
+      title$: this.translocoService.selectTranslate('administration.home.role-management.title'),
+      subtitle$: this.translocoService.selectTranslate('administration.home.role-management.description'),
+      route: 'role-management',
+      visible$: this.administrationService.hasRoleManagementEmbedded(),
     },
     {
       icon: 'cabin',
-      title: 'Service Logs',
-      subtitle: 'Have a look at the service logs.',
-      link: 'service-logs',
-      canShow: this.administrationService.hasServiceLogsLink(),
+      title$: this.translocoService.selectTranslate('administration.home.service-logs.title'),
+      subtitle$: this.translocoService.selectTranslate('administration.home.service-logs.description'),
+      route: 'service-logs',
+      visible$: this.administrationService.hasServiceLogsLink(),
     },
     {
       icon: 'vpn_lock',
-      title: 'Global Settings',
-      subtitle: 'Global Settings',
-      link: 'global-settings',
-      canShow: this.administrationService.hasGlobalSettingsLink(),
+      title$: this.translocoService.selectTranslate('administration.home.global-settings.title'),
+      subtitle$: this.translocoService.selectTranslate('administration.home.global-settings.description'),
+      route: 'global-settings',
+      visible$: this.administrationService.hasGlobalSettingsLink(),
     },
   ];
 
-  constructor(public readonly administrationService: AdministrationService, private readonly coreService: CoreService) {
-    this.coreService.setCoreStyle('raw');
-  }
-
-  ngOnDestroy(): void {
-    this.coreService.reset();
-  }
+  constructor(
+    public readonly administrationService: AdministrationService,
+    private readonly translocoService: TranslocoService,
+  ) {}
 }

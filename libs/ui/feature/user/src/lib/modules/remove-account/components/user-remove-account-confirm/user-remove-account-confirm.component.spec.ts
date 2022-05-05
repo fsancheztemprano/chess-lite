@@ -3,8 +3,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NgLetModule } from '@app/ui/shared/core';
-import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
+import { NgLetModule, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { UserRemoveAccountConfirmComponent } from './user-remove-account-confirm.component';
 
 describe('UserRemoveAccountConfirmComponent', () => {
@@ -13,7 +13,14 @@ describe('UserRemoveAccountConfirmComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule, NgLetModule],
+      imports: [
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NoopAnimationsModule,
+        NgLetModule,
+        getTranslocoModule(),
+      ],
       declarations: [UserRemoveAccountConfirmComponent],
       providers: [stubUserSettingsServiceProvider],
     }).compileComponents();

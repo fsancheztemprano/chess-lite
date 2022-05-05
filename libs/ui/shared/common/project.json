@@ -8,7 +8,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/ui/shared/common"],
       "options": {
-        "jestConfig": "libs/ui/shared/common/jest.config.js",
+        "jestConfig": "libs/ui/shared/common/jest.config.ts",
         "passWithNoTests": true
       }
     },

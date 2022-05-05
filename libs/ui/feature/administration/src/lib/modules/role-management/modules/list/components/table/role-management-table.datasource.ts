@@ -34,10 +34,9 @@ import { RoleManagementService } from '../../../../services/role-management.serv
 export class RoleManagementTableDatasource extends DataSource<Role> {
   public paginator: MatPaginator | undefined;
   public sort: MatSort | undefined;
-  private _rolePage$: BehaviorSubject<RolePage> = new BehaviorSubject<RolePage>(new RolePage({}));
-  private _roleListChanges: Subject<void> = new Subject();
-
-  private _roleListMessagesSubscription: Subscription = new Subscription();
+  private readonly _rolePage$: BehaviorSubject<RolePage> = new BehaviorSubject<RolePage>(new RolePage({}));
+  private readonly _roleListChanges: Subject<void> = new Subject();
+  private _roleListMessagesSubscription?: Subscription;
 
   constructor(
     private readonly roleManagementService: RoleManagementService,

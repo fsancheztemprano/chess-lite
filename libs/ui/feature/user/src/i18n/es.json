@@ -1,0 +1,95 @@
+{
+  "home": {
+    "profile": {
+      "title": "Perfil de Usuario",
+      "description": "Editar tu perfil"
+    },
+    "avatar": {
+      "title": "Avatar",
+      "description": "Cambiar imagen de perfil"
+    },
+    "password": {
+      "title": "Cambiar contraseña",
+      "description": "Protege tu cuenta"
+    },
+    "delete": {
+      "title": "Borrar cuenta",
+      "description": "Borrar la cuenta y todos los datos de usuario"
+    },
+    "preferences": {
+      "title": "Preferencias de Usuario",
+      "description": "Cambia tus preferencias"
+    }
+  },
+  "change-password": {
+    "header": "Cambiar Contraseña",
+    "placeholder": {
+      "password": "Contraseña Actual",
+      "password2": "Confirma la contraseña actual",
+      "newPassword": "Contraseña Nueva",
+      "newPassword2": "Confirma la contraseña nueva"
+    },
+    "button": {
+      "change": "Guardar"
+    },
+    "toast": {
+      "success": "Contraseña actualizada"
+    }
+  },
+  "preferences": {
+    "header": "Preferencias",
+    "theme": "Tema",
+    "content-language": "Idioma",
+    "button": {
+      "save": "Guardar y Aplicar"
+    }
+  },
+  "remove-account": {
+    "header": "Eliminar Cuenta",
+    "title": "Zona de Peligro",
+    "description": "Una vez eliminada los datos no pueden ser recuperados",
+    "button": {
+      "delete": "Borrar Cuenta"
+    },
+    "dialog": {
+      "title": "Elimar Cuenta?",
+      "warning": "Esta acción no es reversible. Tu cuenta y todos los datos asociados serán eliminados.",
+      "description": "Escribe tu usuario para confirmar",
+      "placeholder": "Usuario",
+      "button": {
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
+      }
+    },
+    "toast": {
+      "success": "La cuenta y todos los datos han sido eliminados",
+      "error": "La cuenta no fue eliminada"
+    }
+  },
+  "profile": {
+    "header": "Perfil de Usuario",
+    "placeholder": {
+      "username": "Usuario",
+      "email": "Email",
+      "firstname": "Nombre",
+      "lastname": "Apellido",
+      "lastLoginDateDisplay": "Último Acceso",
+      "joinDate": "Registro",
+      "role": "Rol",
+      "active": "Activo",
+      "locked": "Bloqueado",
+      "expired": "Expirado",
+      "credentialsExpired": "Credenciales Expiradas"
+    },
+    "button": {
+      "save": "Guardar"
+    },
+    "toast": {
+      "success": "Perfil Actualizado"
+    }
+  },
+  "avatar": {
+    "header": "Subir Avatar",
+    "upload": "Subir"
+  }
+}

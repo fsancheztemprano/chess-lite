@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { filterNulls, ToasterService } from '@app/ui/shared/app';
+import { filterNulls } from '@app/ui/shared/app';
 import { patchFormPipe } from '@app/ui/shared/common';
-import { LocalizationRepository } from '@app/ui/shared/core';
+import { LocalizationRepository, UserSettingsService } from '@app/ui/shared/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { UserSettingsService } from '../../../../services/user-settings.service';
 
 @UntilDestroy()
 @Component({
@@ -23,8 +21,6 @@ export class CurrentUserPreferencesComponent {
   constructor(
     public readonly userSettingsService: UserSettingsService,
     public readonly localizationRepository: LocalizationRepository,
-    private readonly route: ActivatedRoute,
-    private readonly toasterService: ToasterService,
   ) {
     this.userSettingsService
       .getCurrentUserPreferences()
@@ -33,8 +29,6 @@ export class CurrentUserPreferencesComponent {
   }
 
   onSubmit() {
-    this.userSettingsService.updateUserPreferences(this.form.value).subscribe({
-      error: () => this.toasterService.showErrorToast({ message: 'An Error Occurred' }),
-    });
+    this.userSettingsService.updateUserPreferences(this.form.value).subscribe();
   }
 }

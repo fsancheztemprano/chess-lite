@@ -1,0 +1,9 @@
+<div *ngLet="'' | isMobile | async as isMobile" [ngClass]="{ isMobile: isMobile }" class="tile-menu-content">
+  <ng-container *ngFor="let tile of tiles">
+    <app-tiled-menu-tile
+      *ngIf="tile.visible$ === undefined || (tile.visible$ | async)"
+      [tileData]="tile"
+      [ngClass]="{ isMobile: isMobile }"
+    ></app-tiled-menu-tile>
+  </ng-container>
+</div>

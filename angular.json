@@ -15,6 +15,7 @@
     "ui-shared-common": "libs/ui/shared/common",
     "ui-shared-core": "libs/ui/shared/core",
     "ui-shared-domain": "libs/ui/shared/domain",
+    "ui-shared-feature-administration": "libs/ui/shared/feature/administration",
     "ui-shared-testing": "libs/ui/shared/testing"
   }
 }

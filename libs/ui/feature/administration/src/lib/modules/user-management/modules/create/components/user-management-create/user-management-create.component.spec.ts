@@ -9,8 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
-import { FormErrorModule } from '@app/ui/shared/common';
-import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
+import { FormErrorModule, StubCoreCardViewComponent } from '@app/ui/shared/common';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
 import { UserManagementCreateComponent } from './user-management-create.component';
 
@@ -31,9 +31,10 @@ describe('UserManagementCreateComponent', () => {
         MatSelectModule,
         MatCheckboxModule,
         ReactiveFormsModule,
+        getTranslocoModule(),
       ],
-      declarations: [UserManagementCreateComponent],
-      providers: [stubUserManagementServiceProvider, stubCardViewHeaderServiceProvider, stubToasterServiceProvider],
+      declarations: [UserManagementCreateComponent, StubCoreCardViewComponent],
+      providers: [stubUserManagementServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 

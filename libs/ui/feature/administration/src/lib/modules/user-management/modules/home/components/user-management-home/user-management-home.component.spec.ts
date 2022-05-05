@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { stubCoreServiceProvider, StubTiledMenuModule } from '@app/ui/shared/core';
+import { StubTiledMenuModule } from '@app/ui/shared/common';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
 import { UserManagementHomeComponent } from './user-management-home.component';
 
@@ -9,9 +10,9 @@ describe('UserManagementHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StubTiledMenuModule],
+      imports: [StubTiledMenuModule, getTranslocoModule()],
       declarations: [UserManagementHomeComponent],
-      providers: [stubCoreServiceProvider, stubUserManagementServiceProvider],
+      providers: [stubUserManagementServiceProvider],
     }).compileComponents();
   });
 

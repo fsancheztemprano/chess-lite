@@ -1,8 +1,0 @@
-<app-sidenav-item
-  *ngIf="hasCurrentUserLink() | async"
-  [expandable]="true"
-  expandableTitle="User Settings"
-  expandableIcon="person"
-  [expandableLink]="['user']"
-  [items]="items"
-  (toggleSidenav)="toggleSidenav.emit()"></app-sidenav-item>

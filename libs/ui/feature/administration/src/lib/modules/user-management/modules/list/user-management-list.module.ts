@@ -6,6 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { CoreCardViewModule } from '@app/ui/shared/common';
+import { TranslocoModule } from '@ngneat/transloco';
 import { UserManagementTableComponent } from './components/user-management-table/user-management-table.component';
 import { UserManagementListRoutingModule } from './user-management-list-routing.module';
 
@@ -20,6 +22,8 @@ import { UserManagementListRoutingModule } from './user-management-list-routing.
     MatIconModule,
     MatButtonModule,
     MatCheckboxModule,
+    TranslocoModule,
+    CoreCardViewModule,
   ],
 })
 export class UserManagementListModule {}

@@ -5,10 +5,9 @@ import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form
 import { Actions } from '@ngneat/effects-ng';
 import { Observable, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { AuthenticationModule } from '../authentication.module';
 
 @Injectable({
-  providedIn: AuthenticationModule,
+  providedIn: 'root',
 })
 export class AuthService {
   constructor(private readonly halFormService: HalFormService, private readonly actions: Actions) {}

@@ -10,6 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
 import { StubFormErrorComponent } from '@app/ui/shared/common';
 import { NgLetModule } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { stubUserManagementDetailServiceProvider } from '../../../../services/user-management-detail.service.stub';
 import { UserManagementProfileComponent } from './user-management-profile.component';
 
@@ -29,6 +30,7 @@ describe('UserManagementProfileComponent', () => {
         MatCardModule,
         ReactiveFormsModule,
         NgLetModule,
+        getTranslocoModule(),
       ],
       declarations: [UserManagementProfileComponent, StubFormErrorComponent],
       providers: [MatDatepickerModule, stubToasterServiceProvider, stubUserManagementDetailServiceProvider],

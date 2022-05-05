@@ -3,8 +3,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
-import { NgLetModule, stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
-import { stubUserSettingsServiceProvider } from '../../../../services/user-settings.service.stub';
+import { StubCoreCardViewComponent } from '@app/ui/shared/common';
+import { NgLetModule, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { UserRemoveAccountComponent } from './user-remove-account.component';
 
 describe('UserRemoveAccountComponent', () => {
@@ -13,9 +14,9 @@ describe('UserRemoveAccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatCardModule, NgLetModule, RouterTestingModule],
-      declarations: [UserRemoveAccountComponent],
-      providers: [stubUserSettingsServiceProvider, stubCardViewHeaderServiceProvider, stubToasterServiceProvider],
+      imports: [MatDialogModule, MatCardModule, NgLetModule, RouterTestingModule, getTranslocoModule()],
+      declarations: [UserRemoveAccountComponent, StubCoreCardViewComponent],
+      providers: [stubUserSettingsServiceProvider, stubToasterServiceProvider],
     }).compileComponents();
   });
 
