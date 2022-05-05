@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/hal-form-client",
   "sourceRoot": "libs/hal-form-client/src",
   "prefix": "app",
   "targets": {

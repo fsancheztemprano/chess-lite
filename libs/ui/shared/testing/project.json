@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/ui/shared/testing",
   "sourceRoot": "libs/ui/shared/testing/src",
   "prefix": "app",
   "targets": {
