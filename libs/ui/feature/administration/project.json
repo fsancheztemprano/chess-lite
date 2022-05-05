@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/ui/feature/administration",
   "sourceRoot": "libs/ui/feature/administration/src",
   "prefix": "lib",
   "targets": {

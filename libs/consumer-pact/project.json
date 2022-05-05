@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/consumer-pact",
   "sourceRoot": "libs/consumer-pact/src",
   "prefix": "pact",
   "targets": {

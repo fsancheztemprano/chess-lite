@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/ui/feature/home",
   "sourceRoot": "libs/ui/feature/home/src",
   "prefix": "app",
   "targets": {

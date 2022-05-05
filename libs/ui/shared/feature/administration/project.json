@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/ui/shared/feature/administration",
   "sourceRoot": "libs/ui/shared/feature/administration/src",
   "prefix": "app",
   "targets": {

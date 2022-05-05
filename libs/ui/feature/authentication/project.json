@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/ui/feature/authentication",
   "sourceRoot": "libs/ui/feature/authentication/src",
   "prefix": "app",
   "targets": {
