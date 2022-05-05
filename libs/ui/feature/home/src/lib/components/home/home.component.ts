@@ -16,28 +16,28 @@ export class HomeComponent {
       title$: this.translocoService.selectTranslate('home.main.tiles.user-settings.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.user-settings.description'),
       route: 'user',
-      canShow: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
+      visible$: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
     },
     {
       icon: 'admin_panel_settings',
       title$: this.translocoService.selectTranslate('home.main.tiles.administration.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.administration.description'),
       route: 'administration',
-      canShow: this.halFormService.hasLink(AdministrationRelations.ADMINISTRATION_REL),
+      visible$: this.halFormService.hasLink(AdministrationRelations.ADMINISTRATION_REL),
     },
     {
       icon: 'login',
       title$: this.translocoService.selectTranslate('home.main.tiles.login.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.login.description'),
       route: 'auth',
-      canShow: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
+      visible$: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
     },
     {
       icon: 'assignment_ind',
       title$: this.translocoService.selectTranslate('home.main.tiles.signup.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.signup.description'),
       route: 'auth/signup',
-      canShow: this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION),
+      visible$: this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION),
     },
   ];
 

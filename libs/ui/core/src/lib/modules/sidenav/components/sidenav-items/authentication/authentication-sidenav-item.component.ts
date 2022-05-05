@@ -27,19 +27,19 @@ export class AuthenticationSidenavItemComponent {
       icon: 'logout',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.logout'),
       callback: this.logout.bind(this),
-      canShow: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
+      visible$: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
     },
     {
       icon: 'login',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.login'),
       route: '/auth/login',
-      canShow: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
+      visible$: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
     },
     {
       icon: 'assignment_ind',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.signup'),
       route: '/auth/signup',
-      canShow: this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION),
+      visible$: this.halFormService.hasLink(AuthRelations.SIGNUP_RELATION),
     },
   ];
 

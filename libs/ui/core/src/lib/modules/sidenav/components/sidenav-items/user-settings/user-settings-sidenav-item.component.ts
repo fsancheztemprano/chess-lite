@@ -24,31 +24,31 @@ export class UserSettingsSidenavItemComponent {
       icon: 'account_box',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.profile'),
       route: '/user/profile',
-      canShow: this.userSettingsService.hasTemplateToUpdateProfile(),
+      visible$: this.userSettingsService.hasTemplateToUpdateProfile(),
     },
     {
       icon: 'account_circle',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.upload-avatar'),
       route: '/user/avatar',
-      canShow: this.userSettingsService.hasTemplateToUploadAvatar(),
+      visible$: this.userSettingsService.hasTemplateToUploadAvatar(),
     },
     {
       icon: 'password',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.change-password'),
       route: '/user/password',
-      canShow: this.userSettingsService.hasTemplateToChangePassword(),
+      visible$: this.userSettingsService.hasTemplateToChangePassword(),
     },
     {
       icon: 'delete_forever',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.delete-account'),
       route: '/user/delete',
-      canShow: this.userSettingsService.hasTemplateToDeleteAccount(),
+      visible$: this.userSettingsService.hasTemplateToDeleteAccount(),
     },
     {
       icon: 'manage_accounts',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.preferences'),
       route: '/user/preferences',
-      canShow: this.userSettingsService.hasLinkToUserPreferences(),
+      visible$: this.userSettingsService.hasLinkToUserPreferences(),
     },
   ];
 

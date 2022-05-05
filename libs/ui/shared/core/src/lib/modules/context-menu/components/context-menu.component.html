@@ -17,16 +17,18 @@
   [overlapTrigger]="overlapTrigger"
   [class]="class"
 >
-  <button
-    *ngFor="let option of menuOptions; let first = first; let last = last; let index = index"
-    [attr.aria-label]="option.title"
-    mat-menu-item
-    class="option-button option-button-{{ index }}"
-    [ngClass]="{ 'option-button-first': first, 'option-button-last': last }"
-    [disabled]="!option.disabled$ ? false : (option.disabled$ | async)"
-    (click)="optionClick(option)"
-  >
-    <mat-icon *ngIf="option.icon">{{ option.icon }}</mat-icon>
-    <span>{{ option.title || (option.title$ && option.title$ | async) }}</span>
-  </button>
+  <ng-container *ngFor="let option of menuOptions; let first = first; let last = last; let index = index">
+    <button
+      *ngIf="option.title$ | async as title"
+      [attr.aria-label]="title"
+      mat-menu-item
+      class="option-button option-button-{{ index }}"
+      [ngClass]="{ 'option-button-first': first, 'option-button-last': last }"
+      [disabled]="!option.disabled$ ? false : (option.disabled$ | async)"
+      (click)="optionClick(option)"
+    >
+      <mat-icon *ngIf="option.icon">{{ option.icon }}</mat-icon>
+      <span>{{ title }}</span>
+    </button>
+  </ng-container>
 </mat-menu>

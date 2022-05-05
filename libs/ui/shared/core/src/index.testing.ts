@@ -1,5 +1,3 @@
-export * from './lib/services/core.service.stub';
-export * from './lib/services/card-view/card-view-header.service.stub';
 export * from './lib/modules/core-context-menu/services/core-context-menu.service.stub';
 export * from './lib/modules/core-context-menu/components/core-context-menu.component.stub';
 export * from './lib/services/sidenav/sidenav.service.stub';

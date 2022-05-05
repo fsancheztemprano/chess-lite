@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StubCoreCardViewComponent, StubFormErrorComponent } from '@app/ui/shared/common';
-import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { getTranslocoModule } from '@app/ui/testing';
 import { HalFormClientModule } from '@hal-form-client';
 import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
@@ -30,7 +29,7 @@ describe('LoginComponent', () => {
         getTranslocoModule(),
       ],
       declarations: [LoginComponent, StubFormErrorComponent, StubCoreCardViewComponent],
-      providers: [stubAuthServiceProvider, stubCardViewHeaderServiceProvider],
+      providers: [stubAuthServiceProvider],
     }).compileComponents();
   });
 

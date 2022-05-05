@@ -17,14 +17,14 @@ export class UserManagementHomeComponent {
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.table.title`),
       subtitle$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.table.subtitle`),
       route: 'users',
-      canShow: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
+      visible$: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
     },
     {
       icon: 'person_add',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.detail.title`),
       subtitle$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.detail.subtitle`),
       route: 'create',
-      canShow: this.userManagementService.hasTemplate(UserManagementRelations.USER_CREATE_REL),
+      visible$: this.userManagementService.hasTemplate(UserManagementRelations.USER_CREATE_REL),
     },
   ];
 

@@ -6,8 +6,6 @@ export * from './lib/store/theme/theme.repository';
 export * from './lib/store/theme/theme.store.model';
 export * from './lib/store/theme/theme.action';
 
-export * from './lib/services/core.service';
-export * from './lib/services/card-view/card-view-header.service';
 export * from './lib/services/sidenav/sidenav.service';
 export * from './lib/services/toolbar/breadcrumb.service';
 export * from './lib/services/user-settings.service';

@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubMessageServiceProvider } from '@app/ui/shared/app';
 import { StubCoreCardViewComponent } from '@app/ui/shared/common';
-import { stubCardViewHeaderServiceProvider } from '@app/ui/shared/core';
 import { Role } from '@app/ui/shared/domain';
 import { getTranslocoModule, StubRouteDataProvider } from '@app/ui/testing';
 import { Observable } from 'rxjs';
@@ -46,7 +45,6 @@ describe('RoleManagementDetailComponent', () => {
       ],
       providers: [
         StubRouteDataProvider({ role: new Role({}) }),
-        stubCardViewHeaderServiceProvider,
         stubMessageServiceProvider,
         stubRoleManagementServiceProvider,
       ],
