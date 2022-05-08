@@ -47,48 +47,48 @@ public class UserProfileController {
   private final UserPreferencesFacade userPreferencesFacade;
 
   @GetMapping()
-  @PreAuthorize("hasAuthority('profile:read')")
+  @PreAuthorize("hasAuthority(@ProfileAuthority.PROFILE_READ)")
   public ResponseEntity<UserModel> get() throws UserNotFoundException {
     return ok().body(userFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }
 
   @PatchMapping()
-  @PreAuthorize("hasAuthority('profile:update') ")
+  @PreAuthorize("hasAuthority(@ProfileAuthority.PROFILE_UPDATE) ")
   public ResponseEntity<UserModel> updateProfile(@RequestBody UserProfileUpdateInput userProfileUpdateInput)
     throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     return ok().body(userFacade.updateProfile(AuthorityUtils.getCurrentUserId(), userProfileUpdateInput));
   }
 
   @PatchMapping(USER_PROFILE_CHANGE_PASSWORD_PATH)
-  @PreAuthorize("hasAuthority('profile:update')")
+  @PreAuthorize("hasAuthority(@ProfileAuthority.PROFILE_UPDATE)")
   public ResponseEntity<UserModel> changePassword(@RequestBody ChangeUserPasswordInput changeUserPasswordInput)
     throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     return ok().body(userFacade.changePassword(AuthorityUtils.getCurrentUserId(), changeUserPasswordInput));
   }
 
   @PatchMapping(value = USER_PROFILE_UPLOAD_AVATAR_PATH, consumes = MULTIPART_FORM_DATA_VALUE)
-  @PreAuthorize("hasAuthority('profile:update')")
+  @PreAuthorize("hasAuthority(@ProfileAuthority.PROFILE_UPDATE)")
   public ResponseEntity<UserModel> uploadAvatar(@RequestPart("avatar") MultipartFile avatar)
     throws IOException, UserNotFoundException, RoleNotFoundException, UserExistsException {
     return ok().body(userFacade.uploadAvatar(AuthorityUtils.getCurrentUserId(), avatar));
   }
 
   @DeleteMapping()
-  @PreAuthorize("hasAuthority('profile:delete')")
+  @PreAuthorize("hasAuthority(@ProfileAuthority.PROFILE_DELETE)")
   public ResponseEntity<Void> deleteProfile() throws UserNotFoundException {
     userFacade.deleteById(AuthorityUtils.getCurrentUserId());
     return noContent().build();
   }
 
   @GetMapping(USER_PROFILE_PREFERENCES)
-  @PreAuthorize("hasAuthority('profile:read')")
+  @PreAuthorize("hasAuthority(@ProfileAuthority.PROFILE_READ)")
   public ResponseEntity<UserPreferencesModel> getPreferences() throws UserNotFoundException {
     return ok().body(userPreferencesFacade.findByUserId(AuthorityUtils.getCurrentUserId()));
   }
 
 
   @PatchMapping(USER_PROFILE_PREFERENCES)
-  @PreAuthorize("hasAuthority('profile:update')")
+  @PreAuthorize("hasAuthority(@ProfileAuthority.PROFILE_UPDATE)")
   public ResponseEntity<UserPreferencesModel> updatePreferences(@RequestBody UserPreferencesInput userPreferencesInput)
     throws UserNotFoundException {
     return ResponseEntity.ok()

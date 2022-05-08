@@ -29,13 +29,13 @@ public class AuthorityController {
   private final AuthorityFacade authorityFacade;
 
   @GetMapping()
-  @PreAuthorize("hasAuthority('authority:read')")
+  @PreAuthorize("hasAuthority(@AuthorityAuthority.AUTHORITY_READ)")
   public ResponseEntity<PagedModel<AuthorityModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
     return ok().body(authorityFacade.getAll(pageable));
   }
 
   @GetMapping("/{authorityId}")
-  @PreAuthorize("hasAuthority('authority:read')")
+  @PreAuthorize("hasAuthority(@AuthorityAuthority.AUTHORITY_READ)")
   public ResponseEntity<AuthorityModel> get(@PathVariable("authorityId") String authorityId)
     throws EntityNotFoundException {
     return ok().body(authorityFacade.findByAuthorityId(authorityId));

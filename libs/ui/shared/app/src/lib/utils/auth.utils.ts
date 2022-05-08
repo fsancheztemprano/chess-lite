@@ -4,7 +4,7 @@ export function isValidToken(token?: string | null): boolean {
   if (!token?.length) {
     return false;
   }
-  return !(Date.now() >= getTokenExpiration(token).valueOf() * 1000);
+  return Date.now() < getTokenExpiration(token).valueOf() * 1000;
 }
 
 export function getTokenExpiration(token: string): Date {

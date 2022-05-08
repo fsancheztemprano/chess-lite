@@ -43,13 +43,13 @@ public class UserController {
   private final UserFacade userFacade;
 
   @GetMapping("/{userId}")
-  @PreAuthorize("hasAuthority('user:read')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_READ)")
   public ResponseEntity<UserModel> get(@PathVariable("userId") String userId) throws UserNotFoundException {
     return ok().body(userFacade.findByUserId(userId));
   }
 
   @GetMapping()
-  @PreAuthorize("hasAuthority('user:read')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_READ)")
   public ResponseEntity<PagedModel<UserModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE, sort =
     "username") Pageable pageable,
                                                       @RequestParam(value = "search", required = false) String search) {
@@ -57,14 +57,14 @@ public class UserController {
   }
 
   @PostMapping()
-  @PreAuthorize("hasAuthority('user:create')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_CREATE)")
   public ResponseEntity<UserModel> create(@RequestBody UserInput userInput) throws UserExistsException {
     UserModel newUser = userFacade.create(userInput);
     return created(fromCurrentRequestUri().path("/{userId}").buildAndExpand(newUser.getId()).toUri()).body(newUser);
   }
 
   @PatchMapping("/{userId}")
-  @PreAuthorize("hasAuthority('user:update')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_UPDATE)")
   public ResponseEntity<UserModel> update(@PathVariable("userId") String userId, @RequestBody UserInput userInput)
     throws UserNotFoundException, UserExistsException, RoleNotFoundException {
     userInput.setAuthorityIds(null);
@@ -73,7 +73,7 @@ public class UserController {
   }
 
   @PatchMapping("/{userId}/role")
-  @PreAuthorize("hasAuthority('user:update:role')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_UPDATE_ROLE)")
   public ResponseEntity<UserModel> updateRole(@PathVariable("userId") String userId,
                                               @RequestBody UserRoleInput userRoleInput)
     throws UserNotFoundException, UserExistsException, RoleNotFoundException {
@@ -81,7 +81,7 @@ public class UserController {
   }
 
   @PatchMapping("/{userId}/authorities")
-  @PreAuthorize("hasAuthority('user:update:authorities')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_UPDATE_AUTHORITIES)")
   public ResponseEntity<UserModel> updateAuthorities(@PathVariable("userId") String userId,
                                                      @RequestBody UserAuthoritiesInput userAuthoritiesInput)
     throws UserNotFoundException, UserExistsException, RoleNotFoundException {
@@ -90,14 +90,14 @@ public class UserController {
   }
 
   @DeleteMapping("/{userId}")
-  @PreAuthorize("hasAuthority('user:delete')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_DELETE)")
   public ResponseEntity<Void> delete(@PathVariable("userId") String userId) throws UserNotFoundException {
     userFacade.deleteById(userId);
     return noContent().build();
   }
 
   @PostMapping("/{userId}")
-  @PreAuthorize("hasAuthority('user:update')")
+  @PreAuthorize("hasAuthority(@UserAuthority.USER_UPDATE)")
   public ResponseEntity<Void> requestActivationToken(@PathVariable("userId") String userId)
     throws UserNotFoundException, ActivationTokenRecentException {
     userFacade.requestActivationToken(userId);

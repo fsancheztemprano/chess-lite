@@ -28,14 +28,14 @@ public class UserPreferencesController {
 
 
   @GetMapping("/{userPreferencesId}")
-  @PreAuthorize("hasAuthority('user:preferences:read')")
+  @PreAuthorize("hasAuthority(@UserPreferencesAuthority.USER_PREFERENCES_READ)")
   public ResponseEntity<UserPreferencesModel> get(@PathVariable("userPreferencesId") String userPreferencesId)
     throws EntityNotFoundException {
     return ResponseEntity.ok().body(userPreferencesFacade.findById(userPreferencesId));
   }
 
   @PatchMapping("/{userPreferencesId}")
-  @PreAuthorize("hasAuthority('user:preferences:update')")
+  @PreAuthorize("hasAuthority(@UserPreferencesAuthority.USER_PREFERENCES_UPDATE)")
   public ResponseEntity<UserPreferencesModel> update(@PathVariable("userPreferencesId") String userPreferencesId,
                                                      @RequestBody UserPreferencesInput userPreferencesInput)
     throws EntityNotFoundException {

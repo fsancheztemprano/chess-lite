@@ -2,7 +2,9 @@ package dev.kurama.api.core.authority;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component("UserPreferencesAuthority")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserPreferencesAuthority {
 
