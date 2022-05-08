@@ -1,7 +1,7 @@
 package dev.kurama.api.core.rest;
 
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_READ;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;

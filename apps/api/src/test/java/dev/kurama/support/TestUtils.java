@@ -36,7 +36,7 @@ public class TestUtils {
           .collect(Collectors.toSet()))
         .build())
       .build();
-    String token = jwtTokenProvider.generateJWTToken(userPrincipal);
+    String token = jwtTokenProvider.generateToken(userPrincipal);
 
     httpHeaders.add(HttpHeaders.AUTHORIZATION, SecurityConstant.TOKEN_PREFIX + token);
     return httpHeaders;

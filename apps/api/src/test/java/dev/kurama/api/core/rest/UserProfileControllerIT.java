@@ -1,8 +1,8 @@
 package dev.kurama.api.core.rest;
 
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_DELETE;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_DELETE;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static dev.kurama.api.core.message.UserChangedMessageSender.USER_CHANGED_CHANNEL;
 import static dev.kurama.api.core.message.UserPreferencesChangedMessageSender.USERS_PREFERENCES_CHANGED_CHANNEL;

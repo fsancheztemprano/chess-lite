@@ -1,7 +1,8 @@
 package dev.kurama.api.core.hateoas.root.rest;
 
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.TokenAuthority.TOKEN_REFRESH;
 import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHENTICATION_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.BASE_PATH;
@@ -74,6 +75,17 @@ class RootControllerIT {
       mockMvc.perform(get(BASE_PATH).accept(HAL_FORMS_JSON_VALUE)
           .headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, "AUTHORIZED")))
         .andExpect(status().isOk())
+        .andExpect(jsonPath("$._links.*", hasSize(1)))
+        .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + BASE_PATH)))
+        .andExpect(jsonPath("$._templates.*", hasSize(1)))
+        .andExpect(jsonPath("$._templates.default.method", equalTo(HttpMethod.HEAD.toString())));
+    }
+
+    @Test
+    void should_get_root_resource_with_refresh_token_link_given_token_refresh_authority() throws Exception {
+      mockMvc.perform(get(BASE_PATH).accept(HAL_FORMS_JSON_VALUE)
+          .headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, TOKEN_REFRESH)))
+        .andExpect(status().isOk())
         .andExpect(jsonPath("$._links.*", hasSize(2)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + BASE_PATH)))
         .andExpect(jsonPath("$._links.token.href", equalTo(MOCK_MVC_HOST + AUTHENTICATION_PATH + TOKEN_PATH)))
@@ -86,7 +98,7 @@ class RootControllerIT {
       mockMvc.perform(get(BASE_PATH).accept(HAL_FORMS_JSON_VALUE)
           .headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, PROFILE_READ)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$._links.*", hasSize(3)))
+        .andExpect(jsonPath("$._links.*", hasSize(2)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + BASE_PATH)))
         .andExpect(jsonPath("$._links.current-user.href", equalTo(MOCK_MVC_HOST + USER_PROFILE_PATH)))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))
@@ -98,7 +110,7 @@ class RootControllerIT {
       mockMvc.perform(get(BASE_PATH).accept(HAL_FORMS_JSON_VALUE)
           .headers(TestUtils.getAuthorizationHeader(jwtTokenProvider, ADMIN_ROOT)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$._links.*", hasSize(3)))
+        .andExpect(jsonPath("$._links.*", hasSize(2)))
         .andExpect(jsonPath("$._links.self.href", equalTo(MOCK_MVC_HOST + BASE_PATH)))
         .andExpect(jsonPath("$._links.administration.href", equalTo(MOCK_MVC_HOST + ADMINISTRATION_ROOT_PATH)))
         .andExpect(jsonPath("$._templates.*", hasSize(1)))

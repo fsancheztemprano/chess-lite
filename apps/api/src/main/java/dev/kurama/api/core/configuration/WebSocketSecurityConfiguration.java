@@ -1,6 +1,7 @@
 package dev.kurama.api.core.configuration;
 
 import dev.kurama.api.core.authority.GlobalSettingsAuthority;
+import dev.kurama.api.core.authority.ProfileAuthority;
 import dev.kurama.api.core.authority.RoleAuthority;
 import dev.kurama.api.core.authority.UserAuthority;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +20,9 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
       .simpSubscribeDestMatchers("/ami/user")
       .hasAuthority(UserAuthority.USER_READ)
       .simpSubscribeDestMatchers("/ami/user/**")
-      .hasAuthority(UserAuthority.PROFILE_READ)
+      .hasAuthority(ProfileAuthority.PROFILE_READ)
       .simpSubscribeDestMatchers("/ami/user-preferences/**")
-      .hasAuthority(UserAuthority.PROFILE_READ)
+      .hasAuthority(ProfileAuthority.PROFILE_READ)
       .simpSubscribeDestMatchers("/ami/role/**")
       .hasAuthority(RoleAuthority.ROLE_READ)
       .simpSubscribeDestMatchers("/ami/global-settings")

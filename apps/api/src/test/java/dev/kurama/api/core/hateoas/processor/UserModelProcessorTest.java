@@ -1,8 +1,8 @@
 package dev.kurama.api.core.hateoas.processor;
 
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_DELETE;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_DELETE;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.authority.UserAuthority.USER_DELETE;
 import static dev.kurama.api.core.authority.UserAuthority.USER_READ;
 import static dev.kurama.api.core.authority.UserAuthority.USER_UPDATE;

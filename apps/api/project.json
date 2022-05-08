@@ -48,7 +48,8 @@
           "-P pact",
           "-D it.test=\"dev.kurama.api.pact.**\"",
           "-Dtest=\"dev.kurama.api.null.**\"",
-          "-DfailIfNoTests=false"
+          "-DfailIfNoTests=false",
+          "-Dsurefire.failIfNoSpecifiedTests=false"
         ]
       }
     },

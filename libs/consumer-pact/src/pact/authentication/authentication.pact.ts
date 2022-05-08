@@ -196,9 +196,10 @@ export namespace LoginPact {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: HttpHeaderKey.JWT_TOKEN,
-        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
+        [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: `${HttpHeaderKey.JWT_TOKEN}, ${HttpHeaderKey.JWT_REFRESH_TOKEN}`,
         [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
+        [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwt(jwtToken()),
+        [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
         ...pactCurrentUser,
@@ -229,14 +230,15 @@ export namespace RefreshTokenPact {
       path: '/api/auth/token',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
+        Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id }, authorities: ['token:refresh'] })),
       },
     },
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: HttpHeaderKey.JWT_TOKEN,
+        [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: `${HttpHeaderKey.JWT_TOKEN}, ${HttpHeaderKey.JWT_REFRESH_TOKEN}`,
         [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
+        [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwt(jwtToken()),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: { ...pactCurrentUser },
@@ -250,7 +252,7 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
-        Authorization: bearer(jwtToken({ user: { id: 'lockedRoleUserId' }, authorities: ['profile:read'] })),
+        Authorization: bearer(jwtToken({ user: { id: 'lockedRoleUserId' }, authorities: ['token:refresh'] })),
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
@@ -270,7 +272,7 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
-        Authorization: bearer(jwtToken({ user: { id: 'lockedUserId' }, authorities: ['profile:read'] })),
+        Authorization: bearer(jwtToken({ user: { id: 'lockedUserId' }, authorities: ['token:refresh'] })),
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
@@ -290,14 +292,15 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
+        Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
     willRespondWith: {
-      status: 403,
+      status: 401,
       body: {
-        reason: 'Forbidden',
-        title: 'Authentication required',
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
       },
     },
   };
@@ -310,7 +313,7 @@ export namespace RefreshTokenPact {
       path: '/api/auth/token',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'notFoundId' } })),
+        Authorization: bearer(jwtToken({ user: { id: 'notFoundId' }, authorities: ['token:refresh'] })),
       },
     },
     willRespondWith: {

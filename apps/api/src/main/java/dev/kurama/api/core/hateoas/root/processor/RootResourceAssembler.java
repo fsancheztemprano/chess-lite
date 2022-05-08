@@ -1,7 +1,8 @@
 package dev.kurama.api.core.hateoas.root.processor;
 
 import static dev.kurama.api.core.authority.AdminAuthority.ADMIN_ROOT;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.TokenAuthority.TOKEN_REFRESH;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
@@ -30,10 +31,14 @@ import org.springframework.stereotype.Component;
 public class RootResourceAssembler implements RootAssembler<RootResource> {
 
   public @NonNull RepresentationModel<RootResource> assemble() {
-    HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource()).link(getSelfLink());
+    HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource());
+
+    rootModel.link(getSelfLink());
 
     if (AuthorityUtils.isAuthenticated()) {
-      rootModel.link(getRefreshTokenLink());
+      if (AuthorityUtils.hasAuthority(TOKEN_REFRESH)) {
+        rootModel.link(getRefreshTokenLink());
+      }
       if (AuthorityUtils.hasAuthority(ADMIN_ROOT)) {
         rootModel.link(getAdministrationRootLink());
       }

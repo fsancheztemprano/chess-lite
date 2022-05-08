@@ -1,6 +1,7 @@
 package dev.kurama.api.core.utility;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,18 +12,22 @@ import static org.mockito.Mockito.mock;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.Authority;
+import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.filter.ContextUser;
 import java.util.Date;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -39,20 +44,20 @@ class JWTTokenProviderTest {
   }
 
   @Test
-  void generateJWTToken() {
-    Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
-    Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
+  void generateToken() {
+    Authority authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Authority authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     User user = User.builder()
       .setRandomUUID()
-      .username("username")
+      .username(randomAlphanumeric(8))
       .email("email@localhost")
       .authorities(newHashSet(authority1, authority2))
       .build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
     Date before = new Date();
-    doReturn(7979512271000L).when(jwtTokenProvider).getCurrentTimeMillis();
+    doReturn(8_000_000_000_000L).when(jwtTokenProvider).getCurrentTimeMillis();
 
-    String token = jwtTokenProvider.generateJWTToken(userPrincipal);
+    String token = jwtTokenProvider.generateToken(userPrincipal);
 
     DecodedJWT decoded = jwtTokenProvider.getDecodedJWT(token);
 
@@ -67,29 +72,62 @@ class JWTTokenProviderTest {
     Map<String, Object> userMap = decoded.getClaim("user").asMap();
     assertEquals(userMap.get("id"), user.getId());
     assertEquals(userMap.get("username"), user.getUsername());
-    assertThat(decoded.getExpiresAt()).hasSameTimeAs(new Date(7979512271000L + SecurityConstant.EXPIRATION_TIME));
+    assertThat(decoded.getExpiresAt()).hasSameTimeAs(new Date(8_000_000_000_000L + SecurityConstant.TOKEN_LIFE_SPAN));
+  }
+
+  @Test
+  void generateRefreshToken() {
+    Authority authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Authority authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    User user = User.builder()
+      .setRandomUUID()
+      .username(randomAlphanumeric(8))
+      .email("email@localhost")
+      .authorities(newHashSet(authority1, authority2))
+      .build();
+    UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
+    Date before = new Date();
+    doReturn(8_000_000_000_000L).when(jwtTokenProvider).getCurrentTimeMillis();
+
+    String token = jwtTokenProvider.generateRefreshToken(userPrincipal);
+
+    DecodedJWT decoded = jwtTokenProvider.getDecodedJWT(token);
+
+    assertEquals(SecurityConstant.AUTH_ISSUER, decoded.getIssuer());
+    assertEquals("[" + SecurityConstant.AUTH_AUDIENCE + "]", decoded.getAudience().toString());
+    assertThat(decoded.getIssuedAt()).isCloseTo(before, 1000);
+    assertEquals(user.getUsername(), decoded.getSubject());
+    assertTrue(decoded.getClaim(SecurityConstant.AUTHORITIES)
+      .asList(String.class)
+      .stream()
+      .allMatch(auth -> auth.equals(authority1.getName()) || auth.equals(authority2.getName())));
+    Map<String, Object> userMap = decoded.getClaim("user").asMap();
+    assertEquals(userMap.get("id"), user.getId());
+    assertEquals(userMap.get("username"), user.getUsername());
+    assertThat(decoded.getExpiresAt()).hasSameTimeAs(
+      new Date(8_000_000_000_000L + SecurityConstant.REFRESH_TOKEN_LIFE_SPAN));
   }
 
   @Test
   void isTokenValid() {
-    User user = User.builder().setRandomUUID().username("username").email("email@localhost").build();
+    User user = User.builder().setRandomUUID().username(randomAlphanumeric(8)).email("email@localhost").build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
-    String token = jwtTokenProvider.generateJWTToken(userPrincipal);
+    String token = jwtTokenProvider.generateToken(userPrincipal);
 
     assertTrue(jwtTokenProvider.isTokenValid(jwtTokenProvider.getDecodedJWT(token)));
 
-    doReturn(System.currentTimeMillis() - SecurityConstant.EXPIRATION_TIME).when(jwtTokenProvider)
+    doReturn(System.currentTimeMillis() - SecurityConstant.TOKEN_LIFE_SPAN).when(jwtTokenProvider)
       .getCurrentTimeMillis();
-    token = jwtTokenProvider.generateJWTToken(userPrincipal);
+    token = jwtTokenProvider.generateToken(userPrincipal);
 
     assertFalse(jwtTokenProvider.isTokenValid(jwtTokenProvider.getDecodedJWT(token)));
   }
 
   @Test
   void getAuthentication() {
-    User user = User.builder().setRandomUUID().username("username").email("email@localhost").build();
+    User user = User.builder().setRandomUUID().username(randomAlphanumeric(8)).email("email@localhost").build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();
-    String token = jwtTokenProvider.generateJWTToken(userPrincipal);
+    String token = jwtTokenProvider.generateToken(userPrincipal);
 
     Authentication authentication = jwtTokenProvider.getAuthentication(jwtTokenProvider.getDecodedJWT(token),
       mock(HttpServletRequest.class));
@@ -101,5 +139,35 @@ class JWTTokenProviderTest {
 
   @Test
   void getUsernamePasswordAuthenticationToken() {
+    Authority authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Authority authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Role role = Role.builder()
+      .setRandomUUID()
+      .name(randomAlphanumeric(8))
+      .authorities(newHashSet(authority1, authority2))
+      .build();
+    User user = User.builder()
+      .setRandomUUID()
+      .username(randomAlphanumeric(8))
+      .role(role)
+      .authorities(role.getAuthorities())
+      .build();
+    UserPrincipal userPrincipal = new UserPrincipal(user);
+    var token = jwtTokenProvider.generateToken(userPrincipal);
+    DecodedJWT decoded = jwtTokenProvider.getDecodedJWT(token);
+
+    UsernamePasswordAuthenticationToken actual = jwtTokenProvider.getUsernamePasswordAuthenticationToken(decoded);
+
+    assertThat(actual).isNotNull();
+    assertThat(actual.getPrincipal()).isOfAnyClassIn(ContextUser.class)
+      .hasFieldOrPropertyWithValue("username", user.getUsername())
+      .hasFieldOrPropertyWithValue("id", user.getId());
+    assertThat(actual.getCredentials()).isNull();
+    assertThat(actual.isAuthenticated()).isTrue();
+    assertThat(actual.getAuthorities()
+      .stream()
+      .map(GrantedAuthority::getAuthority)
+      .collect(Collectors.toUnmodifiableList())
+      .containsAll(newHashSet(authority1.getName(), authority2.getName()))).isTrue();
   }
 }

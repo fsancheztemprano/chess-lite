@@ -59,6 +59,17 @@ describe('Root Resource Pacts', () => {
       });
     });
 
+    it('token:refresh', (done) => {
+      provider.addInteraction(GetRootResource.with_token_refresh).then(() => {
+        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['token:refresh'] }));
+        service.initialize().subscribe((resource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toMatchObject(GetRootResource.with_token_refresh.willRespondWith.body);
+          done();
+        });
+      });
+    });
+
     it('admin:root', (done) => {
       provider.addInteraction(GetRootResource.with_admin_root).then(() => {
         localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root'] }));

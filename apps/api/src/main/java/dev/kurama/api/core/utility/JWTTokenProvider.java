@@ -30,21 +30,12 @@ public class JWTTokenProvider {
   @Value("${application.jwt.secret}")
   private String secret;
 
-  public String generateJWTToken(UserPrincipal userPrincipal) {
-    String[] authorities = getAuthoritiesFromUser(userPrincipal);
+  public String generateToken(UserPrincipal userPrincipal) {
+    return generateJwtToken(userPrincipal, SecurityConstant.TOKEN_LIFE_SPAN);
+  }
 
-    return JWT.create()
-      .withIssuer(SecurityConstant.AUTH_ISSUER)
-      .withAudience(SecurityConstant.AUTH_AUDIENCE)
-      .withIssuedAt(new Date())
-      .withSubject(userPrincipal.getUsername())
-      .withArrayClaim(SecurityConstant.AUTHORITIES, authorities)
-      .withClaim("user", new HashMap<String, String>() {{
-        put("id", userPrincipal.getUser().getId());
-        put("username", userPrincipal.getUser().getUsername());
-      }})
-      .withExpiresAt(new Date(getCurrentTimeMillis() + SecurityConstant.EXPIRATION_TIME))
-      .sign(getAlgorithm());
+  public String generateRefreshToken(UserPrincipal userPrincipal) {
+    return generateJwtToken(userPrincipal, SecurityConstant.REFRESH_TOKEN_LIFE_SPAN);
   }
 
   public boolean isTokenValid(DecodedJWT token) {
@@ -68,6 +59,23 @@ public class JWTTokenProvider {
     ContextUser contextUser = getContextUser(token);
 
     return new UsernamePasswordAuthenticationToken(contextUser, null, authorities);
+  }
+
+  private String generateJwtToken(UserPrincipal userPrincipal, long lifeSpan) {
+    String[] authorities = getAuthoritiesFromUser(userPrincipal);
+
+    return JWT.create()
+      .withIssuer(SecurityConstant.AUTH_ISSUER)
+      .withAudience(SecurityConstant.AUTH_AUDIENCE)
+      .withIssuedAt(new Date())
+      .withSubject(userPrincipal.getUsername())
+      .withArrayClaim(SecurityConstant.AUTHORITIES, authorities)
+      .withClaim("user", new HashMap<String, String>() {{
+        put("id", userPrincipal.getUser().getId());
+        put("username", userPrincipal.getUser().getUsername());
+      }})
+      .withExpiresAt(new Date(getCurrentTimeMillis() + lifeSpan))
+      .sign(getAlgorithm());
   }
 
   private ContextUser getContextUser(DecodedJWT token) {

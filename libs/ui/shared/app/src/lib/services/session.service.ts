@@ -97,29 +97,31 @@ export class SessionService {
 
   private _tokenWatchdog(token: string): void {
     this.tokenWatchdog?.unsubscribe();
-    const decoded: Token = jwt_decode<Token>(token);
-    const minNextUpdate: number = Date.now() + 3000;
-    const maxNextUpdate: number = (decoded.exp - 1) * 1000;
-    const threshold: number = (decoded.exp - (decoded.exp - decoded.iat) * 0.1) * 1000;
+    if (this.halFormService.hasLink(AuthRelations.TOKEN_RELATION)) {
+      const decoded: Token = jwt_decode<Token>(token);
+      const minNextUpdate: number = Date.now() + 3000;
+      const maxNextUpdate: number = (decoded.exp - 1) * 1000;
+      const threshold: number = (decoded.exp - (decoded.exp - decoded.iat) * 0.1) * 1000;
 
-    let nextUpdate: Date | null = new Date(minNextUpdate);
-    if (minNextUpdate > maxNextUpdate) {
-      nextUpdate = null;
-    } else if (minNextUpdate < threshold) {
-      nextUpdate = new Date(threshold);
+      let nextUpdate: Date | null = new Date(minNextUpdate);
+      if (minNextUpdate > maxNextUpdate) {
+        nextUpdate = null;
+      } else if (minNextUpdate < threshold) {
+        nextUpdate = new Date(threshold);
+      }
+
+      this.tokenWatchdog = (
+        nextUpdate
+          ? timer(nextUpdate).pipe(
+              switchMap(() => this.halFormService.getLinkOrThrow(AuthRelations.TOKEN_RELATION).pipe(first())),
+              switchMap((link: Link) => link.fetch<User>()),
+              map(httpToSession),
+              switchMap((session) => this.initialize(session)),
+              catchError(() => this.clearSession()),
+            )
+          : this.clearSession()
+      ).subscribe();
     }
-
-    this.tokenWatchdog = (
-      nextUpdate
-        ? timer(nextUpdate).pipe(
-            switchMap(() => this.halFormService.getLinkOrThrow(AuthRelations.TOKEN_RELATION).pipe(first())),
-            switchMap((link: Link) => link.fetch<User>()),
-            map(httpToSession),
-            switchMap((session) => this.initialize(session)),
-            catchError(() => this.clearSession()),
-          )
-        : this.clearSession()
-    ).subscribe();
   }
 
   private _fetchUser(): Observable<User> {

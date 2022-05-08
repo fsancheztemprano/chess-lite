@@ -14,6 +14,7 @@ export enum HttpHeaderKey {
   ACCESS_CONTROL_EXPOSE_HEADERS = 'Access-Control-Expose-Headers',
   CONTENT_TYPE = 'Content-Type',
   JWT_TOKEN = 'Jwt-Token',
+  JWT_REFRESH_TOKEN = 'Jwt-Refresh-Token',
   LOCATION = 'Location',
 }
 

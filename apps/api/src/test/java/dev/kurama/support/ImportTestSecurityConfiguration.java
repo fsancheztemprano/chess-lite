@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
+@ImportAuthorities
 @Import({SecurityConfiguration.class, UserDetailsServiceImpl.class, JWTTokenProvider.class,
   JWTAuthenticationEntryPoint.class, JWTAccessDeniedHandler.class, TestSecurityConfiguration.class,
   HateoasConfiguration.class})
