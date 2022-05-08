@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad, Router, UrlTree } from '@angular/router';
-import { isTokenExpired } from '@app/ui/shared/app';
-import { TOKEN_KEY } from '@app/ui/shared/domain';
+import { isValidToken } from '@app/ui/shared/app';
+import { TokenKeys } from '@app/ui/shared/domain';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +18,6 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   private _guard(): boolean | UrlTree {
-    return isTokenExpired(localStorage.getItem(TOKEN_KEY) || '') ? true : this.router.createUrlTree(['']);
+    return !isValidToken(localStorage.getItem(TokenKeys.TOKEN) || '') || this.router.createUrlTree(['']);
   }
 }

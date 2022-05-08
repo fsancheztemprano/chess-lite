@@ -1,20 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pageable, Role, RoleManagementRelations, RolePage, RoleUpdateInput } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
-import { HalFormService, Link } from '@hal-form-client';
+import { HalFormResourceService, Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class RoleManagementService extends HalFormService {
-  constructor(
-    protected override readonly httpClient: HttpClient,
-    private readonly administrationService: AdministrationService,
-  ) {
-    super(httpClient, '');
+@Injectable({ providedIn: 'root' })
+export class RoleManagementService extends HalFormResourceService {
+  constructor(private readonly administrationService: AdministrationService) {
+    super();
     this.administrationService
       .getEmbeddedObject(RoleManagementRelations.ROLE_MANAGEMENT_REL)
       .subscribe((resource) => this.setResource(resource));
@@ -23,14 +17,14 @@ export class RoleManagementService extends HalFormService {
   public fetchRoles(pageable?: Pageable): Observable<RolePage> {
     return this.getLinkOrThrow(RoleManagementRelations.ROLES_REL).pipe(
       first(),
-      switchMap((link: Link) => link.follow<RolePage>(pageable)),
+      switchMap((link: Link) => link.follow<RolePage>({ parameters: { ...pageable } })),
     );
   }
 
   public fetchOneRole(roleId: string): Observable<Role> {
     return this.getLinkOrThrow(RoleManagementRelations.ROLE_REL).pipe(
       first(),
-      switchMap((roleLink) => roleLink.follow({ roleId })),
+      switchMap((roleLink) => roleLink.follow({ parameters: { roleId } })),
     );
   }
 

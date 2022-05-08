@@ -6,5 +6,6 @@ export * from './lib/domain/template';
 export * from './lib/utils/submit-to-template-or-throw-pipe-rxjs';
 
 export * from './lib/service/hal-form.service';
+export * from './lib/service/hal-form-resource.service';
 
 export * from './lib/hal-form-client.module';

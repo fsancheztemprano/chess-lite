@@ -1,10 +1,10 @@
 import jwt_decode from 'jwt-decode';
 
-export function isTokenExpired(token: string): boolean {
+export function isValidToken(token?: string | null): boolean {
   if (!token?.length) {
-    return true;
+    return false;
   }
-  return Date.now() - 1000 > getTokenExpiration(token).valueOf() * 1000;
+  return !(Date.now() >= getTokenExpiration(token).valueOf() * 1000);
 }
 
 export function getTokenExpiration(token: string): Date {

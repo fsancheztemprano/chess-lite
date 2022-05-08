@@ -1,6 +1,6 @@
-import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AuthorityManagementRelations, RoleManagementRelations, TOKEN_KEY } from '@app/ui/shared/domain';
+import { AuthorityManagementRelations, RoleManagementRelations, TokenKeys } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { HalFormClientModule, Link } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
@@ -42,14 +42,14 @@ describe('Authority Pacts', () => {
         },
       },
     });
-    const roleService = new RoleManagementService(TestBed.inject(HttpClient), administrationService);
+    const roleService = new RoleManagementService(administrationService);
     service = new AuthorityManagementService(roleService);
   });
 
   describe('Get All Authorities', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetAllAuthoritiesPact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['authority:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['authority:read'] }));
       provider.addInteraction(interaction).then(() => {
         service.getAllAuthorities().subscribe((authorities) => {
           expect(authorities).toBeTruthy();
@@ -61,7 +61,7 @@ describe('Authority Pacts', () => {
 
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetAllAuthoritiesPact.unauthorized;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.getAllAuthorities().subscribe({
           error: (error: HttpErrorResponse) => {
@@ -78,7 +78,7 @@ describe('Authority Pacts', () => {
   describe('Get One Authority', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetOneAuthorityPact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['authority:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['authority:read'] }));
       provider.addInteraction(interaction).then(() => {
         Link.ofHref('/api/authority/pactUpdateAuthorityId')
           .follow()
@@ -93,7 +93,7 @@ describe('Authority Pacts', () => {
 
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetOneAuthorityPact.unauthorized;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         Link.ofHref('/api/authority/pactUpdateAuthorityId')
           .follow()
@@ -110,7 +110,7 @@ describe('Authority Pacts', () => {
 
     it('not found', (done) => {
       const interaction: InteractionObject = GetOneAuthorityPact.not_found;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         Link.ofHref('/api/authority/notFoundId')
           .follow()

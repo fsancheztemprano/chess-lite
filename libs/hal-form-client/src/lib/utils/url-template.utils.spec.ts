@@ -18,8 +18,8 @@ describe('Parse Templated Urls', () => {
     ).not.toContain('extra');
   });
 
-  it('should return return expanded ur with null parameters', () => {
-    expect(parseUrl('/api/v1/users/{userId}', null)).toBe('/api/v1/users/');
+  it.each([null, undefined])('should return return expanded url with nullish parameter %s', (nullish) => {
+    expect(parseUrl('/api/v1/users/{userId}', nullish as any)).toBe('/api/v1/users/');
   });
 
   it('should return templates of params not available on parsing', () => {

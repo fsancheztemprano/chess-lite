@@ -1,6 +1,6 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AdministrationRelations, ServiceLogs, TOKEN_KEY } from '@app/ui/shared/domain';
+import { AdministrationRelations, ServiceLogs, TokenKeys } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { defaultTemplate } from '@app/ui/testing';
 import { HalFormClientModule } from '@hal-form-client';
@@ -42,7 +42,7 @@ describe('Service Logs Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetServiceLogsPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['service-logs:read'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['service-logs:read'] }));
         service.getServiceLogs().subscribe((logs: ServiceLogs) => {
           expect(logs).toBeTruthy();
           expect(logs.logs).toBeTruthy();
@@ -57,7 +57,7 @@ describe('Service Logs Pacts', () => {
     it('with delete', (done) => {
       const interaction: InteractionObject = GetServiceLogsPact.with_delete;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['service-logs:read', 'service-logs:delete'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['service-logs:read', 'service-logs:delete'] }));
         service.getServiceLogs().subscribe((logs: ServiceLogs) => {
           expect(logs).toBeTruthy();
           expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
@@ -69,7 +69,7 @@ describe('Service Logs Pacts', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetServiceLogsPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         service.getServiceLogs().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -100,7 +100,7 @@ describe('Service Logs Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = DeleteServiceLogsPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['service-logs:delete'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['service-logs:delete'] }));
         service.deleteServiceLogs(serviceLogs).subscribe((logs: ServiceLogs) => {
           expect(logs).toBeTruthy();
           expect(logs.logs).toBeTruthy();
@@ -115,7 +115,7 @@ describe('Service Logs Pacts', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = DeleteServiceLogsPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         service.deleteServiceLogs(serviceLogs).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();

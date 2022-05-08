@@ -1,3 +1,5 @@
+import { HttpContextToken } from '@angular/common/http';
+
 export interface LoginInput {
   username: string;
   password: string;
@@ -24,4 +26,9 @@ export interface AccountActivationInput {
   password: string;
 }
 
-export const TOKEN_KEY = 'token';
+export enum TokenKeys {
+  TOKEN = 'token',
+  REFRESH_TOKEN = 'refreshToken',
+}
+
+export const USE_REFRESH_TOKEN = new HttpContextToken<boolean>(() => false);

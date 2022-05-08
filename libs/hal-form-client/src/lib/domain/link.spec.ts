@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientModule } from '../hal-form-client.module';
 import { ContentType } from './domain';
-import { Link } from './link';
+import { ILink, Link } from './link';
 import { Resource } from './resource';
 
 class MockResource extends Resource {
@@ -53,8 +53,8 @@ describe('Link', () => {
     });
 
     it('should fetch resource overriding headers', (done) => {
-      Link.of({ href: '/api/ve/users/1', headers: { Accept: ContentType.APPLICATION_JSON } })
-        .fetch<{ id: string }>()
+      Link.of({ href: '/api/ve/users/1' })
+        .fetch<{ id: string }>({ headers: { Accept: ContentType.APPLICATION_JSON } })
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
           expect(response.body).toBeTruthy();
@@ -70,7 +70,7 @@ describe('Link', () => {
 
     it('should parse parameters and fetch resource', (done) => {
       Link.ofHref('/api/ve/users/{userId}')
-        .fetch<{ id: string }>({ userId: '1' })
+        .fetch<{ id: string }>({ parameters: { userId: '1' } })
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
           expect(response.body).toBeTruthy();
@@ -115,5 +115,11 @@ describe('Link', () => {
 
       httpTestingController.expectOne('/api/v1/users/1').flush(null);
     });
+  });
+
+  it('should parse to json', () => {
+    const iLink: ILink = { href: '/api/v1/users/1', name: 'self' };
+
+    expect(Link.of(iLink).toJson()).toEqual(iLink);
   });
 });

@@ -10,7 +10,7 @@ export { clearSession, initialize, updateSession } from './lib/store/session/ses
 export { AuthInterceptorProvider } from './lib/interceptors/auth.interceptor';
 
 export { httpToSession } from './lib/utils/session.utils';
-export { isTokenExpired } from './lib/utils/auth.utils';
+export { isValidToken } from './lib/utils/auth.utils';
 export { filterNulls } from './lib/utils/filter-null.rxjs.pipe';
 
 export * from './index.testing';

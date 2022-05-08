@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { TOKEN_KEY } from '@app/ui/shared/domain';
+import { TokenKeys } from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
@@ -39,7 +39,7 @@ describe('Root Resource Pacts', () => {
     it('authorized', (done) => {
       const interaction: InteractionObject = GetRootResource.authorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);
@@ -50,7 +50,7 @@ describe('Root Resource Pacts', () => {
 
     it('profile:read', (done) => {
       provider.addInteraction(GetRootResource.with_profile_read).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['profile:read'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['profile:read'] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(GetRootResource.with_profile_read.willRespondWith.body);
@@ -61,7 +61,7 @@ describe('Root Resource Pacts', () => {
 
     it('token:refresh', (done) => {
       provider.addInteraction(GetRootResource.with_token_refresh).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['token:refresh'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['token:refresh'] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(GetRootResource.with_token_refresh.willRespondWith.body);
@@ -72,7 +72,7 @@ describe('Root Resource Pacts', () => {
 
     it('admin:root', (done) => {
       provider.addInteraction(GetRootResource.with_admin_root).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['admin:root'] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(GetRootResource.with_admin_root.willRespondWith.body);

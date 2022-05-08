@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { GlobalSettings, TOKEN_KEY } from '@app/ui/shared/domain';
+import { GlobalSettings, TokenKeys } from '@app/ui/shared/domain';
 import { HalFormClientModule, Link, Template } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
@@ -27,7 +27,7 @@ describe('Global Settings Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetGlobalSettingPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['global-settings:read'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['global-settings:read'] }));
         Link.ofHref('/api/global-settings')
           .fetch<GlobalSettings>()
           .subscribe((response: HttpResponse<GlobalSettings>) => {
@@ -46,7 +46,10 @@ describe('Global Settings Pacts', () => {
     it('with update', (done) => {
       const interaction: InteractionObject = GetGlobalSettingPact.with_update;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ["global-settings:read', 'global-settings:update"] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: ["global-settings:read', 'global-settings:update"] }),
+        );
         Link.ofHref('/api/global-settings')
           .fetch<GlobalSettings>()
           .subscribe((response: HttpResponse<GlobalSettings>) => {
@@ -61,7 +64,7 @@ describe('Global Settings Pacts', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetGlobalSettingPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         Link.ofHref('/api/global-settings')
           .fetch<GlobalSettings>()
           .subscribe({
@@ -80,7 +83,7 @@ describe('Global Settings Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = UpdateGlobalSettingPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['global-settings:update'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['global-settings:update'] }));
         Template.of({ method: 'PATCH', target: '/api/global-settings' })
           .afford<GlobalSettings>({ body: { signupOpen: true } })
           .subscribe((response: HttpResponse<GlobalSettings>) => {
@@ -99,7 +102,7 @@ describe('Global Settings Pacts', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = UpdateGlobalSettingPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         Template.of({ method: 'PATCH', target: '/api/global-settings' })
           .afford<GlobalSettings>({ body: { signupOpen: true } })
           .subscribe({
