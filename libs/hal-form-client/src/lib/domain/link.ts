@@ -1,53 +1,57 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
 import { parseUrl } from '../utils/url-template.utils';
-import { ContentType } from './domain';
+import { ContentType, LinkOptions } from './domain';
 import { Resource } from './resource';
 
 export interface ILink {
-  href: string;
+  href?: string;
   templated?: boolean;
   type?: string;
   name?: string;
-  headers?: HttpHeaders | { [p: string]: string | string[] };
 }
 
 export class Link implements ILink {
   private readonly http: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
-  href: string;
-  templated?: boolean;
-  type?: string;
-  name?: string;
-  headers?: HttpHeaders | { [p: string]: string | string[] };
+  public href: string;
+  public templated?: boolean;
+  public type?: string;
+  public name?: string;
 
-  public static of(raw: ILink): Link {
-    return new Link(raw);
+  public static of(iLink?: ILink): Link {
+    return new Link(iLink);
   }
 
-  public static ofHref(href: string): Link {
+  public static ofHref(href?: string): Link {
     return new Link({ href });
   }
 
-  constructor(raw: ILink) {
-    this.href = raw.href;
-    this.templated = raw.templated;
-    this.type = raw.type;
-    this.name = raw.name;
-    this.headers = raw.headers;
+  constructor(iLink?: ILink) {
+    this.href = iLink?.href || '';
+    if (iLink) {
+      this.templated = iLink.templated;
+      this.type = iLink.type;
+      this.name = iLink.name;
+    }
   }
 
-  follow<T extends Resource = Resource>(parameters?: any): Observable<T> {
-    return this.fetch<T>(parameters).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
+  public follow<T extends Resource = Resource>(options?: LinkOptions): Observable<T> {
+    return this.fetch<T>(options).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
   }
 
-  fetch<T>(parameters?: any): Observable<HttpResponse<T>> {
-    return this.http.get<T>(parseUrl(this.href, parameters), {
-      headers: { ...{ Accept: ContentType.APPLICATION_JSON_HAL_FORMS }, ...(this.headers || {}) },
+  public fetch<T>(options?: LinkOptions): Observable<HttpResponse<T>> {
+    return this.http.get<T>(parseUrl(this.href, options?.parameters), {
+      headers: { ...{ Accept: ContentType.APPLICATION_JSON_HAL_FORMS }, ...(options?.headers || {}) },
+      context: options?.context,
       observe: 'response',
       responseType: 'json',
     });
+  }
+
+  public toJson(): ILink {
+    return JSON.parse(JSON.stringify({ ...this, http: undefined }));
   }
 }

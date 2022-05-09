@@ -1,5 +1,6 @@
 package dev.kurama.api.core.repository;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
@@ -27,9 +28,14 @@ class UserPreferencesRepositoryIT {
 
   @Test
   void should_find_user_preferences_by_user_id() {
-    Role role = entityManager.persist(Role.builder().setRandomUUID().name("r1").build());
+    Role role = entityManager.persist(Role.builder().setRandomUUID().name("randomAlphanumeric(8)").build());
     UserPreferences userPreferences1 = UserPreferences.builder().setRandomUUID().build();
-    User user1 = User.builder().setRandomUUID().username("user1").userPreferences(userPreferences1).role(role).build();
+    User user1 = User.builder()
+      .setRandomUUID()
+      .username(randomAlphanumeric(8))
+      .userPreferences(userPreferences1)
+      .role(role)
+      .build();
     userPreferences1.setUser(user1);
     entityManager.persist(user1);
     entityManager.flush();

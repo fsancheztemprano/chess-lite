@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.constant.RestPathConstant.ROLE_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -68,7 +69,7 @@ class RoleControllerTest {
       .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
       .build();
 
-    role = RoleModel.builder().id(randomUUID()).coreRole(true).name("R1").build();
+    role = RoleModel.builder().id(randomUUID()).coreRole(true).name(randomAlphanumeric(8)).build();
   }
 
   @Test
@@ -109,7 +110,7 @@ class RoleControllerTest {
 
     @Test
     void should_create_a_role() throws Exception {
-      RoleCreateInput input = RoleCreateInput.builder().name("NEW_ROLE").build();
+      RoleCreateInput input = RoleCreateInput.builder().name(randomAlphanumeric(8)).build();
       when(facade.create(input.getName())).thenReturn(role);
 
       mockMvc.perform(post(ROLE_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
@@ -120,7 +121,7 @@ class RoleControllerTest {
 
     @Test
     void creating_and_existing_role_should_throw_exception() throws Exception {
-      RoleCreateInput input = RoleCreateInput.builder().name("EXISTING").build();
+      RoleCreateInput input = RoleCreateInput.builder().name(randomAlphanumeric(8)).build();
       doThrow(RoleExistsException.class).when(facade).create(input.getName());
 
       mockMvc.perform(post(ROLE_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
@@ -132,7 +133,7 @@ class RoleControllerTest {
   @Nested
   class UpdateRoleTests {
 
-    RoleUpdateInput input = RoleUpdateInput.builder().name("NEW_NAME").canLogin(true).build();
+    RoleUpdateInput input = RoleUpdateInput.builder().name(randomAlphanumeric(8)).canLogin(true).build();
 
     @Test
     void should_update_a_role() throws Exception {

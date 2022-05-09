@@ -2,6 +2,7 @@ package dev.kurama.api.core.utility;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,7 +35,7 @@ class AuthorityUtilsTest {
 
   @BeforeEach
   void setUp() {
-    contextUser = ContextUser.builder().id(randomUUID()).username("username").build();
+    contextUser = ContextUser.builder().id(randomUUID()).username(randomAlphanumeric(8)).build();
     when(securityContext.getAuthentication()).thenReturn(authentication);
     SecurityContextHolder.setContext(securityContext);
     when(authentication.getPrincipal()).thenReturn(contextUser);
@@ -69,7 +70,7 @@ class AuthorityUtilsTest {
   @Test
   void isCurrentUsername() {
     assertTrue(AuthorityUtils.isCurrentUsername(contextUser.getUsername()));
-    assertFalse(AuthorityUtils.isCurrentUsername("other_username"));
+    assertFalse(AuthorityUtils.isCurrentUsername(randomAlphanumeric(8)));
   }
 
   @Test

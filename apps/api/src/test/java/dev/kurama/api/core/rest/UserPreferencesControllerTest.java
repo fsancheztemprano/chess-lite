@@ -3,6 +3,7 @@ package dev.kurama.api.core.rest;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PREFERENCES_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -59,7 +60,7 @@ class UserPreferencesControllerTest {
       UserPreferencesModel expected = UserPreferencesModel.builder()
         .id(randomUUID())
         .darkMode(true)
-        .contentLanguage("en")
+        .contentLanguage(randomAlphanumeric(2))
         .build();
       when(facade.findById(expected.getId())).thenReturn(expected);
 
@@ -83,11 +84,14 @@ class UserPreferencesControllerTest {
 
     @Test
     void should_update_user_preferences() throws Exception {
-      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
+      UserPreferencesInput input = UserPreferencesInput.builder()
+        .darkMode(false)
+        .contentLanguage(randomAlphanumeric(2))
+        .build();
       UserPreferencesModel expected = UserPreferencesModel.builder()
         .id(randomUUID())
         .darkMode(true)
-        .contentLanguage("en")
+        .contentLanguage(randomAlphanumeric(2))
         .build();
       when(facade.updateById(expected.getId(), input)).thenReturn(expected);
 
@@ -102,7 +106,10 @@ class UserPreferencesControllerTest {
     @Test
     void should_throw_updating_user_preferences_if_id_does_not_exist() throws Exception {
       String notFoundId = randomUUID();
-      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
+      UserPreferencesInput input = UserPreferencesInput.builder()
+        .darkMode(false)
+        .contentLanguage(randomAlphanumeric(2))
+        .build();
       doThrow(EntityNotFoundException.class).when(facade).updateById(notFoundId, input);
 
       mockMvc.perform(patch(USER_PREFERENCES_PATH + "/" + notFoundId).accept(MediaTypes.HAL_FORMS_JSON_VALUE)

@@ -2,6 +2,7 @@ package dev.kurama.api.core.mapper;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,8 +44,8 @@ class RoleMapperTest {
 
   @Test
   void should_map_role_page_to_role_model_page() {
-    Role role1 = Role.builder().setRandomUUID().name("Role1").build();
-    Role role2 = Role.builder().setRandomUUID().name("Role2").build();
+    Role role1 = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Role role2 = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     PageImpl<Role> page = new PageImpl<Role>(newArrayList(role1, role2));
 
     Page<RoleModel> actual = mapper.rolePageToRoleModelPage(page);

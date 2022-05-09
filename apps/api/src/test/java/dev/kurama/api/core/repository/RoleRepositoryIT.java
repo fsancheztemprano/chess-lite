@@ -1,5 +1,6 @@
 package dev.kurama.api.core.repository;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
@@ -25,11 +26,11 @@ class RoleRepositoryIT {
 
   @Test
   void should_find_role_by_name() {
-    Role role1 = Role.builder().setRandomUUID().name("r1").build();
+    Role role1 = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     entityManager.persist(role1);
-    Role role2 = Role.builder().setRandomUUID().name("r2").build();
+    Role role2 = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     entityManager.persist(role2);
-    Role role3 = Role.builder().setRandomUUID().name("r3").build();
+    Role role3 = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     entityManager.persist(role3);
     entityManager.flush();
 

@@ -39,7 +39,7 @@ public class RoleController {
   private final RoleFacade roleFacade;
 
   @GetMapping()
-  @PreAuthorize("hasAuthority('role:read')")
+  @PreAuthorize("hasAuthority(@RoleAuthority.ROLE_READ)")
   public ResponseEntity<PagedModel<RoleModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE, sort =
     "name") Pageable pageable,
                                                       @RequestParam(value = "search", required = false) String search) {
@@ -47,19 +47,19 @@ public class RoleController {
   }
 
   @GetMapping("/{roleId}")
-  @PreAuthorize("hasAuthority('role:read')")
+  @PreAuthorize("hasAuthority(@RoleAuthority.ROLE_READ)")
   public ResponseEntity<RoleModel> get(@PathVariable("roleId") String roleId) throws RoleNotFoundException {
     return ok().body(roleFacade.findByRoleId(roleId));
   }
 
   @PostMapping()
-  @PreAuthorize("hasAuthority('role:create')")
+  @PreAuthorize("hasAuthority(@RoleAuthority.ROLE_CREATE)")
   public ResponseEntity<RoleModel> create(@RequestBody RoleCreateInput roleCreateInput) throws RoleExistsException {
     return ok().body(roleFacade.create(roleCreateInput.getName()));
   }
 
   @PatchMapping("/{roleId}")
-  @PreAuthorize("hasAuthority('role:update')")
+  @PreAuthorize("hasAuthority(@RoleAuthority.ROLE_UPDATE)")
   public ResponseEntity<RoleModel> update(@PathVariable("roleId") String roleId,
                                           @RequestBody RoleUpdateInput roleUpdateInput)
     throws RoleNotFoundException, ImmutableRoleException {
@@ -67,7 +67,7 @@ public class RoleController {
   }
 
   @DeleteMapping("/{roleId}")
-  @PreAuthorize("hasAuthority('role:delete')")
+  @PreAuthorize("hasAuthority(@RoleAuthority.ROLE_DELETE)")
   public ResponseEntity<Void> delete(@PathVariable("roleId") String roleId)
     throws ImmutableRoleException, RoleNotFoundException {
     roleFacade.delete(roleId);

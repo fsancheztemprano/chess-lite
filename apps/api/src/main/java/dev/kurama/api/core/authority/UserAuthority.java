@@ -2,13 +2,11 @@ package dev.kurama.api.core.authority;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component("UserAuthority")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserAuthority {
-
-  public static final String PROFILE_READ = "profile:read";
-  public static final String PROFILE_UPDATE = "profile:update";
-  public static final String PROFILE_DELETE = "profile:delete";
 
   public static final String USER_CREATE = "user:create";
   public static final String USER_READ = "user:read";

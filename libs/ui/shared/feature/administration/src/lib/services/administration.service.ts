@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   AdministrationRelations,
@@ -8,18 +7,16 @@ import {
   UserManagementRelations,
 } from '@app/ui/shared/domain';
 import { HalFormService, Resource } from '@hal-form-client';
-import { Observable, tap, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AdministrationService extends HalFormService {
-  constructor(protected override readonly httpClient: HttpClient, private readonly halFormService: HalFormService) {
-    super(httpClient, '');
+  constructor(private readonly halFormService: HalFormService) {
+    super();
   }
 
-  override initialize(): Observable<Resource> {
+  public override initialize(): Observable<Resource> {
     return this.halFormService.getLink(AdministrationRelations.ADMINISTRATION_REL).pipe(
       switchMap((link) => {
         this._rootUrl = link?.href || '';
@@ -27,23 +24,22 @@ export class AdministrationService extends HalFormService {
           ? super.initialize()
           : throwError(() => new Error('Administration Initialization Error'));
       }),
-      tap({ error: () => this.setResource(new Resource({})) }),
     );
   }
 
-  hasUserManagementEmbedded(): Observable<boolean> {
+  public hasUserManagementEmbedded(): Observable<boolean> {
     return this.hasEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL);
   }
 
-  hasRoleManagementEmbedded(): Observable<boolean> {
+  public hasRoleManagementEmbedded(): Observable<boolean> {
     return this.hasEmbeddedObject(RoleManagementRelations.ROLE_MANAGEMENT_REL);
   }
 
-  hasServiceLogsLink(): Observable<boolean> {
+  public hasServiceLogsLink(): Observable<boolean> {
     return this.hasLink(ServiceLogsRelations.SERVICE_LOGS_REL);
   }
 
-  hasGlobalSettingsLink(): Observable<boolean> {
+  public hasGlobalSettingsLink(): Observable<boolean> {
     return this.hasLink(GlobalSettingsRelations.GLOBAL_SETTINGS_REL);
   }
 }

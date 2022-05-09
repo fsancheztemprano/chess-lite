@@ -22,13 +22,13 @@ public class ServiceLogsController {
   private final ServiceLogsFacade serviceLogsFacade;
 
   @GetMapping()
-  @PreAuthorize("hasAuthority('service-logs:read')")
+  @PreAuthorize("hasAuthority(@ServiceLogsAuthority.SERVICE_LOGS_READ)")
   public ResponseEntity<ServiceLogsModel> getServiceLogs() {
     return ok().body(serviceLogsFacade.getServiceLogs());
   }
 
   @DeleteMapping()
-  @PreAuthorize("hasAuthority('service-logs:delete')")
+  @PreAuthorize("hasAuthority(@ServiceLogsAuthority.SERVICE_LOGS_DELETE)")
   public ResponseEntity<ServiceLogsModel> deleteServiceLogs() {
     return ok().body(serviceLogsFacade.deleteServiceLogs());
   }

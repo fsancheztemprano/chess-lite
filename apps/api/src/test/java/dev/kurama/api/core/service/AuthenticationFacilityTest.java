@@ -13,11 +13,12 @@ import static org.mockito.Mockito.when;
 import dev.kurama.api.core.domain.Role;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.domain.UserPrincipal;
+import dev.kurama.api.core.domain.support.AuthenticatedUser;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import java.util.Optional;
-import org.apache.commons.lang3.tuple.Pair;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,65 +44,65 @@ class AuthenticationFacilityTest {
   @Mock
   private AuthenticationManager authenticationManager;
 
+  @Mock
+  private HttpServletRequest httpServletRequest;
+
   @Nested
   class LoginTests {
 
     @Test
     void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException, UserNotFoundException {
-      String testToken = "test_token";
-      String username = "username";
-      String password = "password";
+      String token = randomUUID();
+      String refreshToken = randomUUID();
+      String password = randomAlphanumeric(8);
       User user = User.builder()
         .setRandomUUID()
         .role(Role.builder().setRandomUUID().canLogin(true).build())
-        .username(username)
+        .username(randomAlphanumeric(8))
         .locked(false)
         .build();
-      when(userService.findUserByUsername(username)).thenReturn(Optional.ofNullable(user));
-      when(jwtTokenProvider.generateJWTToken(any(UserPrincipal.class))).thenReturn(testToken);
+      when(userService.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+      when(jwtTokenProvider.generateToken(any(UserPrincipal.class))).thenReturn(token);
+      when(jwtTokenProvider.generateRefreshToken(any(UserPrincipal.class))).thenReturn(refreshToken);
 
-      Pair<User, String> authenticatedUser = facility.login(username, password);
+      AuthenticatedUser authenticatedUser = facility.login(user.getUsername(), password);
 
-      verify(authenticationManager).authenticate(new UsernamePasswordAuthenticationToken(username, password));
-      verify(jwtTokenProvider, times(2)).generateJWTToken(any(UserPrincipal.class));
+      verify(authenticationManager).authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), password));
+      verify(jwtTokenProvider, times(1)).generateToken(any(UserPrincipal.class));
+      verify(jwtTokenProvider, times(1)).generateRefreshToken(any(UserPrincipal.class));
       verify(jwtTokenProvider).getDecodedJWT(anyString());
       assertThat(authenticatedUser).isNotNull()
-        .hasFieldOrPropertyWithValue("left", user)
-        .hasFieldOrPropertyWithValue("right", testToken);
+        .hasFieldOrPropertyWithValue("user", user)
+        .hasFieldOrPropertyWithValue("token", token)
+        .hasFieldOrPropertyWithValue("refreshToken", refreshToken);
     }
 
     @Test()
     void login_should_throw_if_user_is_locked() {
-      String username = "username";
-      String password = "password";
+      String password = randomAlphanumeric(8);
       User user = User.builder()
         .setRandomUUID()
         .role(Role.builder().setRandomUUID().canLogin(true).build())
-        .username(username)
+        .username(randomAlphanumeric(8))
         .locked(true)
         .build();
-      when(userService.findUserByUsername(username)).thenReturn(Optional.ofNullable(user));
+      when(userService.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-      assertThrows(LockedException.class, () -> {
-        facility.login(username, password);
-      });
+      assertThrows(LockedException.class, () -> facility.login(user.getUsername(), password));
     }
 
     @Test
-    void login_should_throw_if_role_can_not_login() throws RoleCanNotLoginException {
-      String username = "username";
-      String password = "password";
+    void login_should_throw_if_role_can_not_login() {
+      String password = randomAlphanumeric(8);
       User user = User.builder()
         .setRandomUUID()
         .role(Role.builder().setRandomUUID().canLogin(false).build())
-        .username(username)
+        .username(randomAlphanumeric(8))
         .locked(false)
         .build();
-      when(userService.findUserByUsername(username)).thenReturn(Optional.ofNullable(user));
+      when(userService.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-      assertThrows(RoleCanNotLoginException.class, () -> {
-        facility.login(username, password);
-      });
+      assertThrows(RoleCanNotLoginException.class, () -> facility.login(user.getUsername(), password));
     }
   }
 
@@ -109,8 +110,11 @@ class AuthenticationFacilityTest {
   class RefreshTokenTests {
 
     @Test
-    void login_should_return_authenticated_user_excerpt() throws RoleCanNotLoginException, UserNotFoundException {
-      String testToken = "test_token";
+    void refresh_token_should_return_authenticated_user_excerpt()
+      throws RoleCanNotLoginException, UserNotFoundException {
+      String token = randomUUID();
+      String refreshToken = randomUUID();
+      String password = randomAlphanumeric(8);
       User user = User.builder()
         .setRandomUUID()
         .role(Role.builder().setRandomUUID().canLogin(true).build())
@@ -118,15 +122,18 @@ class AuthenticationFacilityTest {
         .locked(false)
         .build();
       when(userService.findUserById(user.getId())).thenReturn(Optional.of(user));
-      when(jwtTokenProvider.generateJWTToken(any(UserPrincipal.class))).thenReturn(testToken);
+      when(jwtTokenProvider.generateToken(any(UserPrincipal.class))).thenReturn(token);
+      when(jwtTokenProvider.generateRefreshToken(any(UserPrincipal.class))).thenReturn(refreshToken);
 
-      Pair<User, String> authenticatedUser = facility.refreshToken(user.getId());
+      AuthenticatedUser authenticatedUser = facility.refreshToken(user.getId());
 
-      verify(jwtTokenProvider, times(2)).generateJWTToken(any(UserPrincipal.class));
+      verify(jwtTokenProvider, times(1)).generateToken(any(UserPrincipal.class));
+      verify(jwtTokenProvider, times(1)).generateRefreshToken(any(UserPrincipal.class));
       verify(jwtTokenProvider).getDecodedJWT(anyString());
       assertThat(authenticatedUser).isNotNull()
-        .hasFieldOrPropertyWithValue("left", user)
-        .hasFieldOrPropertyWithValue("right", testToken);
+        .hasFieldOrPropertyWithValue("user", user)
+        .hasFieldOrPropertyWithValue("token", token)
+        .hasFieldOrPropertyWithValue("refreshToken", refreshToken);
     }
 
     @Test()
@@ -166,8 +173,8 @@ class AuthenticationFacilityTest {
 
   @Test
   void should_validate_user_credentials() {
-    String username = "username";
-    String password = "password";
+    String username = randomAlphanumeric(8);
+    String password = randomAlphanumeric(8);
 
     facility.validateCredentials(username, password);
 

@@ -3,7 +3,8 @@ import {
   AuthRelations,
   CurrentUserRelations,
   Session,
-  TOKEN_KEY,
+  TokenKeys,
+  USE_REFRESH_TOKEN,
   User,
   UserChangedMessage,
   UserChangedMessageAction,
@@ -18,13 +19,12 @@ import { catchError, EMPTY, filter, Observable, of, Subscription, tap, timer } f
 import { first, map, switchMap } from 'rxjs/operators';
 import { updateSession } from '../store/session/session.action';
 import { SessionRepository } from '../store/session/session.repository';
-import { isTokenExpired, Token } from '../utils/auth.utils';
+import { isValidToken, Token } from '../utils/auth.utils';
 import { httpToSession } from '../utils/session.utils';
 import { MessageService } from './message.service';
+import { HttpContext } from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class SessionService {
   private userPreferencesUpdates?: Subscription;
   private userUpdates?: Subscription;
@@ -37,26 +37,31 @@ export class SessionService {
     private readonly sessionRepository: SessionRepository,
     private readonly actions: Actions,
   ) {
-    SessionService._validateToken(localStorage.getItem(TOKEN_KEY));
+    this._validateToken(TokenKeys.TOKEN);
+    this._validateToken(TokenKeys.REFRESH_TOKEN);
   }
 
-  private static _validateToken(token: string | null): boolean {
-    if (!token || isTokenExpired(token)) {
-      localStorage.removeItem(TOKEN_KEY);
-      return false;
+  private _validateToken(tokenKey: TokenKeys): string | null {
+    const token = localStorage.getItem(tokenKey);
+    if (!isValidToken(token)) {
+      localStorage.removeItem(tokenKey);
+      return null;
     }
-    return true;
+    return token;
   }
 
-  public initialize(options?: Session): Observable<Resource> {
-    const token: string | null = options?.token || localStorage.getItem(TOKEN_KEY);
-    if (SessionService._validateToken(token)) {
+  public initialize(session?: Session): Observable<Resource> {
+    const token: string | null = session?.token || this._validateToken(TokenKeys.TOKEN);
+    const refreshToken: string | null = session?.refreshToken || this._validateToken(TokenKeys.REFRESH_TOKEN);
+
+    if (isValidToken(token)) {
       return this.messageService.disconnect().pipe(
-        tap(() => localStorage.setItem(TOKEN_KEY, token!)),
+        tap(() => localStorage.setItem(TokenKeys.TOKEN, token!)),
+        tap(() => localStorage.setItem(TokenKeys.REFRESH_TOKEN, refreshToken!)),
         switchMap(() => this._initializeRoot()),
         switchMap(() =>
-          options?.user
-            ? of(options.user).pipe(tap((user: User) => this.actions.dispatch(updateSession({ user }))))
+          session?.user
+            ? of(session.user).pipe(tap((user: User) => this.actions.dispatch(updateSession({ user }))))
             : this._fetchUser(),
         ),
         tap((user) => {
@@ -64,6 +69,14 @@ export class SessionService {
           this._subscribeToUserPreferencesChanges(new UserPreferences(user.userPreferences!));
           this._tokenWatchdog(token!);
         }),
+        catchError(() => this.clearSession()),
+      );
+    } else if (isValidToken(refreshToken)) {
+      return this.halFormService.fetchRootResource({ context: new HttpContext().set(USE_REFRESH_TOKEN, true) }).pipe(
+        map((resource: Resource) => resource.getLinkOrThrow(AuthRelations.TOKEN_RELATION)),
+        switchMap((link: Link) => link.fetch<User>({ context: new HttpContext().set(USE_REFRESH_TOKEN, true) })),
+        map(httpToSession),
+        switchMap((newSession) => this.initialize(newSession)),
         catchError(() => this.clearSession()),
       );
     } else return this._initializeRoot();
@@ -76,7 +89,8 @@ export class SessionService {
         this.userUpdates?.unsubscribe();
         this.userPreferencesUpdates?.unsubscribe();
         this.actions.dispatch(updateSession({}));
-        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(TokenKeys.TOKEN);
+        localStorage.removeItem(TokenKeys.REFRESH_TOKEN);
       }),
       switchMap(() => this._initializeRoot()),
     );
@@ -97,29 +111,31 @@ export class SessionService {
 
   private _tokenWatchdog(token: string): void {
     this.tokenWatchdog?.unsubscribe();
-    const decoded: Token = jwt_decode<Token>(token);
-    const minNextUpdate: number = Date.now() + 3000;
-    const maxNextUpdate: number = (decoded.exp - 1) * 1000;
-    const threshold: number = (decoded.exp - (decoded.exp - decoded.iat) * 0.1) * 1000;
+    if (this.halFormService.hasLink(AuthRelations.TOKEN_RELATION) && this._validateToken(TokenKeys.REFRESH_TOKEN)) {
+      const decoded: Token = jwt_decode<Token>(token);
+      const minNextUpdate: number = Date.now() + 3000;
+      const maxNextUpdate: number = (decoded.exp - 1) * 1000;
+      const threshold: number = (decoded.exp - (decoded.exp - decoded.iat) * 0.1) * 1000;
 
-    let nextUpdate: Date | null = new Date(minNextUpdate);
-    if (minNextUpdate > maxNextUpdate) {
-      nextUpdate = null;
-    } else if (minNextUpdate < threshold) {
-      nextUpdate = new Date(threshold);
+      let nextUpdate: Date | null = new Date(minNextUpdate);
+      if (minNextUpdate > maxNextUpdate) {
+        nextUpdate = null;
+      } else if (minNextUpdate < threshold) {
+        nextUpdate = new Date(threshold);
+      }
+
+      this.tokenWatchdog = (
+        nextUpdate
+          ? timer(nextUpdate).pipe(
+              switchMap(() => this.halFormService.getLinkOrThrow(AuthRelations.TOKEN_RELATION).pipe(first())),
+              switchMap((link: Link) => link.fetch<User>({ context: new HttpContext().set(USE_REFRESH_TOKEN, true) })),
+              map(httpToSession),
+              switchMap((session) => this.initialize(session)),
+              catchError(() => this.clearSession()),
+            )
+          : this.clearSession()
+      ).subscribe();
     }
-
-    this.tokenWatchdog = (
-      nextUpdate
-        ? timer(nextUpdate).pipe(
-            switchMap(() => this.halFormService.getLinkOrThrow(AuthRelations.TOKEN_RELATION).pipe(first())),
-            switchMap((link: Link) => link.fetch<User>()),
-            map(httpToSession),
-            switchMap((session) => this.initialize(session)),
-            catchError(() => this.clearSession()),
-          )
-        : this.clearSession()
-    ).subscribe();
   }
 
   private _fetchUser(): Observable<User> {

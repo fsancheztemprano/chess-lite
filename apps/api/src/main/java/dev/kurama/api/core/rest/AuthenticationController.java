@@ -57,7 +57,7 @@ public class AuthenticationController {
     return ok().headers(authenticatedUser.getHeaders()).body(authenticatedUser.getUserModel());
   }
 
-  @PreAuthorize("isAuthenticated()")
+  @PreAuthorize("hasAuthority(@TokenAuthority.TOKEN_REFRESH)")
   @GetMapping(TOKEN_PATH)
   public ResponseEntity<UserModel> refreshToken() throws RoleCanNotLoginException, UserNotFoundException {
     var authenticatedUser = authenticationFacade.refreshToken(getCurrentUserId());

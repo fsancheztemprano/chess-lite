@@ -1,20 +1,20 @@
 import { sign } from 'jsonwebtoken';
-import { isTokenExpired } from './auth.utils';
+import { isValidToken } from './auth.utils';
 
 describe('Auth Utils', () => {
   describe('isTokenExpired', () => {
-    it('should return true if token is expired', () => {
-      expect(isTokenExpired(sign({}, 'secret', { expiresIn: '-10m' }))).toBeTruthy();
+    it('should return true if token is not expired', () => {
+      expect(isValidToken(sign({}, 'secret', { expiresIn: '1m' }))).toBe(true);
+      expect(isValidToken(sign({}, 'secret', { expiresIn: '1s' }))).toBe(true);
     });
 
-    it('should return false if token is not expired', () => {
-      expect(isTokenExpired(sign({}, 'secret', { expiresIn: '2y' }))).toBeFalsy();
+    it('should return false if token is expired', () => {
+      expect(isValidToken(sign({}, 'secret', { expiresIn: '-1m' }))).toBe(false);
+      expect(isValidToken(sign({}, 'secret', { expiresIn: '-1s' }))).toBe(false);
     });
 
-    it('should return true if token is null or empty', () => {
-      expect(isTokenExpired(null as never)).toBeTruthy();
-      expect(isTokenExpired(undefined as never)).toBeTruthy();
-      expect(isTokenExpired('')).toBeTruthy();
+    it.each([null, undefined, ''])('should return false if token is nullish (%p)', (falsy) => {
+      expect(isValidToken(falsy)).toBe(false);
     });
   });
 });

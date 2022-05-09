@@ -16,7 +16,7 @@ export class AuthorityManagementService {
       first(),
       switchMap((link: Link) =>
         link
-          .follow({ size: 1000 })
+          .follow({ parameters: { size: 1000 } })
           .pipe(
             map((resource) =>
               resource.getEmbeddedCollection<Authority>(AuthorityManagementRelations.AUTHORITY_MODEL_LIST_REL),

@@ -1,7 +1,7 @@
 import { Observable, switchMap } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Resource } from '../domain/resource';
-import { AffordanceOptions } from '../domain/template';
+import { AffordanceOptions } from '../domain/domain';
 
 export function submitToTemplateOrThrowPipe<T extends Resource = Resource>(
   templateName?: string,

@@ -1,7 +1,7 @@
 package dev.kurama.api.core.hateoas.processor;
 
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_READ;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
@@ -16,6 +16,7 @@ import static dev.kurama.api.core.message.UserPreferencesChangedMessageSender.US
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFERENCES;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
 
@@ -47,7 +48,7 @@ class UserPreferencesModelProcessorTest {
     model = UserPreferencesModel.builder()
       .id(randomUUID())
       .darkMode(true)
-      .contentLanguage("en")
+      .contentLanguage(randomAlphanumeric(2))
       .user(UserPreferencesModel.PreferencesOwner.builder().id(randomUUID()).username(randomUUID()).build())
       .build();
   }

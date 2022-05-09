@@ -24,8 +24,9 @@ public class DefaultAuthority {
     DefaultAuthority.ADMIN_ROLE, DefaultAuthority.SUPER_ADMIN_ROLE);
 
 
-  public static final List<String> AUTHORITIES = Lists.newArrayList(UserAuthority.PROFILE_UPDATE,
-    UserAuthority.PROFILE_READ, UserAuthority.PROFILE_DELETE,
+  public static final List<String> AUTHORITIES = Lists.newArrayList(TokenAuthority.TOKEN_REFRESH,
+
+    ProfileAuthority.PROFILE_UPDATE, ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE,
 
     UserAuthority.USER_READ, UserAuthority.USER_CREATE, UserAuthority.USER_UPDATE, UserAuthority.USER_UPDATE_ROLE,
     UserAuthority.USER_UPDATE_AUTHORITIES, UserAuthority.USER_DELETE,
@@ -45,8 +46,8 @@ public class DefaultAuthority {
     GlobalSettingsAuthority.GLOBAL_SETTINGS_READ, GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE);
 
 
-  public static final List<String> USER_AUTHORITIES = Lists.newArrayList(UserAuthority.PROFILE_UPDATE,
-    UserAuthority.PROFILE_READ, UserAuthority.PROFILE_DELETE);
+  public static final List<String> USER_AUTHORITIES = Lists.newArrayList(TokenAuthority.TOKEN_REFRESH,
+    ProfileAuthority.PROFILE_UPDATE, ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE);
 
   public static final List<String> MOD_AUTHORITIES = Stream.of(USER_AUTHORITIES,
       Lists.newArrayList(UserAuthority.USER_READ, UserAuthority.USER_UPDATE))
@@ -58,7 +59,7 @@ public class DefaultAuthority {
     Lists.newArrayList(UserAuthority.USER_CREATE, ServiceLogsAuthority.SERVICE_LOGS_READ,
       ServiceLogsAuthority.SERVICE_LOGS_DELETE)).flatMap(Collection::stream).collect(Collectors.toList());
 
-  public static final Map<String, List<String>> ROLE_AUTHORITIES = new HashMap<String, List<String>>() {
+  public static final Map<String, List<String>> ROLE_AUTHORITIES = new HashMap<>() {
     {
       put(DefaultAuthority.USER_ROLE, DefaultAuthority.USER_AUTHORITIES);
       put(DefaultAuthority.MOD_ROLE, DefaultAuthority.MOD_AUTHORITIES);

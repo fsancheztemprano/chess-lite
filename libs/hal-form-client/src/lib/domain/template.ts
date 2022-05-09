@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
 import { parseUrl } from '../utils/url-template.utils';
-import { ContentType, HttpMethod } from './domain';
+import { AffordanceOptions, ContentType, HttpMethod, SUPPORTED_HTTP_METHODS } from './domain';
 import { ILink } from './link';
 import { Resource } from './resource';
 
@@ -45,63 +45,62 @@ export interface ITemplate {
   target?: string;
 }
 
-export interface AffordanceOptions {
-  body?: any;
-  params?: any;
-  observe?: 'body' | 'events' | 'response';
-  headers?: HttpHeaders | { [p: string]: string | string[] };
-}
-
 export class Template implements ITemplate {
   private readonly http: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
 
-  method: HttpMethod | string;
-  title?: string;
-  contentType?: ContentType | string;
-  properties?: ITemplateProperty[];
-  target?: string;
+  public method: HttpMethod | string;
+  public title?: string;
+  public contentType?: ContentType | string;
+  public properties?: ITemplateProperty[];
+  public target?: string;
 
-  public static of(raw: ITemplate): Template {
-    return new Template(raw);
+  public static of(iTemplate?: ITemplate): Template {
+    return new Template(iTemplate);
   }
 
-  constructor(raw: ITemplate) {
-    this.method = raw.method || HttpMethod.GET;
-    this.target = raw.target;
-    if (raw.contentType) {
-      this.contentType = raw.contentType;
-    }
+  constructor(iTemplate?: ITemplate) {
+    this.method = iTemplate?.method || HttpMethod.GET;
+    if (iTemplate) {
+      this.target = iTemplate.target;
+      if (iTemplate.contentType) {
+        this.contentType = iTemplate.contentType;
+      }
 
-    if (raw.title) {
-      this.title = raw.title;
-    }
+      if (iTemplate.title) {
+        this.title = iTemplate.title;
+      }
 
-    if (raw.properties) {
-      this.properties = raw.properties;
+      if (iTemplate.properties) {
+        this.properties = iTemplate.properties;
+      }
     }
   }
 
-  submit<T extends Resource = Resource>(options?: AffordanceOptions): Observable<T> {
+  public submit<T extends Resource = Resource>(options?: AffordanceOptions): Observable<T> {
     return this.afford<T>(options).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
   }
 
-  afford<T>(options?: AffordanceOptions): Observable<HttpResponse<T>> {
+  public afford<T>(options?: AffordanceOptions): Observable<HttpResponse<T>> {
     if (!this.target?.length) {
       return throwError(() => new Error('Template has no target'));
+    }
+    if (!SUPPORTED_HTTP_METHODS.includes(this.method)) {
+      return throwError(() => new Error(`Http Method ${this.method} not supported`));
     }
     const headers: any = { Accept: ContentType.APPLICATION_JSON_HAL_FORMS };
     if (options?.body && this.contentType !== ContentType.MULTIPART_FILE) {
       headers['Content-Type'] = this.contentType || ContentType.APPLICATION_JSON;
     }
-    return this.http.request<T>(this.method, parseUrl(this.target, options?.params), {
+    return this.http.request<T>(this.method, parseUrl(this.target, options?.parameters), {
       headers: { ...headers, ...options?.headers },
+      context: options?.context,
       body: options?.body,
       observe: 'response',
     });
   }
 
   public getProperty(name: string): ITemplateProperty | undefined {
-    return this.properties?.find((prop) => prop.name === name);
+    return this.properties?.find((property) => property.name === name);
   }
 
   public setProperty(property: string, key: string, value: any): this {
@@ -120,21 +119,25 @@ export class Template implements ITemplate {
     return this;
   }
 
-  isAllowedTo(body: any): boolean {
+  public isAllowedTo(body: any): boolean {
     if (!this.properties) {
       return true;
     }
-    return this.properties.every((prop) => {
-      if (prop.readOnly) {
+    return this.properties.every((property) => {
+      if (property.readOnly) {
         return true;
       }
-      if (prop.required && body[prop.name] == null) {
+      if (property.required && body[property.name] == null) {
         return false;
       }
-      if (prop.regex && body[prop.name] && !body[prop.name].match(prop.regex)) {
+      if (property.regex && body[property.name] && !body[property.name].match(property.regex)) {
         return false;
       }
       return true;
     });
+  }
+
+  public toJson(): ITemplate {
+    return JSON.parse(JSON.stringify({ ...this, http: undefined }));
   }
 }

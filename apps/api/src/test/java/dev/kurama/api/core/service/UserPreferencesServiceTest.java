@@ -1,6 +1,7 @@
 package dev.kurama.api.core.service;
 
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -123,8 +124,15 @@ class UserPreferencesServiceTest {
 
     @Test
     void updateGlobalSettings() {
-      UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).contentLanguage("en").build();
-      UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("de").build();
+      UserPreferences expected = UserPreferences.builder()
+        .setRandomUUID()
+        .darkMode(true)
+        .contentLanguage(randomAlphanumeric(8))
+        .build();
+      UserPreferencesInput input = UserPreferencesInput.builder()
+        .darkMode(false)
+        .contentLanguage(randomAlphanumeric(8))
+        .build();
       when(userPreferencesRepository.save(expected)).thenReturn(expected);
 
       UserPreferences actual = userPreferencesService.patchUserPreferences(expected, input);
@@ -138,7 +146,11 @@ class UserPreferencesServiceTest {
 
     @Test
     void should_not_save_nor_emit_event_if_user_preferences_did_not_change() {
-      UserPreferences expected = UserPreferences.builder().setRandomUUID().darkMode(true).contentLanguage("en").build();
+      UserPreferences expected = UserPreferences.builder()
+        .setRandomUUID()
+        .darkMode(true)
+        .contentLanguage(randomAlphanumeric(8))
+        .build();
       UserPreferencesInput input = UserPreferencesInput.builder()
         .darkMode(expected.isDarkMode())
         .contentLanguage(expected.getContentLanguage())

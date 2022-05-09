@@ -1,6 +1,7 @@
 package dev.kurama.api.core.service;
 
 import static dev.kurama.api.core.domain.GlobalSettings.UNIQUE_ID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,7 +55,7 @@ class GlobalSettingsServiceTest {
 
     @Test
     void should_update_global_settings_signup_open() throws RoleNotFoundException {
-      Role defaultRole = Role.builder().setRandomUUID().name("role").build();
+      Role defaultRole = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       GlobalSettings globalSettings = GlobalSettings.builder()
         .setRandomUUID()
         .signupOpen(false)
@@ -75,8 +76,8 @@ class GlobalSettingsServiceTest {
 
     @Test
     void should_update_global_settings_default_role() throws RoleNotFoundException {
-      Role role1 = Role.builder().setRandomUUID().name("role1").build();
-      Role role2 = Role.builder().setRandomUUID().name("role2").build();
+      Role role1 = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+      Role role2 = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       GlobalSettings globalSettings = GlobalSettings.builder()
         .setRandomUUID()
         .signupOpen(false)
@@ -98,7 +99,7 @@ class GlobalSettingsServiceTest {
 
     @Test
     void should_not_save_nor_emit_event_if_global_settings_did_not_change() throws RoleNotFoundException {
-      Role defaultRole = Role.builder().setRandomUUID().name("role").build();
+      Role defaultRole = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       GlobalSettings globalSettings = GlobalSettings.builder()
         .setRandomUUID()
         .signupOpen(false)

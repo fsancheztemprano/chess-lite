@@ -1,9 +1,5 @@
 package dev.kurama.api.core.facade;
 
-import static dev.kurama.api.core.utility.HttpUtils.getJwtHeader;
-
-import dev.kurama.api.core.domain.User;
-import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.domain.ActivationTokenExpiredException;
 import dev.kurama.api.core.exception.domain.ActivationTokenRecentException;
 import dev.kurama.api.core.exception.domain.ActivationTokenUserMismatchException;
@@ -15,12 +11,12 @@ import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
+import dev.kurama.api.core.hateoas.model.AuthenticatedUserModel;
 import dev.kurama.api.core.mapper.UserMapper;
 import dev.kurama.api.core.service.AuthenticationFacility;
 import dev.kurama.api.core.service.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,23 +36,13 @@ public class AuthenticationFacade {
     userService.signup(signupInput);
   }
 
-  public AuthenticatedUserExcerpt login(LoginInput loginInput) throws RoleCanNotLoginException, UserNotFoundException {
-    Pair<User, String> authenticationDetails = authenticationFacility.login(loginInput.getUsername(),
-      loginInput.getPassword());
-
-    return AuthenticatedUserExcerpt.builder()
-      .userModel(userMapper.userToUserModel(authenticationDetails.getLeft()))
-      .headers(getJwtHeader(authenticationDetails.getRight()))
-      .build();
+  public AuthenticatedUserModel login(LoginInput loginInput) throws RoleCanNotLoginException, UserNotFoundException {
+    return userMapper.authenticatedUserToModel(
+      authenticationFacility.login(loginInput.getUsername(), loginInput.getPassword()));
   }
 
-  public AuthenticatedUserExcerpt refreshToken(String userId) throws UserNotFoundException, RoleCanNotLoginException {
-    Pair<User, String> authenticationDetails = authenticationFacility.refreshToken(userId);
-
-    return AuthenticatedUserExcerpt.builder()
-      .userModel(userMapper.userToUserModel(authenticationDetails.getLeft()))
-      .headers(getJwtHeader(authenticationDetails.getRight()))
-      .build();
+  public AuthenticatedUserModel refreshToken(String userId) throws UserNotFoundException, RoleCanNotLoginException {
+    return userMapper.authenticatedUserToModel(authenticationFacility.refreshToken(userId));
   }
 
   public void requestActivationToken(String email) throws ActivationTokenRecentException, UserNotFoundException {

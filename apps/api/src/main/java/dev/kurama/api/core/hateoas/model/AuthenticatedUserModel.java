@@ -1,6 +1,5 @@
-package dev.kurama.api.core.domain.excerpts;
+package dev.kurama.api.core.hateoas.model;
 
-import dev.kurama.api.core.hateoas.model.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +10,7 @@ import org.springframework.http.HttpHeaders;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticatedUserExcerpt {
+public class AuthenticatedUserModel {
 
   private UserModel userModel;
   private HttpHeaders headers;

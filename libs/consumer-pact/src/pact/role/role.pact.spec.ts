@@ -1,11 +1,11 @@
-import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import {
   AuthorityManagementRelations,
   Role,
   RoleManagementRelations,
   RolePage,
-  TOKEN_KEY,
+  TokenKeys,
 } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { defaultTemplate } from '@app/ui/testing';
@@ -75,13 +75,13 @@ describe('Role Pacts', () => {
         },
       },
     });
-    service = new RoleManagementService(TestBed.inject(HttpClient), administrationService);
+    service = new RoleManagementService(administrationService);
   });
 
   describe('Get All Roles', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetAllRolesPact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:read'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchRoles().subscribe((rolePage) => {
           expect(rolePage?._embedded?.roleModels).toBeTruthy();
@@ -96,7 +96,7 @@ describe('Role Pacts', () => {
 
     it('with create', (done) => {
       const interaction: InteractionObject = GetAllRolesPact.with_create;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:create'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:read', 'role:create'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchRoles().subscribe((rolePage) => {
           expect(rolePage?.hasTemplate('create')).toBe(true);
@@ -107,7 +107,7 @@ describe('Role Pacts', () => {
 
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetAllRolesPact.unauthorized;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.fetchRoles().subscribe({
           error: (error: HttpErrorResponse) => {
@@ -124,7 +124,7 @@ describe('Role Pacts', () => {
   describe('Get One Role', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetOneRolePact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:read'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
@@ -139,7 +139,7 @@ describe('Role Pacts', () => {
 
     it('with update', (done) => {
       const interaction: InteractionObject = GetOneRolePact.with_update;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:update'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:read', 'role:update'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
@@ -153,7 +153,7 @@ describe('Role Pacts', () => {
 
     it('with delete', (done) => {
       const interaction: InteractionObject = GetOneRolePact.with_delete;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read', 'role:delete'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:read', 'role:delete'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
@@ -167,7 +167,7 @@ describe('Role Pacts', () => {
 
     it('not found', (done) => {
       const interaction: InteractionObject = GetOneRolePact.not_found;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:read'] }));
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('notFoundId').subscribe({
           error: (error: HttpErrorResponse) => {
@@ -182,7 +182,7 @@ describe('Role Pacts', () => {
 
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetOneRolePact.unauthorized;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('pactRoleId').subscribe({
           error: (error: HttpErrorResponse) => {
@@ -222,7 +222,7 @@ describe('Role Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = CreateRolePact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:create'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:create'] }));
       provider.addInteraction(interaction).then(() => {
         service.createRole(rolePage, 'NEW_PACT_ROLE').subscribe((role) => {
           expect(role).toBeTruthy();
@@ -236,7 +236,7 @@ describe('Role Pacts', () => {
 
     it('existing', (done) => {
       const interaction: InteractionObject = CreateRolePact.existing;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:create'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:create'] }));
       provider.addInteraction(interaction).then(() => {
         service.createRole(rolePage, 'PACT_ROLE').subscribe({
           error: (error: HttpErrorResponse) => {
@@ -251,7 +251,7 @@ describe('Role Pacts', () => {
 
     it('unauthorized', (done) => {
       const interaction: InteractionObject = CreateRolePact.unauthorized;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.createRole(rolePage, 'NEW_PACT_ROLE').subscribe({
           error: (error: HttpErrorResponse) => {
@@ -300,7 +300,7 @@ describe('Role Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = UpdateRolePact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:create'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:create'] }));
       provider.addInteraction(interaction).then(() => {
         service.updateRole(pactRole, { name: 'PACT_ROLE' }).subscribe((role) => {
           expect(role).toBeTruthy();
@@ -314,7 +314,7 @@ describe('Role Pacts', () => {
 
     it('core role', (done) => {
       const interaction: InteractionObject = UpdateRolePact.core_role;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:create'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:create'] }));
       provider.addInteraction(interaction).then(() => {
         const coreRole = JSON.parse(JSON.stringify(pactRole));
         coreRole._templates.update.target = '/api/role/coreRoleId';
@@ -331,7 +331,7 @@ describe('Role Pacts', () => {
 
     it('unauthorized', (done) => {
       const interaction: InteractionObject = UpdateRolePact.unauthorized;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.updateRole(pactRole, { name: 'PACT_ROLE' }).subscribe({
           error: (error: HttpErrorResponse) => {
@@ -346,7 +346,7 @@ describe('Role Pacts', () => {
 
     it('not found', (done) => {
       const interaction: InteractionObject = UpdateRolePact.not_found;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         const notFoundRole = JSON.parse(JSON.stringify(pactRole));
         notFoundRole._templates.update.target = '/api/role/notFoundId';
@@ -384,7 +384,7 @@ describe('Role Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = DeleteRolePact.successful;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:delete'] }));
       provider.addInteraction(interaction).then(() => {
         service.deleteRole(pactRole).subscribe((role) => {
           expect(role).toBeTruthy();
@@ -395,7 +395,7 @@ describe('Role Pacts', () => {
 
     it('core role', (done) => {
       const interaction: InteractionObject = DeleteRolePact.core_role;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:delete'] }));
       provider.addInteraction(interaction).then(() => {
         const coreRole = JSON.parse(JSON.stringify(pactRole));
         coreRole._templates.delete.target = '/api/role/coreRoleId';
@@ -412,7 +412,7 @@ describe('Role Pacts', () => {
 
     it('unauthorized', (done) => {
       const interaction: InteractionObject = DeleteRolePact.unauthorized;
-      localStorage.setItem(TOKEN_KEY, jwtToken());
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken());
       provider.addInteraction(interaction).then(() => {
         service.deleteRole(pactRole).subscribe({
           error: (error: HttpErrorResponse) => {
@@ -427,7 +427,7 @@ describe('Role Pacts', () => {
 
     it('not found', (done) => {
       const interaction: InteractionObject = DeleteRolePact.not_found;
-      localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['role:delete'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['role:delete'] }));
       provider.addInteraction(interaction).then(() => {
         const notFoundRole = JSON.parse(JSON.stringify(pactRole));
         notFoundRole._templates.delete.target = '/api/role/notFoundId';

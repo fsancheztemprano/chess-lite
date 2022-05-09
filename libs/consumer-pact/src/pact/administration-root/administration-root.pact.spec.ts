@@ -1,6 +1,6 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AdministrationRelations, TOKEN_KEY } from '@app/ui/shared/domain';
+import { AdministrationRelations, TokenKeys } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
@@ -58,7 +58,7 @@ describe('Administration Root Resource Pacts', () => {
       const interaction: InteractionObject = GetAdministrationRootResource.as_authorized;
       provider.addInteraction(interaction).then(() => {
         jest.spyOn(console, 'error').mockImplementationOnce(noop);
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         service.initialize().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -73,7 +73,7 @@ describe('Administration Root Resource Pacts', () => {
     it('admin:root', (done) => {
       const interaction = GetAdministrationRootResource.as_admin_root;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['admin:root'] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);
@@ -86,7 +86,7 @@ describe('Administration Root Resource Pacts', () => {
       it('service-logs:read', (done) => {
         const interaction = GetAdministrationRootResource.as_admin_root__service_logs_read;
         provider.addInteraction(interaction).then(() => {
-          localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root', 'service-logs:read'] }));
+          localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['admin:root', 'service-logs:read'] }));
           service.initialize().subscribe({
             next: (resource) => {
               expect(resource).toBeTruthy();
@@ -100,7 +100,7 @@ describe('Administration Root Resource Pacts', () => {
       it('global-settings:read', (done) => {
         const interaction: InteractionObject = GetAdministrationRootResource.as_admin_root__global_settings_read;
         provider.addInteraction(interaction).then(() => {
-          localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['admin:root', 'global-settings:read'] }));
+          localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['admin:root', 'global-settings:read'] }));
           service.initialize().subscribe((resource) => {
             expect(resource).toBeTruthy();
             expect(resource).toMatchObject(interaction.willRespondWith.body);
@@ -113,7 +113,7 @@ describe('Administration Root Resource Pacts', () => {
         const interaction = GetAdministrationRootResource.as_admin_user_management_root;
         provider.addInteraction(interaction).then(() => {
           localStorage.setItem(
-            TOKEN_KEY,
+            TokenKeys.TOKEN,
             jwtToken({ authorities: ['admin:root', 'admin:user-management:root', 'user:read', 'user:create'] }),
           );
           service.initialize().subscribe((resource) => {
@@ -128,7 +128,7 @@ describe('Administration Root Resource Pacts', () => {
         const interaction = GetAdministrationRootResource.as_admin_role_management_root;
         provider.addInteraction(interaction).then(() => {
           localStorage.setItem(
-            TOKEN_KEY,
+            TokenKeys.TOKEN,
             jwtToken({
               authorities: ['admin:root', 'admin:role-management:root', 'role:read', 'role:create', 'authority:read'],
             }),

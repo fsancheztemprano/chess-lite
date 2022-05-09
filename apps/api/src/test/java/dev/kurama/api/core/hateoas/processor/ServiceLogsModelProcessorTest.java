@@ -4,6 +4,7 @@ import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_DE
 import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
 
@@ -30,7 +31,7 @@ class ServiceLogsModelProcessorTest {
 
     authorityUtils = Mockito.mockStatic(AuthorityUtils.class);
 
-    model = ServiceLogsModel.builder().logs("Logs").build();
+    model = ServiceLogsModel.builder().logs(randomAlphanumeric(8)).build();
   }
 
   @AfterEach

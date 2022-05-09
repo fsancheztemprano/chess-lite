@@ -1,7 +1,7 @@
 package dev.kurama.api.core.rest;
 
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_READ;
-import static dev.kurama.api.core.authority.UserAuthority.PROFILE_UPDATE;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
+import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_UPDATE;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_READ;
 import static dev.kurama.api.core.authority.UserPreferencesAuthority.USER_PREFERENCES_UPDATE;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
@@ -14,6 +14,7 @@ import static dev.kurama.support.JsonUtils.asJsonString;
 import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
 import static dev.kurama.support.TestUtils.getAuthorizationHeader;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doReturn;
@@ -67,7 +68,7 @@ class UserPreferencesControllerIT {
     expected = UserPreferences.builder()
       .setRandomUUID()
       .darkMode(false)
-      .contentLanguage("es")
+      .contentLanguage(randomAlphanumeric(2))
       .user(User.builder().setRandomUUID().username(randomUUID()).build())
       .build();
   }

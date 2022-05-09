@@ -1,5 +1,6 @@
 package dev.kurama.api.core.listener;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -27,7 +28,7 @@ class AuthenticationFailureListenerTest {
   void should_add_username_to_login_attempt_cache() {
     Authentication authentication = mock(Authentication.class);
     AuthenticationException exception = mock(AuthenticationException.class);
-    String principal = "ANON_USER";
+    String principal = randomAlphanumeric(8);
     doReturn(principal).when(authentication).getPrincipal();
     AuthenticationFailureBadCredentialsEvent event = new AuthenticationFailureBadCredentialsEvent(authentication,
       exception);

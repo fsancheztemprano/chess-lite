@@ -145,6 +145,31 @@ export namespace GetRootResource {
           self: {
             href: 'http://localhost/api',
           },
+        },
+        _templates: { ...defaultTemplate },
+      },
+    },
+  };
+
+  export const with_token_refresh: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get root resource with authority token:refresh',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['token:refresh'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        _links: {
+          self: {
+            href: 'http://localhost/api',
+          },
           token: {
             href: 'http://localhost/api/auth/token',
           },
@@ -173,9 +198,6 @@ export namespace GetRootResource {
           self: {
             href: 'http://localhost/api',
           },
-          token: {
-            href: 'http://localhost/api/auth/token',
-          },
           'current-user': {
             href: 'http://localhost/api/user/profile',
           },
@@ -203,9 +225,6 @@ export namespace GetRootResource {
         _links: {
           self: {
             href: 'http://localhost/api',
-          },
-          token: {
-            href: 'http://localhost/api/auth/token',
           },
           administration: {
             href: 'http://localhost/api/administration',

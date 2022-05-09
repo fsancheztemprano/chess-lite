@@ -190,4 +190,24 @@ describe('Resource', () => {
       expect(() => Resource.of(iResource).submitToTemplateOrThrow('missing')).toThrow();
     });
   });
+
+  it('should parse to json', () => {
+    const iRes = {
+      _links: {
+        self: { href: '/api/v1/users/1', name: 'self' },
+        users: { href: '/api/v1/users', name: 'users' },
+      },
+      _templates: {
+        default: {
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+          properties: [{ name: 'username' }],
+          title: 'update',
+        },
+      },
+      id: 'userId',
+    };
+
+    expect(Resource.of(iRes).toJson()).toEqual(iRes);
+  });
 });

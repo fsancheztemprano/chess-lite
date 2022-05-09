@@ -6,6 +6,7 @@ import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_PREFER
 import static dev.kurama.api.core.rest.UserProfileController.USER_PROFILE_UPLOAD_AVATAR_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -103,8 +104,8 @@ class UserProfileControllerTest {
     class UpdateProfileTests {
 
       UserProfileUpdateInput input = UserProfileUpdateInput.builder()
-        .firstname("first name")
-        .lastname("last name")
+        .firstname(randomAlphanumeric(8))
+        .lastname(randomAlphanumeric(8))
         .build();
 
       @Test
@@ -138,8 +139,8 @@ class UserProfileControllerTest {
     class ChangePasswordTests {
 
       ChangeUserPasswordInput input = ChangeUserPasswordInput.builder()
-        .password("old-password")
-        .newPassword("new-password")
+        .password(randomAlphanumeric(8))
+        .newPassword(randomAlphanumeric(8))
         .build();
 
       @Test
@@ -238,7 +239,7 @@ class UserProfileControllerTest {
     UserPreferencesModel expected = UserPreferencesModel.builder()
       .id(randomUUID())
       .darkMode(false)
-      .contentLanguage("de")
+      .contentLanguage(randomAlphanumeric(2))
       .build();
 
     @Test

@@ -2,6 +2,7 @@ package dev.kurama.api.core.mapper;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -32,8 +33,8 @@ class GlobalSettingsMapperTest {
 
   @Test
   void global_settings_to_global_settings_model() {
-    Authority adminAuthority = Authority.builder().setRandomUUID().name("ADMIN").build();
-    Authority modAuthority = Authority.builder().setRandomUUID().name("MOD").build();
+    Authority adminAuthority = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Authority modAuthority = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     GlobalSettings globalSettings = GlobalSettings.builder()
       .setRandomUUID()
       .signupOpen(false)

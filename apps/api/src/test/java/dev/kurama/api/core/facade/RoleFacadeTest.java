@@ -2,6 +2,7 @@ package dev.kurama.api.core.facade;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,7 +65,7 @@ class RoleFacadeTest {
 
   @Test
   void should_find_by_role_id() throws RoleNotFoundException {
-    Role role = Role.builder().name("TEST_ROLE").setRandomUUID().build();
+    Role role = Role.builder().name(randomAlphanumeric(8)).setRandomUUID().build();
     RoleModel expected = RoleModel.builder().name(role.getName()).id(role.getId()).build();
     when(roleService.findRoleById(role.getId())).thenReturn(Optional.of(role));
     when(roleMapper.roleToRoleModel(role)).thenReturn(expected);
@@ -78,7 +79,7 @@ class RoleFacadeTest {
 
   @Test
   void should_call_service_to_create_role() throws RoleExistsException {
-    Role role = Role.builder().name("TEST_ROLE").setRandomUUID().build();
+    Role role = Role.builder().name(randomAlphanumeric(8)).setRandomUUID().build();
     RoleModel expected = RoleModel.builder().name(role.getName()).id(role.getId()).build();
     when(roleService.create(role.getName())).thenReturn(role);
     when(roleMapper.roleToRoleModel(role)).thenReturn(expected);
@@ -93,7 +94,7 @@ class RoleFacadeTest {
   @Test
   void should_call_service_to_update_role() throws ImmutableRoleException, RoleNotFoundException {
     String id = randomUUID();
-    RoleUpdateInput input = RoleUpdateInput.builder().name("TEST_ROLE").build();
+    RoleUpdateInput input = RoleUpdateInput.builder().name(randomAlphanumeric(8)).build();
     Role role = Role.builder().name(input.getName()).setRandomUUID().build();
     RoleModel expected = RoleModel.builder().name(role.getName()).id(role.getId()).build();
     when(roleService.update(id, input)).thenReturn(role);

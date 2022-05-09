@@ -1,7 +1,14 @@
 import { HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { stubSessionServiceProvider } from '@app/ui/shared/app';
-import { ActivationTokenRelations, AuthRelations, HttpHeaderKey, SignupInput, TOKEN_KEY } from '@app/ui/shared/domain';
+import {
+  ActivationTokenRelations,
+  AuthRelations,
+  HttpHeaderKey,
+  Session,
+  SignupInput,
+  TokenKeys,
+} from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService, IResource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
@@ -216,10 +223,13 @@ describe('Authentication Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = LoginPact.successful;
       provider.addInteraction(interaction).then(() => {
-        authService.login({ username: 'pactUser', password: 'pactUser0' }).subscribe((session) => {
+        authService.login({ username: 'pactUser', password: 'pactUser0' }).subscribe((session: Session | null) => {
           expect(session).toBeTruthy();
           expect(session?.token).toBe(
             (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
+          );
+          expect(session?.refreshToken).toBe(
+            (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_REFRESH_TOKEN]).getValue(),
           );
           expect(session?.user?.id).toBe(interaction.willRespondWith.body.id);
           done();
@@ -245,7 +255,13 @@ describe('Authentication Pacts', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = RefreshTokenPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: pactCurrentUser.id } }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({
+            user: { id: pactCurrentUser.id },
+            authorities: ['token:refresh'],
+          }),
+        );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
           .pipe(switchMap((link) => link.fetch<IResource>()))
@@ -253,6 +269,9 @@ describe('Authentication Pacts', () => {
             expect(response).toBeTruthy();
             expect(response.headers.get(HttpHeaderKey.JWT_TOKEN)).toBe(
               (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
+            );
+            expect(response.headers.get(HttpHeaderKey.JWT_REFRESH_TOKEN)).toBe(
+              (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_REFRESH_TOKEN]).getValue(),
             );
             expect(response.body?.id).toBe(interaction.willRespondWith.body.id);
             done();
@@ -263,7 +282,13 @@ describe('Authentication Pacts', () => {
     it('locked role', (done) => {
       const interaction: InteractionObject = RefreshTokenPact.locked_role;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'lockedRoleUserId' } }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({
+            user: { id: 'lockedRoleUserId' },
+            authorities: ['token:refresh'],
+          }),
+        );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
           .pipe(switchMap((link) => link.fetch()))
@@ -281,7 +306,13 @@ describe('Authentication Pacts', () => {
     it('locked user', (done) => {
       const interaction: InteractionObject = RefreshTokenPact.locked_user;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'lockedUserId' } }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({
+            user: { id: 'lockedUserId' },
+            authorities: ['token:refresh'],
+          }),
+        );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
           .pipe(switchMap((link) => link.fetch()))
@@ -299,6 +330,7 @@ describe('Authentication Pacts', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = RefreshTokenPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ user: { id: pactCurrentUser.id } }));
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
           .pipe(switchMap((link) => link.fetch()))
@@ -316,7 +348,7 @@ describe('Authentication Pacts', () => {
     it('not found', (done) => {
       const interaction: InteractionObject = RefreshTokenPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ user: { id: 'notFoundId' } }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ user: { id: 'notFoundId' }, authorities: ['token:refresh'] }));
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
           .pipe(switchMap((link) => link.fetch()))

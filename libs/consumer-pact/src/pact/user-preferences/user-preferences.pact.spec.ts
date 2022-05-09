@@ -2,7 +2,7 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
-import { TOKEN_KEY, User, UserManagementRelations, UserPreferences } from '@app/ui/shared/domain';
+import { TokenKeys, User, UserManagementRelations, UserPreferences } from '@app/ui/shared/domain';
 import { defaultTemplate, updateUserPreferencesTemplate } from '@app/ui/testing';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
@@ -54,7 +54,7 @@ describe('User Preferences Pact', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetUserPreferencesPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:preferences:read'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:preferences:read'] }));
         service.fetchUserPreferences().subscribe((response: UserPreferences) => {
           expect(response).toBeTruthy();
           expect(response.id).toBe(interaction.willRespondWith.body.id);
@@ -73,7 +73,7 @@ describe('User Preferences Pact', () => {
       const interaction: InteractionObject = GetUserPreferencesPact.with_update;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(
-          TOKEN_KEY,
+          TokenKeys.TOKEN,
           jwtToken({ authorities: ["user:preferences:read', 'user:preferences:update"] }),
         );
         service.fetchUserPreferences().subscribe((response: UserPreferences) => {
@@ -102,7 +102,7 @@ describe('User Preferences Pact', () => {
         );
 
         localStorage.setItem(
-          TOKEN_KEY,
+          TokenKeys.TOKEN,
           jwtToken({ authorities: ["user:preferences:read', 'user:preferences:update"] }),
         );
         service.fetchUserPreferences().subscribe({
@@ -119,7 +119,7 @@ describe('User Preferences Pact', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetUserPreferencesPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         service.fetchUserPreferences().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -156,7 +156,7 @@ describe('User Preferences Pact', () => {
       const interaction: InteractionObject = UpdateUserPreferencesPact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(
-          TOKEN_KEY,
+          TokenKeys.TOKEN,
           jwtToken({ authorities: ['user:preferences:read', 'user:preferences:update'] }),
         );
         service
@@ -178,7 +178,7 @@ describe('User Preferences Pact', () => {
     it('not found', (done) => {
       const interaction: InteractionObject = UpdateUserPreferencesPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken({ authorities: ['user:preferences:update'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:preferences:update'] }));
         const notFoundPreferences = new UserPreferences({
           _links: {
             user: {
@@ -208,7 +208,7 @@ describe('User Preferences Pact', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = UpdateUserPreferencesPact.unauthorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TOKEN_KEY, jwtToken());
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         service.updateUserPreferences(pactUserPreferences, { darkMode: true }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();

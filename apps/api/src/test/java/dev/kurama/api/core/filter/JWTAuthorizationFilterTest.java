@@ -1,5 +1,6 @@
 package dev.kurama.api.core.filter;
 
+import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static org.assertj.core.util.Lists.newArrayList;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -76,7 +77,7 @@ class JWTAuthorizationFilterTest {
     HttpServletResponse response = mock(HttpServletResponse.class);
     FilterChain filterChain = mock(FilterChain.class);
     doReturn(GET.toString()).when(request).getMethod();
-    String token = "token";
+    String token = randomUUID();
     DecodedJWT decodedToken = mock(DecodedJWT.class);
     doReturn(SecurityConstant.TOKEN_PREFIX + token).when(request).getHeader(HttpHeaders.AUTHORIZATION);
     doReturn(decodedToken).when(jwtTokenProvider).getDecodedJWT(token);
@@ -97,7 +98,7 @@ class JWTAuthorizationFilterTest {
     HttpServletResponse response = mock(HttpServletResponse.class);
     FilterChain filterChain = mock(FilterChain.class);
     doReturn(GET.toString()).when(request).getMethod();
-    String token = "token";
+    String token = randomUUID();
     DecodedJWT decodedToken = mock(DecodedJWT.class);
     doReturn(SecurityConstant.TOKEN_PREFIX + token).when(request).getHeader(HttpHeaders.AUTHORIZATION);
     doReturn(decodedToken).when(jwtTokenProvider).getDecodedJWT(token);

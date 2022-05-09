@@ -2,7 +2,9 @@ package dev.kurama.api.core.authority;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component("ServiceLogsAuthority")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ServiceLogsAuthority {
 

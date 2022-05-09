@@ -7,6 +7,7 @@ import static dev.kurama.api.core.rest.AuthenticationController.SIGNUP_PATH;
 import static dev.kurama.api.core.rest.AuthenticationController.TOKEN_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,13 +18,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import dev.kurama.api.core.constant.SecurityConstant;
-import dev.kurama.api.core.domain.excerpts.AuthenticatedUserExcerpt;
 import dev.kurama.api.core.exception.ExceptionHandlers;
 import dev.kurama.api.core.facade.AuthenticationFacade;
 import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.LoginInput;
 import dev.kurama.api.core.hateoas.input.RequestActivationTokenInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
+import dev.kurama.api.core.hateoas.model.AuthenticatedUserModel;
 import dev.kurama.api.core.hateoas.model.UserModel;
 import dev.kurama.api.core.rest.AuthenticationControllerTest.AuthenticationControllerConfig;
 import dev.kurama.api.core.utility.AuthorityUtils;
@@ -66,10 +67,10 @@ class AuthenticationControllerTest {
   @Test
   void should_signup() throws Exception {
     SignupInput input = SignupInput.builder()
-      .firstname("firstname")
-      .lastname("lastname")
-      .username("username")
-      .email("em@i.l")
+      .firstname(randomAlphanumeric(8))
+      .lastname(randomAlphanumeric(8))
+      .username(randomAlphanumeric(8))
+      .email(randomAlphanumeric(8))
       .build();
 
     mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
@@ -81,12 +82,14 @@ class AuthenticationControllerTest {
 
   @Test
   void should_login() throws Exception {
-    LoginInput input = LoginInput.builder().username("username").password("password").build();
+    LoginInput input = LoginInput.builder().username(randomAlphanumeric(8)).password(randomAlphanumeric(8)).build();
     UserModel user = UserModel.builder().id(randomUUID()).build();
     String token = randomUUID();
+    String refreshToken = randomUUID();
     var headers = new HttpHeaders();
     headers.add(SecurityConstant.JWT_TOKEN_HEADER, token);
-    AuthenticatedUserExcerpt expected = AuthenticatedUserExcerpt.builder().userModel(user).headers(headers).build();
+    headers.add(SecurityConstant.JWT_REFRESH_TOKEN_HEADER, refreshToken);
+    AuthenticatedUserModel expected = AuthenticatedUserModel.builder().userModel(user).headers(headers).build();
     when(facade.login(input)).thenReturn(expected);
 
     mockMvc.perform(post(AUTHENTICATION_PATH + LOGIN_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
@@ -94,16 +97,19 @@ class AuthenticationControllerTest {
         .content(asJsonString(input)))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.id", equalTo(user.getId())))
-      .andExpect(header().stringValues(SecurityConstant.JWT_TOKEN_HEADER, token));
+      .andExpect(header().string(SecurityConstant.JWT_TOKEN_HEADER, token))
+      .andExpect(header().string(SecurityConstant.JWT_REFRESH_TOKEN_HEADER, refreshToken));
   }
 
   @Test
   void should_refresh_token() throws Exception {
     UserModel user = UserModel.builder().id(randomUUID()).build();
     String token = randomUUID();
+    String refreshToken = randomUUID();
     var headers = new HttpHeaders();
     headers.add(SecurityConstant.JWT_TOKEN_HEADER, token);
-    AuthenticatedUserExcerpt expected = AuthenticatedUserExcerpt.builder().userModel(user).headers(headers).build();
+    headers.add(SecurityConstant.JWT_REFRESH_TOKEN_HEADER, refreshToken);
+    AuthenticatedUserModel expected = AuthenticatedUserModel.builder().userModel(user).headers(headers).build();
     when(facade.refreshToken(user.getId())).thenReturn(expected);
 
     try (MockedStatic<AuthorityUtils> utilities = Mockito.mockStatic(AuthorityUtils.class)) {
@@ -112,13 +118,14 @@ class AuthenticationControllerTest {
       mockMvc.perform(get(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id", equalTo(user.getId())))
-        .andExpect(header().stringValues(SecurityConstant.JWT_TOKEN_HEADER, token));
+        .andExpect(header().string(SecurityConstant.JWT_TOKEN_HEADER, token))
+        .andExpect(header().string(SecurityConstant.JWT_REFRESH_TOKEN_HEADER, refreshToken));
     }
   }
 
   @Test
   void should_request_activation_token() throws Exception {
-    RequestActivationTokenInput input = RequestActivationTokenInput.builder().email("em@i.l").build();
+    RequestActivationTokenInput input = RequestActivationTokenInput.builder().email(randomAlphanumeric(8)).build();
 
     mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
       .contentType(MediaType.APPLICATION_JSON)
@@ -130,8 +137,8 @@ class AuthenticationControllerTest {
   @Test
   void should_activate_account() throws Exception {
     AccountActivationInput input = AccountActivationInput.builder()
-      .email("em@i.l")
-      .password("password")
+      .email(randomAlphanumeric(8))
+      .password(randomAlphanumeric(8))
       .token(randomUUID())
       .build();
 

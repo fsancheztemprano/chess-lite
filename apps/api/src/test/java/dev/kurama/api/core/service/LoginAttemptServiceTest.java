@@ -1,6 +1,7 @@
 package dev.kurama.api.core.service;
 
 import static dev.kurama.api.core.service.LoginAttemptService.MAXIMUM_NUMBER_OF_ATTEMPTS;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.google.common.cache.LoadingCache;
@@ -19,7 +20,7 @@ class LoginAttemptServiceTest {
 
   @Test
   void evict_user_from_login_attempt_cache() {
-    String username = "username";
+    String username = randomAlphanumeric(8);
     LoadingCache<String, Integer> loginAttemptCache = (LoadingCache<String, Integer>) ReflectionTestUtils.getField(
       loginAttemptService, "loginAttemptCache");
     assertThat(loginAttemptCache).isNotNull();
@@ -33,7 +34,7 @@ class LoginAttemptServiceTest {
 
   @Test
   void should_add_user_to_login_attempt_cache() throws ExecutionException {
-    String username = "username";
+    String username = randomAlphanumeric(8);
     LoadingCache<String, Integer> loginAttemptCache = (LoadingCache<String, Integer>) ReflectionTestUtils.getField(
       loginAttemptService, "loginAttemptCache");
     assertThat(loginAttemptCache).isNotNull();
@@ -47,8 +48,8 @@ class LoginAttemptServiceTest {
 
   @Test
   void should_increment_user_attempts_in_login_attempt_cache() throws ExecutionException {
-    String username1 = "username1";
-    String username2 = "username2";
+    String username1 = randomAlphanumeric(8);
+    String username2 = randomAlphanumeric(8);
     LoadingCache<String, Integer> loginAttemptCache = (LoadingCache<String, Integer>) ReflectionTestUtils.getField(
       loginAttemptService, "loginAttemptCache");
     assertThat(loginAttemptCache).isNotNull();
@@ -64,7 +65,7 @@ class LoginAttemptServiceTest {
 
   @Test
   void should_return_true_only_when_maximum_attempts_exceeded() {
-    String username = "username";
+    String username = randomAlphanumeric(8);
     for (int attempt = 1; attempt <= MAXIMUM_NUMBER_OF_ATTEMPTS; attempt++) {
       loginAttemptService.addUserToLoginAttemptCache(username);
       assertThat(loginAttemptService.hasExceededMaxAttempts(username)).isEqualTo(

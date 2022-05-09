@@ -2,6 +2,7 @@ package dev.kurama.api.core.facade;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -54,7 +55,7 @@ class UserFacadeTest {
 
   @Test
   void should_create_user() throws UserExistsException {
-    UserInput input = UserInput.builder().username("username").build();
+    UserInput input = UserInput.builder().username(randomAlphanumeric(8)).build();
     User user = User.builder().username(input.getUsername()).setRandomUUID().build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
     when(userService.createUser(input)).thenReturn(user);
@@ -69,7 +70,7 @@ class UserFacadeTest {
 
   @Test
   void should_find_by_user_id() throws UserNotFoundException {
-    User user = User.builder().username("username").setRandomUUID().build();
+    User user = User.builder().username(randomAlphanumeric(8)).setRandomUUID().build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
     when(userService.findUserById(user.getId())).thenReturn(Optional.of(user));
     when(userMapper.userToUserModel(user)).thenReturn(expected);
@@ -110,7 +111,7 @@ class UserFacadeTest {
   @Test
   void should_update_user() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     String id = randomUUID();
-    UserInput input = UserInput.builder().username("username").build();
+    UserInput input = UserInput.builder().username(randomAlphanumeric(8)).build();
     User user = User.builder().username(input.getUsername()).setRandomUUID().build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
     when(userService.updateUser(id, input)).thenReturn(user);
@@ -126,7 +127,7 @@ class UserFacadeTest {
   @Test
   void should_update_user_profile() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     String id = randomUUID();
-    UserProfileUpdateInput input = UserProfileUpdateInput.builder().firstname("firstname").build();
+    UserProfileUpdateInput input = UserProfileUpdateInput.builder().firstname(randomAlphanumeric(8)).build();
     User user = User.builder().username(input.getFirstname()).setRandomUUID().build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
     when(userService.updateUser(eq(id), any(UserInput.class))).thenReturn(user);
@@ -143,10 +144,10 @@ class UserFacadeTest {
   void should_change_user_password() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
     String id = randomUUID();
     ChangeUserPasswordInput input = ChangeUserPasswordInput.builder()
-      .password("Old_p4ss")
-      .newPassword("New_p4ss")
+      .password(randomAlphanumeric(8))
+      .newPassword(randomAlphanumeric(8))
       .build();
-    User user = User.builder().id(id).username("username").build();
+    User user = User.builder().id(id).username(randomAlphanumeric(8)).build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
     when(userService.findUserById(id)).thenReturn(Optional.of(user));
     when(userService.updateUser(eq(id), any(UserInput.class))).thenReturn(user);
@@ -165,7 +166,7 @@ class UserFacadeTest {
     throws UserNotFoundException, RoleNotFoundException, UserExistsException, IOException {
     String id = randomUUID();
     MockMultipartFile avatar = new MockMultipartFile("avatar", "image".getBytes());
-    User user = User.builder().id(id).username("username").build();
+    User user = User.builder().id(id).username(randomAlphanumeric(8)).build();
     UserModel expected = UserModel.builder().username(user.getUsername()).id(user.getId()).build();
     when(userService.updateUser(eq(id), any(UserInput.class))).thenReturn(user);
     when(userMapper.userToUserModel(user)).thenReturn(expected);

@@ -5,6 +5,7 @@ import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
@@ -36,8 +37,8 @@ class AuthorityModelAssemblerTest {
 
   @Test
   void should_map_to_paged_model_and_add_links() {
-    AuthorityModel admin = AuthorityModel.builder().id(randomUUID()).name("ADMIN").build();
-    AuthorityModel mod = AuthorityModel.builder().id(randomUUID()).name("MOD").build();
+    AuthorityModel admin = AuthorityModel.builder().id(randomUUID()).name(randomAlphanumeric(8)).build();
+    AuthorityModel mod = AuthorityModel.builder().id(randomUUID()).name(randomAlphanumeric(8)).build();
     PageImpl<AuthorityModel> pagedAuthorities = new PageImpl<>(newArrayList(admin, mod), of(2, 2), 10);
 
     PagedModel<AuthorityModel> actual = assembler.toPagedModel(pagedAuthorities);

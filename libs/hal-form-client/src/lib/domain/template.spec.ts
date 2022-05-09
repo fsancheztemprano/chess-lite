@@ -208,7 +208,7 @@ describe('Template', () => {
         method: HttpMethod.PATCH,
         target: '/api/v1/users/{userId}',
       })
-        .afford<MockResource>({ body: { name: 'new name' }, params: { userId: 1 } })
+        .afford<MockResource>({ body: { name: 'new name' }, parameters: { userId: 1 } })
         .subscribe((response: HttpResponse<MockResource>) => {
           expect(response).toBeTruthy();
           expect(response.body?.name).toBe('new name');
@@ -226,20 +226,17 @@ describe('Template', () => {
         .flush({ name: 'new name' });
     });
 
-    it.each<any | jest.DoneCallback>(['', null, undefined])(
-      'should throw error when %p target',
-      (falsy, done: jest.DoneCallback) => {
-        Template.of({ target: falsy })
-          .afford()
-          .subscribe({
-            error: (error) => {
-              expect(error).toBeTruthy();
-              expect(error.message).toBe('Template has no target');
-              done();
-            },
-          });
-      },
-    );
+    it('should throw error when using unsupported method', (done: jest.DoneCallback) => {
+      Template.of({ method: 'UNSUPPORTED', target: '/api/v1/users/1' })
+        .afford()
+        .subscribe({
+          error: (error) => {
+            expect(error).toBeTruthy();
+            expect(error.message).toBe(`Http Method UNSUPPORTED not supported`);
+            done();
+          },
+        });
+    });
   });
 
   describe('submit', () => {
@@ -404,5 +401,16 @@ describe('Template', () => {
         }).isAllowedTo({}),
       ).toBeTruthy();
     });
+  });
+
+  it('should parse to json', () => {
+    const iTemplate: ITemplate = {
+      method: HttpMethod.GET,
+      target: '/api/v1/users/1',
+      properties: [{ name: 'username' }],
+      title: 'update',
+    };
+
+    expect(Template.of(iTemplate).toJson()).toEqual(iTemplate);
   });
 });

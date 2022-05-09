@@ -1,20 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pageable, User, UserInput, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
-import { HalFormService, Link } from '@hal-form-client';
+import { HalFormResourceService, Link } from '@hal-form-client';
 import { Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class UserManagementService extends HalFormService {
-  constructor(
-    protected override readonly httpClient: HttpClient,
-    private readonly administrationService: AdministrationService,
-  ) {
-    super(httpClient, '');
+@Injectable({ providedIn: 'root' })
+export class UserManagementService extends HalFormResourceService {
+  constructor(private readonly administrationService: AdministrationService) {
+    super();
     this.administrationService
       .getEmbeddedObject(UserManagementRelations.USER_MANAGEMENT_REL)
       .subscribe((resource) => this.setResource(resource));
@@ -23,7 +17,7 @@ export class UserManagementService extends HalFormService {
   public fetchUsers(pageable?: Pageable): Observable<UserPage> {
     return this.getLinkOrThrow(UserManagementRelations.USERS_REL).pipe(
       first(),
-      switchMap((link: Link) => link.follow<UserPage>(pageable)),
+      switchMap((link: Link) => link.follow<UserPage>({ parameters: { ...pageable } })),
     );
   }
 
@@ -31,7 +25,7 @@ export class UserManagementService extends HalFormService {
     userId = userId || '0';
     return this.getLinkOrThrow(UserManagementRelations.USER_REL).pipe(
       first(),
-      switchMap((userLink) => userLink.follow({ userId })),
+      switchMap((userLink) => userLink.follow({ parameters: { userId } })),
     );
   }
 

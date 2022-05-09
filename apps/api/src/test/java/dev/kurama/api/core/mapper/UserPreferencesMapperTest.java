@@ -1,6 +1,7 @@
 package dev.kurama.api.core.mapper;
 
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -37,7 +38,7 @@ class UserPreferencesMapperTest {
     UserPreferences userPreferences = UserPreferences.builder()
       .setRandomUUID()
       .darkMode(true)
-      .contentLanguage("en")
+      .contentLanguage(randomAlphanumeric(2))
       .user(User.builder().setRandomUUID().username(randomUUID()).build())
       .build();
 

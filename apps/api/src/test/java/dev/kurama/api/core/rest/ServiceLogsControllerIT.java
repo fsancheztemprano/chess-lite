@@ -4,6 +4,7 @@ import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_DE
 import static dev.kurama.api.core.authority.ServiceLogsAuthority.SERVICE_LOGS_READ;
 import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
 import static dev.kurama.support.TestUtils.getAuthorizationHeader;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -59,7 +60,7 @@ class ServiceLogsControllerIT {
 
     @Test
     void should_get_service_logs() throws Exception {
-      ServiceLogsModel expected = ServiceLogsModel.builder().logs("logs").timestamp(new Date()).build();
+      ServiceLogsModel expected = ServiceLogsModel.builder().logs(randomAlphanumeric(8)).timestamp(new Date()).build();
       doReturn(expected).when(serviceLogsService).getServiceLogs();
 
       mockMvc.perform(get(SERVICE_LOGS_PATH).headers(getAuthorizationHeader(jwtTokenProvider, SERVICE_LOGS_READ)))

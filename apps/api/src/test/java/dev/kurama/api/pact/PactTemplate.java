@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 public class PactTemplate {
 
   public static User pactUser() {
-    HashSet<Authority> authorities = newHashSet(Authority.builder().setRandomUUID().name("profile:read").build(),
+    HashSet<Authority> authorities = newHashSet(Authority.builder().setRandomUUID().name("token:refresh").build(),
+      Authority.builder().setRandomUUID().name("profile:read").build(),
       Authority.builder().setRandomUUID().name("profile:update").build(),
       Authority.builder().setRandomUUID().name("profile:delete").build());
     Role pactRole = Role.builder()
