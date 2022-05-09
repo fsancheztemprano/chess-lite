@@ -9,6 +9,7 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.message.RoleChangedMessageSender.ROLES_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
@@ -53,8 +54,8 @@ class RoleModelAssemblerTest {
 
   @Test
   void should_map_to_paged_model_and_add_links() {
-    RoleModel admin = RoleModel.builder().id(randomUUID()).name("ADMIN").build();
-    RoleModel mod = RoleModel.builder().id(randomUUID()).name("MOD").build();
+    RoleModel admin = RoleModel.builder().id(randomUUID()).name(randomAlphanumeric(8)).build();
+    RoleModel mod = RoleModel.builder().id(randomUUID()).name(randomAlphanumeric(8)).build();
     PageImpl<RoleModel> pagedRoles = new PageImpl<>(newArrayList(admin, mod), of(2, 2), 10);
 
     PagedModel<RoleModel> actual = assembler.toPagedModel(pagedRoles);

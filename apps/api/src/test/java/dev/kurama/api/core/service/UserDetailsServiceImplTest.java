@@ -1,5 +1,6 @@
 package dev.kurama.api.core.service;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,7 +35,7 @@ class UserDetailsServiceImplTest {
 
     @Test
     void should_load_user_by_username() {
-      User expected = User.builder().setRandomUUID().username("username").locked(false).build();
+      User expected = User.builder().setRandomUUID().username(randomAlphanumeric(8)).locked(false).build();
       when(userRepository.findUserByUsername(expected.getUsername())).thenReturn(Optional.of(expected));
       when(loginAttemptService.hasExceededMaxAttempts(expected.getUsername())).thenReturn(false);
 
@@ -51,7 +52,7 @@ class UserDetailsServiceImplTest {
 
     @Test
     void should_evict_if_user_was_locked() {
-      User expected = User.builder().setRandomUUID().username("username").locked(true).build();
+      User expected = User.builder().setRandomUUID().username(randomAlphanumeric(8)).locked(true).build();
       when(userRepository.findUserByUsername(expected.getUsername())).thenReturn(Optional.of(expected));
 
       service.loadUserByUsername(expected.getUsername());

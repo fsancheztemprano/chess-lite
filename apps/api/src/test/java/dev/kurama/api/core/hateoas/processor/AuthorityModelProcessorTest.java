@@ -7,6 +7,7 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.DEFAULT;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
 
@@ -33,7 +34,7 @@ class AuthorityModelProcessorTest {
 
     authorityUtils = Mockito.mockStatic(AuthorityUtils.class);
 
-    model = AuthorityModel.builder().id(randomUUID()).name("TEST_AUTH").build();
+    model = AuthorityModel.builder().id(randomUUID()).name(randomAlphanumeric(8)).build();
   }
 
   @AfterEach

@@ -36,15 +36,19 @@ class UserPreferencesServiceIT {
       .setRandomUUID()
       .user(user1)
       .darkMode(true)
-      .contentLanguage("jp")
+      .contentLanguage(randomAlphanumeric(2))
       .build();
     user1.setUserPreferences(userPreferences);
 
     entityManager.persist(user1);
 
     User user2 = User.builder().setRandomUUID().userPreferences(userPreferences).role(role).build();
-    user2.setUserPreferences(
-      UserPreferences.builder().setRandomUUID().user(user1).darkMode(true).contentLanguage("jp").build());
+    user2.setUserPreferences(UserPreferences.builder()
+      .setRandomUUID()
+      .user(user1)
+      .darkMode(true)
+      .contentLanguage(randomAlphanumeric(2))
+      .build());
 
     entityManager.persist(user2);
   }
@@ -58,7 +62,10 @@ class UserPreferencesServiceIT {
 
   @Test
   void should_update_user_preferences() throws EntityNotFoundException {
-    UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("cn").build();
+    UserPreferencesInput input = UserPreferencesInput.builder()
+      .darkMode(false)
+      .contentLanguage(randomAlphanumeric(2))
+      .build();
 
     UserPreferences actual = service.updateUserPreferences(this.userPreferences.getId(), input);
 
@@ -78,7 +85,10 @@ class UserPreferencesServiceIT {
 
   @Test
   void should_update_user_preferences_by_user_id() throws UserNotFoundException {
-    UserPreferencesInput input = UserPreferencesInput.builder().darkMode(false).contentLanguage("cn").build();
+    UserPreferencesInput input = UserPreferencesInput.builder()
+      .darkMode(false)
+      .contentLanguage(randomAlphanumeric(2))
+      .build();
 
     UserPreferences actual = service.updateUserPreferencesByUserId(this.userPreferences.getUser().getId(), input);
 

@@ -12,6 +12,7 @@ import static dev.kurama.api.core.hateoas.relations.RoleRelations.ROLES_REL;
 import static dev.kurama.api.core.message.RoleChangedMessageSender.ROLE_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
 
@@ -38,7 +39,7 @@ class RoleModelProcessorTest {
 
     authorityUtils = Mockito.mockStatic(AuthorityUtils.class);
 
-    model = RoleModel.builder().id(randomUUID()).name("TEST_ROLE").canLogin(false).coreRole(true).build();
+    model = RoleModel.builder().id(randomUUID()).name(randomAlphanumeric(8)).canLogin(false).coreRole(true).build();
   }
 
   @AfterEach

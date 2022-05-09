@@ -1,6 +1,7 @@
 package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.SERVICE_LOGS_PATH;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -45,7 +46,7 @@ class ServiceLogsControllerTest {
 
   @Test
   void should_get_service_logs() throws Exception {
-    ServiceLogsModel expected = ServiceLogsModel.builder().logs("Logs").build();
+    ServiceLogsModel expected = ServiceLogsModel.builder().logs(randomAlphanumeric(8)).build();
     when(facade.getServiceLogs()).thenReturn(expected);
 
     mockMvc.perform(get(SERVICE_LOGS_PATH))

@@ -9,6 +9,7 @@ import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.message.UserChangedMessageSender.USERS_CHANGED_CHANNEL;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.hateoas.MediaTypes.HAL_FORMS_JSON;
@@ -53,8 +54,8 @@ class UserModelAssemblerTest {
 
   @Test
   void should_map_to_paged_model_and_add_links() {
-    UserModel admin = UserModel.builder().id(randomUUID()).username("ADMIN").build();
-    UserModel mod = UserModel.builder().id(randomUUID()).username("MOD").build();
+    UserModel admin = UserModel.builder().id(randomUUID()).username(randomAlphanumeric(8)).build();
+    UserModel mod = UserModel.builder().id(randomUUID()).username(randomAlphanumeric(8)).build();
     PageImpl<UserModel> pagedUsers = new PageImpl<>(newArrayList(admin, mod), of(2, 2), 10);
 
     PagedModel<UserModel> actual = assembler.toPagedModel(pagedUsers);

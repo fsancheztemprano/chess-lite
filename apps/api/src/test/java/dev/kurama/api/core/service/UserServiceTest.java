@@ -104,7 +104,7 @@ class UserServiceTest {
 
   @Test
   void should_find_user_by_username() {
-    User expected = User.builder().setRandomUUID().username("username").build();
+    User expected = User.builder().setRandomUUID().username(randomAlphanumeric(8)).build();
     when(userRepository.findUserByUsername(expected.getUsername())).thenReturn(Optional.of(expected));
 
     Optional<User> actual = userService.findUserByUsername(expected.getUsername());
@@ -115,7 +115,7 @@ class UserServiceTest {
 
   @Test
   void should_find_user_by_email() {
-    User expected = User.builder().setRandomUUID().email("email@email.com").build();
+    User expected = User.builder().setRandomUUID().email(randomAlphanumeric(8)).build();
     when(userRepository.findUserByEmail(expected.getEmail())).thenReturn(Optional.of(expected));
 
     Optional<User> actual = userService.findUserByEmail(expected.getEmail());
@@ -142,9 +142,9 @@ class UserServiceTest {
 
     @Test
     void should_get_users_filtered() {
-      String search = "search";
+      String search = randomAlphanumeric(8);
       PageRequest pageable = PageRequest.of(1, 2, Sort.by(ASC, "id"));
-      Page<User> expected = new PageImpl<User>(newArrayList(User.builder().setRandomUUID().username("search").build()));
+      Page<User> expected = new PageImpl<User>(newArrayList(User.builder().setRandomUUID().username(search).build()));
       when(userRepository.findAll(any(Example.class), eq(pageable))).thenReturn(expected);
 
       Page<User> actual = userService.getAllUsers(pageable, search);
@@ -172,19 +172,19 @@ class UserServiceTest {
     @Test
     void should_throw_if_signup_is_locked() {
       when(globalSettingsService.getGlobalSettings()).thenReturn(GlobalSettings.builder().signupOpen(false).build());
-      assertThrows(SignupClosedException.class,
-        () -> userService.signup(SignupInput.builder().username("").email("").build()));
+      assertThrows(SignupClosedException.class, () -> userService.signup(
+        SignupInput.builder().username(randomAlphanumeric(8)).email(randomAlphanumeric(8)).build()));
     }
 
     @Test
     void should_signup() throws UserExistsException, SignupClosedException, ActivationTokenRecentException {
-      User expected = User.builder().setRandomUUID().email("email@email.com").build();
+      User expected = User.builder().setRandomUUID().email(randomAlphanumeric(8)).build();
       Role defaultRole = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       SignupInput input = SignupInput.builder()
-        .firstname("firstname")
-        .lastname("lastname")
-        .email("email@email.com")
-        .username("username")
+        .firstname(randomAlphanumeric(8))
+        .lastname(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
+        .username(randomAlphanumeric(8))
         .build();
       when(globalSettingsService.getGlobalSettings()).thenReturn(
         GlobalSettings.builder().signupOpen(true).defaultRole(defaultRole).build());
@@ -208,15 +208,15 @@ class UserServiceTest {
     void should_create_user() throws UserExistsException {
       Role role = Role.builder()
         .setRandomUUID()
-        .name("ROLE_NAME")
-        .authorities(newHashSet(Authority.builder().setRandomUUID().name("Auhtority").build()))
+        .name(randomAlphanumeric(8))
+        .authorities(newHashSet(Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build()))
         .build();
       UserInput input = UserInput.builder()
-        .username("username")
-        .email("email@email.com")
-        .firstname("firstname")
-        .lastname("lastname")
-        .password("passw0rd")
+        .username(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
+        .firstname(randomAlphanumeric(8))
+        .lastname(randomAlphanumeric(8))
+        .password(randomAlphanumeric(8))
         .credentialsExpired(false)
         .active(true)
         .locked(false)
@@ -255,15 +255,15 @@ class UserServiceTest {
     void should_create_user_with_default_role() throws UserExistsException {
       Role defaultRole = Role.builder()
         .setRandomUUID()
-        .name("ROLE_NAME")
-        .authorities(newHashSet(Authority.builder().setRandomUUID().name("Auhtority").build()))
+        .name(randomAlphanumeric(8))
+        .authorities(newHashSet(Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build()))
         .build();
       UserInput input = UserInput.builder()
-        .username("username")
-        .email("email@email.com")
-        .firstname("firstname")
-        .lastname("lastname")
-        .password("passw0rd")
+        .username(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
+        .firstname(randomAlphanumeric(8))
+        .lastname(randomAlphanumeric(8))
+        .password(randomAlphanumeric(8))
         .credentialsExpired(false)
         .active(true)
         .locked(false)
@@ -298,12 +298,12 @@ class UserServiceTest {
     void should_update_user_except_role_and_authority()
       throws UserNotFoundException, RoleNotFoundException, UserExistsException {
       UserInput input = UserInput.builder()
-        .username("username-A")
-        .password("passw0rd")
-        .firstname("firstname-A")
-        .lastname("lastname-A")
-        .email("email-A@email.com")
-        .profileImageUrl("image-url-A")
+        .username(randomAlphanumeric(8))
+        .password(randomAlphanumeric(8))
+        .firstname(randomAlphanumeric(8))
+        .lastname(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
+        .profileImageUrl(randomAlphanumeric(8))
         .active(false)
         .locked(true)
         .expired(false)
@@ -311,11 +311,11 @@ class UserServiceTest {
         .build();
       User expected = User.builder()
         .setRandomUUID()
-        .username("username-B")
-        .firstname("firstname-B")
-        .lastname("lastname-B")
-        .email("email-B@email.com")
-        .profileImageUrl("image-url-B")
+        .username(randomAlphanumeric(8))
+        .firstname(randomAlphanumeric(8))
+        .lastname(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
+        .profileImageUrl(randomAlphanumeric(8))
         .active(true)
         .locked(false)
         .expired(true)
@@ -347,13 +347,13 @@ class UserServiceTest {
 
     @Test
     void should_update_user_role() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
-      Role currentRole = Role.builder().setRandomUUID().name("ROLE_A").build();
-      Role targetRole = Role.builder().setRandomUUID().name("ROLE_B").build();
+      Role currentRole = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+      Role targetRole = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       UserInput input = UserInput.builder().roleId(targetRole.getId()).build();
       User expected = User.builder()
         .setRandomUUID()
-        .username("username")
-        .email("email@email.com")
+        .username(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
         .role(currentRole)
         .build();
       when(userRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
@@ -373,14 +373,14 @@ class UserServiceTest {
 
     @Test
     void should_update_user_authorities() throws UserNotFoundException, RoleNotFoundException, UserExistsException {
-      Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
-      Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
-      Authority authority3 = Authority.builder().setRandomUUID().name("authority3").build();
+      Authority authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+      Authority authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+      Authority authority3 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
       UserInput input = UserInput.builder().authorityIds(newHashSet(authority2.getId(), authority3.getId())).build();
       User expected = User.builder()
         .setRandomUUID()
-        .username("username")
-        .email("email@email.com")
+        .username(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
         .authorities(newHashSet(authority1))
         .build();
 
@@ -401,15 +401,19 @@ class UserServiceTest {
     @Test
     void should_not_update_user_if_nothing_has_changed()
       throws UserNotFoundException, RoleNotFoundException, UserExistsException {
-      Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
-      Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
-      Role role = Role.builder().setRandomUUID().name("ROLE_A").authorities(newHashSet(authority1, authority2)).build();
+      Authority authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+      Authority authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+      Role role = Role.builder()
+        .setRandomUUID()
+        .name(randomAlphanumeric(8))
+        .authorities(newHashSet(authority1, authority2))
+        .build();
       UserInput input = UserInput.builder()
-        .username("username")
-        .firstname("firstname")
-        .lastname("lastname")
-        .email("email@email.com")
-        .profileImageUrl("image-url")
+        .username(randomAlphanumeric(8))
+        .firstname(randomAlphanumeric(8))
+        .lastname(randomAlphanumeric(8))
+        .email(randomAlphanumeric(8))
+        .profileImageUrl(randomAlphanumeric(8))
         .active(true)
         .locked(false)
         .expired(true)
@@ -419,11 +423,11 @@ class UserServiceTest {
         .build();
       User expected = User.builder()
         .setRandomUUID()
-        .username("username")
-        .firstname("firstname")
-        .lastname("lastname")
-        .email("email@email.com")
-        .profileImageUrl("image-url")
+        .username(input.getUsername())
+        .firstname(input.getFirstname())
+        .lastname(input.getLastname())
+        .email(input.getEmail())
+        .profileImageUrl(input.getProfileImageUrl())
         .role(role)
         .authorities(role.getAuthorities())
         .active(true)
@@ -456,7 +460,7 @@ class UserServiceTest {
 
   @Test
   void request_activation_token_by_email() throws ActivationTokenRecentException, UserNotFoundException {
-    User expected = User.builder().setRandomUUID().email("email@localhost").build();
+    User expected = User.builder().setRandomUUID().email(randomAlphanumeric(8)).build();
     when(userRepository.findUserByEmail(expected.getEmail())).thenReturn(Optional.of(expected));
     doNothing().when(userService).requestActivationToken(expected);
 
@@ -472,10 +476,10 @@ class UserServiceTest {
     UserNotFoundException {
     AccountActivationInput input = AccountActivationInput.builder()
       .token(randomUUID())
-      .password("passw0rd")
-      .email("email@localhost")
+      .password(randomAlphanumeric(8))
+      .email(randomAlphanumeric(8))
       .build();
-    User expected = User.builder().setRandomUUID().email("email@localhost").build();
+    User expected = User.builder().setRandomUUID().email(input.getEmail()).build();
     ActivationToken token = ActivationToken.builder().setRandomUUID().created(new Date()).attempts(0).build();
     when(userRepository.findUserByEmail(input.getEmail())).thenReturn(Optional.of(expected));
     when(activationTokenService.findActivationToken(input.getToken())).thenReturn(token);
@@ -504,12 +508,20 @@ class UserServiceTest {
 
   @Test
   void reassign_to_role() {
-    Authority authority1 = Authority.builder().setRandomUUID().name("authority1").build();
-    Authority authority2 = Authority.builder().setRandomUUID().name("authority2").build();
-    Role currentRole = Role.builder().setRandomUUID().authorities(newHashSet(authority1)).name("ROLE_A").build();
-    Role targetRole = Role.builder().setRandomUUID().authorities(newHashSet(authority2)).name("ROLE_B").build();
-    User user1 = User.builder().setRandomUUID().username("user1").role(currentRole).build();
-    User user2 = User.builder().setRandomUUID().username("user2").role(currentRole).build();
+    Authority authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Authority authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
+    Role currentRole = Role.builder()
+      .setRandomUUID()
+      .authorities(newHashSet(authority1))
+      .name(randomAlphanumeric(8))
+      .build();
+    Role targetRole = Role.builder()
+      .setRandomUUID()
+      .authorities(newHashSet(authority2))
+      .name(randomAlphanumeric(8))
+      .build();
+    User user1 = User.builder().setRandomUUID().username(randomAlphanumeric(8)).role(currentRole).build();
+    User user2 = User.builder().setRandomUUID().username(randomAlphanumeric(8)).role(currentRole).build();
     ArrayList<User> users = newArrayList(user1, user2);
     when(userRepository.saveAllAndFlush(users)).thenReturn(users);
 
@@ -525,8 +537,8 @@ class UserServiceTest {
 
   @Test
   void should_throw_if_username_exists() {
-    String username = "username";
-    String email = "email";
+    String username = randomAlphanumeric(8);
+    String email = randomAlphanumeric(8);
     when(userRepository.findUserByUsername(username)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
     assertThrows(UndeclaredThrowableException.class,
@@ -535,8 +547,8 @@ class UserServiceTest {
 
   @Test
   void should_throw_if_email_exists() {
-    String username = "username";
-    String email = "email";
+    String username = randomAlphanumeric(8);
+    String email = randomAlphanumeric(8);
     when(userRepository.findUserByEmail(email)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
     assertThrows(UndeclaredThrowableException.class,

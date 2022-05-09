@@ -82,7 +82,7 @@ class JWTTokenProviderTest {
     User user = User.builder()
       .setRandomUUID()
       .username(randomAlphanumeric(8))
-      .email("email@localhost")
+      .email(randomAlphanumeric(8))
       .authorities(newHashSet(authority1, authority2))
       .build();
     UserPrincipal userPrincipal = UserPrincipal.builder().user(user).build();

@@ -2,6 +2,7 @@ package dev.kurama.api.core.service;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.any;
@@ -317,7 +318,7 @@ class DataInitializationServiceTest {
         .build();
       doReturn(0L).when(userRepository).count();
       doReturn(Optional.of(superAdminRole)).when(roleRepository).findByName(DefaultAuthority.SUPER_ADMIN_ROLE);
-      String encodedPassword = "encoded-password";
+      String encodedPassword = randomAlphanumeric(8);
       doReturn(encodedPassword).when(passwordEncoder).encode("123456");
 
       service.initializeAdminUser();

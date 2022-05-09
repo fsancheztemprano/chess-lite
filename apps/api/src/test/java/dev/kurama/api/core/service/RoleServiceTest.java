@@ -2,6 +2,7 @@ package dev.kurama.api.core.service;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,7 +53,7 @@ class RoleServiceTest {
 
   @Test
   void should_find_by_name() {
-    Role expected = Role.builder().setRandomUUID().name("ROLE_NAME").build();
+    Role expected = Role.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     when(roleRepository.findByName(expected.getName())).thenReturn(Optional.of(expected));
 
     Optional<Role> actual = roleService.findByName(expected.getName());

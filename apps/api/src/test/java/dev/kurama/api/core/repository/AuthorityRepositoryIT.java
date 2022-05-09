@@ -1,6 +1,7 @@
 package dev.kurama.api.core.repository;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
@@ -26,13 +27,13 @@ class AuthorityRepositoryIT {
 
   @Test
   void should_find_all_filtered_by_id() {
-    Authority authority1 = Authority.builder().setRandomUUID().name("auth1").build();
+    Authority authority1 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     entityManager.persist(authority1);
-    Authority authority2 = Authority.builder().setRandomUUID().name("auth2").build();
+    Authority authority2 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     entityManager.persist(authority2);
-    Authority authority3 = Authority.builder().setRandomUUID().name("auth3").build();
+    Authority authority3 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     entityManager.persist(authority3);
-    Authority authority4 = Authority.builder().setRandomUUID().name("auth4").build();
+    Authority authority4 = Authority.builder().setRandomUUID().name(randomAlphanumeric(8)).build();
     entityManager.persist(authority4);
     entityManager.flush();
 

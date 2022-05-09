@@ -14,6 +14,7 @@ import static dev.kurama.support.JsonUtils.asJsonString;
 import static dev.kurama.support.TestConstant.MOCK_MVC_HOST;
 import static dev.kurama.support.TestUtils.getAuthorizationHeader;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doReturn;
@@ -67,7 +68,7 @@ class UserPreferencesControllerIT {
     expected = UserPreferences.builder()
       .setRandomUUID()
       .darkMode(false)
-      .contentLanguage("es")
+      .contentLanguage(randomAlphanumeric(2))
       .user(User.builder().setRandomUUID().username(randomUUID()).build())
       .build();
   }

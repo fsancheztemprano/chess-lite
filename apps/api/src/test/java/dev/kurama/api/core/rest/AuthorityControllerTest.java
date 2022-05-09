@@ -3,6 +3,7 @@ package dev.kurama.api.core.rest;
 import static com.google.common.collect.Lists.newArrayList;
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHORITY_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -59,7 +60,7 @@ class AuthorityControllerTest {
 
   @Test
   void should_get_all_authorities() throws Exception {
-    AuthorityModel authority = AuthorityModel.builder().id(randomUUID()).name("AUTH").build();
+    AuthorityModel authority = AuthorityModel.builder().id(randomUUID()).name(randomAlphanumeric(8)).build();
     PagedModel<AuthorityModel> expected = PagedModel.of(newArrayList(authority), new PagedModel.PageMetadata(2, 1, 2));
 
     when(facade.getAll(any(Pageable.class))).thenReturn(expected);

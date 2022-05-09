@@ -1,5 +1,6 @@
 package dev.kurama.api.core.facade;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,7 +24,7 @@ class ServiceLogsFacadeTest {
 
   @Test
   void should_get_service_logs() {
-    ServiceLogsModel expected = ServiceLogsModel.builder().logs("logs-1").build();
+    ServiceLogsModel expected = ServiceLogsModel.builder().logs(randomAlphanumeric(8)).build();
     when(serviceLogsService.getServiceLogs()).thenReturn(expected);
 
     ServiceLogsModel actual = serviceLogsFacade.getServiceLogs();

@@ -64,10 +64,10 @@ class AuthenticationControllerIT {
   @Test
   void should_signup_new_user() throws Exception {
     SignupInput input = SignupInput.builder()
-      .firstname("firstname")
-      .lastname("lastname")
+      .firstname(randomAlphanumeric(8))
+      .lastname(randomAlphanumeric(8))
       .username(randomAlphanumeric(8))
-      .email("em@i.l")
+      .email(randomAlphanumeric(8))
       .build();
 
     mockMvc.perform(post(AUTHENTICATION_PATH + SIGNUP_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
@@ -122,7 +122,7 @@ class AuthenticationControllerIT {
 
   @Test
   void should_request_activation_token() throws Exception {
-    RequestActivationTokenInput input = RequestActivationTokenInput.builder().email("em@i.l").build();
+    RequestActivationTokenInput input = RequestActivationTokenInput.builder().email(randomAlphanumeric(8)).build();
 
     mockMvc.perform(post(AUTHENTICATION_PATH + TOKEN_PATH).accept(MediaTypes.HAL_FORMS_JSON_VALUE)
       .contentType(MediaType.APPLICATION_JSON)
@@ -134,7 +134,7 @@ class AuthenticationControllerIT {
   @Test
   void should_activate_account() throws Exception {
     AccountActivationInput input = AccountActivationInput.builder()
-      .email("em@i.l")
+      .email(randomAlphanumeric(8))
       .password(randomUUID())
       .token(randomUUID())
       .build();

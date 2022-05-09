@@ -52,10 +52,10 @@ class AuthenticationFacadeTest {
   @Test
   void signup_should_call_user_service_signup() throws UserExistsException, SignupClosedException {
     SignupInput input = SignupInput.builder()
-      .username("username")
-      .email("test@localhost")
-      .firstname("firstname")
-      .lastname("lastname")
+      .username(randomAlphanumeric(8))
+      .email(randomAlphanumeric(8))
+      .firstname(randomAlphanumeric(8))
+      .lastname(randomAlphanumeric(8))
       .build();
 
     facade.signup(input);
@@ -65,7 +65,10 @@ class AuthenticationFacadeTest {
 
   @Test
   void login_should_return_authenticated_user() throws RoleCanNotLoginException, UserNotFoundException {
-    LoginInput loginInput = LoginInput.builder().username("username").password("password").build();
+    LoginInput loginInput = LoginInput.builder()
+      .username(randomAlphanumeric(8))
+      .password(randomAlphanumeric(8))
+      .build();
     User user = User.builder().setRandomUUID().username(loginInput.getUsername()).build();
     String token = randomUUID();
     String refreshToken = randomUUID();
@@ -122,7 +125,7 @@ class AuthenticationFacadeTest {
 
   @Test
   void request_activation_token_should_call_service() throws ActivationTokenRecentException, UserNotFoundException {
-    String email = "email@localhost";
+    String email = randomAlphanumeric(8);
 
     facade.requestActivationToken(email);
 
@@ -134,9 +137,9 @@ class AuthenticationFacadeTest {
     throws ActivationTokenExpiredException, ActivationTokenNotFoundException, ActivationTokenUserMismatchException,
     UserNotFoundException {
     AccountActivationInput input = AccountActivationInput.builder()
-      .email("email@localhost")
-      .password("password")
-      .token("test_token")
+      .email(randomAlphanumeric(8))
+      .password(randomAlphanumeric(8))
+      .token(randomAlphanumeric(8))
       .build();
 
     facade.activateAccount(input);

@@ -1,6 +1,7 @@
 package dev.kurama.api.core.facade;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,7 +59,7 @@ class AuthorityFacadeTest {
 
   @Test
   void should_find_and_map_by_authority_id() throws EntityNotFoundException {
-    Authority authority = Authority.builder().name("test:auth").setRandomUUID().build();
+    Authority authority = Authority.builder().name(randomAlphanumeric(8)).setRandomUUID().build();
     AuthorityModel expected = AuthorityModel.builder().name(authority.getName()).id(authority.getId()).build();
     when(authorityService.findAuthorityById(authority.getId())).thenReturn(Optional.of(authority));
     when(authorityMapper.authorityToAuthorityModel(authority)).thenReturn(expected);

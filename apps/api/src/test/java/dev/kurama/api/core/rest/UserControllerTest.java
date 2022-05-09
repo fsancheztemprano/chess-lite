@@ -6,6 +6,7 @@ import static dev.kurama.api.core.constant.RestPathConstant.USER_PATH;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static dev.kurama.support.JsonUtils.asJsonString;
 import static java.lang.String.format;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -73,7 +74,7 @@ class UserControllerTest {
       .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
       .build();
 
-    user = UserModel.builder().id(randomUUID()).username("username").build();
+    user = UserModel.builder().id(randomUUID()).username(randomAlphanumeric(8)).build();
   }
 
 
@@ -113,7 +114,11 @@ class UserControllerTest {
   @Nested
   class CreateUserTests {
 
-    UserInput input = UserInput.builder().username("username").password("password").email("em@il").build();
+    UserInput input = UserInput.builder()
+      .username(randomAlphanumeric(8))
+      .password(randomAlphanumeric(8))
+      .email(randomAlphanumeric(8))
+      .build();
 
     @Test
     void should_create_a_user() throws Exception {
@@ -140,7 +145,11 @@ class UserControllerTest {
   @Nested
   class UpdateUserTests {
 
-    UserInput input = UserInput.builder().username("new_username").password("new_password").email("new_em@il").build();
+    UserInput input = UserInput.builder()
+      .username(randomAlphanumeric(8))
+      .password(randomAlphanumeric(8))
+      .email(randomAlphanumeric(8))
+      .build();
 
     @Test
     void should_update_a_user() throws Exception {
