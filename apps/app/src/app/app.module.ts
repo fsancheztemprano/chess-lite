@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,7 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app.component';
-import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { HttpErrorInterceptorProvider } from './interceptors/http-error.interceptor';
 import { AppInitializationService } from './services/app-initialization.service';
 import { GlobalErrorHandler } from './services/global-error-handler.service';
 import { SessionEffects } from './store/session.effects';
@@ -43,7 +43,7 @@ export function initializeApp(appInitService: AppInitializationService) {
       multi: true,
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    HttpErrorInterceptorProvider,
   ],
   bootstrap: [AppComponent],
 })

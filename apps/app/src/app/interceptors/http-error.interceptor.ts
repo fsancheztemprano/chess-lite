@@ -1,4 +1,11 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable, NgZone } from '@angular/core';
 import { ToasterService, ToastType } from '@app/ui/shared/app';
 import { Observable, tap } from 'rxjs';
@@ -31,3 +38,5 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     );
   }
 }
+
+export const HttpErrorInterceptorProvider = { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true };

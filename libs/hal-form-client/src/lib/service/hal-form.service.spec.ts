@@ -1,10 +1,10 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { noop } from 'rxjs';
 import { ContentType } from '../domain/domain';
 import { IResource, Resource } from '../domain/resource';
 import { HalFormClientModule } from '../hal-form-client.module';
 import { HalFormService } from './hal-form.service';
-import { noop } from 'rxjs';
 
 describe('HalFormService', () => {
   let httpTestingController: HttpTestingController;
@@ -37,7 +37,7 @@ describe('HalFormService', () => {
       service.initialize().subscribe({
         next: (resource) => {
           expect(resource).toBeTruthy();
-          expect(service['_rootResource'].value).toBeTruthy();
+          expect(service['_rootResource'].value.toJson()).toStrictEqual(mockResource);
           done();
         },
       });
