@@ -48,7 +48,7 @@ describe('HttpErrorInterceptor', () => {
         expect(toasterService.showToast).toHaveBeenCalledWith({
           title: 'Bad Request [400]',
           type: ToastType.ERROR,
-          message: 'Title <br> Time',
+          message: 'Title <br> 14/05/2022',
           override: { enableHtml: true },
         });
         done();
@@ -56,7 +56,7 @@ describe('HttpErrorInterceptor', () => {
     });
 
     httpTestingController.expectOne('/api/test').flush(
-      { title: 'Title', time: 'Time' },
+      { title: 'Title', time: '14/05/2022' },
       {
         status: 400,
         statusText: 'Bad Request',

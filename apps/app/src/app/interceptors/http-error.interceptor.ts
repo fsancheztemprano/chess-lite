@@ -10,7 +10,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { ToasterService, ToastType } from '@app/ui/shared/app';
 import { Observable, tap } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(private readonly ngZone: NgZone, private readonly toasterService: ToasterService) {}
 
