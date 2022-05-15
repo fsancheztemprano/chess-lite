@@ -125,15 +125,15 @@ jobs:
           title: "Application"
           disable-comment: ${{ github.event_name == 'push' }}    # Only post on pull request, not on commit
           report-paths: |
-            apps/api/target/site/jacoco-*/jacoco.xml
+            apps/api/target/site/jacoco-*t/jacoco.xml
             coverage/**/lcov.info
           enable-build-fail: false
           file-coverage-error-min: 60
-          file-coverage-warn-min: 80
+          file-coverage-warn-min: 70
           report-coverage-error-min: 50
-          report-coverage-warn-min: 70
+          report-coverage-warn-min: 60
           global-coverage-error-min: 40
-          global-coverage-warn-min: 60
+          global-coverage-warn-min: 50
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v3
