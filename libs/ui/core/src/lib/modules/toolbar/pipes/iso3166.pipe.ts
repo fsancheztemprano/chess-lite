@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'iso3166',
-})
+@Pipe({ name: 'iso3166' })
 export class Iso3166Pipe implements PipeTransform {
   transform(locale: string): unknown {
     switch (locale) {

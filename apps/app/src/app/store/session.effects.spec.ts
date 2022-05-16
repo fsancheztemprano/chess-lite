@@ -24,9 +24,9 @@ describe('AppInitializationService', () => {
       imports: [EffectsNgModule.forRoot([SessionEffects])],
     });
 
+    actions = TestBed.inject(Actions);
     sessionService = TestBed.inject(SessionService);
     sessionRepository = TestBed.inject(SessionRepository);
-    actions = TestBed.inject(Actions);
   });
 
   it('initialize$ effect should initialize session', () => {

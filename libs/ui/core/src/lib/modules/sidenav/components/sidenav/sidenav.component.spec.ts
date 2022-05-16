@@ -1,10 +1,11 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { stubSessionRepositoryProvider } from '@app/ui/shared/app';
-import { IsMobileModule, NgLetModule, stubSidenavServiceProvider } from '@app/ui/shared/core';
+import { IsMobileModule, NgLetModule, SidenavService, stubSidenavServiceProvider } from '@app/ui/shared/core';
+import { BehaviorSubject } from 'rxjs';
 import { SidenavComponent } from './sidenav.component';
 
 @Component({ selector: 'app-home-sidenav-item', template: '' })
@@ -23,6 +24,8 @@ describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
+  let sidenavService: SidenavService;
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -35,6 +38,8 @@ describe('SidenavComponent', () => {
       imports: [LayoutModule, MatSidenavModule, MatToolbarModule, IsMobileModule, NgLetModule],
       providers: [stubSidenavServiceProvider, stubSessionRepositoryProvider],
     }).compileComponents();
+
+    sidenavService = TestBed.inject(SidenavService);
   }));
 
   beforeEach(() => {
@@ -45,5 +50,28 @@ describe('SidenavComponent', () => {
 
   it('should compile', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should toggle in sidenav service', () => {
+    const spy = jest.spyOn(component.sidenavService, 'toggle');
+    component.sidenav = {
+      get mode(): string {
+        return 'over';
+      },
+    } as never;
+
+    component.toggleSidenav();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should close in sidenav service', () => {
+    const toggle = jest.fn();
+    component.sidenav = { toggle } as unknown as MatSidenav;
+    expect(component.sidenav.toggle).not.toHaveBeenCalled();
+
+    (sidenavService.isOpen$ as unknown as BehaviorSubject<boolean>).next(false);
+
+    expect(component.sidenav.toggle).toHaveBeenCalled();
   });
 });
