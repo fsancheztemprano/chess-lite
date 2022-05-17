@@ -513,7 +513,7 @@
                   <goal>yarn</goal>
                 </goals>
                 <configuration>
-                  <arguments>run pact:consumer --codeCoverage</arguments>
+                  <arguments>run pact:consumer</arguments>
                 </configuration>
               </execution>
             </executions>

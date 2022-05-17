@@ -19,6 +19,7 @@ export class SidenavItemComponent {
   constructor(public readonly router: Router) {}
 
   optionClick(option: MenuData, $event: MouseEvent): void {
+    this.toggleSidenav.emit();
     if (option.callback && !option.route?.length) {
       $event.stopPropagation();
       $event.preventDefault();

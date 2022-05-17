@@ -13,9 +13,9 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdministrationSidenavItemComponent {
-  @Output() toggleSidenav = new EventEmitter();
+  @Output() readonly toggleSidenav = new EventEmitter();
 
-  items: MenuData[] = [
+  public readonly items: MenuData[] = [
     {
       icon: 'space_dashboard',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.dashboard'),

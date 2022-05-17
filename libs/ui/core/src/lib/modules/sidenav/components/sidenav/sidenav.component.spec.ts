@@ -1,10 +1,13 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { stubSessionRepositoryProvider } from '@app/ui/shared/app';
 import { IsMobileModule, NgLetModule, SidenavService, stubSidenavServiceProvider } from '@app/ui/shared/core';
+import { getTranslocoModule } from '@app/ui/testing';
 import { BehaviorSubject } from 'rxjs';
 import { SidenavComponent } from './sidenav.component';
 
@@ -35,7 +38,16 @@ describe('SidenavComponent', () => {
         StubAdministrationSidenavItemComponent,
         StubAuthenticationSidenavItemComponent,
       ],
-      imports: [LayoutModule, MatSidenavModule, MatToolbarModule, IsMobileModule, NgLetModule],
+      imports: [
+        LayoutModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule,
+        IsMobileModule,
+        NgLetModule,
+        getTranslocoModule(),
+        NoopAnimationsModule,
+      ],
       providers: [stubSidenavServiceProvider, stubSessionRepositoryProvider],
     }).compileComponents();
 
@@ -50,6 +62,22 @@ describe('SidenavComponent', () => {
 
   it('should compile', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render home sidenav item', () => {
+    expect(fixture.nativeElement.querySelector('app-home-sidenav-item')).toBeTruthy();
+  });
+
+  it('should render user settings sidenav item', () => {
+    expect(fixture.nativeElement.querySelector('app-user-settings-sidenav-item')).toBeTruthy();
+  });
+
+  it('should render administration sidenav item', () => {
+    expect(fixture.nativeElement.querySelector('app-administration-sidenav-item')).toBeTruthy();
+  });
+
+  it('should render authentication sidenav item', () => {
+    expect(fixture.nativeElement.querySelector('app-authentication-sidenav-item')).toBeTruthy();
   });
 
   it('should toggle in sidenav service', () => {

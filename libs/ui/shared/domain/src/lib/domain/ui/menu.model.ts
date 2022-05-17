@@ -6,7 +6,7 @@ export interface MenuData {
   subtitle$?: Observable<string>;
   disabled$?: Observable<boolean>;
   visible$?: Observable<boolean>;
-  callback?: (parameters?: never) => void;
-  parameters?: never;
+  callback?: (parameters?: { [key: string]: unknown }) => void;
+  parameters?: { [key: string]: unknown };
   route?: string[] | string | null;
 }
