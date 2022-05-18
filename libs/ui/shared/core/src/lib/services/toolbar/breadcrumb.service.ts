@@ -94,8 +94,8 @@ export class BreadcrumbService {
 }
 
 export interface Breadcrumb {
-  title$: Observable<string> | null;
-  url: string;
+  title$?: Observable<string> | null;
+  url?: string;
   icon?: string;
   parentOffset?: number;
 }

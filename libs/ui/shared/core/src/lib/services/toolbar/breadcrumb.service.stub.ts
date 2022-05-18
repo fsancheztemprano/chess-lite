@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { BreadcrumbService } from './breadcrumb.service';
+import { BehaviorSubject, of } from 'rxjs';
+import { Breadcrumb, BreadcrumbService } from './breadcrumb.service';
 
 @Injectable({ providedIn: 'root' })
 export class StubBreadcrumbService implements Partial<BreadcrumbService> {
-  getBreadcrumbs$ = () => of([]);
+  breadcrumbs = new BehaviorSubject<Breadcrumb[]>([]);
+  getBreadcrumbs$ = () => this.breadcrumbs.asObservable();
   getShowBreadCrumbs$ = () => of(true);
 }
 
