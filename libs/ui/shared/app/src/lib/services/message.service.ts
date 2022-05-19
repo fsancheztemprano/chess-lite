@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ApplicationMessage, HotSocket, TokenKeys } from '@app/ui/shared/domain';
+import { ApplicationMessage, TokenKeys } from '@app/ui/shared/domain';
 import { RxStomp } from '@stomp/rx-stomp';
 import { RxStompConfig } from '@stomp/rx-stomp/esm6/rx-stomp-config';
 import { filter, from, Observable, of, share } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { filterNulls } from '../utils/filter-null.rxjs.pipe';
+import { HotSocket } from '../utils/hot-socket.model';
 
-const prepareBrokerURL = (path: string): string => {
+const brokerURL = (path: string): string => {
   const url = new URL(path, window.location.href);
   url.protocol = url.protocol.replace('http', 'ws');
   return url.href;
@@ -15,13 +16,16 @@ const prepareBrokerURL = (path: string): string => {
 @Injectable({ providedIn: 'root' })
 export class MessageService extends RxStomp {
   private readonly RX_STOMP_CONFIG: RxStompConfig = {
-    brokerURL: prepareBrokerURL('/websocket'),
+    brokerURL: brokerURL('/websocket'),
     connectionTimeout: 10000,
     heartbeatIncoming: 0,
     heartbeatOutgoing: 20000,
     reconnectDelay: 1000, // Wait in milliseconds before attempting auto reconnect
   };
-  private multicasts: Map<string, Observable<ApplicationMessage>> = new Map<string, Observable<ApplicationMessage>>();
+  private readonly multicasts: Map<string, Observable<ApplicationMessage>> = new Map<
+    string,
+    Observable<ApplicationMessage>
+  >();
 
   constructor() {
     super();
@@ -33,19 +37,19 @@ export class MessageService extends RxStomp {
     this.activate();
   }
 
-  public multicast<T extends ApplicationMessage = ApplicationMessage>(destination: string): Observable<T> {
-    if (!this.multicasts.has(destination)) {
-      this.multicasts.set(
-        destination,
-        this.watch(destination).pipe(
-          share(),
-          filter((message) => !!message?.body),
-          map((message) => JSON.parse(message.body)),
-          filterNulls(),
-        ),
-      );
+  public listen<T extends ApplicationMessage = ApplicationMessage>(channel: string): Observable<T> {
+    return this.watch(channel).pipe(
+      filter((message) => !!message?.body),
+      map((message) => JSON.parse(message.body)),
+      filterNulls(),
+    );
+  }
+
+  public multicast<T extends ApplicationMessage = ApplicationMessage>(channel: string): Observable<T> {
+    if (!this.multicasts.has(channel)) {
+      this.multicasts.set(channel, this.listen(channel).pipe(share()));
     }
-    return this.multicasts.get(destination) as Observable<T>;
+    return this.multicasts.get(channel) as Observable<T>;
   }
 
   public disconnect(): Observable<void> {
@@ -64,7 +68,11 @@ export class MessageService extends RxStomp {
     });
   }
 
-  public hotSocket(channel: string, size = 1) {
-    return new HotSocket(this.multicast(channel), size);
+  public listener<T extends ApplicationMessage = ApplicationMessage>(channel: string, size = 1): HotSocket<T> {
+    return new HotSocket<T>(this.listen(channel), size);
+  }
+
+  public multicaster<T extends ApplicationMessage = ApplicationMessage>(channel: string, size = 1): HotSocket<T> {
+    return new HotSocket<T>(this.multicast(channel), size);
   }
 }

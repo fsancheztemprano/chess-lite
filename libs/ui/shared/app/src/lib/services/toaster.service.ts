@@ -23,24 +23,28 @@ export class ToasterService {
     return this._toastrService;
   }
 
-  showToast(toast: IToastModel): ActiveToast<unknown> {
+  showToast(toast?: IToastModel): ActiveToast<unknown> {
     toast = toast || {};
     toast.type = toast.type || ToastType.INFO;
     switch (toast?.type) {
+      case ToastType.LINK:
+        return this.toastrService.show(
+          `<a download href='${toast.link}' target='_blank'>${toast.linkCaption}</a>`,
+          toast.title,
+          { ...this.toastrConfig, ...toast.override, enableHtml: true },
+          toast.type,
+        );
       case ToastType.ERROR:
       case ToastType.INFO:
       case ToastType.SUCCESS:
       case ToastType.WARNING:
+      default:
         return this.toastrService.show(
           toast.message,
           toast.title,
-          (toast.override && { ...this.toastrConfig, ...toast.override }) || this.toastrConfig,
+          { ...this.toastrConfig, ...toast.override },
           toast.type || ToastType.INFO,
         );
-      case ToastType.LINK:
-        return this.showLinkToast(toast);
-      default:
-        return this.toastrService.show();
     }
   }
 
@@ -60,8 +64,7 @@ export class ToasterService {
     return this.showToast({ ...toast, type: ToastType.SUCCESS });
   }
 
-  private showLinkToast(toast: IToastModel) {
-    const message = `<a download href='${toast.link}' target='_blank'>${toast.linkCaption}</a>`;
-    return this.toastrService.show(message, toast.title, toast.override, toast.type);
+  showLinkToast(toast: IToastModel): ActiveToast<unknown> {
+    return this.showToast({ ...toast, type: ToastType.LINK });
   }
 }
