@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IResource, Resource } from '../domain/resource';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, take } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Link } from '../domain/link';
+import { IResource, Resource } from '../domain/resource';
 import { Template } from '../domain/template';
 
 @Injectable({ providedIn: 'root' })
@@ -13,59 +13,63 @@ export class HalFormResourceService {
     this._rootResource.next(new Resource(iResource));
   }
 
-  public getResource(): Observable<Resource> {
+  public get resource$(): Observable<Resource> {
     return this._rootResource.asObservable();
   }
 
-  public getResourceOnce(): Observable<Resource> {
-    return this.getResource().pipe(first());
+  public get resource(): Resource {
+    return this._rootResource.getValue();
+  }
+
+  public get resourceOnce$(): Observable<Resource> {
+    return this.resource$.pipe(take(1));
   }
 
   public hasLink(link?: string): Observable<boolean> {
-    return this.getResource().pipe(map((resource) => resource.hasLink(link)));
+    return this.resource$.pipe(map((resource) => resource.hasLink(link)));
   }
 
   public getLink(link?: string): Observable<Link | null> {
-    return this.getResource().pipe(map((resource) => resource.getLink(link)));
+    return this.resource$.pipe(map((resource) => resource.getLink(link)));
   }
 
   public getLinkOrThrow(link?: string, errorMessage?: string | Error): Observable<Link> {
-    return this.getResource().pipe(map((resource) => resource.getLinkOrThrow(link, errorMessage)));
+    return this.resource$.pipe(map((resource) => resource.getLinkOrThrow(link, errorMessage)));
   }
 
   public hasEmbedded(embedded: string): Observable<boolean> {
-    return this.getResource().pipe(map((resource) => resource.hasEmbedded(embedded)));
+    return this.resource$.pipe(map((resource) => resource.hasEmbedded(embedded)));
   }
 
   public hasEmbeddedObject(embedded: string): Observable<boolean> {
-    return this.getResource().pipe(map((resource) => resource.hasEmbeddedObject(embedded)));
+    return this.resource$.pipe(map((resource) => resource.hasEmbeddedObject(embedded)));
   }
 
   public hasEmbeddedCollection(embedded: string): Observable<boolean> {
-    return this.getResource().pipe(map((resource) => resource.hasEmbeddedCollection(embedded)));
+    return this.resource$.pipe(map((resource) => resource.hasEmbeddedCollection(embedded)));
   }
 
   public getEmbedded<T = Resource>(embedded: string): Observable<T | T[] | null> {
-    return this.getResource().pipe(map((resource) => resource.getEmbedded<T>(embedded)));
+    return this.resource$.pipe(map((resource) => resource.getEmbedded<T>(embedded)));
   }
 
   public getEmbeddedObject<T = Resource>(embedded: string): Observable<T> {
-    return this.getResource().pipe(map((resource) => resource.getEmbeddedObject<T>(embedded)));
+    return this.resource$.pipe(map((resource) => resource.getEmbeddedObject<T>(embedded)));
   }
 
   public getEmbeddedCollection<T = Resource>(embedded: string): Observable<T[]> {
-    return this.getResource().pipe(map((resource) => resource.getEmbeddedCollection<T>(embedded)));
+    return this.resource$.pipe(map((resource) => resource.getEmbeddedCollection<T>(embedded)));
   }
 
   public getTemplate(template?: string): Observable<Template | null> {
-    return this.getResource().pipe(map((resource) => resource.getTemplate(template)));
+    return this.resource$.pipe(map((resource) => resource.getTemplate(template)));
   }
 
   public getTemplateOrThrow(template?: string): Observable<Template> {
-    return this.getResource().pipe(map((resource) => resource.getTemplateOrThrow(template)));
+    return this.resource$.pipe(map((resource) => resource.getTemplateOrThrow(template)));
   }
 
   public hasTemplate(template?: string): Observable<boolean> {
-    return this.getResource().pipe(map((resource) => resource.hasTemplate(template)));
+    return this.resource$.pipe(map((resource) => resource.hasTemplate(template)));
   }
 }

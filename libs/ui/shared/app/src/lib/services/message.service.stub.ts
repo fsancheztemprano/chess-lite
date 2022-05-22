@@ -1,9 +1,11 @@
-import { ApplicationMessage, UserChangedMessage } from '@app/ui/shared/domain';
-import { EMPTY, Observable, of, Subject } from 'rxjs';
+import { ApplicationMessage, UserChangedMessage, UserPreferencesChangedMessage } from '@app/ui/shared/domain';
+import { EMPTY, noop, Observable, of, Subject } from 'rxjs';
 import { MessageService } from './message.service';
 
 export class StubMessageService implements Partial<MessageService> {
+  connect = noop;
   public userChangedMessageSubject = new Subject<UserChangedMessage>();
+  public userPreferencesChangedMessageSubject = new Subject<UserPreferencesChangedMessage>();
   public userListChangedMessageSubject = new Subject<UserChangedMessage>();
   disconnect = () => of(void 0);
 
@@ -16,7 +18,9 @@ export class StubMessageService implements Partial<MessageService> {
       case `/ami/user`:
         return this.userListChangedMessageSubject.asObservable();
       case `/ami/user/u1`:
-        return this.userListChangedMessageSubject.asObservable();
+        return this.userChangedMessageSubject.asObservable();
+      case `/ami/user-preferences/up1`:
+        return this.userPreferencesChangedMessageSubject.asObservable();
       default:
         return EMPTY;
     }

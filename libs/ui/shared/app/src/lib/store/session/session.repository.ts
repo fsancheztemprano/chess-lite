@@ -7,8 +7,10 @@ import { SessionProps } from './session.store.model';
 
 @Injectable({ providedIn: 'root' })
 export class SessionRepository {
-  user$: Observable<User | undefined> = sessionStore.pipe(select((core) => core.user));
-  userPreferences$: Observable<UserPreferences | undefined> = sessionStore.pipe(select((core) => core.userPreferences));
+  public readonly user$: Observable<User | undefined> = sessionStore.pipe(select((core) => core.user));
+  public readonly userPreferences$: Observable<UserPreferences | undefined> = sessionStore.pipe(
+    select((core) => core.userPreferences),
+  );
 
   public updateSession(session: SessionProps) {
     sessionStore.update(

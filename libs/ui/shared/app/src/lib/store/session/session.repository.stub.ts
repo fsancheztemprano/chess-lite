@@ -8,11 +8,11 @@ export class StubSessionRepository implements Partial<SessionRepository> {
   user$ = new BehaviorSubject<User | undefined>(undefined);
   userPreferences$ = new BehaviorSubject<UserPreferences | undefined>(undefined);
 
-  updateUser(user: User | undefined) {
+  _updateUser(user: User | undefined) {
     this.user$.next(user);
   }
 
-  updateUserPreferences(userPreferences: UserPreferences) {
+  _updateUserPreferences(userPreferences: UserPreferences) {
     this.userPreferences$.next(userPreferences);
   }
 }

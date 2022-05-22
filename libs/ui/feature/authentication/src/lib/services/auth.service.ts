@@ -38,6 +38,6 @@ export class AuthService {
   }
 
   public signup(body: SignupInput): Observable<User | null> {
-    return this.halFormService.getResource().pipe(submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, { body }));
+    return this.halFormService.resource$.pipe(submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, { body }));
   }
 }
