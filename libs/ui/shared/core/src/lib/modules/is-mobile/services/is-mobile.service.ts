@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, share } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,7 @@ import { map, shareReplay } from 'rxjs/operators';
 export class IsMobileService {
   private readonly isHandset: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
-    shareReplay(),
+    share(),
   );
 
   constructor(private readonly breakpointObserver: BreakpointObserver) {}

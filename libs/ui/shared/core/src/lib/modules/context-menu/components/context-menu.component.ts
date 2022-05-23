@@ -19,8 +19,7 @@ export class ContextMenuComponent {
 
   optionClick(option: MenuData, $event: MouseEvent): void {
     if (option.callback && !option.route?.length) {
-      $event.stopPropagation();
-      $event.preventDefault();
+      this.preventNavigation($event);
       option.parameters !== undefined ? option.callback(option.parameters) : option.callback();
     }
   }

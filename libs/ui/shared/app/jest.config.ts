@@ -14,7 +14,7 @@ export default {
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage/libs/shared/app',
+        outputDirectory: 'coverage/libs/ui/shared/app',
         outputName: 'jest-junit.xml',
       },
     ],

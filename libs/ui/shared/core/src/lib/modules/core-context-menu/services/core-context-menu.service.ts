@@ -13,7 +13,7 @@ export class CoreContextMenuService {
     return this.coreContextMenuRepository.coreContextMenuOptions$;
   }
 
-  setOptions(options?: MenuData[]): void {
+  set options(options: MenuData[]) {
     this.coreContextMenuRepository.setOptions(options);
   }
 

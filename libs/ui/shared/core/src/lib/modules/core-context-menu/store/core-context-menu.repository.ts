@@ -17,7 +17,9 @@ const coreContextMenuStore = createStore(
 
 @Injectable({ providedIn: 'root' })
 export class CoreContextMenuRepository {
-  coreContextMenuOptions$: Observable<MenuData[]> = coreContextMenuStore.pipe(select((core) => core.menuOptions));
+  public readonly coreContextMenuOptions$: Observable<MenuData[]> = coreContextMenuStore.pipe(
+    select((core) => core.menuOptions),
+  );
 
   public setOptions(options?: MenuData[]): void {
     coreContextMenuStore.update(setProps({ menuOptions: options || [] }));

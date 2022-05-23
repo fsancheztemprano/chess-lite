@@ -31,7 +31,7 @@ export class RoleManagementTableComponent implements OnDestroy {
     private readonly coreContextMenuService: CoreContextMenuService,
     private readonly translocoService: TranslocoService,
   ) {
-    this.coreContextMenuService.setOptions([
+    this.coreContextMenuService.options = [
       {
         title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.add`),
         icon: 'add',
@@ -40,7 +40,7 @@ export class RoleManagementTableComponent implements OnDestroy {
           map((rolePage: RolePage) => !rolePage.hasTemplate(RoleManagementRelations.ROLE_CREATE_REL)),
         ),
       },
-    ]);
+    ];
   }
 
   @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {

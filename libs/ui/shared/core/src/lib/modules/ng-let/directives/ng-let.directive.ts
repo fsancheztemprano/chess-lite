@@ -1,27 +1,56 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/member-ordering */
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
-export class NgLetContext {
-  $implicit: any = null;
-  ngLet: any = null;
+interface NgLetContext<T> {
+  ngLet: T;
+  $implicit: T;
 }
 
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[ngLet]' })
-export class NgLetDirective implements OnInit {
-  private _context = new NgLetContext();
+export class NgLetDirective<T> {
+  private context: NgLetContext<T | null> = { ngLet: null, $implicit: null };
+  private hasView = false;
+
+  // @formatter:off
+  constructor(
+    private readonly viewContainer: ViewContainerRef,
+    private readonly templateRef: TemplateRef<NgLetContext<T>>,
+  ) {}
+  // @formatter:on
 
   @Input()
-  set ngLet(value: any) {
-    this._context.$implicit = this._context.ngLet = value;
+  set ngLet(value: T) {
+    this.context.$implicit = this.context.ngLet = value;
+    if (!this.hasView) {
+      this.viewContainer.createEmbeddedView(this.templateRef, this.context);
+      this.hasView = true;
+    }
   }
 
-  constructor(
-    private readonly _viewContainerRef: ViewContainerRef,
-    private readonly _templateRef: TemplateRef<NgLetContext>, // @formatter:off
-  ) {} // @formatter:on
+  public static ngLetUseIfTypeGuard: void;
+  /** @internal */
 
-  ngOnInit() {
-    this._viewContainerRef.createEmbeddedView(this._templateRef, this._context);
+  /**
+   * Assert the correct type of the expression bound to the `NgLet` input within the template.
+   *
+   * The presence of this static field is a signal to the Ivy template type check compiler that
+   * when the `NgLet` structural directive renders its template, the type of the expression bound
+   * to `NgLet` should be narrowed in some way. For `NgLet`, the binding expression itself is used to
+   * narrow its type, which allows the strictNullChecks feature of TypeScript to work with `NgLet`.
+   */
+  static ngTemplateGuard_ngLet: 'binding';
+
+  /**
+   * Asserts the correct type of the context for the template that `NgLet` will render.
+   *
+   * The presence of this method is a signal to the Ivy template type-check compiler that the
+   * `NgLet` structural directive renders its template with a specific context type.
+   */
+  static ngTemplateContextGuard<T>(
+    dir: NgLetDirective<T>,
+    ctx: any,
+  ): ctx is NgLetContext<Exclude<T, false | 0 | '' | null | undefined>> {
+    return true;
   }
 }
