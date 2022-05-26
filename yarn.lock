@@ -2178,10 +2178,10 @@
   resolved "https://registry.yarnpkg.com/@ngneat/elf-entities/-/elf-entities-4.3.1.tgz#d1b9465dccff1c6c1e28b1de10787aaac8e1a244"
   integrity sha512-CoCWgO8XsHN9bJOQHC517ZbYEEmRQrPEgMMoVrV210U9Q43/yfyEeRoyt2AOvw1PB8d5/I+/VqwHKVxJkuRFBA==
 
-"@ngneat/elf-persist-state@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@ngneat/elf-persist-state/-/elf-persist-state-1.1.1.tgz#ccd5f15128000a816db09b34e26d8d97d4451a04"
-  integrity sha512-19riZeAul29RDpoizeFYJtRddVUiTVGZLKivhZPVzeezLuH6dJTpkd1kLy3jGhlS6UOQX4NKJUl72HqYGiF0zA==
+"@ngneat/elf-persist-state@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf-persist-state/-/elf-persist-state-1.1.2.tgz#3625d17ad2d88fe9518c5fd67247a002279d0eb0"
+  integrity sha512-3JDyU45OFGO1iybUk+wZKU6axezQfMNdkERAvJb7k1yPVjhEy7uKKYgfkxDKPvf+D7gXzARAIoK/5inCL2BofA==
 
 "@ngneat/elf@2.0.0":
   version "2.0.0"
