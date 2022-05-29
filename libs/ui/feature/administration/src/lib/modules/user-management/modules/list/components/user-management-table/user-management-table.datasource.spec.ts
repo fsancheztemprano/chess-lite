@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { stubMessageServiceProvider } from '@app/ui/shared/app';
-import { stubSearchServiceProvider } from '@app/ui/shared/core';
 import { stubUserManagementServiceProvider } from '../../../../services/user-management.service.stub';
 import { UserManagementTableDatasource } from './user-management-table.datasource';
 
@@ -9,7 +8,7 @@ describe('UserManagementTableDatasource', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubUserManagementServiceProvider, stubMessageServiceProvider, stubSearchServiceProvider],
+      providers: [stubUserManagementServiceProvider, stubMessageServiceProvider],
     });
     service = TestBed.inject(UserManagementTableDatasource);
   });

@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { CoreContextMenuModule, IsMobileModule } from '@app/ui/shared/core';
+import { CoreContextMenuModule, IsMobileModule, NgLetModule, RouteUpButtonComponentModule } from '@app/ui/shared/core';
 import { CoreCardViewComponent } from './components/core-card-view/core-card-view.component';
 
 @NgModule({
@@ -19,6 +19,8 @@ import { CoreCardViewComponent } from './components/core-card-view/core-card-vie
     MatTabsModule,
     CoreContextMenuModule,
     IsMobileModule,
+    RouteUpButtonComponentModule,
+    NgLetModule,
   ],
   exports: [CoreCardViewComponent],
 })

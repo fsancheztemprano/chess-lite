@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IsMobileService } from '../services/is-mobile.service';
+import { IsMobileService } from './is-mobile.service';
 
-@Pipe({
-  name: 'isMobile',
-})
+@Pipe({ name: 'isMobile' })
 export class IsMobilePipe implements PipeTransform {
   constructor(private readonly isMobileService: IsMobileService) {}
 

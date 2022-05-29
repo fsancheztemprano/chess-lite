@@ -1,10 +1,6 @@
-<mat-card>
-  <mat-card-header>
-    <ng-container *ngIf="showNavigationLink">
-      <a *ngIf="navigationLink$ | async as link" [routerLink]="link" mat-icon-button aria-label="Options">
-        <mat-icon [style]="'transform: scaleY(' + iconScaleY + ')'">{{ icon }}</mat-icon>
-      </a>
-    </ng-container>
+<mat-card *ngLet="'' | isMobile | async as isMobile" [ngClass]="{ isMobile: isMobile }">
+  <mat-card-header *ngIf="!isMobile">
+    <app-route-up-button></app-route-up-button>
     <div class="header-title" [style]="'flex-grow:' + titleRatio">
       {{ title }}
     </div>
@@ -24,7 +20,7 @@
         </ng-container>
       </nav>
     </ng-container>
-    <app-core-context-menu *ngIf="showContextMenu && ('' | isMobile | async) === false"></app-core-context-menu>
+    <app-core-context-menu *ngIf="('' | isMobile | async) === false"></app-core-context-menu>
   </mat-card-header>
   <mat-card-content>
     <ng-content></ng-content>

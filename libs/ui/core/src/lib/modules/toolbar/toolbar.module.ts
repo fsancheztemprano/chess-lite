@@ -8,7 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { CoreContextMenuModule, IsMobileModule } from '@app/ui/shared/core';
+import { CoreContextMenuModule, IsMobileModule, NgLetModule, RouteUpButtonComponentModule } from '@app/ui/shared/core';
 import { SubscribeModule } from '@ngneat/subscribe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -40,7 +40,9 @@ import { Iso3166Pipe } from './pipes/iso3166.pipe';
     MatInputModule,
     SubscribeModule,
     RouterModule,
+    NgLetModule,
     CoreContextMenuModule,
+    RouteUpButtonComponentModule,
   ],
   exports: [ToolbarComponent],
 })

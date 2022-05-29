@@ -28,8 +28,8 @@ export class NgLetDirective<T> {
     }
   }
 
-  public static ngLetUseIfTypeGuard: void;
   /** @internal */
+  public static ngLetUseIfTypeGuard: void;
 
   /**
    * Assert the correct type of the expression bound to the `NgLet` input within the template.

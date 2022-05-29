@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { IsMobileService } from '../services/is-mobile.service';
 import { IsMobilePipe } from './is-mobile.pipe';
+import { IsMobileService } from './is-mobile.service';
 
 describe('IsMobilePipe', () => {
   let pipe: IsMobilePipe;

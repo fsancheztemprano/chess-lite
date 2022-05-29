@@ -1,0 +1,3 @@
+<a mat-button *ngIf="navigationLink$ | async as link" [routerLink]="link" mat-icon-button aria-label="Options">
+  <mat-icon [style]="'transform: scaleY(' + iconScaleY + ')'">{{ icon }}</mat-icon>
+</a>

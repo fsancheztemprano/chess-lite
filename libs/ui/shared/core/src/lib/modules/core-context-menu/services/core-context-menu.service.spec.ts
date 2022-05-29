@@ -1,14 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { firstValueFrom } from 'rxjs';
 import { CoreContextMenuService } from './core-context-menu.service';
-import { StubCoreContextMenuService } from './core-context-menu.service.stub';
 
 describe('ContextMenuService', () => {
   let service: CoreContextMenuService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [StubCoreContextMenuService],
-    });
+    TestBed.configureTestingModule({});
     service = TestBed.inject(CoreContextMenuService);
   });
 
@@ -38,11 +36,27 @@ describe('ContextMenuService', () => {
       },
     ];
 
-    service.resetOptions();
+    service.reset();
 
     service.options$.subscribe((menuOptions) => {
       expect([]).toEqual(menuOptions);
       done();
+    });
+  });
+
+  describe('show context menu', () => {
+    it('should set context menu', () => {
+      expect(service['_showMenu$'].value).toBeFalse();
+
+      service.showMenu = true;
+
+      expect(service['_showMenu$'].value).toBeTrue();
+    });
+
+    it('should get context menu', async () => {
+      service.showMenu = true;
+
+      return expect(firstValueFrom(service.showMenu$)).resolves.toBeTrue();
     });
   });
 });

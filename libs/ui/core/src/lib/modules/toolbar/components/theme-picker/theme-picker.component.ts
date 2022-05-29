@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThemeRepository, updateDarkMode } from '@app/ui/shared/core';
 import { Actions } from '@ngneat/effects-ng';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
@@ -12,11 +11,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemePickerComponent {
-  public readonly darkMode$ = this.themeRepository.darkMode$.pipe(untilDestroyed(this));
+  constructor(public readonly themeRepository: ThemeRepository, private readonly actions: Actions) {}
 
-  constructor(private readonly themeRepository: ThemeRepository, private readonly actions: Actions) {}
-
-  onToggle($event: MatSlideToggleChange) {
-    this.actions.dispatch(updateDarkMode({ darkMode: $event.checked }));
+  setDarkMode(darkMode: boolean) {
+    this.actions.dispatch(updateDarkMode({ darkMode }));
   }
 }

@@ -4,26 +4,26 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SearchService, stubSearchServiceProvider } from '@app/ui/shared/core';
+import { SearchService } from '@app/ui/shared/core';
 import { SubscribeModule } from '@ngneat/subscribe';
-import { of } from 'rxjs';
 import { SearchBarComponent } from './search-bar.component';
 
 describe('SearchBarComponent', () => {
   let component: SearchBarComponent;
   let fixture: ComponentFixture<SearchBarComponent>;
+  let searchService: SearchService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SubscribeModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule, MatIconModule],
       declarations: [SearchBarComponent],
-      providers: [stubSearchServiceProvider],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchBarComponent);
     component = fixture.componentInstance;
+    searchService = TestBed.inject(SearchService);
   });
 
   it('should create', () => {
@@ -31,8 +31,7 @@ describe('SearchBarComponent', () => {
   });
 
   it('should render search input', () => {
-    jest.spyOn(TestBed.inject(SearchService), 'getShowSearchBar$').mockReturnValue(of(true));
-    component.showSearchInput = true;
+    searchService.showSearchInput = true;
 
     fixture.detectChanges();
 
@@ -40,17 +39,7 @@ describe('SearchBarComponent', () => {
   });
 
   it('should not render search input if disabled', () => {
-    jest.spyOn(TestBed.inject(SearchService), 'getShowSearchBar$').mockReturnValue(of(true));
-    component.showSearchInput = false;
-
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('input[aria-label="Search"]'))).toBeFalsy();
-  });
-
-  it('should not render search input if toggled', () => {
-    component.showSearchInput = true;
-    jest.spyOn(TestBed.inject(SearchService), 'getShowSearchBar$').mockReturnValue(of(false));
+    searchService.showSearchInput = false;
 
     fixture.detectChanges();
 
@@ -58,8 +47,8 @@ describe('SearchBarComponent', () => {
   });
 
   it('should update service on input change', () => {
-    jest.spyOn(TestBed.inject(SearchService), 'setSearchTerm');
-    component.showSearchInput = true;
+    const searchTermSpy = jest.spyOn(searchService, 'searchTerm', 'set');
+    searchService.showSearchInput = true;
 
     fixture.detectChanges();
 
@@ -67,15 +56,18 @@ describe('SearchBarComponent', () => {
       .query(By.css('input[aria-label="Search"]'))
       .triggerEventHandler('input', { target: { value: 'test' } });
 
-    expect(TestBed.inject(SearchService).setSearchTerm).toHaveBeenCalledWith('test');
+    expect(searchTermSpy).toHaveBeenCalledWith('test');
   });
 
   it('should toggle show search input', () => {
-    fixture.detectChanges();
-    expect(component.showSearchInput).toBe(false);
+    expect(searchService['_showSearchInput$'].value).toBe(false);
 
     fixture.debugElement.query(By.css('button[type="button"]')).nativeElement.click();
 
-    expect(component.showSearchInput).toBe(true);
+    expect(searchService['_showSearchInput$'].value).toBe(true);
+
+    fixture.debugElement.query(By.css('button[type="button"]')).nativeElement.click();
+
+    expect(searchService['_showSearchInput$'].value).toBe(false);
   });
 });

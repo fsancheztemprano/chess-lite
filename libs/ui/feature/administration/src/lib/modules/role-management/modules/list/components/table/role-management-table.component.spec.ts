@@ -12,7 +12,6 @@ import {
   StubCoreCardViewComponent,
   TextInputDialogService,
 } from '@app/ui/shared/common';
-import { stubCoreContextMenuServiceProvider } from '@app/ui/shared/core';
 import { getTranslocoModule } from '@app/ui/testing';
 import { RoleManagementTableComponent } from './role-management-table.component';
 import { stubRoleManagementTableDatasourceProvider } from './role-management-table.datasource.stub';
@@ -34,7 +33,6 @@ describe('RoleManagementListComponent', () => {
       ],
       declarations: [RoleManagementTableComponent, StubCoreCardViewComponent],
       providers: [
-        stubCoreContextMenuServiceProvider,
         stubToasterServiceProvider,
         stubRoleManagementTableDatasourceProvider,
         getStubbedDialogService(ConfirmationDialogService),

@@ -34,7 +34,7 @@ export class UserManagementTableComponent implements OnDestroy {
     private readonly coreContextMenuService: CoreContextMenuService,
     private readonly translocoService: TranslocoService,
   ) {
-    this.coreContextMenuService.options = [
+    this.coreContextMenuService.show([
       {
         title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.add`),
         icon: 'person_add',
@@ -43,7 +43,7 @@ export class UserManagementTableComponent implements OnDestroy {
           map((userPage: UserPage) => !userPage.hasTemplate(UserManagementRelations.USER_CREATE_REL)),
         ),
       },
-    ];
+    ]);
   }
 
   @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
@@ -59,6 +59,6 @@ export class UserManagementTableComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.coreContextMenuService.resetOptions();
+    this.coreContextMenuService.reset();
   }
 }

@@ -24,7 +24,7 @@ export class ServiceLogsComponent implements OnDestroy {
     private readonly translocoService: TranslocoService,
   ) {
     this.route.data.subscribe((data) => this.serviceLogs.next(data.serviceLogs));
-    this.coreContextMenuService.options = [
+    this.coreContextMenuService.show([
       {
         icon: 'refresh',
         title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.refresh`),
@@ -38,11 +38,11 @@ export class ServiceLogsComponent implements OnDestroy {
           map((serviceLogs) => !serviceLogs.hasTemplate(AdministrationRelations.DELETE_SERVICE_LOGS_REL)),
         ),
       },
-    ];
+    ]);
   }
 
   ngOnDestroy(): void {
-    this.coreContextMenuService.resetOptions();
+    this.coreContextMenuService.reset();
     this.serviceLogs.complete();
   }
 

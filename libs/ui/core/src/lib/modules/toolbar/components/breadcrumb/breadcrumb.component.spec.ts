@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BreadcrumbService, StubBreadcrumbService, stubBreadcrumbServiceProvider } from '@app/ui/shared/core';
+import { BreadcrumbService, IsMobileModule, NgLetModule, stubBreadcrumbServiceProvider } from '@app/ui/shared/core';
 import { of } from 'rxjs';
 import { BreadcrumbComponent } from './breadcrumb.component';
 
@@ -13,7 +13,7 @@ describe('BreadcrumbComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatIconModule, MatButtonModule],
+      imports: [RouterTestingModule, MatIconModule, MatButtonModule, NgLetModule, IsMobileModule],
       declarations: [BreadcrumbComponent],
       providers: [stubBreadcrumbServiceProvider],
     }).compileComponents();
@@ -23,8 +23,8 @@ describe('BreadcrumbComponent', () => {
     fixture = TestBed.createComponent(BreadcrumbComponent);
     component = fixture.componentInstance;
 
-    const breadcrumbService = TestBed.inject(BreadcrumbService) as unknown as StubBreadcrumbService;
-    breadcrumbService.breadcrumbs.next([
+    const breadcrumbService = TestBed.inject(BreadcrumbService);
+    breadcrumbService.breadcrumbs = [
       {
         url: '/home',
         icon: 'home',
@@ -33,7 +33,7 @@ describe('BreadcrumbComponent', () => {
         title$: of('Users'),
         url: '/users',
       },
-    ]);
+    ];
 
     fixture.detectChanges();
   });
