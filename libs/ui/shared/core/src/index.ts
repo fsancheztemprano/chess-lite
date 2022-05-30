@@ -1,9 +1,7 @@
 export * from './lib/store/localization/localization.repository';
-export * from './lib/store/localization/localization.store.model';
 export * from './lib/store/localization/localization.action';
 
 export * from './lib/store/theme/theme.repository';
-export * from './lib/store/theme/theme.store.model';
 export * from './lib/store/theme/theme.action';
 
 export * from './lib/services/sidenav/sidenav.service';

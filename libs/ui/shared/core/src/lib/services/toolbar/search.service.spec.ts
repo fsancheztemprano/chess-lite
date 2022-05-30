@@ -108,4 +108,38 @@ describe('SearchService', () => {
       expect(service['_showSearchBar$'].value).toBeFalse();
     });
   });
+
+  describe('show search input', () => {
+    it('should set show search input', () => {
+      expect(service['_showSearchInput$'].value).toBeFalse();
+
+      service.showSearchInput = true;
+
+      expect(service['_showSearchInput$'].value).toBeTrue();
+    });
+
+    it('should show search input', async () => {
+      service.showSearchInput = true;
+
+      return expect(firstValueFrom(service.showSearchInput$)).resolves.toBeTrue();
+    });
+
+    it('should hide search input', async () => {
+      service.showSearchInput = false;
+
+      return expect(firstValueFrom(service.showSearchInput$)).resolves.toBeFalse();
+    });
+  });
+
+  it('should toggle show search input', () => {
+    expect(service['_showSearchInput$'].value).toBeFalse();
+
+    service.toggleShowSearchInput();
+
+    expect(service['_showSearchInput$'].value).toBeTrue();
+
+    service.toggleShowSearchInput();
+
+    expect(service['_showSearchInput$'].value).toBeFalse();
+  });
 });

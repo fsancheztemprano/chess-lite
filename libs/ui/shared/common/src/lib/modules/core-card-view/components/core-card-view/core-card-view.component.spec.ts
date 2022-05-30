@@ -4,7 +4,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CoreContextMenuModule, IsMobileModule } from '@app/ui/shared/core';
+import {
+  CoreContextMenuModule,
+  IsMobileModule,
+  NgLetModule,
+  RouteUpButtonComponent,
+  RouteUpButtonComponentModule,
+} from '@app/ui/shared/core';
 import { getTranslocoModule } from '@app/ui/testing';
 import { CoreCardViewComponent } from './core-card-view.component';
 
@@ -21,10 +27,12 @@ describe('CoreCardViewComponent', () => {
         MatIconModule,
         MatButtonModule,
         MatTabsModule,
+        NgLetModule,
         CoreContextMenuModule,
+        RouteUpButtonComponentModule,
         getTranslocoModule(),
       ],
-      declarations: [CoreCardViewComponent],
+      declarations: [CoreCardViewComponent, RouteUpButtonComponent],
     }).compileComponents();
   });
 

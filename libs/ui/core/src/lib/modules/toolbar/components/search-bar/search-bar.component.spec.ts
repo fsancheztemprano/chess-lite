@@ -4,8 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SearchService } from '@app/ui/shared/core';
-import { SubscribeModule } from '@ngneat/subscribe';
+import { NgLetModule, SearchService } from '@app/ui/shared/core';
 import { SearchBarComponent } from './search-bar.component';
 
 describe('SearchBarComponent', () => {
@@ -15,7 +14,7 @@ describe('SearchBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubscribeModule, MatFormFieldModule, MatInputModule, NoopAnimationsModule, MatIconModule],
+      imports: [MatFormFieldModule, MatInputModule, NoopAnimationsModule, MatIconModule, NgLetModule],
       declarations: [SearchBarComponent],
     }).compileComponents();
   });

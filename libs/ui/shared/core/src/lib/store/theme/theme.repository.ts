@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
-import { select } from '@ngneat/elf';
-import { themeStore } from './theme.store';
+import { createStore, select, withProps } from '@ngneat/elf';
+import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
+
+export interface ThemeProps {
+  darkMode: boolean;
+}
+
+export const themeStore = createStore({ name: 'theme' }, withProps<ThemeProps>({ darkMode: false }));
+
+persistState(themeStore, { key: 'theme', storage: localStorageStrategy });
 
 @Injectable({ providedIn: 'root' })
 export class ThemeRepository {

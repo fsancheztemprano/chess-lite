@@ -31,7 +31,7 @@ export class SearchService {
     this._showSearchInput$.next(showSearchInput);
   }
 
-  toggleSearchInput() {
+  toggleShowSearchInput() {
     this.showSearchInput = !this._showSearchInput$.value;
   }
 

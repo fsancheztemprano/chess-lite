@@ -59,4 +59,17 @@ describe('ContextMenuService', () => {
       return expect(firstValueFrom(service.showMenu$)).resolves.toBeTrue();
     });
   });
+
+  it('should show menu with options', async () => {
+    const options = [
+      {
+        icon: 'home',
+      },
+    ];
+
+    service.show(options);
+
+    await expect(firstValueFrom(service.showMenu$)).resolves.toBeTrue();
+    return expect(firstValueFrom(service.options$)).resolves.toEqual(options);
+  });
 });

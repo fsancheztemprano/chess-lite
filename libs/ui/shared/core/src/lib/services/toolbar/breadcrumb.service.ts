@@ -38,7 +38,7 @@ export class BreadcrumbService {
     return this.breadcrumbs$.pipe(
       map((breadcrumbs) => {
         const current = breadcrumbs[breadcrumbs.length - 1];
-        return breadcrumbs[breadcrumbs.length - 2 - (current?.parentOffset || 0)]?.url;
+        return breadcrumbs[breadcrumbs.length - 2 - (current.parentOffset || 0)].url;
       }),
     );
   }
@@ -50,12 +50,12 @@ export class BreadcrumbService {
   ): Breadcrumb[] {
     if (route) {
       const routeUrl = parentUrl.concat(route.url.map((url) => url.path));
-      if (route.data?.breadcrumb) {
+      if (route.data.breadcrumb) {
         const breadcrumb = {
           title$: this._getBreadcrumbLabel(route.data),
-          url: '/' + routeUrl.join('/'),
-          icon: route.data?.breadcrumb?.icon,
-          parentOffset: route.data?.breadcrumb.parentOffset,
+          url: routeUrl.join('/') || '/',
+          icon: route.data.breadcrumb.icon,
+          parentOffset: route.data.breadcrumb.parentOffset,
         };
         if (breadcrumbs[breadcrumbs.length - 1]?.url === breadcrumb.url) {
           breadcrumbs[breadcrumbs.length - 1] = breadcrumb;
