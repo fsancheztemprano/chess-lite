@@ -142,7 +142,7 @@
     "jsonwebtoken": "8.5.1",
     "junit-report-merger": "3.0.5",
     "ng-packagr": "13.3.1",
-    "npm-check-updates": "12.5.11",
+    "npm-check-updates": "13.0.4",
     "nx": "14.1.5",
     "prettier": "2.6.2",
     "sonarqube-scanner": "2.8.1",
