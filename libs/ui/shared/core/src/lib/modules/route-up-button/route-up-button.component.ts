@@ -15,7 +15,7 @@ import { BreadcrumbService } from '../../services/toolbar/breadcrumb.service';
 export class RouteUpButtonComponent {
   @Input() icon = 'keyboard_return';
   @Input() iconScaleY = -1;
-  @Input() navigationLink: string | null = null;
+  @Input() navigationLink?: string;
 
   constructor(private readonly breadcrumbService: BreadcrumbService) {}
 
