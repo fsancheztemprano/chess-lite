@@ -107,7 +107,7 @@
     "@angular/cli": "14.0.1",
     "@angular/compiler-cli": "14.0.1",
     "@angular/language-service": "14.0.1",
-    "@jest/reporters": "27.5.1",
+    "@jest/reporters": "28.1.1",
     "@ngneat/elf-cli": "3.0.0",
     "@ngneat/elf-cli-ng": "1.0.0",
     "@ngneat/transloco-keys-manager": "3.4.1",
