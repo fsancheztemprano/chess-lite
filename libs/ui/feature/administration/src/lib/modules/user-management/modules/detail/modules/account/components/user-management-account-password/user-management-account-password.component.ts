@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setTemplateValidators } from '@app/ui/shared/common';
-import { UserManagementRelations } from '@app/ui/shared/domain';
+import { ManageUserProfileInput, UserManagementRelations } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
@@ -33,7 +33,7 @@ export class UserManagementAccountPasswordComponent {
   }
 
   onSubmit() {
-    this.userManagementDetailService.updateUser(this.form.value).subscribe(() => {
+    this.userManagementDetailService.updateUser(this.form.value as ManageUserProfileInput).subscribe(() => {
       this.toasterService.showToast({ message: `${this.TRANSLOCO_SCOPE}.toast.updated` });
       this.form.reset();
     });

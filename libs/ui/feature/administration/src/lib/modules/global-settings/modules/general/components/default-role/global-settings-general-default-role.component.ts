@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
-import { Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
+import { GlobalSettingsUpdateInput, Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith } from 'rxjs';
@@ -37,7 +37,7 @@ export class GlobalSettingsGeneralDefaultRoleComponent {
   }
 
   public onSubmit(): void {
-    this.globalSettingsService.updateGlobalSettings(this.form.value).subscribe({
+    this.globalSettingsService.updateGlobalSettings(this.form.value as GlobalSettingsUpdateInput).subscribe({
       next: () => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast`) }),
     });
   }

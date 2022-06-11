@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { Authority, Role } from '@app/ui/shared/domain';
@@ -20,7 +20,7 @@ export class RoleManagementDetailAuthoritiesComponent implements OnInit {
   @Input() role$?: Observable<Role>;
 
   public readonly TRANSLOCO_SCOPE = 'administration.role-management.detail';
-  public readonly form = new FormArray([]);
+  public readonly form = new UntypedFormArray([]);
 
   constructor(
     private readonly roleManagementService: RoleManagementService,

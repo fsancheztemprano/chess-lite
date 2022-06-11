@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setResourceValidatorsPipe } from '@app/ui/shared/common';
 import { UserSettingsService } from '@app/ui/shared/core';
-import { CurrentUserRelations } from '@app/ui/shared/domain';
+import { CurrentUserRelations, UserChangePasswordInput } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -42,7 +42,7 @@ export class UserChangePasswordComponent {
   }
 
   onSubmit() {
-    this.userSettingsService.changePassword(this.form.value).subscribe({
+    this.userSettingsService.changePassword(this.form.value as UserChangePasswordInput).subscribe({
       next: () => this.toasterService.showToast({ title: translate('user.change-password.toast.success') }),
     });
   }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToasterService } from '@app/ui/shared/app';
 import { setTemplateValidators } from '@app/ui/shared/common';
-import { Role, RoleManagementRelations } from '@app/ui/shared/domain';
+import { Role, RoleManagementRelations, RoleUpdateInput } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
@@ -40,7 +40,7 @@ export class RoleManagementDetailNameComponent implements OnInit {
 
   onSubmit(role?: Role) {
     this.roleManagementService
-      .updateRole(role!, this.form.value)
+      .updateRole(role!, this.form.value as RoleUpdateInput)
       .subscribe(() => this.toasterService.showToast({ title: translate(`${this.TRANSLOCO_SCOPE}.toast.updated`) }));
   }
 }

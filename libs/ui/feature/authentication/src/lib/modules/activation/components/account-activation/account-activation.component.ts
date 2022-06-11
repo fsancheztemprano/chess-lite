@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators } from '@app/ui/shared/common';
+import { AccountActivationInput } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
@@ -45,7 +46,7 @@ export class AccountActivationComponent {
   }
 
   onSubmit() {
-    this.activationTokenService.activateAccount(this.form.value).subscribe({
+    this.activationTokenService.activateAccount(this.form.value as AccountActivationInput).subscribe({
       next: () => this.setStatus(true),
       error: () => this.setStatus(false),
     });

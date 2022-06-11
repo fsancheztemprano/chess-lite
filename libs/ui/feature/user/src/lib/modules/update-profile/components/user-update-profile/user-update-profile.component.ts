@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { filterNulls, ToasterService } from '@app/ui/shared/app';
 import { patchFormPipe, setResourceValidatorsPipe } from '@app/ui/shared/common';
 import { UserSettingsService } from '@app/ui/shared/core';
-import { CurrentUserRelations } from '@app/ui/shared/domain';
+import { CurrentUserRelations, UserUpdateProfileInput } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -49,7 +49,7 @@ export class UserUpdateProfileComponent {
   }
 
   onSubmit() {
-    this.userSettingsService.updateProfile(this.form.value).subscribe({
+    this.userSettingsService.updateProfile(this.form.value as UserUpdateProfileInput).subscribe({
       next: () => this.toasterService.showToast({ message: translate('user.profile.toast.success') }),
     });
   }
