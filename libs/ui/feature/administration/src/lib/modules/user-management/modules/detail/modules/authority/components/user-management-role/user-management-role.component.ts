@@ -38,7 +38,7 @@ export class UserManagementRoleComponent {
 
   onSubmit() {
     this.userManagementDetailService
-      .updateUserRole(this.form.value.roleId)
+      .updateUserRole(this.form.value.roleId!)
       .subscribe(() => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.saved`) }));
   }
 }

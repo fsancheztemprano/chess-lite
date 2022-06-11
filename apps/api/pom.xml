@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.7</version>
+    <version>2.7.0</version>
     <relativePath/>
   </parent>
   <groupId>dev.kurama.fullstack</groupId>
@@ -24,13 +24,13 @@
   <properties>
     <java.version>11</java.version>
     <org.projectlombok.version>1.18.24</org.projectlombok.version>
-    <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+    <org.mapstruct.version>1.5.1.Final</org.mapstruct.version>
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
     <skipUTs>${skipTests}</skipUTs>
     <node.version>v16.14.0</node.version><!-- See https://nodejs.org/en/download/ for latest node and yarn (lts) versions -->
     <yarn.version>v1.22.17</yarn.version><!-- https://www.npmjs.com/package/yarn -->
-    <spring-cloud-contract.version>3.1.2</spring-cloud-contract.version>
+    <spring-cloud-contract.version>3.1.3</spring-cloud-contract.version>
   </properties>
 
   <dependencyManagement>
@@ -45,14 +45,14 @@
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
-        <version>2021.0.2</version>
+        <version>2021.0.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.testcontainers</groupId>
         <artifactId>testcontainers-bom</artifactId>
-        <version>1.17.1</version>
+        <version>1.17.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -182,17 +182,17 @@
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.6.8</version>
+      <version>1.6.9</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-hateoas</artifactId>
-      <version>1.6.8</version>
+      <version>1.6.9</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-security</artifactId>
-      <version>1.6.8</version>
+      <version>1.6.9</version>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -264,7 +264,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>3.0.0-M6</version>
+          <version>3.0.0-M7</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -422,7 +422,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M6</version>
+        <version>3.0.0-M7</version>
         <configuration>
           <outputDirectory>target/site</outputDirectory>
         </configuration>
@@ -683,7 +683,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M6</version>
+        <version>3.0.0-M7</version>
       </plugin>
     </plugins>
   </reporting>

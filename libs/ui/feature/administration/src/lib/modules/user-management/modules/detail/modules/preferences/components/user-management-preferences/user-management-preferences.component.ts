@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService, ToasterService } from '@app/ui/shared/app';
 import { LocalizationRepository } from '@app/ui/shared/core';
 import {
+  IUserPreferences,
   UserManagementRelations,
   UserPreferences,
   UserPreferencesChangedMessage,
@@ -42,7 +43,7 @@ export class UserManagementPreferencesComponent {
 
   onSubmit() {
     this.userManagementDetailService
-      .updateUserPreferences(this.userPreferences!, this.form.value)
+      .updateUserPreferences(this.userPreferences!, this.form.value as IUserPreferences)
       .subscribe(() => this.toasterService.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.saved`) }));
   }
 

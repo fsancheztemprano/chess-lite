@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setTemplateValidatorsPipe } from '@app/ui/shared/common';
-import { Role, RoleManagementRelations, RolePage, UserManagementRelations } from '@app/ui/shared/domain';
+import { Role, RoleManagementRelations, RolePage, UserInput, UserManagementRelations } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
 import { Observable, startWith } from 'rxjs';
 import { first, map } from 'rxjs/operators';
@@ -54,7 +54,7 @@ export class UserManagementCreateComponent {
   }
 
   onSubmit() {
-    this.userManagementService.createUser(this.form.value).subscribe((user) => {
+    this.userManagementService.createUser(this.form.value as UserInput).subscribe((user) => {
       this.toaster.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.created`) });
       this.router.navigate(['administration', 'user-management', 'user', user.id]);
     });

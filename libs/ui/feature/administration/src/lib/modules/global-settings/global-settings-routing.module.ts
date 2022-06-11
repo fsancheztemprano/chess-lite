@@ -30,7 +30,11 @@ const routes: Routes = [
         loadChildren: loadGlobalSettingsAccessRestrictionsModule,
         data: { breadcrumb: { i18n: 'administration.global-settings.access-restrictions' } },
       },
-      { path: '', redirectTo: 'general' },
+      {
+        path: '',
+        redirectTo: 'general',
+        pathMatch: 'full',
+      },
       { path: '**', redirectTo: 'general' },
     ],
   },

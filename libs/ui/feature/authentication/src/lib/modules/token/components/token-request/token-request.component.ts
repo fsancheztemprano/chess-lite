@@ -37,7 +37,7 @@ export class TokenRequestComponent {
   }
 
   onSubmit() {
-    this.activationTokenService.requestActivationToken(this.form.value.email).subscribe({
+    this.activationTokenService.requestActivationToken(this.form.value.email as string).subscribe({
       next: () => this.setStatus(true),
       error: () => this.setStatus(false),
     });
