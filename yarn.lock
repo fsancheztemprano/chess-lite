@@ -2613,10 +2613,10 @@
     ts-action-operators "9.1.2"
     tslib "^2.3.0"
 
-"@ngneat/effects@*", "@ngneat/effects@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@ngneat/effects/-/effects-1.1.0.tgz#b43d20999b083e86246fede70bc6e5f9004775a1"
-  integrity sha512-Hti0wfZ1HzAt0fscvKu51JSAxPQ8AK0nlbxEoMGZRwAPb8fUuDYSUCSh1+mPEPR++ztD6NYzFmrSncEP/y1oJg==
+"@ngneat/effects@*", "@ngneat/effects@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@ngneat/effects/-/effects-1.1.1.tgz#889993f12fd1185730b57c5a9b4b112097d39c8a"
+  integrity sha512-otGhdLA25BBkNzTFfmGppi07ai79h3tkLSdE/uZz7jWVMqZ+isPI1INI7tzH8Oe93W8PIbjgnJGYCDusz8OsRg==
   dependencies:
     rxjs "*"
     ts-action "11.0.0"
