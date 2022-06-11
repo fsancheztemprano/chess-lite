@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { filterNulls } from '@app/ui/shared/app';
 import { patchFormPipe } from '@app/ui/shared/common';
 import { LocalizationRepository, UserSettingsService } from '@app/ui/shared/core';
+import { IUserPreferences } from '@app/ui/shared/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -29,6 +30,6 @@ export class CurrentUserPreferencesComponent {
   }
 
   onSubmit() {
-    this.userSettingsService.updateUserPreferences(this.form.value).subscribe();
+    this.userSettingsService.updateUserPreferences(this.form.value as IUserPreferences).subscribe();
   }
 }

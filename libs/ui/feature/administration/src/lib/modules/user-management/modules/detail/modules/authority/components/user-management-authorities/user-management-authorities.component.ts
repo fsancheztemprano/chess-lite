@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { Authority } from '@app/ui/shared/domain';
@@ -17,7 +17,7 @@ import { UserManagementDetailService } from '../../../../services/user-managemen
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementAuthoritiesComponent implements OnInit {
-  public readonly formArray = new FormArray([]);
+  public readonly formArray = new UntypedFormArray([]);
   public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail.authority.authorities';
 
   constructor(

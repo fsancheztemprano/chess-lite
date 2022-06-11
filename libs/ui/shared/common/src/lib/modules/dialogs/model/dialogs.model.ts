@@ -1,4 +1,4 @@
-import { ThemePalette } from '@angular/material/core/common-behaviors/color';
+import { ThemePalette } from '@angular/material/core';
 import { Template } from '@hal-form-client';
 
 interface ButtonData {

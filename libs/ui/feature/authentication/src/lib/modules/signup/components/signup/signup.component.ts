@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { setTemplateValidatorsPipe } from '@app/ui/shared/common';
+import { SignupInput } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
 import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
@@ -37,7 +38,7 @@ export class SignupComponent {
   }
 
   public onSubmit(): void {
-    this.authService.signup(this.signupForm.value)?.subscribe({
+    this.authService.signup(this.signupForm.value as SignupInput)?.subscribe({
       next: () => this.setStatus(true),
       error: () => this.setStatus(false),
     });
