@@ -32,6 +32,18 @@ describe('LocalizationEffects', () => {
 
   it('syncUserPreferencesContentLanguage$ should update preferences content language', () => {
     const updateContentLanguageSpy = jest.spyOn(localizationRepository, 'updateContentLanguage');
+    const userPreferences = { contentLanguage: '' };
+
+    expect(updateContentLanguageSpy).not.toHaveBeenCalled();
+
+    actions.dispatch(updateSession({ userPreferences } as never));
+
+    expect(updateContentLanguageSpy).toHaveBeenCalledTimes(1);
+    expect(updateContentLanguageSpy).toHaveBeenCalledWith('en');
+  });
+
+  it('syncUserPreferencesContentLanguage$ should update preferences content language', () => {
+    const updateContentLanguageSpy = jest.spyOn(localizationRepository, 'updateContentLanguage');
     const userPreferences = { contentLanguage: 'en' };
 
     expect(updateContentLanguageSpy).not.toHaveBeenCalled();

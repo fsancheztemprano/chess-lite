@@ -35,4 +35,12 @@ describe('Session Utils', () => {
     expect(session.refreshToken).toEqual('');
     expect(session.user?.id).toEqual('1');
   });
+
+  it('should map and handle nullish session', () => {
+    const session = httpToSession({} as never);
+
+    expect(session.token).toEqual('');
+    expect(session.refreshToken).toEqual('');
+    expect(session.user?.id).toBeUndefined();
+  });
 });

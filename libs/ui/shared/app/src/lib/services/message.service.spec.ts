@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { TokenKeys } from '@app/ui/shared/domain';
 import { IMessage } from '@stomp/stompjs';
 import { firstValueFrom, of, tap } from 'rxjs';
 import { HotSocket } from '../utils/hot-socket.model';
@@ -27,7 +28,6 @@ describe('MessageService', () => {
     });
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   it.each<any | jest.DoneCallback>([
     null,
     undefined,
@@ -43,14 +43,34 @@ describe('MessageService', () => {
     });
   });
 
-  it('should set headers and activate', () => {
-    const configureSpy = jest.spyOn(service, 'configure').mockImplementation();
+  it('should activate', () => {
     const activateSpy = jest.spyOn(service, 'activate').mockImplementation();
+    const configureSpy = jest.spyOn(service, 'configure').mockImplementation();
 
     service.connect();
 
-    expect(configureSpy).toHaveBeenCalled();
     expect(activateSpy).toHaveBeenCalled();
+    expect(configureSpy).toHaveBeenCalled();
+    expect(configureSpy).toHaveBeenCalledWith({});
+  });
+
+  it('should set headers and activate', () => {
+    const activateSpy = jest.spyOn(service, 'activate').mockImplementation();
+    const configureSpy = jest.spyOn(service, 'configure').mockImplementation();
+    localStorage.setItem(TokenKeys.TOKEN, 'token');
+
+    service.connect();
+
+    expect(activateSpy).toHaveBeenCalled();
+    expect(configureSpy).toHaveBeenCalled();
+    expect(configureSpy).toHaveBeenCalledWith({
+      connectHeaders: {
+        Authorization: 'Bearer token',
+      },
+      disconnectHeaders: {
+        Authorization: 'Bearer token',
+      },
+    });
   });
 
   it('should disconnect if active', (done) => {

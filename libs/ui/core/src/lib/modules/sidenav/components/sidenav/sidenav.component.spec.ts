@@ -93,6 +93,19 @@ describe('SidenavComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it.each(['push', 'side'])('should not toggle if mode is %p', (mode) => {
+    const spy = jest.spyOn(component.sidenavService, 'toggle');
+    component.sidenav = {
+      get mode(): string {
+        return mode;
+      },
+    } as never;
+
+    component.toggleSidenav();
+
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it('should close in sidenav service', () => {
     const toggle = jest.fn();
     component.sidenav = { toggle } as unknown as MatSidenav;
