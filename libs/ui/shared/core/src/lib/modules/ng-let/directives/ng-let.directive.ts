@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,@typescript-eslint/member-ordering */
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, EmbeddedViewRef, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
 interface NgLetContext<T> {
   ngLet: T;
@@ -8,9 +8,9 @@ interface NgLetContext<T> {
 
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[ngLet]' })
-export class NgLetDirective<T> {
+export class NgLetDirective<T> implements OnInit {
   private context: NgLetContext<T | null> = { ngLet: null, $implicit: null };
-  private hasView = false;
+  private embeddedViewRef?: EmbeddedViewRef<NgLetContext<T | null>>;
 
   // @formatter:off
   constructor(
@@ -22,10 +22,11 @@ export class NgLetDirective<T> {
   @Input()
   set ngLet(value: T) {
     this.context.$implicit = this.context.ngLet = value;
-    if (!this.hasView) {
-      this.viewContainer.createEmbeddedView(this.templateRef, this.context);
-      this.hasView = true;
-    }
+    this.embeddedViewRef?.markForCheck();
+  }
+
+  ngOnInit(): void {
+    this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, this.context);
   }
 
   /** @internal */

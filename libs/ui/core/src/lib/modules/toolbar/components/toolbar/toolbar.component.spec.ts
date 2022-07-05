@@ -13,10 +13,10 @@ import {
   SidenavService,
   stubBreadcrumbServiceProvider,
   StubCoreContextMenuComponent,
+  StubIsMobileService,
   stubIsMobileServiceProvider,
   stubSidenavServiceProvider,
 } from '@app/ui/shared/core';
-import { BehaviorSubject } from 'rxjs';
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { LocalePickerComponent } from '../locale-picker/locale-picker.component';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
@@ -38,7 +38,7 @@ class StubBreadcrumbComponent implements Partial<BreadcrumbComponent> {}
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
-  let isMobileService: IsMobileService;
+  let isMobileService: StubIsMobileService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -60,7 +60,7 @@ describe('ToolbarComponent', () => {
     fixture = TestBed.createComponent(ToolbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    isMobileService = TestBed.inject(IsMobileService);
+    isMobileService = TestBed.inject(IsMobileService) as unknown as StubIsMobileService;
   });
 
   it('should compile', () => {
@@ -83,7 +83,7 @@ describe('ToolbarComponent', () => {
   describe('breadcrumbs', () => {
     it('should render breadcrumb', () => {
       component.breadcrumbService.showBreadCrumbs = true;
-      (isMobileService['isHandset'] as BehaviorSubject<boolean>).next(false);
+      isMobileService['isHandset'].next(false);
 
       fixture.detectChanges();
 
@@ -101,7 +101,7 @@ describe('ToolbarComponent', () => {
     it('should not render breadcrumb on mobile with expanded search bar', () => {
       component.breadcrumbService.showBreadCrumbs = true;
       component.searchService.showSearchInput = true;
-      (isMobileService['isHandset'] as BehaviorSubject<boolean>).next(true);
+      isMobileService['isHandset'].next(true);
 
       fixture.detectChanges();
 
@@ -153,13 +153,13 @@ describe('ToolbarComponent', () => {
 
   describe('core context menu', () => {
     it('should not render core context menu', () => {
-      (isMobileService['isHandset'] as BehaviorSubject<boolean>).next(false);
+      isMobileService['isHandset'].next(false);
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('app-core-context-menu'))).toBeFalsy();
     });
 
     it('should render core context menu on mobile view', () => {
-      (isMobileService['isHandset'] as BehaviorSubject<boolean>).next(true);
+      isMobileService['isHandset'].next(true);
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('app-core-context-menu'))).toBeTruthy();
     });
