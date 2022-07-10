@@ -166,7 +166,7 @@ class ExceptionHandlersTest {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/tokenExpiredException")
     public void tokenExpiredException() {
-      throw new TokenExpiredException(null);
+      throw new TokenExpiredException(null, null);
     }
 
     @ResponseStatus(HttpStatus.OK)
