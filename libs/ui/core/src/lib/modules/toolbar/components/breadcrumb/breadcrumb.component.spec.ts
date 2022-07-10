@@ -43,6 +43,10 @@ describe('BreadcrumbComponent', () => {
         title$: of('Users'),
         url: '/users',
       },
+      {
+        title$: of('Roles'),
+        url: '/roles',
+      },
     ];
 
     fixture.detectChanges();
@@ -71,12 +75,13 @@ describe('BreadcrumbComponent', () => {
   });
 
   it('should render breadcrumbs', () => {
-    expect(fixture.debugElement.queryAll(By.css('a.breadcrumb-item'))).toHaveLength(2);
+    expect(fixture.debugElement.queryAll(By.css('a.breadcrumb-item'))).toHaveLength(3);
   });
 
   it('should render breadcrumb with title', () => {
     expect(fixture.debugElement.query(By.css('a.breadcrumb-item-0')).nativeElement.textContent).toContain('home');
     expect(fixture.debugElement.query(By.css('a.breadcrumb-item-1')).nativeElement.textContent).toContain('Users');
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-2')).nativeElement.textContent).toContain('Roles');
   });
 
   it('should only render current breadcrumb on mobile', () => {
@@ -85,6 +90,23 @@ describe('BreadcrumbComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('a.breadcrumb-item-0'))).toBeFalsy();
-    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-1'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-1'))).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-2'))).toBeTruthy();
+  });
+
+  it('should render navigate_next icon between breadcrumbs', () => {
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-0 + mat-icon')).nativeElement.textContent).toContain(
+      'navigate_next',
+    );
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-1 + mat-icon')).nativeElement.textContent).toContain(
+      'navigate_next',
+    );
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-2 + mat-icon'))).toBeFalsy();
+  });
+
+  it('should link breadcrumbs to route', () => {
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-0')).nativeElement.getAttribute('href')).toBe('/home');
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-1')).nativeElement.getAttribute('href')).toBe('/users');
+    expect(fixture.debugElement.query(By.css('a.breadcrumb-item-2')).nativeElement.getAttribute('href')).toBe('/roles');
   });
 });

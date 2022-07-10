@@ -51,8 +51,8 @@ export class BreadcrumbService {
     if (route) {
       const routeUrl = parentUrl.concat(route.url.map((url) => url.path));
       if (route.data.breadcrumb) {
-        const breadcrumb = {
-          title$: this._getBreadcrumbLabel(route.data),
+        const breadcrumb: Breadcrumb = {
+          title$: this._getBreadcrumbLabel(route.data as BreadcrumbRouteData),
           url: routeUrl.join('/') || '/',
           icon: route.data.breadcrumb.icon,
           parentOffset: route.data.breadcrumb.parentOffset,
@@ -68,7 +68,7 @@ export class BreadcrumbService {
     return breadcrumbs;
   }
 
-  private _getBreadcrumbLabel(data: Data): Observable<string> | null {
+  private _getBreadcrumbLabel(data: BreadcrumbRouteData): Observable<string> | null {
     if (data.breadcrumb.i18n) {
       return this.translocoService.selectTranslate(
         'core.breadcrumb.' +
@@ -89,9 +89,11 @@ export interface Breadcrumb {
   parentOffset?: number;
 }
 
-export interface BreadcrumbRouteData {
-  icon?: string;
-  title?: string | ((data: Data) => string);
-  i18n?: string | ((data: Data) => string);
-  parentOffset?: number;
+export interface BreadcrumbRouteData extends Data {
+  breadcrumb: {
+    icon?: string;
+    title?: string | ((data: Data) => string);
+    i18n?: string | ((data: Data) => string);
+    parentOffset?: number;
+  };
 }
