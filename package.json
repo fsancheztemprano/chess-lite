@@ -99,7 +99,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "14.0.1",
-    "@angular-devkit/schematics": "14.0.1",
+    "@angular-devkit/schematics": "14.0.6",
     "@angular-devkit/schematics-cli": "14.0.1",
     "@angular-eslint/eslint-plugin": "13.3.0",
     "@angular-eslint/eslint-plugin-template": "13.3.0",
