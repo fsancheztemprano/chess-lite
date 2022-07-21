@@ -41,3 +41,9 @@ describe('IsMobileDirective', () => {
     expect(fixture.debugElement.query(By.css('div.test-component')).nativeElement.textContent).toBe('false');
   });
 });
+
+describe('IsMobileDirective ivy', () => {
+  it('ngTemplateContextGuard', () => {
+    expect(IsMobileDirective.ngTemplateContextGuard(null as any, {} as never)).toBeTrue();
+  });
+});

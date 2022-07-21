@@ -10,13 +10,13 @@ import { MenuData } from '@app/ui/shared/domain';
   animations: [
     trigger('hover', [
       state(
-        'false',
+        '0',
         style({
           'box-shadow': '0 0 10px 0 rgba(0, 0, 0, 0.10)',
         }),
       ),
       state(
-        'true',
+        '1',
         style({
           'box-shadow': '0 0 20px 0 rgba(0, 0, 0, 0.35)',
         }),
@@ -28,15 +28,15 @@ import { MenuData } from '@app/ui/shared/domain';
 export class TiledMenuTileComponent {
   @Input() tileData!: MenuData;
 
-  public isMouseOver = 'false';
+  public isMouseOver = false;
 
   @HostListener('mouseenter')
   onMouseEnter() {
-    this.isMouseOver = 'true';
+    this.isMouseOver = true;
   }
 
   @HostListener('mouseleave')
   onMouseLeave() {
-    this.isMouseOver = 'false';
+    this.isMouseOver = false;
   }
 }

@@ -1,4 +1,6 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { IsMobileModule, NgLetModule } from '@app/ui/shared/core';
 import { TiledMenuComponent } from './tiled-menu.component';
 import { StubTiledMenuTileComponent } from './tiled-menu.component.stub';
@@ -11,7 +13,9 @@ describe('TiledMenuComponent', () => {
     await TestBed.configureTestingModule({
       imports: [IsMobileModule, NgLetModule],
       declarations: [TiledMenuComponent, StubTiledMenuTileComponent],
-    }).compileComponents();
+    })
+      .overrideComponent(TiledMenuComponent, { set: { changeDetection: ChangeDetectionStrategy.Default } })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -22,5 +26,13 @@ describe('TiledMenuComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should load a tile with a link', () => {
+    component.tiles = [{ icon: 'home' }, { icon: 'login' }];
+    fixture.detectChanges();
+
+    const tileElement = fixture.debugElement.queryAll(By.css('app-tiled-menu-tile'));
+    expect(tileElement.length).toBe(2);
   });
 });

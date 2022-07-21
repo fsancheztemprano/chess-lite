@@ -31,9 +31,13 @@ describe('NgLet: simple', () => {
     document.body.removeChild(element);
   });
 
-  it('test', () => {
+  it('should add element and set template variable', () => {
     fixture.detectChanges();
     expect(element.textContent).toBe('testtest');
+
+    fixture.componentInstance.value = 'test2';
+    fixture.detectChanges();
+    expect(element.textContent).toBe('test2test2');
   });
 });
 
@@ -61,7 +65,7 @@ describe('NgLet: async', () => {
     document.body.removeChild(element);
   });
 
-  it('test', () => {
+  it('should add element and set async template variable', () => {
     fixture.detectChanges();
     expect(element.textContent).toBe('test');
   });
@@ -96,7 +100,7 @@ describe('NgLet: nested', () => {
     document.body.removeChild(element);
   });
 
-  it('test', () => {
+  it('should add nested elements and set template variable', () => {
     fixture.detectChanges();
     expect(element.textContent).toBe('test-testNested');
   });
