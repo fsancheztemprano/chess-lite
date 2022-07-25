@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { SharedDialogModule } from '../../../shared-dialog/shared-dialog.module';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DialogsModule } from '../../dialogs.module';
+import { DialogActionsButtonModule } from '../dialog-actions-button/dialog-actions-button.component';
 import { InformationDialogComponent } from './information-dialog.component';
 
 describe('InformationDialogComponent', () => {
@@ -10,7 +10,7 @@ describe('InformationDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, SharedDialogModule],
+      imports: [DialogsModule, DialogActionsButtonModule],
       declarations: [InformationDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },

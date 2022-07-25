@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { ConfirmationDialogModule, CoreCardViewModule, TextInputDialogModule } from '@app/ui/shared/common';
+import { CoreCardViewModule, DialogsModule } from '@app/ui/shared/common';
 import { TranslocoModule } from '@ngneat/transloco';
 import { RoleManagementTableComponent } from './components/table/role-management-table.component';
 import { RoleManagementListRoutingModule } from './role-management-list-routing.module';
@@ -16,8 +16,6 @@ import { RoleManagementListRoutingModule } from './role-management-list-routing.
   imports: [
     CommonModule,
     RoleManagementListRoutingModule,
-    ConfirmationDialogModule,
-    TextInputDialogModule,
     MatTableModule,
     MatSortModule,
     MatIconModule,
@@ -26,6 +24,7 @@ import { RoleManagementListRoutingModule } from './role-management-list-routing.
     MatPaginatorModule,
     CoreCardViewModule,
     TranslocoModule,
+    DialogsModule,
   ],
 })
 export class RoleManagementListModule {}

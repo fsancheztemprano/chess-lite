@@ -6,12 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
-import {
-  ConfirmationDialogService,
-  getStubbedDialogService,
-  StubCoreCardViewComponent,
-  TextInputDialogService,
-} from '@app/ui/shared/common';
+import { DialogsModule, StubCoreCardViewComponent } from '@app/ui/shared/common';
 import { getTranslocoModule } from '@app/ui/testing';
 import { RoleManagementTableComponent } from './role-management-table.component';
 import { stubRoleManagementTableDatasourceProvider } from './role-management-table.datasource.stub';
@@ -30,14 +25,10 @@ describe('RoleManagementListComponent', () => {
         MatTableModule,
         MatIconModule,
         getTranslocoModule(),
+        DialogsModule,
       ],
       declarations: [RoleManagementTableComponent, StubCoreCardViewComponent],
-      providers: [
-        stubToasterServiceProvider,
-        stubRoleManagementTableDatasourceProvider,
-        getStubbedDialogService(ConfirmationDialogService),
-        getStubbedDialogService(TextInputDialogService),
-      ],
+      providers: [stubToasterServiceProvider, stubRoleManagementTableDatasourceProvider],
     }).compileComponents();
   });
 

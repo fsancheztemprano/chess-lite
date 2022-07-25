@@ -1,5 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { ThemePalette } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogsModule } from '../../dialogs.module';
 
 @Component({
   selector: 'app-dialog-actions-button',
@@ -14,3 +17,10 @@ export class DialogActionsButtonComponent {
   @Input() disabled?: boolean;
   @Input() output?: unknown;
 }
+
+@NgModule({
+  declarations: [DialogActionsButtonComponent],
+  imports: [DialogsModule, MatButtonModule, MatIconModule],
+  exports: [DialogActionsButtonComponent],
+})
+export class DialogActionsButtonModule {}

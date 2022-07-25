@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, NgModule } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { InformationDialogData } from '../../../../model/dialogs.model';
+import { DialogsModule } from '../../dialogs.module';
+import { InformationDialogData } from '../../model/dialogs.model';
+import { DialogActionsButtonModule } from '../dialog-actions-button/dialog-actions-button.component';
 
 @Component({
   selector: 'app-information-dialog',
@@ -14,3 +16,9 @@ export class InformationDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: InformationDialogData,
   ) {}
 }
+
+@NgModule({
+  declarations: [InformationDialogComponent],
+  imports: [DialogsModule, DialogActionsButtonModule],
+})
+export class InformationDialogModule {}

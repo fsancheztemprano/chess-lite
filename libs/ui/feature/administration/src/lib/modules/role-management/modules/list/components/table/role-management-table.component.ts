@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
-import { ConfirmationDialogService, TextInputDialogService } from '@app/ui/shared/common';
+import { DialogService } from '@app/ui/shared/common';
 import { CoreContextMenuService } from '@app/ui/shared/core';
 import { Role, RoleManagementRelations, RolePage } from '@app/ui/shared/domain';
 import { translate, TranslocoService } from '@ngneat/transloco';
@@ -26,8 +26,7 @@ export class RoleManagementTableComponent implements OnDestroy {
     public readonly dataSource: RoleManagementTableDatasource,
     private readonly router: Router,
     private readonly toasterService: ToasterService,
-    private readonly confirmationDialogService: ConfirmationDialogService,
-    private readonly textInputDialogService: TextInputDialogService,
+    private readonly dialogService: DialogService,
     private readonly coreContextMenuService: CoreContextMenuService,
     private readonly translocoService: TranslocoService,
   ) {
@@ -60,8 +59,8 @@ export class RoleManagementTableComponent implements OnDestroy {
   }
 
   public deleteRole(role: Role): void {
-    this.confirmationDialogService
-      .openDialog({
+    this.dialogService
+      .openConfirmationDialog({
         title: translate(`${this.TRANSLOCO_SCOPE}.delete-dialog.title`),
         caption: translate(`${this.TRANSLOCO_SCOPE}.delete-dialog.caption`),
         acceptButton: {
@@ -84,8 +83,8 @@ export class RoleManagementTableComponent implements OnDestroy {
       .pipe(
         first(),
         switchMap((rolePage: RolePage) =>
-          this.textInputDialogService
-            .openDialog({
+          this.dialogService
+            .openInputDialog({
               title: translate(`${this.TRANSLOCO_SCOPE}.create-dialog.title`),
               caption: translate(`${this.TRANSLOCO_SCOPE}.create-dialog.caption`),
               acceptButton: {
