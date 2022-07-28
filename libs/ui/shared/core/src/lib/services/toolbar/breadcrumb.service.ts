@@ -38,7 +38,7 @@ export class BreadcrumbService {
     return this.breadcrumbs$.pipe(
       map((breadcrumbs) => {
         const current = breadcrumbs[breadcrumbs.length - 1];
-        return breadcrumbs[breadcrumbs.length - 2 - (current.parentOffset || 0)].url;
+        return breadcrumbs[breadcrumbs.length - 2 - (current.parentOffset || 0)]?.url || '';
       }),
     );
   }
