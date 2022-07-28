@@ -1,45 +1,43 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, Observable, sampleTime } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class SearchService {
-  private _searchTerm$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  private _showSearchBar$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly _searchTerm$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private readonly _showSearchBar$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly _showSearchInput$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  getSearchTerm(): Observable<string> {
-    return this._searchTerm$.asObservable();
+  get searchTerm$(): Observable<string> {
+    return this._searchTerm$.pipe(distinctUntilChanged(), sampleTime(100));
   }
 
-  setSearchTerm(searchTerm: string) {
-    if (this._searchTerm$.value !== searchTerm) {
-      this._searchTerm$.next(searchTerm);
-    }
+  set searchTerm(searchTerm: string) {
+    this._searchTerm$.next(searchTerm);
   }
 
-  getShowSearchBar$(): Observable<boolean> {
+  get showSearchBar$(): Observable<boolean> {
     return this._showSearchBar$.asObservable();
   }
 
-  setShowSearchBar(showSearchBar: boolean) {
+  set showSearchBar(showSearchBar: boolean) {
     this._showSearchBar$.next(showSearchBar);
   }
 
-  showSearchBar() {
-    this.setShowSearchBar(true);
+  get showSearchInput$(): Observable<boolean> {
+    return this._showSearchInput$.asObservable();
   }
 
-  hideSearchBar() {
-    this.setShowSearchBar(false);
+  set showSearchInput(showSearchInput: boolean) {
+    this._showSearchInput$.next(showSearchInput);
   }
 
-  toggleShowSearchBar() {
-    this.setShowSearchBar(!this._showSearchBar$.value);
+  toggleShowSearchInput() {
+    this.showSearchInput = !this._showSearchInput$.value;
   }
 
   reset() {
-    this.hideSearchBar();
-    this.setSearchTerm('');
+    this.showSearchBar = false;
+    this.showSearchInput = false;
+    this.searchTerm = '';
   }
 }

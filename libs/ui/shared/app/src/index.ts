@@ -2,6 +2,7 @@ export { ToasterService } from './lib/services/toaster.service';
 export { ToastType } from './lib/services/toaster.service.model';
 export { SessionService } from './lib/services/session.service';
 export { MessageService } from './lib/services/message.service';
+export { HotSocket } from './lib/utils/hot-socket.model';
 
 export { SessionRepository } from './lib/store/session/session.repository';
 export { SessionProps } from './lib/store/session/session.store.model';

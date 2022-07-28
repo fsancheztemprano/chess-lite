@@ -1,5 +1,12 @@
-<div class="theme-picker-slider">
-  <mat-icon>brightness_5</mat-icon>
-  <mat-slide-toggle [checked]="darkMode" (change)="onToggle($event)" color="warn"></mat-slide-toggle>
-  <mat-icon>bedtime</mat-icon>
+<div class="theme-picker" *ngLet="themeRepository.darkMode$ | async; let darkMode">
+  <ng-container *ngIf="('' | isMobile | async) === false; else mobilePicker">
+    <mat-icon>brightness_5</mat-icon>
+    <mat-slide-toggle [checked]="darkMode" (change)="setDarkMode($event.checked)" color="warn"></mat-slide-toggle>
+    <mat-icon>bedtime</mat-icon>
+  </ng-container>
+  <ng-template #mobilePicker class="theme-picker">
+    <button mat-icon-button aria-label="Theme Toggle" *ngLet="darkMode" (click)="setDarkMode(!darkMode)">
+      <mat-icon>{{ darkMode ? 'brightness_5' : 'bedtime' }}</mat-icon>
+    </button>
+  </ng-template>
 </div>

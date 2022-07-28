@@ -1,8 +1,19 @@
 import { Injectable } from '@angular/core';
-import { select } from '@ngneat/elf';
+import { createStore, select, withProps } from '@ngneat/elf';
+import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { localizationStore } from './localization.store';
+
+export interface LocalizationProps {
+  contentLanguage: string;
+}
+
+const localizationStore = createStore(
+  { name: 'localization' },
+  withProps<LocalizationProps>({ contentLanguage: 'en' }),
+);
+
+persistState(localizationStore, { key: 'localization', storage: localStorageStrategy });
 
 @UntilDestroy()
 @Injectable({ providedIn: 'root' })

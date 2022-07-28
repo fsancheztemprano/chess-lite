@@ -6,10 +6,10 @@ import { IsMobileService } from '../../modules/is-mobile';
   providedIn: 'root',
 })
 export class SidenavService {
-  private _isOpen$ = new BehaviorSubject(true);
+  private readonly _isOpen$ = new BehaviorSubject(true);
 
   constructor(private readonly isMobileService: IsMobileService) {
-    isMobileService.isMobile$.subscribe((isMobile) => this._isOpen$.next(!isMobile));
+    this.isMobileService.isMobile$.subscribe((isMobile) => this._isOpen$.next(!isMobile));
   }
 
   get isOpen$(): Observable<boolean> {

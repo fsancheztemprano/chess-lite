@@ -13,7 +13,6 @@ import {
   WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import {
-  auditTime,
   BehaviorSubject,
   combineLatest,
   filter,
@@ -47,7 +46,7 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
   }
 
   connect(): Observable<Role[]> {
-    this.searchService.showSearchBar();
+    this.searchService.showSearchBar = true;
     return this.paginator && this.sort
       ? combineLatest([
           this.paginator.page.pipe(
@@ -62,10 +61,7 @@ export class RoleManagementTableDatasource extends DataSource<Role> {
               direction: 'asc',
             } as Sort),
           ),
-          this.searchService.getSearchTerm().pipe(
-            auditTime(300),
-            finalize(() => this.searchService.reset()),
-          ),
+          this.searchService.searchTerm$.pipe(finalize(() => this.searchService.reset())),
           this._roleListChanges.asObservable().pipe(startWith(null)),
         ]).pipe(
           switchMap(([page, sort, search]: [PageEvent, Sort, string, unknown]) => {

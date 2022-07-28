@@ -4,9 +4,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { BehaviorSubject, filter, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class BreadcrumbService {
   private readonly _showBreadcrumbs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private readonly _breadcrumbs$: BehaviorSubject<Breadcrumb[]> = new BehaviorSubject<Breadcrumb[]>([]);
@@ -15,71 +13,62 @@ export class BreadcrumbService {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        map(() => this.buildBreadcrumbs(this.router.routerState.snapshot.root, [], [])),
+        map(() => this._buildBreadcrumbs(this.router.routerState.snapshot.root, [], [])),
       )
-      .subscribe((breadcrumbs: Breadcrumb[]) => this._breadcrumbs$.next(breadcrumbs));
+      .subscribe((breadcrumbs: Breadcrumb[]) => (this.breadcrumbs = breadcrumbs));
   }
 
-  getBreadcrumbs$(): Observable<Breadcrumb[]> {
+  get breadcrumbs$(): Observable<Breadcrumb[]> {
     return this._breadcrumbs$.asObservable();
   }
 
-  getNavigationUp$(): Observable<string> {
-    return this.getBreadcrumbs$().pipe(
+  set breadcrumbs(breadcrumbs: Breadcrumb[]) {
+    this._breadcrumbs$.next(breadcrumbs);
+  }
+
+  get showBreadCrumbs$(): Observable<boolean> {
+    return this._showBreadcrumbs$.asObservable();
+  }
+
+  set showBreadCrumbs(showBreadCrumbs: boolean) {
+    this._showBreadcrumbs$.next(showBreadCrumbs);
+  }
+
+  get parentRoute$(): Observable<string> {
+    return this.breadcrumbs$.pipe(
       map((breadcrumbs) => {
         const current = breadcrumbs[breadcrumbs.length - 1];
-        return breadcrumbs[breadcrumbs.length - 2 - (current?.parentOffset || 0)]?.url || '';
+        return breadcrumbs[breadcrumbs.length - 2 - (current.parentOffset || 0)]?.url || '';
       }),
     );
   }
 
-  getShowBreadCrumbs$(): Observable<boolean> {
-    return this._showBreadcrumbs$.asObservable();
-  }
-
-  setShowBreadCrumbs(showBreadCrumbs: boolean) {
-    this._showBreadcrumbs$.next(showBreadCrumbs);
-  }
-
-  showBreadCrumbs() {
-    this.setShowBreadCrumbs(true);
-  }
-
-  hideBreadCrumb() {
-    this.setShowBreadCrumbs(false);
-  }
-
-  reset() {
-    this.hideBreadCrumb();
-  }
-
-  private buildBreadcrumbs(
+  private _buildBreadcrumbs(
     route: ActivatedRouteSnapshot | null,
     parentUrl: string[],
     breadcrumbs: Breadcrumb[],
   ): Breadcrumb[] {
     if (route) {
       const routeUrl = parentUrl.concat(route.url.map((url) => url.path));
-      const breadcrumbUrl = '/' + routeUrl.join('/');
-      if (route.data?.breadcrumb) {
-        const breadcrumb = {
-          title$: this._getBreadcrumbLabel(route.data),
-          url: breadcrumbUrl,
-          parentOffset: route.data?.breadcrumb.parentOffset,
-          icon: route.data?.breadcrumb?.icon,
+      if (route.data.breadcrumb) {
+        const breadcrumb: Breadcrumb = {
+          title$: this._getBreadcrumbLabel(route.data as BreadcrumbRouteData),
+          url: routeUrl.join('/') || '/',
+          icon: route.data.breadcrumb.icon,
+          parentOffset: route.data.breadcrumb.parentOffset,
         };
-        if (breadcrumbs[breadcrumbs.length - 1]?.url === breadcrumbUrl) {
+        if (breadcrumbs[breadcrumbs.length - 1]?.url === breadcrumb.url) {
           breadcrumbs[breadcrumbs.length - 1] = breadcrumb;
         } else {
           breadcrumbs.push(breadcrumb);
         }
       }
-      this.buildBreadcrumbs(route.firstChild, routeUrl, breadcrumbs);
+      this._buildBreadcrumbs(route.firstChild, routeUrl, breadcrumbs);
     }
     return breadcrumbs;
   }
 
-  private _getBreadcrumbLabel(data: Data): Observable<string> | null {
+  private _getBreadcrumbLabel(data: BreadcrumbRouteData): Observable<string> | null {
     if (data.breadcrumb.i18n) {
       return this.translocoService.selectTranslate(
         'core.breadcrumb.' +
@@ -94,8 +83,17 @@ export class BreadcrumbService {
 }
 
 export interface Breadcrumb {
-  title$: Observable<string> | null;
   url: string;
+  title$?: Observable<string> | null;
   icon?: string;
   parentOffset?: number;
+}
+
+export interface BreadcrumbRouteData extends Data {
+  breadcrumb: {
+    icon?: string;
+    title?: string | ((data: Data) => string);
+    i18n?: string | ((data: Data) => string);
+    parentOffset?: number;
+  };
 }

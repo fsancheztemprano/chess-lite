@@ -1,7 +1,13 @@
 import { ThemePalette } from '@angular/material/core';
 import { Template } from '@hal-form-client';
 
-interface ButtonData {
+export enum DialogType {
+  INFORMATION = 'information',
+  CONFIRMATION = 'confirmation',
+  INPUT = 'input',
+}
+
+export interface ButtonData {
   text?: string;
   icon?: string;
   color?: ThemePalette;
@@ -19,14 +25,32 @@ export interface ConfirmationDialogData extends InformationDialogData {
   acceptButton?: ButtonData;
 }
 
-export interface TextInputDialogData extends ConfirmationDialogData {
-  inputs: TextInputDialogInput[];
+export interface InputDialogData extends ConfirmationDialogData {
+  inputs: InputDialogInput[];
   template?: Template | null;
 }
 
-export interface TextInputDialogInput {
+export enum InputDialogType {
+  text = 'text',
+  password = 'password',
+  email = 'email',
+  number = 'number',
+  date = 'date',
+  time = 'time',
+  datetime = 'datetime',
+  color = 'color',
+  checkbox = 'checkbox',
+  toggle = 'toggle',
+  textarea = 'textarea',
+  hidden = 'hidden',
+  file = 'file',
+  image = 'image',
+}
+
+export interface InputDialogInput {
   key: string;
   value?: string;
+  type?: string | InputDialogType;
   options?: {
     defaultValue?: string;
     label?: string;

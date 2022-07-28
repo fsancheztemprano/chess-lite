@@ -34,7 +34,7 @@ export class UserManagementTableComponent implements OnDestroy {
     private readonly coreContextMenuService: CoreContextMenuService,
     private readonly translocoService: TranslocoService,
   ) {
-    this.coreContextMenuService.setOptions([
+    this.coreContextMenuService.show([
       {
         title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.add`),
         icon: 'person_add',
@@ -59,6 +59,6 @@ export class UserManagementTableComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.coreContextMenuService.resetOptions();
+    this.coreContextMenuService.reset();
   }
 }

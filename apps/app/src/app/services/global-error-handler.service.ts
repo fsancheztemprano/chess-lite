@@ -2,9 +2,7 @@ import { ErrorHandler, Injectable, NgZone } from '@angular/core';
 import { ToasterService, ToastType } from '@app/ui/shared/app';
 import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class GlobalErrorHandler implements ErrorHandler {
   constructor(private readonly ngZone: NgZone, private readonly toasterService: ToasterService) {}
 
@@ -17,3 +15,8 @@ export class GlobalErrorHandler implements ErrorHandler {
     });
   }
 }
+
+export const GlobalErrorHandlerProvider = {
+  provide: ErrorHandler,
+  useClass: GlobalErrorHandler,
+};

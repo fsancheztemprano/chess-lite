@@ -1,4 +1,4 @@
-<app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')" [showContextMenu]="true">
+<app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
   <table mat-table class="full-width-table" matSort [attr.aria-label]="t('header')">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="name" scope="col">{{ t('columns.name') }}</th>

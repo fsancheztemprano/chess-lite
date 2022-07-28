@@ -56,7 +56,9 @@ export class Resource implements IResource {
         .reduce((previous, current) => ({ ...previous, ...current }), {}) as any;
     }
 
-    this._embedded = iResource._embedded;
+    if (iResource._embedded) {
+      this._embedded = iResource._embedded;
+    }
 
     if (iResource._templates) {
       this._templates = Object.keys(iResource._templates)

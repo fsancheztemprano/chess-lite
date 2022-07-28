@@ -47,7 +47,7 @@ jobs:
       - name: Load Cache
         uses: frango9000/cache@main
         env:
-          cache-key: ${{ runner.os }}-v2
+          cache-key: ${{ runner.os }}-v3
         with:
           path: |
             ~/.m2
@@ -124,33 +124,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "Application"
           disable-comment: ${{ github.event_name == 'push' }}    # Only post on pull request, not on commit
-          report-files: |
-            ./apps/api/target/site/jacoco-ut/jacoco.xml
-            ./apps/api/target/site/jacoco-it/jacoco.xml
-            ./coverage/apps/app/lcov.info
-            ./coverage/libs/ui/core/lcov.info
-            ./coverage/libs/ui/shared/app/lcov.info
-            ./coverage/libs/ui/shared/common/lcov.info
-            ./coverage/libs/ui/shared/core/lcov.info
-            ./coverage/libs/ui/shared/domain/lcov.info
-            ./coverage/libs/ui/shared/feature/administration/lcov.info
-            ./coverage/libs/ui/feature/administration/lcov.info
-            ./coverage/libs/ui/feature/authentication/lcov.info
-            ./coverage/libs/ui/feature/home/lcov.info
-            ./coverage/libs/ui/feature/user/lcov.info
-            ./coverage/libs/hal-form-client/lcov.info
-            ./coverage/pact/consumer-pact/lcov.info
-          report-titles: |
-            'Backend Unit Tests'
-            'Backend Integration Tests'
-            'Frontend Tests'
+          report-paths: |
+            apps/api/target/site/jacoco-*t/jacoco.xml
+            coverage/**/lcov.info
           enable-build-fail: false
           file-coverage-error-min: 60
-          file-coverage-warn-min: 80
+          file-coverage-warn-min: 70
           report-coverage-error-min: 50
-          report-coverage-warn-min: 70
+          report-coverage-warn-min: 60
           global-coverage-error-min: 40
-          global-coverage-warn-min: 60
+          global-coverage-warn-min: 50
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v3

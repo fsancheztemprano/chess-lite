@@ -1,5 +1,7 @@
-<app-context-menu
-  *transloco="let t"
-  [title]="t('core.context-menu.title')"
-  [menuOptions]="(coreContextMenuService.options$ | async) || []"
-></app-context-menu>
+<ng-container *ngIf="coreContextMenuService.showMenu$ | async">
+  <app-context-menu
+    *transloco="let t"
+    [title]="t('core.context-menu.title')"
+    [menuOptions]="(coreContextMenuService.options$ | async) || []"
+  ></app-context-menu>
+</ng-container>

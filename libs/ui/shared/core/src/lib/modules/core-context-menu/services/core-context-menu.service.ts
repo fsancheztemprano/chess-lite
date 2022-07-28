@@ -1,23 +1,35 @@
 import { Injectable } from '@angular/core';
 import { MenuData } from '@app/ui/shared/domain';
-import { Observable } from 'rxjs';
-import { CoreContextMenuRepository } from '../store/core-context-menu.repository';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class CoreContextMenuService {
-  constructor(private readonly coreContextMenuRepository: CoreContextMenuRepository) {}
+  private readonly _showMenu$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly _options$: BehaviorSubject<MenuData[]> = new BehaviorSubject<MenuData[]>([]);
+
+  get showMenu$(): Observable<boolean> {
+    return this._showMenu$.asObservable();
+  }
+
+  set showMenu(show: boolean) {
+    this._showMenu$.next(show);
+  }
 
   get options$(): Observable<MenuData[]> {
-    return this.coreContextMenuRepository.coreContextMenuOptions$;
+    return this._options$.asObservable();
   }
 
-  setOptions(options?: MenuData[]): void {
-    this.coreContextMenuRepository.setOptions(options);
+  set options(options: MenuData[]) {
+    this._options$.next(options);
   }
 
-  resetOptions(): void {
-    this.coreContextMenuRepository.setOptions([]);
+  show(options: MenuData[]): void {
+    this.options = options;
+    this.showMenu = true;
+  }
+
+  reset(): void {
+    this.showMenu = false;
+    this.options = [];
   }
 }

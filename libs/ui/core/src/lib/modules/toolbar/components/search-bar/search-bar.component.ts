@@ -8,7 +8,5 @@ import { SearchService } from '@app/ui/shared/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBarComponent {
-  public showSearchInput = false;
-
   constructor(public readonly searchService: SearchService) {}
 }

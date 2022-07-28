@@ -1,8 +1,8 @@
-import { HalFormResourceService } from './hal-form-resource.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { IResource, Resource } from '../domain/resource';
 import { HalFormClientModule } from '../hal-form-client.module';
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HalFormResourceService } from './hal-form-resource.service';
 
 describe('HalFormResourceService', () => {
   let service: HalFormResourceService;
@@ -26,18 +26,30 @@ describe('HalFormResourceService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should set resource', (done) => {
+  it('should set resource', () => {
     service.setResource(mockResource);
 
-    service.getResource().subscribe((resource: Resource) => {
+    service['_rootResource'].value === mockResource;
+  });
+
+  it('should get resource$', (done) => {
+    service.setResource(mockResource);
+
+    service.resource$.subscribe((resource: Resource) => {
       expect(resource).toBeTruthy();
       expect(resource).toStrictEqual(new Resource(mockResource));
       done();
     });
   });
 
+  it('should get resource', () => {
+    service.setResource(mockResource);
+
+    expect(service.resource).toBeTruthy();
+  });
+
   it('should get resource once', (done) => {
-    service.getResourceOnce().subscribe({
+    service.resourceOnce$.subscribe({
       next: (resource: Resource) => expect(resource).toBeTruthy(),
       complete: () => done(),
     });

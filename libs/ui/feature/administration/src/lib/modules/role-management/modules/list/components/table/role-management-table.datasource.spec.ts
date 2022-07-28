@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { stubMessageServiceProvider } from '@app/ui/shared/app';
-import { stubSearchServiceProvider } from '@app/ui/shared/core';
 import { stubRoleManagementServiceProvider } from '../../../../services/role-management.service.stub';
 
 import { RoleManagementTableDatasource } from './role-management-table.datasource';
@@ -10,7 +9,7 @@ describe('RoleManagementTableService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [stubRoleManagementServiceProvider, stubMessageServiceProvider, stubSearchServiceProvider],
+      providers: [stubRoleManagementServiceProvider, stubMessageServiceProvider],
     });
     service = TestBed.inject(RoleManagementTableDatasource);
   });
