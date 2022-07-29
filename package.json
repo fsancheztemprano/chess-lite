@@ -144,7 +144,7 @@
     "junit-report-merger": "3.0.6",
     "ng-packagr": "14.1.0",
     "npm-check-updates": "16.0.1",
-    "nx": "14.4.3",
+    "nx": "14.5.1",
     "prettier": "2.7.1",
     "sonarqube-scanner": "2.8.1",
     "ts-jest": "27.1.4",
