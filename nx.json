@@ -20,14 +20,6 @@
       }
     }
   },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ]
-  },
   "cli": {
     "packageManager": "yarn"
   },
@@ -58,6 +50,11 @@
     },
     "@nrwl/angular:component": {
       "style": "scss"
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
     }
   }
 }

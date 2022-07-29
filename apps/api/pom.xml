@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.0</version>
+    <version>2.7.2</version>
     <relativePath/>
   </parent>
   <groupId>dev.kurama.fullstack</groupId>
@@ -24,7 +24,7 @@
   <properties>
     <java.version>11</java.version>
     <org.projectlombok.version>1.18.24</org.projectlombok.version>
-    <org.mapstruct.version>1.5.1.Final</org.mapstruct.version>
+    <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
     <skipUTs>${skipTests}</skipUTs>
@@ -52,7 +52,7 @@
       <dependency>
         <groupId>org.testcontainers</groupId>
         <artifactId>testcontainers-bom</artifactId>
-        <version>1.17.2</version>
+        <version>1.17.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -177,7 +177,7 @@
     <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
-      <version>3.19.2</version>
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
@@ -453,7 +453,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <id>default-deploy</id>
