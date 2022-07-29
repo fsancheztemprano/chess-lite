@@ -5,7 +5,7 @@
   [matMenuTriggerFor]="menu"
   [matTooltip]="title"
   matTooltipClass="big-font-tooltip"
-  [disabled]="disabled || !menuOptions?.length"
+  [disabled]="disabled || !menuOptions.length"
   (click)="preventNavigation($event)"
 >
   <mat-icon>{{ icon }}</mat-icon>
