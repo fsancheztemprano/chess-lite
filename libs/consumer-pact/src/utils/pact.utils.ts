@@ -1,4 +1,4 @@
-import { Pact } from '@pact-foundation/pact';
+import { MessageConsumerPact, Pact } from '@pact-foundation/pact';
 import { term, UUID_V4_FORMAT } from '@pact-foundation/pact/src/dsl/matchers';
 import { resolve } from 'path';
 
@@ -13,6 +13,18 @@ export function pactForResource(resource: string, suffix = 'Controller'): Pact {
     timeout: 10000,
     spec: 2,
     pactfileWriteMode: 'overwrite',
+  });
+}
+
+export function pactForMessages(resource: string, suffix = 'Messages'): MessageConsumerPact {
+  return new MessageConsumerPact({
+    consumer: `app-${resource}`,
+    provider: 'ami',
+    log: resolve(process.cwd(), 'libs', 'consumer-pact', 'logs', 'pact.log'),
+    logLevel: 'warn',
+    dir: resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact-messages', resource + suffix),
+    spec: 2,
+    pactfileWriteMode: 'update',
   });
 }
 
