@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from '@app/ui/shared/app';
 import {
-  ApplicationMessage,
   GlobalSettings,
+  GlobalSettingsChangedMessage,
   GlobalSettingsRelations,
   GlobalSettingsUpdateInput,
   WEBSOCKET_REL,
@@ -67,7 +67,7 @@ export class GlobalSettingsService {
     this._globalSettingsChanges?.unsubscribe();
     if (globalSettings.hasLink(WEBSOCKET_REL)) {
       this._globalSettingsChanges = this.messageService
-        .multicast<ApplicationMessage>(globalSettings.getLink(WEBSOCKET_REL)!.href)
+        .multicast<GlobalSettingsChangedMessage>(globalSettings.getLink(WEBSOCKET_REL)!.href)
         .pipe(switchMap(() => this._initializeGlobalSettings()))
         .subscribe();
     }
