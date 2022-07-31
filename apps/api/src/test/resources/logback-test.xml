@@ -4,5 +4,6 @@
   <logger name="dev.kurama" level="WARN"/>
   <logger name="org.springframework" level="WARN"/>
   <logger name="org.hibernate.orm.cache" level="ERROR"/>
+  <logger name="au.com.dius" level="ERROR"/>
   <logger name="root" level="WARN"/>
 </configuration>

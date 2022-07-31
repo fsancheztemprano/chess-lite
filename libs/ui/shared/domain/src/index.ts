@@ -10,6 +10,7 @@ export * from './lib/domain/message/message.model';
 export * from './lib/domain/message/user-changed.message.model';
 export * from './lib/domain/message/user-preferences-changed.message.model';
 export * from './lib/domain/message/role-changed.message.model';
+export * from './lib/domain/message/global-settings-changed.message.model';
 
 export * from './lib/domain/administration/administration.model';
 export * from './lib/domain/administration/user-management-model';

@@ -8,7 +8,7 @@ import {
   uploadAvatarTemplate,
 } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
-import { InteractionObject } from '@pact-foundation/pact';
+import { InteractionObject, Matchers } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
@@ -503,6 +503,42 @@ export namespace UpdateUserProfilePreferencesPact {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
       },
+    },
+  };
+}
+
+export namespace UploadAvatarProfilePact {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'update user profile avatar',
+    withRequest: {
+      method: HTTPMethod.PATCH,
+      path: '/api/user/profile/avatar',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: pactCurrentUser.id },
+            authorities: ['profile:read', 'profile:update'],
+          }),
+        ),
+        [HttpHeaderKey.CONTENT_TYPE]: Matchers.regex({
+          generate: 'multipart/form-data; boundary=----boundary',
+          matcher: 'multipart/form-data; boundary=.*',
+        }),
+      },
+      body:
+        '------boundary\r\n' +
+        'Content-Disposition: form-data; name="avatar"; filename="avatar.txt"\r\n' +
+        'Content-Type: text/plain\r\n' +
+        '\r\n' +
+        'content\r\n' +
+        '------boundary--\r\n',
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
+      body: { ...pactCurrentUser },
     },
   };
 }
