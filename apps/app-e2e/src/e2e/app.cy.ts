@@ -1,5 +1,5 @@
 describe('Application Load', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => cy.visit('/app'));
 
   it('should display welcome message', () => {
     cy.get('.mat-drawer-inner-container > .mat-toolbar').should('contain', 'Welcome');
