@@ -39,13 +39,12 @@ public class CypressE2E {
         String output = outputFrame.getUtf8String().replace("\n", "").replace("?", "-");
         switch (outputFrame.getType()) {
           case STDOUT:
-//            if (!output.contains("┐")
-//              && !output.contains("┘")
-//              && !output.contains("39m─────────────────────")
-//              && !output.contains("39m---------------------")
-//              && !output.equals("---------------------")) {
-            log.at(Level.INFO).log(output);
-//            }
+            if (!output.contains("┐")
+              && !output.contains("┘")
+              && !output.contains("39m─────────────────────")
+              && (!output.contains("-----------------") || output.contains("----------------------------------"))) {
+              log.at(Level.INFO).log(output);
+            }
             break;
           case STDERR:
             log.at(Level.WARNING).log(output);
