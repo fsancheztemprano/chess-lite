@@ -291,6 +291,11 @@
           <version>${spring-cloud-contract.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <plugin>
           <groupId>com.heroku.sdk</groupId>
           <artifactId>heroku-maven-plugin</artifactId>
           <version>3.0.4</version>
@@ -436,7 +441,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M7</version>
         <configuration>
           <outputDirectory>target/site</outputDirectory>
         </configuration>
@@ -445,7 +449,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M7</version>
         <executions>
           <execution>
             <goals>
@@ -460,6 +463,7 @@
           <skipITs>${skipITs}</skipITs>
           <excludes>
             <exclude>**/*Test.java</exclude>
+            <exclude>**/*PactIT.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -467,7 +471,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0</version>
         <executions>
           <execution>
             <id>default-deploy</id>
@@ -485,7 +488,7 @@
     <profile>
       <id>pact</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
       </activation>
       <build>
         <plugins>
@@ -554,6 +557,40 @@
                 <version>${spring-cloud-contract.version}</version>
               </dependency>
             </dependencies>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*Test.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>e2e</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*E2E.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/*Test.java</exclude>
+                <exclude>**/*IT.java</exclude>
+              </excludes>
+            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -637,7 +674,6 @@
         </plugins>
       </build>
     </profile>
-
 
     <profile>
       <id>heroku-development</id>

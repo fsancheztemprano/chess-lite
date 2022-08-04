@@ -23,7 +23,7 @@ import org.testcontainers.utility.MountableFile;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("integration-test")
 @Flogger
-public class CypressIT {
+public class CypressE2E {
 
   @LocalServerPort
   private int port;
@@ -36,15 +36,21 @@ public class CypressIT {
     CountDownLatch countDownLatch = new CountDownLatch(1);
     try (GenericContainer container = createCypressContainer()) {
       container.withLogConsumer((Consumer<OutputFrame>) outputFrame -> {
+        String output = outputFrame.getUtf8String().replace("\n", "").replace("?", "-");
         switch (outputFrame.getType()) {
           case STDOUT:
-//            log.at(Level.INFO).log(outputFrame.getUtf8String());
+//            if (!output.contains("┐")
+//              && !output.contains("┘")
+//              && !output.contains("39m─────────────────────")
+//              && !output.contains("39m---------------------")
+//              && !output.equals("---------------------")) {
+            log.at(Level.INFO).log(output);
+//            }
             break;
           case STDERR:
-            log.at(Level.WARNING).log(outputFrame.getUtf8String());
+            log.at(Level.WARNING).log(output);
             break;
           case END:
-            log.at(Level.INFO).log(outputFrame.getUtf8String());
             log.at(Level.INFO).log(outputFrame.getType().name());
             countDownLatch.countDown();
             break;
@@ -52,16 +58,15 @@ public class CypressIT {
       });
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
-      System.out.println(container.getLogs());
-      assertThat(container.getLogs()).contains("All specs passed!");
 
+      log.at(Level.FINER).log("\n" + container.getLogs());
+      assertThat(container.getLogs()).contains("All specs passed!");
     }
   }
 
   private GenericContainer createCypressContainer() {
-    return new GenericContainer("cypress/included:10.4.0")
-      //
-      .withCopyToContainer(MountableFile.forHostPath("../app-e2e"), "/e2e/apps/app-e2e")
+    return new GenericContainer("cypress/included:10.4.0").withCopyToContainer(MountableFile.forHostPath("../app-e2e"),
+        "/e2e/apps/app-e2e")
       .withCopyToContainer(MountableFile.forHostPath("../../tsconfig.base.json"), "/e2e/tsconfig.base.json")
       .withWorkingDirectory("/e2e/apps/app-e2e")
       .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d", GenericContainer.INTERNAL_HOST_HOSTNAME, port));

@@ -47,10 +47,27 @@
         "args": [
           "verify",
           "-P pact",
-          "-D it.test=\"dev.kurama.api.pact.**\"",
+          "-D it.test=\"**/*PactIT.java\"",
           "-Dtest=\"dev.kurama.api.null.**\"",
-          "-DfailIfNoTests=false",
-          "-Dsurefire.failIfNoSpecifiedTests=false"
+          "-Dsurefire.failIfNoSpecifiedTests=false",
+          "-DskipUTs"
+        ]
+      }
+    },
+    "e2e": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "verify",
+          "-P frontend,e2e",
+          "-Dtest=\"dev.kurama.api.null.**\"",
+          "-Dsurefire.failIfNoSpecifiedTests=false",
+          "-DskipUTs"
         ]
       }
     },

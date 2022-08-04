@@ -75,21 +75,21 @@ jobs:
         run: npx nx workspace-lint
 
       - name: Lint
-        uses: MansaGroup/nrwl-nx-action@v2.1.0
+        uses: MansaGroup/nrwl-nx-action@v2
         with:
           targets: lint
           all: 'true'
           parallel: 'true'
 
       - name: Build
-        uses: MansaGroup/nrwl-nx-action@v2.1.0
+        uses: MansaGroup/nrwl-nx-action@v2
         with:
           targets: build
           all: 'true'
           parallel: 'true'
 
       - name: Test
-        uses: MansaGroup/nrwl-nx-action@v2.1.0
+        uses: MansaGroup/nrwl-nx-action@v2
         with:
           targets: test
           all: 'true'
@@ -148,6 +148,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: E2E
+        uses: MansaGroup/nrwl-nx-action@v2
+        with:
+          targets: e2e
+          projects: api
+          parallel: 'false'
 
       - name: Upload Development Backend Artifact
         if: env.upload-dev-artifacts && env.dependabot-run == 'false'
