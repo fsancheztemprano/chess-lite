@@ -15,9 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.Testcontainers;
+import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.OutputFrame;
-import org.testcontainers.utility.MountableFile;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -64,9 +64,9 @@ public class CypressE2E {
   }
 
   private GenericContainer createCypressContainer() {
-    return new GenericContainer("cypress/included:10.4.0").withCopyToContainer(MountableFile.forHostPath("../app-e2e"),
-        "/e2e/apps/app-e2e")
-      .withCopyToContainer(MountableFile.forHostPath("../../tsconfig.base.json"), "/e2e/tsconfig.base.json")
+    return new GenericContainer("cypress/included:10.4.0")
+      //
+      .withFileSystemBind("../../", "/e2e", BindMode.READ_WRITE)
       .withWorkingDirectory("/e2e/apps/app-e2e")
       .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d", GenericContainer.INTERNAL_HOST_HOSTNAME, port));
   }

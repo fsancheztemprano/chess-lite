@@ -156,6 +156,19 @@ jobs:
           projects: api
           parallel: 'false'
 
+      - name: Merge E2E Reports
+        if: env.dependabot-run == 'false' && always()
+        run: npm run test:merge:e2e
+
+      - name: E2E Test Execution Report
+        uses: frango9000/test-execution-report@main
+        if: env.dependabot-run == 'false' && always()
+        with:
+          name: E2E Tests
+          path: coverage/apps/app-e2e/merged-e2e.xml
+          reporter: java-junit
+          fail-on-error: false
+
       - name: Upload Development Backend Artifact
         if: env.upload-dev-artifacts && env.dependabot-run == 'false'
         uses: actions/upload-artifact@v3
