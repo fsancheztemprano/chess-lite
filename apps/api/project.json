@@ -60,7 +60,7 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "apps/api/target",
+        "outputPath": "coverage/apps/app-e2e",
         "root": "apps/api",
         "args": [
           "verify",
