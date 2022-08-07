@@ -1,3 +1,4 @@
+import { nxE2EPreset } from '@nrwl/cypress/plugins/cypress-preset';
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
@@ -14,7 +15,8 @@ export default defineConfig({
   },
 
   e2e: {
-    supportFile: './src/support/index.ts',
-    specPattern: './src/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    ...nxE2EPreset(__dirname),
+    supportFile: 'src/support/e2e.ts',
+    specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
   },
 });

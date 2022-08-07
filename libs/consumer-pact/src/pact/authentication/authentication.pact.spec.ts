@@ -7,8 +7,10 @@ import {
   HttpHeaderKey,
   Session,
   SignupInput,
+  TokenAuthority,
   TokenKeys,
 } from '@app/ui/shared/domain';
+import { jwtToken } from '@app/ui/testing';
 import { HalFormClientModule, HalFormService, IResource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
@@ -18,7 +20,6 @@ import { AuthService } from '../../../../ui/feature/authentication/src/lib/servi
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 import {
   ActivateAccountPact,
   ActivationTokenPact,
@@ -259,7 +260,7 @@ describe('Authentication Pacts', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['token:refresh'],
+            authorities: [TokenAuthority.TOKEN_REFRESH],
           }),
         );
         halFormService
@@ -286,7 +287,7 @@ describe('Authentication Pacts', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'lockedRoleUserId' },
-            authorities: ['token:refresh'],
+            authorities: [TokenAuthority.TOKEN_REFRESH],
           }),
         );
         halFormService
@@ -310,7 +311,7 @@ describe('Authentication Pacts', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'lockedUserId' },
-            authorities: ['token:refresh'],
+            authorities: [TokenAuthority.TOKEN_REFRESH],
           }),
         );
         halFormService
@@ -348,7 +349,13 @@ describe('Authentication Pacts', () => {
     it('not found', (done) => {
       const interaction: InteractionObject = RefreshTokenPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ user: { id: 'notFoundId' }, authorities: ['token:refresh'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: [TokenAuthority.TOKEN_REFRESH],
+          }),
+        );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
           .pipe(switchMap((link) => link.fetch()))

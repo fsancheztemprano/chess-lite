@@ -21,7 +21,7 @@ public class InitializationRunner implements CommandLineRunner {
   private boolean dataInit;
 
   @NonNull
-  private DataInitializationService initializationService;
+  private final DataInitializationService initializationService;
 
   @SneakyThrows
   @Override

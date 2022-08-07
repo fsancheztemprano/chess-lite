@@ -1,11 +1,10 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
-import { defaultTemplate, updateUserPreferencesTemplate } from '@app/ui/testing';
+import { HttpHeaderKey, UserPreferencesAuthority } from '@app/ui/shared/domain';
+import { defaultTemplate, jwtToken, updateUserPreferencesTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactUserPreferences } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 
 export namespace GetUserPreferencesPact {
   export const successful: InteractionObject = {
@@ -16,7 +15,7 @@ export namespace GetUserPreferencesPact {
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:preferences:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserPreferencesAuthority.USER_PREFERENCES_READ] })),
       },
     },
     willRespondWith: {
@@ -34,7 +33,14 @@ export namespace GetUserPreferencesPact {
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:preferences:read', 'user:preferences:update'] })),
+        Authorization: bearer(
+          jwtToken({
+            authorities: [
+              UserPreferencesAuthority.USER_PREFERENCES_READ,
+              UserPreferencesAuthority.USER_PREFERENCES_UPDATE,
+            ],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -58,7 +64,7 @@ export namespace GetUserPreferencesPact {
       path: '/api/user/preferences/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:preferences:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserPreferencesAuthority.USER_PREFERENCES_READ] })),
       },
     },
     willRespondWith: {
@@ -100,7 +106,14 @@ export namespace UpdateUserPreferencesPact {
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:preferences:read', 'user:preferences:update'] })),
+        Authorization: bearer(
+          jwtToken({
+            authorities: [
+              UserPreferencesAuthority.USER_PREFERENCES_READ,
+              UserPreferencesAuthority.USER_PREFERENCES_UPDATE,
+            ],
+          }),
+        ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -122,7 +135,7 @@ export namespace UpdateUserPreferencesPact {
       path: '/api/user/preferences/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:preferences:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserPreferencesAuthority.USER_PREFERENCES_UPDATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {

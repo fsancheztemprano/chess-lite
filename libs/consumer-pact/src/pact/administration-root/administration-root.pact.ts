@@ -1,10 +1,9 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
-import { defaultTemplate } from '@app/ui/testing';
+import { AdminAuthority, AuthorityAuthority, HttpHeaderKey, RoleAuthority, UserAuthority } from '@app/ui/shared/domain';
+import { defaultTemplate, jwtToken } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 
 export namespace GetAdministrationRootResource {
   export const as_unauthorized: InteractionObject = {
@@ -54,7 +53,7 @@ export namespace GetAdministrationRootResource {
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['admin:root'] })),
+        Authorization: bearer(jwtToken({ authorities: [AdminAuthority.ADMIN_ROOT] })),
       },
     },
     willRespondWith: {
@@ -79,7 +78,7 @@ export namespace GetAdministrationRootResource {
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['admin:root', 'service-logs:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [AdminAuthority.ADMIN_ROOT, 'service-logs:read'] })),
       },
     },
     willRespondWith: {
@@ -107,7 +106,7 @@ export namespace GetAdministrationRootResource {
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['admin:root', 'global-settings:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [AdminAuthority.ADMIN_ROOT, 'global-settings:read'] })),
       },
     },
     willRespondWith: {
@@ -137,7 +136,14 @@ export namespace GetAdministrationRootResource {
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
-          jwtToken({ authorities: ['admin:root', 'admin:user-management:root', 'user:read', 'user:create'] }),
+          jwtToken({
+            authorities: [
+              AdminAuthority.ADMIN_ROOT,
+              AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
+              UserAuthority.USER_READ,
+              UserAuthority.USER_CREATE,
+            ],
+          }),
         ),
       },
     },
@@ -242,7 +248,13 @@ export namespace GetAdministrationRootResource {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            authorities: ['admin:root', 'admin:role-management:root', 'role:read', 'role:create', 'authority:read'],
+            authorities: [
+              AdminAuthority.ADMIN_ROOT,
+              AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
+              RoleAuthority.ROLE_READ,
+              RoleAuthority.ROLE_CREATE,
+              AuthorityAuthority.AUTHORITY_READ,
+            ],
           }),
         ),
       },

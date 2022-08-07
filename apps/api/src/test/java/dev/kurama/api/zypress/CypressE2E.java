@@ -21,7 +21,7 @@ import org.testcontainers.containers.output.OutputFrame;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("integration-test")
+@ActiveProfiles({"integration-test", "e2e"})
 @Flogger
 public class CypressE2E {
 

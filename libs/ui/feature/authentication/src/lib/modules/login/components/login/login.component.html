@@ -36,6 +36,7 @@
           <button
             mat-raised-button
             color="primary"
+            data-cy="login-button"
             [disabled]="loginForm.invalid || (authService.hasTemplateToLogin() | async) === false"
           >
             {{ t('button.login') }}

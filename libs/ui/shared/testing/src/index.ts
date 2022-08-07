@@ -8,3 +8,5 @@ export * from './lib/transloco/transloco-testing.module';
 
 export * from './lib/stubs/services/actions.stub';
 export * from './lib/stubs/services/activated-route.stub';
+
+export * from './lib/utils/token.utils';

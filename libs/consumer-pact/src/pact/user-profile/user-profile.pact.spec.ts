@@ -2,11 +2,12 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { SessionRepository, SessionService, stubMessageServiceProvider } from '@app/ui/shared/app';
 import { UserSettingsService } from '@app/ui/shared/core';
-import { CurrentUserRelations, TokenKeys, User, UserPreferences } from '@app/ui/shared/domain';
+import { CurrentUserRelations, ProfileAuthority, TokenKeys, User, UserPreferences } from '@app/ui/shared/domain';
 import {
   changePasswordTemplate,
   defaultTemplate,
   deleteProfileTemplate,
+  jwtToken,
   stubActionsProvider,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
@@ -16,7 +17,6 @@ import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 import {
   DeleteUserProfilePact,
   GetUserProfilePact,
@@ -65,7 +65,7 @@ describe('User Profile Pact', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetUserProfilePact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['profile:read'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [ProfileAuthority.PROFILE_READ] }));
         sessionService['_fetchUser']().subscribe((user: User) => {
           expect(user).toBeTruthy();
           expect(user.id).toBe(interaction.willRespondWith.body.id);
@@ -84,7 +84,10 @@ describe('User Profile Pact', () => {
     it('with update', (done) => {
       const interaction: InteractionObject = GetUserProfilePact.with_update;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE] }),
+        );
         sessionService['_fetchUser']().subscribe((user: User) => {
           expect(user).toBeTruthy();
           expect(user.id).toBe(interaction.willRespondWith.body.id);
@@ -104,7 +107,10 @@ describe('User Profile Pact', () => {
     it('with delete', (done) => {
       const interaction: InteractionObject = GetUserProfilePact.with_delete;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['profile:read', 'profile:delete'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE] }),
+        );
         sessionService['_fetchUser']().subscribe((user: User) => {
           expect(user).toBeTruthy();
           expect(user.id).toBe(interaction.willRespondWith.body.id);
@@ -133,7 +139,13 @@ describe('User Profile Pact', () => {
     it('not found', (done) => {
       const interaction: InteractionObject = GetUserProfilePact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ user: { id: 'notFoundId' }, authorities: ['profile:read'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: [ProfileAuthority.PROFILE_READ],
+          }),
+        );
         sessionService['_fetchUser']().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -162,7 +174,10 @@ describe('User Profile Pact', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = UpdateUserProfilePact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE] }),
+        );
         userSettingsService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
           expect(user).toBeTruthy();
           expect(user.id).toBe(interaction.willRespondWith.body.id);
@@ -194,7 +209,7 @@ describe('User Profile Pact', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         );
         userSettingsService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe({
@@ -225,7 +240,10 @@ describe('User Profile Pact', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = UpdateUserProfilePasswordPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE] }),
+        );
         userSettingsService
           .changePassword({
             password: 'password',
@@ -262,7 +280,7 @@ describe('User Profile Pact', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         );
         userSettingsService.changePassword({ password: 'password', newPassword: 'newPassword' }).subscribe({
@@ -296,7 +314,7 @@ describe('User Profile Pact', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'pactUserId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         );
         userSettingsService.deleteAccount().subscribe((response: User) => {
@@ -328,7 +346,7 @@ describe('User Profile Pact', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         );
         userSettingsService.deleteAccount().subscribe({
@@ -359,7 +377,13 @@ describe('User Profile Pact', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetUserProfilePreferencesPact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ user: { id: 'pactUserId' }, authorities: ['profile:read'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({
+            user: { id: 'pactUserId' },
+            authorities: [ProfileAuthority.PROFILE_READ],
+          }),
+        );
         sessionService['_fetchUserPreferences']().subscribe((userPreferences: User) => {
           expect(userPreferences).toBeTruthy();
           expect(userPreferences.id).toBe(interaction.willRespondWith.body.id);
@@ -390,7 +414,13 @@ describe('User Profile Pact', () => {
     it('not found', (done) => {
       const interaction: InteractionObject = GetUserProfilePreferencesPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ user: { id: 'notFoundId' }, authorities: ['profile:read'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({
+            user: { id: 'notFoundId' },
+            authorities: [ProfileAuthority.PROFILE_READ],
+          }),
+        );
         sessionService['_fetchUserPreferences']().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -426,7 +456,7 @@ describe('User Profile Pact', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'pactUserId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         );
         userSettingsService.updateUserPreferences({ darkMode: true }).subscribe((response: User) => {
@@ -461,7 +491,7 @@ describe('User Profile Pact', () => {
           TokenKeys.TOKEN,
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         );
         userSettingsService.updateUserPreferences({ darkMode: true }).subscribe({
@@ -496,7 +526,10 @@ describe('User Profile Pact', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = UploadAvatarProfilePact.successful;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['profile:read', 'profile:update'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE] }),
+        );
         const content = 'content';
         const data = new Blob([content], { type: 'text/plain' });
         const arrayOfBlob = new Array<Blob>();

@@ -2,12 +2,20 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { stubMessageServiceProvider, stubToasterServiceProvider } from '@app/ui/shared/app';
-import { ActivationTokenRelations, TokenKeys, User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
+import {
+  ActivationTokenRelations,
+  TokenKeys,
+  User,
+  UserAuthority,
+  UserManagementRelations,
+  UserPage,
+} from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
 import {
   createUserTemplate,
   defaultTemplate,
   deleteUserTemplate,
+  jwtToken,
   requestActivationTokenTemplate,
   updateUserAuthoritiesTemplate,
   updateUserRoleTemplate,
@@ -19,7 +27,6 @@ import { UserManagementDetailService } from '../../../../ui/feature/administrati
 import { UserManagementService } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 import {
   CreateUserPact,
   DeleteUserPact,
@@ -88,7 +95,7 @@ describe('User Pacts', () => {
   describe('Get User', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetUserPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [UserAuthority.USER_READ] }));
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -104,7 +111,10 @@ describe('User Pacts', () => {
 
     it('with update', (done) => {
       const interaction: InteractionObject = GetUserPact.with_update;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -117,7 +127,10 @@ describe('User Pacts', () => {
 
     it('with delete', (done) => {
       const interaction: InteractionObject = GetUserPact.with_delete;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:delete'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_DELETE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -129,7 +142,10 @@ describe('User Pacts', () => {
 
     it('with update role', (done) => {
       const interaction: InteractionObject = GetUserPact.with_update_role;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update:role'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -141,7 +157,10 @@ describe('User Pacts', () => {
 
     it('with update authorities', (done) => {
       const interaction: InteractionObject = GetUserPact.with_update_authorities;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update:authorities'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_AUTHORITIES] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -185,7 +204,7 @@ describe('User Pacts', () => {
   describe('Get All Users', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetAllUsersPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [UserAuthority.USER_READ] }));
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUsers().subscribe((userPage: UserPage) => {
           expect(userPage).toBeTruthy();
@@ -202,7 +221,10 @@ describe('User Pacts', () => {
 
     it('with create', (done) => {
       const interaction: InteractionObject = GetAllUsersPact.with_create;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:create'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_CREATE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUsers().subscribe((userPage: UserPage) => {
           expect(userPage).toBeTruthy();
@@ -235,7 +257,7 @@ describe('User Pacts', () => {
   describe('Create User', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = CreateUserPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:create'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [UserAuthority.USER_CREATE] }));
       provider.addInteraction(interaction).then(() => {
         userManagementService
           .createUser({
@@ -255,7 +277,7 @@ describe('User Pacts', () => {
 
     it('existing', (done) => {
       const interaction: InteractionObject = CreateUserPact.existing;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:create'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [UserAuthority.USER_CREATE] }));
       provider.addInteraction(interaction).then(() => {
         userManagementService
           .createUser({
@@ -314,7 +336,10 @@ describe('User Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = UpdateUserPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUser({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -329,7 +354,10 @@ describe('User Pacts', () => {
     it('not found', (done) => {
       const interaction: InteractionObject = UpdateUserPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] }),
+        );
         userDetailService.setUser(
           new User({
             _links: {
@@ -370,7 +398,10 @@ describe('User Pacts', () => {
 
     it('existing', (done) => {
       const interaction: InteractionObject = UpdateUserPact.existing;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUser({ email: 'existingUser@localhost' }).subscribe({
           error: (error: HttpErrorResponse) => {
@@ -402,7 +433,10 @@ describe('User Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = UpdateUserRolePact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update:role'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUserRole('pactRoleId').subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -417,7 +451,10 @@ describe('User Pacts', () => {
     it('user not found', (done) => {
       const interaction: InteractionObject = UpdateUserRolePact.user_not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update:role'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] }),
+        );
         userDetailService.setUser(
           new User({
             _links: {
@@ -448,7 +485,10 @@ describe('User Pacts', () => {
     it('role not found', (done) => {
       const interaction: InteractionObject = UpdateUserRolePact.role_not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update:role'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] }),
+        );
         userDetailService.updateUserRole('notFoundId').subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
@@ -494,7 +534,10 @@ describe('User Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = UpdateUserAuthoritiesPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update:authorities'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_AUTHORITIES] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUserAuthorities(['pactAuthorityId']).subscribe((user: User) => {
           expect(user).toBeTruthy();
@@ -509,7 +552,10 @@ describe('User Pacts', () => {
     it('user not found', (done) => {
       const interaction: InteractionObject = UpdateUserAuthoritiesPact.user_not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:update:authorities'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_AUTHORITIES] }),
+        );
         userDetailService.setUser(
           new User({
             _links: {
@@ -571,7 +617,10 @@ describe('User Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = DeleteUserPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:delete'] }));
+      localStorage.setItem(
+        TokenKeys.TOKEN,
+        jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_DELETE] }),
+      );
       provider.addInteraction(interaction).then(() => {
         userDetailService.deleteUser().subscribe((response) => {
           expect(response).toBeTruthy();
@@ -583,7 +632,10 @@ describe('User Pacts', () => {
     it('user not found', (done) => {
       const interaction: InteractionObject = DeleteUserPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:read', 'user:delete'] }));
+        localStorage.setItem(
+          TokenKeys.TOKEN,
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_DELETE] }),
+        );
         userDetailService.setUser(
           new User({
             _links: {
@@ -641,7 +693,7 @@ describe('User Pacts', () => {
 
     it('successful', (done) => {
       const interaction: InteractionObject = RequestActivationTokenPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:update'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [UserAuthority.USER_UPDATE] }));
       provider.addInteraction(interaction).then(() => {
         userDetailService.sendActivationToken().subscribe((response) => {
           expect(response).toBeTruthy();
@@ -653,7 +705,7 @@ describe('User Pacts', () => {
     it('user not found', (done) => {
       const interaction: InteractionObject = RequestActivationTokenPact.not_found;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['user:update'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [UserAuthority.USER_UPDATE] }));
         userDetailService.setUser(
           new User({
             _links: {

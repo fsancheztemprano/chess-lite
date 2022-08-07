@@ -1,11 +1,10 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
-import { defaultTemplate } from '@app/ui/testing';
+import { HttpHeaderKey, RoleAuthority } from '@app/ui/shared/domain';
+import { defaultTemplate, jwtToken } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { eachLike, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer, withUuid } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 
 const pactRole = {
   id: 'pactRoleId',
@@ -43,7 +42,7 @@ export namespace GetAllRolesPact {
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_READ] })),
       },
     },
     willRespondWith: {
@@ -122,7 +121,7 @@ export namespace GetAllRolesPact {
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:create'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_READ, RoleAuthority.ROLE_CREATE] })),
       },
     },
     willRespondWith: {
@@ -193,7 +192,7 @@ export namespace GetOneRolePact {
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_READ] })),
       },
     },
     willRespondWith: {
@@ -217,7 +216,7 @@ export namespace GetOneRolePact {
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_READ, RoleAuthority.ROLE_UPDATE] })),
       },
     },
     willRespondWith: {
@@ -257,7 +256,7 @@ export namespace GetOneRolePact {
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:read', 'role:delete'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_READ, RoleAuthority.ROLE_DELETE] })),
       },
     },
     willRespondWith: {
@@ -284,7 +283,7 @@ export namespace GetOneRolePact {
       path: '/api/role/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_READ] })),
       },
     },
     willRespondWith: {
@@ -326,7 +325,7 @@ export namespace CreateRolePact {
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:create'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_CREATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -364,7 +363,7 @@ export namespace CreateRolePact {
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:create'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_CREATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -414,7 +413,7 @@ export namespace UpdateRolePact {
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_UPDATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -436,7 +435,7 @@ export namespace UpdateRolePact {
       path: '/api/role/coreRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_UPDATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -484,7 +483,7 @@ export namespace UpdateRolePact {
       path: '/api/role/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_UPDATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -510,7 +509,7 @@ export namespace DeleteRolePact {
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_DELETE] })),
       },
     },
     willRespondWith: {
@@ -526,7 +525,7 @@ export namespace DeleteRolePact {
       path: '/api/role/coreRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_DELETE] })),
       },
     },
     willRespondWith: {
@@ -566,7 +565,7 @@ export namespace DeleteRolePact {
       path: '/api/role/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['role:delete'] })),
+        Authorization: bearer(jwtToken({ authorities: [RoleAuthority.ROLE_DELETE] })),
       },
     },
     willRespondWith: {

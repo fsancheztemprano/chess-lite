@@ -4,6 +4,7 @@
       *ngIf="tile.visible$ === undefined || (tile.visible$ | async)"
       [tileData]="tile"
       [ngClass]="{ isMobile }"
+      [attr.data-cy]="tile.id"
     ></app-tiled-menu-tile>
   </ng-container>
 </div>

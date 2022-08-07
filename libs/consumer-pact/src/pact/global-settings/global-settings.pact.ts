@@ -1,11 +1,10 @@
 import { HttpHeaderKey } from '@app/ui/shared/domain';
-import { defaultTemplate } from '@app/ui/testing';
+import { defaultTemplate, jwtToken } from '@app/ui/testing';
 import { ContentType, IResource } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 
 const globalSettings: IResource = {
   signupOpen: true,

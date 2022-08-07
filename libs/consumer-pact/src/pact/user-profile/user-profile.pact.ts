@@ -1,8 +1,9 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
+import { HttpHeaderKey, ProfileAuthority } from '@app/ui/shared/domain';
 import {
   changePasswordTemplate,
   defaultTemplate,
   deleteProfileTemplate,
+  jwtToken,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
   uploadAvatarTemplate,
@@ -12,7 +13,6 @@ import { InteractionObject, Matchers } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
 
 export namespace GetUserProfilePact {
   export const successful: InteractionObject = {
@@ -23,7 +23,12 @@ export namespace GetUserProfilePact {
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id }, authorities: ['profile:read'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: pactCurrentUser.id },
+            authorities: [ProfileAuthority.PROFILE_READ],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -44,7 +49,7 @@ export namespace GetUserProfilePact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
       },
@@ -82,7 +87,7 @@ export namespace GetUserProfilePact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read', 'profile:delete'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE],
           }),
         ),
       },
@@ -128,7 +133,7 @@ export namespace GetUserProfilePact {
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'notFoundId' }, authorities: ['profile:read'] })),
+        Authorization: bearer(jwtToken({ user: { id: 'notFoundId' }, authorities: [ProfileAuthority.PROFILE_READ] })),
       },
     },
     willRespondWith: {
@@ -153,7 +158,7 @@ export namespace UpdateUserProfilePact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -200,7 +205,7 @@ export namespace UpdateUserProfilePact {
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -229,7 +234,7 @@ export namespace UpdateUserProfilePasswordPact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -276,7 +281,7 @@ export namespace UpdateUserProfilePasswordPact {
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -305,7 +310,7 @@ export namespace DeleteUserProfilePact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read', 'profile:delete'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE],
           }),
         ),
       },
@@ -346,7 +351,7 @@ export namespace DeleteUserProfilePact {
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:delete'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE],
           }),
         ),
       },
@@ -373,7 +378,7 @@ export namespace GetUserProfilePreferencesPact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read'],
+            authorities: [ProfileAuthority.PROFILE_READ],
           }),
         ),
       },
@@ -416,7 +421,7 @@ export namespace GetUserProfilePreferencesPact {
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read'],
+            authorities: [ProfileAuthority.PROFILE_READ],
           }),
         ),
       },
@@ -443,7 +448,7 @@ export namespace UpdateUserProfilePreferencesPact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -490,7 +495,7 @@ export namespace UpdateUserProfilePreferencesPact {
         Authorization: bearer(
           jwtToken({
             user: { id: 'notFoundId' },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -519,7 +524,7 @@ export namespace UploadAvatarProfilePact {
         Authorization: bearer(
           jwtToken({
             user: { id: pactCurrentUser.id },
-            authorities: ['profile:read', 'profile:update'],
+            authorities: [ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_UPDATE],
           }),
         ),
         [HttpHeaderKey.CONTENT_TYPE]: Matchers.regex({
