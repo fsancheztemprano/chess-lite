@@ -1,9 +1,10 @@
 import { AdminAuthority, HttpHeaderKey, ProfileAuthority, TokenAuthority } from '@app/ui/shared/domain';
-import { defaultTemplate, jwtToken } from '@app/ui/testing';
+import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetRootResource {
   export const unauthorized: InteractionObject = {

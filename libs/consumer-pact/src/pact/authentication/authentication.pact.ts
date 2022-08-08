@@ -2,7 +2,6 @@ import { HttpHeaderKey, TokenAuthority } from '@app/ui/shared/domain';
 import {
   changePasswordTemplate,
   defaultTemplate,
-  jwtToken,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
   uploadAvatarTemplate,
@@ -12,6 +11,7 @@ import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer, jwt } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace SignupPact {
   export const successful: InteractionObject = {

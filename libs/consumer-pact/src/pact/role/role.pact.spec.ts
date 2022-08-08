@@ -9,12 +9,13 @@ import {
   TokenKeys,
 } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
-import { defaultTemplate, jwtToken } from '@app/ui/testing';
+import { defaultTemplate } from '@app/ui/testing';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { RoleManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import { CreateRolePact, DeleteRolePact, GetAllRolesPact, GetOneRolePact, UpdateRolePact } from './role.pact';
 
 const provider: Pact = pactForResource('role');

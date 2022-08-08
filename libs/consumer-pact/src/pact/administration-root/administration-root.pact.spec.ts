@@ -11,12 +11,12 @@ import {
   UserAuthority,
 } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
-import { jwtToken } from '@app/ui/testing';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { noop } from 'rxjs';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import { GetAdministrationRootResource } from './administration-root.pact';
 
 const provider: Pact = pactForResource('administrationRoot');

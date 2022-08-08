@@ -1,11 +1,11 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AdminAuthority, ProfileAuthority, TokenAuthority, TokenKeys } from '@app/ui/shared/domain';
-import { jwtToken } from '@app/ui/testing';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import { GetRootResource } from './root.pact';
 
 const provider: Pact = pactForResource('root');

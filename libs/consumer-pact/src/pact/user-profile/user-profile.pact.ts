@@ -3,7 +3,6 @@ import {
   changePasswordTemplate,
   defaultTemplate,
   deleteProfileTemplate,
-  jwtToken,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
   uploadAvatarTemplate,
@@ -13,6 +12,7 @@ import { InteractionObject, Matchers } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetUserProfilePact {
   export const successful: InteractionObject = {

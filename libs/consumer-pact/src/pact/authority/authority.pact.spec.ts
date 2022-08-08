@@ -7,13 +7,13 @@ import {
   TokenKeys,
 } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
-import { jwtToken } from '@app/ui/testing';
 import { HalFormClientModule, Link } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { AuthorityManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/authority-management.service';
 import { RoleManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import { GetAllAuthoritiesPact, GetOneAuthorityPact } from './authority.pact';
 
 const provider: Pact = pactForResource('authority');

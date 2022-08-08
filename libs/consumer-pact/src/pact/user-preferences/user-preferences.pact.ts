@@ -1,10 +1,11 @@
 import { HttpHeaderKey, UserPreferencesAuthority } from '@app/ui/shared/domain';
-import { defaultTemplate, jwtToken, updateUserPreferencesTemplate } from '@app/ui/testing';
+import { defaultTemplate, updateUserPreferencesTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactUserPreferences } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetUserPreferencesPact {
   export const successful: InteractionObject = {

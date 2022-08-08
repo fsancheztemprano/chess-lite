@@ -3,7 +3,6 @@ import {
   createUserTemplate,
   defaultTemplate,
   deleteUserTemplate,
-  jwtToken,
   requestActivationTokenTemplate,
   updateUserAuthoritiesTemplate,
   updateUserRoleTemplate,
@@ -15,6 +14,7 @@ import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { eachLike, email, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { pactUser } from '../../mocks/user.mock';
 import { bearer, withUuid } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetUserPact {
   export const successful: InteractionObject = {

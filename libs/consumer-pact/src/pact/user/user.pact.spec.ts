@@ -15,7 +15,6 @@ import {
   createUserTemplate,
   defaultTemplate,
   deleteUserTemplate,
-  jwtToken,
   requestActivationTokenTemplate,
   updateUserAuthoritiesTemplate,
   updateUserRoleTemplate,
@@ -27,6 +26,7 @@ import { UserManagementDetailService } from '../../../../ui/feature/administrati
 import { UserManagementService } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import {
   CreateUserPact,
   DeleteUserPact,

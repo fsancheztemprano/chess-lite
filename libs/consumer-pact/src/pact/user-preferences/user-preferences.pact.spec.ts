@@ -9,13 +9,14 @@ import {
   UserPreferences,
   UserPreferencesAuthority,
 } from '@app/ui/shared/domain';
-import { defaultTemplate, jwtToken, updateUserPreferencesTemplate } from '@app/ui/testing';
+import { defaultTemplate, updateUserPreferencesTemplate } from '@app/ui/testing';
 import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';
 import { stubUserManagementServiceProvider } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service.stub';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import { GetUserPreferencesPact, UpdateUserPreferencesPact } from './user-preferences.pact';
 
 const provider: Pact = pactForResource('userPreferences');

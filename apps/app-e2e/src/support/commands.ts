@@ -6,7 +6,7 @@ declare namespace Cypress {
 
     logout(): Chainable<Subject>;
 
-    setState(state: CypressState): Chainable<Subject>;
+    setState(state: number): Chainable<Subject>;
 
     fakeLogin(user: AuthUser): Chainable<Subject>;
   }
@@ -41,7 +41,7 @@ Cypress.Commands.add('logout', () => {
   return cy;
 });
 
-Cypress.Commands.add('setState', (state: CypressState) => {
+Cypress.Commands.add('setState', (state: number) => {
   return cy.request('POST', `/api/cypress/STATE_${state}`);
 });
 
@@ -78,9 +78,4 @@ function jwtToken(authUser: AuthUser = {}): string {
     expiresIn: '2y',
     subject: payload.user.username,
   });
-}
-
-export enum CypressState {
-  STATE_0,
-  STATE_1,
 }

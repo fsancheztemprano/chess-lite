@@ -7,7 +7,6 @@ import {
   changePasswordTemplate,
   defaultTemplate,
   deleteProfileTemplate,
-  jwtToken,
   stubActionsProvider,
   updateProfilePreferencesTemplate,
   updateProfileTemplate,
@@ -17,6 +16,7 @@ import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import {
   DeleteUserProfilePact,
   GetUserProfilePact,

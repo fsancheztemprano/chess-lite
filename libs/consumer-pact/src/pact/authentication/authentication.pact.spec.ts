@@ -10,7 +10,6 @@ import {
   TokenAuthority,
   TokenKeys,
 } from '@app/ui/shared/domain';
-import { jwtToken } from '@app/ui/testing';
 import { HalFormClientModule, HalFormService, IResource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
@@ -20,6 +19,7 @@ import { AuthService } from '../../../../ui/feature/authentication/src/lib/servi
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { pactForResource } from '../../utils/pact.utils';
+import { jwtToken } from '../../utils/token.utils';
 import {
   ActivateAccountPact,
   ActivationTokenPact,
