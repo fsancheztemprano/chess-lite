@@ -12,7 +12,7 @@
       {{ t('core.welcome') }}&nbsp;
       <span *ngIf="sessionRepository.user$ | async as user" data-cy="nav-username">{{
         user.firstname || user.username
-        }}</span>
+      }}</span>
     </mat-toolbar>
     <mat-nav-list>
       <app-home-sidenav-item (toggleSidenav)="toggleSidenav()"></app-home-sidenav-item>
