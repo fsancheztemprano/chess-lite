@@ -184,3 +184,10 @@ jobs:
           path: coverage/apps/app-e2e/merged-e2e.xml
           reporter: java-junit
           fail-on-error: false
+
+      - name: Upload E2E Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-errors
+          path: coverage/apps/app-e2e/screenshots

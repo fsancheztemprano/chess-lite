@@ -19,17 +19,23 @@ Cypress.Commands.add('login', (username, password) => {
       password,
     })
     .then((response) => {
-      const token = response.headers['Jwt-Token'];
-      if (typeof token === 'string') {
-        localStorage.setItem('token', token);
-      } else {
-        localStorage.setItem('token', token[0]);
+      const token = response.headers['jwt-token'];
+      console.log(response);
+      console.log(response.headers);
+      if (token) {
+        if (typeof token === 'string') {
+          localStorage.setItem('token', token);
+        } else {
+          localStorage.setItem('token', token[0]);
+        }
       }
-      const refreshToken = response.headers['Jwt-Refresh-Token'];
-      if (typeof refreshToken === 'string') {
-        localStorage.setItem('refreshToken', refreshToken);
-      } else {
-        localStorage.setItem('refreshToken', refreshToken[0]);
+      const refreshToken = response.headers['jwt-refresh-token'];
+      if (refreshToken) {
+        if (typeof refreshToken === 'string') {
+          localStorage.setItem('refreshToken', refreshToken);
+        } else {
+          localStorage.setItem('refreshToken', refreshToken[0]);
+        }
       }
       return response;
     });

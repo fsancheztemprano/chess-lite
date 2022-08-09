@@ -23,6 +23,7 @@
       mat-raised-button
       color="primary"
       type="submit"
+      data-cy="change-preferences-button"
       *subscribe="userSettingsService.hasTemplateToUpdateUserPreferences(); let canUpdateUserPreferences"
       [disabled]="!canUpdateUserPreferences"
     >

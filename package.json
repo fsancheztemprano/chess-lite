@@ -56,7 +56,7 @@
     "validate": "nx format:check && yarn run lint && yarn run test && yarn run build:frontend",
     "validate:frontend": "nx format:check && yarn run lint && yarn run test:frontend && yarn run pact:consumer && yarn run build:frontend",
     "validate:backend": "yarn run test:backend",
-    "validate:e2e": "nx format:check && yarn run lint && yarn run test && yarn run build:frontend && yarn run e2e",
+    "validate:e2e": "nx format:check && yarn run lint && yarn run test && yarn run e2e",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find"
   },

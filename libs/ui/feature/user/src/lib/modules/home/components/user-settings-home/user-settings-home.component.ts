@@ -12,6 +12,7 @@ import { TranslocoService } from '@ngneat/transloco';
 export class UserSettingsHomeComponent {
   tiles: MenuData[] = [
     {
+      id: 'user-profile-tile',
       icon: 'account_box',
       title$: this.translocoService.selectTranslate('user.home.profile.title'),
       subtitle$: this.translocoService.selectTranslate('user.home.profile.description'),
@@ -19,6 +20,7 @@ export class UserSettingsHomeComponent {
       visible$: this.userSettingsService.hasTemplateToUpdateProfile(),
     },
     {
+      id: 'user-avatar-tile',
       icon: 'account_circle',
       title$: this.translocoService.selectTranslate('user.home.avatar.title'),
       subtitle$: this.translocoService.selectTranslate('user.home.avatar.description'),
@@ -26,6 +28,7 @@ export class UserSettingsHomeComponent {
       visible$: this.userSettingsService.hasTemplateToUploadAvatar(),
     },
     {
+      id: 'user-password-tile',
       icon: 'password',
       title$: this.translocoService.selectTranslate('user.home.password.title'),
       subtitle$: this.translocoService.selectTranslate('user.home.password.description'),
@@ -33,6 +36,7 @@ export class UserSettingsHomeComponent {
       visible$: this.userSettingsService.hasTemplateToChangePassword(),
     },
     {
+      id: 'user-remove-tile',
       icon: 'delete_forever',
       title$: this.translocoService.selectTranslate('user.home.delete.title'),
       subtitle$: this.translocoService.selectTranslate('user.home.delete.description'),
@@ -40,6 +44,7 @@ export class UserSettingsHomeComponent {
       visible$: this.userSettingsService.hasTemplateToDeleteAccount(),
     },
     {
+      id: 'user-preferences-tile',
       icon: 'manage_accounts',
       title$: this.translocoService.selectTranslate('user.home.preferences.title'),
       subtitle$: this.translocoService.selectTranslate('user.home.preferences.description'),

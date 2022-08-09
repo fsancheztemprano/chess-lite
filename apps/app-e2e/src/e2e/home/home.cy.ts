@@ -1,4 +1,4 @@
-describe('Application Load', () => {
+describe('Home Component', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {

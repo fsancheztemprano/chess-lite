@@ -42,7 +42,7 @@ public class CypressService {
 
   @PostConstruct
   public void init() {
-    _state0();
+    setState0();
   }
 
   private CypressState state = CypressState.STATE_0;
@@ -55,11 +55,11 @@ public class CypressService {
     try {
       switch (state) {
         case STATE_0:
-          _state0();
+          setState0();
           break;
         case STATE_1:
-          _state0();
-          _state1();
+          setState0();
+          setState1();
           break;
         default:
           break;
@@ -71,16 +71,21 @@ public class CypressService {
     }
   }
 
-  private void _state0() {
+  private void setState0() {
     globalSettingsRepository.deleteAll();
     userRepository.deleteAll();
     roleRepository.deleteAll();
     authorityRepository.deleteAll();
   }
 
-  private void _state1() throws UserExistsException {
+  private void setState1() throws UserExistsException {
     initializationService.initialize();
-    userService.createUser(UserInput.builder().username("e2e-user1").password("e2e-user1").locked(false).build());
+    userService.createUser(UserInput.builder()
+      .username("e2e-user1")
+      .password("e2e-user1")
+      .email("e2e-user1@localhost")
+      .locked(false)
+      .build());
     roleService.findByName("USER_ROLE").ifPresent(role -> {
       role.setCanLogin(true);
       roleRepository.save(role);

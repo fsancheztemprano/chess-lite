@@ -16,6 +16,7 @@
     <button
       mat-raised-button
       color="warn"
+      data-cy="password-confirm-button"
       *ngLet="userService.getCurrentUser() | async as user"
       [disabled]="!user || !usernameInput.value.length || user.username !== usernameInput.value"
       [mat-dialog-close]="user"
