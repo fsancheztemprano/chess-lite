@@ -58,16 +58,16 @@ public class CypressE2E {
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
 
-      log.at(Level.FINER).log("\n" + container.getLogs());
-      assertThat(container.getLogs()).contains("All specs passed!");
+      assertThat(container.getLogs().replace("?", "-")).contains("All specs passed!");
     }
   }
 
   private GenericContainer createCypressContainer() {
-    return new GenericContainer("cypress/included:10.4.0")
+    return new GenericContainer("cypress/included:10.5.0")
       //
       .withFileSystemBind("../../", "/e2e", BindMode.READ_WRITE)
       .withWorkingDirectory("/e2e/apps/app-e2e")
-      .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d", GenericContainer.INTERNAL_HOST_HOSTNAME, port));
+      .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port))
+      .withEnv("CYPRESS_apiUrl", String.format("http://%s:%d/api", GenericContainer.INTERNAL_HOST_HOSTNAME, port));
   }
 }

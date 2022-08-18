@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-namespace
+// eslint-disable-next-line @typescript-eslint/no-namespace,@typescript-eslint/no-unused-vars
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
@@ -12,51 +12,6 @@ declare namespace Cypress {
   }
 }
 
-Cypress.Commands.add('login', (username, password) => {
-  return cy
-    .request('POST', '/api/auth/login', {
-      username,
-      password,
-    })
-    .then((response) => {
-      const token = response.headers['jwt-token'];
-      console.log(response);
-      console.log(response.headers);
-      if (token) {
-        if (typeof token === 'string') {
-          localStorage.setItem('token', token);
-        } else {
-          localStorage.setItem('token', token[0]);
-        }
-      }
-      const refreshToken = response.headers['jwt-refresh-token'];
-      if (refreshToken) {
-        if (typeof refreshToken === 'string') {
-          localStorage.setItem('refreshToken', refreshToken);
-        } else {
-          localStorage.setItem('refreshToken', refreshToken[0]);
-        }
-      }
-      return response;
-    });
-});
-
-Cypress.Commands.add('logout', () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('refreshToken');
-  return cy;
-});
-
-Cypress.Commands.add('setState', (state: number) => {
-  return cy.request('POST', `/api/cypress/STATE_${state}`);
-});
-
-Cypress.Commands.add('fakeLogin', (authUser: AuthUser = {}) => {
-  localStorage.setItem('token', jwtToken(authUser));
-  localStorage.setItem('refreshToken', jwtToken({ ...authUser, authorities: ['token:refresh'] }));
-  return cy;
-});
-
 interface AuthUser {
   user?: {
     id?: string;
@@ -64,6 +19,50 @@ interface AuthUser {
   };
   authorities?: string[];
 }
+
+Cypress.Commands.add('login', (username: string, password: string) =>
+  cy
+    .clearLocalStorage()
+    .request('POST', Cypress.env('apiUrl') + '/auth/login', {
+      username,
+      password,
+    })
+    .then((response) => {
+      const token = response.headers['jwt-token'];
+      if (token) {
+        if (typeof token === 'string') {
+          window.localStorage.setItem('token', token);
+        } else {
+          window.localStorage.setItem('token', token[0]);
+        }
+      }
+      const refreshToken = response.headers['jwt-refresh-token'];
+      if (refreshToken) {
+        if (typeof refreshToken === 'string') {
+          window.localStorage.setItem('refreshToken', refreshToken);
+        } else {
+          window.localStorage.setItem('refreshToken', refreshToken[0]);
+        }
+      }
+      return response;
+    }),
+);
+
+Cypress.Commands.add('logout', () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
+  return cy;
+});
+
+Cypress.Commands.add('setState', (state: number) =>
+  cy.request('POST', `${Cypress.env('apiUrl')}/cypress/STATE_${state}`),
+);
+
+Cypress.Commands.add('fakeLogin', (authUser: AuthUser = {}) => {
+  localStorage.setItem('token', jwtToken(authUser));
+  localStorage.setItem('refreshToken', jwtToken({ ...authUser, authorities: ['token:refresh'] }));
+  return cy;
+});
 
 function jwtToken(authUser: AuthUser = {}): string {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -84,4 +83,12 @@ function jwtToken(authUser: AuthUser = {}): string {
     expiresIn: '2y',
     subject: payload.user.username,
   });
+}
+
+interface AuthUser {
+  user?: {
+    id?: string;
+    username?: string;
+  };
+  authorities?: string[];
 }

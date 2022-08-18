@@ -3,5 +3,6 @@
     *transloco="let t"
     [title]="t('core.context-menu.title')"
     [menuOptions]="(coreContextMenuService.options$ | async) || []"
+    data-cy="core-context-menu"
   ></app-context-menu>
 </ng-container>

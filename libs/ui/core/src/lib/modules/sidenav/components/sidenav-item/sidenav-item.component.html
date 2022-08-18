@@ -2,9 +2,7 @@
   <mat-expansion-panel class="mat-elevation-z0" (opened)="router.navigate(expandableLink)">
     <mat-expansion-panel-header>
       <a mat-list-item class="sidenav-title" (click)="toggleSidenav.emit()">
-        <mat-icon aria-hidden="false" [attr.aria-label]="expandableTitle" [attr.data-cy]="expandableTitle">{{
-          expandableIcon
-        }}</mat-icon>
+        <mat-icon aria-hidden="false" [attr.aria-label]="expandableTitle">{{ expandableIcon }}</mat-icon>
         {{ expandableTitle }}
       </a>
     </mat-expansion-panel-header>

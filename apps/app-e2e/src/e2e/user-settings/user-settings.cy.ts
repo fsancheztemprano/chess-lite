@@ -1,9 +1,20 @@
 describe('User Settings Module >', () => {
   beforeEach(() => {
-    cy.setState(1);
+    cy.setState(1).clearLocalStorage();
     cy.login('e2e-user1', 'e2e-user1');
     cy.visit('/');
     cy.get('app-home [data-cy="user-settings-tile"]').click();
+  });
+
+  it('should display user settings side menu', () => {
+    cy.get('[data-cy="user-settings-menu-item"]').should('contain', 'User Settings').click();
+
+    cy.get('[data-cy="user-settings-home-menu-item"]').should('contain', 'Dashboard');
+    cy.get('[data-cy="user-profile-menu-item"]').should('contain', 'Profile');
+    cy.get('[data-cy="user-avatar-menu-item"]').should('contain', 'Upload Avatar');
+    cy.get('[data-cy="user-password-menu-item"]').should('contain', 'Change Password');
+    cy.get('[data-cy="user-delete-menu-item"]').should('contain', 'Delete Account');
+    cy.get('[data-cy="user-preferences-menu-item"]').should('contain', 'Preferences');
   });
 
   it('should display user settings home tiles', () => {

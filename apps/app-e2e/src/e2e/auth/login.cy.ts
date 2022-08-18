@@ -1,6 +1,6 @@
 describe('Login Component', () => {
   beforeEach(() => {
-    cy.setState(1);
+    cy.setState(1).clearLocalStorage();
     cy.visit('/');
     cy.get('app-home [data-cy="login-tile"]').click();
   });

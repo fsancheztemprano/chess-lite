@@ -5,6 +5,7 @@
     [expandableTitle]="t('core.sidenav.administration.title')"
     expandableIcon="admin_panel_settings"
     [expandableLink]="['administration']"
+    data-cy="administration-menu-item"
     [items]="items"
     (toggleSidenav)="toggleSidenav.emit()"
   ></app-sidenav-item>

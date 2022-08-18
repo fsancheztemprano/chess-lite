@@ -20,6 +20,7 @@
             routerLinkActive="active-link"
             #rla="routerLinkActive"
             [active]="rla.isActive"
+            [attr.data-cy]="tab.id"
           >
             {{ title }}
           </a>
