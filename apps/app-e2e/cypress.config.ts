@@ -26,7 +26,6 @@ export default defineConfig({
 
     setupNodeEvents(on) {
       on('before:browser:launch', (browser, launchOptions) => {
-        console.log(launchOptions.args); // print all current args
         if (browser.family === 'chromium') {
           launchOptions.args.push('--auto-open-devtools-for-tabs');
         }
