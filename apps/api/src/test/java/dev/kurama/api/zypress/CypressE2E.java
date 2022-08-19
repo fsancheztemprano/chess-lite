@@ -30,7 +30,7 @@ public class CypressE2E {
   @LocalServerPort
   private int port;
 
-  @Value("${CYPRESS_RECORD_KEY}")
+  @Value("${CYPRESS_RECORD_KEY:#{null}}")
   private String CYPRESS_RECORD_KEY;
 
   private static final int MAX_TOTAL_TEST_TIME_IN_MINUTES = 15;
