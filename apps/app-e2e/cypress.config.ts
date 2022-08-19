@@ -15,12 +15,13 @@ export default defineConfig({
     ...nxE2EPreset(__dirname),
     fileServerFolder: '.',
     fixturesFolder: './src/fixtures',
-    video: false,
+    video: true,
     videosFolder: '../../coverage/apps/app-e2e/videos',
     screenshotsFolder: '../../coverage/apps/app-e2e/screenshots',
     chromeWebSecurity: false,
     supportFile: 'src/support/e2e.ts',
     specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    testIsolation: 'strict',
 
     setupNodeEvents(on) {
       on('before:browser:launch', (browser, launchOptions) => {

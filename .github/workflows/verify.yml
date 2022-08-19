@@ -190,4 +190,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: e2e-errors
-          path: coverage/apps/app-e2e/screenshots
+          path: coverage/apps/app-e2e

@@ -6,11 +6,11 @@ describe('Service Logs Module', () => {
   });
 
   it('should display service logs', () => {
-    cy.get('#mat-input-0').should('contain.value', 'Cypress State: STATE_1');
+    cy.get('#mat-input-0').should('contain.value', '');
   });
 
   it('should delete service logs', () => {
-    cy.get('#mat-input-0').should('contain.value', 'Cypress State: STATE_1');
+    cy.get('#mat-input-0').should('contain.value', '');
     cy.get('[data-cy="core-context-menu"]').click();
     cy.get('[data-cy="delete-service-logs-option"]').click();
     cy.get('#mat-input-0').should('have.value', '');
