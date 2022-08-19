@@ -18,6 +18,5 @@ describe('Service Logs Module', () => {
 
   afterEach(() => {
     cy.logout();
-    cy.wait(1000);
   });
 });
