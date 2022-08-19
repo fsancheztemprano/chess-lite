@@ -1,6 +1,7 @@
 package dev.kurama.api.zypress;
 
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.concurrent.CountDownLatch;
@@ -9,6 +10,7 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import lombok.extern.flogger.Flogger;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -27,6 +29,9 @@ public class CypressE2E {
 
   @LocalServerPort
   private int port;
+
+  @Value("${CYPRESS_RECORD_KEY}")
+  private String CYPRESS_RECORD_KEY;
 
   private static final int MAX_TOTAL_TEST_TIME_IN_MINUTES = 15;
 
@@ -63,11 +68,16 @@ public class CypressE2E {
   }
 
   private GenericContainer createCypressContainer() {
-    return new GenericContainer("cypress/included:10.6.0")
+    GenericContainer genericContainer = new GenericContainer("cypress/included:10.6.0")
       //
       .withFileSystemBind("../../", "/e2e", BindMode.READ_WRITE)
       .withWorkingDirectory("/e2e/apps/app-e2e")
       .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port))
       .withEnv("CYPRESS_apiUrl", String.format("http://%s:%d/api", GenericContainer.INTERNAL_HOST_HOSTNAME, port));
+
+    if (!isEmpty(CYPRESS_RECORD_KEY)) {
+      genericContainer.withCommand("--record").withEnv("CYPRESS_RECORD_KEY", CYPRESS_RECORD_KEY);
+    }
+    return genericContainer;
   }
 }
