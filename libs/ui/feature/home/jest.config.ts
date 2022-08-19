@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'ui-feature-home',
   preset: '../../../../jest.preset.js',

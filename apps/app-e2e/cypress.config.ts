@@ -2,6 +2,7 @@ import { nxE2EPreset } from '@nrwl/cypress/plugins/cypress-preset';
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
+  projectId: 'fcegyj',
   reporter: 'junit',
   reporterOptions: {
     mochaFile: '../../coverage/apps/app-e2e/cypress-junit-[hash].xml',

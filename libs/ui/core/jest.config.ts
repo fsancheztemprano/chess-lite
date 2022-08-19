@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'ui-core',
   preset: '../../../jest.preset.js',

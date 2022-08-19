@@ -4,6 +4,7 @@
 
 ![Development](https://github.com/kurama-dev/fullstack-template/actions/workflows/verify.yml/badge.svg)
 [![codecov](https://codecov.io/gh/frango9000/fullstack-template/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/fullstack-template)
+[![fullstack-template](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/fcegyj/development&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/fcegyj/runs)
 
 <!-- PROJECT LOGO -->
 <br />

@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'consumer-pact',
   preset: '../../jest.preset.js',

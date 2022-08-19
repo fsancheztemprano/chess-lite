@@ -10,5 +10,5 @@
     "src/**/*.d.ts",
     "../../libs/ui/shared/common/src/lib/modules/dialogs/modules/*-dialog/*-dialog.component.ts"
   ],
-  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "jest.config.ts"]
 }

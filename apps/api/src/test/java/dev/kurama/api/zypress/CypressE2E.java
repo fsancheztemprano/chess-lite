@@ -63,7 +63,7 @@ public class CypressE2E {
   }
 
   private GenericContainer createCypressContainer() {
-    return new GenericContainer("cypress/included:10.5.0")
+    return new GenericContainer("cypress/included:10.6.0")
       //
       .withFileSystemBind("../../", "/e2e", BindMode.READ_WRITE)
       .withWorkingDirectory("/e2e/apps/app-e2e")

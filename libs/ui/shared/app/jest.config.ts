@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'ui-shared-app',
   preset: '../../../../jest.preset.js',

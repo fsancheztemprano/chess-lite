@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'ui-feature-user',
   preset: '../../../../jest.preset.js',

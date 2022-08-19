@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'hal-form-client',
   preset: '../../jest.preset.js',
