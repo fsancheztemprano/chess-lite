@@ -45,7 +45,9 @@ public class CypressE2E {
         switch (outputFrame.getType()) {
           case STDOUT:
             if (!output.contains("┐")
+              //
               && !output.contains("┘")
+              && !output.contains("┤")
               && !output.contains("39m─────────────────────")
               && (!output.contains("-----------------") || output.contains("----------------------------------"))) {
               log.at(Level.INFO).log(output);
@@ -63,7 +65,9 @@ public class CypressE2E {
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
 
-      assertThat(container.getLogs().replace("?", "-")).contains("All specs passed!");
+      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
+      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput[1]).contains("All specs passed!");
     }
   }
 
