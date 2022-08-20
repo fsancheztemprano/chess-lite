@@ -2,7 +2,9 @@ describe('Service Logs Module', () => {
   beforeEach(() => {
     cy.setState(1).clearLocalStorage();
     cy.login('admin', '123456');
-    cy.visit('/administration/service-logs');
+    cy.visit('/');
+    cy.get('[data-cy="administration-tile"]').click();
+    cy.get('[data-cy="service-logs-tile"]').click();
   });
 
   it('should display service logs', () => {

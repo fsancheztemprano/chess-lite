@@ -2,7 +2,8 @@ describe('Administration Home Component', () => {
   beforeEach(() => {
     cy.setState(1).clearLocalStorage();
     cy.login('admin', '123456');
-    cy.visit('/administration');
+    cy.visit('/');
+    cy.get('[data-cy="administration-tile"]').click();
   });
 
   it('should display administration side menu', () => {
