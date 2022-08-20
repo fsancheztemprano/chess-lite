@@ -165,6 +165,8 @@ jobs:
 
       - name: E2E
         uses: MansaGroup/nrwl-nx-action@v2
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
           targets: e2e
           projects: api
