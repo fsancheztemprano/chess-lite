@@ -4,6 +4,12 @@
   "sourceRoot": "apps/app/src",
   "prefix": "app",
   "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/apps/app ./dist/apps/app"]
+      }
+    },
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],

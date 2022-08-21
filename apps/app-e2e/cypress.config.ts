@@ -22,21 +22,5 @@ export default defineConfig({
     chromeWebSecurity: false,
     supportFile: 'src/support/e2e.ts',
     specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
-    testIsolation: 'strict',
-
-    setupNodeEvents(on) {
-      on('before:browser:launch', (browser, launchOptions) => {
-        if (browser.family === 'chromium') {
-          launchOptions.args.push('--auto-open-devtools-for-tabs');
-        }
-        if (browser.family === 'firefox') {
-          launchOptions.args.push('-devtools');
-        }
-        if (browser.name === 'electron') {
-          launchOptions.preferences['devTools'] = true;
-        }
-        return launchOptions;
-      });
-    },
   },
 });

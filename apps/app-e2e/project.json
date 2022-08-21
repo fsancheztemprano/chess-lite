@@ -3,9 +3,17 @@
   "sourceRoot": "apps/app-e2e/src",
   "projectType": "application",
   "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/apps/app-e2e"]
+      }
+    },
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
+      "outputs": ["{options.outputPath}"],
       "options": {
+        "outputPath": "coverage/apps/app-e2e",
         "cypressConfig": "apps/app-e2e/cypress.config.ts",
         "devServerTarget": "app:serve:development",
         "testingType": "e2e"

@@ -4,6 +4,12 @@
   "sourceRoot": "libs/ui/shared/core/src",
   "prefix": "app",
   "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/libs/ui/shared/core"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/ui/shared/core"],

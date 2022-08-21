@@ -20,7 +20,7 @@ describe('Global Settings Module', () => {
     });
   });
 
-  it('should change default role', () => {
+  it('should toggle signup open', () => {
     cy.get('[data-cy="toggle-signup"]').click();
     cy.wait('@patchGlobalSettings').then((interception) => {
       expect(interception.request?.body.defaultRoleId).to.eq(undefined);

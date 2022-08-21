@@ -4,6 +4,12 @@
   "sourceRoot": "libs/hal-form-client/src",
   "prefix": "app",
   "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/libs/hal-form-client"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/hal-form-client"],

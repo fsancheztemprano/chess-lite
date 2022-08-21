@@ -4,6 +4,12 @@
   "sourceRoot": "libs/ui/feature/authentication/src",
   "prefix": "app",
   "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/libs/ui/feature/authentication"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/ui/feature/authentication"],
