@@ -5,7 +5,12 @@
     <ng-container *ngFor="let input of data.inputs">
       <mat-form-field appearance="fill">
         <mat-label>{{ input.options?.label }}</mat-label>
-        <input matInput [placeholder]="input.options?.placeholder || ''" [formControlName]="input.key" />
+        <input
+          matInput
+          [placeholder]="input.options?.placeholder || ''"
+          [formControlName]="input.key"
+          [attr.data-cy]="input.id"
+        />
       </mat-form-field>
     </ng-container>
   </form>
@@ -16,6 +21,7 @@
     [icon]="data.dismissButton?.icon"
     [disabled]="data.dismissButton?.disabled"
     [text]="data.dismissButton?.text || 'CLOSE'"
+    data-cy="dismiss-button"
   ></app-dialog-actions-button>
   <app-dialog-actions-button
     [color]="data.acceptButton?.color"
@@ -23,5 +29,6 @@
     [disabled]="data.acceptButton?.disabled || form.invalid"
     [text]="data.acceptButton?.text || 'ACCEPT'"
     [output]="form.getRawValue()"
+    data-cy="accept-button"
   ></app-dialog-actions-button>
 </div>

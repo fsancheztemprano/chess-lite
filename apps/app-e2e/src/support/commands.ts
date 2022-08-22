@@ -1,3 +1,5 @@
+import RequestOptions = Cypress.RequestOptions;
+
 // eslint-disable-next-line @typescript-eslint/no-namespace,@typescript-eslint/no-unused-vars
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -9,6 +11,10 @@ declare namespace Cypress {
     setState(state: number): Chainable<Subject>;
 
     fakeLogin(user: AuthUser): Chainable<Subject>;
+
+    requestApi(options?: Partial<RequestOptions>): Chainable<Subject>;
+
+    interceptApi(method?: string, url?: string): Chainable<Subject>;
   }
 }
 
@@ -63,6 +69,16 @@ Cypress.Commands.add('fakeLogin', (authUser: AuthUser = {}) => {
   localStorage.setItem('refreshToken', jwtToken({ ...authUser, authorities: ['token:refresh'] }));
   return cy;
 });
+
+Cypress.Commands.add('requestApi', (options?: Partial<RequestOptions>) =>
+  cy.request({
+    ...options,
+    url: Cypress.env('apiUrl') + options?.url || '',
+    headers: { ...options?.headers, Authorization: 'Bearer ' + localStorage.getItem('token') },
+  }),
+);
+
+Cypress.Commands.add('interceptApi', (method = 'GET', url = '') => cy.intercept(method, Cypress.env('apiUrl') + url));
 
 function jwtToken(authUser: AuthUser = {}): string {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
