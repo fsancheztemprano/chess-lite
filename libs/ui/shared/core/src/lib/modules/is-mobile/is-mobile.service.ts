@@ -16,4 +16,8 @@ export class IsMobileService {
   get isMobile$(): Observable<boolean> {
     return this.isHandset;
   }
+
+  get isDesktop$(): Observable<boolean> {
+    return this.isHandset.pipe(map((isMobile) => !isMobile));
+  }
 }

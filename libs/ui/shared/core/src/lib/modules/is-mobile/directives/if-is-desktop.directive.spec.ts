@@ -8,9 +8,7 @@ import { IfIsDesktopDirective } from './if-is-desktop.directive';
 @Component({
   template: '<div *ifIsDesktop class="display-on-desktop"></div>',
 })
-class TestIfIsMobileComponent {
-  value = 'test';
-}
+class TestIfIsMobileComponent {}
 
 describe('IfIsDesktopDirective', () => {
   let fixture: ComponentFixture<TestIfIsMobileComponent>;

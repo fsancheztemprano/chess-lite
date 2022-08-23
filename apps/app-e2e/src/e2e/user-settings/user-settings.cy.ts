@@ -81,7 +81,7 @@ describe('User Settings Module >', () => {
 
   it('should change user preferences', () => {
     cy.get('[data-cy="user-preferences-tile"]').click();
-    cy.get('#mat-slide-toggle-2').click();
+    cy.get('[data-cy="preferences-dark-toggle"]').click();
     cy.get('#mat-select-value-1').click();
     cy.get('mat-option').contains('Spanish').click();
     cy.get('[data-cy="change-preferences-button"]').click();

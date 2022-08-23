@@ -1,6 +1,7 @@
 describe('Home Component', () => {
   beforeEach(() => {
     cy.clearLocalStorage();
+    cy.setState(1);
     cy.visit('/');
   });
 

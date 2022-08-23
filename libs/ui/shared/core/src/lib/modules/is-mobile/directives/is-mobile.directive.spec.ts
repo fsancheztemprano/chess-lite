@@ -8,9 +8,7 @@ import { IsMobileDirective } from './is-mobile.directive';
 @Component({
   template: '<div *isMobile="let isMobile" class="test-component">{{isMobile}}</div>',
 })
-class TestIsMobileComponent {
-  value = 'test';
-}
+class TestIsMobileComponent {}
 
 describe('IsMobileDirective', () => {
   let fixture: ComponentFixture<TestIsMobileComponent>;

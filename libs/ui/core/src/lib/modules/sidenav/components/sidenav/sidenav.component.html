@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container" *ngLet="'' | isMobile | async as isMobile">
+<mat-sidenav-container class="sidenav-container" *isMobile="let isMobile">
   <mat-sidenav
     #sidenav
     class="sidenav"
@@ -9,7 +9,7 @@
     *transloco="let t"
   >
     <mat-toolbar>
-      {{ t('core.welcome') }}&nbsp;
+      <span>{{ t('core.welcome') }}&nbsp;</span>
       <span *ngIf="sessionRepository.user$ | async as user" data-cy="nav-username">{{
         user.firstname || user.username
       }}</span>

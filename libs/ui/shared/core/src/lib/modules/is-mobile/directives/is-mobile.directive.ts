@@ -11,22 +11,22 @@ interface IsMobileContext {
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[isMobile]' })
 export class IsMobileDirective implements OnInit {
-  private context: IsMobileContext = { isMobile: false, $implicit: false };
+  private readonly context: IsMobileContext = { isMobile: false, $implicit: false };
   private embeddedViewRef?: EmbeddedViewRef<IsMobileContext>;
 
   constructor(
     private readonly templateRef: TemplateRef<IsMobileContext>,
     private readonly viewContainer: ViewContainerRef,
     private readonly isMobileService: IsMobileService,
-  ) {
-    this.isMobileService.isMobile$.pipe(untilDestroyed(this)).subscribe((isMobile) => {
-      this.context.$implicit = this.context.isMobile = isMobile;
-      this.embeddedViewRef?.markForCheck();
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.embeddedViewRef = this.viewContainer.createEmbeddedView(this.templateRef, this.context);
+    this.isMobileService.isMobile$.pipe(untilDestroyed(this)).subscribe((isMobile) => {
+      this.context.$implicit = this.context.isMobile = isMobile;
+      this.embeddedViewRef?.rootNodes?.forEach((node) => node.classList?.toggle('mobile', isMobile));
+      this.embeddedViewRef?.markForCheck();
+    });
   }
 
   /**
