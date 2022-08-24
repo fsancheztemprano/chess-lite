@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
 import { setTemplateValidatorsPipe } from '@app/ui/shared/common';
 import { translate } from '@ngneat/transloco';
-import { bounceOutAnimation, wobbleAnimation } from 'angular-animations';
 import { first } from 'rxjs/operators';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
 
@@ -13,16 +12,12 @@ import { ActivationTokenService } from '../../../../services/activation-token.se
   templateUrl: './token-request.component.html',
   styleUrls: ['./token-request.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [wobbleAnimation(), bounceOutAnimation()],
 })
 export class TokenRequestComponent {
-  public form = new FormGroup({
+  public readonly TRANSLOCO_SCOPE = 'authentication.token-request';
+  public readonly form = new FormGroup({
     email: new FormControl(''),
   });
-
-  public success = false;
-  public error = false;
-  public readonly TRANSLOCO_SCOPE = 'authentication.token-request';
 
   constructor(
     public readonly activationTokenService: ActivationTokenService,
@@ -38,30 +33,14 @@ export class TokenRequestComponent {
 
   onSubmit() {
     this.activationTokenService.requestActivationToken(this.form.value.email as string).subscribe({
-      next: () => this.setStatus(true),
-      error: () => this.setStatus(false),
+      next: () => {
+        this.router.navigate(['/auth', 'activate']);
+        this.toasterService.showToast({
+          title: translate(`${this.TRANSLOCO_SCOPE}.toast.success.title`),
+          message: translate(`${this.TRANSLOCO_SCOPE}.toast.success.message`),
+        });
+      },
+      error: () => this.toasterService.showErrorToast({ title: translate(`${this.TRANSLOCO_SCOPE}.toast.error`) }),
     });
-  }
-
-  onSuccess() {
-    if (this.success) {
-      this.router.navigate(['/auth', 'activate']);
-    }
-  }
-
-  private setStatus(status: boolean) {
-    if (status) {
-      this.toasterService.showToast({
-        title: translate(`${this.TRANSLOCO_SCOPE}.toast.success.title`),
-        message: translate(`${this.TRANSLOCO_SCOPE}.toast.success.message`),
-      });
-    } else {
-      this.toasterService.showErrorToast({
-        title: translate(`${this.TRANSLOCO_SCOPE}.toast.error`),
-      });
-    }
-    this.success = status;
-    this.error = !status;
-    this.cdr.markForCheck();
   }
 }

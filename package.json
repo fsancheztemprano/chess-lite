@@ -17,9 +17,10 @@
     "url": "https://github.com/frango9000/fullstack-template"
   },
   "scripts": {
-    "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
+    "ng": "nx",
     "nx": "nx",
+    "nx:reset": "nx reset",
     "clean": "nx run-many --target=clean",
     "start": "nx run-many --target=serve --projects=api,app --parallel=true",
     "start:frontend": "nx run-many --target=serve --projects=app",
@@ -85,7 +86,6 @@
     "@ngneat/until-destroy": "9.2.1",
     "@nrwl/angular": "14.5.8",
     "@stomp/rx-stomp": "1.1.4",
-    "angular-animations": "0.11.0",
     "jwt-decode": "3.1.2",
     "ngx-toastr": "15.0.0",
     "rxjs": "7.5.6",

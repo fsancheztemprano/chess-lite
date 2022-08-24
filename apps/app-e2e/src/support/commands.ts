@@ -12,7 +12,8 @@ declare namespace Cypress {
 
     fakeLogin(user: AuthUser): Chainable<Subject>;
 
-    requestApi(options?: Partial<RequestOptions>): Chainable<Subject>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    requestApi<T = any>(options?: Partial<RequestOptions>): Chainable<Response<T>>;
 
     interceptApi(method?: string, url?: string): Chainable<Subject>;
   }
@@ -57,7 +58,7 @@ Cypress.Commands.add('login', (username: string, password: string) =>
 Cypress.Commands.add('logout', () => {
   localStorage.removeItem('token');
   localStorage.removeItem('refreshToken');
-  return cy;
+  return cy.clearLocalStorage();
 });
 
 Cypress.Commands.add('setState', (state: number) =>

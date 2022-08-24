@@ -1,13 +1,7 @@
 <app-core-card-view *transloco="let t; read: 'authentication.login'" [title]="t('header')">
   <div class="card-view-content">
     <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
-      <mat-card
-        class="mat-elevation-z24"
-        [@wobble]="loginError === true"
-        (@wobble.start)="loginError = false"
-        [@bounceOut]="loginSuccess === true"
-        (@bounceOut.done)="onLoginSuccess()"
-      >
+      <mat-card class="mat-elevation-z24">
         <mat-card-header>
           <mat-card-title>{{ t('title') }}</mat-card-title>
         </mat-card-header>

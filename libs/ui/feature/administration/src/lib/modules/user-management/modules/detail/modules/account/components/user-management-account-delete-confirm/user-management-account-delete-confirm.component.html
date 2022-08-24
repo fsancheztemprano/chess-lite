@@ -10,7 +10,14 @@
     <br />
     <br />
     <mat-form-field>
-      <input matInput type="text" placeholder="Type account username" required #usernameInput />
+      <input
+        matInput
+        type="text"
+        placeholder="Type account username"
+        required
+        #usernameInput
+        data-cy="username-removal-confirmation"
+      />
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
@@ -20,6 +27,7 @@
       color="warn"
       [disabled]="!user?.username?.length || user.username !== usernameInput.value"
       [mat-dialog-close]="usernameInput.value"
+      data-cy="remove-user-button"
     >
       Delete
     </button>

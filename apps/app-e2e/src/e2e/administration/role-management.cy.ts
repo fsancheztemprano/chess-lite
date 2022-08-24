@@ -9,25 +9,28 @@ describe('Role Management', () => {
 
   it('should list all roles', () => {
     cy.get('[data-cy="role-item-ADMIN_ROLE"] > .cdk-column-name').should('contain', 'ADMIN_ROLE');
-    cy.get('[data-cy="role-item-ADMIN_ROLE"] > .cdk-column-canLogin > .mat-icon').should('have.text', 'lock_open');
+    cy.get('[data-cy="role-item-ADMIN_ROLE"] > .cdk-column-canLogin > .mat-icon').should('have.text', 'lock');
     cy.get('[data-cy="role-item-ADMIN_ROLE"] > .cdk-column-coreRole > .mat-icon').should('have.text', 'verified');
     cy.get('[data-cy="role-item-ADMIN_ROLE"] [data-cy="edit-role-button"]').should('exist');
     cy.get('[data-cy="role-item-ADMIN_ROLE"] [data-cy="delete-role-button"]').should('be.disabled');
 
     cy.get('[data-cy="role-item-MOD_ROLE"] > .cdk-column-name').should('contain', 'MOD_ROLE');
-    cy.get('[data-cy="role-item-MOD_ROLE"] > .cdk-column-canLogin > .mat-icon').should('have.text', 'lock_open');
+    cy.get('[data-cy="role-item-MOD_ROLE"] > .cdk-column-canLogin > .mat-icon').should('have.text', 'lock');
     cy.get('[data-cy="role-item-MOD_ROLE"] > .cdk-column-coreRole > .mat-icon').should('have.text', 'verified');
     cy.get('[data-cy="role-item-MOD_ROLE"] [data-cy="edit-role-button"]').should('exist');
     cy.get('[data-cy="role-item-MOD_ROLE"] [data-cy="delete-role-button"]').should('be.disabled');
 
     cy.get('[data-cy="role-item-SUPER_ADMIN_ROLE"] > .cdk-column-name').should('contain', 'SUPER_ADMIN_ROLE');
-    cy.get('[data-cy="role-item-SUPER_ADMIN_ROLE"] > .cdk-column-canLogin > .mat-icon').should('have.text', 'lock');
+    cy.get('[data-cy="role-item-SUPER_ADMIN_ROLE"] > .cdk-column-canLogin > .mat-icon').should(
+      'have.text',
+      'lock_open',
+    );
     cy.get('[data-cy="role-item-SUPER_ADMIN_ROLE"] > .cdk-column-coreRole > .mat-icon').should('have.text', 'verified');
     cy.get('[data-cy="role-item-SUPER_ADMIN_ROLE"] [data-cy="edit-role-button"]').should('exist');
     cy.get('[data-cy="role-item-SUPER_ADMIN_ROLE"] [data-cy="delete-role-button"]').should('be.disabled');
 
     cy.get('[data-cy="role-item-USER_ROLE"] > .cdk-column-name').should('contain', 'USER_ROLE');
-    cy.get('[data-cy="role-item-USER_ROLE"] > .cdk-column-canLogin > .mat-icon').should('have.text', 'lock');
+    cy.get('[data-cy="role-item-USER_ROLE"] > .cdk-column-canLogin > .mat-icon').should('have.text', 'lock_open');
     cy.get('[data-cy="role-item-USER_ROLE"] > .cdk-column-coreRole > .mat-icon').should('have.text', 'verified');
     cy.get('[data-cy="role-item-USER_ROLE"] [data-cy="edit-role-button"]').should('exist');
     cy.get('[data-cy="role-item-USER_ROLE"] [data-cy="delete-role-button"]').should('be.disabled');
@@ -43,12 +46,13 @@ describe('Role Management', () => {
     cy.get('[data-cy="role-name-input"]').clear().type('NEW_ROLE');
     cy.get('[data-cy="accept-button"] button').should('be.enabled');
     cy.get('[data-cy="accept-button"]').click();
-    cy.wait('@createRole').then((interception) => {
-      expect(interception.response?.statusCode).to.eq(200);
-      expect(interception.request?.body.name).to.eq('NEW_ROLE');
+    cy.wait('@createRole').then((xhr) => {
+      expect(xhr.response?.statusCode).to.eq(200);
+      expect(xhr.request?.body.name).to.eq('NEW_ROLE');
+      cy.location('pathname').should('contain', `/administration/role-management/${xhr.response?.body?.id}`);
     });
     cy.get('#toast-container').should('contain', 'Role created successfully');
-    cy.get('[data-cy="role-item-NEW_ROLE"] > .cdk-column-name').should('contain', 'NEW_ROLE');
+    cy.get('[data-cy="role-name"]').should('have.value', 'NEW_ROLE');
   });
 
   describe('Edit Role', () => {

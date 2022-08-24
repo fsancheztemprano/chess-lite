@@ -1,13 +1,7 @@
 <app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
   <div class="card-view-content">
     <form [formGroup]="signupForm" novalidate (ngSubmit)="onSubmit()">
-      <mat-card
-        class="mat-elevation-z24"
-        [@wobble]="signupError === true"
-        (@wobble.start)="signupError = false"
-        [@bounceOut]="signupSuccess === true"
-        (@bounceOut.done)="onSignupSuccess()"
-      >
+      <mat-card class="mat-elevation-z24">
         <mat-card-header>
           <mat-card-title>{{ t('title') }}</mat-card-title>
         </mat-card-header>
@@ -41,6 +35,7 @@
           <button
             mat-raised-button
             color="primary"
+            type="submit"
             [disabled]="signupForm.invalid || (authService.hasTemplateToSignup() | async) === false"
           >
             {{ t('button.signup') }}

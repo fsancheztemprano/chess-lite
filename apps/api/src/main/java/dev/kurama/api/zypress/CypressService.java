@@ -1,12 +1,15 @@
 package dev.kurama.api.zypress;
 
 import dev.kurama.api.core.exception.domain.exists.UserExistsException;
+import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
+import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
 import dev.kurama.api.core.repository.UserRepository;
 import dev.kurama.api.core.service.DataInitializationService;
+import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.api.core.service.UserService;
 import javax.annotation.PostConstruct;
@@ -36,6 +39,8 @@ public class CypressService {
   private final AuthorityRepository authorityRepository;
   @NonNull
   private final GlobalSettingsRepository globalSettingsRepository;
+  @NonNull
+  private final GlobalSettingsService globalSettingsService;
 
   @NonNull
   private final DataInitializationService initializationService;
@@ -78,7 +83,7 @@ public class CypressService {
     authorityRepository.deleteAll();
   }
 
-  private void setState1() throws UserExistsException {
+  private void setState1() throws UserExistsException, RoleNotFoundException {
     initializationService.initialize();
     userService.createUser(UserInput.builder()
       .username("e2e-user1")
@@ -90,5 +95,6 @@ public class CypressService {
       role.setCanLogin(true);
       roleRepository.save(role);
     });
+    globalSettingsService.updateGlobalSettings(GlobalSettingsUpdateInput.builder().signupOpen(true).build());
   }
 }

@@ -115,8 +115,9 @@ export class RoleManagementTableComponent implements OnDestroy {
             ),
         ),
       )
-      .subscribe(() =>
-        this.toasterService.showToast({ title: translate(`${this.TRANSLOCO_SCOPE}.create-dialog.toast`) }),
-      );
+      .subscribe((newRole) => {
+        this.toasterService.showToast({ title: translate(`${this.TRANSLOCO_SCOPE}.create-dialog.toast`) });
+        this.router.navigate([`/administration/role-management/${newRole.id}`]);
+      });
   }
 }

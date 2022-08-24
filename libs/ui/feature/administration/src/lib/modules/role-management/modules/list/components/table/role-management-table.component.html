@@ -15,7 +15,7 @@
         <mat-icon>vpn_lock</mat-icon>
       </th>
       <td mat-cell *matCellDef="let row">
-        <mat-icon>{{ 'lock' + (row.canLogin ? '' : '_open') }}</mat-icon>
+        <mat-icon>{{ 'lock' + (!row.canLogin ? '' : '_open') }}</mat-icon>
       </td>
     </ng-container>
 

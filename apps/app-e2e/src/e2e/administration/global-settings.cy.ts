@@ -24,14 +24,16 @@ describe('Global Settings Module', () => {
     cy.get('[data-cy="toggle-signup"]').click();
     cy.wait('@patchGlobalSettings').then((interception) => {
       expect(interception.request?.body.defaultRoleId).to.eq(undefined);
-      expect(interception.request?.body.signupOpen).to.eq(true);
+      expect(interception.request?.body.signupOpen).to.eq(false);
       expect(interception.response?.statusCode).to.eq(200);
+      expect(interception.response?.body.signupOpen).to.eq(false);
     });
     cy.get('[data-cy="toggle-signup"]').click();
     cy.wait('@patchGlobalSettings').then((interception) => {
       expect(interception.request?.body.defaultRoleId).to.eq(undefined);
-      expect(interception.request?.body.signupOpen).to.eq(false);
+      expect(interception.request?.body.signupOpen).to.eq(true);
       expect(interception.response?.statusCode).to.eq(200);
+      expect(interception.response?.body.signupOpen).to.eq(true);
     });
   });
 

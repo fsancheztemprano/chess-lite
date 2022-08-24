@@ -36,7 +36,7 @@ class EmailServiceIT {
       .build();
     service.sendEmail(emailTemplate);
 
-    await().atMost(2, SECONDS).untilAsserted(() -> {
+    await().atMost(3, SECONDS).untilAsserted(() -> {
       MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
       assertEquals(1, receivedMessages.length);
 

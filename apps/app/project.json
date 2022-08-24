@@ -22,7 +22,8 @@
         "inlineStyleLanguage": "scss",
         "assets": ["apps/app/src/favicon.ico", "apps/app/src/assets"],
         "styles": ["apps/app/src/styles.scss", "node_modules/ngx-toastr/toastr.css"],
-        "scripts": []
+        "scripts": [],
+        "allowedCommonJsDependencies": ["url-template", "flat", "angular2-uuid"]
       },
       "configurations": {
         "production": {
