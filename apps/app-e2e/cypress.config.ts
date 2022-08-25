@@ -10,6 +10,7 @@ export default defineConfig({
 
   env: {
     apiUrl: '/api',
+    emailUrl: 'http://localhost:8025',
   },
 
   e2e: {
@@ -22,5 +23,6 @@ export default defineConfig({
     chromeWebSecurity: false,
     supportFile: 'src/support/e2e.ts',
     specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    // experimentalSessionAndOrigin: true,
   },
 });

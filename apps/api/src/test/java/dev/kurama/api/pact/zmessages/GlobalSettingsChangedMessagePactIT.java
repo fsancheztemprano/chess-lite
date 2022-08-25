@@ -1,4 +1,4 @@
-package dev.kurama.api.core.event.emitter;
+package dev.kurama.api.pact.zmessages;
 
 import au.com.dius.pact.provider.PactVerifyProvider;
 import au.com.dius.pact.provider.junit.Provider;
@@ -6,18 +6,20 @@ import au.com.dius.pact.provider.junit.loader.PactFolder;
 import au.com.dius.pact.provider.junit5.AmpqTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
-import dev.kurama.api.core.event.domain.RoleChangedEvent;
-import dev.kurama.api.core.event.domain.RoleChangedEvent.RoleChangedEventAction;
+import dev.kurama.api.core.event.domain.GlobalSettingsChangedEvent;
+import dev.kurama.api.core.event.domain.GlobalSettingsChangedEvent.GlobalSettingsChangedEventAction;
 import groovy.json.JsonOutput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@IfProfileValue(name = "spring.profiles.active", values = {"pact"})
 @ExtendWith(SpringExtension.class)
 @Provider("ami")
-@PactFolder("target/test-classes/pact-messages/roleChangedMessages")
-public class RoleChangedMessagePactIT {
+@PactFolder("target/test-classes/pact-messages/globalSettingsChangedMessages")
+public class GlobalSettingsChangedMessagePactIT {
 
   @TestTemplate
   @ExtendWith(PactVerificationInvocationContextProvider.class)
@@ -30,19 +32,10 @@ public class RoleChangedMessagePactIT {
     context.setTarget(new AmpqTestTarget());
   }
 
-  @PactVerifyProvider("a role created message")
-  public String verifyRoleCreatedMessage() {
-    return JsonOutput.toJson(RoleChangedEvent.builder().roleId("r1").action(RoleChangedEventAction.CREATED).build());
-  }
-
-  @PactVerifyProvider("a role updated message")
-  public String verifyRoleUpdatedMessage() {
-    return JsonOutput.toJson(RoleChangedEvent.builder().roleId("r2").action(RoleChangedEventAction.UPDATED).build());
-  }
-
-  @PactVerifyProvider("a role deleted message")
-  public String verifyRoleDeletedMessage() {
-    return JsonOutput.toJson(RoleChangedEvent.builder().roleId("r3").action(RoleChangedEventAction.DELETED).build());
+  @PactVerifyProvider("a global settings updated message")
+  public String verifyGlobalSettingsUpdatedMessage() {
+    return JsonOutput.toJson(
+      GlobalSettingsChangedEvent.builder().action(GlobalSettingsChangedEventAction.UPDATED).build());
   }
 
 }

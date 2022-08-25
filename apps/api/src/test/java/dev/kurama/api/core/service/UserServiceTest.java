@@ -491,7 +491,6 @@ class UserServiceTest {
     verify(activationTokenService).verifyActivationTokenMatch(token, expected);
     verify(passwordEncode).encode(input.getPassword());
     verify(userRepository).saveAndFlush(expected);
-    verify(emailService).sendEmail(any(EmailTemplate.class));
   }
 
   @Test

@@ -2039,6 +2039,11 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
+"@lensesio/cypress-websocket-testing@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@lensesio/cypress-websocket-testing/-/cypress-websocket-testing-1.0.1.tgz#0a17ec8431b6f07110875c400ad75b2ce9a78e80"
+  integrity sha512-smZlFhxFC7ucZP302xpz94sV581MTFkWwOIvt/ica7Q0iR314ioX2RSA2V7uz9kbvspQYlrKP+4khdBst7iBNA==
+
 "@ngneat/effects-ng@2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@ngneat/effects-ng/-/effects-ng-2.0.0.tgz#6e99330d85e213dfec89cfa8c387a0715fbd5487"

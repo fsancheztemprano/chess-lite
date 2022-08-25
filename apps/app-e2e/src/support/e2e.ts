@@ -13,5 +13,8 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
+import { addStreamCommands } from '@lensesio/cypress-websocket-testing';
 // Import commands.ts using ES2015 syntax:
 import './commands';
+
+addStreamCommands();

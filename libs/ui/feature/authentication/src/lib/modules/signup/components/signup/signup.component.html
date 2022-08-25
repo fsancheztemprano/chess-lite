@@ -36,7 +36,7 @@
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="signupForm.invalid || (authService.hasTemplateToSignup() | async) === false"
+            [disabled]="signupForm.invalid || !!!(authService.hasTemplateToSignup() | async)"
           >
             {{ t('button.signup') }}
           </button>

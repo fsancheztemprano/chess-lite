@@ -1,6 +1,5 @@
 package dev.kurama.api.core.service;
 
-import static dev.kurama.api.core.constant.ActivationTokenConstant.ACTIVATION_EMAIL_SUBJECT;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -253,12 +252,6 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(accountActivationInput.getPassword()));
     user.setActivationToken(null);
     userRepository.saveAndFlush(user);
-
-    emailService.sendEmail(EmailTemplate.builder()
-      .to(user.getEmail())
-      .subject(ACTIVATION_EMAIL_SUBJECT)
-      .text("Your Account has just been Activated.")
-      .build());
   }
 
   @Transactional
@@ -294,8 +287,11 @@ public class UserService {
       + "<a href =\"%s/auth/activation?token=%s&email=%s\"> Click Here </a><br><br><br>"
       + "Thank You", token, host, token, user.getEmail());
 
-    emailService.sendEmail(
-      EmailTemplate.builder().to(user.getEmail()).subject(ACTIVATION_EMAIL_SUBJECT).text(activationEmailText).build());
+    emailService.sendEmail(EmailTemplate.builder()
+      .to(user.getEmail())
+      .subject("Your App Account Activation Token")
+      .text(activationEmailText)
+      .build());
   }
 
   private void setRoleAndAuthorities(User user, Role role) {

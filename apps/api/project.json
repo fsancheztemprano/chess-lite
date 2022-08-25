@@ -36,6 +36,35 @@
         ]
       }
     },
+    "ut": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "test"
+        ]
+      }
+    },
+    "it": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "verify",
+          "-Dtest=\"dev.kurama.api.null.**\"",
+          "-Dsurefire.failIfNoSpecifiedTests=false",
+          "-DskipUTs"
+        ]
+      }
+    },
     "pact": {
       "executor": "@nxrocks/nx-spring-boot:clean",
       "outputs": [

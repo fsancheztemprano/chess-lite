@@ -17,6 +17,7 @@
           <button
             mat-raised-button
             color="primary"
+            type="submit"
             [disabled]="form.invalid || (activationTokenService.hasTemplateToRequestToken() | async) === false"
           >
             {{ t('button.request') }}
