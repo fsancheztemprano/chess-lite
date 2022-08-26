@@ -1,15 +1,11 @@
-import { WebSocketSubjectConfig } from 'rxjs/internal/observable/dom/WebSocketSubject';
+import { filter, firstValueFrom, map, take, takeUntil, timer } from 'rxjs';
 
-describe('email verification', () => {
+describe('email verification', { defaultCommandTimeout: 10000 }, () => {
   beforeEach(() => {
     cy.setState(1).clearLocalStorage();
     cy.request('DELETE', Cypress.env('emailUrl') + '/api/v1/messages');
     cy.visit('/');
   });
-
-  const config: WebSocketSubjectConfig<{ Content: { Body: string } }> = {
-    url: Cypress.env('emailUrl').replace('http', 'ws') + '/api/v2/websocket',
-  };
 
   it('should signup activate account and login', () => {
     cy.interceptApi('POST', '/auth/signup').as('signup');
@@ -21,16 +17,31 @@ describe('email verification', () => {
       expect(xhr.response?.statusCode).to.equal(204);
     });
 
-    cy.streamRequest<{ Content: { Body: string } }>(config, { streamTimeout: 15000 }).then(
-      (results: void | Array<{ Content: { Body: string } }>) => {
-        expect(!!results).to.be.true;
-        expect(results).to.have.length(1);
-        expect(Array.isArray(results)).to.be.true;
-        const activationUrl = (results as Array<{ Content: { Body: string } }>)[0].Content.Body.split('"')[1];
-        expect(activationUrl).to.contain('e2e-user5@localhost');
-        cy.visit(activationUrl);
-      },
-    );
+    // Get first published email, fails if previous tests sent mails asynchronously
+    //
+    // cy.streamRequest<{ Content: { Body: string } }>(config, { streamTimeout: 15000 }).then(
+    //   (results: void | Array<{ Content: { Body: string } }>) => {
+    //     expect(!!results).to.be.true;
+    //     expect(results).to.have.length(1);
+    //     expect(Array.isArray(results)).to.be.true;
+    //     const activationUrl = (results as Array<{ Content: { Body: string } }>)[0].Content.Body.split('"')[1];
+    //     expect(activationUrl).to.contain('e2e-user5@localhost');
+    //     cy.visit(activationUrl);
+    //   },
+    // );
+
+    cy.stream<{ Content: { Body: string } }>(Cypress.env('emailUrl').replace('http', 'ws') + '/api/v2/websocket')
+      .then((subject) => {
+        return firstValueFrom(
+          subject.pipe(
+            takeUntil(timer(10000)),
+            filter((message) => message?.Content?.Body?.includes('e2e-user5@localhost')),
+            take(1),
+            map((message) => message.Content.Body.split('"')[1]),
+          ),
+        );
+      })
+      .then((activationUrl) => cy.visit(activationUrl));
 
     activateAccount('e2e-user5-password');
     login('e2e-user5', 'e2e-user5-password');
@@ -46,40 +57,35 @@ describe('email verification', () => {
       expect(xhr.response?.statusCode).to.equal(204);
     });
 
-    cy.streamRequest<{ Content: { Body: string } }>(config, { streamTimeout: 15000 }).then(
-      (results: void | Array<{ Content: { Body: string } }>) => {
-        expect(!!results).to.be.true;
-        expect(results).to.have.length(1);
-        expect(Array.isArray(results)).to.be.true;
-        const activationUrl = (results as Array<{ Content: { Body: string } }>)[0].Content.Body.split('"')[1];
-        expect(activationUrl).to.contain('e2e-user1@localhost');
-        cy.visit(activationUrl);
-      },
-    );
-
+    // Iframe is pulling a Gandalf
     // cy.origin(Cypress.env('emailUrl'), () => {
     //   cy.visit('/');
-    //   cy.get('.subject').contains('Your App Account Activation Token').click();
-    // cy.contains('Click Here')
-    //   .should('have.attr', 'href')
-    //   .then((href) => {
-    //     cy.log(String(href));
-    //   });
-    // .click({ force: true });
-    // cy.get('#preview-html', { timeout: 10000 }).then(($iframe) => {
-    //   cy.wait(10000);
-    // cy.wrap($iframe.contents().find('a'));
-
-    // .click({ force: true });
-    // });
-    //   }
-    //     // .its('0.contentDocument').should('contain', 'Your App Account Activation Token');
-    //     .within((a) => {
-    //       // cy.get('a').contains('Click Here').click();
-    //       console.log(a);
-    //       cy.log(String(a));
+    //   cy.get('.subject').contains('e2e-user1 Welcome. Here is your Activation Token').click();
+    //
+    //   cy.get('iframe#preview-html')
+    //     .its('0.contentDocument')
+    //     .should('exist')
+    //     .its('body')
+    //     .should('not.be.undefined')
+    //     .then(cy.wrap)
+    //     .then((body) => {
+    //       cy.log(JSON.stringify(body));
     //     });
+    //   cy.contains('Click Here').click({ force: true });
     // });
+
+    cy.stream<{ Content: { Body: string } }>(Cypress.env('emailUrl').replace('http', 'ws') + '/api/v2/websocket')
+      .then((subject) => {
+        return firstValueFrom(
+          subject.pipe(
+            takeUntil(timer(10000)),
+            filter((message) => message?.Content?.Body?.includes('e2e-user1@localhost')),
+            take(1),
+            map((message) => message.Content.Body.split('"')[1]),
+          ),
+        );
+      })
+      .then((activationUrl) => cy.visit(activationUrl));
 
     activateAccount('e2e-user1-password2');
     login('e2e-user1', 'e2e-user1-password2');

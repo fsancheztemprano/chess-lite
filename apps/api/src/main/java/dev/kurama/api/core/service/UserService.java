@@ -76,6 +76,10 @@ public class UserService {
   @Value("${application.host_url}")
   private String host;
 
+  public void setHost(String host) {
+    this.host = host;
+  }
+
   public Optional<User> findUserById(String id) {
     return userRepository.findById(id);
   }
@@ -289,7 +293,7 @@ public class UserService {
 
     emailService.sendEmail(EmailTemplate.builder()
       .to(user.getEmail())
-      .subject("Your App Account Activation Token")
+      .subject(String.format("%s Welcome. Here is your Activation Token", user.getUsername()))
       .text(activationEmailText)
       .build());
   }

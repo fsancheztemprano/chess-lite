@@ -4,12 +4,15 @@ package dev.kurama.api.zypress;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.kurama.api.core.service.UserService;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import lombok.extern.flogger.Flogger;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +40,9 @@ public class CypressE2E {
   @LocalServerPort
   private int port;
 
+  @Autowired
+  private UserService userService;
+
   @Value("${CYPRESS_RECORD_KEY:#{null}}")
   private String CYPRESS_RECORD_KEY;
 
@@ -53,11 +59,16 @@ public class CypressE2E {
     registry.add("spring.mail.port", mailHogContainer::getFirstMappedPort);
   }
 
-  @Test
-  void runCypressTests() throws InterruptedException {
+  @BeforeEach
+  void setUp() {
     Testcontainers.exposeHostPorts(port);
     Testcontainers.exposeHostPorts(mailHogContainer.getMappedPort(1025));
     Testcontainers.exposeHostPorts(mailHogContainer.getMappedPort(8025));
+    this.userService.setHost(String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port));
+  }
+
+  @Test
+  void runCypressTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
     try (GenericContainer container = createCypressContainer()) {
       container.withLogConsumer((Consumer<OutputFrame>) outputFrame -> {
