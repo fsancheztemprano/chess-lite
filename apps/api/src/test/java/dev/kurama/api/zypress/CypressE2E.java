@@ -18,7 +18,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.testcontainers.Testcontainers;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
@@ -28,7 +27,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
 
-@EnabledIf(value = "#{'${spring.profiles.active}' == 'e2e'}", loadContext = true)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @org.testcontainers.junit.jupiter.Testcontainers()
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -94,6 +92,7 @@ public class CypressE2E {
   private GenericContainer createCypressContainer() {
     GenericContainer genericContainer = new GenericContainer("cypress/included:10.6.0")
       //
+      .withAccessToHost(true)
       .withFileSystemBind("../../", "/e2e", BindMode.READ_WRITE)
       .withWorkingDirectory("/e2e/apps/app-e2e")
       .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port))
