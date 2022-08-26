@@ -56,6 +56,8 @@ public class CypressE2E {
   @Test
   void runCypressTests() throws InterruptedException {
     Testcontainers.exposeHostPorts(port);
+    Testcontainers.exposeHostPorts(mailHogContainer.getMappedPort(1025));
+    Testcontainers.exposeHostPorts(mailHogContainer.getMappedPort(8025));
     CountDownLatch countDownLatch = new CountDownLatch(1);
     try (GenericContainer container = createCypressContainer()) {
       container.withLogConsumer((Consumer<OutputFrame>) outputFrame -> {
