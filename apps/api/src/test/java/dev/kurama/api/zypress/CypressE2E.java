@@ -4,10 +4,11 @@ package dev.kurama.api.zypress;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.google.common.collect.Lists;
 import dev.kurama.api.core.service.UserService;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import lombok.extern.flogger.Flogger;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.Testcontainers;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.output.OutputFrame;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
@@ -68,19 +68,37 @@ public class CypressE2E {
   }
 
   @Test
-  void runCypressTests() throws InterruptedException {
+  void runElectronTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
-    try (GenericContainer container = createCypressContainer()) {
-      container.withLogConsumer((Consumer<OutputFrame>) outputFrame -> {
+    try (GenericContainer container = createCypressContainer(countDownLatch, "electron")) {
+
+      container.start();
+      countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
+
+      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
+      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput[1]).contains("All specs passed!");
+    }
+  }
+
+  private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser) {
+    GenericContainer genericContainer = new GenericContainer<>("cypress/included:10.6.0")
+      //
+      .withCommand("--browser", !isEmpty(browser) ? browser : "electron")
+      .withAccessToHost(true)
+      .withFileSystemBind("../../", "/e2e", BindMode.READ_WRITE)
+      .withWorkingDirectory("/e2e/apps/app-e2e")
+      .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port))
+      .withEnv("CYPRESS_apiUrl", String.format("http://%s:%d/api", GenericContainer.INTERNAL_HOST_HOSTNAME, port))
+      .withEnv("CYPRESS_emailUrl",
+        String.format("http://%s:%d", GenericContainer.INTERNAL_HOST_HOSTNAME, mailHogContainer.getMappedPort(8025)))
+      .withLogConsumer(outputFrame -> {
         String output = outputFrame.getUtf8String().replace("\n", "").replace("?", "-");
         switch (outputFrame.getType()) {
           case STDOUT:
-            if (!output.contains("┐")
-              //
-              && !output.contains("┘")
-              && !output.contains("┤")
-              && !output.contains("39m─────────────────────")
-              && (!output.contains("-----------------") || output.contains("----------------------------------"))) {
+            ArrayList<String> skippedLines = Lists.newArrayList("┐", "┘", "┤", "39m─────────────────────");
+            if (skippedLines.stream().noneMatch(output::contains) && !isEmpty(output) && (!output.contains(
+              "-----------------") || output.contains("----------------------------------"))) {
               log.at(Level.INFO).log(output);
             }
             break;
@@ -93,25 +111,6 @@ public class CypressE2E {
             break;
         }
       });
-      container.start();
-      countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
-
-      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
-      assertThat(formattedOutput.length).isEqualTo(2);
-      assertThat(formattedOutput[1]).contains("All specs passed!");
-    }
-  }
-
-  private GenericContainer createCypressContainer() {
-    GenericContainer genericContainer = new GenericContainer("cypress/included:10.6.0")
-      //
-      .withAccessToHost(true)
-      .withFileSystemBind("../../", "/e2e", BindMode.READ_WRITE)
-      .withWorkingDirectory("/e2e/apps/app-e2e")
-      .withEnv("CYPRESS_baseUrl", String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port))
-      .withEnv("CYPRESS_apiUrl", String.format("http://%s:%d/api", GenericContainer.INTERNAL_HOST_HOSTNAME, port))
-      .withEnv("CYPRESS_emailUrl",
-        String.format("http://%s:%d", GenericContainer.INTERNAL_HOST_HOSTNAME, mailHogContainer.getMappedPort(8025)));
 
     if (!isEmpty(CYPRESS_RECORD_KEY)) {
       genericContainer.withCommand("--record").withEnv("CYPRESS_RECORD_KEY", CYPRESS_RECORD_KEY);

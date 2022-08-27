@@ -88,12 +88,16 @@ describe('User Management', () => {
       });
     });
 
-    it('should edit users preferences dark mode', () => {
+    it.only('should edit users preferences', () => {
       cy.interceptApi('PATCH', '/user/preferences/*').as('updateUser');
       cy.get('[data-cy="user-preferences-tab"]').click();
 
       cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('not.be.checked');
       cy.get('app-user-management-preferences [formControlName="darkMode"]').click();
+      cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should(
+        'have.value',
+        'on',
+      );
 
       cy.get('app-user-management-preferences [formControlName="contentLanguage"]').click();
       cy.get('[data-cy="es-option"]').click();
