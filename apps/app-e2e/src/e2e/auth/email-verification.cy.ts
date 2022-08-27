@@ -1,6 +1,6 @@
 import { filter, first, firstValueFrom, map, takeUntil, timer } from 'rxjs';
 
-describe('email verification', { defaultCommandTimeout: 60000 }, () => {
+describe.skip('email verification', { defaultCommandTimeout: 60000 }, () => {
   beforeEach(() => {
     cy.setState(1).clearLocalStorage();
     cy.request('DELETE', Cypress.env('emailUrl') + '/api/v1/messages');
