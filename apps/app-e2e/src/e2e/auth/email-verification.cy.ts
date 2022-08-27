@@ -1,6 +1,6 @@
 import { filter, first, firstValueFrom, map, takeUntil, timer } from 'rxjs';
 
-describe('email verification', { defaultCommandTimeout: 20000 }, () => {
+describe('email verification', { defaultCommandTimeout: 60000 }, () => {
   beforeEach(() => {
     cy.setState(1).clearLocalStorage();
     cy.request('DELETE', Cypress.env('emailUrl') + '/api/v1/messages');
@@ -34,7 +34,7 @@ describe('email verification', { defaultCommandTimeout: 20000 }, () => {
       .then((subject) => {
         return firstValueFrom(
           subject.pipe(
-            takeUntil(timer(20000)),
+            takeUntil(timer(60000)),
             filter((message) => message?.Content?.Body?.includes('e2e-user5@localhost')),
             first(),
             map((message) => message.Content.Body.split('"')[1]),
@@ -78,7 +78,7 @@ describe('email verification', { defaultCommandTimeout: 20000 }, () => {
       .then((subject) => {
         return firstValueFrom(
           subject.pipe(
-            takeUntil(timer(20000)),
+            takeUntil(timer(60000)),
             filter((message) => message?.Content?.Body?.includes('e2e-user1@localhost')),
             first(),
             map((message) => message.Content.Body.split('"')[1]),
