@@ -28,7 +28,7 @@ public class EmailService {
       message.setText(emailTemplate.getText(), true);
       emailSender.send(mimeMessage);
     } catch (Exception exception) {
-      log.atFiner().withCause(exception).log("Email sending failed");
+      log.atInfo().withCause(exception).log("Email sending failed");
     }
   }
 }
