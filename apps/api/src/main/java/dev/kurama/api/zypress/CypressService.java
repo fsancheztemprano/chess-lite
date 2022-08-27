@@ -70,7 +70,7 @@ public class CypressService {
           break;
       }
       this.state = state;
-      log.atInfo().log("Cypress State: %s", this.state);
+      log.atFine().log("Cypress State: %s", this.state);
     } catch (Exception e) {
       log.atWarning().withCause(e).log("Cypress State: %s", this.state);
     }
