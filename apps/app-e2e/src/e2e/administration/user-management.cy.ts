@@ -88,12 +88,13 @@ describe('User Management', () => {
       });
     });
 
-    it.only('should edit users preferences', () => {
+    it('should edit users preferences', () => {
       cy.interceptApi('PATCH', '/user/preferences/*').as('updateUser');
       cy.get('[data-cy="user-preferences-tab"]').click();
 
       cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('not.be.checked');
       cy.get('app-user-management-preferences [formControlName="darkMode"]').click();
+      cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('be.checked');
       cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should(
         'have.value',
         'on',
@@ -104,6 +105,8 @@ describe('User Management', () => {
 
       cy.get('app-user-management-preferences button[type="submit"]').click();
       cy.wait('@updateUser').then((xhr) => {
+        expect(xhr.request?.body.darkMode).equal(true);
+        expect(xhr.request?.body.contentLanguage).equal('es');
         expect(xhr.response?.statusCode).to.eq(200);
         expect(xhr.response?.body.darkMode).equal(true);
         expect(xhr.response?.body.contentLanguage).equal('es');
