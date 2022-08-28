@@ -207,6 +207,8 @@
   },
   "tags": [],
   "implicitDependencies": [
-    "consumer-pact"
+    "consumer-pact",
+    "app",
+    "app-e2e"
   ]
 }

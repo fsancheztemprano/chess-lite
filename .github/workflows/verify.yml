@@ -47,7 +47,7 @@ jobs:
       - name: Load Cache
         uses: frango9000/cache@main
         env:
-          cache-key: ${{ runner.os }}-v4
+          cache-key: ${{ runner.os }}-v5
         with:
           path: |
             ~/.m2

@@ -33,5 +33,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["app"]
+  "implicitDependencies": ["app", "api"]
 }
