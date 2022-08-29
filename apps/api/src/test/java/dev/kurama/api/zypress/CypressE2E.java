@@ -97,8 +97,9 @@ public class CypressE2E {
         switch (outputFrame.getType()) {
           case STDOUT:
             ArrayList<String> skippedLines = Lists.newArrayList("┐", "┘", "┤", "39m─────────────────────");
-            if (skippedLines.stream().noneMatch(output::contains) && !isEmpty(output) && (!output.contains(
-              "-----------------") || output.contains("----------------------------------"))) {
+            if (!isEmpty(output) //
+              && skippedLines.stream().noneMatch(output::contains)//
+              && (!output.contains("-----------------") || output.contains("----------------------------------"))) {
               log.at(Level.INFO).log(output);
             }
             break;

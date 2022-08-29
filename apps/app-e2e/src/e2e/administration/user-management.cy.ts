@@ -90,7 +90,9 @@ describe('User Management', () => {
 
     it('should edit users preferences', () => {
       cy.interceptApi('PATCH', '/user/preferences/*').as('updateUser');
+      cy.interceptApi('GET', '/user/preferences/*').as('getUserPreferences');
       cy.get('[data-cy="user-preferences-tab"]').click();
+      cy.wait('@getUserPreferences');
 
       cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('not.be.checked');
       cy.get('app-user-management-preferences [formControlName="darkMode"]').click();
