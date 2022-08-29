@@ -7,7 +7,7 @@ describe('Administration Home Component', () => {
   });
 
   it('should display administration side menu', () => {
-    cy.get('[data-cy="administration-menu-item"]').should('contain', 'Administration').click();
+    cy.get('[data-cy="administration-menu-item"] a').should('contain', 'Administration').click({ force: true });
 
     cy.get('[data-cy="administration-home-menu-item"]').should('contain', 'Dashboard');
     cy.get('[data-cy="user-management-menu-item"]').should('contain', 'User Management');

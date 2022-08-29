@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import lombok.extern.flogger.Flogger;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -67,10 +67,53 @@ public class CypressE2E {
     this.userService.setHost(String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port));
   }
 
-  @Test
+  @RepeatedTest(10)
   void runElectronTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
     try (GenericContainer container = createCypressContainer(countDownLatch, "electron")) {
+
+      container.start();
+      countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
+
+      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
+      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput[1]).contains("All specs passed!");
+    }
+  }
+
+  @RepeatedTest(10)
+  void runChromeTests() throws InterruptedException {
+    CountDownLatch countDownLatch = new CountDownLatch(1);
+    try (GenericContainer container = createCypressContainer(countDownLatch, "chrome")) {
+
+      container.start();
+      countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
+
+      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
+      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput[1]).contains("All specs passed!");
+    }
+  }
+
+
+  @RepeatedTest(10)
+  void runEdgeTests() throws InterruptedException {
+    CountDownLatch countDownLatch = new CountDownLatch(1);
+    try (GenericContainer container = createCypressContainer(countDownLatch, "edge")) {
+
+      container.start();
+      countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
+
+      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
+      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput[1]).contains("All specs passed!");
+    }
+  }
+
+  @RepeatedTest(10)
+  void runFirefoxTests() throws InterruptedException {
+    CountDownLatch countDownLatch = new CountDownLatch(1);
+    try (GenericContainer container = createCypressContainer(countDownLatch, "firefox")) {
 
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);

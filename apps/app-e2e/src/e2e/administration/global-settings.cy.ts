@@ -1,7 +1,7 @@
 describe('Global Settings Module', () => {
   beforeEach(() => {
-    cy.intercept('PATCH', Cypress.env('apiUrl') + '/role/*').as('patchRoleAccess');
-    cy.intercept('PATCH', Cypress.env('apiUrl') + '/global-settings').as('patchGlobalSettings');
+    cy.interceptApi('PATCH', '/role/*').as('patchRoleAccess');
+    cy.interceptApi('PATCH', '/global-settings').as('patchGlobalSettings');
     cy.setState(1);
     cy.login('admin', '123456');
     cy.visit('/');
@@ -38,6 +38,7 @@ describe('Global Settings Module', () => {
   });
 
   it('should enable access to a role', () => {
+    Cypress.on('uncaught:exception', (err: Error) => !err.message.includes('ResizeObserver loop limit exceeded'));
     cy.get('[data-cy="global-settings-access-restrictions-tab"]').click();
     cy.get('[data-cy="MOD_ROLE-login-toggle"]').click();
     cy.wait('@patchRoleAccess').then((interception) => {
@@ -47,6 +48,7 @@ describe('Global Settings Module', () => {
   });
 
   it('should disable access to a role', () => {
+    Cypress.on('uncaught:exception', (err: Error) => !err.message.includes('ResizeObserver loop limit exceeded'));
     cy.get('[data-cy="global-settings-access-restrictions-tab"]').click();
     cy.get('[data-cy="USER_ROLE-login-toggle"]').click();
     cy.wait('@patchRoleAccess').then((interception) => {

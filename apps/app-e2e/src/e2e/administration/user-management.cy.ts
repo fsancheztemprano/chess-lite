@@ -94,6 +94,9 @@ describe('User Management', () => {
       cy.get('[data-cy="user-preferences-tab"]').click();
       cy.wait('@getUserPreferences');
 
+      cy.get('app-user-management-preferences [formControlName="contentLanguage"]').click();
+      cy.get('[data-cy="es-option"]').click();
+
       cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('not.be.checked');
       cy.get('app-user-management-preferences [formControlName="darkMode"]').click();
       cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('be.checked');
@@ -101,9 +104,6 @@ describe('User Management', () => {
         'have.value',
         'on',
       );
-
-      cy.get('app-user-management-preferences [formControlName="contentLanguage"]').click();
-      cy.get('[data-cy="es-option"]').click();
 
       cy.get('app-user-management-preferences button[type="submit"]').click();
       cy.wait('@updateUser').then((xhr) => {

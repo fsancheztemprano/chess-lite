@@ -7,7 +7,7 @@ describe('User Settings Module >', () => {
   });
 
   it('should display user settings side menu', () => {
-    cy.get('[data-cy="user-settings-menu-item"]').should('contain', 'User Settings').click();
+    cy.get('[data-cy="user-settings-menu-item"] a').should('contain', 'User Settings').click({ force: true });
 
     cy.get('[data-cy="user-settings-home-menu-item"]').should('contain', 'Dashboard');
     cy.get('[data-cy="user-profile-menu-item"]').should('contain', 'Profile');

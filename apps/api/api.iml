@@ -197,17 +197,17 @@
     <orderEntry type="library" name="Maven: com.auth0:java-jwt:4.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.13.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.3" level="project" />
-    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-ui:1.6.10" level="project" />
-    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-webmvc-core:1.6.10" level="project" />
-    <orderEntry type="library" name="Maven: org.webjars:swagger-ui:4.13.2" level="project" />
+    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-ui:1.6.11" level="project" />
+    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-webmvc-core:1.6.11" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:swagger-ui:4.14.0" level="project" />
     <orderEntry type="library" name="Maven: org.webjars:webjars-locator-core:0.50" level="project" />
     <orderEntry type="library" name="Maven: io.github.classgraph:classgraph:4.8.149" level="project" />
-    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-hateoas:1.6.10" level="project" />
-    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-common:1.6.10" level="project" />
+    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-hateoas:1.6.11" level="project" />
+    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-common:1.6.11" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-core:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-annotations:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: io.swagger.core.v3:swagger-models:2.2.2" level="project" />
-    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-security:1.6.10" level="project" />
+    <orderEntry type="library" name="Maven: org.springdoc:springdoc-openapi-security:1.6.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:testcontainers:1.17.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.13.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
