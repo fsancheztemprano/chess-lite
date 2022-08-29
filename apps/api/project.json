@@ -168,38 +168,14 @@
         "root": "apps/api"
       }
     },
-    "format": {
-      "executor": "@nxrocks/nx-spring-boot:format",
+    "build-image": {
+      "executor": "@nxrocks/nx-spring-boot:build-image",
       "options": {
         "root": "apps/api"
       }
     },
-    "format-check": {
-      "executor": "@nxrocks/nx-spring-boot:format-check",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildJar": {
-      "executor": "@nxrocks/nx-spring-boot:buildJar",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildWar": {
-      "executor": "@nxrocks/nx-spring-boot:buildWar",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildImage": {
-      "executor": "@nxrocks/nx-spring-boot:buildImage",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildInfo": {
-      "executor": "@nxrocks/nx-spring-boot:buildInfo",
+    "build-info": {
+      "executor": "@nxrocks/nx-spring-boot:build-info",
       "options": {
         "root": "apps/api"
       }
