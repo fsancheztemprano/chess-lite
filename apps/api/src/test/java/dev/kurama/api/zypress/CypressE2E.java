@@ -68,10 +68,10 @@ public class CypressE2E {
     this.userService.setHost(String.format("http://%s:%d/app", GenericContainer.INTERNAL_HOST_HOSTNAME, port));
   }
 
-  @RepeatedTest(10)
+  @RepeatedTest(1)
   void runElectronTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
-    try (GenericContainer container = createCypressContainer(countDownLatch, "electron")) {
+    try (GenericContainer container = createCypressContainer(countDownLatch)) {
 
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
@@ -82,7 +82,7 @@ public class CypressE2E {
     }
   }
 
-  @RepeatedTest(10)
+  @RepeatedTest(20)
   void runChromeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
     try (GenericContainer container = createCypressContainer(countDownLatch, "chrome")) {
@@ -97,7 +97,7 @@ public class CypressE2E {
   }
 
 
-  @RepeatedTest(10)
+  @RepeatedTest(20)
   void runEdgeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
     try (GenericContainer container = createCypressContainer(countDownLatch, "edge")) {
@@ -111,11 +111,12 @@ public class CypressE2E {
     }
   }
 
-  @RepeatedTest(10)
+  @RepeatedTest(20)
   void runFirefoxTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
+//  try (GenericContainer container =
+//            createCypressContainer(countDownLatch, "firefox", "src/e2e/**/role-management.cy.ts")) {
     try (GenericContainer container = createCypressContainer(countDownLatch, "firefox")) {
-
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
 
@@ -125,7 +126,7 @@ public class CypressE2E {
     }
   }
 
-  private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser) {
+  private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser, String specPattern) {
     GenericContainer genericContainer = new GenericContainer<>("cypress/included:10.6.0")
       //
       .withCommand("--browser", !isEmpty(browser) ? browser : "electron")
@@ -157,9 +158,20 @@ public class CypressE2E {
         }
       });
 
+    if (!isEmpty(specPattern)) {
+      genericContainer.withCommand("--spec", specPattern);
+    }
     if (!isEmpty(CYPRESS_RECORD_KEY)) {
       genericContainer.withCommand("--record").withEnv("CYPRESS_RECORD_KEY", CYPRESS_RECORD_KEY);
     }
     return genericContainer;
+  }
+
+  private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser) {
+    return createCypressContainer(countDownLatch, browser, null);
+  }
+
+  private GenericContainer createCypressContainer(CountDownLatch countDownLatch) {
+    return createCypressContainer(countDownLatch, null, null);
   }
 }

@@ -40,8 +40,7 @@ describe('Role Management', () => {
     cy.interceptApi('POST', '/role').as('createRole');
     cy.get('[data-cy="core-context-menu"]').click();
     cy.get('[data-cy="create-role-option"]').click();
-    cy.get('[data-cy="accept-button"] button').should('be.disabled');
-    cy.get('[data-cy="role-name-input"]').click().blur();
+    cy.get('[data-cy="accept-button"] button').should('be.disabled').should('contain.text', 'CREATE ROLE');
     cy.get('[data-cy="role-name-input"]').type('NEW_ROLE');
     cy.get('[data-cy="role-name-input"]').clear().type('NEW_ROLE');
     cy.get('[data-cy="accept-button"] button').should('be.enabled');
