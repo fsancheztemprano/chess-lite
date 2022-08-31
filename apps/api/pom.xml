@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.2</version>
+    <version>2.7.3</version>
     <relativePath/>
   </parent>
   <groupId>dev.kurama.fullstack</groupId>
@@ -184,21 +184,26 @@
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.6.9</version>
+      <version>1.6.11</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-hateoas</artifactId>
-      <version>1.6.9</version>
+      <version>1.6.11</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-security</artifactId>
-      <version>1.6.9</version>
+      <version>1.6.11</version>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -229,7 +234,7 @@
     <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail-junit5</artifactId>
-      <version>1.6.9</version>
+      <version>1.6.10</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -242,6 +247,12 @@
       <groupId>au.com.dius</groupId>
       <artifactId>pact-jvm-provider-junit5-spring</artifactId>
       <version>4.0.10</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit-pioneer</groupId>
+      <artifactId>junit-pioneer</artifactId>
+      <version>1.7.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -289,6 +300,11 @@
           <groupId>org.springframework.cloud</groupId>
           <artifactId>spring-cloud-contract-maven-plugin</artifactId>
           <version>${spring-cloud-contract.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>com.heroku.sdk</groupId>
@@ -436,7 +452,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M7</version>
         <configuration>
           <outputDirectory>target/site</outputDirectory>
         </configuration>
@@ -445,7 +460,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M7</version>
         <executions>
           <execution>
             <goals>
@@ -460,6 +474,7 @@
           <skipITs>${skipITs}</skipITs>
           <excludes>
             <exclude>**/*Test.java</exclude>
+            <exclude>**/*PactIT.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -467,7 +482,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0</version>
         <executions>
           <execution>
             <id>default-deploy</id>
@@ -555,6 +569,40 @@
               </dependency>
             </dependencies>
           </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*Test.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>e2e</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*E2E.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/*Test.java</exclude>
+                <exclude>**/*IT.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -637,7 +685,6 @@
         </plugins>
       </build>
     </profile>
-
 
     <profile>
       <id>heroku-development</id>

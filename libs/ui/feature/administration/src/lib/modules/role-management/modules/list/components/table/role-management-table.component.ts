@@ -32,6 +32,7 @@ export class RoleManagementTableComponent implements OnDestroy {
   ) {
     this.coreContextMenuService.show([
       {
+        id: 'create-role-option',
         title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.add`),
         icon: 'add',
         callback: () => this.createRole(),
@@ -98,6 +99,7 @@ export class RoleManagementTableComponent implements OnDestroy {
               template: rolePage.getTemplate(RoleManagementRelations.ROLE_CREATE_REL),
               inputs: [
                 {
+                  id: 'role-name-input',
                   key: 'name',
                   options: {
                     label: translate(`${this.TRANSLOCO_SCOPE}.create-dialog.input.name.label`),
@@ -113,8 +115,9 @@ export class RoleManagementTableComponent implements OnDestroy {
             ),
         ),
       )
-      .subscribe(() =>
-        this.toasterService.showToast({ title: translate(`${this.TRANSLOCO_SCOPE}.create-dialog.toast`) }),
-      );
+      .subscribe((newRole) => {
+        this.toasterService.showToast({ title: translate(`${this.TRANSLOCO_SCOPE}.create-dialog.toast`) });
+        this.router.navigate([`/administration/role-management/${newRole.id}`]);
+      });
   }
 }

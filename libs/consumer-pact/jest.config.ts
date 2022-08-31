@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'consumer-pact',
   preset: '../../jest.preset.js',
@@ -8,13 +9,13 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/pact/consumer-pact',
+  coverageDirectory: '../../coverage/pact',
   reporters: [
     'default',
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage/pact/consumer-pact',
+        outputDirectory: 'coverage/pact',
         outputName: 'jest-junit.xml',
       },
     ],

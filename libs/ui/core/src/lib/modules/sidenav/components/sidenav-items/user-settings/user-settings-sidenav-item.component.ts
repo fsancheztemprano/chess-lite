@@ -16,35 +16,41 @@ export class UserSettingsSidenavItemComponent {
 
   public readonly items: MenuData[] = [
     {
+      id: 'user-settings-home-menu-item',
       icon: 'settings_applications',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.dashboard'),
       route: '/user',
     },
     {
+      id: 'user-profile-menu-item',
       icon: 'account_box',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.profile'),
       route: ['/user', 'profile'],
       visible$: this.userSettingsService.hasTemplateToUpdateProfile(),
     },
     {
+      id: 'user-avatar-menu-item',
       icon: 'account_circle',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.upload-avatar'),
       route: ['/user', 'avatar'],
       visible$: this.userSettingsService.hasTemplateToUploadAvatar(),
     },
     {
+      id: 'user-password-menu-item',
       icon: 'password',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.change-password'),
       route: ['/user', 'password'],
       visible$: this.userSettingsService.hasTemplateToChangePassword(),
     },
     {
+      id: 'user-delete-menu-item',
       icon: 'delete_forever',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.delete-account'),
       route: ['/user', 'delete'],
       visible$: this.userSettingsService.hasTemplateToDeleteAccount(),
     },
     {
+      id: 'user-preferences-menu-item',
       icon: 'manage_accounts',
       title$: this.translocoService.selectTranslate('core.sidenav.user-settings.subtitle.preferences'),
       route: ['/user', 'preferences'],

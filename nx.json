@@ -13,7 +13,7 @@
   "npmScope": "app",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": ["build", "lint", "test", "pact", "e2e"],
         "parallel": 3
@@ -52,6 +52,7 @@
       "style": "scss"
     }
   },
+  "plugins": ["@nxrocks/nx-spring-boot"],
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"]

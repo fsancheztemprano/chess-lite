@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'ui-feature-authentication',
   preset: '../../../../jest.preset.js',

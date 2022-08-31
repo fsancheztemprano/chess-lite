@@ -58,6 +58,7 @@
           mat-raised-button
           color="primary"
           type="submit"
+          data-cy="update-profile-button"
           *ngLet="this.userSettingsService.hasTemplateToUpdateProfile() | async as canUpdateProfile"
           [disabled]="!canUpdateProfile"
         >

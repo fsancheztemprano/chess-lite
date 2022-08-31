@@ -7,7 +7,6 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   IsMobileModule,
-  IsMobilePipe,
   IsMobileService,
   NgLetModule,
   SidenavService,
@@ -49,10 +48,9 @@ describe('ToolbarComponent', () => {
         StubLocalePickerComponent,
         StubThemePickerComponent,
         StubCoreContextMenuComponent,
-        IsMobilePipe,
       ],
       imports: [NoopAnimationsModule, MatButtonModule, MatIconModule, MatToolbarModule, IsMobileModule, NgLetModule],
-      providers: [IsMobilePipe, stubSidenavServiceProvider, stubIsMobileServiceProvider, stubBreadcrumbServiceProvider],
+      providers: [stubSidenavServiceProvider, stubIsMobileServiceProvider, stubBreadcrumbServiceProvider],
     }).compileComponents();
   }));
 

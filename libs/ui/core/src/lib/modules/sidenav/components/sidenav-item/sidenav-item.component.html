@@ -25,6 +25,7 @@
           [routerLink]="item.route"
           routerLinkActive="active-link"
           [disabled]="disabled"
+          [attr.data-cy]="item.id"
         >
           <mat-icon aria-hidden="false" [attr.aria-label]="title">{{ item.icon }}</mat-icon>
           {{ title }}

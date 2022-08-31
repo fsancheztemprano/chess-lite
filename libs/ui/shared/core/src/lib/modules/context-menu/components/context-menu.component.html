@@ -27,6 +27,7 @@
       [disabled]="!option.disabled$ ? false : (option.disabled$ | async)"
       [routerLink]="option.route"
       (click)="optionClick(option, $event)"
+      [attr.data-cy]="option.id"
     >
       <mat-icon *ngIf="option.icon">{{ option.icon }}</mat-icon>
       <span>{{ title }}</span>

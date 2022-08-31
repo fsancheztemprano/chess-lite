@@ -14,18 +14,22 @@ export class UserManagementDetailComponent {
   public readonly TRANSLOCO_SCOPE = 'administration.user-management.detail';
   public readonly tabs: MenuData[] = [
     {
+      id: 'user-detail-tab',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.profile`),
       route: [...this.baseRoute, 'profile'],
     },
     {
+      id: 'user-preferences-tab',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.preferences`),
       route: [...this.baseRoute, 'preferences'],
     },
     {
+      id: 'user-authorities-tab',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.authority`),
       route: [...this.baseRoute, 'authority'],
     },
     {
+      id: 'user-account-tab',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.account`),
       route: [...this.baseRoute, 'account'],
     },

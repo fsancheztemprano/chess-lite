@@ -11,6 +11,7 @@
     mat-raised-button
     color="primary"
     [disabled]="(globalSettingsService.canUpdateGlobalSettings() | async) === false"
+    data-cy="update-default-role"
   >
     {{ t('button') }}
   </button>

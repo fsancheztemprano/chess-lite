@@ -36,6 +36,35 @@
         ]
       }
     },
+    "ut": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "test"
+        ]
+      }
+    },
+    "it": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "verify",
+          "-Dtest=\"dev.kurama.api.null.**\"",
+          "-Dsurefire.failIfNoSpecifiedTests=false",
+          "-DskipUTs"
+        ]
+      }
+    },
     "pact": {
       "executor": "@nxrocks/nx-spring-boot:clean",
       "outputs": [
@@ -47,10 +76,27 @@
         "args": [
           "verify",
           "-P pact",
-          "-D it.test=\"dev.kurama.api.pact.**\"",
+          "-D it.test=\"**/*PactIT.java\"",
           "-Dtest=\"dev.kurama.api.null.**\"",
-          "-DfailIfNoTests=false",
-          "-Dsurefire.failIfNoSpecifiedTests=false"
+          "-Dsurefire.failIfNoSpecifiedTests=false",
+          "-DskipUTs"
+        ]
+      }
+    },
+    "e2e": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "coverage/apps/app-e2e",
+        "root": "apps/api",
+        "args": [
+          "verify",
+          "-P frontend,e2e",
+          "-Dtest=\"dev.kurama.api.null.**\"",
+          "-Dsurefire.failIfNoSpecifiedTests=false",
+          "-DskipUTs"
         ]
       }
     },
@@ -122,38 +168,14 @@
         "root": "apps/api"
       }
     },
-    "format": {
-      "executor": "@nxrocks/nx-spring-boot:format",
+    "build-image": {
+      "executor": "@nxrocks/nx-spring-boot:build-image",
       "options": {
         "root": "apps/api"
       }
     },
-    "format-check": {
-      "executor": "@nxrocks/nx-spring-boot:format-check",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildJar": {
-      "executor": "@nxrocks/nx-spring-boot:buildJar",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildWar": {
-      "executor": "@nxrocks/nx-spring-boot:buildWar",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildImage": {
-      "executor": "@nxrocks/nx-spring-boot:buildImage",
-      "options": {
-        "root": "apps/api"
-      }
-    },
-    "buildInfo": {
-      "executor": "@nxrocks/nx-spring-boot:buildInfo",
+    "build-info": {
+      "executor": "@nxrocks/nx-spring-boot:build-info",
       "options": {
         "root": "apps/api"
       }
@@ -161,6 +183,8 @@
   },
   "tags": [],
   "implicitDependencies": [
-    "consumer-pact"
+    "consumer-pact",
+    "app",
+    "app-e2e"
   ]
 }

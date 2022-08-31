@@ -3,7 +3,7 @@
     <span>{{ t('user.preferences.theme') }}</span>
     <div class="theme-slider">
       <mat-icon>brightness_5</mat-icon>
-      <mat-slide-toggle formControlName="darkMode"></mat-slide-toggle>
+      <mat-slide-toggle formControlName="darkMode" data-cy="preferences-dark-toggle"></mat-slide-toggle>
       <mat-icon>bedtime</mat-icon>
     </div>
     <div class="separator"></div>
@@ -23,6 +23,7 @@
       mat-raised-button
       color="primary"
       type="submit"
+      data-cy="change-preferences-button"
       *subscribe="userSettingsService.hasTemplateToUpdateUserPreferences(); let canUpdateUserPreferences"
       [disabled]="!canUpdateUserPreferences"
     >

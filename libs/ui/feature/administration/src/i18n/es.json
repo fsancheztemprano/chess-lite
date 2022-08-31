@@ -216,7 +216,7 @@
             "delete": "Borrar esta cuenta"
           },
           "toast": {
-            "sent": "Cuenta eliminada"
+            "deleted": "Cuenta eliminada"
           }
         }
       },

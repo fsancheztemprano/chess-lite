@@ -8,7 +8,7 @@ import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { ServiceLogsService } from '../../../../ui/feature/administration/src/lib/modules/service-logs/services/service-logs.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 import { DeleteServiceLogsPact, GetServiceLogsPact } from './service-logs.pact';
 
 const provider: Pact = pactForResource('serviceLogs');

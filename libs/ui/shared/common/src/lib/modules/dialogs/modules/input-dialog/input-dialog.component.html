@@ -1,14 +1,19 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>
   <p>{{ data.caption }}</p>
-  <form [formGroup]="form">
-    <ng-container *ngFor="let input of data.inputs">
-      <mat-form-field appearance="fill">
+  <ng-container *ngFor="let inputControl of form.controls">
+    <form [formGroup]="inputControl">
+      <mat-form-field appearance="fill" *ngIf="inputControl.get('input')?.value as input">
         <mat-label>{{ input.options?.label }}</mat-label>
-        <input matInput [placeholder]="input.options?.placeholder || ''" [formControlName]="input.key" />
+        <input
+          matInput
+          [placeholder]="input.options?.placeholder + ''"
+          formControlName="value"
+          [attr.data-cy]="input.id"
+        />
       </mat-form-field>
-    </ng-container>
-  </form>
+    </form>
+  </ng-container>
 </div>
 <div mat-dialog-actions>
   <app-dialog-actions-button
@@ -16,12 +21,14 @@
     [icon]="data.dismissButton?.icon"
     [disabled]="data.dismissButton?.disabled"
     [text]="data.dismissButton?.text || 'CLOSE'"
+    data-cy="dismiss-button"
   ></app-dialog-actions-button>
   <app-dialog-actions-button
     [color]="data.acceptButton?.color"
     [icon]="data.acceptButton?.icon"
     [disabled]="data.acceptButton?.disabled || form.invalid"
     [text]="data.acceptButton?.text || 'ACCEPT'"
-    [output]="form.getRawValue()"
+    [output]="getRawValue()"
+    data-cy="accept-button"
   ></app-dialog-actions-button>
 </div>

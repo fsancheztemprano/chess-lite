@@ -10,6 +10,7 @@
     (change)="onToggle(role, $event)"
     [disabled]="!role.hasTemplate('update')"
     color="primary"
+    [attr.data-cy]="role.name + '-login-toggle'"
   ></mat-slide-toggle>
   <mat-icon>lock_open</mat-icon>
   <span *ngIf="showRoleName">{{ role.name }}</span>

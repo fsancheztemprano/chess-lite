@@ -26,7 +26,7 @@ describe('IsMobileService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return breakpoint observer match', (done) => {
+  it('should return breakpoint observer true', (done) => {
     const breakpointObserver = TestBed.inject(BreakpointObserver) as unknown as StubBreakpointObserver;
 
     breakpointObserver.breakpointObserver.next({ matches: true });
@@ -37,13 +37,35 @@ describe('IsMobileService', () => {
     });
   });
 
-  it('should return breakpoint observer match', (done) => {
+  it('should return breakpoint observer false', (done) => {
     const breakpointObserver = TestBed.inject(BreakpointObserver) as unknown as StubBreakpointObserver;
 
     breakpointObserver.breakpointObserver.next({ matches: false });
 
     service.isMobile$.subscribe((isMobile) => {
       expect(isMobile).toBeFalse();
+      done();
+    });
+  });
+
+  it('should return breakpoint true negated', (done) => {
+    const breakpointObserver = TestBed.inject(BreakpointObserver) as unknown as StubBreakpointObserver;
+
+    breakpointObserver.breakpointObserver.next({ matches: true });
+
+    service.isDesktop$.subscribe((isDesktop) => {
+      expect(isDesktop).toBeFalse();
+      done();
+    });
+  });
+
+  it('should return breakpoint false negated', (done) => {
+    const breakpointObserver = TestBed.inject(BreakpointObserver) as unknown as StubBreakpointObserver;
+
+    breakpointObserver.breakpointObserver.next({ matches: false });
+
+    service.isDesktop$.subscribe((isDesktop) => {
+      expect(isDesktop).toBeTrue();
       done();
     });
   });

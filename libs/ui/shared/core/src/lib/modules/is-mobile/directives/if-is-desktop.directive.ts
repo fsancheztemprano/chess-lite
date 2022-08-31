@@ -1,6 +1,5 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { map } from 'rxjs/operators';
 import { IsMobileService } from '../is-mobile.service';
 
 @UntilDestroy()
@@ -14,17 +13,12 @@ export class IfIsDesktopDirective implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isMobileService.isMobile$
-      .pipe(
-        untilDestroyed(this),
-        map((isMobile) => !isMobile),
-      )
-      .subscribe((isDesktop) => {
-        if (isDesktop && !this.viewContainer.length) {
-          this.viewContainer.createEmbeddedView(this.templateRef);
-        } else {
-          this.viewContainer.clear();
-        }
-      });
+    this.isMobileService.isDesktop$.pipe(untilDestroyed(this)).subscribe((isDesktop) => {
+      if (isDesktop && !this.viewContainer.length) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainer.clear();
+      }
+    });
   }
 }

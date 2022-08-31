@@ -24,18 +24,21 @@ export class AuthenticationSidenavItemComponent {
 
   items: MenuData[] = [
     {
+      id: 'logout-menu-option',
       icon: 'logout',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.logout'),
       callback: this.logout.bind(this),
       visible$: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
     },
     {
+      id: 'login-menu-option',
       icon: 'login',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.login'),
       route: ['/auth', 'login'],
       visible$: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
     },
     {
+      id: 'signup-menu-option',
       icon: 'assignment_ind',
       title$: this.translocoService.selectTranslate('core.sidenav.authentication.subtitle.signup'),
       route: ['/auth', 'signup'],

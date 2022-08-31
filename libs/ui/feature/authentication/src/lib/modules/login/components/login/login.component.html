@@ -1,13 +1,7 @@
 <app-core-card-view *transloco="let t; read: 'authentication.login'" [title]="t('header')">
   <div class="card-view-content">
     <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
-      <mat-card
-        class="mat-elevation-z24"
-        [@wobble]="loginError === true"
-        (@wobble.start)="loginError = false"
-        [@bounceOut]="loginSuccess === true"
-        (@bounceOut.done)="onLoginSuccess()"
-      >
+      <mat-card class="mat-elevation-z24">
         <mat-card-header>
           <mat-card-title>{{ t('title') }}</mat-card-title>
         </mat-card-header>
@@ -32,10 +26,13 @@
           </mat-form-field>
         </mat-card-content>
         <mat-card-actions [align]="'end'">
-          <a mat-raised-button [routerLink]="['/auth', 'token-request']">{{ t('button.recover-account') }}</a>
+          <a mat-raised-button [routerLink]="['/auth', 'token-request']" data-cy="account-recovery">{{
+            t('button.recover-account')
+          }}</a>
           <button
             mat-raised-button
             color="primary"
+            data-cy="login-button"
             [disabled]="loginForm.invalid || (authService.hasTemplateToLogin() | async) === false"
           >
             {{ t('button.login') }}

@@ -1,4 +1,4 @@
-import { CurrentUserRelations, HttpHeaderKey, UserManagementRelations } from '@app/ui/shared/domain';
+import { CurrentUserRelations, HttpHeaderKey, UserAuthority, UserManagementRelations } from '@app/ui/shared/domain';
 import {
   createUserTemplate,
   defaultTemplate,
@@ -14,7 +14,7 @@ import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { eachLike, email, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { pactUser } from '../../mocks/user.mock';
 import { bearer, withUuid } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetUserPact {
   export const successful: InteractionObject = {
@@ -25,7 +25,7 @@ export namespace GetUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ] })),
       },
     },
     willRespondWith: {
@@ -43,7 +43,7 @@ export namespace GetUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] })),
       },
     },
     willRespondWith: {
@@ -68,7 +68,7 @@ export namespace GetUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:delete'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_DELETE] })),
       },
     },
     willRespondWith: {
@@ -92,7 +92,7 @@ export namespace GetUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] })),
       },
     },
     willRespondWith: {
@@ -116,7 +116,9 @@ export namespace GetUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
+        Authorization: bearer(
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_AUTHORITIES] }),
+        ),
       },
     },
     willRespondWith: {
@@ -160,7 +162,7 @@ export namespace GetUserPact {
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ] })),
       },
     },
     willRespondWith: {
@@ -182,7 +184,7 @@ export namespace GetAllUsersPact {
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ] })),
       },
     },
     willRespondWith: {
@@ -210,7 +212,7 @@ export namespace GetAllUsersPact {
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:create'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_CREATE] })),
       },
     },
     willRespondWith: {
@@ -264,7 +266,7 @@ export namespace CreateUserPact {
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:create'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_CREATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -314,7 +316,7 @@ export namespace CreateUserPact {
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:create'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_CREATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -368,7 +370,7 @@ export namespace UpdateUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -392,7 +394,7 @@ export namespace UpdateUserPact {
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -440,7 +442,7 @@ export namespace UpdateUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -466,7 +468,7 @@ export namespace UpdateUserRolePact {
       path: '/api/user/pactUserId/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -490,7 +492,7 @@ export namespace UpdateUserRolePact {
       path: '/api/user/notFoundId/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -514,7 +516,7 @@ export namespace UpdateUserRolePact {
       path: '/api/user/pactUserId/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:role'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_ROLE] })),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -564,7 +566,9 @@ export namespace UpdateUserAuthoritiesPact {
       path: '/api/user/pactUserId/authorities',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
+        Authorization: bearer(
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_AUTHORITIES] }),
+        ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -588,7 +592,9 @@ export namespace UpdateUserAuthoritiesPact {
       path: '/api/user/notFoundId/authorities',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:update:authorities'] })),
+        Authorization: bearer(
+          jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_UPDATE_AUTHORITIES] }),
+        ),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
       },
       body: {
@@ -638,7 +644,7 @@ export namespace DeleteUserPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:delete'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_DELETE] })),
       },
     },
     willRespondWith: {
@@ -654,7 +660,7 @@ export namespace DeleteUserPact {
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:read', 'user:delete'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_READ, UserAuthority.USER_DELETE] })),
       },
     },
     willRespondWith: {
@@ -696,7 +702,7 @@ export namespace RequestActivationTokenPact {
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_UPDATE] })),
       },
     },
     willRespondWith: {
@@ -712,7 +718,7 @@ export namespace RequestActivationTokenPact {
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['user:update'] })),
+        Authorization: bearer(jwtToken({ authorities: [UserAuthority.USER_UPDATE] })),
       },
     },
     willRespondWith: {

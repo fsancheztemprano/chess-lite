@@ -1,11 +1,11 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
+import { AuthorityAuthority, HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer, withUuid } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetAllAuthoritiesPact {
   export const successful: InteractionObject = {
@@ -19,7 +19,7 @@ export namespace GetAllAuthoritiesPact {
       },
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['authority:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [AuthorityAuthority.AUTHORITY_READ] })),
       },
     },
     willRespondWith: {
@@ -108,7 +108,7 @@ export namespace GetOneAuthorityPact {
       path: '/api/authority/pactUpdateAuthorityId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['authority:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [AuthorityAuthority.AUTHORITY_READ] })),
       },
     },
     willRespondWith: {
@@ -154,7 +154,7 @@ export namespace GetOneAuthorityPact {
       path: '/api/authority/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['authority:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [AuthorityAuthority.AUTHORITY_READ] })),
       },
     },
     willRespondWith: {

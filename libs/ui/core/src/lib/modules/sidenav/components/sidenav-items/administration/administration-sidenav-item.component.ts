@@ -17,29 +17,34 @@ export class AdministrationSidenavItemComponent {
 
   public readonly items: MenuData[] = [
     {
+      id: 'administration-home-menu-item',
       icon: 'space_dashboard',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.dashboard'),
       route: '/administration',
     },
     {
+      id: 'user-management-menu-item',
       icon: 'manage_accounts',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.user-management'),
       route: ['/administration', 'user-management'],
       visible$: this.administrationService.hasUserManagementEmbedded(),
     },
     {
+      id: 'role-management-menu-item',
       icon: 'military_tech',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.role-management'),
       route: ['/administration', 'role-management'],
       visible$: this.administrationService.hasRoleManagementEmbedded(),
     },
     {
+      id: 'service-logs-menu-item',
       icon: 'cabin',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.service-logs'),
       route: ['/administration', 'service-logs'],
       visible$: this.administrationService.hasServiceLogsLink(),
     },
     {
+      id: 'global-settings-menu-item',
       icon: 'vpn_lock',
       title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.global-settings'),
       route: ['/administration', 'global-settings'],

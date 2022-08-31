@@ -6,7 +6,7 @@ export function pactForResource(resource: string, suffix = 'Controller'): Pact {
   return new Pact({
     consumer: `app-${resource}`,
     provider: 'api',
-    log: resolve(process.cwd(), 'libs', 'consumer-pact', 'logs', 'pact.log'),
+    log: resolve(process.cwd(), 'coverage', 'pact', 'logs', 'api.log'),
     logLevel: 'warn',
     dir: resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact', resource + suffix),
     cors: true,
@@ -20,7 +20,7 @@ export function pactForMessages(resource: string, suffix = 'Messages'): MessageC
   return new MessageConsumerPact({
     consumer: `app-${resource}`,
     provider: 'ami',
-    log: resolve(process.cwd(), 'libs', 'consumer-pact', 'logs', 'pact.log'),
+    log: resolve(process.cwd(), 'coverage', 'pact', 'logs', 'ami.log'),
     logLevel: 'warn',
     dir: resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact-messages', resource + suffix),
     spec: 2,

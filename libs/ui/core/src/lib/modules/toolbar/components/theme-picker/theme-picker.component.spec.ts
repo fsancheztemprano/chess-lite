@@ -9,15 +9,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSlideToggleHarness } from '@angular/material/slide-toggle/testing';
 import { By } from '@angular/platform-browser';
 import {
-  IsMobileModule,
-  IsMobileService,
   NgLetModule,
   stubIsMobileServiceProvider,
   stubThemeRepositoryProvider,
   ThemeRepository,
 } from '@app/ui/shared/core';
 import { Actions, EffectsNgModule } from '@ngneat/effects-ng';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ThemePickerComponent } from './theme-picker.component';
 
 describe('ThemeComponent', () => {
@@ -36,7 +33,6 @@ describe('ThemeComponent', () => {
         MatSlideToggleModule,
         ReactiveFormsModule,
         EffectsNgModule.forRoot([], { customActionsStream }),
-        IsMobileModule,
         NgLetModule,
       ],
       declarations: [ThemePickerComponent],
@@ -57,41 +53,9 @@ describe('ThemeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('desktop slide toggle', () => {
-    beforeEach(() => {
-      (TestBed.inject(IsMobileService)['isHandset'] as BehaviorSubject<boolean>).next(false);
-    });
-
-    it('should render slide toggle', async () => {
-      const toggleButton = fixture.debugElement.query(By.css('button[aria-label="Theme Toggle"]'));
-
-      expect(toggleButton).toBeFalsy();
-      expect(await loader.getHarness(MatSlideToggleHarness)).toBeTruthy();
-    });
-
-    it('should update dark mode slide toggle from datasource', async () => {
-      const matSlideToggleHarness = await loader.getHarness(MatSlideToggleHarness);
-
-      expect(await matSlideToggleHarness.isChecked()).toBeFalse();
-
-      themeRepository.updateDarkMode(true);
-
-      expect(await matSlideToggleHarness.isChecked()).toBeTrue();
-    });
-
-    it('should dispatch action on slide toggle', async () => {
-      const matSlideToggleHarness = await loader.getHarness(MatSlideToggleHarness);
-
-      matSlideToggleHarness.toggle();
-
-      expect(await firstValueFrom(customActionsStream)).toEqual({ darkMode: true, type: '[Theme] Update Dark Mode' });
-    });
-  });
-
   describe('mobile button toggle', () => {
     let toggleButton: DebugElement;
     beforeEach(() => {
-      (TestBed.inject(IsMobileService)['isHandset'] as BehaviorSubject<boolean>).next(true);
       fixture.detectChanges();
       toggleButton = fixture.debugElement.query(By.css('button[aria-label="Theme Toggle"]'));
     });

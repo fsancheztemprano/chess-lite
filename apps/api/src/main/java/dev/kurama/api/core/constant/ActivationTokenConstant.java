@@ -11,8 +11,4 @@ public class ActivationTokenConstant {
   public static final long ACTIVATION_TOKEN_DELAY = 180_000; // 3 minutes  in milliseconds
   public static final long ACTIVATION_TOKEN_MAX_ATTEMPTS = 4;
 
-
-  public static final String ACTIVATION_EMAIL_SUBJECT = "Your App Account Activation Token"; // 3 minutes  in
-  // milliseconds
-
 }

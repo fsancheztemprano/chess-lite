@@ -48,6 +48,7 @@ export enum InputDialogType {
 }
 
 export interface InputDialogInput {
+  id?: string;
   key: string;
   value?: string;
   type?: string | InputDialogType;

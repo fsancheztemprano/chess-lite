@@ -4,6 +4,12 @@
   "sourceRoot": "libs/ui/feature/administration/src",
   "prefix": "lib",
   "targets": {
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/libs/ui/feature/administration"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/ui/feature/administration"],

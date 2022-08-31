@@ -1,4 +1,4 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
+import { HttpHeaderKey, TokenAuthority } from '@app/ui/shared/domain';
 import {
   changePasswordTemplate,
   defaultTemplate,
@@ -11,7 +11,7 @@ import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer, jwt } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace SignupPact {
   export const successful: InteractionObject = {
@@ -230,7 +230,12 @@ export namespace RefreshTokenPact {
       path: '/api/auth/token',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id }, authorities: ['token:refresh'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: pactCurrentUser.id },
+            authorities: [TokenAuthority.TOKEN_REFRESH],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -252,7 +257,12 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
-        Authorization: bearer(jwtToken({ user: { id: 'lockedRoleUserId' }, authorities: ['token:refresh'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'lockedRoleUserId' },
+            authorities: [TokenAuthority.TOKEN_REFRESH],
+          }),
+        ),
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
@@ -272,7 +282,7 @@ export namespace RefreshTokenPact {
       method: HTTPMethod.GET,
       path: '/api/auth/token',
       headers: {
-        Authorization: bearer(jwtToken({ user: { id: 'lockedUserId' }, authorities: ['token:refresh'] })),
+        Authorization: bearer(jwtToken({ user: { id: 'lockedUserId' }, authorities: [TokenAuthority.TOKEN_REFRESH] })),
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
     },
@@ -313,7 +323,7 @@ export namespace RefreshTokenPact {
       path: '/api/auth/token',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'notFoundId' }, authorities: ['token:refresh'] })),
+        Authorization: bearer(jwtToken({ user: { id: 'notFoundId' }, authorities: [TokenAuthority.TOKEN_REFRESH] })),
       },
     },
     willRespondWith: {

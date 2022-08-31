@@ -40,7 +40,7 @@ jobs:
       - name: Load Cache
         uses: frango9000/cache@main
         env:
-          cache-key: ${{ runner.os }}-v3
+          cache-key: ${{ runner.os }}-v5
         with:
           path: |
             ~/.m2
@@ -67,7 +67,7 @@ jobs:
           languages: java, javascript
 
       - name: Build
-        uses: MansaGroup/nrwl-nx-action@v2.1.0
+        uses: MansaGroup/nrwl-nx-action@v2
         with:
           targets: build
           all: 'true'

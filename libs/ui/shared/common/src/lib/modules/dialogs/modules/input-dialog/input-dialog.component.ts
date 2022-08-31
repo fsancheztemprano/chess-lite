@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Inject, NgModule } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, Inject, NgModule, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { setTemplateValidators } from '../../../../utils/forms/validators/set-template.validators';
+import { setTemplateValidator } from '../../../../utils/forms/validators/set-template.validators';
 import { DialogsModule } from '../../dialogs.module';
 import { InputDialogData } from '../../model/dialogs.model';
 import { DialogActionsButtonModule } from '../dialog-actions-button/dialog-actions-button.component';
@@ -14,21 +14,30 @@ import { DialogActionsButtonModule } from '../dialog-actions-button/dialog-actio
   styleUrls: ['./input-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputDialogComponent {
-  public readonly form = new FormGroup({});
+export class InputDialogComponent implements OnInit {
+  public readonly form = new FormArray<FormGroup>([]);
 
-  constructor(
-    public dialogRef: MatDialogRef<InputDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: InputDialogData,
-  ) {
-    if (data) {
-      this.data.inputs?.forEach((input) =>
-        this.form.addControl(input.key, new FormControl(input.options?.defaultValue)),
-      );
-      if (data.template) {
-        setTemplateValidators(this.form, data.template);
+  constructor(@Inject(MAT_DIALOG_DATA) public readonly data: InputDialogData) {}
+
+  ngOnInit(): void {
+    if (this.data?.inputs) {
+      for (const input of this.data.inputs) {
+        const valueControl = new FormControl(input.options?.defaultValue);
+        const formGroup = new FormGroup({
+          input: new FormControl(input),
+          value: valueControl,
+        });
+        if (this.data.template) {
+          setTemplateValidator(valueControl, 'name', this.data.template);
+          valueControl.updateValueAndValidity({ emitEvent: false });
+        }
+        this.form.push(formGroup);
       }
     }
+  }
+
+  getRawValue(): { [key: string]: string } {
+    return this.form.value.reduce((acc, cur) => ({ ...acc, [cur.input.key]: cur.value }), {});
   }
 }
 

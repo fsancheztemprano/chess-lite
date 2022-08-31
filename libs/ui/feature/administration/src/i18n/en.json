@@ -216,7 +216,7 @@
             "delete": "Delete this account"
           },
           "toast": {
-            "sent": "Account removed"
+            "deleted": "Account removed"
           }
         }
       },

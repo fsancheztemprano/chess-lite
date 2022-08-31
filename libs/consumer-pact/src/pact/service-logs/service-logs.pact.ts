@@ -5,7 +5,7 @@ import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { iso8601DateTimeWithMillis, string } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 
 const serviceLogs = {
   logs: string(),

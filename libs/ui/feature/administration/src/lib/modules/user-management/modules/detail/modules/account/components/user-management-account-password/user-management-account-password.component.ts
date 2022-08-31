@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ToasterService } from '@app/ui/shared/app';
 import { matchingControlsValidators, setTemplateValidators } from '@app/ui/shared/common';
 import { ManageUserProfileInput, UserManagementRelations } from '@app/ui/shared/domain';
+import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserManagementDetailService } from '../../../../services/user-management-detail.service';
 
@@ -25,6 +26,7 @@ export class UserManagementAccountPasswordComponent {
 
   constructor(
     public readonly userManagementDetailService: UserManagementDetailService,
+    private readonly translocoService: TranslocoService,
     private readonly toasterService: ToasterService,
   ) {
     this.userManagementDetailService.user$
@@ -34,7 +36,9 @@ export class UserManagementAccountPasswordComponent {
 
   onSubmit() {
     this.userManagementDetailService.updateUser(this.form.value as ManageUserProfileInput).subscribe(() => {
-      this.toasterService.showToast({ message: `${this.TRANSLOCO_SCOPE}.toast.updated` });
+      this.toasterService.showToast({
+        message: this.translocoService.translate(`${this.TRANSLOCO_SCOPE}.toast.updated`),
+      });
       this.form.reset();
     });
   }

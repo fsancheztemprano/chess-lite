@@ -1,13 +1,17 @@
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { Template } from '@hal-form-client';
 import { getPropertyValidators } from './get-property.validators';
 
-export function setTemplateValidators(formGroup: FormGroup, template: Template | null | undefined) {
-  for (const control in formGroup.controls) {
-    const propertyValidators = getPropertyValidators(template, control);
-    if (propertyValidators.length) {
-      formGroup.controls[control]?.setValidators(propertyValidators);
-    }
+export function setTemplateValidator(control: AbstractControl, key: string, template: Template | null | undefined) {
+  const propertyValidators = getPropertyValidators(template, key);
+  if (propertyValidators.length) {
+    control.setValidators(propertyValidators);
   }
-  formGroup.updateValueAndValidity();
+}
+
+export function setTemplateValidators(formGroup: FormGroup, template?: Template | null) {
+  for (const control in formGroup.controls) {
+    setTemplateValidator(formGroup.controls[control], control, template);
+  }
+  formGroup.updateValueAndValidity({ emitEvent: false });
 }

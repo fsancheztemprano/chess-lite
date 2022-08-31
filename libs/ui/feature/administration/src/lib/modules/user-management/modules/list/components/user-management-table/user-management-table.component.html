@@ -65,13 +65,13 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" [attr.data-cy]="'user-item-' + row.username"></tr>
   </table>
 
   <mat-paginator
     #paginator
     [pageIndex]="0"
-    [length]="(dataSource.userPage$ | async)!.page?.totalElements || 0"
+    [length]="(dataSource.userPage$ | async)?.page?.totalElements || 0"
     [pageSize]="10"
     [pageSizeOptions]="[5, 10, 20]"
     aria-label="Select page"

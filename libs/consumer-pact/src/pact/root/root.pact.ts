@@ -1,10 +1,10 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
+import { AdminAuthority, HttpHeaderKey, ProfileAuthority, TokenAuthority } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetRootResource {
   export const unauthorized: InteractionObject = {
@@ -159,7 +159,7 @@ export namespace GetRootResource {
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['token:refresh'] })),
+        Authorization: bearer(jwtToken({ authorities: [TokenAuthority.TOKEN_REFRESH] })),
       },
     },
     willRespondWith: {
@@ -187,7 +187,7 @@ export namespace GetRootResource {
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['profile:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [ProfileAuthority.PROFILE_READ] })),
       },
     },
     willRespondWith: {
@@ -215,7 +215,7 @@ export namespace GetRootResource {
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['admin:root'] })),
+        Authorization: bearer(jwtToken({ authorities: [AdminAuthority.ADMIN_ROOT] })),
       },
     },
     willRespondWith: {

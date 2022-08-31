@@ -13,6 +13,7 @@ export class UserManagementHomeComponent {
   private readonly TRANSLOCO_SCOPE = 'administration.user-management.home.tiles';
   public readonly tiles: MenuData[] = [
     {
+      id: 'user-list-tile',
       icon: 'contacts',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.table.title`),
       subtitle$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.table.subtitle`),
@@ -20,6 +21,7 @@ export class UserManagementHomeComponent {
       visible$: this.userManagementService.hasLink(UserManagementRelations.USERS_REL),
     },
     {
+      id: 'new-user-tile',
       icon: 'person_add',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.detail.title`),
       subtitle$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.detail.subtitle`),

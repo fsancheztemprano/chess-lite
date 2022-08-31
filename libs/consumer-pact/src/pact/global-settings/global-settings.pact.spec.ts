@@ -5,7 +5,7 @@ import { HalFormClientModule, Link, Template } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 import { GetGlobalSettingPact, UpdateGlobalSettingPact } from './global-settings.pact';
 
 const provider: Pact = pactForResource('globalSettings');

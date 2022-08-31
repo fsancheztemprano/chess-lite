@@ -8,6 +8,7 @@
     [icon]="data.dismissButton?.icon"
     [disabled]="data.dismissButton?.disabled"
     [text]="data.dismissButton?.text || 'CLOSE'"
+    data-cy="dialog-dismiss-button"
   ></app-dialog-actions-button>
   <app-dialog-actions-button
     [color]="data.acceptButton?.color"
@@ -15,5 +16,6 @@
     [disabled]="data.acceptButton?.disabled"
     [text]="data.acceptButton?.text || 'ACCEPT'"
     [output]="true"
+    data-cy="dialog-accept-button"
   ></app-dialog-actions-button>
 </div>

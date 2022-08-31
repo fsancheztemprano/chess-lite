@@ -56,7 +56,7 @@ export class UserManagementCreateComponent {
   onSubmit() {
     this.userManagementService.createUser(this.form.value as UserInput).subscribe((user) => {
       this.toaster.showToast({ message: translate(`${this.TRANSLOCO_SCOPE}.toast.created`) });
-      this.router.navigate(['administration', 'user-management', 'user', user.id]);
+      this.router.navigate(['administration', 'user-management', 'users', user.id]);
     });
   }
 }

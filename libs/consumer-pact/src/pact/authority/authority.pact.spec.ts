@@ -1,6 +1,11 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AuthorityManagementRelations, RoleManagementRelations, TokenKeys } from '@app/ui/shared/domain';
+import {
+  AuthorityAuthority,
+  AuthorityManagementRelations,
+  RoleManagementRelations,
+  TokenKeys,
+} from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { HalFormClientModule, Link } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
@@ -8,7 +13,7 @@ import { AuthorityManagementService } from '../../../../ui/feature/administratio
 import { RoleManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.util';
+import { jwtToken } from '../../utils/token.utils';
 import { GetAllAuthoritiesPact, GetOneAuthorityPact } from './authority.pact';
 
 const provider: Pact = pactForResource('authority');
@@ -49,7 +54,7 @@ describe('Authority Pacts', () => {
   describe('Get All Authorities', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetAllAuthoritiesPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['authority:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [AuthorityAuthority.AUTHORITY_READ] }));
       provider.addInteraction(interaction).then(() => {
         service.getAllAuthorities().subscribe((authorities) => {
           expect(authorities).toBeTruthy();
@@ -78,7 +83,7 @@ describe('Authority Pacts', () => {
   describe('Get One Authority', () => {
     it('successful', (done) => {
       const interaction: InteractionObject = GetOneAuthorityPact.successful;
-      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['authority:read'] }));
+      localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [AuthorityAuthority.AUTHORITY_READ] }));
       provider.addInteraction(interaction).then(() => {
         Link.ofHref('/api/authority/pactUpdateAuthorityId')
           .follow()
