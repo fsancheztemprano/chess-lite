@@ -103,7 +103,7 @@
     "@angular/cli": "14.2.1",
     "@angular/compiler-cli": "14.2.0",
     "@angular/language-service": "14.2.0",
-    "@jest/reporters": "29.0.1",
+    "@jest/reporters": "29.0.3",
     "@lensesio/cypress-websocket-testing": "1.0.1",
     "@ngneat/elf-cli": "3.0.1",
     "@ngneat/elf-cli-ng": "1.0.0",
