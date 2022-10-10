@@ -25,7 +25,7 @@
   <properties>
     <java.version>11</java.version>
     <org.projectlombok.version>1.18.24</org.projectlombok.version>
-    <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
+    <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
     <skipUTs>${skipTests}</skipUTs>
