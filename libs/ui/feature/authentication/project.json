@@ -5,7 +5,7 @@
   "prefix": "app",
   "targets": {
     "clean": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "commands": ["rimraf ./coverage/libs/ui/feature/authentication"]
       }
