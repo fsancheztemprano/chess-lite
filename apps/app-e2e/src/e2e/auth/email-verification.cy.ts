@@ -1,4 +1,4 @@
-import { filter, first, firstValueFrom, map, takeUntil, timer } from 'rxjs';
+import { filter, firstValueFrom, map, take, takeUntil, timer } from 'rxjs';
 
 describe('email verification', { defaultCommandTimeout: 60000 }, () => {
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe('email verification', { defaultCommandTimeout: 60000 }, () => {
           subject.pipe(
             takeUntil(timer(60000)),
             filter((message) => message?.Content?.Body?.includes('e2e-user5@localhost')),
-            first(),
+            take(1),
             map((message) => message.Content.Body.split('"')[1]),
           ),
         );
@@ -80,7 +80,7 @@ describe('email verification', { defaultCommandTimeout: 60000 }, () => {
           subject.pipe(
             takeUntil(timer(60000)),
             filter((message) => message?.Content?.Body?.includes('e2e-user1@localhost')),
-            first(),
+            take(1),
             map((message) => message.Content.Body.split('"')[1]),
           ),
         );
