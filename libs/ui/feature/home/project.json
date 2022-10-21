@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ui/feature/home"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ui/feature/home"],
       "options": {
         "jestConfig": "libs/ui/feature/home/jest.config.ts",
         "passWithNoTests": true

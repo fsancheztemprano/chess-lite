@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ui/feature/authentication"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ui/feature/authentication"],
       "options": {
         "jestConfig": "libs/ui/feature/authentication/jest.config.ts",
         "passWithNoTests": true
