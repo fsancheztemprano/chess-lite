@@ -21,8 +21,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: loadHomeModule,
+        redirectTo: 'home',
         pathMatch: 'full',
+      },
+      {
+        path: 'home',
+        loadChildren: loadHomeModule,
       },
       {
         path: 'auth',
@@ -45,7 +49,7 @@ const routes: Routes = [
         canActivate: [AdministrationGuard],
         data: { breadcrumb: { i18n: 'administration.title' } },
       },
-      { path: '**', redirectTo: '' },
+      { path: '**', redirectTo: 'home' },
     ],
   },
 ];

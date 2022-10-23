@@ -19,5 +19,12 @@
         "description": "Configuraciones de la Aplicación"
       }
     }
+  },
+  "build-info": {
+    "version": "Versión",
+    "date": "Fecha",
+    "run": "Ejecución",
+    "branch": "Rama",
+    "stage": "Etapa"
   }
 }

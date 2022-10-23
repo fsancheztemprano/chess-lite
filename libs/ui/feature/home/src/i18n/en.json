@@ -19,5 +19,12 @@
         "description": "Application settings"
       }
     }
+  },
+  "build-info": {
+    "version": "Version",
+    "date": "Build Date",
+    "run": "Run",
+    "branch": "Branch",
+    "stage": "Stage"
   }
 }

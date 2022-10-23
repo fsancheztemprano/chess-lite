@@ -8,6 +8,7 @@ application:
     - /api/auth/signup
     - /api/auth/token
     - /api/auth/activate
+    - /api/build-info
     - /websocket/**
     - /api/cypress/**
   run_data_init: false

@@ -1,14 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TiledMenuModule } from '@app/ui/shared/common';
-import { TRANSLOCO_SCOPE, TranslocoModule } from '@ngneat/transloco';
+import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { scopeLoader } from '../../../../../../tools/transloco/transloco.scope';
-import { HomeComponent } from './components/home/home.component';
 import { HomeRoutingModule } from './home-routing.module';
 
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [CommonModule, HomeRoutingModule, TiledMenuModule, TranslocoModule],
+  imports: [CommonModule, HomeRoutingModule],
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
