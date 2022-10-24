@@ -49,7 +49,7 @@ jobs:
           git checkout -B release/${{ steps.release-version.outputs.version }}
           git commit -am "Set Release Version ${{ steps.release-version.outputs.version }}"
           git tag -a ${{ steps.release-version.outputs.version }} -m "Release Version ${{ steps.release-version.outputs.version }}"
-          git push
+          git push origin release/${{ steps.release-version.outputs.version }}
           gh pr create -B mister --title 'Release Version {{ steps.release-version.outputs.version }}' --body 'Merge release/${{ steps.release-version.outputs.version }} into mister\n\nCreated by Release Bot'
 
       - name: Determine Next Version
@@ -72,5 +72,5 @@ jobs:
         run: |
           git checkout -B back-merge/${{ steps.release-version.outputs.version }}
           git commit -am "Set Next Snapshot Version ${{ steps.next-version.outputs.version }}"
-          git push
+          git push origin back-merge/${{ steps.release-version.outputs.version }}
           gh pr create -B development --title 'Set Next Snapshot Version {{ steps.next-version.outputs.version }}' --body 'Back Merge release/${{ steps.release-version.outputs.version }} into development\n\nCreated by Release Bot'

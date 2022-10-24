@@ -43,4 +43,4 @@ jobs:
           git config --global user.email 'frango9000@users.noreply.github.com'
           git checkout -B hotfix/${{ steps.hotfix-version.outputs.version }}
           git commit -am "Set Hotfix Snapshot Version ${{ steps.hotfix-version.outputs.version }}"
-          git push
+          git push origin hotfix/${{ steps.hotfix-version.outputs.version }}
