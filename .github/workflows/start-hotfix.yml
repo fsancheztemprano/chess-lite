@@ -26,14 +26,13 @@ jobs:
             npm version --json --no-git-tag-version patch
           fi
           version=$(node --print "require('./package.json').version")
-          version=${version%-SNAPSHOT}-SNAPSHOT
-          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "version=${version%-SNAPSHOT}" >> $GITHUB_OUTPUT
 
       - name: Write Next Version
         run: |
-          npm version --json --no-git-tag-version -f ${{ steps.hotfix-version.outputs.version }}
+          npm version --json --no-git-tag-version -f ${{ steps.hotfix-version.outputs.version }}-SNAPSHOT
           cd apps/api
-          mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.hotfix-version.outputs.version }}
+          mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.hotfix-version.outputs.version }}-SNAPSHOT
 
       - name: Commit and PR Back Merge
         env:
