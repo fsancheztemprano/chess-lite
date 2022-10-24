@@ -85,7 +85,7 @@ jobs:
           all: 'true'
           parallel: 'false'
           affected: 'false'
-          args: '--configuration=${{ inputs.env }}'
+          args: --stage=${{ inputs.env }} --run=${{ format('{0}-{1}', github.run_number, github.run_attempt) }}
 
       - name: Upload Deployed Artifact
         uses: actions/upload-artifact@v3

@@ -117,6 +117,36 @@ describe('Link', () => {
     });
   });
 
+  describe('followRaw', () => {
+    it('should fetch and map to body', (done) => {
+      Link.ofHref('/api/v1/users/1')
+        .followRaw<MockResource>()
+        .subscribe((resource: MockResource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).not.toBeInstanceOf(Resource);
+          expect(resource.id).toBe('1');
+          done();
+        });
+
+      httpTestingController.expectOne('/api/v1/users/1').flush({
+        id: '1',
+        _links: { self: { href: '/api/v1/users/1' } },
+      });
+    });
+
+    it('should fetch and return an empty object if response is empty', (done) => {
+      Link.ofHref('/api/v1/users/1')
+        .followRaw<MockResource>()
+        .subscribe((resource: MockResource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).not.toBeInstanceOf(Resource);
+          done();
+        });
+
+      httpTestingController.expectOne('/api/v1/users/1').flush(null);
+    });
+  });
+
   it('should parse to json', () => {
     const iLink: ILink = { href: '/api/v1/users/1', name: 'self' };
 

@@ -39,7 +39,11 @@ export class Link implements ILink {
   }
 
   public follow<T extends Resource = Resource>(options?: LinkOptions): Observable<T> {
-    return this.fetch<T>(options).pipe(map((response: HttpResponse<T>) => new Resource(response.body || {}) as T));
+    return this.followRaw<T>(options).pipe(map((iResource: T) => new Resource(iResource || {}) as T));
+  }
+
+  public followRaw<T>(options?: LinkOptions): Observable<T> {
+    return this.fetch<T>(options).pipe(map((response: HttpResponse<T>) => response?.body || ({} as T)));
   }
 
   public fetch<T>(options?: LinkOptions): Observable<HttpResponse<T>> {

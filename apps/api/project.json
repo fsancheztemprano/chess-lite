@@ -101,60 +101,30 @@
       }
     },
     "package": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
+      "executor": "nx:run-commands",
       "outputs": [
         "{options.outputPath}"
       ],
       "options": {
         "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": [
-          "package",
-          "-DskipTests",
-          "-DskipITs",
-          "-P frontend"
+        "cwd": "apps/api",
+        "commands": [
+          "mvn package -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend"
         ]
       }
     },
     "deploy": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
+      "executor": "nx:run-commands",
       "outputs": [
         "{options.outputPath}"
       ],
       "options": {
         "outputPath": "apps/api/target",
-        "root": "apps/api"
-      },
-      "configurations": {
-        "production": {
-          "args": [
-            "deploy",
-            "-DskipTests",
-            "-DskipITs",
-            "-P frontend",
-            "-P heroku-production"
-          ]
-        },
-        "development": {
-          "args": [
-            "deploy",
-            "-DskipTests",
-            "-DskipITs",
-            "-P frontend",
-            "-P heroku-development"
-          ]
-        },
-        "feature": {
-          "args": [
-            "deploy",
-            "-DskipTests",
-            "-DskipITs",
-            "-P frontend",
-            "-P heroku-feature"
-          ]
-        }
-      },
-      "defaultConfiguration": "development"
+        "cwd": "apps/api",
+        "commands": [
+          "mvn deploy -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend -P heroku-{args.stage}"
+        ]
+      }
     },
     "run": {
       "executor": "@nxrocks/nx-spring-boot:run",
@@ -184,7 +154,6 @@
   "tags": [],
   "implicitDependencies": [
     "consumer-pact",
-    "app",
-    "app-e2e"
+    "app"
   ]
 }
