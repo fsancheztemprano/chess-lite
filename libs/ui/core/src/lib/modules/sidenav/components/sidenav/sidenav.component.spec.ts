@@ -24,7 +24,7 @@ class StubAdministrationSidenavItemComponent {}
 class StubAuthenticationSidenavItemComponent {}
 
 @Component({ selector: 'app-build-info-sidenav-item', template: '' })
-class BuildInfoSidenavItemComponent {}
+class StubBuildInfoSidenavItemComponent {}
 
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
@@ -40,7 +40,7 @@ describe('SidenavComponent', () => {
         StubUserSettingsSidenavItemComponent,
         StubAdministrationSidenavItemComponent,
         StubAuthenticationSidenavItemComponent,
-        BuildInfoSidenavItemComponent,
+        StubBuildInfoSidenavItemComponent,
       ],
       imports: [
         LayoutModule,

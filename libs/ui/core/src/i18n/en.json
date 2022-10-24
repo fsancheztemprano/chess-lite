@@ -2,7 +2,10 @@
   "welcome": "Welcome",
   "sidenav": {
     "home": {
-      "title": "Home"
+      "title": "Home",
+      "build-info": {
+        "title": "Build Info"
+      }
     },
     "user-settings": {
       "title": "User Settings",

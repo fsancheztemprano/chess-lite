@@ -13,7 +13,7 @@ export class BuildInfoSidenavItemComponent {
   public items: MenuData[] = [
     {
       id: 'build-info',
-      title$: this.translocoService.selectTranslate('home.build-info.title'),
+      title$: this.translocoService.selectTranslate('core.sidenav.home.build-info.title'),
       icon: 'info_outlined',
       route: '/home/build-info',
     },

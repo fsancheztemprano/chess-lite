@@ -11,6 +11,9 @@
       "home": {
         "title": "Home"
       },
+      "build-info": {
+        "title": "Build Info"
+      },
       "authentication": {
         "title": "Authentication",
         "login": "Login",
