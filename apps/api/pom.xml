@@ -10,7 +10,7 @@
   </parent>
   <groupId>dev.kurama.fullstack</groupId>
   <artifactId>api</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>Full Stack Template</name>
   <description>Full Stack Application Template</description>
 
