@@ -28,7 +28,7 @@ jobs:
 
       - name: Write Next Version
         run: |
-          npm version --no-git-tag-version -f $version
+          npm version --no-git-tag-version -f ${{ steps.hotfix-version.outputs.version }}
           cd apps/api
           mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.hotfix-version.outputs.version }}
 
