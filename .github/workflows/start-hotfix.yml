@@ -24,8 +24,7 @@ jobs:
           npm version --no-git-tag-version patch
           version=$(node --print "require('./package.json').version")
           version=${version%-SNAPSHOT}-SNAPSHOT
-          echo "version=version"
-          >> $GITHUB_OUTPUT
+          echo "version=version" >> $GITHUB_OUTPUT
 
       - name: Write Next Version
         run: |
