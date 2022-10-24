@@ -68,7 +68,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git checkout -B back-merge/${{ steps.release-version.outputs.version }}
+          git checkout -B merge-back/${{ steps.release-version.outputs.version }}
           git commit -am "Set Next Version ${{ steps.next-version.outputs.version }}-SNAPSHOT"
           git push origin merge-back/${{ steps.release-version.outputs.version }}
           gh pr create -B development --title 'Merge Back Version ${{ steps.release-version.outputs.version }}' --body 'Merge Back release/${{ steps.release-version.outputs.version }} into development'
