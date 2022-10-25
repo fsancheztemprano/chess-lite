@@ -1,8 +1,8 @@
 {
-  "name": "user-management",
+  "name": "board-games",
   "version": "0.1.0-SNAPSHOT",
   "license": "MIT",
-  "homepage": "https://github.com/frango9000/user-management",
+  "homepage": "https://github.com/frango9000/board-games",
   "bugs": {
     "url": "https://kurama-dev.atlassian.net/jira/software/c/projects/UM/boards/1",
     "email": "frango9000@gmail.com"
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/frango9000/user-management"
+    "url": "https://github.com/frango9000/board-games"
   },
   "scripts": {
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",

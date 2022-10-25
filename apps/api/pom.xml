@@ -8,11 +8,11 @@
     <version>2.7.5</version>
     <relativePath/>
   </parent>
-  <groupId>dev.kurama.user-management</groupId>
+  <groupId>dev.kurama.board-games</groupId>
   <artifactId>api</artifactId>
   <version>0.1.0-SNAPSHOT</version>
-  <name>User Management</name>
-  <description>User Management Application</description>
+  <name>Board Games</name>
+  <description>Board Games Application</description>
 
   <issueManagement>
     <system>Jira</system>
@@ -20,7 +20,7 @@
   </issueManagement>
   <ciManagement>
     <system>Github Actions</system>
-    <url>https://github.com/frango9000/user-management/actions</url>
+    <url>https://github.com/frango9000/board-games/actions</url>
   </ciManagement>
   <properties>
     <java.version>11</java.version>

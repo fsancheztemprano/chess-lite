@@ -1,33 +1,33 @@
 <!-- PROJECT SHIELDS -->
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=frango9000_user-management)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=frango9000_board-games)
 
-![Development](https://github.com/frango9000/user-management/actions/workflows/verify.yml/badge.svg)
-[![codecov](https://codecov.io/gh/frango9000/user-management/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/user-management)
+![Development](https://github.com/frango9000/board-games/actions/workflows/verify.yml/badge.svg)
+[![codecov](https://codecov.io/gh/frango9000/board-games/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/board-games)
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/kurama-dev/user-management">
+  <a href="https://github.com/frango9000/board-games">
 
 [comment]: <> ( <img src="./images/logo.png" alt="Logo" width="80" height="80">)
 </a>
 
 </p>
 
-<h3 align="center">User Management</h3>
+<h3 align="center">Board Games</h3>
 
 <p align="center">
   An application with jwt authentication, and user management.
   <br />
-  <a href="https://github.com/kurama-dev/user-management"><strong>Explore the docs »</strong></a>
+  <a href="https://github.com/frango9000/board-games"><strong>Explore the docs »</strong></a>
   <br />
   <br />
   <a href="https://boiling-shore-06894.herokuapp.com/app/home">View Demo</a>
   ·
-  <a href="https://github.com/kurama-dev/user-management/issues">Report Bug</a>
+  <a href="https://github.com/frango9000/board-games/issues">Report Bug</a>
   ·
-  <a href="https://github.com/kurama-dev/user-management/issues">Request Feature</a>
+  <a href="https://github.com/frango9000/board-games/issues">Request Feature</a>
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -90,7 +90,7 @@ To get a local copy up and running follow these simple steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/kurama-dev/user-management.git
+   git clone https://github.com/frango9000/board-games.git
    ```
 2. Install NPM packages
    ```sh
@@ -206,7 +206,7 @@ cd apps/api
 
 ## Roadmap
 
-See the [open issues](https://github.com/kurama-dev/user-management/issues) for a list of
+See the [open issues](https://github.com/frango9000/board-games/issues) for a list of
 proposed features (and
 known issues).
 
@@ -231,7 +231,7 @@ contributions you make are **greatly appreciated**.
 ## Wiki 📖
 
 More info on the project can be found in
-our [Wiki](https://github.com/kurama-dev/user-management/wiki)
+our [Wiki](https://github.com/frango9000/board-games/wiki)
 
 <!-- CONTACT -->
 
@@ -266,10 +266,10 @@ our [Wiki](https://github.com/kurama-dev/user-management/wiki)
 [email-contact-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
 [email-contact-url]: mailto:frango9000@gmail.com
 [linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kurama-dev/user-management
+[linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/frango9000/board-games
 [facebook-share-shield]: https://img.shields.io/badge/Share-Facebook?style=for-the-badge&logo=facebook&colorB=555
-[facebook-share-url]: https://www.facebook.com/sharer/sharer.php?u=https://github.com/kurama-dev/user-management
+[facebook-share-url]: https://www.facebook.com/sharer/sharer.php?u=https://github.com/frango9000/board-games
 [twitter-share-shield]: https://img.shields.io/badge/Share-Twitter?style=for-the-badge&logo=twitter&colorB=555
-[twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/kurama-dev/user-management&text=Check%20this%20project%20out
+[twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/frango9000/board-games&text=Check%20this%20project%20out
 [email-share-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
-[email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/kurama-dev/user-management
+[email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/frango9000/board-games
