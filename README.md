@@ -1,34 +1,34 @@
 <!-- PROJECT SHIELDS -->
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=frango9000_fullstack-template)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=frango9000_user-management)
 
-![Development](https://github.com/kurama-dev/fullstack-template/actions/workflows/verify.yml/badge.svg)
-[![codecov](https://codecov.io/gh/frango9000/fullstack-template/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/fullstack-template)
-[![fullstack-template](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/fcegyj/development&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/fcegyj/runs)
+![Development](https://github.com/kurama-dev/user-management/actions/workflows/verify.yml/badge.svg)
+[![codecov](https://codecov.io/gh/frango9000/user-management/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/user-management)
+[![user-management](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/fcegyj/development&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/fcegyj/runs)
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/kurama-dev/fullstack-template">
+  <a href="https://github.com/kurama-dev/user-management">
 
 [comment]: <> ( <img src="./images/logo.png" alt="Logo" width="80" height="80">)
 </a>
 
 </p>
 
-<h3 align="center">Fullstack Template</h3>
+<h3 align="center">User Management</h3>
 
 <p align="center">
-  A Full stack template with jwt authentication, and user management.
+  An application with jwt authentication, and user management.
   <br />
-  <a href="https://github.com/kurama-dev/fullstack-template"><strong>Explore the docs »</strong></a>
+  <a href="https://github.com/kurama-dev/user-management"><strong>Explore the docs »</strong></a>
   <br />
   <br />
   <a href="https://boiling-shore-06894.herokuapp.com/app/home">View Demo</a>
   ·
-  <a href="https://github.com/kurama-dev/fullstack-template/issues">Report Bug</a>
+  <a href="https://github.com/kurama-dev/user-management/issues">Report Bug</a>
   ·
-  <a href="https://github.com/kurama-dev/fullstack-template/issues">Request Feature</a>
+  <a href="https://github.com/kurama-dev/user-management/issues">Request Feature</a>
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -91,7 +91,7 @@ To get a local copy up and running follow these simple steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/kurama-dev/fullstack-template.git
+   git clone https://github.com/kurama-dev/user-management.git
    ```
 2. Install NPM packages
    ```sh
@@ -207,7 +207,7 @@ cd apps/api
 
 ## Roadmap
 
-See the [open issues](https://github.com/kurama-dev/fullstack-template/issues) for a list of
+See the [open issues](https://github.com/kurama-dev/user-management/issues) for a list of
 proposed features (and
 known issues).
 
@@ -232,7 +232,7 @@ contributions you make are **greatly appreciated**.
 ## Wiki 📖
 
 More info on the project can be found in
-our [Wiki](https://github.com/kurama-dev/fullstack-template/wiki)
+our [Wiki](https://github.com/kurama-dev/user-management/wiki)
 
 <!-- CONTACT -->
 
@@ -267,10 +267,10 @@ our [Wiki](https://github.com/kurama-dev/fullstack-template/wiki)
 [email-contact-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
 [email-contact-url]: mailto:frango9000@gmail.com
 [linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kurama-dev/fullstack-template
+[linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kurama-dev/user-management
 [facebook-share-shield]: https://img.shields.io/badge/Share-Facebook?style=for-the-badge&logo=facebook&colorB=555
-[facebook-share-url]: https://www.facebook.com/sharer/sharer.php?u=https://github.com/kurama-dev/fullstack-template
+[facebook-share-url]: https://www.facebook.com/sharer/sharer.php?u=https://github.com/kurama-dev/user-management
 [twitter-share-shield]: https://img.shields.io/badge/Share-Twitter?style=for-the-badge&logo=twitter&colorB=555
-[twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/kurama-dev/fullstack-template&text=Check%20this%20project%20out
+[twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/kurama-dev/user-management&text=Check%20this%20project%20out
 [email-share-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
-[email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/kurama-dev/fullstack-template
+[email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/kurama-dev/user-management

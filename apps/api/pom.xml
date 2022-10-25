@@ -8,19 +8,19 @@
     <version>2.7.5</version>
     <relativePath/>
   </parent>
-  <groupId>dev.kurama.fullstack</groupId>
+  <groupId>dev.kurama.user-management</groupId>
   <artifactId>api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Full Stack Template</name>
-  <description>Full Stack Application Template</description>
+  <name>User Management</name>
+  <description>User Management Application</description>
 
   <issueManagement>
     <system>Jira</system>
-    <url>https://kurama-dev.atlassian.net/jira/software/c/projects/UM</url>
+    <url>https://kurama-dev.atlassian.net/jira/software/c/projects/UM/boards/1</url>
   </issueManagement>
   <ciManagement>
     <system>Github Actions</system>
-    <url>https://github.com/frango9000/fullstack-template/actions</url>
+    <url>https://github.com/frango9000/user-management/actions</url>
   </ciManagement>
   <properties>
     <java.version>11</java.version>
