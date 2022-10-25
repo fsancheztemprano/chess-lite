@@ -34,7 +34,7 @@ jobs:
           cd apps/api
           mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.hotfix-version.outputs.version }}-SNAPSHOT
 
-      - name: Commit and PR Back Merge
+      - name: Commit and PR Merge Back
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
