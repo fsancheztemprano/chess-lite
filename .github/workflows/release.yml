@@ -49,7 +49,7 @@ jobs:
           git commit -am "Chore(project): Set Release Version ${{ steps.release-version.outputs.version }}"
           git tag -a ${{ steps.release-version.outputs.version }} -m "Release Version ${{ steps.release-version.outputs.version }}"
           git push origin release/${{ steps.release-version.outputs.version }}
-          gh pr create -B master --title 'Release Version ${{ steps.release-version.outputs.version }}' --body 'Merge release/${{ steps.release-version.outputs.version }} into master'
+          gh pr create -B master --title 'Chore(project): Release Version ${{ steps.release-version.outputs.version }}' --body 'Merge release/${{ steps.release-version.outputs.version }} into master'
 
       - name: Determine Next Version
         id: next-version
@@ -71,4 +71,4 @@ jobs:
           git checkout -B merge-back/${{ steps.release-version.outputs.version }}
           git commit -am "Chore(project): Set Next Version ${{ steps.next-version.outputs.version }}-SNAPSHOT"
           git push origin merge-back/${{ steps.release-version.outputs.version }}
-          gh pr create -B development --title 'Merge Back Version ${{ steps.release-version.outputs.version }}' --body 'Merge Back release/${{ steps.release-version.outputs.version }} into development'
+          gh pr create -B development --title 'Chore(project): Merge Back Version ${{ steps.release-version.outputs.version }}' --body 'Merge Back release/${{ steps.release-version.outputs.version }} into development'
