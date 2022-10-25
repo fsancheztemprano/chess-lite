@@ -1,0 +1,251 @@
+{
+  "home": {
+    "user-management": {
+      "title": "User Management",
+      "description": "Manage User Accounts"
+    },
+    "role-management": {
+      "title": "Role Management",
+      "description": "Manage Roles"
+    },
+    "service-logs": {
+      "title": "Service Logs",
+      "description": "Have a look at the service logs."
+    },
+    "global-settings": {
+      "title": "Global Settings",
+      "description": "Global Settings"
+    }
+  },
+  "service-logs": {
+    "header": "Service Logs",
+    "logs": "Service Logs",
+    "context": {
+      "refresh": "Refresh",
+      "delete": "Delete"
+    }
+  },
+  "global-settings": {
+    "header": "Global Settings",
+    "tabs": {
+      "general-settings": "General Settings",
+      "access-restrictions": "Access Restrictions"
+    },
+    "general": {
+      "default-role": {
+        "label": "Default Role",
+        "button": "Set Default Role",
+        "toast": "Default Role updated"
+      },
+      "signup-open": {
+        "title": "New Member Signup",
+        "toast": "Global Signup Settings Changed"
+      },
+      "access-restrictions": {
+        "title": "Role Login Configuration"
+      }
+    }
+  },
+  "role-management": {
+    "table": {
+      "header": "Role Management",
+      "context": {
+        "add": "New Role"
+      },
+      "columns": {
+        "name": "Role",
+        "authorities": "Authorities"
+      },
+      "delete-dialog": {
+        "title": "Remove Role",
+        "caption": "Do you really want to remove this role? Users with this role will get the default role.",
+        "button": {
+          "accept": "REMOVE ROLE",
+          "reject": "CLOSE"
+        },
+        "toast": "Role deleted successfully"
+      },
+      "create-dialog": {
+        "title": "Create Role",
+        "caption": "Enter a name for the new Role",
+        "input": {
+          "name": {
+            "label": "Role Name",
+            "placeholder": "ROLE_SUPER_USER"
+          }
+        },
+        "button": {
+          "accept": "CREATE ROLE",
+          "reject": "CLOSE"
+        },
+        "toast": "Role created successfully"
+      }
+    },
+    "detail": {
+      "header": "Edit Role",
+      "placeholder": {
+        "name": "Name",
+        "can-login": "Has Login Access"
+      },
+      "button": {
+        "change-name": "Change name",
+        "save-authorities": "Save Authorities"
+      },
+      "toast": {
+        "deleted": "Role {{roleId}} was removed.",
+        "updated": "Role updated successfully",
+        "updated-authorities": "Authorities updated successfully"
+      }
+    }
+  },
+  "user-management": {
+    "home": {
+      "tiles": {
+        "table": {
+          "title": "User List",
+          "subtitle": "List of all users"
+        },
+        "detail": {
+          "title": "Create User",
+          "subtitle": "Create a new User Account"
+        }
+      }
+    },
+    "table": {
+      "header": "User Management",
+      "context": {
+        "add": "New User"
+      },
+      "columns": {
+        "username": "Username",
+        "email": "Email",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "lastLoginDateDisplay": "Last Login",
+        "joinDate": "Since",
+        "role": "Role"
+      }
+    },
+    "detail": {
+      "header": "Edit User",
+      "tabs": {
+        "profile": "Profile",
+        "preferences": "Preferences",
+        "authority": "Authority",
+        "account": "Account"
+      },
+      "profile": {
+        "placeholder": {
+          "username": "Username",
+          "email": "Email",
+          "firstname": "Firstname",
+          "lastname": "Lastname",
+          "profileImageUrl": "Profile Image",
+          "active": "Active",
+          "locked": "Locked",
+          "expired": "Expired",
+          "credentialsExpired": "Expired Credentials"
+        },
+        "button": {
+          "save": "Save"
+        },
+        "toast": {
+          "updated": "User Profile Updated Successfully"
+        }
+      },
+      "preferences": {
+        "label": {
+          "theme": "Theme",
+          "content-language": "Content Language"
+        },
+        "button": {
+          "save": "Save"
+        },
+        "toast": {
+          "saved": "User Preferences Saved Successfully"
+        }
+      },
+      "authority": {
+        "role": {
+          "label": "Role",
+          "button": {
+            "save": "Save Role"
+          },
+          "toast": {
+            "saved": "User Role Saved Successfully"
+          }
+        },
+        "authorities": {
+          "label": "Authorities",
+          "button": {
+            "save": "Save Authorities"
+          },
+          "toast": {
+            "saved": "User Authorities Saved Successfully"
+          }
+        }
+      },
+      "account": {
+        "password": {
+          "title": "Change Password",
+          "placeholder": {
+            "password": "New Password",
+            "password2": "New Password Again"
+          },
+          "toast": {
+            "updated": "Password updated successfully"
+          },
+          "button": {
+            "save": "Change Password"
+          }
+        },
+        "token": {
+          "title": "Send Activation Token",
+          "description": "Send the token to the user's email so he/she can reset the account password and unlock the account",
+          "button": {
+            "send": "Send Token"
+          },
+          "toast": {
+            "sent": "Activation token sent"
+          }
+        },
+        "delete": {
+          "title": "Remove Account",
+          "description": "Once you delete an account, it can't be recovered. Please be sure",
+          "button": {
+            "delete": "Delete this account"
+          },
+          "toast": {
+            "deleted": "Account removed"
+          }
+        }
+      },
+      "toast": {
+        "deleted": "User account {{userId}} was removed."
+      }
+    },
+    "create": {
+      "header": "New User",
+      "placeholder": {
+        "username": "Username",
+        "email": "Email",
+        "firstname": "Firstname",
+        "lastname": "Lastname",
+        "profileImageUrl": "Profile Image",
+        "role": "Role",
+        "password": "Password",
+        "password2": "Repeat Password",
+        "active": "Active",
+        "locked": "Locked",
+        "expired": "Expired",
+        "credentialsExpired": "Expired Credentials"
+      },
+      "button": {
+        "create": "Create User"
+      },
+      "toast": {
+        "created": "User created successfully"
+      }
+    }
+  }
+}

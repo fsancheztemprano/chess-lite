@@ -1,0 +1,84 @@
+application:
+  public_urls:
+    - /
+    - /index.html
+    - /app/**
+    - /api
+    - /api/auth/login
+    - /api/auth/signup
+    - /api/auth/token
+    - /api/auth/activate
+    - /api/build-info
+    - /websocket/**
+  jwt:
+    secret: 'secret'
+  host_url: 'localhost'
+  run_data_init: false
+  version: '@project.version@'
+  run: '@project.run@'
+  stage: '@project.stage@'
+server:
+  port: 8888
+  error:
+    whitelabel:
+      enabled: true
+spring:
+  main:
+    banner-mode: "off"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: p@ssw0rd
+    username: master
+    driver-class-name: org.postgresql.Driver
+  devtools:
+    livereload:
+      enabled: false
+  flyway:
+    enabled: true
+    # flyway's table schema_version shall be in the same schema as the other tables
+    schemas: ${spring.jpa.properties.hibernate.default_schema}
+    table: flyway_schema_version
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: application
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        cache:
+          use_query_cache: true
+          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+        javax:
+          persistence:
+            sharedCache:
+              mode: ENABLE_SELECTIVE
+          cache:
+            provider: org.ehcache.jsr107.EhcacheCachingProvider
+            missing_cache_strategy: 'create'
+    open-in-view: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+logging:
+  file:
+    name: logs/logs.log
+  logback:
+    rollingpolicy:
+      max-file-size: 1MB

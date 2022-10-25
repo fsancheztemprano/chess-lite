@@ -1,0 +1,19 @@
+<ul>
+  <li *ngFor="let control of form.controls">
+    <form [formGroup]="$any(control)">
+      <mat-checkbox formControlName="active" [attr.data-cy]="control.value.name">
+        {{ control.value.name }}
+      </mat-checkbox>
+    </form>
+  </li>
+</ul>
+<button
+  mat-raised-button
+  color="primary"
+  *ngLet="role$ | async as role"
+  (click)="onSubmit(role)"
+  [disabled]="!role || !role?.hasTemplate('update')"
+  data-cy="save-role-authorities"
+>
+  <ng-container *transloco="let t; read: TRANSLOCO_SCOPE">{{ t('button.save-authorities') }}</ng-container>
+</button>

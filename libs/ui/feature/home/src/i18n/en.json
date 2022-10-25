@@ -1,0 +1,30 @@
+{
+  "main": {
+    "title": "Home",
+    "tiles": {
+      "login": {
+        "title": "Login",
+        "description": "Login to your account"
+      },
+      "signup": {
+        "title": "Sign Up",
+        "description": "Create a new Account"
+      },
+      "user-settings": {
+        "title": "User Settings",
+        "description": "Manage User Settings"
+      },
+      "administration": {
+        "title": "Administration",
+        "description": "Application settings"
+      }
+    }
+  },
+  "build-info": {
+    "version": "Version",
+    "date": "Build Date",
+    "run": "Run",
+    "branch": "Branch",
+    "stage": "Stage"
+  }
+}

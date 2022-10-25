@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: Type of next release
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+          - major
+          - minor
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Determine Release Version
+        id: release-version
+        run: |
+          version=$(node --print "require('./package.json').version")
+          echo "version=${version%-SNAPSHOT}" >> $GITHUB_OUTPUT
+
+      - name: Write Release Version
+        run: |
+          npm version --json --no-git-tag-version -f ${{ steps.release-version.outputs.version }}
+          cd ./apps/api
+          mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.release-version.outputs.version }}
+
+      - name: Commit, Tag and PR Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'Release Bot'
+          git config --global user.email 'frango9000@users.noreply.github.com'
+          git checkout -B release/${{ steps.release-version.outputs.version }}
+          git commit -am "Chore(project): Set Release Version ${{ steps.release-version.outputs.version }}"
+          git push origin release/${{ steps.release-version.outputs.version }}
+          git tag -a ${{ steps.release-version.outputs.version }} -m "Release Version ${{ steps.release-version.outputs.version }}"
+          git push origin ${{ steps.release-version.outputs.version }}
+          gh pr create -B master --title 'Chore(project): Release Version ${{ steps.release-version.outputs.version }}' --body 'Merge release/${{ steps.release-version.outputs.version }} into master'
+
+      - name: Determine Next Version
+        id: next-version
+        run: |
+          npm version --json --no-git-tag-version ${{ inputs.type }}
+          version=$(node --print "require('./package.json').version")
+          echo "version=${version%-SNAPSHOT}" >> $GITHUB_OUTPUT
+
+      - name: Write Next Version
+        run: |
+          npm version --json --no-git-tag-version -f ${{ steps.next-version.outputs.version }}-SNAPSHOT
+          cd ./apps/api
+          mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.next-version.outputs.version }}-SNAPSHOT
+
+      - name: Commit and PR Merge Back
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git checkout -B merge-back/${{ steps.release-version.outputs.version }}
+          git commit -am "Chore(project): Set Next Version ${{ steps.next-version.outputs.version }}-SNAPSHOT"
+          git push origin merge-back/${{ steps.release-version.outputs.version }}
+          gh pr create -B development --title 'Chore(project): Merge Back Version ${{ steps.release-version.outputs.version }}' --body 'Merge Back release/${{ steps.release-version.outputs.version }} into development'

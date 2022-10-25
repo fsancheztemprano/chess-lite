@@ -1,105 +1,275 @@
+<!-- PROJECT SHIELDS -->
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=frango9000_user-management)
 
-# ChessLite
+![Development](https://github.com/frango9000/user-management/actions/workflows/verify.yml/badge.svg)
+[![codecov](https://codecov.io/gh/frango9000/user-management/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/user-management)
 
-This project was generated using [Nx](https://nx.dev).
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/kurama-dev/user-management">
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+[comment]: <> ( <img src="./images/logo.png" alt="Logo" width="80" height="80">)
+</a>
 
-🔎 **Smart, Extensible Build Framework**
+</p>
 
-## Quick Start & Documentation
+<h3 align="center">User Management</h3>
 
-[Nx Documentation](https://nx.dev/angular)
+<p align="center">
+  An application with jwt authentication, and user management.
+  <br />
+  <a href="https://github.com/kurama-dev/user-management"><strong>Explore the docs »</strong></a>
+  <br />
+  <br />
+  <a href="https://boiling-shore-06894.herokuapp.com/app/home">View Demo</a>
+  ·
+  <a href="https://github.com/kurama-dev/user-management/issues">Report Bug</a>
+  ·
+  <a href="https://github.com/kurama-dev/user-management/issues">Request Feature</a>
+</p>
 
-[10-minute video showing all Nx features](https://nx.dev/angular/getting-started/what-is-nx)
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#building">Building</a></li>
+    <li><a href="#Deploying">Deploying</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
+  </ol>
+</details>
 
-[Interactive Tutorial](https://nx.dev/angular/tutorial/01-create-application)
+<!-- ABOUT THE PROJECT -->
 
-## Adding capabilities to your workspace
+## About The Project ⌨️
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+### Built With 🛠️
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+- [OpenJDK 11](https://adoptopenjdk.net/) - Open Java
+- [Maven](https://maven.apache.org/) - Dependencies Management
+- [Spring](https://spring.io/) - Framework
+- [Node.js](http://nodejs.org/) - Runtime Environment
+- [Yarn](https://yarnpkg.com/) - NodeJS Package Manager
+- [Angular](https://angular.io/) - Framework
+- [Nx](https://nx.dev/angular) - Nx Workspace
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) - IDE
 
-Below are our core plugins:
+<!-- GETTING STARTED -->
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+## Getting Started 🚀
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+To get a local copy up and running follow these simple steps.
 
-## Generate an application
+### Prerequisites 📋
 
-Run `ng g @nrwl/angular:app my-app` to generate an application.
+- Java 11
+- Node 14
+- Docker
 
-> You can use any of the plugins above to generate applications as well.
+### Installation 🔧
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+1. Clone the repo
+   ```sh
+   git clone https://github.com/kurama-dev/user-management.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
 
-## Generate a library
+<!-- USAGE EXAMPLES -->
 
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
+## Usage 🏹
 
-> You can also use any of the plugins above to generate libraries as well.
+Use this space to show useful examples of how a project can be used. Additional screenshots, code
+examples and demos
+work well in this space. You may also link to more resources.
 
-Libraries are shareable across libraries and applications. They can be imported from `@chess-lite/mylib`.
+_For more examples, please refer to the [Documentation](https://example.com)_
 
-## Development server
+<!-- TESTING -->
 
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+## Testing ⚙️
 
-## Code scaffolding
+Explain how to run the automated tests for this system
 
-Run `ng g component my-component --project=my-app` to generate a new component.
+Test Backend
 
-## Build
+```
+npm run test:backend
+```
 
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+or
 
-## Running unit tests
+```
+cd apps/api
+.\mvn test
+```
 
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+Test Frontend
 
-Run `nx affected:test` to execute the unit tests affected by a change.
+```
+npm run test:frontend
+```
 
-## Running end-to-end tests
+Test All
 
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+```
+npm run test
+```
 
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+E2E
 
-## Understand your workspace
+```
+npm run e2e
+```
 
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
+And coding style tests
 
-## Further help
+```
+npm run lint
+npm run format:check
+```
 
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
+<!-- BUILDING -->
 
+## Building 🛠️
 
+Build Backend
 
+```
+npm run build:build
+```
 
+Build Frontend
 
+```
+npm run build:frontend
+```
 
-## ☁ Nx Cloud
+Create Jar Package (Front+Back)
 
-### Distributed Computation Caching & Distributed Task Execution
+```
+npm run package
+```
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+or
 
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+```
+cd apps/api
+.\mvn clean package -P frontend
+```
 
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
+<!-- DEPLOYING -->
 
-Visit [Nx Cloud](https://nx.app/) to learn more.
+## Deploying 📦
+
+### Deploying to heroku:
+
+Branch development automatically deploys to heroku on success ci build.
+
+Manual Deployment:
+You'll need to set HEROKU_API_KEY environment variable or user Heroku CLI to login first.
+
+```
+npm run deploy
+```
+
+or
+
+```
+cd apps/api
+.\mvn clean deploy -P frontend,heroku
+```
+
+<!-- ROADMAP -->
+
+## Roadmap
+
+See the [open issues](https://github.com/kurama-dev/user-management/issues) for a list of
+proposed features (and
+known issues).
+
+<!-- CONTRIBUTING -->
+
+## Contributing 🖇️
+
+Contributions are what make the open source community such an amazing place to be learn, inspire,
+and create. Any
+contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<!-- LICENSE -->
+
+## License 📄
+
+## Wiki 📖
+
+More info on the project can be found in
+our [Wiki](https://github.com/kurama-dev/user-management/wiki)
+
+<!-- CONTACT -->
+
+## Contact ✒️
+
+- **[Francisco Sanchez](https://frango9000.github.io/)**
+
+[![Email][email-contact-shield]][email-contact-url]
+[![Github][github-contact-shield]][github-contact-url]
+[![LinkedIn][linkedin-contact-shield]][linkedin-contact-url]
+
+<!-- SHARE -->
+
+## Share 🔗
+
+[![Email][email-share-shield]][email-share-url]
+[![LinkedIn][linkedin-share-shield]][linkedin-share-url]
+[![Facebook][facebook-share-shield]][facebook-share-url]
+[![Twitter][twitter-share-shield]][twitter-share-url]
+
+<!-- ACKNOWLEDGEMENTS -->
+
+## Acknowledgements 🎁
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
+[linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-contact-url]: https://www.linkedin.com/in/frango9000/
+[github-contact-shield]: https://img.shields.io/badge/-Github-black?style=for-the-badge&logo=github&colorB=555
+[github-contact-url]: https://github.com/frango9000
+[email-contact-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
+[email-contact-url]: mailto:frango9000@gmail.com
+[linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/kurama-dev/user-management
+[facebook-share-shield]: https://img.shields.io/badge/Share-Facebook?style=for-the-badge&logo=facebook&colorB=555
+[facebook-share-url]: https://www.facebook.com/sharer/sharer.php?u=https://github.com/kurama-dev/user-management
+[twitter-share-shield]: https://img.shields.io/badge/Share-Twitter?style=for-the-badge&logo=twitter&colorB=555
+[twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/kurama-dev/user-management&text=Check%20this%20project%20out
+[email-share-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
+[email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/kurama-dev/user-management

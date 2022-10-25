@@ -1,0 +1,31 @@
+:host {
+  overflow: auto;
+
+  .sidenav-container {
+    height: 100%;
+
+    .sidenav {
+      width: 200px;
+
+      .user-welcome {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        height: 48px;
+        padding: 0 16px;
+        text-align: center;
+      }
+
+      .mat-toolbar {
+        position: sticky;
+        background: inherit;
+        top: 0;
+        z-index: 1;
+      }
+
+      a .mat-icon {
+        padding-right: 8px;
+      }
+    }
+  }
+}

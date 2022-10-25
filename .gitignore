@@ -6,10 +6,10 @@
 /out-tsc
 
 # dependencies
+/node
 /node_modules
 
 # IDEs and editors
-/.idea
 .project
 .classpath
 .c9/
@@ -25,6 +25,8 @@
 !.vscode/extensions.json
 
 # misc
+.angular
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -37,3 +39,10 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+.scannerwork
+.jpb
+
+apps/api/src/main/resources/application-gb.yml
+
+libs/consumer-pact/logs

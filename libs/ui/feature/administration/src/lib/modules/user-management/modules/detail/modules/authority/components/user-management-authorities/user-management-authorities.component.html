@@ -1,0 +1,18 @@
+<ul>
+  <li *ngFor="let control of formArray.controls">
+    <form [formGroup]="$any(control)">
+      <mat-checkbox formControlName="active">
+        {{ control.value.name }}
+      </mat-checkbox>
+    </form>
+  </li>
+</ul>
+<button
+  mat-raised-button
+  color="primary"
+  (click)="onSubmit()"
+  [disabled]="(userManagementDetailService.canUpdateAuthorities() | async) === false"
+  *transloco="let t; read: TRANSLOCO_SCOPE"
+>
+  {{ t('button.save') }}
+</button>

@@ -1,0 +1,12 @@
+<ng-container *transloco="let t">
+  <app-sidenav-item
+    *ngIf="hasAdministrationLink() | async"
+    [expandable]="true"
+    [expandableTitle]="t('core.sidenav.administration.title')"
+    expandableIcon="admin_panel_settings"
+    [expandableLink]="['administration']"
+    data-cy="administration-menu-item"
+    [items]="items"
+    (toggleSidenav)="toggleSidenav.emit()"
+  ></app-sidenav-item>
+</ng-container>

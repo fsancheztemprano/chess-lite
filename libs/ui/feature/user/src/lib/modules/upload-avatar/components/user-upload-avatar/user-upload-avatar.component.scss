@@ -1,0 +1,15 @@
+:host {
+  form {
+    mat-card {
+      mat-card-content {
+        display: flex;
+        flex-flow: column;
+      }
+
+      mat-card-actions {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}

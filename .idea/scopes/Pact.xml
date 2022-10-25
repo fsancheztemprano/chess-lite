@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Pact" pattern="file[api]:src/test/java/dev/kurama/api/pact//*||file[um]:libs/consumer-pact//*" />
+</component>

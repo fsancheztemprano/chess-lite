@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" *isMobile="let isMobile">
+  <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenavService.toggle()">
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+  <app-breadcrumb
+    *ngIf="
+      (breadcrumbService.showBreadCrumbs$ | async) && (!isMobile || (searchService.showSearchInput$ | async) === false)
+    "
+  ></app-breadcrumb>
+  <div class="flex-stretch"></div>
+  <app-search-bar *ngIf="searchService.showSearchBar$ | async"></app-search-bar>
+  <app-locale-picker *ngIf="toolbarService.showLocalePicker$ | async"></app-locale-picker>
+  <app-theme-picker *ngIf="toolbarService.showThemePicker$ | async"></app-theme-picker>
+  <app-core-context-menu *ngIf="isMobile"></app-core-context-menu>
+</mat-toolbar>

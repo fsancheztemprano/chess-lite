@@ -1,0 +1,12 @@
+:host {
+  mat-form-field {
+    width: 100%;
+
+    textarea {
+      max-height: calc(100vh - 244px);
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: scroll;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/consumer-pact/src",
+  "prefix": "pact",
+  "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "rimraf ./apps/api/target/test-classes/pact ./apps/api/target/test-classes/pact-messages ./coverage/pact"
+        ]
+      }
+    },
+    "pact": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/apps/api/target/test-classes/pact",
+        "{workspaceRoot}/apps/api/target/test-classes/pact-messages",
+        "{workspaceRoot}/coverage/pact"
+      ],
+      "options": {
+        "jestConfig": "libs/consumer-pact/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/consumer-pact/src/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

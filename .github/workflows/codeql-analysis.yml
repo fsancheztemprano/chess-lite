@@ -1,0 +1,78 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [ development ]
+  schedule:
+    - cron: '0 3 * * *'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          check-latest: true
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Get branch names
+        id: branch-name
+        uses: tj-actions/branch-names@v6
+
+      - name: Load Cache
+        uses: frango9000/cache@main
+        env:
+          cache-key: ${{ runner.os }}-v5
+        with:
+          path: |
+            ~/.m2
+            ~/.npm
+            ./node_modules
+            ./node
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}
+            ${{ env.cache-key }}-development
+            ${{ env.cache-key }}
+          save-on-hit: false
+
+      - name: Java Dependencies
+        run: mvn -f apps/api/pom.xml dependency:resolve dependency:resolve-plugins
+
+      - name: Node Dependencies
+        run: yarn install
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          config-file: ./.github/codeql/codeql-config.yml
+          languages: java, javascript
+
+      - name: Build
+        uses: MansaGroup/nrwl-nx-action@v2
+        with:
+          targets: build
+          all: 'true'
+          parallel: 'false'
+          args: '--skip-nx-cache'
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2

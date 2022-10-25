@@ -1,0 +1,32 @@
+{
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/ui/feature/administration/src",
+  "prefix": "lib",
+  "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/libs/ui/feature/administration"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/ui/feature/administration"],
+      "options": {
+        "jestConfig": "libs/ui/feature/administration/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/ui/feature/administration/src/**/*.ts",
+          "libs/ui/feature/administration/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

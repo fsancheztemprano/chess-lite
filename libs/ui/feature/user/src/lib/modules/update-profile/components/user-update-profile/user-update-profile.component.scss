@@ -1,0 +1,14 @@
+:host {
+  form {
+    mat-card {
+      mat-card-content {
+        display: flex;
+        flex-flow: column;
+
+        .submit-message {
+          text-align: right;
+        }
+      }
+    }
+  }
+}

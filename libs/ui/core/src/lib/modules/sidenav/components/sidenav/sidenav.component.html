@@ -1,0 +1,28 @@
+<mat-sidenav-container class="sidenav-container" *isMobile="let isMobile">
+  <mat-sidenav
+    #sidenav
+    class="sidenav"
+    [fixedInViewport]="false"
+    [attr.role]="isMobile ? 'dialog' : 'navigation'"
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="this.sidenavService.isOpen$ | async"
+    *transloco="let t"
+  >
+    <mat-toolbar>
+      <span>{{ t('core.welcome') }}&nbsp;</span>
+      <span *ngIf="sessionRepository.user$ | async as user" data-cy="nav-username">{{
+        user.firstname || user.username
+      }}</span>
+    </mat-toolbar>
+    <mat-nav-list>
+      <app-home-sidenav-item (toggleSidenav)="toggleSidenav()"></app-home-sidenav-item>
+      <app-user-settings-sidenav-item (toggleSidenav)="toggleSidenav()"></app-user-settings-sidenav-item>
+      <app-administration-sidenav-item (toggleSidenav)="toggleSidenav()"></app-administration-sidenav-item>
+      <app-authentication-sidenav-item (toggleSidenav)="toggleSidenav()"></app-authentication-sidenav-item>
+      <app-build-info-sidenav-item (toggleSidenav)="toggleSidenav()"></app-build-info-sidenav-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

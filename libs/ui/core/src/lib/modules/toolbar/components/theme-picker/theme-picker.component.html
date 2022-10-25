@@ -1,0 +1,5 @@
+<div class="theme-picker" *ngLet="themeRepository.darkMode$ | async; let darkMode">
+  <button mat-icon-button aria-label="Theme Toggle" (click)="setDarkMode(!darkMode)">
+    <mat-icon>{{ darkMode ? 'brightness_5' : 'bedtime' }}</mat-icon>
+  </button>
+</div>

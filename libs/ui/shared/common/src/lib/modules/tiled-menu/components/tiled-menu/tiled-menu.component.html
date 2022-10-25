@@ -1,0 +1,10 @@
+<div *isMobile="let isMobile" [ngClass]="{ isMobile }" class="tile-menu-content">
+  <ng-container *ngFor="let tile of tiles">
+    <app-tiled-menu-tile
+      *ngIf="tile.visible$ === undefined || (tile.visible$ | async)"
+      [tileData]="tile"
+      [ngClass]="{ isMobile }"
+      [attr.data-cy]="tile.id"
+    ></app-tiled-menu-tile>
+  </ng-container>
+</div>

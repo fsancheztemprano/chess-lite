@@ -1,0 +1,251 @@
+{
+  "home": {
+    "user-management": {
+      "title": "Administración de Usuarios",
+      "description": "Cuentas de Usuario"
+    },
+    "role-management": {
+      "title": "Administración de Roles",
+      "description": "Roles"
+    },
+    "service-logs": {
+      "title": "Logs de Servicio",
+      "description": "Revisa los logs del servicio."
+    },
+    "global-settings": {
+      "title": "Configuraciones Globales",
+      "description": "Configuraciones Globales"
+    }
+  },
+  "service-logs": {
+    "header": "Logs de Servicio",
+    "logs": "Logs de Servicio",
+    "context": {
+      "refresh": "Actualizar",
+      "delete": "Borrar"
+    }
+  },
+  "global-settings": {
+    "header": "Configuraciones Globales",
+    "tabs": {
+      "general-settings": "Opciones",
+      "access-restrictions": "Restricción de Acceso"
+    },
+    "general": {
+      "default-role": {
+        "label": "Rol por defecto",
+        "button": "Establecer Rol por Defecto",
+        "toast": "Rol por defecto actualizado"
+      },
+      "signup-open": {
+        "title": "Registro de nuevos Usuarios",
+        "toast": "Configuración de Registro actualizada"
+      },
+      "access-restrictions": {
+        "title": "Configuración de acceso por roles"
+      }
+    }
+  },
+  "role-management": {
+    "table": {
+      "header": "Administración de Roles",
+      "context": {
+        "add": "Nuevo Rol"
+      },
+      "columns": {
+        "name": "Rol",
+        "authorities": "Autoridades"
+      },
+      "delete-dialog": {
+        "title": "Eliminar Rol",
+        "caption": "Estas seguro de eliminar este rol? Usuarios con este rol se reasignaran al rol por defecto.",
+        "button": {
+          "accept": "ELIMINAR ROL",
+          "reject": "CERRAR"
+        },
+        "toast": "Rol eliminado"
+      },
+      "create-dialog": {
+        "title": "Crear Rol",
+        "caption": "Introduce un nombre para el nuevo rol",
+        "input": {
+          "name": {
+            "label": "Nombre",
+            "placeholder": "ROLE_SUPER_USER"
+          }
+        },
+        "button": {
+          "accept": "CREAR ROL",
+          "reject": "CERRAR"
+        },
+        "toast": "Rol creado"
+      }
+    },
+    "detail": {
+      "header": "Editar Rol",
+      "placeholder": {
+        "name": "Nombre",
+        "can-login": "Puede iniciar sesión"
+      },
+      "button": {
+        "change-name": "Cambiar Nombre",
+        "save-authorities": "Guardar Autoridades"
+      },
+      "toast": {
+        "deleted": "Rol {{roleId}} eliminado",
+        "updated": "Rol Actualizado",
+        "updated-authorities": "Authorities actualizadas"
+      }
+    }
+  },
+  "user-management": {
+    "home": {
+      "tiles": {
+        "table": {
+          "title": "Usuarios",
+          "subtitle": "Todos los usuarios"
+        },
+        "detail": {
+          "title": "Crear Usuario",
+          "subtitle": "Crear una nueva cuenta de Usuario"
+        }
+      }
+    },
+    "table": {
+      "header": "Administración de Usuarios",
+      "context": {
+        "add": "Nuevo Usuario"
+      },
+      "columns": {
+        "username": "Usuario",
+        "email": "Email",
+        "firstname": "Nombre",
+        "lastname": "Apellido",
+        "lastLoginDateDisplay": "Último acceso",
+        "joinDate": "Registro",
+        "role": "Rol"
+      }
+    },
+    "detail": {
+      "header": "Editar Usuario",
+      "tabs": {
+        "profile": "Perfil",
+        "preferences": "Preferencias",
+        "authority": "Autoridad",
+        "account": "Cuenta"
+      },
+      "profile": {
+        "placeholder": {
+          "username": "Usuario",
+          "email": "Email",
+          "firstname": "Nombre",
+          "lastname": "Apellido",
+          "profileImageUrl": "Imagen de Perfil",
+          "active": "Activo",
+          "locked": "Bloqueado",
+          "expired": "Expirado",
+          "credentialsExpired": "Credenciales Expiradas"
+        },
+        "button": {
+          "save": "Guardar"
+        },
+        "toast": {
+          "updated": "Perfil de Usuario actualizado"
+        }
+      },
+      "preferences": {
+        "label": {
+          "theme": "Tema",
+          "content-language": "Idioma"
+        },
+        "button": {
+          "save": "Guardar"
+        },
+        "toast": {
+          "saved": "Preferencias Guardadas"
+        }
+      },
+      "authority": {
+        "role": {
+          "label": "Rol",
+          "button": {
+            "save": "Guardar Rol"
+          },
+          "toast": {
+            "saved": "Rol Actualizado"
+          }
+        },
+        "authorities": {
+          "label": "Autoridades",
+          "button": {
+            "save": "Guardar Autoridades"
+          },
+          "toast": {
+            "saved": "Autoridades Actualizadas"
+          }
+        }
+      },
+      "account": {
+        "password": {
+          "title": "Cambiar Contraseña",
+          "placeholder": {
+            "password": "Nueva Contraseña",
+            "password2": "Confirma la Contraseña"
+          },
+          "toast": {
+            "updated": "Contraseña Actualizada"
+          },
+          "button": {
+            "save": "Cambiar Contraseña"
+          }
+        },
+        "token": {
+          "title": "Enviar token de activación",
+          "description": "Enviar un link de activación al email del usuario para cambiar la contraseña y desbloquear la cuenta",
+          "button": {
+            "send": "Enviar Token"
+          },
+          "toast": {
+            "sent": "Token enviado"
+          }
+        },
+        "delete": {
+          "title": "Eliminar Cuenta",
+          "description": "Una vez eliminada la cuenta, los datos no pueden ser recuperados.",
+          "button": {
+            "delete": "Borrar esta cuenta"
+          },
+          "toast": {
+            "deleted": "Cuenta eliminada"
+          }
+        }
+      },
+      "toast": {
+        "deleted": "La cuenta con id {{userId}} ha sido eliminada."
+      }
+    },
+    "create": {
+      "header": "Nuevo Usuario",
+      "placeholder": {
+        "username": "Usuario",
+        "email": "Email",
+        "firstname": "Nombre",
+        "lastname": "Apellido",
+        "profileImageUrl": "Imagen de Perfil",
+        "role": "Rol",
+        "password": "Contraseña",
+        "password2": "Contraseña de nuevo",
+        "active": "Activa",
+        "locked": "Bloqueada",
+        "expired": "Expirada",
+        "credentialsExpired": "Credenciales Expiradas"
+      },
+      "button": {
+        "create": "Crear Usuario"
+      },
+      "toast": {
+        "created": "Usuario Creado"
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<ng-container *transloco="let t; read: 'user.remove-account.dialog'">
+  <h2 mat-dialog-title>{{ t('title') }}</h2>
+  <mat-dialog-content>
+    {{ t('warning') }}
+    <br />
+    <br />
+    {{ t('description') }}
+    <br />
+    <br />
+    <mat-form-field>
+      <input matInput type="text" [placeholder]="t('placeholder')" required #usernameInput />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" [mat-dialog-close]="null">{{ t('button.cancel') }}</button>
+    <button
+      mat-raised-button
+      color="warn"
+      data-cy="password-confirm-button"
+      *ngLet="userService.getCurrentUser() | async as user"
+      [disabled]="!user || !usernameInput.value.length || user.username !== usernameInput.value"
+      [mat-dialog-close]="user"
+    >
+      {{ t('button.confirm') }}
+    </button>
+  </mat-dialog-actions>
+</ng-container>

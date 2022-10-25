@@ -1,0 +1,80 @@
+<app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="username" scope="col">{{ t('columns.username') }}</th>
+      <td mat-cell *matCellDef="let row">{{ row.username }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="email" scope="col">{{ t('columns.email') }}</th>
+      <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="firstname" scope="col">{{ t('columns.firstname') }}</th>
+      <td mat-cell *matCellDef="let row">{{ row.firstname }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="lastname" scope="col">{{ t('columns.lastname') }}</th>
+      <td mat-cell *matCellDef="let row">{{ row.lastname }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastLoginDateDisplay">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="lastLoginDateDisplay" scope="col">
+        {{ t('columns.lastLoginDateDisplay') }}
+      </th>
+      <td mat-cell *matCellDef="let row">{{ row.lastLoginDateDisplay | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="joinDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="joinDate" scope="col">{{ t('columns.joinDate') }}</th>
+      <td mat-cell *matCellDef="let row">{{ row.joinDate | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="role" scope="col">{{ t('columns.role') }}</th>
+      <td mat-cell *matCellDef="let row">{{ row.role.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="active" scope="col">
+        <mat-icon>verified</mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox [checked]="row.active" disabled></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="locked">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="locked" scope="col">
+        <mat-icon>lock</mat-icon>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox [checked]="row.locked" disabled></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef scope="col"></th>
+      <td mat-cell *matCellDef="let row">
+        <a mat-stroked-button [routerLink]="[row.id]" [disabled]="!row.hasTemplate('update')">
+          <mat-icon>edit</mat-icon>
+        </a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" [attr.data-cy]="'user-item-' + row.username"></tr>
+  </table>
+
+  <mat-paginator
+    #paginator
+    [pageIndex]="0"
+    [length]="(dataSource.userPage$ | async)?.page?.totalElements || 0"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</app-core-card-view>

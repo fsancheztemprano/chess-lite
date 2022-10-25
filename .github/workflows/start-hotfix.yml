@@ -1,0 +1,45 @@
+name: Start Hotfix
+
+on:
+  workflow_dispatch:
+
+jobs:
+  start-hotfix:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Determine Hotfix Version
+        id: hotfix-version
+        run: |
+          npm version --json --no-git-tag-version patch
+          if [[ $CURRENT_BRANCH != 'master' ]]; then
+            npm version --json --no-git-tag-version patch
+          fi
+          version=$(node --print "require('./package.json').version")
+          echo "version=${version%-SNAPSHOT}" >> $GITHUB_OUTPUT
+
+      - name: Write Next Version
+        run: |
+          npm version --json --no-git-tag-version -f ${{ steps.hotfix-version.outputs.version }}-SNAPSHOT
+          cd apps/api
+          mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.hotfix-version.outputs.version }}-SNAPSHOT
+
+      - name: Commit and PR Merge Back
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name 'Release Bot'
+          git config --global user.email 'frango9000@users.noreply.github.com'
+          git checkout -B hotfix/${{ steps.hotfix-version.outputs.version }}
+          git commit -am "Chore(project): Set Hotfix Snapshot Version ${{ steps.hotfix-version.outputs.version }}"
+          git push origin hotfix/${{ steps.hotfix-version.outputs.version }}

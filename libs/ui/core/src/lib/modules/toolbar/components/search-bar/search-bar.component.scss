@@ -1,0 +1,15 @@
+:host {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  padding: 0 8px;
+
+  ::ng-deep.mat-form-field-wrapper {
+    padding-top: 13.4375px;
+  }
+
+  input {
+    font-size: 16px;
+  }
+}

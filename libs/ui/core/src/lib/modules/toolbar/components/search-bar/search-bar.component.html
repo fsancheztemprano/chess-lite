@@ -1,0 +1,12 @@
+<mat-form-field appearance="fill" *ngIf="searchService.showSearchInput$ | async">
+  <input
+    matInput
+    placeholder="Search"
+    aria-label="Search"
+    [value]="searchService.searchTerm$ | async"
+    (input)="searchService.searchTerm = $any($event.target).value"
+  />
+</mat-form-field>
+<button mat-icon-button type="button" aria-label="Open Search Bar" (click)="searchService.toggleShowSearchInput()">
+  <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
+</button>

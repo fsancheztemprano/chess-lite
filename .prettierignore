@@ -2,3 +2,12 @@
 
 /dist
 /coverage
+/.github
+/.idea
+/.run
+/.scannerwork
+/.jpb
+/node
+/node_modules
+/apps/api
+/.angular/cache

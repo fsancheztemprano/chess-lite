@@ -1,0 +1,14 @@
+application:
+  public_urls:
+    - /
+    - /index.html
+    - /app/**
+    - /api
+    - /api/auth/login
+    - /api/auth/signup
+    - /api/auth/token
+    - /api/auth/activate
+    - /api/build-info
+    - /websocket/**
+    - /api/cypress/**
+  run_data_init: false

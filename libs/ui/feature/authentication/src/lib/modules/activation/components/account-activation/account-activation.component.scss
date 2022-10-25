@@ -1,0 +1,23 @@
+:host {
+  .card-view-content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+
+    form {
+      mat-card {
+        min-width: 350px;
+
+        mat-card-content {
+          display: flex;
+          flex-flow: column;
+
+          mat-form-field {
+            padding-bottom: 16px;
+          }
+        }
+      }
+    }
+  }
+}

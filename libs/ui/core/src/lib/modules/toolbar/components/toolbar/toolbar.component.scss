@@ -1,0 +1,14 @@
+mat-toolbar {
+  display: flex;
+  align-items: center;
+  padding-right: 8px;
+  width: 100%;
+
+  app-breadcrumb {
+    overflow: hidden;
+  }
+
+  .flex-stretch {
+    flex: 1 0 auto;
+  }
+}

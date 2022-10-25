@@ -1,0 +1,30 @@
+{
+  "main": {
+    "title": "Inicio",
+    "tiles": {
+      "login": {
+        "title": "Iniciar Sesión",
+        "description": "Iniciar Sesión en tu cuenta"
+      },
+      "signup": {
+        "title": "Nuevo Usuario",
+        "description": "Iniciar Sesión en tu cuenta"
+      },
+      "user-settings": {
+        "title": "Perfil de Usuario",
+        "description": "Opciones de Usuario"
+      },
+      "administration": {
+        "title": "Administración",
+        "description": "Configuraciones de la Aplicación"
+      }
+    }
+  },
+  "build-info": {
+    "version": "Versión",
+    "date": "Fecha",
+    "run": "Ejecución",
+    "branch": "Rama",
+    "stage": "Etapa"
+  }
+}

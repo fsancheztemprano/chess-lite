@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <logger name="dev.kurama" level="WARN"/>
+  <logger name="dev.kurama.api.zypress" level="INFO"/>
+  <logger name="org.springframework" level="WARN"/>
+  <logger name="org.hibernate.orm.cache" level="ERROR"/>
+  <logger name="au.com.dius" level="ERROR"/>
+  <logger name="root" level="WARN"/>
+</configuration>

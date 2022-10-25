@@ -1,0 +1,36 @@
+<mat-accordion class="sidenav-expansion" *ngIf="expandable; else subItems">
+  <mat-expansion-panel class="mat-elevation-z0" (opened)="router.navigate(expandableLink)">
+    <mat-expansion-panel-header>
+      <a mat-list-item class="sidenav-title" (click)="toggleSidenav.emit()">
+        <mat-icon aria-hidden="false" [attr.aria-label]="expandableTitle">{{ expandableIcon }}</mat-icon>
+        {{ expandableTitle }}
+      </a>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <mat-action-list>
+        <ng-container *ngTemplateOutlet="subItems"></ng-container>
+      </mat-action-list>
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>
+<ng-template #subItems>
+  <ng-container *ngFor="let item of items; index as index">
+    <ng-container *ngIf="item.title$ | async as title">
+      <ng-container *ngLet="item.disabled$ && (item.disabled$ | async) as disabled">
+        <a
+          *ngIf="item.visible$ === undefined || (item.visible$ | async)"
+          mat-list-item
+          class="sidenav-option {{ 'sidenav-option-' + index }}"
+          (click)="!disabled && optionClick(item, $event)"
+          [routerLink]="item.route"
+          routerLinkActive="active-link"
+          [disabled]="disabled"
+          [attr.data-cy]="item.id"
+        >
+          <mat-icon aria-hidden="false" [attr.aria-label]="title">{{ item.icon }}</mat-icon>
+          {{ title }}
+        </a>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>

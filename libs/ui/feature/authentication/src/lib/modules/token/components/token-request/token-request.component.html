@@ -1,0 +1,29 @@
+<app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
+  <div class="card-view-content">
+    <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
+      <mat-card class="mat-elevation-z24">
+        <mat-card-header>
+          <mat-card-title>{{ t('title') }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field>
+            <input matInput [placeholder]="t('placeholder.email')" formControlName="email" required />
+            <mat-error>
+              <app-form-error [control]="form.controls.email" name="email"></app-form-error>
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions [align]="'end'">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid || (activationTokenService.hasTemplateToRequestToken() | async) === false"
+          >
+            {{ t('button.request') }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+</app-core-card-view>

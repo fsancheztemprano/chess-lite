@@ -1,0 +1,38 @@
+application:
+  public_urls:
+    - /
+    - /index.html
+    - /app/**
+    - /api
+    - /api/auth/login
+    - /api/auth/signup
+    - /api/auth/token
+    - /api/auth/activate
+    - /api/build-info
+    - /websocket/**
+    - /explorer/**
+    - /swagger-ui/**
+    - /v*/api-docs/**
+  jwt:
+    secret: 'secret'
+  host_url: 'http://localhost:4200'
+  run_data_init: true
+spring:
+  jpa:
+    show-sql: false
+  mail:
+    host: localhost
+    port: 3025
+    properties.mail.smtp.auth: false
+    properties.mail.smtp.starttls.enable: false
+  devtools:
+    livereload:
+      enabled: true
+springdoc:
+  show-actuator: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+logging:
+  config: src/main/resources/logback-development.xml

@@ -1,0 +1,37 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/app-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/apps/app-e2e"]
+      }
+    },
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "coverage/apps/app-e2e",
+        "cypressConfig": "apps/app-e2e/cypress.config.ts",
+        "devServerTarget": "app:serve:development",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "app:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/app-e2e/**/*.{js,ts}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["app", "api"]
+}

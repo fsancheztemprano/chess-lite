@@ -1,0 +1,195 @@
+name: Verify
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - main
+      - development
+  pull_request:
+  workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      dependabot-run: ${{ github.actor == 'dependabot[bot]' }}
+      upload-dev-artifacts: ${{ github.ref != 'refs/heads/development' || github.event_name == 'pull_request' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Sync PR with target
+        if: github.event_name == 'pull_request'
+        run: git merge ${{ github.event.pull_request.head.sha }}
+
+      - name: Get branch names
+        id: branch-name
+        uses: tj-actions/branch-names@v6
+
+      - name: Use Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          check-latest: true
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Load Cache
+        uses: frango9000/cache@main
+        env:
+          cache-key: ${{ runner.os }}-v5
+        with:
+          path: |
+            ~/.m2
+            ~/.npm
+            ./node_modules
+            ./node
+          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}
+            ${{ env.cache-key }}-development
+            ${{ env.cache-key }}
+          save-on-hit: true
+
+      - name: Java Dependencies
+        working-directory: apps/api
+        run: mvn dependency:resolve dependency:resolve-plugins
+
+      - name: Node Dependencies
+        run: yarn install
+
+      - name: Format Check
+        run: npx nx format:check --all
+
+      - name: Workspace Lint
+        run: npx nx workspace-lint
+
+      - name: Lint
+        uses: MansaGroup/nrwl-nx-action@v2
+        with:
+          targets: lint
+          all: 'true'
+          parallel: 'true'
+
+      - name: Build
+        uses: MansaGroup/nrwl-nx-action@v2
+        with:
+          targets: build
+          all: 'true'
+          parallel: 'true'
+
+      - name: Test
+        uses: MansaGroup/nrwl-nx-action@v2
+        with:
+          targets: test
+          all: 'true'
+          parallel: 'true'
+          args: '--codeCoverage'
+
+      - name: Merge Test Reports
+        run: npm run test:merge
+        if: always()
+
+      - name: Frontend Test Execution Report
+        uses: frango9000/test-execution-report@main
+        if: env.dependabot-run == 'false' && always()
+        with:
+          name: Frontend Tests
+          path: coverage/**/jest-junit.xml
+          reporter: jest-junit
+          fail-on-error: false
+
+      - name: Backend Test Execution Report
+        uses: frango9000/test-execution-report@main
+        if: env.dependabot-run == 'false' && always()
+        with:
+          name: Backend Tests
+          path: apps/api/target/*-reports/merged-*ts.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      - name: Coverage Report
+        uses: frango9000/test-coverage-report@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Application"
+          disable-comment: ${{ github.event_name == 'push' }}    # Only post on pull request, not on commit
+          report-paths: |
+            apps/api/target/site/jacoco-*t/jacoco.xml
+            coverage/**/lcov.info
+          enable-build-fail: false
+          file-coverage-error-min: 60
+          file-coverage-warn-min: 70
+          report-coverage-error-min: 50
+          report-coverage-warn-min: 60
+          global-coverage-error-min: 40
+          global-coverage-warn-min: 50
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/target/site/**/jacoco.xml,coverage/**/lcov.info
+          verbose: true
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        if: env.dependabot-run == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload Development Backend Artifact
+        if: env.upload-dev-artifacts && env.dependabot-run == 'false'
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend
+          path: apps/api/target/*.jar
+
+      - name: Upload Development Frontend Artifact
+        if: env.upload-dev-artifacts && env.dependabot-run == 'false'
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend
+          path: dist/apps/app
+
+      - name: E2E
+        uses: MansaGroup/nrwl-nx-action@v2
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        with:
+          targets: e2e
+          projects: api
+          parallel: 'false'
+
+      - name: Merge E2E Reports
+        if: env.dependabot-run == 'false' && always()
+        run: |
+          sudo chown -R 1001:1001 ./coverage/apps/app-e2e
+          npm run test:merge:e2e
+
+      - name: E2E Test Execution Report
+        uses: frango9000/test-execution-report@main
+        if: env.dependabot-run == 'false' && always()
+        with:
+          name: E2E Tests
+          path: coverage/apps/app-e2e/merged-e2e.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      - name: Upload E2E Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-errors
+          path: coverage/apps/app-e2e
