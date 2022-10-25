@@ -47,8 +47,9 @@ jobs:
           git config --global user.email 'frango9000@users.noreply.github.com'
           git checkout -B release/${{ steps.release-version.outputs.version }}
           git commit -am "Chore(project): Set Release Version ${{ steps.release-version.outputs.version }}"
-          git tag -a ${{ steps.release-version.outputs.version }} -m "Release Version ${{ steps.release-version.outputs.version }}"
           git push origin release/${{ steps.release-version.outputs.version }}
+          git tag -a ${{ steps.release-version.outputs.version }} -m "Release Version ${{ steps.release-version.outputs.version }}"
+          git push origin ${{ steps.release-version.outputs.version }}
           gh pr create -B master --title 'Chore(project): Release Version ${{ steps.release-version.outputs.version }}' --body 'Merge release/${{ steps.release-version.outputs.version }} into master'
 
       - name: Determine Next Version
