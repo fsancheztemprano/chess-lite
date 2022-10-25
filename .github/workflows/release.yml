@@ -73,3 +73,8 @@ jobs:
           git commit -am "Chore(project): Set Next Version ${{ steps.next-version.outputs.version }}-SNAPSHOT"
           git push origin merge-back/${{ steps.release-version.outputs.version }}
           gh pr create -B development --title 'Chore(project): Merge Back Version ${{ steps.release-version.outputs.version }}' --body 'Merge Back release/${{ steps.release-version.outputs.version }} into development'
+
+  cleanup-failure:
+    uses: ./.github/workflows/cancel-release.yml
+    needs: release
+    if: ${{ always() && needs.release.result == 'failure' }}
