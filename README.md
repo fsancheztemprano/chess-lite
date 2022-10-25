@@ -2,9 +2,8 @@
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=frango9000_user-management)
 
-![Development](https://github.com/kurama-dev/user-management/actions/workflows/verify.yml/badge.svg)
+![Development](https://github.com/frango9000/user-management/actions/workflows/verify.yml/badge.svg)
 [![codecov](https://codecov.io/gh/frango9000/user-management/branch/development/graph/badge.svg?token=5N7AH4BAHQ)](https://codecov.io/gh/frango9000/user-management)
-[![user-management](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/fcegyj/development&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/fcegyj/runs)
 
 <!-- PROJECT LOGO -->
 <br />
