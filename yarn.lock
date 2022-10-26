@@ -1983,10 +1983,10 @@
   resolved "https://registry.yarnpkg.com/@ngneat/elf-persist-state/-/elf-persist-state-1.1.6.tgz#fdeceeb902937898aee2fdaa594275e9bdbb075a"
   integrity sha512-tcyRvruCPa/0WPW66fsaFAM8KIhg79bGVASdEHIGbu3JKepdfSMDhXdJFMWkyknva2NMIDPGqhjbzC0ovKqPaQ==
 
-"@ngneat/elf@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@ngneat/elf/-/elf-2.1.0.tgz#22b852daebbb6680ea8c60d9a7e5f92a72fee9c9"
-  integrity sha512-R5BeYoBQ9DgtjlWAE8eqaYyDI5zgRmND7mbgDdbG1JUisaOopcxLMDKZYI9+HWSHcfKPk+XHgFlKQfAl470lNw==
+"@ngneat/elf@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/elf/-/elf-2.2.0.tgz#195fffc2927438d1a31edf70edce5f1aa50e9855"
+  integrity sha512-Bhjr4JkcvISOrbEJFU4th4mqk/GcaJZx2eEz43R5wcYy0s/+Y6P+tBal/yJkja8edpSzD60GBxwuVWESb1x9gQ==
 
 "@ngneat/subscribe@3.0.2":
   version "3.0.2"
