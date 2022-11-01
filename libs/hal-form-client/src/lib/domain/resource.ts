@@ -1,12 +1,20 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Observable } from 'rxjs';
-import { AffordanceOptions, DEFAULT_LINK, DEFAULT_TEMPLATE, HalFormsEntityName, noEntityError } from './domain';
+import {
+  AffordanceOptions,
+  DEFAULT_LINK,
+  DEFAULT_TEMPLATE,
+  HalFormsEntityName,
+  LinkOptions,
+  noEntityError,
+} from './domain';
 import { ILink, Link } from './link';
 import { ITemplate, Template } from './template';
 
 export interface IResource {
   _links?: {
-    self: ILink;
-    [key: string]: ILink;
+    self?: ILink;
+    [key: string]: ILink | undefined;
   };
 
   _embedded?: {
@@ -14,8 +22,8 @@ export interface IResource {
   };
 
   _templates?: {
-    default: ITemplate;
-    [name: string]: ITemplate;
+    default?: ITemplate;
+    [name: string]: ITemplate | undefined;
   };
 
   [key: string]: any;
@@ -23,29 +31,26 @@ export interface IResource {
 
 export class Resource implements IResource {
   public _links?: {
-    self: Link;
-    [key: string]: Link;
+    self?: Link;
+    [key: string]: Link | undefined;
   };
 
-  public _embedded?: {
-    [key: string]: IResource[] | IResource;
-  };
+  public _embedded?: { [p: string]: Resource[] | Resource };
 
   public _templates?: {
-    default: Template;
-    [key: string]: Template;
+    default?: Template;
+    [name: string]: Template | undefined;
   };
 
   [key: string]: any;
 
-  public static of(iResource?: IResource) {
+  public static of(iResource?: IResource): Resource {
     return new Resource(iResource);
   }
 
-  constructor(iResource?: IResource) {
-    if (!iResource) {
-      iResource = {};
-    }
+  constructor(data?: IResource) {
+    const iResource = data || {};
+
     for (const property of Object.keys(iResource)) {
       this[property] = iResource[property];
     }
@@ -53,17 +58,28 @@ export class Resource implements IResource {
     if (iResource._links) {
       this._links = Object.keys(iResource._links)
         .map((key) => ({ [key]: Link.of(iResource!._links![key]) }))
-        .reduce((previous, current) => ({ ...previous, ...current }), {}) as any;
+        .reduce((previous, current) => ({ ...previous, ...current }), {});
     }
 
     if (iResource._embedded) {
-      this._embedded = iResource._embedded;
+      this._embedded = Object.keys(iResource._embedded as any)
+        .map((key) => ({
+          [key]: Array.isArray(iResource!._embedded![key])
+            ? iResource!._embedded![key].map((res: IResource) => Resource.of(res))
+            : Resource.of(iResource!._embedded![key]),
+        }))
+        .reduce((previous, current) => ({ ...previous, ...current }), {});
     }
 
     if (iResource._templates) {
       this._templates = Object.keys(iResource._templates)
-        .map((key) => ({ [key]: Template.of({ target: this._links?.self?.href, ...iResource!._templates![key] }) }))
-        .reduce((previous, current) => ({ ...previous, ...current }), {}) as any;
+        .map((key) => ({
+          [key]: Template.of({
+            target: this._links?.self?.href,
+            ...iResource!._templates![key],
+          }),
+        }))
+        .reduce((previous, current) => ({ ...previous, ...current }), {});
     }
   }
 
@@ -72,7 +88,7 @@ export class Resource implements IResource {
     if (!this._links || !this._links[key]) {
       return null;
     }
-    return this._links[key];
+    return this._links[key] || null;
   }
 
   public getLinkOrThrow(key?: string, errorMessage?: string | Error): Link {
@@ -87,15 +103,18 @@ export class Resource implements IResource {
     return !!this.getLink(key)?.href?.length;
   }
 
+  public followLink<T extends Resource = Resource>(options?: LinkOptions & { link?: string }): Observable<T> {
+    return this.getLinkOrThrow(options?.link).follow<T>(options);
+  }
+
   public getEmbedded<T = Resource>(key: string): T | T[] | null {
     if (!key || !key.length || !this._embedded || !this._embedded[key]) {
       return null;
     }
-
     if (Array.isArray(this._embedded[key])) {
-      return this._embedded[key].map((element: IResource) => new Resource(element));
+      return this._embedded[key].map((resource: IResource) => resource);
     }
-    return new Resource(this._embedded[key]) as any as T;
+    return this._embedded[key] as unknown as T;
   }
 
   public getEmbeddedOrThrow<T = Resource>(key: string, errorMessage?: string | Error): T | T[] {
@@ -134,7 +153,7 @@ export class Resource implements IResource {
     if (!this._templates || !this._templates[key]) {
       return null;
     }
-    return this._templates[key];
+    return this._templates[key] || null;
   }
 
   public getTemplateOrThrow(key?: string, errorMessage?: string | Error): Template {
@@ -149,18 +168,32 @@ export class Resource implements IResource {
     return !!this.getTemplate(template);
   }
 
-  public submitToTemplateOrThrow<T extends Resource = Resource>(
-    template?: string,
-    options?: AffordanceOptions,
+  public affordTemplate<T extends Resource = Resource>(
+    options?: AffordanceOptions & { template?: string },
   ): Observable<T> {
-    return this.getTemplateOrThrow(template).submit<T>(options);
+    return this.getTemplateOrThrow(options?.template).afford<T>(options);
+  }
+
+  public canAfford(options?: { template?: string; body?: any }): boolean {
+    return this.getTemplate(options?.template)?.canAfford(options?.body) || false;
+  }
+
+  public canAffordProperty(options?: { template?: string; name?: string; value?: any }): boolean {
+    return this.getTemplate(options?.template)?.canAffordProperty(options?.name, options?.value) || false;
   }
 
   public toJson(): IResource {
-    return JSON.parse(JSON.stringify({ ...this, _links: this.linksToJson(), _templates: this.templatesToJson() }));
+    return JSON.parse(
+      JSON.stringify({
+        ...this,
+        _links: this.linksToJson(),
+        _templates: this.templatesToJson(),
+        _embedded: this.embeddedToJson(),
+      }),
+    );
   }
 
-  private linksToJson(): { [key: string]: ILink } | undefined {
+  private linksToJson(): { [key: string]: ILink | undefined } | undefined {
     return this._links
       ? Object.keys(this._links)
           .map((key) => ({ [key]: this._links![key]?.toJson() }))
@@ -168,10 +201,24 @@ export class Resource implements IResource {
       : undefined;
   }
 
-  private templatesToJson(): { [key: string]: ITemplate } | undefined {
+  private templatesToJson(): { [key: string]: ITemplate | undefined } | undefined {
     return this._templates
       ? Object.keys(this._templates)
           .map((key) => ({ [key]: this._templates![key]?.toJson() }))
+          .reduce((previous, current) => ({ ...previous, ...current }), {})
+      : undefined;
+  }
+
+  private embeddedToJson(): { [key: string]: IResource | IResource[] } | undefined {
+    return this._embedded
+      ? Object.keys(this._embedded)
+          .map((key) => ({
+            [key]: Array.isArray(this._embedded![key])
+              ? this._embedded![key].map((resource: Resource) => resource.toJson())
+              : this._embedded![key] instanceof Resource
+              ? (this._embedded![key] as Resource).toJson()
+              : JSON.parse(JSON.stringify(this._embedded![key])),
+          }))
           .reduce((previous, current) => ({ ...previous, ...current }), {})
       : undefined;
   }

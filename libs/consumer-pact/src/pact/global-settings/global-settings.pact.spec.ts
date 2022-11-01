@@ -29,7 +29,7 @@ describe('Global Settings Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['global-settings:read'] }));
         Link.ofHref('/api/global-settings')
-          .fetch<GlobalSettings>()
+          .get<GlobalSettings>()
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
@@ -51,7 +51,7 @@ describe('Global Settings Pacts', () => {
           jwtToken({ authorities: ["global-settings:read', 'global-settings:update"] }),
         );
         Link.ofHref('/api/global-settings')
-          .fetch<GlobalSettings>()
+          .get<GlobalSettings>()
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
@@ -66,7 +66,7 @@ describe('Global Settings Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         Link.ofHref('/api/global-settings')
-          .fetch<GlobalSettings>()
+          .get<GlobalSettings>()
           .subscribe({
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
@@ -85,7 +85,7 @@ describe('Global Settings Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['global-settings:update'] }));
         Template.of({ method: 'PATCH', target: '/api/global-settings' })
-          .afford<GlobalSettings>({ body: { signupOpen: true } })
+          .request<GlobalSettings>({ body: { signupOpen: true } })
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
@@ -104,7 +104,7 @@ describe('Global Settings Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         Template.of({ method: 'PATCH', target: '/api/global-settings' })
-          .afford<GlobalSettings>({ body: { signupOpen: true } })
+          .request<GlobalSettings>({ body: { signupOpen: true } })
           .subscribe({
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();

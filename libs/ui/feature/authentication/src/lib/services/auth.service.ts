@@ -23,7 +23,7 @@ export class AuthService {
   public login(body: LoginInput): Observable<Session | null> {
     return this.halFormService.getTemplateOrThrow(AuthRelations.LOGIN_RELATION).pipe(
       first(),
-      switchMap((template) => template.afford<User>({ body })),
+      switchMap((template) => template.request<User>({ body })),
       map(httpToSession),
       tap((session) => this.actions.dispatch(initialize({ session }))),
     );

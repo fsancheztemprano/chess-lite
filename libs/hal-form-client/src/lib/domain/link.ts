@@ -14,7 +14,7 @@ export interface ILink {
 }
 
 export class Link implements ILink {
-  private readonly http: HttpClient = INJECTOR_INSTANCE.get(HttpClient);
+  private http?: HttpClient;
 
   public href: string;
   public templated?: boolean;
@@ -43,12 +43,15 @@ export class Link implements ILink {
   }
 
   public followRaw<T>(options?: LinkOptions): Observable<T> {
-    return this.fetch<T>(options).pipe(map((response: HttpResponse<T>) => response?.body || ({} as T)));
+    return this.get<T>(options).pipe(map((response: HttpResponse<T>) => response?.body as T));
   }
 
-  public fetch<T>(options?: LinkOptions): Observable<HttpResponse<T>> {
+  public get<T>(options?: LinkOptions): Observable<HttpResponse<T>> {
+    if (!this.http) {
+      this.http = INJECTOR_INSTANCE.get(HttpClient);
+    }
     return this.http.get<T>(parseUrl(this.href, options?.parameters), {
-      headers: { ...{ Accept: ContentType.APPLICATION_JSON_HAL_FORMS }, ...(options?.headers || {}) },
+      headers: { Accept: ContentType.APPLICATION_JSON_HAL_FORMS, ...options?.headers },
       context: options?.context,
       observe: 'response',
       responseType: 'json',

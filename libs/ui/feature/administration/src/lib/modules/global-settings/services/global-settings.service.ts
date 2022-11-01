@@ -8,6 +8,7 @@ import {
   WEBSOCKET_REL,
 } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
+import { Link } from '@hal-form-client';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 
@@ -32,7 +33,7 @@ export class GlobalSettingsService {
 
   public initialize(): Observable<GlobalSettings> {
     return this._initializeGlobalSettings().pipe(
-      tap((globalSettings) => this._subscribeToGlobalSettingsChanges(globalSettings)),
+      tap((globalSettings: GlobalSettings) => this._subscribeToGlobalSettingsChanges(globalSettings)),
     );
   }
 
@@ -43,15 +44,17 @@ export class GlobalSettingsService {
 
   public canUpdateGlobalSettings() {
     return this.globalSettings$.pipe(
-      map((globalSettings) => globalSettings.hasTemplate(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL)),
+      map((globalSettings: GlobalSettings) =>
+        globalSettings.hasTemplate(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL),
+      ),
     );
   }
 
   public updateGlobalSettings(body: GlobalSettingsUpdateInput) {
     return this.globalSettings$.pipe(
       first(),
-      switchMap((globalSettings) =>
-        globalSettings.submitToTemplateOrThrow(GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL, { body }),
+      switchMap((globalSettings: GlobalSettings) =>
+        globalSettings.affordTemplate({ template: GlobalSettingsRelations.GLOBAL_SETTINGS_UPDATE_REL, body }),
       ),
     );
   }
@@ -59,7 +62,7 @@ export class GlobalSettingsService {
   private _initializeGlobalSettings(): Observable<GlobalSettings> {
     return this.administrationService
       .getLinkOrThrow(GlobalSettingsRelations.GLOBAL_SETTINGS_REL)
-      .pipe(switchMap((link) => link.follow()))
+      .pipe(switchMap((link: Link) => link.follow()))
       .pipe(tap((globalSettings) => this._globalSettings.next(globalSettings)));
   }
 

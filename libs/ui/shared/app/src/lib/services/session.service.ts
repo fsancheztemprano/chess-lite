@@ -104,7 +104,7 @@ export class SessionService {
   private _refreshToken(resource: Resource): Observable<Resource> {
     return resource
       .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
-      .fetch<User>({ context: new HttpContext().set(USE_REFRESH_TOKEN, true) })
+      .get<User>({ context: new HttpContext().set(USE_REFRESH_TOKEN, true) })
       .pipe(
         map(httpToSession),
         switchMap((session) => this.initialize(session)),

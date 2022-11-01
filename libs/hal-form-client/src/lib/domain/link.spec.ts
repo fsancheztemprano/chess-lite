@@ -35,10 +35,10 @@ describe('Link', () => {
     expect(link.templated).toBe(true);
   });
 
-  describe('fetch', () => {
+  describe('get', () => {
     it('should fetch resource', (done) => {
       Link.ofHref('/api/ve/users/1')
-        .fetch<{ id: string }>()
+        .get<{ id: string }>()
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
           expect(response.body).toBeTruthy();
@@ -54,7 +54,7 @@ describe('Link', () => {
 
     it('should fetch resource overriding headers', (done) => {
       Link.of({ href: '/api/ve/users/1' })
-        .fetch<{ id: string }>({ headers: { Accept: ContentType.APPLICATION_JSON } })
+        .get<{ id: string }>({ headers: { Accept: ContentType.APPLICATION_JSON } })
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
           expect(response.body).toBeTruthy();
@@ -70,7 +70,7 @@ describe('Link', () => {
 
     it('should parse parameters and fetch resource', (done) => {
       Link.ofHref('/api/ve/users/{userId}')
-        .fetch<{ id: string }>({ parameters: { userId: '1' } })
+        .get<{ id: string }>({ parameters: { userId: '1' } })
         .subscribe((response: HttpResponse<{ id: string }>) => {
           expect(response).toBeTruthy();
           expect(response.body).toBeTruthy();
@@ -138,8 +138,7 @@ describe('Link', () => {
       Link.ofHref('/api/v1/users/1')
         .followRaw<MockResource>()
         .subscribe((resource: MockResource) => {
-          expect(resource).toBeTruthy();
-          expect(resource).not.toBeInstanceOf(Resource);
+          expect(resource).toBe(null);
           done();
         });
 

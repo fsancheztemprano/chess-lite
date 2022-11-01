@@ -65,7 +65,7 @@ export class UserManagementDetailService {
     return this.user$.pipe(
       first(),
       filterNulls(),
-      switchMap((user) => user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body })),
+      switchMap((user: User) => user.affordTemplate({ template: UserManagementRelations.USER_UPDATE_REL, body })),
     );
   }
 
@@ -73,8 +73,8 @@ export class UserManagementDetailService {
     return this.user$.pipe(
       first(),
       filterNulls(),
-      switchMap((user) =>
-        user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_ROLE_REL, { body: { roleId } }),
+      switchMap((user: User) =>
+        user.affordTemplate({ template: UserManagementRelations.USER_UPDATE_ROLE_REL, body: { roleId } }),
       ),
     );
   }
@@ -83,8 +83,8 @@ export class UserManagementDetailService {
     return this.user$.pipe(
       first(),
       filterNulls(),
-      switchMap((user) =>
-        user.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_AUTHORITIES_REL, { body: { authorityIds } }),
+      switchMap((user: User) =>
+        user.affordTemplate({ template: UserManagementRelations.USER_UPDATE_AUTHORITIES_REL, body: { authorityIds } }),
       ),
     );
   }
@@ -97,7 +97,7 @@ export class UserManagementDetailService {
     return this.user$.pipe(
       first(),
       filterNulls(),
-      switchMap((user) => user.submitToTemplateOrThrow(UserManagementRelations.USER_DELETE_REL)),
+      switchMap((user: User) => user.affordTemplate({ template: UserManagementRelations.USER_DELETE_REL })),
     );
   }
 
@@ -109,7 +109,9 @@ export class UserManagementDetailService {
     return this.user$.pipe(
       first(),
       filterNulls(),
-      switchMap((user) => user.submitToTemplateOrThrow(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL)),
+      switchMap((user: User) =>
+        user.affordTemplate({ template: ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL }),
+      ),
     );
   }
 
@@ -117,12 +119,12 @@ export class UserManagementDetailService {
     return this.user$.pipe(
       first(),
       filterNulls(),
-      switchMap((user) => user.getLinkOrThrow(UserManagementRelations.USER_PREFERENCES_REL).follow()),
+      switchMap((user: User) => user.getLinkOrThrow(UserManagementRelations.USER_PREFERENCES_REL).follow()),
     );
   }
 
   public updateUserPreferences(userPreferences: UserPreferences, body: IUserPreferences): Observable<UserPreferences> {
-    return userPreferences.submitToTemplateOrThrow(UserManagementRelations.USER_UPDATE_REL, { body });
+    return userPreferences.affordTemplate({ template: UserManagementRelations.USER_UPDATE_REL, body });
   }
 
   private _fetchUser(userId: string): Observable<User> {

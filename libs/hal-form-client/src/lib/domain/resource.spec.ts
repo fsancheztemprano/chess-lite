@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 import { HalFormClientModule } from '../hal-form-client.module';
 import { HttpMethod } from './domain';
 import { IResource, Resource } from './resource';
@@ -50,11 +51,11 @@ describe('Resource', () => {
 
       expect(resource).toBeTruthy();
       expect(resource.id).toEqual(iResource.id);
-      expect(resource._links?.self.href).toEqual(iResource._links?.self.href);
-      expect(resource._links?.user.href).toEqual(iResource._links?.user.href);
-      expect(resource._templates?.default.method).toEqual(iResource._templates?.default.method);
-      expect(resource._templates?.update.method).toEqual(iResource._templates?.update.method);
-      expect(resource._templates?.preferences.method).toEqual(iResource._templates?.preferences.method);
+      expect(resource._links?.self?.href).toEqual(iResource._links?.self?.href);
+      expect(resource._links?.user?.href).toEqual(iResource._links?.user?.href);
+      expect(resource._templates?.default?.method).toEqual(iResource._templates?.default?.method);
+      expect(resource._templates?.update?.method).toEqual(iResource._templates?.update?.method);
+      expect(resource._templates?.preferences?.method).toEqual(iResource._templates?.preferences?.method);
       expect((resource._embedded?.preferences as IResource).locale).toEqual(
         (iResource._embedded?.preferences as IResource).locale,
       );
@@ -64,7 +65,7 @@ describe('Resource', () => {
     });
 
     it('should instantiate templates using self as target', () => {
-      expect(Resource.of(iResource)._templates?.update?.target).toEqual(iResource._links?.self.href);
+      expect(Resource.of(iResource)._templates?.update?.target).toEqual(iResource._links?.self?.href);
       expect(
         Resource.of({
           _links: {} as any,
@@ -74,7 +75,7 @@ describe('Resource', () => {
     });
 
     it('should instantiate templates using template specific target', () => {
-      expect(Resource.of(iResource)._templates?.preferences?.target).toEqual(iResource._templates?.preferences.target);
+      expect(Resource.of(iResource)._templates?.preferences?.target).toEqual(iResource._templates?.preferences?.target);
     });
   });
 
@@ -95,11 +96,22 @@ describe('Resource', () => {
       expect(() => Resource.of().getLinkOrThrow()).toThrow();
     });
 
-    it('should should return if resource has link', () => {
+    it('should  return if resource has link', () => {
       expect(Resource.of(iResource).hasLink()).toBe(true);
       expect(Resource.of(iResource).hasLink('self')).toBe(true);
       expect(Resource.of(iResource).hasLink('user')).toBe(true);
       expect(Resource.of(iResource).hasLink('missing')).toBe(false);
+    });
+
+    it('should get link and follow', (done) => {
+      const resource = Resource.of(iResource);
+
+      const followLinkSpy = jest.spyOn(resource.getLink('user')!, 'follow').mockReturnValue(of(resource));
+      resource.followLink({ link: 'user' }).subscribe((res) => {
+        expect(res).toBeTruthy();
+        expect(followLinkSpy).toHaveBeenCalled();
+        done();
+      });
     });
   });
 
@@ -182,32 +194,100 @@ describe('Resource', () => {
       expect(Resource.of(iResource).hasTemplate('missing')).toBe(false);
     });
 
-    it('should submit to template or throw', () => {
-      expect(Resource.of(iResource).submitToTemplateOrThrow()).toBeTruthy();
-      expect(Resource.of(iResource).submitToTemplateOrThrow('default')).toBeTruthy();
-      expect(Resource.of(iResource).submitToTemplateOrThrow('update')).toBeTruthy();
-      expect(Resource.of(iResource).submitToTemplateOrThrow('preferences')).toBeTruthy();
-      expect(() => Resource.of(iResource).submitToTemplateOrThrow('missing')).toThrow();
+    it('should afford template or throw', () => {
+      expect(Resource.of(iResource).affordTemplate()).toBeTruthy();
+      expect(Resource.of(iResource).affordTemplate({ template: 'default' })).toBeTruthy();
+      expect(Resource.of(iResource).affordTemplate({ template: 'update' })).toBeTruthy();
+      expect(Resource.of(iResource).affordTemplate({ template: 'preferences' })).toBeTruthy();
+      expect(() => Resource.of(iResource).affordTemplate({ template: 'missing' })).toThrow();
+    });
+
+    it('should return true if can afford', () => {
+      expect(Resource.of(iResource).canAfford()).toBe(true);
+      expect(Resource.of(iResource).canAfford({ template: 'default' })).toBe(true);
+      expect(Resource.of(iResource).canAfford({ template: 'update' })).toBe(true);
+      expect(Resource.of(iResource).canAfford({ template: 'preferences' })).toBe(true);
+    });
+
+    it('should return false if cannot afford', () => {
+      expect(Resource.of(iResource).canAfford({ template: 'missing' })).toBe(false);
+    });
+
+    it('should return true if can afford property', () => {
+      expect(
+        Resource.of(iResource).canAffordProperty({
+          template: 'update',
+          name: 'name',
+          value: 'John Doe',
+        }),
+      ).toBe(true);
+    });
+
+    it('should return false if cannot afford property', () => {
+      expect(
+        Resource.of(iResource).canAffordProperty({
+          template: 'preferences',
+          name: 'name',
+          value: 'John Doe',
+        }),
+      ).toBe(false);
     });
   });
 
-  it('should parse to json', () => {
-    const iRes = {
-      _links: {
-        self: { href: '/api/v1/users/1', name: 'self' },
-        users: { href: '/api/v1/users', name: 'users' },
-      },
-      _templates: {
-        default: {
-          method: HttpMethod.PATCH,
-          target: '/api/v1/users/1',
-          properties: [{ name: 'username' }],
-          title: 'update',
+  describe('toJson', () => {
+    it('should parse links to json', () => {
+      const iRes = {
+        _links: {
+          self: { href: '/api/v1/users/1', name: 'self' },
+          users: { href: '/api/v1/users', name: 'users' },
         },
-      },
-      id: 'userId',
-    };
+        id: 'userId',
+      };
 
-    expect(Resource.of(iRes).toJson()).toEqual(iRes);
+      expect(Resource.of(iRes).toJson()).toEqual(iRes);
+    });
+
+    it('should parse templates to json', () => {
+      const iRes = {
+        _templates: {
+          default: {
+            method: HttpMethod.PATCH,
+            target: '/api/v1/users/1',
+            properties: [{ name: 'username' }],
+            title: 'update',
+          },
+        },
+        id: 'userId',
+      };
+
+      expect(Resource.of(iRes).toJson()).toEqual(iRes);
+    });
+
+    it('should parse embedded object to json', () => {
+      const iRes = {
+        _embedded: {
+          adminRoot: {
+            _links: { self: { href: '/api/v1/admin' } },
+          },
+        },
+        id: 'userId',
+      };
+
+      expect(Resource.of(iRes).toJson()).toEqual(iRes);
+    });
+
+    it('should parse embedded collection to json', () => {
+      const iRes = {
+        _embedded: {
+          userModelList: [
+            { _links: { self: { href: '/api/v1/users/1' } } },
+            { _links: { self: { href: '/api/v1/users/2' } } },
+          ],
+        },
+        id: 'userCollection',
+      };
+
+      expect(Resource.of(iRes).toJson()).toEqual(iRes);
+    });
   });
 });

@@ -265,7 +265,7 @@ describe('Authentication Pacts', () => {
         );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
-          .pipe(switchMap((link) => link.fetch<IResource>()))
+          .pipe(switchMap((link) => link.get<IResource>()))
           .subscribe((response: HttpResponse<IResource>) => {
             expect(response).toBeTruthy();
             expect(response.headers.get(HttpHeaderKey.JWT_TOKEN)).toBe(
@@ -292,7 +292,7 @@ describe('Authentication Pacts', () => {
         );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
-          .pipe(switchMap((link) => link.fetch()))
+          .pipe(switchMap((link) => link.get()))
           .subscribe({
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
@@ -316,7 +316,7 @@ describe('Authentication Pacts', () => {
         );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
-          .pipe(switchMap((link) => link.fetch()))
+          .pipe(switchMap((link) => link.get()))
           .subscribe({
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
@@ -334,7 +334,7 @@ describe('Authentication Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ user: { id: pactCurrentUser.id } }));
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
-          .pipe(switchMap((link) => link.fetch()))
+          .pipe(switchMap((link) => link.get()))
           .subscribe({
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
@@ -358,7 +358,7 @@ describe('Authentication Pacts', () => {
         );
         halFormService
           .getLinkOrThrow(AuthRelations.TOKEN_RELATION)
-          .pipe(switchMap((link) => link.fetch()))
+          .pipe(switchMap((link) => link.get()))
           .subscribe({
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();

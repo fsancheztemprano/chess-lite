@@ -29,14 +29,14 @@ export class RoleManagementService extends HalFormResourceService {
   }
 
   public updateRole(role: Role, body: RoleUpdateInput): Observable<Role> {
-    return role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_UPDATE_REL, { body });
+    return role.affordTemplate({ template: RoleManagementRelations.ROLE_UPDATE_REL, body });
   }
 
   public createRole(rolePage: RolePage, name: string): Observable<Role> {
-    return rolePage.submitToTemplateOrThrow(RoleManagementRelations.ROLE_CREATE_REL, { body: { name } });
+    return rolePage.affordTemplate({ template: RoleManagementRelations.ROLE_CREATE_REL, body: { name } });
   }
 
   public deleteRole(role: Role): Observable<unknown> {
-    return role.submitToTemplateOrThrow(RoleManagementRelations.ROLE_DELETE_REL);
+    return role.affordTemplate({ template: RoleManagementRelations.ROLE_DELETE_REL });
   }
 }
