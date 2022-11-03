@@ -1,0 +1,68 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: Type of release, if major or minor, the version bump pushed to development
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.type == 'patch' && 'master' || 'development' }}
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Create RC branch
+        if: inputs.type != 'patch'
+        run: |
+          git branch rc
+          git push origin rc
+
+      - name: Next Version
+        id: next-version
+        run: |
+          npm version --json --no-git-tag-version {{ inputs.type }}
+          if [[ $CURRENT_BRANCH != 'master' ]]; then
+            npm version --json --no-git-tag-version {{ inputs.type }}
+          fi
+          version=$(node --print "require('./package.json').version")
+          echo "version=${version%-SNAPSHOT}" >> $GITHUB_OUTPUT
+
+      - name: Bump Version
+        run: |
+          npm version --json --no-git-tag-version -f ${{ steps.next-version.outputs.version }}-SNAPSHOT
+          cd apps/api
+          mvn versions:set -DgenerateBackupPoms -DnewVersion=${{ steps.next-version.outputs.version }}-SNAPSHOT
+
+      - name: Commit Version Bump
+        run: |
+          git config --global user.name 'Release Bot'
+          git config --global user.email 'frango9000@users.noreply.github.com'
+          git commit -am "Chore(project): Set Next Release Snapshot Version ${{ steps.next-version.outputs.version }}"
+
+      - name: Push Next Version Bump
+        if: inputs.type != 'patch'
+        run: |
+          git push origin development
+
+      - name: Push Hotfix Version Bump
+        if: inputs.type == 'patch'
+        run: |
+          git checkout -B hotfix/${{ steps.next-version.outputs.version }}
+          git push origin hotfix/${{ steps.next-version.outputs.version }}
