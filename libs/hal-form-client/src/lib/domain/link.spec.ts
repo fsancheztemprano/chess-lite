@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientModule } from '../hal-form-client.module';
@@ -48,6 +48,8 @@ describe('Link', () => {
         });
 
       const testRequest = httpTestingController.expectOne('/api/ve/users/1');
+
+      expect(testRequest.request.headers.keys().length).toBe(1);
       expect(testRequest.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
       testRequest.flush({ id: '1' });
     });
@@ -64,7 +66,33 @@ describe('Link', () => {
         });
 
       const testRequest = httpTestingController.expectOne('/api/ve/users/1');
+
+      expect(testRequest.request.headers.keys().length).toBe(1);
       expect(testRequest.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON);
+      testRequest.flush({ id: '1' });
+    });
+
+    it('should fetch resource with HttpHeaders', (done) => {
+      Link.of({ href: '/api/ve/users/1' })
+        .get<{ id: string }>({
+          headers: new HttpHeaders({
+            Accept: ContentType.APPLICATION_JSON,
+            'x-header': 'x-value',
+          }),
+        })
+        .subscribe((response: HttpResponse<{ id: string }>) => {
+          expect(response).toBeTruthy();
+          expect(response.body).toBeTruthy();
+          expect(response.body?.id).toBe('1');
+
+          done();
+        });
+
+      const testRequest = httpTestingController.expectOne('/api/ve/users/1');
+
+      expect(testRequest.request.headers.keys().length).toBe(2);
+      expect(testRequest.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON);
+      expect(testRequest.request.headers.get('x-header')).toBe('x-value');
       testRequest.flush({ id: '1' });
     });
 
@@ -80,6 +108,8 @@ describe('Link', () => {
         });
 
       const testRequest = httpTestingController.expectOne('/api/ve/users/1');
+
+      expect(testRequest.request.headers.keys().length).toBe(1);
       expect(testRequest.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
       testRequest.flush({ id: '1' });
     });

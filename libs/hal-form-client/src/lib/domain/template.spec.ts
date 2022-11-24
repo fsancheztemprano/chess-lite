@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientModule } from '../hal-form-client.module';
@@ -171,31 +171,162 @@ describe('Template', () => {
       expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
     });
 
-    it('should afford template overriding headers', (done) => {
-      Template.of({
-        method: HttpMethod.PATCH,
-        target: '/api/v1/users/1',
-      })
-        .request<MockResource>({
-          body: { name: 'new name' },
-          headers: { 'Content-type': ContentType.APPLICATION_JSON_HAL_FORMS },
+    describe('headers', () => {
+      it('should afford template with accept hal forms header and content type json', (done) => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
         })
-        .subscribe((response: HttpResponse<MockResource>) => {
-          expect(response).toBeTruthy();
-          expect(response.body?.name).toBe('new name');
-          done();
-        });
+          .request<MockResource>({
+            body: { name: 'new name' },
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            expect(response.body?.name).toBe('new name');
+            done();
+          });
 
-      httpTestingController
-        .expectOne((request) => {
-          return (
-            request.method === HttpMethod.PATCH &&
-            request.url === '/api/v1/users/1' &&
-            request.body?.name === 'new name' &&
-            request.headers.get('Content-type') === ContentType.APPLICATION_JSON_HAL_FORMS
-          );
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.APPLICATION_JSON);
+        expect(request.request.method).toBe(HttpMethod.PATCH);
+        expect(request.request.body).toEqual({ name: 'new name' });
+      });
+
+      it('should afford template with configured content type', (done) => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+          contentType: ContentType.APPLICATION_JSON_HAL,
         })
-        .flush({ name: 'new name' });
+          .request<MockResource>({
+            body: { name: 'new name' },
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.APPLICATION_JSON_HAL);
+        expect(request.request.body).toEqual({ name: 'new name' });
+      });
+
+      it('should afford template with text plain content', (done) => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            body: 'new name',
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.TEXT_PLAIN);
+        expect(request.request.body).toBe('new name');
+      });
+
+      it('should afford template with blob content type', (done) => {
+        const body = new Blob(['new name']);
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            body,
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.APPLICATION_OCTET_STREAM);
+        expect(request.request.body).toBe(body);
+      });
+
+      it('should afford template with multipart form data content type', (done) => {
+        const file = new File(['new name'], 'new name.txt');
+        const body = new FormData();
+        body.append('avatar', file);
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            body,
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(1);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBeFalsy();
+        expect(request.request.body).toBe(body);
+      });
+
+      it('should afford template custom headers object', () => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            headers: { 'X-Header': 'value' },
+          })
+          .subscribe();
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('X-Header')).toBe('value');
+      });
+
+      it('should afford template with HttpHeaders object merged', () => {
+        const headers = new HttpHeaders({
+          'X-Header': 'value',
+        });
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            headers,
+          })
+          .subscribe();
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('X-Header')).toBe('value');
+      });
     });
 
     it('should parse target and afford template', (done) => {

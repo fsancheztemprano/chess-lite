@@ -27,7 +27,9 @@ export enum ContentType {
   APPLICATION_JSON = 'application/json',
   APPLICATION_JSON_HAL = 'application/hal+json',
   APPLICATION_JSON_HAL_FORMS = 'application/prs.hal-forms+json',
+  APPLICATION_OCTET_STREAM = 'application/octet-stream',
   MULTIPART_FILE = 'multipart/form-data',
+  TEXT_PLAIN = 'text/plain',
 }
 
 export enum HttpMethod {

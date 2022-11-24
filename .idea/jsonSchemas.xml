@@ -49,6 +49,9 @@
                   <Item>
                     <option name="path" value="docker-compose.yml" />
                   </Item>
+                  <Item>
+                    <option name="path" value="docker-compose.package.yml" />
+                  </Item>
                 </list>
               </option>
             </SchemaInfo>

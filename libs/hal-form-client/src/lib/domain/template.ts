@@ -2,6 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { INJECTOR_INSTANCE } from '../hal-form-client.module';
+import { parseHeaders } from '../utils/headers.utils';
 import { parseUrl } from '../utils/url-template.utils';
 import { AffordanceOptions, ContentType, HttpMethod, SUPPORTED_HTTP_METHODS } from './domain';
 import { ILink } from './link';
@@ -96,17 +97,39 @@ export class Template implements ITemplate {
     if (!this.http) {
       this.http = INJECTOR_INSTANCE.get(HttpClient);
     }
-    const contentType = this.contentType || (options?.body && ContentType.APPLICATION_JSON);
     return this.http.request<T>(this.method, parseUrl(this.target, options?.parameters), {
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        ...(contentType && { 'Content-Type': contentType }),
-        ...options?.headers,
+        ...this._getContentType(options?.body),
+        ...parseHeaders(options?.headers),
       },
       context: options?.context,
       body: options?.body,
       observe: 'response',
+      responseType: 'json',
     });
+  }
+
+  private _getContentType(body?: any): undefined | { 'Content-Type': string } {
+    let contentType;
+    if (body) {
+      if (body instanceof FormData || this.contentType === ContentType.MULTIPART_FILE) {
+        return undefined;
+      }
+      if (typeof body === 'object') {
+        if (body instanceof Blob) {
+          contentType = ContentType.APPLICATION_OCTET_STREAM;
+        } else {
+          contentType = ContentType.APPLICATION_JSON;
+        }
+      } else if (typeof body === 'string') {
+        contentType = ContentType.TEXT_PLAIN;
+      }
+    }
+    if (this.contentType) {
+      contentType = this.contentType;
+    }
+    return (contentType && { 'Content-Type': contentType }) || undefined;
   }
 
   public getProperty(name?: string): ITemplateProperty | undefined {

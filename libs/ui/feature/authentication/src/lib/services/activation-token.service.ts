@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AccountActivationInput, ActivationTokenRelations } from '@app/ui/shared/domain';
-import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
+import { affordTemplate, HalFormService, Template } from '@hal-form-client';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class ActivationTokenService {
 
   public requestActivationToken(email: string): Observable<unknown> {
     return this.halFormService.resource$.pipe(
-      submitToTemplateOrThrowPipe(ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL, { body: { email } }),
+      affordTemplate({ template: ActivationTokenRelations.REQUEST_ACTIVATION_TOKEN_REL, body: { email } }),
     );
   }
 
@@ -29,7 +29,7 @@ export class ActivationTokenService {
 
   public activateAccount(body: AccountActivationInput) {
     return this.halFormService.resource$.pipe(
-      submitToTemplateOrThrowPipe(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL, { body }),
+      affordTemplate({ template: ActivationTokenRelations.ACTIVATE_ACCOUNT_REL, body }),
     );
   }
 }

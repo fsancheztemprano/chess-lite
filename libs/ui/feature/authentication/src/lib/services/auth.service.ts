@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { httpToSession, initialize } from '@app/ui/shared/app';
 import { AuthRelations, LoginInput, Session, SignupInput, User } from '@app/ui/shared/domain';
-import { HalFormService, submitToTemplateOrThrowPipe, Template } from '@hal-form-client';
+import { affordTemplate, HalFormService, Template } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
 import { Observable, tap } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
@@ -38,6 +38,6 @@ export class AuthService {
   }
 
   public signup(body: SignupInput): Observable<User | null> {
-    return this.halFormService.resource$.pipe(submitToTemplateOrThrowPipe(AuthRelations.SIGNUP_RELATION, { body }));
+    return this.halFormService.resource$.pipe(affordTemplate({ template: AuthRelations.SIGNUP_RELATION, body }));
   }
 }

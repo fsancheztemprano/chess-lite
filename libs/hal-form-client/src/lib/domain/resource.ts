@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Observable } from 'rxjs';
+import { Observable, switchMap, take } from 'rxjs';
 import {
   AffordanceOptions,
   DEFAULT_LINK,
@@ -222,4 +222,15 @@ export class Resource implements IResource {
           .reduce((previous, current) => ({ ...previous, ...current }), {})
       : undefined;
   }
+}
+
+export function affordTemplate<T extends Resource = Resource>(
+  options?: AffordanceOptions & { template?: string },
+): (observable: Observable<Resource>) => Observable<T> {
+  return (observable: Observable<Resource>) => {
+    return observable.pipe(
+      take(1),
+      switchMap((resource) => resource.affordTemplate<T>({ ...options })),
+    );
+  };
 }

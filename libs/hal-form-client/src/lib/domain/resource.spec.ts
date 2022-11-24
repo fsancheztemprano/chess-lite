@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { HalFormClientModule } from '../hal-form-client.module';
 import { HttpMethod } from './domain';
-import { IResource, Resource } from './resource';
+import { affordTemplate, IResource, Resource } from './resource';
 
 describe('Resource', () => {
   let httpTestingController: HttpTestingController;
@@ -289,5 +289,49 @@ describe('Resource', () => {
 
       expect(Resource.of(iRes).toJson()).toEqual(iRes);
     });
+  });
+});
+
+describe('Afford Template', () => {
+  it('should afford if template is available', (done) => {
+    const resource = Resource.of({ _templates: { default: { method: HttpMethod.PATCH, target: '/api/v1/users/1' } } });
+    const spyInstance = jest.spyOn(resource, 'affordTemplate').mockReturnValueOnce(of(Resource.of({})));
+    of(resource)
+      .pipe(affordTemplate())
+      .subscribe({
+        next: (response) => {
+          expect(response).toBeTruthy();
+          expect(spyInstance).toHaveBeenCalled();
+          done();
+        },
+      });
+  });
+
+  it('should afford if template is available', (done) => {
+    const resource = Resource.of({ _templates: { action: { method: HttpMethod.PATCH, target: '/api/v1/users/1' } } });
+    const spyInstance = jest.spyOn(resource, 'affordTemplate').mockReturnValueOnce(of(Resource.of({})));
+    of(resource)
+      .pipe(affordTemplate({ template: 'action' }))
+      .subscribe({
+        next: (response) => {
+          expect(response).toBeTruthy();
+          expect(spyInstance).toHaveBeenCalled();
+          done();
+        },
+      });
+  });
+
+  it('should throw if doesnt have the template', (done) => {
+    const resource = Resource.of();
+    const spyInstance = jest.spyOn(resource, 'affordTemplate');
+    of(resource)
+      .pipe(affordTemplate())
+      .subscribe({
+        error: (error) => {
+          expect(error.message).toBe('Can not find template: default');
+          expect(spyInstance).toHaveBeenCalled();
+          done();
+        },
+      });
   });
 });
