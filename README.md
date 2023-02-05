@@ -184,24 +184,6 @@ cd apps/api
 
 ## Deploying 📦
 
-### Deploying to heroku:
-
-Branch development automatically deploys to heroku on success ci build.
-
-Manual Deployment:
-You'll need to set HEROKU_API_KEY environment variable or user Heroku CLI to login first.
-
-```
-npm run deploy
-```
-
-or
-
-```
-cd apps/api
-.\mvn clean deploy -P frontend,heroku
-```
-
 <!-- ROADMAP -->
 
 ## Roadmap

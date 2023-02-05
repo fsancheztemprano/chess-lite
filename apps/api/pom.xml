@@ -24,7 +24,7 @@
   </ciManagement>
   <properties>
     <java.version>11</java.version>
-    <org.projectlombok.version>1.18.24</org.projectlombok.version>
+    <org.projectlombok.version>1.18.26</org.projectlombok.version>
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
@@ -54,7 +54,7 @@
       <dependency>
         <groupId>org.testcontainers</groupId>
         <artifactId>testcontainers-bom</artifactId>
-        <version>1.17.5</version>
+        <version>1.17.6</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -156,10 +156,12 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-jcache</artifactId>
+      <version>5.6.12.Final</version>
     </dependency>
     <dependency>
       <groupId>org.ehcache</groupId>
       <artifactId>ehcache</artifactId>
+      <version>3.10.2</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -179,22 +181,22 @@
     <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
-      <version>4.2.0</version>
+      <version>4.2.2</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.6.12</version>
+      <version>1.6.14</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-hateoas</artifactId>
-      <version>1.6.12</version>
+      <version>1.6.14</version>
     </dependency>
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-security</artifactId>
-      <version>1.6.12</version>
+      <version>1.6.14</version>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -234,7 +236,7 @@
     <dependency>
       <groupId>com.icegreen</groupId>
       <artifactId>greenmail-junit5</artifactId>
-      <version>1.6.11</version>
+      <version>1.6.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -252,7 +254,7 @@
     <dependency>
       <groupId>org.junit-pioneer</groupId>
       <artifactId>junit-pioneer</artifactId>
-      <version>1.7.1</version>
+      <version>2.0.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -284,17 +286,17 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.0.0-M8</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.0.0-M8</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.0.0-M8</version>
         </plugin>
         <plugin>
           <groupId>org.springframework.cloud</groupId>
@@ -305,24 +307,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>3.0.0</version>
-        </plugin>
-        <plugin>
-          <groupId>com.heroku.sdk</groupId>
-          <artifactId>heroku-maven-plugin</artifactId>
-          <version>3.0.4</version>
-          <configuration>
-            <appName>boiling-shore-06894-feat</appName>
-            <jdkVersion>11</jdkVersion>
-            <includeTarget>false</includeTarget>
-            <includes>
-              <include>target/${project.artifactId}-${project.version}.jar</include>
-            </includes>
-            <processTypes>
-              <web>
-                java $JAVA_OPTS -jar target/${project.artifactId}-${project.version}.jar --spring.profiles.active=heroku
-              </web>
-            </processTypes>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>io.github.git-commit-id</groupId>
@@ -380,11 +364,6 @@
       <plugin><!-- https://github.com/eirslett/frontend-maven-plugin -->
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>com.heroku.sdk</groupId>
-        <artifactId>heroku-maven-plugin</artifactId>
       </plugin>
 
       <plugin>
@@ -689,84 +668,6 @@
         </plugins>
       </build>
     </profile>
-
-    <profile>
-      <id>heroku-production</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.heroku.sdk</groupId>
-            <artifactId>heroku-maven-plugin</artifactId>
-            <configuration>
-              <appName>boiling-shore-06894</appName>
-            </configuration>
-            <executions>
-              <execution>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>deploy-only</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>heroku-development</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.heroku.sdk</groupId>
-            <artifactId>heroku-maven-plugin</artifactId>
-            <configuration>
-              <appName>boiling-shore-06894-dev</appName>
-            </configuration>
-            <executions>
-              <execution>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>deploy-only</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>heroku-feature</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.heroku.sdk</groupId>
-            <artifactId>heroku-maven-plugin</artifactId>
-            <configuration>
-              <appName>boiling-shore-06894-feat</appName>
-            </configuration>
-            <executions>
-              <execution>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>deploy-only</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
 
   <reporting>
@@ -774,7 +675,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M7</version>
+        <version>3.0.0-M8</version>
       </plugin>
     </plugins>
   </reporting>
