@@ -131,7 +131,7 @@ public class CypressE2E {
   }
 
   private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser, String specPattern) {
-    GenericContainer genericContainer = new GenericContainer<>("cypress/included:10.10.0")
+    GenericContainer genericContainer = new GenericContainer<>("cypress/included:12.5.1")
       //
       .withCommand("--browser", !isEmpty(browser) ? browser : "electron")
       .withAccessToHost(true)
