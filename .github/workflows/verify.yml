@@ -48,7 +48,7 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: yarn-v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
           restore-keys: |
             v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
             v3-${{ runner.os }}-

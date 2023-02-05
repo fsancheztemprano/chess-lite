@@ -78,7 +78,7 @@ springdoc:
     enabled: false
 logging:
   file:
-    name: logs/logs.log
+    name: logs.log
   logback:
     rollingpolicy:
       max-file-size: 1MB
