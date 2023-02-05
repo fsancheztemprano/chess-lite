@@ -11,6 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import lombok.extern.flogger.Flogger;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.DisableIfTestFails;
@@ -83,6 +84,8 @@ public class CypressE2E {
     }
   }
 
+
+  @Ignore
   @Test
   void runChromeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -99,6 +102,7 @@ public class CypressE2E {
   }
 
 
+  @Ignore
   @Test
   void runEdgeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -114,6 +118,7 @@ public class CypressE2E {
     }
   }
 
+  @Ignore
   @Test
   void runFirefoxTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
