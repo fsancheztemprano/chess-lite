@@ -11,65 +11,43 @@
     },
     "build": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "apps/api/target",
         "root": "apps/api",
-        "args": [
-          "compile"
-        ]
+        "args": ["compile"]
       }
     },
     "test": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "apps/api/target",
         "root": "apps/api",
-        "args": [
-          "verify",
-          "-P pact"
-        ]
+        "args": ["verify", "-P pact"]
       }
     },
     "ut": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "apps/api/target",
         "root": "apps/api",
-        "args": [
-          "test"
-        ]
+        "args": ["test"]
       }
     },
     "it": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "apps/api/target",
         "root": "apps/api",
-        "args": [
-          "verify",
-          "-Dtest=\"dev.kurama.api.null.**\"",
-          "-Dsurefire.failIfNoSpecifiedTests=false",
-          "-DskipUTs"
-        ]
+        "args": ["verify", "-Dtest=\"dev.kurama.api.null.**\"", "-Dsurefire.failIfNoSpecifiedTests=false", "-DskipUTs"]
       }
     },
     "pact": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "apps/api/target",
         "root": "apps/api",
@@ -85,9 +63,7 @@
     },
     "e2e": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "coverage/apps/app-e2e",
         "root": "apps/api",
@@ -102,9 +78,7 @@
     },
     "package": {
       "executor": "nx:run-commands",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "apps/api/target",
         "cwd": "apps/api",
@@ -115,9 +89,7 @@
     },
     "deploy": {
       "executor": "nx:run-commands",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "apps/api/target",
         "cwd": "apps/api",
@@ -152,8 +124,6 @@
     }
   },
   "tags": [],
-  "implicitDependencies": [
-    "consumer-pact",
-    "app"
-  ]
+  "implicitDependencies": ["consumer-pact", "app"],
+  "name": "api"
 }

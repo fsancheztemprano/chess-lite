@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { CoreContextMenuModule, IsMobileModule, NgLetModule, RouteUpButtonComponentModule } from '@app/ui/shared/core';
-import { SubscribeModule } from '@ngneat/subscribe';
+import { SubscribeDirective } from '@ngneat/subscribe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { LocalePickerComponent } from './components/locale-picker/locale-picker.component';
@@ -38,7 +38,7 @@ import { Iso3166Pipe } from './pipes/iso3166.pipe';
     MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
-    SubscribeModule,
+    SubscribeDirective,
     RouterModule,
     NgLetModule,
     CoreContextMenuModule,

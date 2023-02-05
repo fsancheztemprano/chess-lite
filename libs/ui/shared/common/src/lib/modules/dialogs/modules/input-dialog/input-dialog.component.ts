@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject, NgModule, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { setTemplateValidator } from '../../../../utils/forms/validators/set-template.validators';
 import { DialogsModule } from '../../dialogs.module';
 import { InputDialogData } from '../../model/dialogs.model';

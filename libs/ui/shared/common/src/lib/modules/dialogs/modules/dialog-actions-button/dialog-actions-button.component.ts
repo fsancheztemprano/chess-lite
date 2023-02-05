@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { ThemePalette } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogsModule } from '../../dialogs.module';

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, NgModule } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { DialogsModule } from '../../dialogs.module';
 import { ConfirmationDialogData } from '../../model/dialogs.model';
 import { DialogActionsButtonModule } from '../dialog-actions-button/dialog-actions-button.component';

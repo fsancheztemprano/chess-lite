@@ -26,5 +26,6 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "hal-form-client"
 }

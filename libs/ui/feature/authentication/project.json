@@ -28,5 +28,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "ui-feature-authentication"
 }
