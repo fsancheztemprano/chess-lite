@@ -48,10 +48,10 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
           restore-keys: |
-            v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
-            v3-${{ runner.os }}-
+            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
+            v4-${{ runner.os }}-
 
       - name: Java Dependencies
         working-directory: apps/api
