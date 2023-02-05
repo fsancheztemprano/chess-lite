@@ -6,52 +6,82 @@
     "clean": {
       "executor": "@nxrocks/nx-spring-boot:clean",
       "options": {
-        "root": "apps/api"
+        "root": "apps/api",
+        "args": [
+          "-B"
+        ]
       }
     },
     "build": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": ["compile"]
-      }
-    },
-    "test": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": ["verify", "-P pact"]
-      }
-    },
-    "ut": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": ["test"]
-      }
-    },
-    "it": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": ["verify", "-Dtest=\"dev.kurama.api.null.**\"", "-Dsurefire.failIfNoSpecifiedTests=false", "-DskipUTs"]
-      }
-    },
-    "pact": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
+          "compile"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "-B",
+          "verify",
+          "-P pact"
+        ]
+      }
+    },
+    "ut": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "-B",
+          "test"
+        ]
+      }
+    },
+    "it": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "-B",
+          "verify",
+          "-Dtest=\"dev.kurama.api.null.**\"",
+          "-Dsurefire.failIfNoSpecifiedTests=false",
+          "-DskipUTs"
+        ]
+      }
+    },
+    "pact": {
+      "executor": "@nxrocks/nx-spring-boot:clean",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "apps/api/target",
+        "root": "apps/api",
+        "args": [
+          "-B",
           "verify",
           "-P pact",
           "-D it.test=\"**/*PactIT.java\"",
@@ -63,11 +93,14 @@
     },
     "e2e": {
       "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "coverage/apps/app-e2e",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-P frontend,e2e",
           "-Dtest=\"dev.kurama.api.null.**\"",
@@ -78,23 +111,27 @@
     },
     "package": {
       "executor": "nx:run-commands",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "apps/api/target",
         "cwd": "apps/api",
         "commands": [
-          "mvn package -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend"
+          "mvn package -B -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend"
         ]
       }
     },
     "deploy": {
       "executor": "nx:run-commands",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "apps/api/target",
         "cwd": "apps/api",
         "commands": [
-          "mvn deploy -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend -P heroku-{args.stage}"
+          "mvn deploy -B -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend -P heroku-{args.stage}"
         ]
       }
     },
@@ -124,6 +161,9 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["consumer-pact", "app"],
+  "implicitDependencies": [
+    "consumer-pact",
+    "app"
+  ],
   "name": "api"
 }

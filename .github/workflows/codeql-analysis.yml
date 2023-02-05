@@ -51,7 +51,8 @@ jobs:
             v4-${{ runner.os }}-
 
       - name: Java Dependencies
-        run: mvn -f apps/api/pom.xml dependency:resolve dependency:resolve-plugins
+        working-directory: apps/api
+        run: mvn -B dependency:resolve dependency:resolve-plugins
 
       - name: Node Dependencies
         run: yarn install
