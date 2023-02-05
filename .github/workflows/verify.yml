@@ -44,22 +44,18 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Load Cache
-        uses: frango9000/cache@main
-        env:
-          cache-key: ${{ runner.os }}-v5
+      - name: Cache
+        uses: actions/cache@v3
         with:
           path: |
             ~/.m2
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: yarn-v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}
-            ${{ env.cache-key }}-development
-            ${{ env.cache-key }}
-          save-on-hit: true
+            v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
+            v3-${{ runner.os }}-
 
       - name: Java Dependencies
         working-directory: apps/api
