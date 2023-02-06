@@ -97,13 +97,9 @@ describe('User Management', () => {
       cy.get('app-user-management-preferences [formControlName="contentLanguage"]').click();
       cy.get('[data-cy="es-option"]').click();
 
-      cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('not.be.checked');
+      cy.get('app-user-management-preferences [formControlName="darkMode"] .mdc-switch--unselected').should('exist');
       cy.get('app-user-management-preferences [formControlName="darkMode"]').click();
-      cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should('be.checked');
-      cy.get('app-user-management-preferences [formControlName="darkMode"] [type="checkbox"]').should(
-        'have.value',
-        'on',
-      );
+      cy.get('app-user-management-preferences [formControlName="darkMode"] .mdc-switch--selected').should('exist');
 
       cy.get('app-user-management-preferences button[type="submit"]').click();
       cy.wait('@updateUser').then((xhr) => {
@@ -137,23 +133,18 @@ describe('User Management', () => {
       cy.get('app-user-management-role [formControlName="roleId"]').click();
       cy.get('[data-cy="MOD_ROLE-option"]').click();
 
-      cy.get('app-user-management-authorities [formControlName="active"]')
-        .contains('token:refresh')
-        .within(() => cy.get('[type="checkbox"]').should('be.checked'));
-      cy.get('app-user-management-authorities [formControlName="active"]')
-        .contains('profile:update')
-        .within(() => cy.get('[type="checkbox"]').should('be.checked'));
-      cy.get('app-user-management-authorities [formControlName="active"]')
-        .contains('profile:read')
-        .within(() => cy.get('[type="checkbox"]').should('be.checked'));
-      cy.get('app-user-management-authorities [formControlName="active"]')
-        .contains('profile:delete')
-        .within(() => cy.get('[type="checkbox"]').should('be.checked'));
-      cy.get('app-user-management-authorities [formControlName="active"]').contains('profile:delete').click();
-      cy.get('app-user-management-authorities [formControlName="active"]')
-        .contains('user:read')
-        .within(() => cy.get('[type="checkbox"]').should('not.be.checked'));
-      cy.get('app-user-management-authorities [formControlName="active"]').contains('user:read').click();
+      cy.get('app-user-management-authorities [data-cy="token:refresh-toggle"] [type="checkbox"]').should('be.checked');
+      cy.get('app-user-management-authorities [data-cy="profile:update-toggle"] [type="checkbox"]').should(
+        'be.checked',
+      );
+      cy.get('app-user-management-authorities [data-cy="profile:read-toggle"] [type="checkbox"]').should('be.checked');
+      cy.get('app-user-management-authorities [data-cy="profile:delete-toggle"] [type="checkbox"]').should(
+        'be.checked',
+      );
+      cy.get('app-user-management-authorities [data-cy="user:read-toggle"] [type="checkbox"]').should('not.be.checked');
+
+      cy.get('app-user-management-authorities [data-cy="profile:delete-toggle"] [type="checkbox"]').click();
+      cy.get('app-user-management-authorities [data-cy="user:read-toggle"] [type="checkbox"]').click();
 
       cy.get('app-user-management-authorities button').click();
       cy.wait('@updateUserAuthorities').then((xhr) => {
