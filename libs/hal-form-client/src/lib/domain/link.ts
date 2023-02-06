@@ -1,7 +1,7 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { INJECTOR_INSTANCE } from '../hal-form-client.module';
+import { HTTP_CLIENT } from '../hal-form-client.module';
 import { parseHeaders } from '../utils/headers.utils';
 import { parseUrl } from '../utils/url-template.utils';
 import { ContentType, LinkOptions } from './domain';
@@ -14,8 +14,6 @@ export interface ILink {
 }
 
 export class Link implements ILink {
-  private http?: HttpClient;
-
   public href: string;
   public templated?: boolean;
   public name?: string;
@@ -45,10 +43,7 @@ export class Link implements ILink {
   }
 
   public get<T>(options?: LinkOptions): Observable<HttpResponse<T>> {
-    if (!this.http) {
-      this.http = INJECTOR_INSTANCE.get(HttpClient);
-    }
-    return this.http.get<T>(parseUrl(this.href, options?.parameters), {
+    return HTTP_CLIENT.get<T>(parseUrl(this.href, options?.parameters), {
       headers: { Accept: ContentType.APPLICATION_JSON_HAL_FORMS, ...parseHeaders(options?.headers) },
       context: options?.context,
       observe: 'response',
@@ -57,6 +52,6 @@ export class Link implements ILink {
   }
 
   public toJson(): ILink {
-    return JSON.parse(JSON.stringify({ ...this, http: undefined }));
+    return JSON.parse(JSON.stringify({ ...this }));
   }
 }
