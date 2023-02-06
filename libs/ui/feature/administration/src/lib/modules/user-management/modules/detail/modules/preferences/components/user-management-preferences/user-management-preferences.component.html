@@ -7,23 +7,21 @@
   </div>
   <div class="separator"></div>
   <span>{{ t('label.content-language') }}</span>
-  <div *transloco="let l; read: 'core.locale'">
-    <mat-form-field appearance="fill">
-      <mat-label>{{ l('label.theme') }}</mat-label>
-      <mat-select formControlName="contentLanguage">
-        <mat-option
-          *ngFor="let language of localizationRepository.availableLanguages"
-          [value]="language"
-          [attr.data-cy]="language + '-option'"
-        >
-          {{ l(language) }}
-        </mat-option>
-      </mat-select>
-      <mat-error>
-        <app-form-error [control]="form.controls.contentLanguage" name="contentLanguage"></app-form-error>
-      </mat-error>
-    </mat-form-field>
-  </div>
+  <mat-form-field appearance="fill">
+    <mat-label>{{ t('label.theme') }}</mat-label>
+    <mat-select formControlName="contentLanguage">
+      <mat-option
+        *ngFor="let language of localizationRepository.availableLanguages"
+        [value]="language"
+        [attr.data-cy]="language + '-option'"
+      >
+        <ng-container *transloco="let l; read: 'core.locale'">{{ l(language) }}</ng-container>
+      </mat-option>
+    </mat-select>
+    <mat-error>
+      <app-form-error [control]="form.controls.contentLanguage" name="contentLanguage"></app-form-error>
+    </mat-error>
+  </mat-form-field>
   <button mat-raised-button color="primary" type="submit" [disabled]="!hasTemplateToUpdateUserPreferences()">
     {{ t('button.save') }}
   </button>
