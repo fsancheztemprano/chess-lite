@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { MatLegacySlideToggleChange as MatSlideToggleChange } from '@angular/material/legacy-slide-toggle';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Role } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 import { RoleManagementService } from '../../../../../../services/role-management.service';

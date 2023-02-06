@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToasterService } from '@app/ui/shared/app';
-import { matchingControlsValidators } from '@app/ui/shared/common';
+import { matchingControlsValidators, setTemplateValidatorsPipe } from '@app/ui/shared/common';
 import { AccountActivationInput } from '@app/ui/shared/domain';
 import { translate } from '@ngneat/transloco';
+import { first } from 'rxjs/operators';
 import { ActivationTokenService } from '../../../../services/activation-token.service';
 
 @Component({
@@ -33,6 +34,10 @@ export class AccountActivationComponent {
     private readonly toasterService: ToasterService,
   ) {
     this.route.queryParams.subscribe((params) => this.form.patchValue(params));
+    this.activationTokenService
+      .getActivateAccountTemplate()
+      .pipe(first(), setTemplateValidatorsPipe(this.form))
+      .subscribe();
   }
 
   onSubmit() {

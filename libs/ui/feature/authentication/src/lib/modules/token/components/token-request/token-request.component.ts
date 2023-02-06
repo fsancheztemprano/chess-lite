@@ -26,7 +26,7 @@ export class TokenRequestComponent {
     private readonly toasterService: ToasterService,
   ) {
     this.activationTokenService
-      .getRequestActivationTokenTemplate()
+      .getActivateAccountTemplate()
       .pipe(first(), setTemplateValidatorsPipe(this.form))
       .subscribe();
   }

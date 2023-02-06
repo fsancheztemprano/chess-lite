@@ -1,6 +1,6 @@
 import { DataSource } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
-import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MessageService } from '@app/ui/shared/app';
 import { SearchService } from '@app/ui/shared/core';

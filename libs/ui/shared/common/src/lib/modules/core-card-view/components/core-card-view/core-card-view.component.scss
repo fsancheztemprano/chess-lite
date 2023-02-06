@@ -6,10 +6,6 @@
     overflow-x: hidden;
     height: 100%;
 
-    ::ng-deep.mat-card-header-text {
-      margin: 0;
-    }
-
     mat-card-header {
       max-height: 50px;
       border-bottom: solid 1px;

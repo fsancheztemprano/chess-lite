@@ -1,5 +1,5 @@
 <form [formGroup]="form" novalidate (ngSubmit)="onSubmit()">
-  <mat-card *transloco="let t; read: TRANSLOCO_SCOPE">
+  <mat-card appearance="outlined" *transloco="let t; read: TRANSLOCO_SCOPE">
     <mat-card-content>
       <mat-form-field>
         <input matInput [placeholder]="t('placeholder.username')" formControlName="username" required />

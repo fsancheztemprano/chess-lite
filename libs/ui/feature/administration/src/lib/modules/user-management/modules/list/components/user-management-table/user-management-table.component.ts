@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angular/core';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
+import { MatTable } from '@angular/material/table';
 import { CoreContextMenuService } from '@app/ui/shared/core';
 import { User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
 import { TranslocoService } from '@ngneat/transloco';

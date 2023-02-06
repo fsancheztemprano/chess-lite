@@ -1,4 +1,4 @@
-<mat-card *isMobile="let isMobile" [ngClass]="{ isMobile }">
+<mat-card appearance="outlined" *isMobile="let isMobile" [ngClass]="{ isMobile }">
   <mat-card-header *ngIf="!isMobile">
     <app-route-up-button></app-route-up-button>
     <div class="header-title" [ngStyle]="{ 'flex-grow': titleRatio }">

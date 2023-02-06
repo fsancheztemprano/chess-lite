@@ -2,11 +2,11 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCardHarness } from '@angular/material/card/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyCardHarness as MatCardHarness } from '@angular/material/legacy-card/testing';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
@@ -68,7 +68,7 @@ describe('CoreCardViewComponent', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.debugElement.query(By.css('.mat-card-header'))).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('.mat-mdc-card-header'))).toBeFalsy();
   });
 
   it('should show header on desktop view', async () => {
@@ -76,7 +76,7 @@ describe('CoreCardViewComponent', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.debugElement.query(By.css('.mat-card-header'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.mat-mdc-card-header'))).toBeTruthy();
   });
 
   it('should show app-route-up-button', () => {
