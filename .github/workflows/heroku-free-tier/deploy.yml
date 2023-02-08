@@ -73,7 +73,7 @@
 #          env: ${{ inputs.env }}
 #
 #      - name: Deploy to Heroku
-#        uses: MansaGroup/nrwl-nx-action@v2
+#        uses: MansaGroup/nrwl-nx-action@v3
 #        env:
 #          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 #        with:
