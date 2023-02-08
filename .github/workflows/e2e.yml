@@ -44,7 +44,7 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-${{ github.run_id }}
           restore-keys: |
             v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-
             v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
