@@ -1,61 +1,65 @@
 <app-core-card-view *transloco="let t; read: TRANSLOCO_SCOPE" [title]="t('header')">
-  <table mat-table class="full-width-table" matSort [attr.aria-label]="t('header')">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="name" scope="col">{{ t('columns.name') }}</th>
-      <td mat-cell *matCellDef="let row">{{ row.name }}</td>
-    </ng-container>
+  <div class="role-management-table">
+    <table mat-table class="full-width-table" matSort [attr.aria-label]="t('header')">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name" scope="col">{{ t('columns.name') }}</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="authorities">
-      <th mat-header-cell *matHeaderCellDef scope="col">{{ t('columns.authorities') }}</th>
-      <td mat-cell *matCellDef="let row">{{ row.authorities.length }}</td>
-    </ng-container>
+      <ng-container matColumnDef="authorities">
+        <th mat-header-cell *matHeaderCellDef scope="col">{{ t('columns.authorities') }}</th>
+        <td mat-cell *matCellDef="let row">{{ row.authorities.length }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="canLogin">
-      <th mat-header-cell *matHeaderCellDef scope="col">
-        <mat-icon>vpn_lock</mat-icon>
-      </th>
-      <td mat-cell *matCellDef="let row">
-        <mat-icon>{{ 'lock' + (!row.canLogin ? '' : '_open') }}</mat-icon>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="canLogin">
+        <th mat-header-cell *matHeaderCellDef scope="col">
+          <mat-icon>vpn_lock</mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon>{{ 'lock' + (!row.canLogin ? '' : '_open') }}</mat-icon>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="coreRole">
-      <th mat-header-cell *matHeaderCellDef scope="col">
-        <mat-icon>gavel</mat-icon>
-      </th>
-      <td mat-cell *matCellDef="let row">
-        <mat-icon>{{ row.coreRole ? 'verified' : 'block' }}</mat-icon>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="coreRole">
+        <th mat-header-cell *matHeaderCellDef scope="col">
+          <mat-icon>gavel</mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon>{{ row.coreRole ? 'verified' : 'block' }}</mat-icon>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef scope="col"></th>
-      <td mat-cell *matCellDef="let row">
-        <a mat-icon-button [routerLink]="[row.id]" data-cy="edit-role-button">
-          <mat-icon>edit</mat-icon>
-        </a>
-        <button
-          mat-icon-button
-          [disabled]="!row.hasTemplate('delete')"
-          (click)="deleteRole(row)"
-          data-cy="delete-role-button"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef scope="col"></th>
+        <td mat-cell *matCellDef="let row">
+          <div class="role-actions">
+            <a mat-icon-button [routerLink]="[row.id]" data-cy="edit-role-button">
+              <mat-icon>edit</mat-icon>
+            </a>
+            <button
+              mat-icon-button
+              [disabled]="!row.hasTemplate('delete')"
+              (click)="deleteRole(row)"
+              data-cy="delete-role-button"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns" [attr.data-cy]="'role-item-' + row.name"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns" [attr.data-cy]="'role-item-' + row.name"></tr>
+    </table>
 
-  <mat-paginator
-    #paginator
-    [pageIndex]="0"
-    [length]="(dataSource.rolePage$ | async)?.page?.totalElements || 0"
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 20]"
-    aria-label="Select page"
-  >
-  </mat-paginator>
+    <mat-paginator
+      #paginator
+      [pageIndex]="0"
+      [length]="(dataSource.rolePage$ | async)?.page?.totalElements || 0"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 20]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
 </app-core-card-view>

@@ -1,15 +1,8 @@
 :host {
   width: 100%;
+  overflow: hidden;
 
   mat-card {
-    padding: 0;
-    overflow-x: hidden;
-    height: 100%;
-
-    ::ng-deep.mat-card-header-text {
-      margin: 0;
-    }
-
     mat-card-header {
       max-height: 50px;
       border-bottom: solid 1px;
@@ -17,7 +10,6 @@
       padding: 0 5px;
       width: 100%;
       display: flex;
-      overflow: hidden;
       align-items: center;
       box-sizing: border-box;
 
@@ -42,18 +34,22 @@
 
     mat-card-content {
       padding: 16px;
-      min-height: calc(100vh - 183px);
-      // min-height: calc(100vh - 64px - 24px - 50px - 1px - 32px - 12px);
-      // 100% - card top padding - header - header border - content v-paddings - card bottom padding
+      box-sizing: border-box;
+      overflow: auto;
+      min-height: calc(100vh - 152px);
+      max-height: calc(100vh - 152px);
+      // min-height: calc(100vh - 64px - 50px - 32px - 6px);
+      // 100% - toolbar - header - content v-paddings - card bottom padding
     }
 
     &.isMobile {
       border-radius: 0;
 
       mat-card-content {
-        padding: 12px;
-        min-height: calc(100vh - 80px);
-        // min-height: calc(100vh - 56px - 24px);
+        padding: 0;
+        min-height: calc(100vh - 59px);
+        max-height: calc(100vh - 59px);
+        // min-height: calc(100vh - 56px - 3px);
         // 100% - toolbar - both vertical paddings
       }
     }

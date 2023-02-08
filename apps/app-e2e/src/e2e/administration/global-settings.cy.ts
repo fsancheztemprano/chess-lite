@@ -11,7 +11,7 @@ describe('Global Settings Module', () => {
 
   it('should change default role', () => {
     cy.get('#mat-select-value-1').should('contain', 'USER_ROLE').click();
-    cy.get('#mat-option-1 > .mat-option-text').should('contain', 'MOD_ROLE').click();
+    cy.get('#mat-option-1').should('contain', 'MOD_ROLE').click();
     cy.get('button[data-cy="update-default-role"]').click();
     cy.wait('@patchGlobalSettings').then((interception) => {
       expect(interception.request?.body.defaultRoleId).not.to.eq(undefined);

@@ -53,10 +53,10 @@
 #             ~/.npm
 #             ./node_modules
 #             ./node
-#           key: v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+#           key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
 #           restore-keys: |
-#             v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
-#             v3-${{ runner.os }}-
+#             v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
+#             v4-${{ runner.os }}-
 #
 #      - name: Java Dependencies
 #        run: mvn -f apps/api/pom.xml dependency:resolve dependency:resolve-plugins
@@ -73,7 +73,7 @@
 #          env: ${{ inputs.env }}
 #
 #      - name: Deploy to Heroku
-#        uses: MansaGroup/nrwl-nx-action@v2
+#        uses: MansaGroup/nrwl-nx-action@v3
 #        env:
 #          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 #        with:

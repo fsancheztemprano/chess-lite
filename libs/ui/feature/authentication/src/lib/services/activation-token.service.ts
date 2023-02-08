@@ -27,6 +27,10 @@ export class ActivationTokenService {
     return this.halFormService.hasTemplate(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL);
   }
 
+  public getActivateAccountTemplate(): Observable<Template | null> {
+    return this.halFormService.getTemplate(ActivationTokenRelations.ACTIVATE_ACCOUNT_REL);
+  }
+
   public activateAccount(body: AccountActivationInput) {
     return this.halFormService.resource$.pipe(
       affordTemplate({ template: ActivationTokenRelations.ACTIVATE_ACCOUNT_REL, body }),

@@ -6,7 +6,10 @@
     "clean": {
       "executor": "@nxrocks/nx-spring-boot:clean",
       "options": {
-        "root": "apps/api"
+        "root": "apps/api",
+        "args": [
+          "-B"
+        ]
       }
     },
     "build": {
@@ -18,6 +21,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "compile"
         ]
       }
@@ -31,6 +35,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-P pact"
         ]
@@ -45,6 +50,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "test"
         ]
       }
@@ -58,6 +64,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-Dtest=\"dev.kurama.api.null.**\"",
           "-Dsurefire.failIfNoSpecifiedTests=false",
@@ -74,6 +81,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-P pact",
           "-D it.test=\"**/*PactIT.java\"",
@@ -92,6 +100,7 @@
         "outputPath": "coverage/apps/app-e2e",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-P frontend,e2e",
           "-Dtest=\"dev.kurama.api.null.**\"",
@@ -109,7 +118,7 @@
         "outputPath": "apps/api/target",
         "cwd": "apps/api",
         "commands": [
-          "mvn package -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend"
+          "mvn package -B -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend"
         ]
       }
     },
@@ -122,7 +131,7 @@
         "outputPath": "apps/api/target",
         "cwd": "apps/api",
         "commands": [
-          "mvn deploy -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend -P heroku-{args.stage}"
+          "mvn deploy -B -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend -P heroku-{args.stage}"
         ]
       }
     },
@@ -155,5 +164,6 @@
   "implicitDependencies": [
     "consumer-pact",
     "app"
-  ]
+  ],
+  "name": "api"
 }

@@ -1,4 +1,4 @@
-<mat-card *isMobile="let isMobile" [ngClass]="{ isMobile }">
+<mat-card appearance="outlined" *isMobile="let isMobile" [ngClass]="{ isMobile }">
   <mat-card-header *ngIf="!isMobile">
     <app-route-up-button></app-route-up-button>
     <div class="header-title" [ngStyle]="{ 'flex-grow': titleRatio }">
@@ -10,6 +10,7 @@
         mat-tab-nav-bar
         mat-align-tabs="end"
         mat-stretch-tabs
+        [tabPanel]="tabPanel"
         [ngStyle]="{ 'flex-grow': tabsRatio }"
       >
         <ng-container *ngFor="let tab of tabs">
@@ -26,6 +27,7 @@
           </a>
         </ng-container>
       </nav>
+      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
     </ng-container>
     <app-core-context-menu></app-core-context-menu>
   </mat-card-header>

@@ -45,13 +45,14 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
           restore-keys: |
-            v3-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
-            v3-${{ runner.os }}-
+            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
+            v4-${{ runner.os }}-
 
       - name: Java Dependencies
-        run: mvn -f apps/api/pom.xml dependency:resolve dependency:resolve-plugins
+        working-directory: apps/api
+        run: mvn -B dependency:resolve dependency:resolve-plugins
 
       - name: Node Dependencies
         run: yarn install

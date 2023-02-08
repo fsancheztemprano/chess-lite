@@ -1,0 +1,8 @@
+@mixin mat-icon-size($size: 24px) {
+  width: $size;
+  height: $size;
+  font-size: $size;
+  line-height: $size;
+  min-height: $size;
+  max-height: $size;
+}

@@ -33,5 +33,6 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["app", "api"]
+  "implicitDependencies": ["app", "api"],
+  "name": "app-e2e"
 }

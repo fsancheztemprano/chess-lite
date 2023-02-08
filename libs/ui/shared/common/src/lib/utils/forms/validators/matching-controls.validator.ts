@@ -10,6 +10,6 @@ export function matchingControlsValidators(
 
     return control && matchingControl && control.value === matchingControl.value
       ? null
-      : { mustMatch: { [controlName]: true } };
+      : { mustMatch: { [matchingControlName]: true } };
   };
 }

@@ -1,0 +1,96 @@
+name: E2E
+
+on:
+  push:
+  pull_request:
+  workflow_call:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      dependabot-run: ${{ github.actor == 'dependabot[bot]' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Sync PR with target
+        if: github.event_name == 'pull_request'
+        run: git merge ${{ github.event.pull_request.head.sha }}
+
+      - name: Get branch names
+        id: branch-name
+        uses: tj-actions/branch-names@v6
+
+      - name: Use Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          check-latest: true
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2
+            ~/.npm
+            ./node_modules
+            ./node
+          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-${{ github.run_id }}
+          restore-keys: |
+            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-
+            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
+            v4-${{ runner.os }}-
+
+      - name: Java Dependencies
+        working-directory: apps/api
+        run: mvn -B dependency:resolve dependency:resolve-plugins
+
+      - name: Node Dependencies
+        run: yarn install
+
+      - name: Build
+        uses: MansaGroup/nrwl-nx-action@v3
+        with:
+          targets: build
+          all: 'true'
+          parallel: 'true'
+
+      - name: E2E
+        uses: MansaGroup/nrwl-nx-action@v3
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        with:
+          targets: e2e
+          projects: api
+          parallel: 'false'
+
+      - name: Merge E2E Reports
+        if: env.dependabot-run == 'false' && always()
+        run: |
+          sudo chown -R 1001:1001 ./coverage/apps/app-e2e
+          npm run test:merge:e2e
+
+      - name: E2E Test Execution Report
+        uses: frango9000/test-execution-report@main
+        if: env.dependabot-run == 'false' && always()
+        with:
+          name: E2E Tests
+          path: coverage/apps/app-e2e/merged-e2e.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      - name: Upload E2E Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-errors
+          path: coverage/apps/app-e2e

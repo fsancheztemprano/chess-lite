@@ -1,7 +1,7 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { INJECTOR_INSTANCE } from '../hal-form-client.module';
+import { HTTP_CLIENT } from '../hal-form-client.module';
 import { parseHeaders } from '../utils/headers.utils';
 import { parseUrl } from '../utils/url-template.utils';
 import { AffordanceOptions, ContentType, HttpMethod, SUPPORTED_HTTP_METHODS } from './domain';
@@ -49,8 +49,6 @@ export interface ITemplate {
 }
 
 export class Template implements ITemplate {
-  private http?: HttpClient;
-
   public method: HttpMethod | string;
   public title?: string;
   public contentType?: ContentType | string;
@@ -94,10 +92,7 @@ export class Template implements ITemplate {
     if (!SUPPORTED_HTTP_METHODS.includes(this.method)) {
       return throwError(() => new Error(`Http Method ${this.method} not supported`));
     }
-    if (!this.http) {
-      this.http = INJECTOR_INSTANCE.get(HttpClient);
-    }
-    return this.http.request<T>(this.method, parseUrl(this.target, options?.parameters), {
+    return HTTP_CLIENT.request<T>(this.method, parseUrl(this.target, options?.parameters), {
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         ...this._getContentType(options?.body),
@@ -180,6 +175,6 @@ export class Template implements ITemplate {
   }
 
   public toJson(): ITemplate {
-    return JSON.parse(JSON.stringify({ ...this, http: undefined }));
+    return JSON.parse(JSON.stringify({ ...this }));
   }
 }
