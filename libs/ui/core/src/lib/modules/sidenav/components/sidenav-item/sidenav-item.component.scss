@@ -7,18 +7,23 @@
     .mat-expansion-panel {
       .mat-expansion-panel-header {
         padding-left: 0;
-
-        .sidenav-title {
-          &:hover,
-          &:focus {
-            background: transparent;
-          }
-        }
       }
     }
 
     mat-action-list {
       padding: 0 0 0 12px;
+    }
+  }
+
+  .sidenav-title-content,
+  .sidenav-option-content {
+    display: flex;
+  }
+
+  ::ng-deep .sidenav-expansion {
+    .mat-expansion-panel-body,
+    .mat-mdc-action-list {
+      padding: 0;
     }
   }
 }
