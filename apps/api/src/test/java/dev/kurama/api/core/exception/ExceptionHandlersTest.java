@@ -196,7 +196,7 @@ class ExceptionHandlersTest {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/notFoundException")
     public void notFoundException() throws EntityNotFoundException {
-      throw new NoSuchElementException(null);
+      throw new NoSuchElementException();
     }
 
     @ResponseStatus(HttpStatus.OK)

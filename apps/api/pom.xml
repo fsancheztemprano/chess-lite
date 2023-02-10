@@ -23,7 +23,7 @@
     <url>https://github.com/frango9000/board-games/actions</url>
   </ciManagement>
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
     <org.projectlombok.version>1.18.26</org.projectlombok.version>
     <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     <skipTests>false</skipTests>
