@@ -70,8 +70,8 @@ describe('User Profile Pact', () => {
           expect(user).toBeTruthy();
           expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
-          expect(user._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(user._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(user._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
+          expect(user._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           expect(user._templates?.default).toBeTruthy();
           expect(user.userPreferences).toBeTruthy();
           expect(user.userPreferences?._templates).toBeTruthy();
@@ -389,8 +389,8 @@ describe('User Profile Pact', () => {
           expect(userPreferences.id).toBe(interaction.willRespondWith.body.id);
           expect(userPreferences._links).toBeTruthy();
           expect(userPreferences._templates?.default).toBeTruthy();
-          expect(userPreferences._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(userPreferences._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(userPreferences._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
+          expect(userPreferences._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           done();
         });
       });

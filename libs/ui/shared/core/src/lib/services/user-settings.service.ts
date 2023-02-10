@@ -8,7 +8,7 @@ import {
   UserPreferences,
   UserUpdateProfileInput,
 } from '@app/ui/shared/domain';
-import { HalFormService, Resource, submitToTemplateOrThrowPipe } from '@hal-form-client';
+import { affordTemplate, HalFormService, Resource } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
 import { Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export class UserSettingsService {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PROFILE_REL, { body }),
+      affordTemplate({ template: CurrentUserRelations.UPDATE_PROFILE_REL, body }),
       tap((user) => this.actions.dispatch(updateSession({ user }))),
     );
   }
@@ -56,7 +56,7 @@ export class UserSettingsService {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.DELETE_ACCOUNT_REL),
+      affordTemplate({ template: CurrentUserRelations.DELETE_ACCOUNT_REL }),
       tap(() => this.actions.dispatch(clearSession())),
     );
   }
@@ -71,7 +71,7 @@ export class UserSettingsService {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.CHANGE_PASSWORD_REL, { body }),
+      affordTemplate({ template: CurrentUserRelations.CHANGE_PASSWORD_REL, body }),
     );
   }
 
@@ -88,7 +88,7 @@ export class UserSettingsService {
     return this.getCurrentUser().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.UPLOAD_AVATAR_REL, { body }),
+      affordTemplate({ template: CurrentUserRelations.UPLOAD_AVATAR_REL, body }),
       tap((user) => this.actions.dispatch(updateSession({ user }))),
     );
   }
@@ -103,7 +103,7 @@ export class UserSettingsService {
     return this.getCurrentUserPreferences().pipe(
       first(),
       filterNulls(),
-      submitToTemplateOrThrowPipe(CurrentUserRelations.UPDATE_PREFERENCES_REL, { body }),
+      affordTemplate({ template: CurrentUserRelations.UPDATE_PREFERENCES_REL, body }),
       tap((userPreferences: UserPreferences) => {
         this.actions.dispatch(updateSession({ userPreferences }));
       }),

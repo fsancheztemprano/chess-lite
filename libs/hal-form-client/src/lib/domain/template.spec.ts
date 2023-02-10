@@ -1,4 +1,4 @@
-import { HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { HalFormClientModule } from '../hal-form-client.module';
@@ -124,13 +124,13 @@ describe('Template', () => {
     });
   });
 
-  describe('afford', () => {
+  describe('request', () => {
     it('should afford template', (done) => {
       Template.of({
         method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
-        .afford<MockResource>({ body: { name: 'new name' } })
+        .request<MockResource>({ body: { name: 'new name' } })
         .subscribe((response: HttpResponse<MockResource>) => {
           expect(response).toBeTruthy();
           expect(response.body?.name).toBe('new name');
@@ -156,51 +156,177 @@ describe('Template', () => {
         method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
-        .afford<MockResource>()
+        .request<MockResource>()
         .subscribe((response: HttpResponse<MockResource>) => {
           expect(response).toBeTruthy();
           expect(response.body?.id).toEqual('1');
           done();
         });
 
-      httpTestingController
-        .expectOne((request) => {
-          return (
-            request.method === HttpMethod.PATCH &&
-            request.url === '/api/v1/users/1' &&
-            request.body === null &&
-            request.headers.keys().length === 1 &&
-            request.headers.get('Accept') === ContentType.APPLICATION_JSON_HAL_FORMS
-          );
-        })
-        .flush({ id: '1' });
+      const request = httpTestingController.expectOne('/api/v1/users/1');
+      request.flush({ id: '1' });
+      expect(request.request.method).toBe(HttpMethod.PATCH);
+      expect(request.request.body).toBeNull();
+      expect(request.request.headers.keys().length).toBe(1);
+      expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
     });
 
-    it('should afford template overriding headers', (done) => {
-      Template.of({
-        method: HttpMethod.PATCH,
-        target: '/api/v1/users/1',
-      })
-        .afford<MockResource>({
-          body: { name: 'new name' },
-          headers: { 'Content-type': ContentType.APPLICATION_JSON_HAL_FORMS },
+    describe('headers', () => {
+      it('should afford template with accept hal forms header and content type json', (done) => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
         })
-        .subscribe((response: HttpResponse<MockResource>) => {
-          expect(response).toBeTruthy();
-          expect(response.body?.name).toBe('new name');
-          done();
-        });
+          .request<MockResource>({
+            body: { name: 'new name' },
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            expect(response.body?.name).toBe('new name');
+            done();
+          });
 
-      httpTestingController
-        .expectOne((request) => {
-          return (
-            request.method === HttpMethod.PATCH &&
-            request.url === '/api/v1/users/1' &&
-            request.body?.name === 'new name' &&
-            request.headers.get('Content-type') === ContentType.APPLICATION_JSON_HAL_FORMS
-          );
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.APPLICATION_JSON);
+        expect(request.request.method).toBe(HttpMethod.PATCH);
+        expect(request.request.body).toEqual({ name: 'new name' });
+      });
+
+      it('should afford template with configured content type', (done) => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+          contentType: ContentType.APPLICATION_JSON_HAL,
         })
-        .flush({ name: 'new name' });
+          .request<MockResource>({
+            body: { name: 'new name' },
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.APPLICATION_JSON_HAL);
+        expect(request.request.body).toEqual({ name: 'new name' });
+      });
+
+      it('should afford template with text plain content', (done) => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            body: 'new name',
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.TEXT_PLAIN);
+        expect(request.request.body).toBe('new name');
+      });
+
+      it('should afford template with blob content type', (done) => {
+        const body = new Blob(['new name']);
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            body,
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBe(ContentType.APPLICATION_OCTET_STREAM);
+        expect(request.request.body).toBe(body);
+      });
+
+      it('should afford template with multipart form data content type', (done) => {
+        const file = new File(['new name'], 'new name.txt');
+        const body = new FormData();
+        body.append('avatar', file);
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            body,
+          })
+          .subscribe((response: HttpResponse<MockResource>) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(1);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('Content-type')).toBeFalsy();
+        expect(request.request.body).toBe(body);
+      });
+
+      it('should afford template custom headers object', () => {
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            headers: { 'X-Header': 'value' },
+          })
+          .subscribe();
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('X-Header')).toBe('value');
+      });
+
+      it('should afford template with HttpHeaders object merged', () => {
+        const headers = new HttpHeaders({
+          'X-Header': 'value',
+        });
+        Template.of({
+          method: HttpMethod.PATCH,
+          target: '/api/v1/users/1',
+        })
+          .request<MockResource>({
+            headers,
+          })
+          .subscribe();
+
+        const request = httpTestingController.expectOne('/api/v1/users/1');
+        request.flush({ name: 'new name' });
+
+        expect(request.request.headers.keys().length).toBe(2);
+        expect(request.request.headers.get('Accept')).toBe(ContentType.APPLICATION_JSON_HAL_FORMS);
+        expect(request.request.headers.get('X-Header')).toBe('value');
+      });
     });
 
     it('should parse target and afford template', (done) => {
@@ -208,7 +334,7 @@ describe('Template', () => {
         method: HttpMethod.PATCH,
         target: '/api/v1/users/{userId}',
       })
-        .afford<MockResource>({ body: { name: 'new name' }, parameters: { userId: 1 } })
+        .request<MockResource>({ body: { name: 'new name' }, parameters: { userId: 1 } })
         .subscribe((response: HttpResponse<MockResource>) => {
           expect(response).toBeTruthy();
           expect(response.body?.name).toBe('new name');
@@ -226,9 +352,21 @@ describe('Template', () => {
         .flush({ name: 'new name' });
     });
 
+    it('should throw error when no target available', (done: jest.DoneCallback) => {
+      Template.of({ method: 'UNSUPPORTED', target: '' })
+        .request()
+        .subscribe({
+          error: (error) => {
+            expect(error).toBeTruthy();
+            expect(error.message).toBe(`Template has no target`);
+            done();
+          },
+        });
+    });
+
     it('should throw error when using unsupported method', (done: jest.DoneCallback) => {
       Template.of({ method: 'UNSUPPORTED', target: '/api/v1/users/1' })
-        .afford()
+        .request()
         .subscribe({
           error: (error) => {
             expect(error).toBeTruthy();
@@ -239,13 +377,13 @@ describe('Template', () => {
     });
   });
 
-  describe('submit', () => {
-    it('should submit and instantiate the response', () => {
+  describe('afford', () => {
+    it('should afford and instantiate the response', () => {
       Template.of({
         method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
-        .submit<MockResource>({ body: { name: 'new name' } })
+        .afford<MockResource>({ body: { name: 'new name' } })
         .subscribe((resource: MockResource) => {
           expect(resource).toBeTruthy();
           expect(resource).toBeInstanceOf(Resource);
@@ -265,12 +403,12 @@ describe('Template', () => {
         .flush({ name: 'new name', _links: { self: { href: '/api/v1/users/1' } } });
     });
 
-    it('should submit and return an empty resource if response is empty', () => {
+    it('should afford and return an empty resource if response is empty', () => {
       Template.of({
         method: HttpMethod.PATCH,
         target: '/api/v1/users/1',
       })
-        .submit<MockResource>({ body: { name: 'new name' } })
+        .afford<MockResource>({ body: { name: 'new name' } })
         .subscribe((resource: MockResource) => {
           expect(resource).toBeTruthy();
           expect(resource).toBeInstanceOf(Resource);
@@ -290,9 +428,9 @@ describe('Template', () => {
     });
   });
 
-  describe('isAllowedTo', () => {
+  describe('canAfford', () => {
     it('should return true when no properties', () => {
-      expect(Template.of({}).isAllowedTo({ username: 'username' })).toBeTruthy();
+      expect(Template.of({}).canAfford({ username: 'username' })).toBeTruthy();
     });
 
     it('should return true for readonly property', () => {
@@ -304,7 +442,7 @@ describe('Template', () => {
               readOnly: true,
             },
           ],
-        }).isAllowedTo({ name: 'name', username: 'username' }),
+        }).canAfford({ name: 'name', username: 'username' }),
       ).toBeTruthy();
     });
 
@@ -317,7 +455,7 @@ describe('Template', () => {
               required: true,
             },
           ],
-        }).isAllowedTo({ username: 'new username' }),
+        }).canAfford({ username: 'new username' }),
       ).toBeTruthy();
     });
 
@@ -332,12 +470,12 @@ describe('Template', () => {
                 required: true,
               },
             ],
-          }).isAllowedTo({ username: nullish }),
+          }).canAfford({ username: nullish }),
         ).toBeTruthy();
       },
     );
 
-    it.each([null, undefined])('should return false if required property is %p', (nullish) => {
+    it('should return false if required property is undefined', () => {
       expect(
         Template.of({
           properties: [
@@ -346,7 +484,7 @@ describe('Template', () => {
               required: true,
             },
           ],
-        }).isAllowedTo({ username: nullish }),
+        }).canAfford({ username: undefined }),
       ).toBeFalsy();
     });
 
@@ -359,7 +497,7 @@ describe('Template', () => {
               required: true,
             },
           ],
-        }).isAllowedTo({ lastname: 'new lastname' }),
+        }).canAfford({ lastname: 'new lastname' }),
       ).toBeFalsy();
     });
 
@@ -372,7 +510,7 @@ describe('Template', () => {
               regex: '^[a-zA-Z]+$',
             },
           ],
-        }).isAllowedTo({ username: 'newusername' }),
+        }).canAfford({ username: 'newusername' }),
       ).toBeTruthy();
     });
 
@@ -385,7 +523,7 @@ describe('Template', () => {
               regex: '^[a-zA-Z]+$',
             },
           ],
-        }).isAllowedTo({ username: 'newusername0' }),
+        }).canAfford({ username: 'newusername0' }),
       ).toBeFalsy();
     });
 
@@ -398,8 +536,32 @@ describe('Template', () => {
               regex: '^[a-zA-Z]+$',
             },
           ],
-        }).isAllowedTo({}),
+        }).canAfford({}),
       ).toBeTruthy();
+    });
+
+    it('should return true if provided property is valid', () => {
+      expect(
+        Template.of({
+          properties: [{ name: 'username' }],
+        }).canAffordProperty('username', 'JohnDoe'),
+      ).toBeTruthy();
+    });
+
+    it('should return false if provided property is not valid', () => {
+      expect(
+        Template.of({
+          properties: [{ name: 'password' }],
+        }).canAffordProperty('username', 'JohnDoe'),
+      ).toBeFalsy();
+    });
+
+    it('should return false if provided property is null', () => {
+      expect(
+        Template.of({
+          properties: [{ name: 'password' }],
+        }).canAffordProperty(undefined, 'JohnDoe'),
+      ).toBeFalsy();
     });
   });
 

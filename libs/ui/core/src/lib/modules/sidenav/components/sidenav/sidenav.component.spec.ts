@@ -23,6 +23,9 @@ class StubAdministrationSidenavItemComponent {}
 @Component({ selector: 'app-authentication-sidenav-item', template: '' })
 class StubAuthenticationSidenavItemComponent {}
 
+@Component({ selector: 'app-build-info-sidenav-item', template: '' })
+class StubBuildInfoSidenavItemComponent {}
+
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
@@ -37,6 +40,7 @@ describe('SidenavComponent', () => {
         StubUserSettingsSidenavItemComponent,
         StubAdministrationSidenavItemComponent,
         StubAuthenticationSidenavItemComponent,
+        StubBuildInfoSidenavItemComponent,
       ],
       imports: [
         LayoutModule,
@@ -78,6 +82,10 @@ describe('SidenavComponent', () => {
 
   it('should render authentication sidenav item', () => {
     expect(fixture.nativeElement.querySelector('app-authentication-sidenav-item')).toBeTruthy();
+  });
+
+  it('should render build info sidenav item', () => {
+    expect(fixture.nativeElement.querySelector('app-build-info-sidenav-item')).toBeTruthy();
   });
 
   it('should toggle in sidenav service', () => {

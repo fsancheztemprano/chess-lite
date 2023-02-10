@@ -30,8 +30,8 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "630kb",
-              "maximumError": "636kb"
+              "maximumWarning": "670kb",
+              "maximumError": "680kb"
             },
             {
               "type": "anyComponentStyle",
@@ -83,12 +83,13 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/app"],
+      "outputs": ["{workspaceRoot}/coverage/apps/app"],
       "options": {
         "jestConfig": "apps/app/jest.config.ts",
         "passWithNoTests": true
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "app"
 }

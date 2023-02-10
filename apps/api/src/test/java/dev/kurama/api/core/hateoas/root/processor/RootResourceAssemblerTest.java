@@ -6,8 +6,10 @@ import static dev.kurama.api.core.authority.TokenAuthority.TOKEN_REFRESH;
 import static dev.kurama.api.core.constant.RestPathConstant.ADMINISTRATION_ROOT_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.AUTHENTICATION_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.BASE_PATH;
+import static dev.kurama.api.core.constant.RestPathConstant.BUILD_INFO_PATH;
 import static dev.kurama.api.core.constant.RestPathConstant.USER_PROFILE_PATH;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
+import static dev.kurama.api.core.hateoas.relations.ApplicationRelations.BUILD_INFO_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
@@ -64,7 +66,7 @@ class RootResourceAssemblerTest {
     void should_have_self_link() {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(5);
+      assertThat(actual.getLinks()).hasSize(6);
       assertThat(actual.getLink(SELF)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(BASE_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(2)
@@ -72,14 +74,15 @@ class RootResourceAssemblerTest {
           .extracting("name", "httpMethod")
           .anySatisfy(reqs -> assertThat(reqs.toList()).contains(DEFAULT, HttpMethod.HEAD))
           .anySatisfy(reqs -> assertThat(reqs.toList()).contains("root", HttpMethod.GET)));
-
+      assertThat(actual.getLink(BUILD_INFO_REL)).isPresent()
+        .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(BUILD_INFO_PATH));
     }
 
     @Test
     void should_have_login_link_and_affordance() {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(5);
+      assertThat(actual.getLinks()).hasSize(6);
       assertThat(actual.getLink(LOGIN_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(AUTHENTICATION_PATH + LOGIN_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(1)
@@ -92,7 +95,7 @@ class RootResourceAssemblerTest {
     void should_have_signup_link_and_affordance() {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(5);
+      assertThat(actual.getLinks()).hasSize(6);
       assertThat(actual.getLink(SIGNUP_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(AUTHENTICATION_PATH + SIGNUP_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(1)
@@ -105,7 +108,7 @@ class RootResourceAssemblerTest {
     void should_have_activation_token_link_and_affordance() {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(5);
+      assertThat(actual.getLinks()).hasSize(6);
       assertThat(actual.getLink(ACTIVATION_TOKEN_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(AUTHENTICATION_PATH + TOKEN_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(1)
@@ -118,7 +121,7 @@ class RootResourceAssemblerTest {
     void should_have_account_activation_link_and_affordance() {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(5);
+      assertThat(actual.getLinks()).hasSize(6);
       assertThat(actual.getLink(ACTIVATE_ACCOUNT_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(AUTHENTICATION_PATH + ACTIVATE_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(1)
@@ -140,7 +143,7 @@ class RootResourceAssemblerTest {
     void should_have_self_link() {
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(1);
+      assertThat(actual.getLinks()).hasSize(2);
       assertThat(actual.getLink(SELF)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(BASE_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(2)
@@ -156,7 +159,7 @@ class RootResourceAssemblerTest {
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(2);
+      assertThat(actual.getLinks()).hasSize(3);
       assertThat(actual.getLink(TOKEN_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(AUTHENTICATION_PATH + TOKEN_PATH));
     }
@@ -167,7 +170,7 @@ class RootResourceAssemblerTest {
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(2);
+      assertThat(actual.getLinks()).hasSize(3);
       assertThat(actual.getLink(ADMINISTRATION_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(ADMINISTRATION_ROOT_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(1)
@@ -182,7 +185,7 @@ class RootResourceAssemblerTest {
 
       RepresentationModel<RootResource> actual = assembler.assemble();
 
-      assertThat(actual.getLinks()).hasSize(2);
+      assertThat(actual.getLinks()).hasSize(3);
       assertThat(actual.getLink(CURRENT_USER_REL)).isPresent()
         .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(USER_PROFILE_PATH))
         .hasValueSatisfying(link -> assertThat(link.getAffordances()).hasSize(1)

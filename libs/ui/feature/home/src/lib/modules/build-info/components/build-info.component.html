@@ -1,0 +1,19 @@
+<ng-container *ngIf="this.route.snapshot.data.buildInfo as buildInfo">
+  <ng-container *transloco="let t; read: 'home.build-info'">
+    <div>
+      <span class="version">{{ t('version') + ': ' + buildInfo.version }}</span>
+    </div>
+    <div>
+      <span class="date">{{ t('date') + ': ' + buildInfo.date }}</span>
+    </div>
+    <div>
+      <span class="run">{{ t('run') + ': ' + buildInfo.run }}</span>
+    </div>
+    <div>
+      <span class="branch">{{ t('branch') + ': ' + buildInfo.branch }}</span>
+    </div>
+    <div>
+      <span class="stage">{{ t('stage') + ': ' + buildInfo.stage }}</span>
+    </div>
+  </ng-container>
+</ng-container>

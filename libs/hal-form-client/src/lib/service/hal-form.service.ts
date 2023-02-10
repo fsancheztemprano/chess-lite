@@ -28,7 +28,7 @@ export class HalFormService extends HalFormResourceService {
 
   public fetchRootResource(options?: LinkOptions): Observable<Resource> {
     return Link.ofHref(this._rootUrl)
-      .fetch<IResource>(options)
+      .get<IResource>(options)
       .pipe(
         map((response: HttpResponse<IResource>) => {
           if (!response.headers.get('Content-Type')?.includes(ContentType.APPLICATION_JSON_HAL_FORMS)) {

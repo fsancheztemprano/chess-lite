@@ -43,7 +43,7 @@ describe('User Settings Module >', () => {
   it('should upload user avatar', () => {
     cy.interceptApi('PATCH', '/user/profile/avatar').as('updateAvatar');
     cy.get('[data-cy="user-avatar-tile"]').click();
-    cy.get('.mat-card-content > .mat-icon').should('contain', 'person_outline');
+    cy.get('mat-card-content > .mat-icon').should('contain', 'person_outline');
 
     cy.get('input[type="file"]').selectFile(
       {

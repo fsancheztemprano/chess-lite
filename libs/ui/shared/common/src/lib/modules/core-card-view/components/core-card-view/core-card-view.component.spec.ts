@@ -68,7 +68,7 @@ describe('CoreCardViewComponent', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.debugElement.query(By.css('.mat-card-header'))).toBeFalsy();
+    expect(fixture.debugElement.query(By.css('.mat-mdc-card-header'))).toBeFalsy();
   });
 
   it('should show header on desktop view', async () => {
@@ -76,7 +76,7 @@ describe('CoreCardViewComponent', () => {
 
     fixture.detectChanges();
 
-    expect(fixture.debugElement.query(By.css('.mat-card-header'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.mat-mdc-card-header'))).toBeTruthy();
   });
 
   it('should show app-route-up-button', () => {

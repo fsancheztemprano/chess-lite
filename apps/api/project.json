@@ -6,7 +6,10 @@
     "clean": {
       "executor": "@nxrocks/nx-spring-boot:clean",
       "options": {
-        "root": "apps/api"
+        "root": "apps/api",
+        "args": [
+          "-B"
+        ]
       }
     },
     "build": {
@@ -18,6 +21,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "compile"
         ]
       }
@@ -31,6 +35,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-P pact"
         ]
@@ -45,6 +50,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "test"
         ]
       }
@@ -58,6 +64,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-Dtest=\"dev.kurama.api.null.**\"",
           "-Dsurefire.failIfNoSpecifiedTests=false",
@@ -74,6 +81,7 @@
         "outputPath": "apps/api/target",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-P pact",
           "-D it.test=\"**/*PactIT.java\"",
@@ -92,6 +100,7 @@
         "outputPath": "coverage/apps/app-e2e",
         "root": "apps/api",
         "args": [
+          "-B",
           "verify",
           "-P frontend,e2e",
           "-Dtest=\"dev.kurama.api.null.**\"",
@@ -101,60 +110,30 @@
       }
     },
     "package": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
+      "executor": "nx:run-commands",
       "outputs": [
         "{options.outputPath}"
       ],
       "options": {
         "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": [
-          "package",
-          "-DskipTests",
-          "-DskipITs",
-          "-P frontend"
+        "cwd": "apps/api",
+        "commands": [
+          "mvn package -B -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend"
         ]
       }
     },
     "deploy": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
+      "executor": "nx:run-commands",
       "outputs": [
         "{options.outputPath}"
       ],
       "options": {
         "outputPath": "apps/api/target",
-        "root": "apps/api"
-      },
-      "configurations": {
-        "production": {
-          "args": [
-            "deploy",
-            "-DskipTests",
-            "-DskipITs",
-            "-P frontend",
-            "-P heroku-production"
-          ]
-        },
-        "development": {
-          "args": [
-            "deploy",
-            "-DskipTests",
-            "-DskipITs",
-            "-P frontend",
-            "-P heroku-development"
-          ]
-        },
-        "feature": {
-          "args": [
-            "deploy",
-            "-DskipTests",
-            "-DskipITs",
-            "-P frontend",
-            "-P heroku-feature"
-          ]
-        }
-      },
-      "defaultConfiguration": "development"
+        "cwd": "apps/api",
+        "commands": [
+          "mvn deploy -B -DskipTests -DskipITs -Dproject.stage={args.stage} -Dproject.run={args.run} -P frontend -P heroku-{args.stage}"
+        ]
+      }
     },
     "run": {
       "executor": "@nxrocks/nx-spring-boot:run",
@@ -184,7 +163,7 @@
   "tags": [],
   "implicitDependencies": [
     "consumer-pact",
-    "app",
-    "app-e2e"
-  ]
+    "app"
+  ],
+  "name": "api"
 }

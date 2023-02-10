@@ -37,6 +37,9 @@ export namespace GetRootResource {
           'activate-account': {
             href: 'http://localhost/api/auth/activate',
           },
+          'build-info': {
+            href: 'http://localhost/api/build-info',
+          },
         },
         _templates: {
           ...defaultTemplate,
@@ -145,6 +148,9 @@ export namespace GetRootResource {
           self: {
             href: 'http://localhost/api',
           },
+          'build-info': {
+            href: 'http://localhost/api/build-info',
+          },
         },
         _templates: { ...defaultTemplate },
       },
@@ -172,6 +178,9 @@ export namespace GetRootResource {
           },
           token: {
             href: 'http://localhost/api/auth/token',
+          },
+          'build-info': {
+            href: 'http://localhost/api/build-info',
           },
         },
         _templates: { ...defaultTemplate },
@@ -201,6 +210,9 @@ export namespace GetRootResource {
           'current-user': {
             href: 'http://localhost/api/user/profile',
           },
+          'build-info': {
+            href: 'http://localhost/api/build-info',
+          },
         },
         _templates: { ...defaultTemplate },
       },
@@ -228,6 +240,9 @@ export namespace GetRootResource {
           },
           administration: {
             href: 'http://localhost/api/administration',
+          },
+          'build-info': {
+            href: 'http://localhost/api/build-info',
           },
         },
         _templates: { ...defaultTemplate },

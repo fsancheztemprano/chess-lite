@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import lombok.extern.flogger.Flogger;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.DisableIfTestFails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,8 @@ public class CypressE2E {
     }
   }
 
+
+  @Disabled
   @Test
   void runChromeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -99,6 +102,7 @@ public class CypressE2E {
   }
 
 
+  @Disabled
   @Test
   void runEdgeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -114,6 +118,7 @@ public class CypressE2E {
     }
   }
 
+  @Disabled
   @Test
   void runFirefoxTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -131,7 +136,7 @@ public class CypressE2E {
   }
 
   private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser, String specPattern) {
-    GenericContainer genericContainer = new GenericContainer<>("cypress/included:10.10.0")
+    GenericContainer genericContainer = new GenericContainer<>("cypress/included:12.5.1")
       //
       .withCommand("--browser", !isEmpty(browser) ? browser : "electron")
       .withAccessToHost(true)

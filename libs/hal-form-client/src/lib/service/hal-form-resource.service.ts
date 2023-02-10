@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, mergeMap, Observable, take } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AffordanceOptions, LinkOptions } from '../domain/domain';
 import { Link } from '../domain/link';
 import { IResource, Resource } from '../domain/resource';
 import { Template } from '../domain/template';
@@ -13,12 +14,12 @@ export class HalFormResourceService {
     this._rootResource.next(new Resource(iResource));
   }
 
-  public get resource$(): Observable<Resource> {
-    return this._rootResource.asObservable();
-  }
-
   public get resource(): Resource {
     return this._rootResource.getValue();
+  }
+
+  public get resource$(): Observable<Resource> {
+    return this._rootResource.asObservable();
   }
 
   public get resourceOnce$(): Observable<Resource> {
@@ -35,6 +36,13 @@ export class HalFormResourceService {
 
   public getLinkOrThrow(link?: string, errorMessage?: string | Error): Observable<Link> {
     return this.resource$.pipe(map((resource) => resource.getLinkOrThrow(link, errorMessage)));
+  }
+
+  public followLink<T extends Resource = Resource>(options?: LinkOptions & { link?: string }): Observable<T> {
+    return this.resource$.pipe(
+      take(1),
+      mergeMap((resource) => resource.followLink<T>(options)),
+    );
   }
 
   public hasEmbedded(embedded: string): Observable<boolean> {
@@ -71,5 +79,14 @@ export class HalFormResourceService {
 
   public hasTemplate(template?: string): Observable<boolean> {
     return this.resource$.pipe(map((resource) => resource.hasTemplate(template)));
+  }
+
+  public affordTemplate<T extends Resource = Resource>(
+    options?: AffordanceOptions & { template?: string },
+  ): Observable<T> {
+    return this.resource$.pipe(
+      take(1),
+      mergeMap((resource) => resource.affordTemplate<T>(options)),
+    );
   }
 }

@@ -8,11 +8,15 @@ application:
     - /api/auth/signup
     - /api/auth/token
     - /api/auth/activate
+    - /api/build-info
     - /websocket/**
   jwt:
     secret: 'secret'
   host_url: 'localhost'
   run_data_init: false
+  version: '@project.version@'
+  run: '@project.run@'
+  stage: '@project.stage@'
 server:
   port: 8888
   error:
@@ -74,7 +78,7 @@ springdoc:
     enabled: false
 logging:
   file:
-    name: logs/logs.log
+    name: logs.log
   logback:
     rollingpolicy:
       max-file-size: 1MB

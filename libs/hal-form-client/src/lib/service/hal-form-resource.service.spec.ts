@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 import { IResource, Resource } from '../domain/resource';
 import { HalFormClientModule } from '../hal-form-client.module';
 import { HalFormResourceService } from './hal-form-resource.service';
@@ -79,6 +80,17 @@ describe('HalFormResourceService', () => {
 
     service.getLinkOrThrow('self').subscribe(() => {
       expect(resourceSpy).toHaveBeenCalledWith('self', undefined);
+      done();
+    });
+  });
+
+  it('should merge map to resource.followLink', (done) => {
+    service.setResource({ ...mockResource, links: { update: { href: 'url' } } });
+    const resourceSpy = jest.spyOn(service['_rootResource'].value, 'followLink').mockReturnValueOnce(of(Resource.of()));
+
+    service.followLink({ link: 'update' }).subscribe(() => {
+      expect(resourceSpy).toHaveBeenCalledTimes(1);
+      expect(resourceSpy).toHaveBeenCalledWith({ link: 'update' });
       done();
     });
   });
@@ -163,6 +175,19 @@ describe('HalFormResourceService', () => {
 
     service.hasTemplate('update').subscribe(() => {
       expect(resourceSpy).toHaveBeenCalledWith('update');
+      done();
+    });
+  });
+
+  it('should merge map to resource.affordTemplate', (done) => {
+    service.setResource({ ...mockResource, _templates: { default: {}, update: { method: 'PATCH' } } });
+    const resourceSpy = jest
+      .spyOn(service['_rootResource'].value, 'affordTemplate')
+      .mockReturnValueOnce(of(Resource.of()));
+
+    service.affordTemplate({ template: 'update' }).subscribe(() => {
+      expect(resourceSpy).toHaveBeenCalledTimes(1);
+      expect(resourceSpy).toHaveBeenCalledWith({ template: 'update' });
       done();
     });
   });

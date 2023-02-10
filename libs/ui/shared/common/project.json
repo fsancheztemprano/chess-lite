@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ui/shared/common"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ui/shared/common"],
       "options": {
         "jestConfig": "libs/ui/shared/common/jest.config.ts",
         "passWithNoTests": true
@@ -25,5 +25,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "ui-shared-common"
 }

@@ -14,7 +14,11 @@
     },
     "pact": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["apps/api/target/test-classes/pact", "apps/api/target/test-classes/pact-messages", "coverage/pact"],
+      "outputs": [
+        "{workspaceRoot}/apps/api/target/test-classes/pact",
+        "{workspaceRoot}/apps/api/target/test-classes/pact-messages",
+        "{workspaceRoot}/coverage/pact"
+      ],
       "options": {
         "jestConfig": "libs/consumer-pact/jest.config.ts",
         "passWithNoTests": true
@@ -27,5 +31,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "consumer-pact"
 }

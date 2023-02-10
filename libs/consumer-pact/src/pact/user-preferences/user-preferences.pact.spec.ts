@@ -70,8 +70,8 @@ describe('User Preferences Pact', () => {
           expect(response.darkMode).toBe(interaction.willRespondWith.body.darkMode);
           expect(response.contentLanguage).toBe(interaction.willRespondWith.body.contentLanguage);
           expect(response._links).toBeTruthy();
-          expect(response._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(response._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(response._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
+          expect(response._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           expect(response._templates?.default).toBeTruthy();
           done();
         });
@@ -181,8 +181,8 @@ describe('User Preferences Pact', () => {
             expect(response.darkMode).toBe(interaction.willRespondWith.body.darkMode);
             expect(response.contentLanguage).toBe(interaction.willRespondWith.body.contentLanguage);
             expect(response._links).toBeTruthy();
-            expect(response._links?.self.href).toBe(interaction.willRespondWith.body._links.self.href);
-            expect(response._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
+            expect(response._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
+            expect(response._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
             expect(response._templates?.default).toBeTruthy();
             done();
           });

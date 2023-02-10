@@ -89,7 +89,7 @@ describe('Role Pacts', () => {
           expect(rolePage._embedded.roleModels).toHaveLength(
             interaction.willRespondWith.body._embedded.roleModels.length,
           );
-          expect(rolePage?._links?.ws.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(rolePage?._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           done();
         });
       });
@@ -134,7 +134,7 @@ describe('Role Pacts', () => {
           expect(role).toBeTruthy();
           expect(role.id).toEqual(interaction.willRespondWith.body.id);
           expect(role.name).toEqual(interaction.willRespondWith.body.name);
-          expect(role._links?.ws.href).toStrictEqual(interaction.willRespondWith.body._links.ws.href);
+          expect(role._links?.ws?.href).toStrictEqual(interaction.willRespondWith.body._links.ws.href);
           expect(role.authorities).toHaveLength(3);
           done();
         });

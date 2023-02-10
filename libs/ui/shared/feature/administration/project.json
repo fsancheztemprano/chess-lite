@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ui/shared/feature/administration"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ui/shared/feature/administration"],
       "options": {
         "jestConfig": "libs/ui/shared/feature/administration/jest.config.ts",
         "passWithNoTests": true
@@ -28,5 +28,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "ui-shared-feature-administration"
 }

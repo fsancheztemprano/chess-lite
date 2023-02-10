@@ -1,11 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
+
+const loadHomeTileModule = () => import('./modules/home-tile/home-tile.module').then((m) => m.HomeTileModule);
+
+const loadBuildInfoModule = () => import('./modules/build-info/build-info.module').then((m) => m.BuildInfoModule);
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    loadChildren: loadHomeTileModule,
+    pathMatch: 'full',
+  },
+  {
+    path: 'build-info',
+    loadChildren: loadBuildInfoModule,
+    data: { breadcrumb: { i18n: 'build-info.title' } },
   },
   {
     path: '**',

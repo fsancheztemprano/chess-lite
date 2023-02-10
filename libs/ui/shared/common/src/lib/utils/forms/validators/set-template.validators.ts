@@ -5,7 +5,7 @@ import { getPropertyValidators } from './get-property.validators';
 export function setTemplateValidator(control: AbstractControl, key: string, template: Template | null | undefined) {
   const propertyValidators = getPropertyValidators(template, key);
   if (propertyValidators.length) {
-    control.setValidators(propertyValidators);
+    control.addValidators(propertyValidators);
   }
 }
 

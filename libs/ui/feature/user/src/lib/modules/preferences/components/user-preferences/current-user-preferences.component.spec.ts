@@ -10,7 +10,7 @@ import { stubToasterServiceProvider } from '@app/ui/shared/app';
 import { FormErrorModule, StubCoreCardViewComponent } from '@app/ui/shared/common';
 import { stubLocalizationRepositoryProvider, stubUserSettingsServiceProvider } from '@app/ui/shared/core';
 import { getTranslocoModule } from '@app/ui/testing';
-import { SubscribeModule } from '@ngneat/subscribe';
+import { SubscribeDirective } from '@ngneat/subscribe';
 import { CurrentUserPreferencesComponent } from './current-user-preferences.component';
 
 describe('CurrentUserPreferencesComponent', () => {
@@ -28,7 +28,7 @@ describe('CurrentUserPreferencesComponent', () => {
         MatFormFieldModule,
         MatSelectModule,
         FormErrorModule,
-        SubscribeModule,
+        SubscribeDirective,
         getTranslocoModule(),
       ],
       declarations: [CurrentUserPreferencesComponent, StubCoreCardViewComponent],

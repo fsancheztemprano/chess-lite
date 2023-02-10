@@ -18,6 +18,6 @@ export class ServiceLogsService {
   }
 
   public deleteServiceLogs(serviceLogs: ServiceLogs) {
-    return serviceLogs.submitToTemplateOrThrow(AdministrationRelations.DELETE_SERVICE_LOGS_REL);
+    return serviceLogs.affordTemplate({ template: AdministrationRelations.DELETE_SERVICE_LOGS_REL });
   }
 }

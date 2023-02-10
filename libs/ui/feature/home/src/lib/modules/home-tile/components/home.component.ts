@@ -16,7 +16,7 @@ export class HomeComponent {
       icon: 'person',
       title$: this.translocoService.selectTranslate('home.main.tiles.user-settings.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.user-settings.description'),
-      route: 'user',
+      route: '/user',
       visible$: this.halFormService.hasLink(CurrentUserRelations.CURRENT_USER_REL),
     },
     {
@@ -24,7 +24,7 @@ export class HomeComponent {
       icon: 'admin_panel_settings',
       title$: this.translocoService.selectTranslate('home.main.tiles.administration.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.administration.description'),
-      route: 'administration',
+      route: '/administration',
       visible$: this.halFormService.hasLink(AdministrationRelations.ADMINISTRATION_REL),
     },
     {
@@ -32,7 +32,7 @@ export class HomeComponent {
       icon: 'login',
       title$: this.translocoService.selectTranslate('home.main.tiles.login.title'),
       subtitle$: this.translocoService.selectTranslate('home.main.tiles.login.description'),
-      route: 'auth',
+      route: '/auth',
       visible$: this.halFormService.hasLink(AuthRelations.LOGIN_RELATION),
     },
     {

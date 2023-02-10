@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ui/shared/domain"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ui/shared/domain"],
       "options": {
         "jestConfig": "libs/ui/shared/domain/jest.config.ts",
         "passWithNoTests": true
@@ -25,5 +25,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "ui-shared-domain"
 }

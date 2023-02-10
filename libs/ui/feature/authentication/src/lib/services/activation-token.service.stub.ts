@@ -6,6 +6,7 @@ import { ActivationTokenService } from './activation-token.service';
 @Injectable({ providedIn: 'root' })
 export class StubActivationTokenService implements Partial<ActivationTokenService> {
   getRequestActivationTokenTemplate = (): Observable<Template | null> => of({} as never);
+  getActivateAccountTemplate = (): Observable<Template | null> => of({} as never);
 }
 
 export const stubActivationTokenServiceProvider = {

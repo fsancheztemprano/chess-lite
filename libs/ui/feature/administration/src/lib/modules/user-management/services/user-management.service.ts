@@ -31,7 +31,7 @@ export class UserManagementService extends HalFormResourceService {
 
   public createUser(body: UserInput): Observable<User> {
     return this.resourceOnce$.pipe(
-      switchMap((resource) => resource.getTemplateOrThrow(UserManagementRelations.USER_CREATE_REL).submit({ body })),
+      switchMap((resource) => resource.getTemplateOrThrow(UserManagementRelations.USER_CREATE_REL).afford({ body })),
     );
   }
 }

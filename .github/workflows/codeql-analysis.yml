@@ -37,25 +37,22 @@ jobs:
         id: branch-name
         uses: tj-actions/branch-names@v6
 
-      - name: Load Cache
-        uses: frango9000/cache@main
-        env:
-          cache-key: ${{ runner.os }}-v5
+      - name: Cache
+        uses: actions/cache@v3
         with:
           path: |
             ~/.m2
             ~/.npm
             ./node_modules
             ./node
-          key: ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
           restore-keys: |
-            ${{ env.cache-key }}-${{ steps.branch-name.outputs.current_branch }}
-            ${{ env.cache-key }}-development
-            ${{ env.cache-key }}
-          save-on-hit: false
+            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
+            v4-${{ runner.os }}-
 
       - name: Java Dependencies
-        run: mvn -f apps/api/pom.xml dependency:resolve dependency:resolve-plugins
+        working-directory: apps/api
+        run: mvn -B dependency:resolve dependency:resolve-plugins
 
       - name: Node Dependencies
         run: yarn install
@@ -67,7 +64,7 @@ jobs:
           languages: java, javascript
 
       - name: Build
-        uses: MansaGroup/nrwl-nx-action@v2
+        uses: MansaGroup/nrwl-nx-action@v3
         with:
           targets: build
           all: 'true'

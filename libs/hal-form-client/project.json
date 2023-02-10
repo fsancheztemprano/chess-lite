@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/hal-form-client"],
+      "outputs": ["{workspaceRoot}/coverage/libs/hal-form-client"],
       "options": {
         "jestConfig": "libs/hal-form-client/jest.config.ts",
         "passWithNoTests": true
@@ -26,5 +26,6 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "hal-form-client"
 }
