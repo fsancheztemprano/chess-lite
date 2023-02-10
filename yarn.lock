@@ -3487,7 +3487,7 @@
     "@angular-devkit/schematics" "15.1.4"
     jsonc-parser "3.2.0"
 
-"@schematics/angular@~15.1.0":
+"@schematics/angular@15.1.5", "@schematics/angular@~15.1.0":
   version "15.1.5"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-15.1.5.tgz#ef7d00129169d2707dab6a527a5648c217cfeba2"
   integrity sha512-mw5adVNSLX8h6c8F0tNEe11LVOlj100c1PrPggZNVz9nd2fwb32SVFSx+FmOxLVfE1kfnPgsvLpDH23z8SF6bg==
