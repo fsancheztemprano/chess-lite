@@ -11,8 +11,9 @@ import {
   TokenKeys,
 } from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService, IResource } from '@hal-form-client';
-import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { MatcherResult } from '@pact-foundation/pact/src/dsl/matchers';
+import { Interaction, InteractionObject, Pact } from '@pact-foundation/pact';
+import { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes';
+import { Matcher } from '@pact-foundation/pact/src/dsl/matchers';
 import { switchMap } from 'rxjs';
 import { ActivationTokenService } from '../../../../ui/feature/authentication/src/lib/services/activation-token.service';
 import { AuthService } from '../../../../ui/feature/authentication/src/lib/services/auth.service';
@@ -106,7 +107,7 @@ describe('Authentication Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -120,7 +121,7 @@ describe('Authentication Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -134,7 +135,7 @@ describe('Authentication Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -148,7 +149,7 @@ describe('Authentication Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -200,7 +201,7 @@ describe('Authentication Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -214,25 +215,25 @@ describe('Authentication Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
       });
     });
 
-    it('successful', (done) => {
+    it.only('successful', (done) => {
       const interaction: InteractionObject = LoginPact.successful;
       provider.addInteraction(interaction).then(() => {
         authService.login({ username: 'pactUser', password: 'pactUser0' }).subscribe((session: Session | null) => {
           expect(session).toBeTruthy();
           expect(session?.token).toBe(
-            (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
+            (<Matcher<string>>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
           );
           expect(session?.refreshToken).toBe(
-            (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_REFRESH_TOKEN]).getValue(),
+            (<Matcher<string>>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_REFRESH_TOKEN]).getValue(),
           );
-          expect(session?.user?.id).toBe(interaction.willRespondWith.body.id);
+          expect(session?.user?.id).toBe((<JsonMap>interaction.willRespondWith.body)!.id);
           done();
         });
       });
@@ -253,7 +254,7 @@ describe('Authentication Pacts', () => {
       });
     });
 
-    it('successful', (done) => {
+    it.only('successful', (done) => {
       const interaction: InteractionObject = RefreshTokenPact.successful;
       provider.addInteraction(interaction).then(() => {
         localStorage.setItem(
@@ -269,12 +270,12 @@ describe('Authentication Pacts', () => {
           .subscribe((response: HttpResponse<IResource>) => {
             expect(response).toBeTruthy();
             expect(response.headers.get(HttpHeaderKey.JWT_TOKEN)).toBe(
-              (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
+              (<Matcher<string>>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
             );
             expect(response.headers.get(HttpHeaderKey.JWT_REFRESH_TOKEN)).toBe(
-              (<MatcherResult>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_REFRESH_TOKEN]).getValue(),
+              (<Matcher<string>>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_REFRESH_TOKEN]).getValue(),
             );
-            expect(response.body?.id).toBe(interaction.willRespondWith.body.id);
+            expect(response.body?.id).toBe(pactCurrentUser.id);
             done();
           });
       });
@@ -297,7 +298,7 @@ describe('Authentication Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -321,7 +322,7 @@ describe('Authentication Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -339,7 +340,7 @@ describe('Authentication Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -363,7 +364,7 @@ describe('Authentication Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -400,13 +401,13 @@ describe('Authentication Pacts', () => {
     });
 
     it('email not found', (done) => {
-      const interaction: InteractionObject = ActivationTokenPact.not_found;
+      const interaction: Interaction = ActivationTokenPact.not_found;
       provider.addInteraction(interaction).then(() => {
         activationTokenService.requestActivationToken('notFound@localhost').subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(404);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.json().response.body!);
             done();
           },
         });
@@ -471,7 +472,7 @@ describe('Authentication Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(404);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });

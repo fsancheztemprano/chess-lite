@@ -2,9 +2,9 @@ import { HttpHeaderKey, UserPreferencesAuthority } from '@app/ui/shared/domain';
 import { defaultTemplate, updateUserPreferencesTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { pactUserPreferences } from '../../mocks/user.mock';
-import { bearer } from '../../utils/pact.utils';
+import { bearer, JsonObject } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 
 export namespace GetUserPreferencesPact {
@@ -12,7 +12,7 @@ export namespace GetUserPreferencesPact {
     state: 'stateless',
     uponReceiving: 'get user preferences',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -30,7 +30,7 @@ export namespace GetUserPreferencesPact {
     state: 'stateless',
     uponReceiving: 'get user preferences with update',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -51,7 +51,7 @@ export namespace GetUserPreferencesPact {
         ...pactUserPreferences,
         _templates: {
           ...defaultTemplate,
-          ...updateUserPreferencesTemplate,
+          ...(updateUserPreferencesTemplate as JsonObject),
         },
       },
     },
@@ -61,7 +61,7 @@ export namespace GetUserPreferencesPact {
     state: 'stateless',
     uponReceiving: 'get user preferences not found',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/preferences/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -81,7 +81,7 @@ export namespace GetUserPreferencesPact {
     state: 'stateless',
     uponReceiving: 'get user preferences unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -103,7 +103,7 @@ export namespace UpdateUserPreferencesPact {
     state: 'stateless',
     uponReceiving: 'update user preferences',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -132,7 +132,7 @@ export namespace UpdateUserPreferencesPact {
     state: 'stateless',
     uponReceiving: 'update user preferences not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/preferences/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -156,7 +156,7 @@ export namespace UpdateUserPreferencesPact {
     state: 'stateless',
     uponReceiving: 'update user preferences unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/preferences/pactUserPreferencesId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,

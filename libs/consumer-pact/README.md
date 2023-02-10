@@ -38,7 +38,7 @@ describe('Test Resource Pacts', () => {
         state: 'stateless',
         uponReceiving: 'sync request',
         withRequest: {
-          method: HTTPMethod.GET,
+          method: HTTPMethods.GET,
           path: '/api/sync',
         },
         willRespondWith: {
@@ -51,7 +51,7 @@ describe('Test Resource Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         httpClient.get('/api/sync').subscribe((response: { msg?: string }) => {
           expect(response).toBeTruthy();
-          expect(response.msg).toBe(interaction.willRespondWith.body.msg);
+          expect(response.msg).toBe((<JsonObject>interaction.willRespondWith.body).msg);
           done();
         });
       });
@@ -62,7 +62,7 @@ describe('Test Resource Pacts', () => {
         state: 'async stateless',
         uponReceiving: 'request',
         withRequest: {
-          method: HTTPMethod.GET,
+          method: HTTPMethods.GET,
           path: '/api/async',
         },
         willRespondWith: {
@@ -77,7 +77,7 @@ describe('Test Resource Pacts', () => {
       const response: { msg?: string } = await firstValueFrom(httpClient.get('/api/async'));
 
       expect(response).toBeTruthy();
-      expect(response.msg).toBe(interaction.willRespondWith.body.msg);
+      expect(response.msg).toBe((<JsonObject>interaction.willRespondWith.body).msg);
     });
   });
 });

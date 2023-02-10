@@ -14,7 +14,7 @@ import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { RoleManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactForResource } from '../../utils/pact.utils';
+import { JsonObject, pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import { CreateRolePact, DeleteRolePact, GetAllRolesPact, GetOneRolePact, UpdateRolePact } from './role.pact';
 
@@ -87,9 +87,9 @@ describe('Role Pacts', () => {
         service.fetchRoles().subscribe((rolePage) => {
           expect(rolePage?._embedded?.roleModels).toBeTruthy();
           expect(rolePage._embedded.roleModels).toHaveLength(
-            interaction.willRespondWith.body._embedded.roleModels.length,
+            (<JsonObject>interaction.willRespondWith.body)._embedded.roleModels.length,
           );
-          expect(rolePage?._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(rolePage?._links?.ws?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.ws.href);
           done();
         });
       });
@@ -132,9 +132,9 @@ describe('Role Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
-          expect(role.id).toEqual(interaction.willRespondWith.body.id);
-          expect(role.name).toEqual(interaction.willRespondWith.body.name);
-          expect(role._links?.ws?.href).toStrictEqual(interaction.willRespondWith.body._links.ws.href);
+          expect(role.id).toEqual((<JsonObject>interaction.willRespondWith.body).id);
+          expect(role.name).toEqual((<JsonObject>interaction.willRespondWith.body).name);
+          expect(role._links?.ws?.href).toStrictEqual((<JsonObject>interaction.willRespondWith.body)._links.ws.href);
           expect(role.authorities).toHaveLength(3);
           done();
         });
@@ -150,8 +150,8 @@ describe('Role Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
-          expect(role.id).toEqual(interaction.willRespondWith.body.id);
-          expect(role.name).toEqual(interaction.willRespondWith.body.name);
+          expect(role.id).toEqual((<JsonObject>interaction.willRespondWith.body).id);
+          expect(role.name).toEqual((<JsonObject>interaction.willRespondWith.body).name);
           expect(role.hasTemplate(RoleManagementRelations.ROLE_UPDATE_REL)).toBeTruthy();
           done();
         });
@@ -167,8 +167,8 @@ describe('Role Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.fetchOneRole('pactRoleId').subscribe((role) => {
           expect(role).toBeTruthy();
-          expect(role.id).toEqual(interaction.willRespondWith.body.id);
-          expect(role.name).toEqual(interaction.willRespondWith.body.name);
+          expect(role.id).toEqual((<JsonObject>interaction.willRespondWith.body).id);
+          expect(role.name).toEqual((<JsonObject>interaction.willRespondWith.body).name);
           expect(role.hasTemplate(RoleManagementRelations.ROLE_DELETE_REL)).toBeTruthy();
           done();
         });
@@ -236,9 +236,9 @@ describe('Role Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.createRole(rolePage, 'NEW_PACT_ROLE').subscribe((role) => {
           expect(role).toBeTruthy();
-          expect(role.id).toEqual(interaction.willRespondWith.body.id);
-          expect(role.name).toEqual(interaction.willRespondWith.body.name);
-          expect(role.authorities).toHaveLength(interaction.willRespondWith.body.authorities.min);
+          expect(role.id).toEqual((<JsonObject>interaction.willRespondWith.body).id);
+          expect(role.name).toEqual((<JsonObject>interaction.willRespondWith.body).name);
+          expect(role.authorities).toHaveLength((<JsonObject>interaction.willRespondWith.body).authorities.min);
           done();
         });
       });
@@ -314,9 +314,9 @@ describe('Role Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.updateRole(pactRole, { name: 'PACT_ROLE' }).subscribe((role) => {
           expect(role).toBeTruthy();
-          expect(role.id).toEqual(interaction.willRespondWith.body.id);
-          expect(role.name).toEqual(interaction.willRespondWith.body.name);
-          expect(role.authorities).toHaveLength(interaction.willRespondWith.body.authorities.length);
+          expect(role.id).toEqual((<JsonObject>interaction.willRespondWith.body).id);
+          expect(role.name).toEqual((<JsonObject>interaction.willRespondWith.body).name);
+          expect(role.authorities).toHaveLength((<JsonObject>interaction.willRespondWith.body).authorities.length);
           done();
         });
       });

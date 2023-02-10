@@ -12,7 +12,7 @@ import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { AuthorityManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/authority-management.service';
 import { RoleManagementService } from '../../../../ui/feature/administration/src/lib/modules/role-management/services/role-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactForResource } from '../../utils/pact.utils';
+import { JsonObject, pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import { GetAllAuthoritiesPact, GetOneAuthorityPact } from './authority.pact';
 
@@ -58,7 +58,9 @@ describe('Authority Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.getAllAuthorities().subscribe((authorities) => {
           expect(authorities).toBeTruthy();
-          expect(authorities).toHaveLength(interaction.willRespondWith.body._embedded.authorityModels.length);
+          expect(authorities).toHaveLength(
+            (<JsonObject>interaction.willRespondWith.body)._embedded.authorityModels.length,
+          );
           done();
         });
       });
@@ -72,7 +74,7 @@ describe('Authority Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -89,8 +91,8 @@ describe('Authority Pacts', () => {
           .follow()
           .subscribe((authority) => {
             expect(authority).toBeTruthy();
-            expect(authority).toMatchObject(interaction.willRespondWith.body);
-            expect(authority.id).toEqual(interaction.willRespondWith.body.id);
+            expect(authority).toMatchObject(interaction.willRespondWith.body!);
+            expect(authority.id).toEqual((<JsonObject>interaction.willRespondWith.body).id);
             done();
           });
       });

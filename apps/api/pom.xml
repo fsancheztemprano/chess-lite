@@ -506,7 +506,7 @@
 
   <profiles>
     <profile>
-      <id>pact</id>
+      <id>pact-consumer</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
@@ -555,7 +555,16 @@
               </execution>
             </executions>
           </plugin>
-
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>pact-producer</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
           <plugin>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-contract-maven-plugin</artifactId>

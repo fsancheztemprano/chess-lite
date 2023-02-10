@@ -7,8 +7,8 @@ import {
   uploadAvatarTemplate,
 } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
-import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { Interaction, InteractionObject } from '@pact-foundation/pact';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer, jwt } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
@@ -18,7 +18,7 @@ export namespace SignupPact {
     state: 'stateless',
     uponReceiving: 'new user signup',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/signup',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -38,7 +38,7 @@ export namespace SignupPact {
     state: 'stateless',
     uponReceiving: 'new user signup without email',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/signup',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -50,6 +50,7 @@ export namespace SignupPact {
     },
     willRespondWith: {
       status: 400,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Bad Request',
         title: 'An error has occurred',
@@ -61,7 +62,7 @@ export namespace SignupPact {
     state: 'stateless',
     uponReceiving: 'new user signup with existing email',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/signup',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -74,6 +75,7 @@ export namespace SignupPact {
     },
     willRespondWith: {
       status: 409,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Conflict',
         title: 'User with unique id: pactUser@localhost already exists',
@@ -85,7 +87,7 @@ export namespace SignupPact {
     state: 'stateless',
     uponReceiving: 'new user signup without username',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/signup',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -97,6 +99,7 @@ export namespace SignupPact {
     },
     willRespondWith: {
       status: 400,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Bad Request',
         title: 'An error has occurred',
@@ -108,7 +111,7 @@ export namespace SignupPact {
     state: 'stateless',
     uponReceiving: 'new user signup with existing username',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/signup',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -121,6 +124,7 @@ export namespace SignupPact {
     },
     willRespondWith: {
       status: 409,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Conflict',
         title: 'User with unique id: pactUser already exists',
@@ -134,7 +138,7 @@ export namespace LoginPact {
     state: 'stateless',
     uponReceiving: 'locked role login',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/login',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -147,6 +151,7 @@ export namespace LoginPact {
     },
     willRespondWith: {
       status: 401,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Unauthorized',
         title: 'LOCKED_ROLE is locked',
@@ -158,7 +163,7 @@ export namespace LoginPact {
     state: 'stateless',
     uponReceiving: 'locked user login',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/login',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -171,6 +176,7 @@ export namespace LoginPact {
     },
     willRespondWith: {
       status: 401,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Unauthorized',
         title: 'User account is locked',
@@ -182,7 +188,7 @@ export namespace LoginPact {
     state: 'stateless',
     uponReceiving: 'successful login',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/login',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -207,7 +213,7 @@ export namespace LoginPact {
           ...pactCurrentUser.userPreferences,
           _templates: {
             ...defaultTemplate,
-            ...updateProfilePreferencesTemplate,
+            ...(updateProfilePreferencesTemplate as Record<string, unknown>),
           },
         },
         _templates: {
@@ -226,7 +232,7 @@ export namespace RefreshTokenPact {
     state: 'stateless',
     uponReceiving: 'refresh token successful',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/auth/token',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -254,7 +260,7 @@ export namespace RefreshTokenPact {
     state: 'stateless',
     uponReceiving: 'refresh token locked role',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/auth/token',
       headers: {
         Authorization: bearer(
@@ -268,6 +274,7 @@ export namespace RefreshTokenPact {
     },
     willRespondWith: {
       status: 401,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Unauthorized',
         title: 'LOCKED_ROLE is locked',
@@ -279,7 +286,7 @@ export namespace RefreshTokenPact {
     state: 'stateless',
     uponReceiving: 'refresh token locked user',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/auth/token',
       headers: {
         Authorization: bearer(jwtToken({ user: { id: 'lockedUserId' }, authorities: [TokenAuthority.TOKEN_REFRESH] })),
@@ -288,6 +295,7 @@ export namespace RefreshTokenPact {
     },
     willRespondWith: {
       status: 401,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Unauthorized',
         title: 'User account is locked',
@@ -299,7 +307,7 @@ export namespace RefreshTokenPact {
     state: 'stateless',
     uponReceiving: 'refresh token unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/auth/token',
       headers: {
         Authorization: bearer(jwtToken({ user: { id: pactCurrentUser.id } })),
@@ -319,7 +327,7 @@ export namespace RefreshTokenPact {
     state: 'stateless',
     uponReceiving: 'refresh token user not found',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/auth/token',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -328,6 +336,7 @@ export namespace RefreshTokenPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -337,11 +346,11 @@ export namespace RefreshTokenPact {
 }
 
 export namespace ActivationTokenPact {
-  export const not_found: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'request activation token with email not found',
-    withRequest: {
-      method: HTTPMethod.POST,
+  export const not_found = new Interaction()
+    .given('stateless')
+    .uponReceiving('request activation token with email not found')
+    .withRequest({
+      method: HTTPMethods.POST,
       path: '/api/auth/token',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -350,21 +359,21 @@ export namespace ActivationTokenPact {
       body: {
         email: 'notFound@localhost',
       },
-    },
-    willRespondWith: {
+    })
+    .willRespondWith({
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFound@localhost not found',
       },
-    },
-  };
+    });
 
-  export const successful: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'request activation token',
-    withRequest: {
-      method: HTTPMethod.POST,
+  export const successful: Interaction = new Interaction()
+    .given('stateless')
+    .uponReceiving('request activation token')
+    .withRequest({
+      method: HTTPMethods.POST,
       path: '/api/auth/token',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -373,11 +382,10 @@ export namespace ActivationTokenPact {
       body: {
         email: 'lockedRoleUser@localhost',
       },
-    },
-    willRespondWith: {
+    })
+    .willRespondWith({
       status: 204,
-    },
-  };
+    });
 }
 
 export namespace ActivateAccountPact {
@@ -385,7 +393,7 @@ export namespace ActivateAccountPact {
     state: 'stateless',
     uponReceiving: 'activate account not found',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/activate',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -399,6 +407,7 @@ export namespace ActivateAccountPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFound@localhost not found',
@@ -410,7 +419,7 @@ export namespace ActivateAccountPact {
     state: 'stateless',
     uponReceiving: 'activate account',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/auth/activate',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,

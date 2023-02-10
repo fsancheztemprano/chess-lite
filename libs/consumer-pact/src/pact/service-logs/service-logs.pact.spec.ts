@@ -7,7 +7,7 @@ import { HalFormClientModule } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { ServiceLogsService } from '../../../../ui/feature/administration/src/lib/modules/service-logs/services/service-logs.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactForResource } from '../../utils/pact.utils';
+import { JsonObject, pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import { DeleteServiceLogsPact, GetServiceLogsPact } from './service-logs.pact';
 
@@ -47,8 +47,8 @@ describe('Service Logs Pacts', () => {
           expect(logs).toBeTruthy();
           expect(logs.logs).toBeTruthy();
           expect(logs.timestamp).toBeTruthy();
-          expect(logs._links).toMatchObject(interaction.willRespondWith.body._links);
-          expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
+          expect(logs._links).toMatchObject((<JsonObject>interaction.willRespondWith.body)._links);
+          expect(logs._templates).toMatchObject((<JsonObject>interaction.willRespondWith.body)._templates);
           done();
         });
       });
@@ -60,7 +60,7 @@ describe('Service Logs Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['service-logs:read', 'service-logs:delete'] }));
         service.getServiceLogs().subscribe((logs: ServiceLogs) => {
           expect(logs).toBeTruthy();
-          expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
+          expect(logs._templates).toMatchObject((<JsonObject>interaction.willRespondWith.body)._templates);
           done();
         });
       });
@@ -105,8 +105,8 @@ describe('Service Logs Pacts', () => {
           expect(logs).toBeTruthy();
           expect(logs.logs).toBeTruthy();
           expect(logs.timestamp).toBeTruthy();
-          expect(logs._links).toMatchObject(interaction.willRespondWith.body._links);
-          expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
+          expect(logs._links).toMatchObject((<JsonObject>interaction.willRespondWith.body)._links);
+          expect(logs._templates).toMatchObject((<JsonObject>interaction.willRespondWith.body)._templates);
           done();
         });
       });

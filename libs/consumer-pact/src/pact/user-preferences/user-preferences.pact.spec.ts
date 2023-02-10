@@ -15,7 +15,7 @@ import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';
 import { stubUserManagementServiceProvider } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service.stub';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactForResource } from '../../utils/pact.utils';
+import { JsonObject, pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import { GetUserPreferencesPact, UpdateUserPreferencesPact } from './user-preferences.pact';
 
@@ -66,12 +66,12 @@ describe('User Preferences Pact', () => {
         );
         service.fetchUserPreferences().subscribe((response: UserPreferences) => {
           expect(response).toBeTruthy();
-          expect(response.id).toBe(interaction.willRespondWith.body.id);
-          expect(response.darkMode).toBe(interaction.willRespondWith.body.darkMode);
-          expect(response.contentLanguage).toBe(interaction.willRespondWith.body.contentLanguage);
+          expect(response.id).toBe((<JsonObject>interaction.willRespondWith.body).id);
+          expect(response.darkMode).toBe((<JsonObject>interaction.willRespondWith.body).darkMode);
+          expect(response.contentLanguage).toBe((<JsonObject>interaction.willRespondWith.body).contentLanguage);
           expect(response._links).toBeTruthy();
-          expect(response._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(response._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(response._links?.self?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.self.href);
+          expect(response._links?.ws?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.ws.href);
           expect(response._templates?.default).toBeTruthy();
           done();
         });
@@ -177,12 +177,12 @@ describe('User Preferences Pact', () => {
           .updateUserPreferences(pactUserPreferences, { darkMode: true })
           .subscribe((response: UserPreferences) => {
             expect(response).toBeTruthy();
-            expect(response.id).toBe(interaction.willRespondWith.body.id);
-            expect(response.darkMode).toBe(interaction.willRespondWith.body.darkMode);
-            expect(response.contentLanguage).toBe(interaction.willRespondWith.body.contentLanguage);
+            expect(response.id).toBe((<JsonObject>interaction.willRespondWith.body).id);
+            expect(response.darkMode).toBe((<JsonObject>interaction.willRespondWith.body).darkMode);
+            expect(response.contentLanguage).toBe((<JsonObject>interaction.willRespondWith.body).contentLanguage);
             expect(response._links).toBeTruthy();
-            expect(response._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-            expect(response._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
+            expect(response._links?.self?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.self.href);
+            expect(response._links?.ws?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.ws.href);
             expect(response._templates?.default).toBeTruthy();
             done();
           });
