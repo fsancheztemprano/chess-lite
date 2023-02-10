@@ -5565,6 +5565,11 @@ command-line-usage@6.1.1:
     table-layout "^1.0.1"
     typical "^5.2.0"
 
+commander@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-10.0.0.tgz#71797971162cd3cf65f0b9d24eb28f8d303acdf1"
+  integrity sha512-zS5PnTI22FIRM6ylNW8G4Ap0IEOyk62fhLSD0+uHRT9McRCLGpkVNvao4bjimpK/GShynyQkFFxHhwMcETmduA==
+
 commander@^2.20.0, commander@^2.8.1:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
@@ -5580,7 +5585,7 @@ commander@^7.2.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
 
-commander@^9.4.0, commander@^9.4.1:
+commander@^9.4.1:
   version "9.5.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-9.5.0.tgz#bc08d1eb5cedf7ccb797a96199d41c7bc3e60d30"
   integrity sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==
@@ -6666,17 +6671,17 @@ es6-weak-map@^2.0.3:
     es6-iterator "^2.0.3"
     es6-symbol "^3.1.1"
 
-esbuild-wasm@0.16.17, esbuild-wasm@^0.16.0:
+esbuild-wasm@0.16.17:
   version "0.16.17"
   resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.16.17.tgz#b8d41ab99a9b725765a138f0f1d2381e891f913d"
   integrity sha512-Tn7NuMqRcM+T/qCOxbQRq0qrwWl1sUWp6ARfJRakE8Bepew6zata4qrKgH2YqovNC5e/2fcTa7o+VL/FAOZC1Q==
 
-esbuild-wasm@>=0.13.8:
+esbuild-wasm@>=0.13.8, esbuild-wasm@^0.17.0:
   version "0.17.7"
   resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.17.7.tgz#cdca271574108430ca3dd52e64182d13cdf6d7f7"
   integrity sha512-2po3VY6Gc3ZSQJH1BU4QWrPMwIuFsjycdi28i5+rQxJKWX0p1RRlHWP+hoYNHHhXKp3LkPNO+Vki3o859ika+g==
 
-esbuild@0.16.17, esbuild@^0.16.0:
+esbuild@0.16.17:
   version "0.16.17"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.16.17.tgz#fc2c3914c57ee750635fee71b89f615f25065259"
   integrity sha512-G8LEkV0XzDMNwXKgM0Jwu3nY3lSTwSGY6XbxM9cr9+s0T/qSV1q1JVPBGzm3dcjhCic9+emZDmMffkwgPeOeLg==
@@ -6704,7 +6709,7 @@ esbuild@0.16.17, esbuild@^0.16.0:
     "@esbuild/win32-ia32" "0.16.17"
     "@esbuild/win32-x64" "0.16.17"
 
-esbuild@>=0.13.8:
+esbuild@>=0.13.8, esbuild@^0.17.0:
   version "0.17.7"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.17.7.tgz#a7ace55f2bf82fdb1c9013a924620ce2596984fa"
   integrity sha512-+5hHlrK108fT6C6/40juy0w4DYKtyZ5NjfBlTccBdsFutR7WBxpIY633JzZJewdsCy8xWA/u2z0MSniIJwufYg==
@@ -10361,10 +10366,10 @@ next-tick@1, next-tick@^1.1.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"
   integrity sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
 
-ng-packagr@15.1.1:
-  version "15.1.1"
-  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-15.1.1.tgz#c59de99748342f14cb2119a605e8ebd89250a9d2"
-  integrity sha512-TT5JtYJkKuYnUaCIQH/ArE+D1xjpjWnQjvbfRxd6/wypi0nDfSYvq96CLd1zphgMOp+Ofd8Xyet0K73znygxCA==
+ng-packagr@15.1.2:
+  version "15.1.2"
+  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-15.1.2.tgz#d26e87e1099517367e11a945c299abfb5a2ac2c9"
+  integrity sha512-GpVySff7Wwx+eAW+HXkFD8et05UK0/usHnFEKznXhxmhML7XOGYaK74tAsgUwA06GUQofQH/VjdsBGi6XlVNjA==
   dependencies:
     "@rollup/plugin-json" "^6.0.0"
     "@rollup/plugin-node-resolve" "^15.0.0"
@@ -10374,10 +10379,10 @@ ng-packagr@15.1.1:
     browserslist "^4.21.4"
     cacache "^17.0.0"
     chokidar "^3.5.3"
-    commander "^9.4.0"
+    commander "^10.0.0"
     convert-source-map "^2.0.0"
     dependency-graph "^0.11.0"
-    esbuild-wasm "^0.16.0"
+    esbuild-wasm "^0.17.0"
     find-cache-dir "^3.3.2"
     glob "^8.0.3"
     injection-js "^2.4.0"
@@ -10391,7 +10396,7 @@ ng-packagr@15.1.1:
     rxjs "^7.5.6"
     sass "^1.55.0"
   optionalDependencies:
-    esbuild "^0.16.0"
+    esbuild "^0.17.0"
 
 ngx-toastr@16.0.2:
   version "16.0.2"
