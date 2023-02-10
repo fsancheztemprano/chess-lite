@@ -25,7 +25,7 @@ import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { UserManagementDetailService } from '../../../../ui/feature/administration/src/lib/modules/user-management/modules/detail/services/user-management-detail.service';
 import { UserManagementService } from '../../../../ui/feature/administration/src/lib/modules/user-management/services/user-management.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactForResource } from '../../utils/pact.utils';
+import { JsonObject, pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import {
   CreateUserPact,
@@ -99,10 +99,10 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user.id).toBe((<JsonObject>interaction.willRespondWith.body).id);
           expect(user._links).toBeTruthy();
-          expect(user._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(user._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(user._links?.self?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.self.href);
+          expect(user._links?.ws?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.ws.href);
           expect(user._templates?.default).toBeTruthy();
           done();
         });
@@ -211,8 +211,8 @@ describe('User Pacts', () => {
           expect(userPage._embedded).toBeTruthy();
           expect(userPage._embedded.userModels).toHaveLength(3);
           expect(userPage._links).toBeTruthy();
-          expect(userPage._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(userPage._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
+          expect(userPage._links?.self?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.self.href);
+          expect(userPage._links?.ws?.href).toBe((<JsonObject>interaction.willRespondWith.body)._links.ws.href);
           expect(userPage._templates?.default).toBeTruthy();
           done();
         });
@@ -267,7 +267,7 @@ describe('User Pacts', () => {
           })
           .subscribe((user: User) => {
             expect(user).toBeTruthy();
-            expect(user.id).toBe(interaction.willRespondWith.body.id.getValue());
+            expect(user.id).toBe((<JsonObject>interaction.willRespondWith.body).id.getValue());
             expect(user._links).toBeTruthy();
             expect(user._templates?.default).toBeTruthy();
             done();
@@ -343,7 +343,7 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUser({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user.id).toBe((<JsonObject>interaction.willRespondWith.body).id);
           expect(user._links).toBeTruthy();
           expect(user._templates?.default).toBeTruthy();
           done();
@@ -440,7 +440,7 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUserRole('pactRoleId').subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user.id).toBe((<JsonObject>interaction.willRespondWith.body).id);
           expect(user._links).toBeTruthy();
           expect(user._templates?.default).toBeTruthy();
           done();
@@ -541,7 +541,7 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUserAuthorities(['pactAuthorityId']).subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
+          expect(user.id).toBe((<JsonObject>interaction.willRespondWith.body).id);
           expect(user._links).toBeTruthy();
           expect(user._templates?.default).toBeTruthy();
           done();

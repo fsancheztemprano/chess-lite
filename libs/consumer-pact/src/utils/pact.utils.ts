@@ -1,5 +1,5 @@
 import { MessageConsumerPact, Pact } from '@pact-foundation/pact';
-import { term, UUID_V4_FORMAT } from '@pact-foundation/pact/src/dsl/matchers';
+import { RegexMatcher, term, UUID_V4_FORMAT } from '@pact-foundation/pact/src/dsl/matchers';
 import { resolve } from 'path';
 
 export function pactForResource(resource: string, suffix = 'Controller'): Pact {
@@ -12,7 +12,7 @@ export function pactForResource(resource: string, suffix = 'Controller'): Pact {
     cors: true,
     timeout: 10000,
     spec: 2,
-    pactfileWriteMode: 'overwrite',
+    pactfileWriteMode: 'update',
   });
 }
 
@@ -23,7 +23,7 @@ export function pactForMessages(resource: string, suffix = 'Messages'): MessageC
     log: resolve(process.cwd(), 'coverage', 'pact', 'logs', 'ami.log'),
     logLevel: 'warn',
     dir: resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact-messages', resource + suffix),
-    spec: 2,
+    spec: 3,
     pactfileWriteMode: 'update',
   });
 }
@@ -50,7 +50,7 @@ export function jwt(token?: string) {
   });
 }
 
-export function withUuid(string?: string) {
+export function withUuid(string?: string): RegexMatcher<string> {
   let generate = string || '/{uuid}';
   generate = generate.replace(/{uuid}/, 'ce118b6e-d8e1-11e7-9296-cec278b6b50a');
   let matcher = string || '/{uuid}';
@@ -61,4 +61,9 @@ export function withUuid(string?: string) {
     generate,
     matcher,
   });
+}
+
+export interface JsonObject {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }

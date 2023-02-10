@@ -4,7 +4,7 @@ import { GlobalSettings, TokenKeys } from '@app/ui/shared/domain';
 import { HalFormClientModule, Link, Template } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactForResource } from '../../utils/pact.utils';
+import { JsonObject, pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import { GetGlobalSettingPact, UpdateGlobalSettingPact } from './global-settings.pact';
 
@@ -33,10 +33,12 @@ describe('Global Settings Pacts', () => {
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
-            expect(response.body?._links).toStrictEqual(interaction.willRespondWith.body._links);
-            expect(response.body?.defaultRole?.name).toEqual(interaction.willRespondWith.body.defaultRole.name);
+            expect(response.body?._links).toStrictEqual((<JsonObject>interaction.willRespondWith.body)._links);
+            expect(response.body?.defaultRole?.name).toEqual(
+              (<JsonObject>interaction.willRespondWith.body).defaultRole.name,
+            );
             expect(response.body?.defaultRole?.authorities).toHaveLength(
-              interaction.willRespondWith.body.defaultRole.authorities.length,
+              (<JsonObject>interaction.willRespondWith.body).defaultRole.authorities.length,
             );
             done();
           });
@@ -55,7 +57,9 @@ describe('Global Settings Pacts', () => {
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
-            expect(response.body?._templates?.update).toStrictEqual(interaction.willRespondWith.body._templates.update);
+            expect(response.body?._templates?.update).toStrictEqual(
+              (<JsonObject>interaction.willRespondWith.body)._templates.update,
+            );
             done();
           });
       });
@@ -71,7 +75,7 @@ describe('Global Settings Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -89,10 +93,12 @@ describe('Global Settings Pacts', () => {
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
-            expect(response.body?._links).toStrictEqual(interaction.willRespondWith.body._links);
-            expect(response.body?.defaultRole?.name).toEqual(interaction.willRespondWith.body.defaultRole.name);
+            expect(response.body?._links).toStrictEqual((<JsonObject>interaction.willRespondWith.body)._links);
+            expect(response.body?.defaultRole?.name).toEqual(
+              (<JsonObject>interaction.willRespondWith.body).defaultRole.name,
+            );
             expect(response.body?.defaultRole?.authorities).toHaveLength(
-              interaction.willRespondWith.body.defaultRole.authorities.length,
+              (<JsonObject>interaction.willRespondWith.body).defaultRole.authorities.length,
             );
             done();
           });
@@ -109,7 +115,7 @@ describe('Global Settings Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });

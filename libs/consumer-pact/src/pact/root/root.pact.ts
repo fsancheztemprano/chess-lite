@@ -2,7 +2,7 @@ import { AdminAuthority, HttpHeaderKey, ProfileAuthority, TokenAuthority } from 
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 
@@ -11,7 +11,7 @@ export namespace GetRootResource {
     state: 'stateless',
     uponReceiving: 'get root resource as unauthorized user',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -133,7 +133,7 @@ export namespace GetRootResource {
     state: 'stateless',
     uponReceiving: 'get root resource as authorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -161,7 +161,7 @@ export namespace GetRootResource {
     state: 'stateless',
     uponReceiving: 'get root resource with authority token:refresh',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -192,7 +192,7 @@ export namespace GetRootResource {
     state: 'stateless',
     uponReceiving: 'get root resource with authority profile:read',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -223,7 +223,7 @@ export namespace GetRootResource {
     state: 'stateless',
     uponReceiving: 'get root resource with authority admin:root',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,

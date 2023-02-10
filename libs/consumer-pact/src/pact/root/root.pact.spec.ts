@@ -4,7 +4,7 @@ import { AdminAuthority, ProfileAuthority, TokenAuthority, TokenKeys } from '@ap
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
-import { pactForResource } from '../../utils/pact.utils';
+import { JsonObject, pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import { GetRootResource } from './root.pact';
 
@@ -27,10 +27,11 @@ describe('Root Resource Pacts', () => {
 
   describe('get root resource with authority', () => {
     it('unauthorized', (done) => {
-      provider.addInteraction(GetRootResource.unauthorized).then(() => {
+      const interaction: InteractionObject = GetRootResource.unauthorized;
+      provider.addInteraction(interaction).then(() => {
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResource.unauthorized.willRespondWith.body);
+          expect(resource).toMatchObject((<JsonObject>interaction.willRespondWith).body);
           done();
         });
       });
@@ -42,40 +43,43 @@ describe('Root Resource Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken());
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(interaction.willRespondWith.body);
+          expect(resource).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });
     });
 
     it(ProfileAuthority.PROFILE_READ, (done) => {
-      provider.addInteraction(GetRootResource.with_profile_read).then(() => {
+      const interaction: InteractionObject = GetRootResource.with_profile_read;
+      provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [ProfileAuthority.PROFILE_READ] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResource.with_profile_read.willRespondWith.body);
+          expect(resource).toMatchObject((<JsonObject>interaction.willRespondWith).body);
           done();
         });
       });
     });
 
     it(TokenAuthority.TOKEN_REFRESH, (done) => {
-      provider.addInteraction(GetRootResource.with_token_refresh).then(() => {
+      const interaction: InteractionObject = GetRootResource.with_token_refresh;
+      provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TokenAuthority.TOKEN_REFRESH] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResource.with_token_refresh.willRespondWith.body);
+          expect(resource).toMatchObject((<JsonObject>interaction.willRespondWith).body);
           done();
         });
       });
     });
 
     it(AdminAuthority.ADMIN_ROOT, (done) => {
-      provider.addInteraction(GetRootResource.with_admin_root).then(() => {
+      const interaction: InteractionObject = GetRootResource.with_admin_root;
+      provider.addInteraction(interaction).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [AdminAuthority.ADMIN_ROOT] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResource.with_admin_root.willRespondWith.body);
+          expect(resource).toMatchObject((<JsonObject>interaction.willRespondWith).body);
           done();
         });
       });

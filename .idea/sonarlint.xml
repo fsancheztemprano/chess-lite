@@ -3,6 +3,6 @@
   <component name="SonarLintProjectSettings">
     <option name="bindingEnabled" value="true" />
     <option name="projectKey" value="frango9000_board-games" />
-    <option name="serverId" value="NarF" />
+    <option name="serverId" value="Narf" />
   </component>
 </project>
