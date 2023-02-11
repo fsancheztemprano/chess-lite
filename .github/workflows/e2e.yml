@@ -80,7 +80,7 @@ jobs:
           npm run test:merge:e2e
 
       - name: E2E Test Execution Report
-        uses: frango9000/test-execution-report@main
+        uses: frango9000/test-execution-report@node-16
         if: env.dependabot-run == 'false' && always()
         with:
           name: E2E Tests
