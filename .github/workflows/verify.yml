@@ -93,7 +93,7 @@ jobs:
         if: always()
 
       - name: Frontend Test Execution Report
-        uses: frango9000/test-execution-report@node-16
+        uses: frango9000/test-execution-report@v0.0.2
         if: env.dependabot-run == 'false' && always()
         with:
           name: Frontend Tests
@@ -102,7 +102,7 @@ jobs:
           fail-on-error: false
 
       - name: Backend Test Execution Report
-        uses: frango9000/test-execution-report@node-16
+        uses: frango9000/test-execution-report@v0.0.2
         if: env.dependabot-run == 'false' && always()
         with:
           name: Backend Tests
@@ -111,7 +111,7 @@ jobs:
           fail-on-error: false
 
       - name: Coverage Report
-        uses: frango9000/test-coverage-report@node-16
+        uses: frango9000/test-coverage-report@v0.0.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: "Application"
