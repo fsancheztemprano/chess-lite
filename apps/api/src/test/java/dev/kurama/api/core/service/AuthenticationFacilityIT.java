@@ -11,7 +11,7 @@ import dev.kurama.api.core.exception.domain.not.found.UserNotFoundException;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import dev.kurama.support.ServiceLayerIntegrationTestConfig;
 import dev.kurama.support.TestEmailConfiguration;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;

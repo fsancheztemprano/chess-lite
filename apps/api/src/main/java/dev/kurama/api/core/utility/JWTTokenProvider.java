@@ -1,6 +1,6 @@
 package dev.kurama.api.core.utility;
 
-import static io.micrometer.core.instrument.util.StringUtils.isNotBlank;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -10,12 +10,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.filter.ContextUser;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,7 +39,7 @@ public class JWTTokenProvider {
   }
 
   public boolean isTokenValid(DecodedJWT token) {
-    return isNotBlank(token.getSubject()) && !isTokenExpired(token);
+    return !isNullOrEmpty(token.getSubject()) && !isTokenExpired(token);
   }
 
   public DecodedJWT getDecodedJWT(String token) {

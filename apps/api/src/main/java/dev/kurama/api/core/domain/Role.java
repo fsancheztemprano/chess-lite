@@ -1,15 +1,15 @@
 package dev.kurama.api.core.domain;
 
 import com.google.common.collect.Sets;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

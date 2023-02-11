@@ -12,7 +12,7 @@ import dev.kurama.api.core.service.DataInitializationService;
 import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.api.core.service.UserService;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
@@ -59,15 +59,11 @@ public class CypressService {
   public void setState(CypressState state) {
     try {
       switch (state) {
-        case STATE_0:
-          setState0();
-          break;
-        case STATE_1:
+        case STATE_0 -> setState0();
+        case STATE_1 -> {
           setState0();
           setState1();
-          break;
-        default:
-          break;
+        }
       }
       this.state = state;
       log.atFine().log("Cypress State: %s", this.state);

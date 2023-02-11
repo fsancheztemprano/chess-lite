@@ -3,10 +3,10 @@ package dev.kurama.api.core.domain;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
