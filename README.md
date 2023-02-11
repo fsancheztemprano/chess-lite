@@ -65,7 +65,7 @@
 
 ### Built With 🛠️
 
-- [OpenJDK 11](https://adoptopenjdk.net/) - Open Java
+- [OpenJDK 17](https://adoptopenjdk.net/) - Open Java
 - [Maven](https://maven.apache.org/) - Dependencies Management
 - [Spring](https://spring.io/) - Framework
 - [Node.js](http://nodejs.org/) - Runtime Environment
@@ -82,7 +82,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites 📋
 
-- Java 11
+- Java 17
 - Node 14
 - Docker
 
@@ -242,16 +242,29 @@ our [Wiki](https://github.com/frango9000/board-games/wiki)
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [linkedin-contact-shield]: https://img.shields.io/badge/-LinkedIn-black?style=for-the-badge&logo=linkedin&colorB=555
+
 [linkedin-contact-url]: https://www.linkedin.com/in/frango9000/
+
 [github-contact-shield]: https://img.shields.io/badge/-Github-black?style=for-the-badge&logo=github&colorB=555
+
 [github-contact-url]: https://github.com/frango9000
+
 [email-contact-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
+
 [email-contact-url]: mailto:frango9000@gmail.com
+
 [linkedin-share-shield]: https://img.shields.io/badge/Share-Linkedin?style=for-the-badge&logo=linkedin&colorB=555
+
 [linkedin-share-url]: https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/frango9000/board-games
+
 [facebook-share-shield]: https://img.shields.io/badge/Share-Facebook?style=for-the-badge&logo=facebook&colorB=555
+
 [facebook-share-url]: https://www.facebook.com/sharer/sharer.php?u=https://github.com/frango9000/board-games
+
 [twitter-share-shield]: https://img.shields.io/badge/Share-Twitter?style=for-the-badge&logo=twitter&colorB=555
+
 [twitter-share-url]: https://twitter.com/intent/tweet?url=https://github.com/frango9000/board-games&text=Check%20this%20project%20out
+
 [email-share-shield]: https://img.shields.io/badge/-email-black.svg?style=for-the-badge&colorB=555
+
 [email-share-url]: mailto:info@example.com?&subject=&cc=&bcc=&body=Check%20this%20project%20out%20https://github.com/frango9000/board-games
