@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
 
 const loadLoginModule = () => import('./modules/login/login.module').then((m) => m.LoginModule);
 const loadSignupModule = () => import('./modules/signup/signup.module').then((m) => m.SignupModule);
@@ -17,26 +16,22 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: loadLoginModule,
-    canActivate: [AuthGuard],
-    data: { breadcrumb: { i18n: 'authentication.login', parentOffset: 1 } },
+    data: { breadcrumb: { label: 'authentication.login', i18n: true, parentOffset: 1 } },
   },
   {
     path: 'signup',
     loadChildren: loadSignupModule,
-    canActivate: [AuthGuard],
-    data: { breadcrumb: { i18n: 'authentication.signup' } },
+    data: { breadcrumb: { label: 'authentication.signup', i18n: true } },
   },
   {
     path: 'activation',
     loadChildren: loadActivationModule,
-    canActivate: [AuthGuard],
-    data: { breadcrumb: { i18n: 'authentication.activation' } },
+    data: { breadcrumb: { label: 'authentication.activation', i18n: true } },
   },
   {
     path: 'token-request',
     loadChildren: loadTokenModule,
-    canActivate: [AuthGuard],
-    data: { breadcrumb: { i18n: 'authentication.token-request' } },
+    data: { breadcrumb: { label: 'authentication.token-request', i18n: true } },
   },
   {
     path: '**',
