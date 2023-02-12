@@ -1,25 +1,32 @@
 import { Injectable } from '@angular/core';
-import { createStore, select, withProps } from '@ngneat/elf';
+import { createStore, select, setProps, withProps } from '@ngneat/elf';
 import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 
-export interface ThemeProps {
-  darkMode: boolean;
+export interface ColorProps {
+  primary?: string;
+  secondary?: string;
+  warn?: string;
 }
 
-export const themeStore = createStore({ name: 'theme' }, withProps<ThemeProps>({ darkMode: false }));
+export interface ThemeProps {
+  darkMode?: boolean;
+  colors?: ColorProps;
+}
+
+export const themeStore = createStore({ name: 'theme' }, withProps<ThemeProps>({}));
 
 persistState(themeStore, { key: 'theme', storage: localStorageStrategy });
 
 @Injectable({ providedIn: 'root' })
 export class ThemeRepository {
   darkMode$ = themeStore.pipe(select((state) => state.darkMode));
+  colors$ = themeStore.pipe(select((state) => state.colors));
 
   public updateDarkMode(darkMode: boolean): void {
-    themeStore.update((state) => {
-      return {
-        ...state,
-        darkMode,
-      };
-    });
+    themeStore.update(setProps({ darkMode }));
+  }
+
+  public updateColors(colors?: ColorProps): void {
+    themeStore.update(setProps({ colors }));
   }
 }

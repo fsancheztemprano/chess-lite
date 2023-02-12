@@ -1,0 +1,18 @@
+<ng-container>
+  <mat-form-field>
+    <mat-label>Primary</mat-label>
+    <input
+      #ignoredInput
+      matInput
+      type="text"
+      formControlName="primary"
+      [style.background]="ignoredInput.value"
+      [(colorPicker)]="ignoredInput.value"
+      [(cpToggle)]="primaryToggle"
+      [cpPosition]="'bottom'"
+      [cpPositionOffset]="'0'"
+    />
+    <mat-icon matSuffix class="material-icons-outlined">palette</mat-icon>
+  </mat-form-field>
+
+</ng-container>

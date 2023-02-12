@@ -1408,6 +1408,11 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@ctrl/tinycolor@3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.5.0.tgz#6e52b3d1c38d13130101771821e09cdd414a16bc"
+  integrity sha512-tlJpwF40DEQcfR/QF+wNMVyGMaO9FQp6Z1Wahj4Gk3CJQYHwA2xVG7iKDFdW6zuxZY9XWOpGcfNCTsX4McOsOg==
+
 "@cypress/request@^2.88.10":
   version "2.88.11"
   resolved "https://registry.yarnpkg.com/@cypress/request/-/request-2.88.11.tgz#5a4c7399bc2d7e7ed56e92ce5acb620c8b187047"
@@ -10392,6 +10397,13 @@ ng-packagr@15.1.1:
     sass "^1.55.0"
   optionalDependencies:
     esbuild "^0.16.0"
+
+ngx-color-picker@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-color-picker/-/ngx-color-picker-13.0.0.tgz#fe6d3b2def721ebc4f2a1a4ed83e552e0cfe3601"
+  integrity sha512-3mgMbs21KeqnmmY5p1cn71ckTH3q7gBt6Qn0fMfeF/Ql7ddTZsW4Z7Z8ga6LymMP/ugooGuLOFX+V6yx0dDxAw==
+  dependencies:
+    tslib "^2.3.0"
 
 ngx-toastr@16.0.2:
   version "16.0.2"

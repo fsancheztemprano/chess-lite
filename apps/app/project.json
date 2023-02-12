@@ -23,7 +23,10 @@
         "assets": ["apps/app/src/favicon.ico", "apps/app/src/assets"],
         "styles": ["apps/app/src/styles.scss", "node_modules/ngx-toastr/toastr.css"],
         "scripts": [],
-        "allowedCommonJsDependencies": ["url-template", "flat", "angular2-uuid"]
+        "allowedCommonJsDependencies": ["url-template", "flat", "angular2-uuid"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/app/src/theme"]
+        }
       },
       "configurations": {
         "production": {

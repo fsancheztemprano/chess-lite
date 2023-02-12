@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   clearSession,
-  initialize,
+  initializeSession,
   SessionProps,
   SessionRepository,
   SessionService,
@@ -21,10 +21,10 @@ export class SessionEffects {
     ),
   );
 
-  initialize$ = createEffect((actions) =>
+  initializeSession$ = createEffect((actions) =>
     actions.pipe(
-      ofType(initialize),
-      switchMap(({ session }) => this.sessionService.initialize(session)),
+      ofType(initializeSession),
+      switchMap(({ session, init }) => this.sessionService.initialize(session).pipe(tap(() => init && true))),
     ),
   );
 

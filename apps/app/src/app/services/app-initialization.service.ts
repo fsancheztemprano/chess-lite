@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, Injectable } from '@angular/core';
-import { initialize } from '@app/ui/shared/app';
+import { initializeSession } from '@app/ui/shared/app';
 import { Actions } from '@ngneat/effects-ng';
 import { Observable, of } from 'rxjs';
 
@@ -8,7 +8,7 @@ export class AppInitializationService {
   constructor(private readonly actions: Actions) {}
 
   initialize(): Observable<unknown> {
-    this.actions.dispatch(initialize({}));
+    this.actions.dispatch(initializeSession({}));
     return of(void 0);
   }
 }
