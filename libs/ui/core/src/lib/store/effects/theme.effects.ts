@@ -29,11 +29,11 @@ export class ThemeEffects {
   updateTheme$ = createEffect((actions) =>
     actions.pipe(
       ofType(updateTheme),
-      startWith({ colors: { primary: '#8bc34a', secondary: '#42a6f5' } as ColorProps }),
-      tap(({ colors }) => {
+      startWith({ primary: '#8bc34a', accent: '#42a6f5' }),
+      tap((colors: ColorProps) => {
         this.themeRepository.updateColors(colors);
         colors?.primary && this._generateHues('primary', colors?.primary);
-        colors?.secondary && this._generateHues('accent', colors?.secondary);
+        colors?.accent && this._generateHues('accent', colors?.accent);
         colors?.warn && this._generateHues('warn', colors?.warn);
       }),
     ),

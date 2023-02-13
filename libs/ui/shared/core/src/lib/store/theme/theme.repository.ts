@@ -4,7 +4,7 @@ import { localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 
 export interface ColorProps {
   primary?: string;
-  secondary?: string;
+  accent?: string;
   warn?: string;
 }
 

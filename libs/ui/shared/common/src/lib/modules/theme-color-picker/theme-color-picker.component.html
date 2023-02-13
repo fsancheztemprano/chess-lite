@@ -1,18 +1,14 @@
-<ng-container>
-  <mat-form-field>
-    <mat-label>Primary</mat-label>
-    <input
-      #ignoredInput
-      matInput
-      type="text"
-      formControlName="primary"
-      [style.background]="ignoredInput.value"
-      [(colorPicker)]="ignoredInput.value"
-      [(cpToggle)]="primaryToggle"
-      [cpPosition]="'bottom'"
-      [cpPositionOffset]="'0'"
-    />
-    <mat-icon matSuffix class="material-icons-outlined">palette</mat-icon>
-  </mat-form-field>
-
-</ng-container>
+<form [formGroup]="form" class="color-picker-container">
+  <div class="picker">
+    <ngx-colors ngx-colors-trigger formControlName="primary"></ngx-colors>
+    <span>Primary</span>
+  </div>
+  <div class="picker">
+    <ngx-colors ngx-colors-trigger formControlName="accent"></ngx-colors>
+    <span>Accent</span>
+  </div>
+  <div class="picker">
+    <ngx-colors ngx-colors-trigger formControlName="warn"></ngx-colors>
+    <span>Warn</span>
+  </div>
+</form>

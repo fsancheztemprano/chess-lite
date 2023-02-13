@@ -1,5 +1,15 @@
 :host {
-  ::ng-deep .mat-mdc-text-field-wrapper {
-    overflow: unset;
+  .color-picker-container {
+    display: flex;
+    flex-direction: column;
+
+    .picker {
+      display: flex;
+      align-items: center;
+
+      span {
+        margin-left: 8px;
+      }
+    }
   }
 }
