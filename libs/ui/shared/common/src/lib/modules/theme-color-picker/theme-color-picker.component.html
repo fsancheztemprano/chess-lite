@@ -8,7 +8,7 @@
 </form>
 
 <ng-template #colorPicker let-palette="palette" let-control="control">
-  <mat-form-field class="example-full-width" [color]="palette">
+  <mat-form-field class="{{ palette }}-picker" [color]="palette">
     <input matInput [value]="picker.color" [readonly]="true" [disabled]="disable" [ngStyle]="{ color: picker.color }" />
     <div matSuffix class="suffix">
       <ngx-colors #picker class="" ngx-colors-trigger [formControl]="control"></ngx-colors>

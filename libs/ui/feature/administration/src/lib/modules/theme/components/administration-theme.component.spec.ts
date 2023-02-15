@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { StubCoreCardViewComponent, ThemeColorPickerComponent } from '@app/ui/shared/common';
+import { HalFormClientTestingModule } from '@hal-form-client';
 import { AdministrationThemeComponent } from './administration-theme.component';
 
 describe('AdministrationThemeComponent', () => {
@@ -8,6 +10,7 @@ describe('AdministrationThemeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HalFormClientTestingModule, ThemeColorPickerComponent, StubCoreCardViewComponent, RouterTestingModule],
       declarations: [AdministrationThemeComponent],
     }).compileComponents();
 
