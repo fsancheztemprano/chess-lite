@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IThemeModel, ThemeModel } from '@app/ui/shared/domain';
+import { IThemeModel, ThemeModel, ThemeRelations } from '@app/ui/shared/domain';
 import { TinyColor } from '@ctrl/tinycolor';
 import { HalFormService, Resource } from '@hal-form-client';
 import { Observable, tap } from 'rxjs';
@@ -11,7 +11,7 @@ export class ThemeService {
   constructor(private readonly halFormService: HalFormService) {}
 
   public getTheme(): Observable<ThemeModel> {
-    return this.halFormService.followLink<ThemeModel>({ link: 'theme' });
+    return this.halFormService.followLink<ThemeModel>({ link: ThemeRelations.THEME_REL });
   }
 
   public updateTheme(resource: Resource, colors: IThemeModel): Observable<ThemeModel> {

@@ -63,3 +63,11 @@ export enum GlobalSettingsRelations {
   GLOBAL_SETTINGS_REL = 'global-settings',
   GLOBAL_SETTINGS_UPDATE_REL = 'update',
 }
+
+export enum BuildInfoRelations {
+  BUILD_INFO_REL = 'build-info',
+}
+
+export enum ThemeRelations {
+  THEME_REL = 'theme',
+}

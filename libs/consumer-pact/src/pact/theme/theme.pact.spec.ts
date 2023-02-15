@@ -10,7 +10,7 @@ import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 import { GetThemePact, themeUpdateTemplate, UpdateThemePact } from './theme.pact';
 
-const provider: Pact = pactForResource('themeModel');
+const provider: Pact = pactForResource('theme');
 
 describe('Theme Pacts', () => {
   let service: ThemeService;
@@ -66,9 +66,9 @@ describe('Theme Pacts', () => {
 
   describe('Update Theme', () => {
     const newColors = {
-      primary: '#3e58dc',
-      accent: '#26881b',
-      warn: '#6c0707',
+      primaryColor: '#3e58dc',
+      accentColor: '#26881b',
+      warnColor: '#6c0707',
     };
     const colorResource = {
       _links: {
