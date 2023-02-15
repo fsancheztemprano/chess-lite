@@ -1,15 +1,16 @@
 :host {
-  .color-picker-container {
+  form {
     display: flex;
     flex-direction: column;
+  }
 
-    .picker {
-      display: flex;
-      align-items: center;
+  .mat-mdc-input-element {
+    cursor: default;
+  }
 
-      span {
-        margin-left: 8px;
-      }
-    }
+  .suffix {
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
   }
 }

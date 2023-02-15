@@ -7,11 +7,9 @@ import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 
 const theme: IResource = {
-  colors: {
-    primary: '#85238f',
-    accent: '#2c8588',
-    warn: '#fa0000',
-  },
+  primaryColor: '#85238f',
+  accentColor: '#2c8588',
+  warnColor: '#fa0000',
   _links: {
     self: { href: 'http://localhost/api/theme' },
   },
@@ -95,11 +93,9 @@ export namespace UpdateThemePact {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...theme,
-        colors: {
-          primary: '#3e58dc',
-          accent: '#26881b',
-          warn: '#6c0707',
-        },
+        primaryColor: '#3e58dc',
+        accentColor: '#26881b',
+        warnColor: '#6c0707',
         _templates: {
           ...defaultTemplate,
           ...themeUpdateTemplate,

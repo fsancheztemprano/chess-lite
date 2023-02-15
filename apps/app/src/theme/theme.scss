@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-@import "material-utils";
+@import 'material-theme';
 
 @include mat.all-component-typographies();
 @include mat.core();
@@ -15,47 +15,46 @@ $dynamic-primary-palette: define-dynamic-palette('primary');
 $dynamic-accent-palette: define-dynamic-palette('accent');
 $dynamic-warn-palette: define-dynamic-palette('warn');
 
-
 // @formatter:off
 $dynamic-light-theme: mat.define-light-theme(
-    (
-      color: (
-        primary: mat.define-palette($dynamic-primary-palette),
-        accent: mat.define-palette($dynamic-accent-palette),
-        warn: mat.define-palette($dynamic-warn-palette),
-      ),
-      typography: mat.define-typography-config(),
-    )
+  (
+    color: (
+      primary: mat.define-palette($dynamic-primary-palette),
+      accent: mat.define-palette($dynamic-accent-palette),
+      warn: mat.define-palette($dynamic-warn-palette),
+    ),
+    typography: mat.define-typography-config(),
+  )
 );
 
 $dynamic-dark-theme: mat.define-dark-theme(
-    (
-      color: (
-        primary: mat.define-palette($dynamic-primary-palette),
-        accent: mat.define-palette($dynamic-accent-palette),
-        warn: mat.define-palette($dynamic-warn-palette),
-      )
-    )
+  (
+    color: (
+      primary: mat.define-palette($dynamic-primary-palette),
+      accent: mat.define-palette($dynamic-accent-palette),
+      warn: mat.define-palette($dynamic-warn-palette),
+    ),
+  )
 );
 
 $static-light-theme: mat.define-light-theme(
-    (
-      color: (
-        primary: mat.define-palette($primary-palette),
-        accent: mat.define-palette($accent-palette),
-        warn: mat.define-palette($warn-palette),
-      ),
-      typography: mat.define-typography-config(),
-    )
+  (
+    color: (
+      primary: mat.define-palette($primary-palette),
+      accent: mat.define-palette($accent-palette),
+      warn: mat.define-palette($warn-palette),
+    ),
+    typography: mat.define-typography-config(),
+  )
 );
 $static-dark-theme: mat.define-dark-theme(
-    (
-      color: (
-        primary: mat.define-palette($primary-palette),
-        accent: mat.define-palette($accent-palette),
-        warn: mat.define-palette($warn-palette),
-      )
-    )
+  (
+    color: (
+      primary: mat.define-palette($primary-palette),
+      accent: mat.define-palette($accent-palette),
+      warn: mat.define-palette($warn-palette),
+    ),
+  )
 );
 // @formatter:on
 

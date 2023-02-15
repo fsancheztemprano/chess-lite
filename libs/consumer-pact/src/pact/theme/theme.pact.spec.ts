@@ -1,10 +1,10 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { ThemeService } from '@app/ui/shared/core';
 import { IThemeModel, TokenKeys } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { HalFormClientModule, HalFormService, Resource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { ThemeService } from '../../../../ui/shared/core/src/lib/services/theme.service';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
@@ -45,8 +45,7 @@ describe('Theme Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.getTheme().subscribe((theme: IThemeModel) => {
           expect(theme).toBeTruthy();
-          expect(theme._links).toMatchObject(interaction.willRespondWith.body._links);
-          expect(theme.colors).toEqual(interaction.willRespondWith.body.colors);
+          expect(theme).toMatchObject(interaction.willRespondWith.body);
           done();
         });
       });
@@ -58,8 +57,7 @@ describe('Theme Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['theme:update'] }));
         service.getTheme().subscribe((theme: IThemeModel) => {
           expect(theme).toBeTruthy();
-          expect(theme._links).toMatchObject(interaction.willRespondWith.body._links);
-          expect(theme._templates?.update).toMatchObject(interaction.willRespondWith.body._templates.update);
+          expect(theme).toMatchObject(interaction.willRespondWith.body);
           done();
         });
       });
@@ -88,8 +86,7 @@ describe('Theme Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['theme:update'] }));
         service.updateTheme(Resource.of(colorResource), newColors).subscribe((theme: IThemeModel) => {
           expect(theme).toBeTruthy();
-          expect(theme._links).toMatchObject(interaction.willRespondWith.body._links);
-          expect(theme.colors).toEqual(interaction.willRespondWith.body.colors);
+          expect(theme).toMatchObject(interaction.willRespondWith.body);
           done();
         });
       });

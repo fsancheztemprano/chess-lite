@@ -24,7 +24,7 @@ export class SessionEffects {
   initializeSession$ = createEffect((actions) =>
     actions.pipe(
       ofType(initializeSession),
-      switchMap(({ session, init }) => this.sessionService.initialize(session).pipe(tap(() => init && true))),
+      switchMap(({ session }) => this.sessionService.initialize(session)),
     ),
   );
 

@@ -20,6 +20,9 @@ const loadGlobalSettingsModule = () =>
 const loadRoleManagementModule = () =>
   import('./modules/role-management/role-management.module').then((m) => m.RoleManagementModule);
 
+const loadThemeModule = () =>
+  import('./modules/theme/administration-theme.module').then((m) => m.AdministrationThemeModule);
+
 const routes: Routes = [
   {
     path: '',
@@ -49,6 +52,11 @@ const routes: Routes = [
     loadChildren: loadRoleManagementModule,
     canMatch: [RoleManagementGuard],
     data: { breadcrumb: { label: 'administration.role-management.title', i18n: true } },
+  },
+  {
+    path: 'theme',
+    loadChildren: loadThemeModule,
+    data: { breadcrumb: { label: 'administration.theme.title', i18n: true } },
   },
   { path: '**', redirectTo: '' },
 ];
