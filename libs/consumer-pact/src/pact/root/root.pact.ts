@@ -22,24 +22,13 @@ export namespace GetRootResource {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
-          self: {
-            href: 'http://localhost/api',
-          },
-          login: {
-            href: 'http://localhost/api/auth/login',
-          },
-          signup: {
-            href: 'http://localhost/api/auth/signup',
-          },
-          'activation-token': {
-            href: 'http://localhost/api/auth/token',
-          },
-          'activate-account': {
-            href: 'http://localhost/api/auth/activate',
-          },
-          'build-info': {
-            href: 'http://localhost/api/build-info',
-          },
+          self: { href: 'http://localhost/api' },
+          login: { href: 'http://localhost/api/auth/login' },
+          signup: { href: 'http://localhost/api/auth/signup' },
+          'activation-token': { href: 'http://localhost/api/auth/token' },
+          'activate-account': { href: 'http://localhost/api/auth/activate' },
+          'build-info': { href: 'http://localhost/api/build-info' },
+          theme: { href: 'http://localhost/api/theme' },
         },
         _templates: {
           ...defaultTemplate,
@@ -77,18 +66,9 @@ export namespace GetRootResource {
           signup: {
             method: 'POST',
             properties: [
-              {
-                name: 'email',
-                type: 'email',
-              },
-              {
-                name: 'firstname',
-                type: 'text',
-              },
-              {
-                name: 'lastname',
-                type: 'text',
-              },
+              { name: 'email', type: 'email' },
+              { name: 'firstname', type: 'text' },
+              { name: 'lastname', type: 'text' },
               {
                 name: 'username',
                 required: true,
@@ -102,11 +82,7 @@ export namespace GetRootResource {
           activateAccount: {
             method: 'POST',
             properties: [
-              {
-                name: 'email',
-                required: true,
-                type: 'email',
-              },
+              { name: 'email', required: true, type: 'email' },
               {
                 name: 'password',
                 required: true,
@@ -114,13 +90,7 @@ export namespace GetRootResource {
                 maxLength: 128,
                 type: 'text',
               },
-              {
-                name: 'token',
-                required: true,
-                minLength: 8,
-                maxLength: 128,
-                type: 'text',
-              },
+              { name: 'token', required: true, minLength: 8, maxLength: 128, type: 'text' },
             ],
             target: 'http://localhost/api/auth/activate',
           },
@@ -145,12 +115,9 @@ export namespace GetRootResource {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
-          self: {
-            href: 'http://localhost/api',
-          },
-          'build-info': {
-            href: 'http://localhost/api/build-info',
-          },
+          self: { href: 'http://localhost/api' },
+          'build-info': { href: 'http://localhost/api/build-info' },
+          theme: { href: 'http://localhost/api/theme' },
         },
         _templates: { ...defaultTemplate },
       },
@@ -173,15 +140,10 @@ export namespace GetRootResource {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
-          self: {
-            href: 'http://localhost/api',
-          },
-          token: {
-            href: 'http://localhost/api/auth/token',
-          },
-          'build-info': {
-            href: 'http://localhost/api/build-info',
-          },
+          self: { href: 'http://localhost/api' },
+          token: { href: 'http://localhost/api/auth/token' },
+          'build-info': { href: 'http://localhost/api/build-info' },
+          theme: { href: 'http://localhost/api/theme' },
         },
         _templates: { ...defaultTemplate },
       },
@@ -204,15 +166,10 @@ export namespace GetRootResource {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
-          self: {
-            href: 'http://localhost/api',
-          },
-          'current-user': {
-            href: 'http://localhost/api/user/profile',
-          },
-          'build-info': {
-            href: 'http://localhost/api/build-info',
-          },
+          self: { href: 'http://localhost/api' },
+          'current-user': { href: 'http://localhost/api/user/profile' },
+          'build-info': { href: 'http://localhost/api/build-info' },
+          theme: { href: 'http://localhost/api/theme' },
         },
         _templates: { ...defaultTemplate },
       },
@@ -235,15 +192,10 @@ export namespace GetRootResource {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
-          self: {
-            href: 'http://localhost/api',
-          },
-          administration: {
-            href: 'http://localhost/api/administration',
-          },
-          'build-info': {
-            href: 'http://localhost/api/build-info',
-          },
+          self: { href: 'http://localhost/api' },
+          administration: { href: 'http://localhost/api/administration' },
+          'build-info': { href: 'http://localhost/api/build-info' },
+          theme: { href: 'http://localhost/api/theme' },
         },
         _templates: { ...defaultTemplate },
       },

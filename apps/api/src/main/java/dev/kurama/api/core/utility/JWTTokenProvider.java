@@ -1,12 +1,11 @@
 package dev.kurama.api.core.utility;
 
-import static io.micrometer.core.instrument.util.StringUtils.isNotBlank;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.common.base.Strings;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.filter.ContextUser;
@@ -39,7 +38,7 @@ public class JWTTokenProvider {
   }
 
   public boolean isTokenValid(DecodedJWT token) {
-    return isNotBlank(token.getSubject()) && !isTokenExpired(token);
+    return !Strings.isNullOrEmpty(token.getSubject()) && !isTokenExpired(token);
   }
 
   public DecodedJWT getDecodedJWT(String token) {

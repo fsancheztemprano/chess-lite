@@ -1,15 +1,13 @@
 import { APP_INITIALIZER, Injectable } from '@angular/core';
-import { initialize } from '@app/ui/shared/app';
-import { Actions } from '@ngneat/effects-ng';
-import { Observable, of } from 'rxjs';
+import { SessionService, ThemeService } from '@app/ui/shared/app';
+import { Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AppInitializationService {
-  constructor(private readonly actions: Actions) {}
+  constructor(private readonly sessionService: SessionService, private readonly themeService: ThemeService) {}
 
   initialize(): Observable<unknown> {
-    this.actions.dispatch(initialize({}));
-    return of(void 0);
+    return this.sessionService.initialize().pipe(switchMap(() => this.themeService.initializeTheme()));
   }
 }
 

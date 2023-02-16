@@ -3,14 +3,17 @@ package dev.kurama.api.zypress;
 import dev.kurama.api.core.exception.domain.exists.UserExistsException;
 import dev.kurama.api.core.exception.domain.not.found.RoleNotFoundException;
 import dev.kurama.api.core.hateoas.input.GlobalSettingsUpdateInput;
+import dev.kurama.api.core.hateoas.input.ThemeUpdateInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
+import dev.kurama.api.core.repository.ThemeRepository;
 import dev.kurama.api.core.repository.UserRepository;
 import dev.kurama.api.core.service.DataInitializationService;
 import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
+import dev.kurama.api.core.service.ThemeService;
 import dev.kurama.api.core.service.UserService;
 import javax.annotation.PostConstruct;
 import lombok.NonNull;
@@ -41,6 +44,10 @@ public class CypressService {
   private final GlobalSettingsRepository globalSettingsRepository;
   @NonNull
   private final GlobalSettingsService globalSettingsService;
+  @NonNull
+  private final ThemeService themeService;
+  @NonNull
+  private final ThemeRepository themeRepository;
 
   @NonNull
   private final DataInitializationService initializationService;
@@ -77,6 +84,7 @@ public class CypressService {
   }
 
   private void setState0() {
+    themeRepository.deleteAll();
     globalSettingsRepository.deleteAll();
     userRepository.deleteAll();
     roleRepository.deleteAll();
@@ -96,5 +104,7 @@ public class CypressService {
       roleRepository.save(role);
     });
     globalSettingsService.updateGlobalSettings(GlobalSettingsUpdateInput.builder().signupOpen(true).build());
+    themeService.updateTheme(
+      ThemeUpdateInput.builder().primaryColor("#303f9f").accentColor("#f9a825").warnColor("#c2185b").build());
   }
 }

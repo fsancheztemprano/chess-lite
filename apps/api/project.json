@@ -14,6 +14,10 @@
     },
     "build": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/main/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -28,6 +32,10 @@
     },
     "test": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -44,6 +52,10 @@
     },
     "ut": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -58,6 +70,10 @@
     },
     "it": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -75,6 +91,12 @@
     },
     "pact": {
       "executor": "nx:run-commands",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*",
+        "{projectRoot}/target/test-classes/pact/**/*",
+        "{projectRoot}/target/test-classes/pact-messages/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -108,6 +130,11 @@
     },
     "e2e": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{workspaceRoot}/apps/**/*",
+        "{workspaceRoot}/libs/ui/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -126,6 +153,11 @@
     },
     "package": {
       "executor": "nx:run-commands",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{workspaceRoot}/apps/**/*",
+        "{workspaceRoot}/libs/ui/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -139,6 +171,11 @@
     },
     "deploy": {
       "executor": "nx:run-commands",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{workspaceRoot}/apps/**/*",
+        "{workspaceRoot}/libs/ui/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],

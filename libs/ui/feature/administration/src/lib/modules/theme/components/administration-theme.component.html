@@ -1,0 +1,7 @@
+<app-core-card-view [title]="t('administration.home.theme.title')" *transloco="let t">
+  <app-theme-color-picker
+    (colorChanges)="colorChanges($event)"
+    [colors]="themeResource"
+    [disable]="!themeResource?.hasTemplate('update')"
+  ></app-theme-color-picker>
+</app-core-card-view>

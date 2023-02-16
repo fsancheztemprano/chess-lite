@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import {
   clearSession,
-  initialize,
+  initializeSession,
   SessionProps,
   SessionRepository,
   SessionService,
@@ -35,7 +35,7 @@ describe('AppInitializationService', () => {
 
     expect(initializeSpy).not.toHaveBeenCalled();
 
-    actions.dispatch(initialize({ session }));
+    actions.dispatch(initializeSession({ session }));
 
     expect(initializeSpy).toHaveBeenCalledTimes(1);
     expect(initializeSpy).toHaveBeenCalledWith(session);

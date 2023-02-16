@@ -10,7 +10,6 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { GlobalSettingsGeneralDefaultRoleComponent } from './components/default-role/global-settings-general-default-role.component';
 import { GlobalSettingsGeneralComponent } from './components/general/global-settings-general.component';
 import { GlobalSettingsGeneralSignupOpenComponent } from './components/signup-open/global-settings-general-signup-open.component';
-
 import { GlobalSettingsGeneralRoutingModule } from './global-settings-general-routing.module';
 
 @NgModule({

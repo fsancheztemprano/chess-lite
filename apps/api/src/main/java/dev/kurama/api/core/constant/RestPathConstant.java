@@ -11,6 +11,7 @@ public class RestPathConstant {
   public static final String GLOBAL_SETTINGS_PATH = BASE_PATH + "/global-settings";
   public static final String USER_PROFILE_PATH = BASE_PATH + "/user/profile";
   public static final String BUILD_INFO_PATH = BASE_PATH + "/build-info";
+  public static final String THEME_PATH = BASE_PATH + "/theme";
   public static final String USER_PREFERENCES_PATH = BASE_PATH + "/user/preferences";
   public static final String AUTHENTICATION_PATH = BASE_PATH + "/auth";
   public static final String SERVICE_LOGS_PATH = BASE_PATH + "/administration/service-logs";

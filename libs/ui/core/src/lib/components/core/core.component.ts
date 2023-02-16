@@ -22,7 +22,7 @@ export class CoreComponent implements OnInit {
   private _subscribeToThemeChanges(): void {
     this.themeRepository.darkMode$.pipe(untilDestroyed(this)).subscribe((darkMode) => {
       const darkClassName = 'dark-mode';
-      this.darkModeClass = darkMode;
+      this.darkModeClass = !!darkMode;
       if (darkMode) {
         this.overlay.getContainerElement().classList.add(darkClassName);
       } else {
