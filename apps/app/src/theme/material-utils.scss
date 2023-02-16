@@ -3,6 +3,8 @@
   height: $size;
   font-size: $size;
   line-height: $size;
+  min-height: $size;
+  max-height: $size;
 }
 
 @mixin mat-icon-button-size($button-size: 40px, $touch-target-size: 48px, $mat-icon-size: 24px) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { updateSession } from '@app/ui/shared/app';
-import { ThemeRepository, ThemeService, updateDarkMode, updateTheme } from '@app/ui/shared/core';
+import { ThemeService, updateSession } from '@app/ui/shared/app';
+import { ThemeRepository, updateDarkMode, updateTheme } from '@app/ui/shared/core';
 import { IThemeModel } from '@app/ui/shared/domain';
 import { createEffect, ofType } from '@ngneat/effects';
 import { filterNil } from '@ngneat/elf';

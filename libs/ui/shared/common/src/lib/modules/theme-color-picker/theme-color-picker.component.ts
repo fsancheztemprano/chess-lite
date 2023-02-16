@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { IThemeModel, ThemeModel } from '@app/ui/shared/domain';
+import { IThemeModel } from '@app/ui/shared/domain';
 import { NgxColorsModule } from 'ngx-colors';
 import { Observable, skip } from 'rxjs';
 
@@ -27,12 +27,12 @@ import { Observable, skip } from 'rxjs';
 export class ThemeColorPickerComponent implements OnChanges {
   public readonly palettes = ['primary', 'accent', 'warn'];
   public form = new FormGroup({
-    primaryColor: new FormControl(''),
-    accentColor: new FormControl(''),
-    warnColor: new FormControl(''),
+    primaryColor: new FormControl<string | null>(null),
+    accentColor: new FormControl<string | null>(null),
+    warnColor: new FormControl<string | null>(null),
   });
 
-  @Input() colors?: ThemeModel;
+  @Input() colors?: IThemeModel;
   @Input() disable = true;
 
   @Output() colorChanges = (<Observable<IThemeModel>>this.form.valueChanges).pipe(skip(1));

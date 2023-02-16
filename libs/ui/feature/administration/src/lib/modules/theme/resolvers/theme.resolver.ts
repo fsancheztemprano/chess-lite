@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { ThemeService } from '@app/ui/shared/core';
+import { ThemeService } from '@app/ui/shared/app';
 import { ThemeModel } from '@app/ui/shared/domain';
 import { Observable } from 'rxjs';
 

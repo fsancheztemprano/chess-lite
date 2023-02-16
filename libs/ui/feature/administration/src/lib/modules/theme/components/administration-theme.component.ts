@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ThemeService, updateTheme } from '@app/ui/shared/core';
+import { ThemeService } from '@app/ui/shared/app';
+import { updateTheme } from '@app/ui/shared/core';
 import { IThemeModel, ThemeModel } from '@app/ui/shared/domain';
 import { Actions } from '@ngneat/effects-ng';
 
@@ -11,16 +12,13 @@ import { Actions } from '@ngneat/effects-ng';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdministrationThemeComponent {
-  public themeResource?: ThemeModel;
+  public themeResource?: ThemeModel = this.route.snapshot.data.theme;
 
   constructor(
     private readonly actions: Actions,
     private readonly themeService: ThemeService,
     private readonly route: ActivatedRoute,
-  ) {
-    this.actions.dispatch(updateTheme(route.snapshot.data.theme));
-    this.themeResource = route.snapshot.data.theme;
-  }
+  ) {}
 
   colorChanges($event: IThemeModel) {
     if (!this.themeResource) return;

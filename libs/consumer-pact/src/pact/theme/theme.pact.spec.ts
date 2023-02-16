@@ -1,6 +1,6 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ThemeService } from '@app/ui/shared/core';
+import { ThemeService } from '@app/ui/shared/app';
 import { IThemeModel, TokenKeys } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { HalFormClientModule, HalFormService, Resource } from '@hal-form-client';

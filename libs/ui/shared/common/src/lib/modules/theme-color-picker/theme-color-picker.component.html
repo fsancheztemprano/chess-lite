@@ -11,7 +11,7 @@
   <mat-form-field class="{{ palette }}-picker" [color]="palette">
     <input matInput [value]="picker.color" [readonly]="true" [disabled]="disable" [ngStyle]="{ color: picker.color }" />
     <div matSuffix class="suffix">
-      <ngx-colors #picker class="" ngx-colors-trigger [formControl]="control"></ngx-colors>
+      <ngx-colors #picker ngx-colors-trigger [formControl]="control"></ngx-colors>
       <button
         [color]="palette"
         mat-icon-button

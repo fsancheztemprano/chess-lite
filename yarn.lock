@@ -10398,13 +10398,6 @@ ng-packagr@15.1.1:
   optionalDependencies:
     esbuild "^0.16.0"
 
-ngx-color-picker@13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-color-picker/-/ngx-color-picker-13.0.0.tgz#fe6d3b2def721ebc4f2a1a4ed83e552e0cfe3601"
-  integrity sha512-3mgMbs21KeqnmmY5p1cn71ckTH3q7gBt6Qn0fMfeF/Ql7ddTZsW4Z7Z8ga6LymMP/ugooGuLOFX+V6yx0dDxAw==
-  dependencies:
-    tslib "^2.3.0"
-
 ngx-colors@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/ngx-colors/-/ngx-colors-3.4.0.tgz#522d37563202053bd5b68ce8726afbfddf2f83a5"

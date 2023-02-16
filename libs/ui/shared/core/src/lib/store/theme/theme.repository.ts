@@ -6,7 +6,7 @@ export interface ThemeProps {
   darkMode?: boolean;
 }
 
-export const themeStore = createStore({ name: 'theme' }, withProps<ThemeProps>({}));
+export const themeStore = createStore({ name: 'theme' }, withProps<ThemeProps>({ darkMode: false }));
 
 persistState(themeStore, { key: 'theme', storage: localStorageStrategy });
 

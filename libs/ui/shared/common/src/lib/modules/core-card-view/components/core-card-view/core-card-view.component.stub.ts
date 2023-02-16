@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MenuData } from '@app/ui/shared/domain';
 import { CoreCardViewComponent } from './core-card-view.component';
 
-@Component({ selector: 'app-core-card-view', template: '<ng-content></ng-content>', standalone: true })
+@Component({ selector: 'app-core-card-view', template: '<ng-content></ng-content>' })
 export class StubCoreCardViewComponent implements Partial<CoreCardViewComponent> {
   @Input() title = '';
   @Input() titleRatio = 1;

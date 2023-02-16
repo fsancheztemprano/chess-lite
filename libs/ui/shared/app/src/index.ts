@@ -11,6 +11,7 @@ export { clearSession, initializeSession, updateSession } from './lib/store/sess
 export { AuthInterceptorProvider } from './lib/interceptors/auth.interceptor';
 
 export { ThemeService } from './lib/services/theme.service';
+export { StubThemeService, stubThemeServiceProvider } from './lib/services/theme.service.stub';
 
 export { httpToSession } from './lib/utils/session.utils';
 export { isValidToken } from './lib/utils/auth.utils';
