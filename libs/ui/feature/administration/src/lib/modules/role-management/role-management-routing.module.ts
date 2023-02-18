@@ -18,7 +18,7 @@ const routes: Routes = [
     path: ':roleId',
     loadChildren: loadRoleManagementDetailModule,
     resolve: { role: RoleResolver, authorities: AuthoritiesResolver },
-    data: { breadcrumb: { title: (data: { role: { name: string } }) => `${data.role.name}` } },
+    data: { breadcrumb: { label: (data: { role: { name: string } }) => `${data.role.name}` } },
   },
 ];
 

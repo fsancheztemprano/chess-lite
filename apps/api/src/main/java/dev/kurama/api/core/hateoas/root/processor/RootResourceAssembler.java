@@ -5,6 +5,7 @@ import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
 import static dev.kurama.api.core.authority.TokenAuthority.TOKEN_REFRESH;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
 import static dev.kurama.api.core.hateoas.relations.ApplicationRelations.BUILD_INFO_REL;
+import static dev.kurama.api.core.hateoas.relations.ApplicationRelations.THEME_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
@@ -20,6 +21,7 @@ import dev.kurama.api.core.hateoas.root.rest.AdministrationRootController;
 import dev.kurama.api.core.hateoas.root.rest.RootController;
 import dev.kurama.api.core.rest.AuthenticationController;
 import dev.kurama.api.core.rest.BuildInfoController;
+import dev.kurama.api.core.rest.ThemeController;
 import dev.kurama.api.core.rest.UserProfileController;
 import dev.kurama.api.core.utility.AuthorityUtils;
 import lombok.NonNull;
@@ -35,7 +37,7 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
   public @NonNull RepresentationModel<RootResource> assemble() {
     HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource());
 
-    rootModel.link(getSelfLink()).link(getBuildInfoLink());
+    rootModel.link(getSelfLink()).link(getBuildInfoLink()).link(getThemeLink());
 
     if (AuthorityUtils.isAuthenticated()) {
       if (AuthorityUtils.hasAuthority(TOKEN_REFRESH)) {
@@ -96,5 +98,9 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
 
   private @NonNull Link getBuildInfoLink() {
     return linkTo(methodOn(BuildInfoController.class).get()).withRel(BUILD_INFO_REL);
+  }
+
+  private @NonNull Link getThemeLink() {
+    return linkTo(methodOn(ThemeController.class).get()).withRel(THEME_REL);
   }
 }

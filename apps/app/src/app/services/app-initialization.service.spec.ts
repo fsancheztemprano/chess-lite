@@ -1,18 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { stubSessionServiceProvider } from '@app/ui/shared/app';
-import { Actions, EffectsNgModule } from '@ngneat/effects-ng';
-import { SessionEffects } from '../store/session.effects';
+import { stubSessionServiceProvider, stubThemeServiceProvider } from '@app/ui/shared/app';
+import { firstValueFrom } from 'rxjs';
 import { AppInitializationService } from './app-initialization.service';
 
 describe('AppInitializationService', () => {
   let service: AppInitializationService;
-  let customActionsStream: Actions;
 
   beforeEach(() => {
-    customActionsStream = new Actions();
     TestBed.configureTestingModule({
-      providers: [stubSessionServiceProvider],
-      imports: [EffectsNgModule.forRoot([SessionEffects], { customActionsStream })],
+      providers: [stubSessionServiceProvider, stubThemeServiceProvider],
     });
     service = TestBed.inject(AppInitializationService);
   });
@@ -21,13 +17,11 @@ describe('AppInitializationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should dispatch initialization action', (done) => {
-    customActionsStream.subscribe((action) => {
-      expect(action).toBeTruthy();
-      expect(action.type).toBe('[Session] Initialize Session');
-      done();
-    });
-
-    service.initialize().subscribe();
+  it('should dispatch initialization action', async () => {
+    const initializeSessionStub = jest.spyOn(service['sessionService'], 'initialize');
+    const initializeTheme = jest.spyOn(service['themeService'], 'initializeTheme');
+    await firstValueFrom(service.initialize());
+    expect(initializeSessionStub).toHaveBeenCalled();
+    expect(initializeTheme).toHaveBeenCalled();
   });
 });

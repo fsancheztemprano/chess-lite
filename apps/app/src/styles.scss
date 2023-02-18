@@ -1,7 +1,4 @@
-@use '@angular/material' as mat;
-
-@include mat.all-component-typographies();
-@include mat.core();
+@import 'theme';
 
 html,
 body {
@@ -17,37 +14,4 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-// @formatter:off
-$light-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: mat.define-palette(mat.$blue-palette),
-      accent: mat.define-palette(mat.$orange-palette),
-      warn: mat.define-palette(mat.$red-palette),
-    ),
-    typography: mat.define-typography-config(),
-  )
-);
-
-$dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: mat.define-palette(mat.$blue-palette),
-      accent: mat.define-palette(mat.$orange-palette),
-      warn: mat.define-palette(mat.$red-palette),
-    ),
-  )
-);
-// @formatter:on
-
-@include mat.all-component-themes($light-theme);
-
-.dark-mode {
-  @include mat.all-component-colors($dark-theme);
-}
-
-.mat-mdc-form-field-error.mat-mdc-form-field-error {
-  display: flex;
 }

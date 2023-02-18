@@ -32,7 +32,8 @@
         "user-management": "User Management",
         "role-management": "Role Management",
         "service-logs": "Service Logs",
-        "global-settings": "Global Settings"
+        "global-settings": "Global Settings",
+        "theme": "Theme"
       }
     }
   }

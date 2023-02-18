@@ -22,22 +22,22 @@ const routes: Routes = [
       {
         path: 'profile',
         loadChildren: loadUserManagementProfileModule,
-        data: { breadcrumb: { i18n: 'administration.user-management.profile', parentOffset: 1 } },
+        data: { breadcrumb: { label: 'administration.user-management.profile', i18n: true, parentOffset: 1 } },
       },
       {
         path: 'authority',
         loadChildren: loadUserManagementAuthorityModule,
-        data: { breadcrumb: { i18n: 'administration.user-management.authority' } },
+        data: { breadcrumb: { label: 'administration.user-management.authority', i18n: true } },
       },
       {
         path: 'account',
         loadChildren: loadUserManagementDeleteModule,
-        data: { breadcrumb: { i18n: 'administration.user-management.account' } },
+        data: { breadcrumb: { label: 'administration.user-management.account', i18n: true } },
       },
       {
         path: 'preferences',
         loadChildren: loadUserManagementPreferencesModule,
-        data: { breadcrumb: { i18n: 'administration.user-management.preferences' } },
+        data: { breadcrumb: { label: 'administration.user-management.preferences', i18n: true } },
       },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: '**', redirectTo: 'profile' },

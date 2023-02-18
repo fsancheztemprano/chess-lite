@@ -14,6 +14,7 @@
     },
     "pact": {
       "executor": "@nrwl/jest:jest",
+      "inputs": ["{workspaceRoot}/apps/**/*", "{workspaceRoot}/libs/ui/**/*"],
       "outputs": [
         "{workspaceRoot}/apps/api/target/test-classes/pact",
         "{workspaceRoot}/apps/api/target/test-classes/pact-messages",

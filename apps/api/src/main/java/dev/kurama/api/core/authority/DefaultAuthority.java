@@ -43,7 +43,9 @@ public class DefaultAuthority {
 
     ServiceLogsAuthority.SERVICE_LOGS_READ, ServiceLogsAuthority.SERVICE_LOGS_DELETE,
 
-    GlobalSettingsAuthority.GLOBAL_SETTINGS_READ, GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE);
+    GlobalSettingsAuthority.GLOBAL_SETTINGS_READ, GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE,
+
+    ThemeAuthority.THEME_UPDATE);
 
 
   public static final List<String> USER_AUTHORITIES = Lists.newArrayList(TokenAuthority.TOKEN_REFRESH,

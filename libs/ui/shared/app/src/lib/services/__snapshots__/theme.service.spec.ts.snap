@@ -1,0 +1,342 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ThemeService should update app primary colors 1`] = `
+Array [
+  Array [
+    "--primary-50",
+    "#e4f2fe",
+  ],
+  Array [
+    "--primary-100",
+    "#bce0fb",
+  ],
+  Array [
+    "--primary-200",
+    "#90cbf9",
+  ],
+  Array [
+    "--primary-300",
+    "#64b6f7",
+  ],
+  Array [
+    "--primary-400",
+    "#42a6f5",
+  ],
+  Array [
+    "--primary-500",
+    "#2196f3",
+  ],
+  Array [
+    "--primary-600",
+    "#1d8ef2",
+  ],
+  Array [
+    "--primary-700",
+    "#1883f0",
+  ],
+  Array [
+    "--primary-800",
+    "#1479ee",
+  ],
+  Array [
+    "--primary-900",
+    "#0b68eb",
+  ],
+  Array [
+    "--primary-A100",
+    "#639cff",
+  ],
+  Array [
+    "--primary-A200",
+    "#307cff",
+  ],
+  Array [
+    "--primary-A400",
+    "#005dfc",
+  ],
+  Array [
+    "--primary-A700",
+    "#0053e2",
+  ],
+  Array [
+    "--primary-contrast-50",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--primary-contrast-100",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--primary-contrast-200",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--primary-contrast-300",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--primary-contrast-400",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--primary-contrast-500",
+    "white",
+  ],
+  Array [
+    "--primary-contrast-600",
+    "white",
+  ],
+  Array [
+    "--primary-contrast-700",
+    "white",
+  ],
+  Array [
+    "--primary-contrast-800",
+    "white",
+  ],
+  Array [
+    "--primary-contrast-900",
+    "white",
+  ],
+  Array [
+    "--primary-contrast-A100",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--primary-contrast-A200",
+    "white",
+  ],
+  Array [
+    "--primary-contrast-A400",
+    "white",
+  ],
+  Array [
+    "--primary-contrast-A700",
+    "white",
+  ],
+  Array [
+    "--accent-50",
+    "#f1f8e9",
+  ],
+  Array [
+    "--accent-100",
+    "#dcedc9",
+  ],
+  Array [
+    "--accent-200",
+    "#c5e1a5",
+  ],
+  Array [
+    "--accent-300",
+    "#aed580",
+  ],
+  Array [
+    "--accent-400",
+    "#9ccc65",
+  ],
+  Array [
+    "--accent-500",
+    "#8bc34a",
+  ],
+  Array [
+    "--accent-600",
+    "#83bd43",
+  ],
+  Array [
+    "--accent-700",
+    "#78b53a",
+  ],
+  Array [
+    "--accent-800",
+    "#6eae32",
+  ],
+  Array [
+    "--accent-900",
+    "#5ca122",
+  ],
+  Array [
+    "--accent-A100",
+    "#86ff2a",
+  ],
+  Array [
+    "--accent-A200",
+    "#6af600",
+  ],
+  Array [
+    "--accent-A400",
+    "#54c300",
+  ],
+  Array [
+    "--accent-A700",
+    "#49aa00",
+  ],
+  Array [
+    "--accent-contrast-50",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-100",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-200",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-300",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-400",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-500",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-600",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-700",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-800",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-900",
+    "white",
+  ],
+  Array [
+    "--accent-contrast-A100",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-A200",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-A400",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--accent-contrast-A700",
+    "white",
+  ],
+  Array [
+    "--warn-50",
+    "#fee8e7",
+  ],
+  Array [
+    "--warn-100",
+    "#fcc7c3",
+  ],
+  Array [
+    "--warn-200",
+    "#faa19b",
+  ],
+  Array [
+    "--warn-300",
+    "#f77b72",
+  ],
+  Array [
+    "--warn-400",
+    "#f65f54",
+  ],
+  Array [
+    "--warn-500",
+    "#f44336",
+  ],
+  Array [
+    "--warn-600",
+    "#f33d30",
+  ],
+  Array [
+    "--warn-700",
+    "#f13429",
+  ],
+  Array [
+    "--warn-800",
+    "#ef2c22",
+  ],
+  Array [
+    "--warn-900",
+    "#ec1e16",
+  ],
+  Array [
+    "--warn-A100",
+    "#ff6e69",
+  ],
+  Array [
+    "--warn-A200",
+    "#ff3d36",
+  ],
+  Array [
+    "--warn-A400",
+    "#ff0b03",
+  ],
+  Array [
+    "--warn-A700",
+    "#e90700",
+  ],
+  Array [
+    "--warn-contrast-50",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--warn-contrast-100",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--warn-contrast-200",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--warn-contrast-300",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--warn-contrast-400",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--warn-contrast-500",
+    "white",
+  ],
+  Array [
+    "--warn-contrast-600",
+    "white",
+  ],
+  Array [
+    "--warn-contrast-700",
+    "white",
+  ],
+  Array [
+    "--warn-contrast-800",
+    "white",
+  ],
+  Array [
+    "--warn-contrast-900",
+    "white",
+  ],
+  Array [
+    "--warn-contrast-A100",
+    "rgba(0, 0, 0, 0.87)",
+  ],
+  Array [
+    "--warn-contrast-A200",
+    "white",
+  ],
+  Array [
+    "--warn-contrast-A400",
+    "white",
+  ],
+  Array [
+    "--warn-contrast-A700",
+    "white",
+  ],
+]
+`;

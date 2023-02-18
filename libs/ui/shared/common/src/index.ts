@@ -13,4 +13,6 @@ export * from './lib/modules/dialogs';
 export * from './lib/modules/tiled-menu';
 export * from './lib/modules/core-card-view';
 
+export * from './lib/modules/theme-color-picker/theme-color-picker.component';
+
 export * from './index.testing';
