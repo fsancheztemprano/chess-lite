@@ -1,13 +1,16 @@
 import { HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { AuthInterceptorProvider } from '@app/ui/shared/app';
 import { Observable } from 'rxjs';
 
 export const PACT_BASE_URL = new InjectionToken<number>('Provided Pact Base Url');
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PactInterceptor implements HttpInterceptor {
-  constructor(@Inject(PACT_BASE_URL) public pactBaseUrl: string) {}
+  public pactBaseUrl = '';
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let url = request.url.replace('http://localhost', '');
@@ -23,6 +26,12 @@ export const PactInterceptorProvider = {
   multi: true,
 };
 
-export function avengersAssemble(pactBaseUrl = ''): unknown[] {
-  return [{ provide: PACT_BASE_URL, useValue: pactBaseUrl }, PactInterceptorProvider, AuthInterceptorProvider];
+export function avengersAssemble(): unknown[] {
+  return [PactInterceptorProvider, AuthInterceptorProvider];
+}
+
+export function setPactUrl(url: string) {
+  TestBed.inject(HTTP_INTERCEPTORS)
+    .filter((x) => x instanceof PactInterceptor)
+    .forEach((interceptor: HttpInterceptor) => ((<PactInterceptor>interceptor).pactBaseUrl = url));
 }

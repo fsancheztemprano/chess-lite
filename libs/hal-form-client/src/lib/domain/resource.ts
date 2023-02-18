@@ -26,7 +26,7 @@ export interface IResource {
     [name: string]: ITemplate | undefined;
   };
 
-  [key: string]: any;
+  [key: string]: any | undefined;
 }
 
 export class Resource implements IResource {
@@ -42,7 +42,7 @@ export class Resource implements IResource {
     [name: string]: Template | undefined;
   };
 
-  [key: string]: any;
+  [key: string]: any | undefined;
 
   public static of(iResource?: IResource): Resource {
     return new Resource(iResource);
@@ -196,30 +196,30 @@ export class Resource implements IResource {
   private linksToJson(): { [key: string]: ILink | undefined } | undefined {
     return this._links
       ? Object.keys(this._links)
-          .map((key) => ({ [key]: this._links![key]?.toJson() }))
-          .reduce((previous, current) => ({ ...previous, ...current }), {})
+        .map((key) => ({ [key]: this._links![key]?.toJson() }))
+        .reduce((previous, current) => ({ ...previous, ...current }), {})
       : undefined;
   }
 
   private templatesToJson(): { [key: string]: ITemplate | undefined } | undefined {
     return this._templates
       ? Object.keys(this._templates)
-          .map((key) => ({ [key]: this._templates![key]?.toJson() }))
-          .reduce((previous, current) => ({ ...previous, ...current }), {})
+        .map((key) => ({ [key]: this._templates![key]?.toJson() }))
+        .reduce((previous, current) => ({ ...previous, ...current }), {})
       : undefined;
   }
 
   private embeddedToJson(): { [key: string]: IResource | IResource[] } | undefined {
     return this._embedded
       ? Object.keys(this._embedded)
-          .map((key) => ({
-            [key]: Array.isArray(this._embedded![key])
-              ? this._embedded![key].map((resource: Resource) => resource.toJson())
-              : this._embedded![key] instanceof Resource
+        .map((key) => ({
+          [key]: Array.isArray(this._embedded![key])
+            ? this._embedded![key].map((resource: Resource) => resource.toJson())
+            : this._embedded![key] instanceof Resource
               ? (this._embedded![key] as Resource).toJson()
               : JSON.parse(JSON.stringify(this._embedded![key])),
-          }))
-          .reduce((previous, current) => ({ ...previous, ...current }), {})
+        }))
+        .reduce((previous, current) => ({ ...previous, ...current }), {})
       : undefined;
   }
 }

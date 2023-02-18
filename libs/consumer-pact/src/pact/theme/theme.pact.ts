@@ -2,8 +2,8 @@ import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType, IResource } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { bearer } from '../../utils/pact.utils';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
+import { bearer, JsonObject } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 
 const theme: IResource = {
@@ -32,7 +32,7 @@ export namespace GetThemePact {
     state: 'stateless',
     uponReceiving: 'get app theme',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/theme',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -49,7 +49,7 @@ export namespace GetThemePact {
     state: 'stateless',
     uponReceiving: 'get theme with update template',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/theme',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -60,7 +60,7 @@ export namespace GetThemePact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
-        ...theme,
+        ...(theme as JsonObject),
         _templates: {
           ...defaultTemplate,
           ...themeUpdateTemplate,
@@ -75,7 +75,7 @@ export namespace UpdateThemePact {
     state: 'stateless',
     uponReceiving: 'update theme',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/theme',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -92,7 +92,7 @@ export namespace UpdateThemePact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
-        ...theme,
+        ...(theme as JsonObject),
         primaryColor: '#3e58dc',
         accentColor: '#26881b',
         warnColor: '#6c0707',
@@ -108,7 +108,7 @@ export namespace UpdateThemePact {
     state: 'stateless',
     uponReceiving: 'update theme unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/theme',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,

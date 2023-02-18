@@ -5,7 +5,7 @@ import { RoleChangedMessages } from './role-messages.pact';
 
 const provider: MessageConsumerPact = pactForMessages('roleChanged');
 
-describe.skip('Role Messages Pacts', () => {
+describe('Role Messages Pacts', () => {
   it('should receive a role created message', () => {
     return provider
       .expectsToReceive(`a role created message`)

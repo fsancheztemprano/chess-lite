@@ -5,7 +5,7 @@ import { GlobalSettingsChangedMessages } from './global-settings-messages.pact';
 
 const provider: MessageConsumerPact = pactForMessages('globalSettingsChanged');
 
-describe.skip('Global Settings Messages Pacts', () => {
+describe('Global Settings Messages Pacts', () => {
   it('should receive a global settings updated message', () => {
     return provider
       .expectsToReceive(`a global settings updated message`)

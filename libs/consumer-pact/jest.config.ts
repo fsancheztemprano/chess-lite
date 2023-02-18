@@ -30,4 +30,5 @@ export default {
     'jest-preset-angular/build/serializers/html-comment',
   ],
   testTimeout: 30000,
+  passWithNoTests: true,
 };

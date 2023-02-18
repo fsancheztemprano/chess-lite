@@ -5,7 +5,7 @@ import { UserPreferencesChangedMessages } from './user-preferences-messages.pact
 
 const provider: MessageConsumerPact = pactForMessages('userPreferencesChanged');
 
-describe.skip('User Preferences Messages Pacts', () => {
+describe('User Preferences Messages Pacts', () => {
   it('should receive a user preferences updated message', () => {
     return provider
       .expectsToReceive(`a user preferences updated message`)

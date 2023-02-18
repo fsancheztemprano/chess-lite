@@ -7,15 +7,15 @@ import {
   uploadAvatarTemplate,
 } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
-import { Interaction, InteractionObject } from '@pact-foundation/pact';
+import { Interaction, InteractionObject, V3Interaction } from '@pact-foundation/pact';
 import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
-import { bearer, jwt } from '../../utils/pact.utils';
+import { bearer, JsonObject, jwt, jwtv3 } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 
 export namespace SignupPact {
-  export const successful: InteractionObject = {
-    state: 'stateless',
+  export const successful: V3Interaction = {
+    states: [],
     uponReceiving: 'new user signup',
     withRequest: {
       method: HTTPMethods.POST,
@@ -34,8 +34,8 @@ export namespace SignupPact {
     },
   };
 
-  export const no_email: InteractionObject = {
-    state: 'stateless',
+  export const no_email: V3Interaction = {
+    states: [],
     uponReceiving: 'new user signup without email',
     withRequest: {
       method: HTTPMethods.POST,
@@ -58,8 +58,8 @@ export namespace SignupPact {
     },
   };
 
-  export const existing_email: InteractionObject = {
-    state: 'stateless',
+  export const existing_email: V3Interaction = {
+    states: [],
     uponReceiving: 'new user signup with existing email',
     withRequest: {
       method: HTTPMethods.POST,
@@ -83,8 +83,8 @@ export namespace SignupPact {
     },
   };
 
-  export const no_username: InteractionObject = {
-    state: 'stateless',
+  export const no_username: V3Interaction = {
+    states: [],
     uponReceiving: 'new user signup without username',
     withRequest: {
       method: HTTPMethods.POST,
@@ -107,8 +107,8 @@ export namespace SignupPact {
     },
   };
 
-  export const existing_username: InteractionObject = {
-    state: 'stateless',
+  export const existing_username: V3Interaction = {
+    states: [],
     uponReceiving: 'new user signup with existing username',
     withRequest: {
       method: HTTPMethods.POST,
@@ -184,8 +184,8 @@ export namespace LoginPact {
     },
   };
 
-  export const successful: InteractionObject = {
-    state: 'stateless',
+  export const successful: V3Interaction = {
+    states: [],
     uponReceiving: 'successful login',
     withRequest: {
       method: HTTPMethods.POST,
@@ -203,8 +203,8 @@ export namespace LoginPact {
       status: 200,
       headers: {
         [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: `${HttpHeaderKey.JWT_TOKEN}, ${HttpHeaderKey.JWT_REFRESH_TOKEN}`,
-        [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
-        [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwt(jwtToken()),
+        [HttpHeaderKey.JWT_TOKEN]: jwtv3(jwtToken()),
+        [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwtv3(jwtToken()),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
@@ -213,7 +213,7 @@ export namespace LoginPact {
           ...pactCurrentUser.userPreferences,
           _templates: {
             ...defaultTemplate,
-            ...(updateProfilePreferencesTemplate as Record<string, unknown>),
+            ...(updateProfilePreferencesTemplate as JsonObject),
           },
         },
         _templates: {

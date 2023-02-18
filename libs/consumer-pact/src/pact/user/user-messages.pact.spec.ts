@@ -5,7 +5,7 @@ import { UserChangedMessages } from './user-messages.pact';
 
 const provider: MessageConsumerPact = pactForMessages('userChanged');
 
-describe.skip('User Messages Pacts', () => {
+describe('User Messages Pacts', () => {
   it('should receive a user created message', () => {
     return provider
       .expectsToReceive(`a user created message`)
