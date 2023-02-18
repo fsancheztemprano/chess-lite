@@ -48,6 +48,9 @@
         },
         "role-management": {
           "title": "Administración de Roles"
+        },
+        "theme": {
+          "title": "Tema"
         }
       }
     }

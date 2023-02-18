@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanLoad } from '@angular/router';
+import { CanMatch } from '@angular/router';
 import { RoleManagementRelations } from '@app/ui/shared/domain';
 import { AdministrationService } from '@app/ui/shared/feature/administration';
 import { Observable } from 'rxjs';
@@ -7,14 +7,10 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class RoleManagementGuard implements CanLoad, CanActivate {
+export class RoleManagementGuard implements CanMatch {
   constructor(private readonly administrationService: AdministrationService) {}
 
-  canActivate(): Observable<boolean> {
-    return this._guard();
-  }
-
-  canLoad(): Observable<boolean> {
+  canMatch(): Observable<boolean> {
     return this._guard();
   }
 

@@ -28,27 +28,27 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: loadUserUpdateProfileModule,
-    data: { breadcrumb: { i18n: 'user-settings.profile' } },
+    data: { breadcrumb: { label: 'user-settings.profile', i18n: true } },
   },
   {
     path: 'delete',
     loadChildren: loadUserRemoveAccountModule,
-    data: { breadcrumb: { i18n: 'user-settings.delete' } },
+    data: { breadcrumb: { label: 'user-settings.delete', i18n: true } },
   },
   {
     path: 'password',
     loadChildren: loadUserChangePasswordModule,
-    data: { breadcrumb: { i18n: 'user-settings.password' } },
+    data: { breadcrumb: { label: 'user-settings.password', i18n: true } },
   },
   {
     path: 'avatar',
     loadChildren: loadUserUploadAvatarModule,
-    data: { breadcrumb: { i18n: 'user-settings.avatar' } },
+    data: { breadcrumb: { label: 'user-settings.avatar', i18n: true } },
   },
   {
     path: 'preferences',
     loadChildren: loadUserPreferencesModule,
-    data: { breadcrumb: { i18n: 'user-settings.preferences' } },
+    data: { breadcrumb: { label: 'user-settings.preferences', i18n: true } },
   },
   { path: '**', redirectTo: '' },
 ];

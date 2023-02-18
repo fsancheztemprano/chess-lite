@@ -7,3 +7,4 @@ export * from './lib/service/hal-form.service';
 export * from './lib/service/hal-form-resource.service';
 
 export * from './lib/hal-form-client.module';
+export * from './lib/hal-form-client-testing.module';

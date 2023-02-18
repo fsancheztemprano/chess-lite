@@ -4,12 +4,7 @@
   [matMenuTriggerFor]="menu"
   *ngIf="this.localizationRepository.contentLanguage$ | async as contentLanguage"
 >
-  <img
-    alt="{{ contentLanguage }}"
-    src="./assets/flags/{{ contentLanguage | iso3166 }}.png"
-    [width]="pickerFlagWidth"
-    [height]="pickerFlagHeight"
-  />
+  <img alt="{{ contentLanguage }}" src="./assets/flags/{{ contentLanguage | iso3166 }}.png" />
 </button>
 <mat-menu #menu="matMenu" classList="locale-picker-menu">
   <ng-container *transloco="let t">
@@ -18,12 +13,7 @@
       *ngFor="let language of localizationRepository.availableLanguages"
       (click)="updateContentLanguage(language)"
     >
-      <img
-        alt="{{ language }}"
-        src="./assets/flags/{{ language | iso3166 }}.png"
-        [width]="menuFlagWidth"
-        [height]="menuFlagHeight"
-      />
+      <img alt="{{ language }}" src="./assets/flags/{{ language | iso3166 }}.png" />
       <span>{{ t('core.locale.' + language) }}</span>
     </button>
   </ng-container>

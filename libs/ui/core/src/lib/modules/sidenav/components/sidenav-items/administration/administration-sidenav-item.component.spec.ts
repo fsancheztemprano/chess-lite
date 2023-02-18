@@ -50,6 +50,10 @@ describe('AdministrationSidenavItemComponent', () => {
     expect(component.items).toPartiallyContain({ route: ['/administration', 'global-settings'] });
   });
 
+  it('should have link to theme', () => {
+    expect(component.items).toPartiallyContain({ route: ['/administration', 'theme'] });
+  });
+
   it('should not render if administration link is not available', () => {
     expect(fixture.debugElement.query(By.css('app-sidenav-item'))).toBeFalsy();
   });

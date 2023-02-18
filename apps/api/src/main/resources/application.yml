@@ -9,6 +9,7 @@ application:
     - /api/auth/token
     - /api/auth/activate
     - /api/build-info
+    - /api/theme
     - /websocket/**
   jwt:
     secret: 'secret'

@@ -4,9 +4,9 @@ import dev.kurama.api.core.filter.JWTAccessDeniedHandler;
 import dev.kurama.api.core.filter.JWTAuthenticationEntryPoint;
 import dev.kurama.api.core.filter.JWTAuthorizationFilter;
 import dev.kurama.api.core.properties.ApplicationProperties;
-import dev.kurama.api.core.service.UserDetailsServiceImpl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -42,9 +43,10 @@ public class SecurityConfiguration {
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http,
                                                      BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                     UserDetailsServiceImpl userDetailsServiceImpl) throws Exception {
+                                                     @Qualifier("userDetailsService") UserDetailsService userDetailsService)
+    throws Exception {
     return http.getSharedObject(AuthenticationManagerBuilder.class)
-      .userDetailsService(userDetailsServiceImpl)
+      .userDetailsService(userDetailsService)
       .passwordEncoder(bCryptPasswordEncoder)
       .and()
       .build();
@@ -52,7 +54,7 @@ public class SecurityConfiguration {
 
   @Bean
   public DefaultSecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf()
+    return http.csrf()
       .disable()
       .cors()
       .and()
@@ -69,7 +71,7 @@ public class SecurityConfiguration {
       .accessDeniedHandler(jwtAccessDeniedHandler)
       .authenticationEntryPoint(jwtAuthenticationEntryPoint)
       .and()
-      .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-    return http.build();
+      .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+      .build();
   }
 }

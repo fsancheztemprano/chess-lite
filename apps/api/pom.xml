@@ -29,9 +29,9 @@
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
     <skipUTs>${skipTests}</skipUTs>
-    <node.version>v16.14.0
+    <node.version>v16.19.0
     </node.version><!-- See https://nodejs.org/en/download/ for latest node and yarn (lts) versions -->
-    <yarn.version>v1.22.17</yarn.version><!-- https://www.npmjs.com/package/yarn -->
+    <yarn.version>v1.22.19</yarn.version><!-- https://www.npmjs.com/package/yarn -->
     <spring-cloud-contract.version>3.1.5</spring-cloud-contract.version>
   </properties>
 
@@ -290,17 +290,17 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M8</version>
+          <version>3.0.0-M9</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-report-plugin</artifactId>
-          <version>3.0.0-M8</version>
+          <version>3.0.0-M9</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.0.0-M8</version>
+          <version>3.0.0-M9</version>
         </plugin>
         <plugin>
           <groupId>org.springframework.cloud</groupId>
@@ -554,7 +554,7 @@
                   <goal>yarn</goal>
                 </goals>
                 <configuration>
-                  <arguments>run pact:consumer</arguments>
+                  <arguments>run pact:consumer --codeCoverage</arguments>
                 </configuration>
               </execution>
             </executions>
@@ -688,7 +688,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M8</version>
+        <version>3.0.0-M9</version>
       </plugin>
     </plugins>
   </reporting>

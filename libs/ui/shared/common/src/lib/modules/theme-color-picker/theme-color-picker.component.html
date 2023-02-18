@@ -1,0 +1,27 @@
+<form [formGroup]="form" class="color-picker-container">
+  <ng-container *ngFor="let palette of palettes">
+    <ng-container
+      [ngTemplateOutlet]="colorPicker"
+      [ngTemplateOutletContext]="{ palette, control: $any(form.controls)[palette +'Color'] }"
+    ></ng-container>
+  </ng-container>
+</form>
+
+<ng-template #colorPicker let-palette="palette" let-control="control">
+  <mat-form-field class="{{ palette }}-picker" [color]="palette">
+    <input matInput [value]="picker.color" [readonly]="true" [disabled]="disable" [ngStyle]="{ color: picker.color }" />
+    <div matSuffix class="suffix">
+      <ngx-colors #picker ngx-colors-trigger [formControl]="control"></ngx-colors>
+      <button
+        [color]="palette"
+        mat-icon-button
+        (click)="control.patchValue(null, { emitEvent: false })"
+        [attr.aria-label]="'Remove Color'"
+        [disabled]="disable"
+      >
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    </div>
+    <mat-hint [ngStyle]="{ color: picker.color }">{{ palette | titlecase }} Color</mat-hint>
+  </mat-form-field>
+</ng-template>

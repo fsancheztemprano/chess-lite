@@ -6,6 +6,7 @@ import dev.kurama.api.core.repository.UserRepository;
 import java.util.Date;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
+@Qualifier("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
   @NonNull

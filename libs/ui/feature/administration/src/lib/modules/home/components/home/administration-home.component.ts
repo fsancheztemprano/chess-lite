@@ -43,6 +43,13 @@ export class AdministrationHomeComponent {
       route: 'global-settings',
       visible$: this.administrationService.hasGlobalSettingsLink(),
     },
+    {
+      id: 'theme-tile',
+      icon: 'palette',
+      title$: this.translocoService.selectTranslate('administration.home.theme.title'),
+      subtitle$: this.translocoService.selectTranslate('administration.home.theme.description'),
+      route: 'theme',
+    },
   ];
 
   constructor(

@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import dev.kurama.api.core.configuration.SecurityConfiguration;
 import dev.kurama.api.core.filter.JWTAccessDeniedHandler;
 import dev.kurama.api.core.filter.JWTAuthenticationEntryPoint;
-import dev.kurama.api.core.service.UserDetailsServiceImpl;
 import dev.kurama.api.core.utility.JWTTokenProvider;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,10 +33,12 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -63,8 +64,8 @@ class ApplicationForwardControllerIT {
 
   @DisplayName("Route endpoint should forward")
   @ParameterizedTest(name = "if someone requests \"{0}\"")
-  @ValueSource(strings = {"/", "/app/", "/app", "/app/some.html", "/app/some.css", "/app/test.js", "/app/a/b/c/d/",
-    "/app/a/b/c/d/index.html", "/app/a/b/c/d/some.css", "/app/a/b/c/d/some.js"
+  @ValueSource(strings = {"/", "/app", "/app/", "/app/some", "/app/some.html", "/app/some.css", "/app/test.js",
+    "/app/a/b/c/d/", "/app/a/b/c/d/index.html", "/app/a/b/c/d/some.css", "/app/a/b/c/d/some.js"
 
   })
   void route_should_forward_if_someone_requests(String path) throws Exception {
@@ -144,8 +145,9 @@ class ApplicationForwardControllerIT {
   protected static class ApplicationForwardControllerITConfig {
 
     @Bean
-    public UserDetailsServiceImpl UserDetailsService() {
-      return Mockito.mock(UserDetailsServiceImpl.class);
+    @Qualifier("userDetailsService")
+    public UserDetailsService UserDetailsService() {
+      return Mockito.mock(UserDetailsService.class);
     }
 
     @Bean

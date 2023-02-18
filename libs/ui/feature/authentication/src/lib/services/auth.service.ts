@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { httpToSession, initialize } from '@app/ui/shared/app';
+import { httpToSession, initializeSession } from '@app/ui/shared/app';
 import { AuthRelations, LoginInput, Session, SignupInput, User } from '@app/ui/shared/domain';
 import { affordTemplate, HalFormService, Template } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
@@ -25,7 +25,7 @@ export class AuthService {
       first(),
       switchMap((template) => template.request<User>({ body })),
       map(httpToSession),
-      tap((session) => this.actions.dispatch(initialize({ session }))),
+      tap((session) => this.actions.dispatch(initializeSession({ session }))),
     );
   }
 

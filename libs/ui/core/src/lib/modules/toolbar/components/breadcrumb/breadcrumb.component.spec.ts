@@ -40,11 +40,11 @@ describe('BreadcrumbComponent', () => {
         icon: 'home',
       },
       {
-        title$: of('Users'),
+        label$: of('Users'),
         url: '/users',
       },
       {
-        title$: of('Roles'),
+        label$: of('Roles'),
         url: '/roles',
       },
     ];

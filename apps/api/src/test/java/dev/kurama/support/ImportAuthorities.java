@@ -6,6 +6,7 @@ import dev.kurama.api.core.authority.GlobalSettingsAuthority;
 import dev.kurama.api.core.authority.ProfileAuthority;
 import dev.kurama.api.core.authority.RoleAuthority;
 import dev.kurama.api.core.authority.ServiceLogsAuthority;
+import dev.kurama.api.core.authority.ThemeAuthority;
 import dev.kurama.api.core.authority.TokenAuthority;
 import dev.kurama.api.core.authority.UserAuthority;
 import dev.kurama.api.core.authority.UserPreferencesAuthority;
@@ -23,7 +24,7 @@ import org.springframework.context.annotation.Import;
 @Inherited
 @Import({TokenAuthority.class, AdminAuthority.class, AuthorityAuthority.class, GlobalSettingsAuthority.class,
   UserAuthority.class, RoleAuthority.class, ProfileAuthority.class, ServiceLogsAuthority.class,
-  UserPreferencesAuthority.class})
+  UserPreferencesAuthority.class, ThemeAuthority.class})
 public @interface ImportAuthorities {
 
 }

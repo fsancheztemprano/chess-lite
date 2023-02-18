@@ -1,0 +1,16 @@
+:host {
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mat-mdc-input-element {
+    cursor: default;
+  }
+
+  .suffix {
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+  }
+}
