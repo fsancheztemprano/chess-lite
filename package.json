@@ -17,7 +17,7 @@
     "url": "https://github.com/frango9000/board-games"
   },
   "scripts": {
-    "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
+    "postinstall": "ngcc --properties es2020 browser module main",
     "ng": "nx",
     "nx": "nx",
     "nx:reset": "nx reset",
@@ -44,7 +44,7 @@
     "test:merge:it": "jrm ./apps/api/target/failsafe-reports/merged-its.xml \"./apps/api/target/failsafe-reports/TEST*.xml\"",
     "test:merge:e2e": "jrm ./coverage/apps/app-e2e/merged-e2e.xml \"./coverage/apps/app-e2e/cypress-junit-*.xml\"",
     "scan": "sonar-scanner",
-    "lint": "nx workspace-lint && nx run-many --target=lint --all",
+    "lint": "nx run-many --target=lint --all",
     "e2e": "nx run api:e2e",
     "e2e:dev": "nx run app-e2e:e2e",
     "e2e:watch": "nx run app-e2e:e2e --watch",

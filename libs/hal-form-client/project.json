@@ -1,4 +1,5 @@
 {
+  "name": "hal-form-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/hal-form-client/src",
@@ -26,6 +27,5 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "tags": [],
-  "name": "hal-form-client"
+  "tags": []
 }

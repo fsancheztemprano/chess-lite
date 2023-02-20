@@ -2,22 +2,22 @@ export namespace TicTacToeGameMessages {
   //channels:
   //          /ami/ttc/games
   //          /ami/ttc/games/{ttcGameId}
-  //          /ami/ttc/users/{xUserId}
-  //          /ami/ttc/users/{oUserId}
+  //          /ami/ttc/players/{xUserId}
+  //          /ami/ttc/players/{oUserId}
 
   export const ttcGameCreatedMessage = {
     ttcGameId: 'ttcg1',
-    playerAId: 'userId1',
-    playerBId: 'userId2',
-    nextMovePlayerId: 'userId2',
+    playerXId: 'user-a-id',
+    playerOId: 'user-b-id',
+    nextMovePlayerId: 'user-b-id',
     action: 'CREATED',
   };
 
   export const ttcGameUpdatedMessage = {
     ttcGameId: 'ttcg1',
-    playerAId: 'userId1',
-    playerBId: 'userId2',
-    nextMovePlayerId: 'userId1',
+    playerXId: 'user-a-id',
+    playerOId: 'user-b-id',
+    nextMovePlayerId: 'user-a-id',
     action: 'UPDATED',
   };
 }

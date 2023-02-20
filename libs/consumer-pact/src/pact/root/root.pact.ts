@@ -176,6 +176,30 @@ export namespace GetRootResource {
     },
   };
 
+  export const with_ttc_game: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get root resource with authority ttc:game',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: ['ttc:game'] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        _links: {
+          self: { href: 'http://localhost/api' },
+          ttc: { href: 'http://localhost/api/ttc' },
+        },
+        _templates: { ...defaultTemplate },
+      },
+    },
+  };
+
   export const with_admin_root: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get root resource with authority admin:root',

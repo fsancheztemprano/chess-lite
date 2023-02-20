@@ -59,6 +59,17 @@ describe('Root Resource Pacts', () => {
       });
     });
 
+    it.skip('ttc:game', (done) => {
+      provider.addInteraction(GetRootResource.with_ttc_game).then(() => {
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['ttc:game'] }));
+        service.initialize().subscribe((resource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toMatchObject(GetRootResource.with_ttc_game.willRespondWith.body);
+          done();
+        });
+      });
+    });
+
     it(TokenAuthority.TOKEN_REFRESH, (done) => {
       provider.addInteraction(GetRootResource.with_token_refresh).then(() => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TokenAuthority.TOKEN_REFRESH] }));
