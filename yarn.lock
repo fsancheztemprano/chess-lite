@@ -6880,12 +6880,7 @@ esbuild-wasm@0.16.17:
   resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.16.17.tgz#b8d41ab99a9b725765a138f0f1d2381e891f913d"
   integrity sha512-Tn7NuMqRcM+T/qCOxbQRq0qrwWl1sUWp6ARfJRakE8Bepew6zata4qrKgH2YqovNC5e/2fcTa7o+VL/FAOZC1Q==
 
-esbuild-wasm@>=0.13.8:
-  version "0.17.7"
-  resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.17.7.tgz#cdca271574108430ca3dd52e64182d13cdf6d7f7"
-  integrity sha512-2po3VY6Gc3ZSQJH1BU4QWrPMwIuFsjycdi28i5+rQxJKWX0p1RRlHWP+hoYNHHhXKp3LkPNO+Vki3o859ika+g==
-
-esbuild-wasm@^0.17.0:
+esbuild-wasm@>=0.13.8, esbuild-wasm@^0.17.0:
   version "0.17.8"
   resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.17.8.tgz#c2348306430c27613ee3cc9a955cdd54df29137a"
   integrity sha512-zCmpxv95E0FuCmvdw1K836UHnj4EdiQnFfjTby35y3LAjRPtXMj3sbHDRHjbD8Mqg5lTwq3knacr/1qIFU51CQ==
@@ -10604,10 +10599,10 @@ next-tick@1, next-tick@^1.1.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.1.0.tgz#1836ee30ad56d67ef281b22bd199f709449b35eb"
   integrity sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
 
-ng-packagr@15.1.2:
-  version "15.1.2"
-  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-15.1.2.tgz#d26e87e1099517367e11a945c299abfb5a2ac2c9"
-  integrity sha512-GpVySff7Wwx+eAW+HXkFD8et05UK0/usHnFEKznXhxmhML7XOGYaK74tAsgUwA06GUQofQH/VjdsBGi6XlVNjA==
+ng-packagr@15.2.2:
+  version "15.2.2"
+  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-15.2.2.tgz#2ae63e8e63a7b0fd9202c1bf77f144bf86a06b29"
+  integrity sha512-+042GBD35ztxbHywGJloAiDM/s3Ja3TZtQh361TWqd/xza3K5DMUu6VRGLTgMwG7CW1YsqYHWgMZslP1c+ng7A==
   dependencies:
     "@rollup/plugin-json" "^6.0.0"
     "@rollup/plugin-node-resolve" "^15.0.0"

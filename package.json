@@ -144,7 +144,7 @@
     "jest-preset-angular": "12.2.3",
     "jsonwebtoken": "9.0.0",
     "junit-report-merger": "4.0.0",
-    "ng-packagr": "15.1.2",
+    "ng-packagr": "15.2.2",
     "npm-check-updates": "16.7.4",
     "nx": "15.7.1",
     "prettier": "2.8.4",
