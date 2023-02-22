@@ -1,4 +1,4 @@
-import { HttpHeaderKey } from '@app/ui/shared/domain';
+import { HttpHeaderKey, TicTacToeAuthority, TicTacToeGameResult } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
@@ -10,10 +10,10 @@ import { jwtToken } from '../../../utils/token.utils';
 export const createGameTemplate = {
   create: {
     method: 'POST',
-    target: 'http://localhost/api/ttc/games',
+    target: '/api/tic-tac-toe/games',
     properties: [
       { name: 'oId', type: 'text', required: true },
-      { name: 'xId', type: 'text' },
+      { name: 'xId', type: 'text', required: true },
       { name: 'private', type: 'boolean' },
     ],
   },
@@ -21,11 +21,11 @@ export const createGameTemplate = {
 
 const pendingGame = {
   _links: {
-    self: { href: 'http://localhost/api/ttc/games/1' },
-    ws: { href: 'ws://localhost/api/ttc/games/1' },
+    self: { href: 'http://localhost/api/tic-tac-toe/games/tic-tac-toe-g1' },
+    ws: { href: 'ws://localhost/api/tic-tac-toe/games/tic-tac-toe-g1' },
   },
   id: uuid(),
-  status: 'PENDING', // PENDING, IN_PROGRESS, FINISHED
+  status: 'PENDING',
   private: true,
   players: {
     x: {
@@ -66,16 +66,16 @@ const finishedGame = {
   },
   board: [
     ['x', 'x', 'o'],
-    ['o', 'o', 'x'],
-    ['x', 'o', 'x'],
+    ['o', 'o', 'o'],
+    ['x', '', 'x'],
   ],
-  result: 'DRAW',
+  result: TicTacToeGameResult.O_WON,
 };
 
-const moveTemplate = {
+export const moveTemplate = {
   move: {
     method: 'POST',
-    target: 'http://localhost/api/ttc/games/1/moves',
+    target: '/api/tic-tac-toe/games/tic-tac-toe-g1/move',
     properties: [
       {
         name: 'cell',
@@ -95,10 +95,10 @@ export namespace GetAllTicTacToeGamesPact {
     uponReceiving: 'get all tic tac toe games',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games',
+      path: '/api/tic-tac-toe/games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] })),
       },
     },
     willRespondWith: {
@@ -106,52 +106,18 @@ export namespace GetAllTicTacToeGamesPact {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
-          self: { href: 'http://localhost/api/ttc/games?page=0' },
-          first: { href: 'http://localhost/api/ttc/games?page=0' },
-          last: { href: 'http://localhost/api/ttc/games?page=1' },
-          next: { href: 'http://localhost/api/ttc/games?page=1' },
-          prev: { href: 'http://localhost/api/ttc/games?page=0' },
+          self: { href: 'http://localhost/api/tic-tac-toe/games?page=0' },
+          first: { href: 'http://localhost/api/tic-tac-toe/games?page=0' },
+          last: { href: 'http://localhost/api/tic-tac-toe/games?page=1' },
+          next: { href: 'http://localhost/api/tic-tac-toe/games?page=1' },
+          prev: { href: 'http://localhost/api/tic-tac-toe/games?page=0' },
         },
         page: { size: 20, totalElements: 30, totalPages: 2, number: 0 },
         _embedded: {
-          ttcGameModelList: eachLike(pendingGame),
+          ticTacToeGameModelList: eachLike(pendingGame),
         },
         _templates: {
           ...defaultTemplate,
-        },
-      },
-    },
-  };
-
-  export const successful_with_create: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'get all tic tac toe games with create',
-    withRequest: {
-      method: HTTPMethod.GET,
-      path: '/api/ttc/games',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game:read', 'ttc:game:create'] })),
-      },
-    },
-    willRespondWith: {
-      status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
-      body: {
-        _links: {
-          self: { href: 'http://localhost/api/ttc/games?page=0' },
-          first: { href: 'http://localhost/api/ttc/games?page=0' },
-          last: { href: 'http://localhost/api/ttc/games?page=1' },
-          next: { href: 'http://localhost/api/ttc/games?page=1' },
-          prev: { href: 'http://localhost/api/ttc/games?page=0' },
-        },
-        page: { size: 20, totalElements: 30, totalPages: 2, number: 0 },
-        _embedded: {
-          ttcGameModelList: eachLike(pendingGame),
-        },
-        _templates: {
-          ...defaultTemplate,
-          ...createGameTemplate,
         },
       },
     },
@@ -162,10 +128,10 @@ export namespace GetAllTicTacToeGamesPact {
     uponReceiving: 'get all tic tac toe games unauthorized',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games',
+      path: '/api/tic-tac-toe/games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game'] })),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
       },
     },
     willRespondWith: {
@@ -179,16 +145,20 @@ export namespace GetAllTicTacToeGamesPact {
 }
 
 export namespace GetMyTicTacToeGamesPact {
-  export const successful_with_create: InteractionObject = {
+  export const successful: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get my tic tac toe games',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/my-games',
-      query: 'page=0',
+      path: '/api/tic-tac-toe/my-games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -196,17 +166,17 @@ export namespace GetMyTicTacToeGamesPact {
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _links: {
-          self: { href: 'http://localhost/api/ttc/my-games?page=0' },
-          first: { href: 'http://localhost/api/ttc/my-games?page=0' },
-          last: { href: 'http://localhost/api/ttc/my-games?page=1' },
-          next: { href: 'http://localhost/api/ttc/my-games?page=1' },
-          prev: { href: 'http://localhost/api/ttc/my-games?page=0' },
+          self: { href: 'http://localhost/api/tic-tac-toe/my-games?page=0' },
+          first: { href: 'http://localhost/api/tic-tac-toe/my-games?page=0' },
+          last: { href: 'http://localhost/api/tic-tac-toe/my-games?page=1' },
+          next: { href: 'http://localhost/api/tic-tac-toe/my-games?page=1' },
+          prev: { href: 'http://localhost/api/tic-tac-toe/my-games?page=0' },
         },
         page: { size: 20, totalElements: 30, totalPages: 2, number: 0 },
         _embedded: {
-          ttcGameModel: eachLike(pendingGame),
+          ticTacToeGameModelList: eachLike(pendingGame),
         },
-        _templates: { ...defaultTemplate, ...createGameTemplate },
+        _templates: { ...defaultTemplate },
       },
     },
   };
@@ -216,8 +186,7 @@ export namespace GetMyTicTacToeGamesPact {
     uponReceiving: 'get my tic tac toe games unauthorized',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/my-games',
-      query: 'page=0',
+      path: '/api/tic-tac-toe/my-games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
@@ -239,14 +208,20 @@ export namespace CreateTicTacToeGamePact {
     uponReceiving: 'create a tic tac toe game as player',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games',
+      path: '/api/tic-tac-toe/games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
-        oId: string(),
+        xId: 'user-a-id',
+        oId: 'user-b-id',
         private: boolean(),
       },
     },
@@ -260,15 +235,20 @@ export namespace CreateTicTacToeGamePact {
     uponReceiving: 'create a tic tac toe game as admin',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games',
+      path: '/api/tic-tac-toe/games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game:create'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'admin-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE],
+          }),
+        ),
       },
       body: {
-        oId: uuid(),
-        xId: uuid(),
+        xId: 'user-a-id',
+        oId: 'user-b-id',
         private: boolean(),
       },
     },
@@ -282,15 +262,20 @@ export namespace CreateTicTacToeGamePact {
     uponReceiving: 'create a tic tac toe game with initiator as player',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games',
+      path: '/api/tic-tac-toe/games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
-        oId: uuid(),
-        xId: uuid(),
+        xId: 'user-b-id',
+        oId: 'user-c-id',
         private: boolean(),
       },
     },
@@ -307,14 +292,15 @@ export namespace CreateTicTacToeGamePact {
     uponReceiving: 'create a tic tac toe game unauthorized',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games',
+      path: '/api/tic-tac-toe/games',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
+        'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(jwtToken()),
       },
       body: {
-        oId: uuid(),
+        xId: 'user-a-id',
+        oId: 'user-b-id',
         private: boolean(),
       },
     },
@@ -326,18 +312,48 @@ export namespace CreateTicTacToeGamePact {
       },
     },
   };
+
+  export const error_no_opponent: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'create a tic tac toe game when rival is same as initiator',
+    withRequest: {
+      method: HTTPMethod.POST,
+      path: '/api/tic-tac-toe/games',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'admin-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE],
+          }),
+        ),
+      },
+      body: {
+        xId: 'user-a-id',
+        oId: 'user-a-id',
+        private: boolean(),
+      },
+    },
+    willRespondWith: {
+      status: 400,
+      body: {
+        reason: 'Bad Request',
+      },
+    },
+  };
 }
 
 export namespace GetOneTicTacToeGamePact {
   export const private_as_admin: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'get one private tic tac toe game with ttc:game:read as admin',
+    uponReceiving: 'get one private tic tac toe game with tic-tac-toe:game:read as admin',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/1',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game:read'] })),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] })),
       },
     },
     willRespondWith: {
@@ -352,10 +368,15 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one private tic tac toe game with as player',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/1',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -370,10 +391,15 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one private tic tac toe game as viewer',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/1',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-c-id' }, authorities: ['ttc:game'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-c-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -390,10 +416,15 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one public tic tac toe game as viewer',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/2',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g2',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-c-id' }, authorities: ['ttc:game'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-c-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -408,10 +439,15 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one tic tac toe game in progress inactive player',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/1',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-b-id' }, authorities: ['ttc:game'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-b-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -428,10 +464,15 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one tic tac toe game in progress active player',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/1',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -452,10 +493,15 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one tic tac toe game finished',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/1',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -472,10 +518,10 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one tic tac toe game not found',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/0',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g0',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game'] })),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
       },
     },
     willRespondWith: {
@@ -492,7 +538,7 @@ export namespace GetOneTicTacToeGamePact {
     uponReceiving: 'get one tic tac toe game unauthorized',
     withRequest: {
       method: HTTPMethod.GET,
-      path: '/api/ttc/games/1',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(jwtToken()),
@@ -514,11 +560,11 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe game as admin',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/1/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: ['ttc:game:move'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE] })),
       },
       body: {
         cell: 'A2',
@@ -534,11 +580,16 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe game as active player',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/1/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
         cell: 'A2',
@@ -554,11 +605,16 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe game as inactive player',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/1/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-b-id' }, authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-b-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
         cell: 'A2',
@@ -578,11 +634,16 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe game as viewer',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/1/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-c-id' }, authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-c-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
         cell: 'A2',
@@ -602,11 +663,16 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe game cell is occupied',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/1/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
         cell: 'A1',
@@ -626,11 +692,16 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe game finished',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/2/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g2/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
         cell: 'A1',
@@ -650,11 +721,16 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe game not found',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/0/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g0/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ user: { id: 'user-a-id' }, authorities: ['ttc:game'] })),
+        'Content-Type': ContentType.APPLICATION_JSON,
+        Authorization: bearer(
+          jwtToken({
+            user: { id: 'user-a-id' },
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
       body: {
         cell: 'A1',
@@ -673,10 +749,10 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe unauthorized',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/ttc/games/2/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g2/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON_HAL_FORMS,
+        'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(jwtToken()),
       },
       body: {

@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AdminAuthority, ProfileAuthority, TokenAuthority, TokenKeys } from '@app/ui/shared/domain';
+import { AdminAuthority, ProfileAuthority, TicTacToeAuthority, TokenAuthority, TokenKeys } from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
@@ -59,12 +59,13 @@ describe('Root Resource Pacts', () => {
       });
     });
 
-    it.skip('ttc:game', (done) => {
-      provider.addInteraction(GetRootResource.with_ttc_game).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['ttc:game'] }));
+    it.skip('tic-tac-toe:game', (done) => {
+      const interaction: InteractionObject = GetRootResource.with_tic_tac_toe_root;
+      provider.addInteraction(interaction).then(() => {
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(GetRootResource.with_ttc_game.willRespondWith.body);
+          expect(resource).toMatchObject(interaction.willRespondWith.body);
           done();
         });
       });

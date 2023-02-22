@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { TicTacToeGame } from '@app/ui/shared/domain';
 import { HalFormService, Resource } from '@hal-form-client';
-import { Observable, throwError } from 'rxjs';
+import { map, Observable, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class TicTacToeService extends HalFormService {
   }
 
   public override initialize(): Observable<Resource> {
-    return this.halFormService.getLink('ttc-game').pipe(
+    return this.halFormService.getLink('tic-tac-toe').pipe(
       switchMap((link) => {
         this._rootUrl = link?.href || '';
         return this._rootUrl?.length
@@ -20,5 +21,29 @@ export class TicTacToeService extends HalFormService {
           : throwError(() => new Error('Tic Tac Toe Initialization Error'));
       }),
     );
+  }
+
+  public getAllGames(): Observable<TicTacToeGame[]> {
+    return this.followLink({ link: 'games' }).pipe(
+      map((resource) => resource.getEmbeddedCollection('ticTacToeGameModelList')),
+    );
+  }
+
+  public getGame(gameId: string): Observable<TicTacToeGame> {
+    return this.followLink({ link: `game`, parameters: { gameId } });
+  }
+
+  public getMyGames(): Observable<TicTacToeGame[]> {
+    return this.followLink({ link: 'my-games' }).pipe(
+      map((resource) => resource.getEmbeddedCollection('ticTacToeGameModelList')),
+    );
+  }
+
+  public createGame(xId: string, oId: string, pri?: boolean): Observable<unknown> {
+    return this.affordTemplate({ template: 'create', body: { xId, oId, private: !!pri } });
+  }
+
+  public gameMove(game: TicTacToeGame, cell: string): Observable<unknown> {
+    return game.affordTemplate({ template: 'move', parameters: { gameId: game.id, cell } });
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { TokenKeys } from '@app/ui/shared/domain';
+import { TicTacToeAuthority, TokenKeys } from '@app/ui/shared/domain';
 import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
@@ -8,9 +8,9 @@ import { noop } from 'rxjs';
 import { avengersAssemble } from '../../../interceptor/pact.interceptor';
 import { pactForResource } from '../../../utils/pact.utils';
 import { jwtToken } from '../../../utils/token.utils';
-import { GetTicTacToeRootResource } from './ttc-root.pact';
+import { GetTicTacToeRootResource } from './tic-tac-toe-root.pact';
 
-const provider: Pact = pactForResource('ttcRoot');
+const provider: Pact = pactForResource('ticTacToeRoot');
 
 describe.skip('Tic Tac Toe Root Resource Pacts', () => {
   let service: TicTacToeService;
@@ -25,10 +25,10 @@ describe.skip('Tic Tac Toe Root Resource Pacts', () => {
       providers: [avengersAssemble(provider.mockService.baseUrl)],
     });
     service = TestBed.inject(TicTacToeService);
-    TestBed.inject(HalFormService).setResource({ _links: { 'ttc-game': { href: '/api/ttc' } } });
+    TestBed.inject(HalFormService).setResource({ _links: { 'tic-tac-toe': { href: '/api/tic-tac-toe' } } });
   });
 
-  describe('get root ttc resource with authority', () => {
+  describe('get root tic-tac-toe resource with authority', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetTicTacToeRootResource.unauthorized;
       provider.addInteraction(interaction).then(() => {
@@ -47,7 +47,7 @@ describe.skip('Tic Tac Toe Root Resource Pacts', () => {
     it('as player', (done) => {
       const interaction: InteractionObject = GetTicTacToeRootResource.as_player;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['ttc:game'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);
@@ -59,7 +59,7 @@ describe.skip('Tic Tac Toe Root Resource Pacts', () => {
     it('as admin', (done) => {
       const interaction: InteractionObject = GetTicTacToeRootResource.as_admin;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['ttc:game:read'] }));
+        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);

@@ -25,7 +25,7 @@ export interface ITemplateProperty {
   placeholder?: string;
   step?: number;
   type?: string;
-  options?: ITemplatePropertyOption[];
+  options?: ITemplatePropertyOption;
 
   [key: string]: any;
 }
@@ -168,7 +168,31 @@ export class Template implements ITemplate {
     if (property.required && value === undefined) {
       return false;
     }
-    if (property.regex && value && !value.match(property.regex)) {
+    if (!value) {
+      return true;
+    }
+    if (property.min && value < property.min) {
+      return false;
+    }
+    if (property.max && value > property.max) {
+      return false;
+    }
+    if (property.minLength && value.length < property.minLength) {
+      return false;
+    }
+    if (property.maxLength && value.length > property.maxLength) {
+      return false;
+    }
+    if (property.step && value % property.step !== 0) {
+      return false;
+    }
+    if (property.type && typeof value !== property.type) {
+      return false;
+    }
+    if (property.options && !property.options.inline?.some((option) => option === value)) {
+      return false;
+    }
+    if (property.regex && !value.match(property.regex)) {
       return false;
     }
     return true;
