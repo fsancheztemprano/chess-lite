@@ -126,7 +126,7 @@
     "@schematics/schematics": "0.1102.12",
     "@types/jest": "28.1.8",
     "@types/jsonwebtoken": "9.0.1",
-    "@types/node": "18.13.0",
+    "@types/node": "18.14.1",
     "@types/sockjs-client": "1.5.1",
     "@types/url-template": "2.0.28",
     "@typescript-eslint/eslint-plugin": "5.52.0",
