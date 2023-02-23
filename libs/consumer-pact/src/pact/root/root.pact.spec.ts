@@ -1,11 +1,11 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AdminAuthority, ProfileAuthority, TicTacToeAuthority, TokenAuthority, TokenKeys } from '@app/ui/shared/domain';
+import { AdminAuthority, ProfileAuthority, TicTacToeAuthority, TokenAuthority } from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
-import { jwtToken } from '../../utils/token.utils';
+import { setToken } from '../../utils/token.utils';
 import { GetRootResource } from './root.pact';
 
 const provider: Pact = pactForResource('root');
@@ -39,7 +39,7 @@ describe('Root Resource Pacts', () => {
     it('authorized', (done) => {
       const interaction: InteractionObject = GetRootResource.authorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
+        setToken();
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);
@@ -50,7 +50,7 @@ describe('Root Resource Pacts', () => {
 
     it(ProfileAuthority.PROFILE_READ, (done) => {
       provider.addInteraction(GetRootResource.with_profile_read).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [ProfileAuthority.PROFILE_READ] }));
+        setToken({ authorities: [ProfileAuthority.PROFILE_READ] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(GetRootResource.with_profile_read.willRespondWith.body);
@@ -59,10 +59,10 @@ describe('Root Resource Pacts', () => {
       });
     });
 
-    it.skip('tic-tac-toe:game', (done) => {
+    it(TicTacToeAuthority.TIC_TAC_TOE_ROOT, (done) => {
       const interaction: InteractionObject = GetRootResource.with_tic_tac_toe_root;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }));
+        setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);
@@ -73,7 +73,7 @@ describe('Root Resource Pacts', () => {
 
     it(TokenAuthority.TOKEN_REFRESH, (done) => {
       provider.addInteraction(GetRootResource.with_token_refresh).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TokenAuthority.TOKEN_REFRESH] }));
+        setToken({ authorities: [TokenAuthority.TOKEN_REFRESH] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(GetRootResource.with_token_refresh.willRespondWith.body);
@@ -84,7 +84,7 @@ describe('Root Resource Pacts', () => {
 
     it(AdminAuthority.ADMIN_ROOT, (done) => {
       provider.addInteraction(GetRootResource.with_admin_root).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [AdminAuthority.ADMIN_ROOT] }));
+        setToken({ authorities: [AdminAuthority.ADMIN_ROOT] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(GetRootResource.with_admin_root.willRespondWith.body);

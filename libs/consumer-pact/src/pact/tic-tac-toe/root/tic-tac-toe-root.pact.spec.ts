@@ -1,18 +1,18 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { TicTacToeAuthority, TokenKeys } from '@app/ui/shared/domain';
+import { TicTacToeAuthority } from '@app/ui/shared/domain';
 import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
 import { HalFormClientModule, HalFormService } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { noop } from 'rxjs';
 import { avengersAssemble } from '../../../interceptor/pact.interceptor';
 import { pactForResource } from '../../../utils/pact.utils';
-import { jwtToken } from '../../../utils/token.utils';
+import { setToken } from '../../../utils/token.utils';
 import { GetTicTacToeRootResource } from './tic-tac-toe-root.pact';
 
 const provider: Pact = pactForResource('ticTacToeRoot');
 
-describe.skip('Tic Tac Toe Root Resource Pacts', () => {
+describe('Tic Tac Toe Root Resource Pacts', () => {
   let service: TicTacToeService;
 
   beforeAll(() => provider.setup());
@@ -32,11 +32,12 @@ describe.skip('Tic Tac Toe Root Resource Pacts', () => {
     it('unauthorized', (done) => {
       const interaction: InteractionObject = GetTicTacToeRootResource.unauthorized;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken());
+        setToken();
         jest.spyOn(console, 'error').mockImplementationOnce(noop);
         service.initialize().subscribe({
-          error: (error) => {
+          error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
             expect(error.error).toMatchObject(interaction.willRespondWith.body);
             done();
           },
@@ -47,7 +48,7 @@ describe.skip('Tic Tac Toe Root Resource Pacts', () => {
     it('as player', (done) => {
       const interaction: InteractionObject = GetTicTacToeRootResource.as_player;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }));
+        setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);
@@ -59,7 +60,7 @@ describe.skip('Tic Tac Toe Root Resource Pacts', () => {
     it('as admin', (done) => {
       const interaction: InteractionObject = GetTicTacToeRootResource.as_admin;
       provider.addInteraction(interaction).then(() => {
-        localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] }));
+        setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);

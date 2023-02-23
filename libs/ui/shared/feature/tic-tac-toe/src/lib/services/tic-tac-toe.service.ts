@@ -42,8 +42,4 @@ export class TicTacToeService extends HalFormService {
   public createGame(xId: string, oId: string, pri?: boolean): Observable<unknown> {
     return this.affordTemplate({ template: 'create', body: { xId, oId, private: !!pri } });
   }
-
-  public gameMove(game: TicTacToeGame, cell: string): Observable<unknown> {
-    return game.affordTemplate({ template: 'move', parameters: { gameId: game.id, cell } });
-  }
 }

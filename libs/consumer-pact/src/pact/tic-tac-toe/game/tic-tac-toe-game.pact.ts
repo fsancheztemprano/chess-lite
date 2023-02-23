@@ -571,7 +571,7 @@ export namespace MoveTicTacToeGamePact {
       },
     },
     willRespondWith: {
-      status: 204,
+      status: 202,
     },
   };
 
@@ -596,7 +596,7 @@ export namespace MoveTicTacToeGamePact {
       },
     },
     willRespondWith: {
-      status: 204,
+      status: 202,
     },
   };
 
@@ -749,7 +749,7 @@ export namespace MoveTicTacToeGamePact {
     uponReceiving: 'make a move a tic tac toe unauthorized',
     withRequest: {
       method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/games/tic-tac-toe-g2/move',
+      path: '/api/tic-tac-toe/games/tic-tac-toe-g1/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         'Content-Type': ContentType.APPLICATION_JSON,
