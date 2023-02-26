@@ -1,12 +1,13 @@
 export namespace TicTacToeGameMessages {
   //channels:
-  //          /ami/tic-tac-toe/games
-  //          /ami/tic-tac-toe/games/{ticTacToeGameId}
-  //          /ami/tic-tac-toe/players/{xUserId}
-  //          /ami/tic-tac-toe/players/{oUserId}
+  //          /ami/tic-tac-toe/game
+  //          /ami/tic-tac-toe/game/{ticTacToeGameId}
+  //          /ami/tic-tac-toe/game/players
+  //          /ami/tic-tac-toe/game/players/{xUserId}
+  //          /ami/tic-tac-toe/game/players/{oUserId}
 
   export const ticTacToeGameCreatedMessage = {
-    tiTacToeGameId: 'tic-tac-toe-g1',
+    ticTacToeGameId: 'tic-tac-toe-g1',
     playerXId: 'user-a-id',
     playerOId: 'user-b-id',
     nextMovePlayerId: 'user-b-id',
@@ -14,7 +15,7 @@ export namespace TicTacToeGameMessages {
   };
 
   export const ticTacToeGameUpdatedMessage = {
-    tiTacToeGameId: 'tic-tac-toe-g1',
+    ticTacToeGameId: 'tic-tac-toe-g1',
     playerXId: 'user-a-id',
     playerOId: 'user-b-id',
     nextMovePlayerId: 'user-a-id',

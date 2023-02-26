@@ -31,4 +31,5 @@ public class HateoasConfiguration {
   public ForwardedHeaderTransformer forwardHeaderTransformer() {
     return new ForwardedHeaderTransformer();
   }
+
 }

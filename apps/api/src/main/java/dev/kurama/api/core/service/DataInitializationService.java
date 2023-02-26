@@ -15,6 +15,8 @@ import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
 import dev.kurama.api.core.repository.UserRepository;
+import dev.kurama.api.ttt.player.TicTacToePlayer;
+import dev.kurama.api.ttt.player.TicTacToePlayerRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +44,9 @@ public class DataInitializationService {
 
   @NonNull
   private final GlobalSettingsRepository globalSettingsRepository;
+
+  @NonNull
+  private final TicTacToePlayerRepository ticTacToePlayerRepository;
 
   @NonNull
   private final BCryptPasswordEncoder passwordEncoder;
@@ -118,8 +123,7 @@ public class DataInitializationService {
         } else {
           return false;
         }
-      })
-      .collect(Collectors.toList());
+      }).toList();
     if (!updatableRoles.isEmpty()) {
       int updates = roleRepository.saveAllAndFlush(updatableRoles).size();
       if (updates > 0) {
@@ -149,7 +153,7 @@ public class DataInitializationService {
       var superAdminRole = roleRepository.findByName(DefaultAuthority.SUPER_ADMIN_ROLE)
         .orElseThrow(() -> new RoleNotFoundException(DefaultAuthority.SUPER_ADMIN_ROLE));
 
-      userRepository.saveAndFlush(User.builder()
+      User admin = userRepository.saveAndFlush(User.builder()
         .setRandomUUID()
         .username("admin")
         .email("admin@localhost")
@@ -163,6 +167,8 @@ public class DataInitializationService {
         .credentialsExpired(false)
         .userPreferences(UserPreferences.builder().setRandomUUID().build())
         .build());
+      ticTacToePlayerRepository.saveAndFlush(
+        TicTacToePlayer.builder().setIdOrRandomUUID(admin.getId()).user(admin).build());
       log(log.atInfo(), "Admin User Initialized");
     }
   }

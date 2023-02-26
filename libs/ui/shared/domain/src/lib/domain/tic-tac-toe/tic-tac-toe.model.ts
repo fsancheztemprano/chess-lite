@@ -9,8 +9,8 @@ export interface ITicTacToeGame extends IResource {
     x: ITicTacToePlayer;
     o: ITicTacToePlayer;
   };
-  board?: string[][];
-  result?: TicTacToeGameResult;
+  board?: string;
+  result?: TicTacToeGamePlayer;
 }
 
 export class TicTacToeGame extends Resource implements IResource {
@@ -21,28 +21,35 @@ export class TicTacToeGame extends Resource implements IResource {
     x: ITicTacToePlayer;
     o: ITicTacToePlayer;
   };
-  board?: string[][];
-  result?: TicTacToeGameResult;
+  board?: string;
+  result?: TicTacToeGamePlayer;
 
   move(cell: string): Observable<unknown> {
     return this.affordTemplate({ template: 'move', body: { cell } });
+  }
+
+  changeStatus(status: TicTacToeGameStatus.REJECTED | TicTacToeGameStatus.IN_PROGRESS): Observable<Resource> {
+    return this.affordTemplate({ template: 'status', body: { status } });
   }
 }
 
 export enum TicTacToeGameStatus {
   PENDING = 'PENDING',
+  REJECTED = 'REJECTED',
   IN_PROGRESS = 'IN_PROGRESS',
   FINISHED = 'FINISHED',
 }
 
-export enum TicTacToeGameResult {
+export enum TicTacToeGamePlayer {
   DRAW = 'DRAW',
-  X_WON = 'X_WON',
-  O_WON = 'O_WON',
+  X = 'X',
+  O = 'O',
 }
 
 export interface ITicTacToePlayer {
   id: string;
   username: string;
-  active?: boolean;
+  wins: number;
+  losses: number;
+  draws: number;
 }

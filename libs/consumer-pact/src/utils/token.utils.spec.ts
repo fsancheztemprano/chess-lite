@@ -5,6 +5,7 @@ import {
   ProfileAuthority,
   RoleAuthority,
   ServiceLogsAuthority,
+  TicTacToeAuthority,
   TokenAuthority,
   UserAuthority,
   UserPreferencesAuthority,
@@ -46,6 +47,10 @@ describe('Token Utils', () => {
         AdminAuthority.ADMIN_ROOT,
         AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
         AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
+        TicTacToeAuthority.TIC_TAC_TOE_ROOT,
+        TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE,
+        TicTacToeAuthority.TIC_TAC_TOE_GAME_READ,
+        TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE,
       ],
     };
     const token = jwtToken(authenticatedUser);

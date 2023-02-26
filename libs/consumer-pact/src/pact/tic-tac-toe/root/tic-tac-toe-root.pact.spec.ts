@@ -45,22 +45,10 @@ describe('Tic Tac Toe Root Resource Pacts', () => {
       });
     });
 
-    it('as player', (done) => {
-      const interaction: InteractionObject = GetTicTacToeRootResource.as_player;
+    it('authorized', (done) => {
+      const interaction: InteractionObject = GetTicTacToeRootResource.successfull;
       provider.addInteraction(interaction).then(() => {
         setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
-        service.initialize().subscribe((resource) => {
-          expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(interaction.willRespondWith.body);
-          done();
-        });
-      });
-    });
-
-    it('as admin', (done) => {
-      const interaction: InteractionObject = GetTicTacToeRootResource.as_admin;
-      provider.addInteraction(interaction).then(() => {
-        setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);

@@ -1,8 +1,8 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { TicTacToeAuthority, TicTacToeGame } from '@app/ui/shared/domain';
+import { TicTacToeAuthority, TicTacToeGame, TicTacToeGameStatus } from '@app/ui/shared/domain';
 import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
-import { HalFormClientModule } from '@hal-form-client';
+import { HalFormClientModule, Resource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
 import { avengersAssemble } from '../../../interceptor/pact.interceptor';
 import { pactForResource } from '../../../utils/pact.utils';
@@ -11,10 +11,11 @@ import {
   createGameTemplate,
   CreateTicTacToeGamePact,
   GetAllTicTacToeGamesPact,
-  GetMyTicTacToeGamesPact,
   GetOneTicTacToeGamePact,
   moveTemplate,
   MoveTicTacToeGamePact,
+  PatchOneTicTacToeGamePact,
+  statusTemplate,
 } from './tic-tac-toe-game.pact';
 
 const provider: Pact = pactForResource('ticTacToeGame');
@@ -35,14 +36,25 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
   });
 
   describe('get all tic-tac-toe games with authority', () => {
-    beforeEach(() => service.setResource({ _links: { games: { href: '/api/tic-tac-toe/games' } } }));
+    beforeEach(() => service.setResource({ _links: { games: { href: '/api/tic-tac-toe/game' } } }));
 
     it('read', (done) => {
-      provider.addInteraction(GetAllTicTacToeGamesPact.successful).then(() => {
+      provider.addInteraction(GetAllTicTacToeGamesPact.all_for_admin).then(() => {
         setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] });
         service.getAllGames().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toHaveLength(1);
+          expect(resource).toHaveLength(4);
+          done();
+        });
+      });
+    });
+
+    it('read', (done) => {
+      provider.addInteraction(GetAllTicTacToeGamesPact.affected_or_public_for_player).then(() => {
+        setToken({ user: { id: 'user-a-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+        service.getAllGames().subscribe((resource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toHaveLength(3);
           done();
         });
       });
@@ -53,36 +65,6 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
         service.getAllGames().subscribe({
-          error: (error: HttpErrorResponse) => {
-            expect(error).toBeTruthy();
-            expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
-            done();
-          },
-        });
-      });
-    });
-  });
-
-  describe('get my tic-tac-toe games with authority', () => {
-    beforeEach(() => service.setResource({ _links: { 'my-games': { href: '/api/tic-tac-toe/my-games' } } }));
-
-    it('read', (done) => {
-      provider.addInteraction(GetMyTicTacToeGamesPact.successful).then(() => {
-        setToken({ user: { id: 'user-a-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
-        service.getMyGames().subscribe((resource) => {
-          expect(resource).toBeTruthy();
-          expect(resource).toHaveLength(1);
-          done();
-        });
-      });
-    });
-
-    it('unauthorized', (done) => {
-      const interaction: InteractionObject = GetMyTicTacToeGamesPact.error_unauthorized;
-      provider.addInteraction(interaction).then(() => {
-        setToken();
-        service.getMyGames().subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
@@ -110,21 +92,6 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
       setToken({ user: { id: 'admin-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
       provider.addInteraction(interaction).then(() => {
         service.createGame('user-a-id', 'user-b-id').subscribe(() => done());
-      });
-    });
-
-    it('error non admin', (done) => {
-      const interaction: InteractionObject = CreateTicTacToeGamePact.error_not_admin;
-      setToken({ user: { id: 'user-a-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
-      provider.addInteraction(interaction).then(() => {
-        service.createGame('user-b-id', 'user-c-id').subscribe({
-          error: (error: HttpErrorResponse) => {
-            expect(error).toBeTruthy();
-            expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
-            done();
-          },
-        });
       });
     });
 
@@ -157,14 +124,29 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
         });
       });
     });
+
+    it('error not found', (done) => {
+      const interaction: InteractionObject = CreateTicTacToeGamePact.error_not_found;
+      setToken({ user: { id: 'admin-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
+      provider.addInteraction(interaction).then(() => {
+        service.createGame('user-z-id', 'user-z-id').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
   });
 
-  describe('get one tic-tac-toe game', () => {
+  describe('get one tic tac toe game', () => {
     beforeEach(() =>
       service.setResource({
         _links: {
           game: {
-            href: '/api/tic-tac-toe/games/{gameId}',
+            href: '/api/tic-tac-toe/game/{gameId}',
             templated: true,
           },
         },
@@ -232,7 +214,7 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
       const interaction: InteractionObject = GetOneTicTacToeGamePact.in_progress_inactive_player;
       setToken({ user: { id: 'user-b-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
       provider.addInteraction(interaction).then(() => {
-        service.getGame('tic-tac-toe-g1').subscribe((resource) => {
+        service.getGame('tic-tac-toe-g2').subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource._links).toMatchObject(interaction.willRespondWith.body._links);
           expect(resource.status).toBe(interaction.willRespondWith.body.status);
@@ -246,7 +228,21 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
       const interaction: InteractionObject = GetOneTicTacToeGamePact.in_progress_active_player;
       setToken({ user: { id: 'user-a-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
       provider.addInteraction(interaction).then(() => {
-        service.getGame('tic-tac-toe-g1').subscribe((resource) => {
+        service.getGame('tic-tac-toe-g2').subscribe((resource) => {
+          expect(resource).toBeTruthy();
+          expect(resource._links).toMatchObject(interaction.willRespondWith.body._links);
+          expect(resource.status).toBe(interaction.willRespondWith.body.status);
+          expect(resource._templates).toMatchObject(interaction.willRespondWith.body._templates);
+          done();
+        });
+      });
+    });
+
+    it('rejected', (done) => {
+      const interaction: InteractionObject = GetOneTicTacToeGamePact.rejected;
+      setToken({ user: { id: 'user-c-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+      provider.addInteraction(interaction).then(() => {
+        service.getGame('tic-tac-toe-g3').subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource._links).toMatchObject(interaction.willRespondWith.body._links);
           expect(resource.status).toBe(interaction.willRespondWith.body.status);
@@ -260,7 +256,7 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
       const interaction: InteractionObject = GetOneTicTacToeGamePact.finished;
       setToken({ user: { id: 'user-a-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
       provider.addInteraction(interaction).then(() => {
-        service.getGame('tic-tac-toe-g1').subscribe((resource) => {
+        service.getGame('tic-tac-toe-g4').subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource._links).toMatchObject(interaction.willRespondWith.body._links);
           expect(resource.status).toBe(interaction.willRespondWith.body.status);
@@ -272,7 +268,7 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
 
     it('not found', (done) => {
       const interaction: InteractionObject = GetOneTicTacToeGamePact.error_not_found;
-      setToken({ user: { id: 'user-a-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+      setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
       provider.addInteraction(interaction).then(() => {
         service.getGame('tic-tac-toe-g0').subscribe({
           error: (error: HttpErrorResponse) => {
@@ -297,6 +293,84 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
             done();
           },
         });
+      });
+    });
+  });
+
+  describe('tic tac toe game status change', () => {
+    const game = new TicTacToeGame({ _templates: { ...statusTemplate } });
+
+    it('should reject game as admin', (done) => {
+      const interaction: InteractionObject = PatchOneTicTacToeGamePact.as_admin;
+      setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
+      provider.addInteraction(interaction).then(() => {
+        game.changeStatus(TicTacToeGameStatus.REJECTED).subscribe((resource: Resource) => {
+          expect(resource._links).toMatchObject(interaction.willRespondWith.body._links);
+          expect(resource.status).toBe(interaction.willRespondWith.body.status);
+          expect(resource._templates).toMatchObject(interaction.willRespondWith.body._templates);
+          done();
+        });
+      });
+    });
+    it('should accept game as opponent', (done) => {
+      const interaction: InteractionObject = PatchOneTicTacToeGamePact.as_opponent_player;
+      setToken({ user: { id: 'user-b-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+      provider.addInteraction(interaction).then(() => {
+        game.changeStatus(TicTacToeGameStatus.IN_PROGRESS).subscribe((resource: Resource) => {
+          expect(resource._links).toMatchObject(interaction.willRespondWith.body._links);
+          expect(resource.status).toBe(interaction.willRespondWith.body.status);
+          expect(resource._templates).toMatchObject(interaction.willRespondWith.body._templates);
+          done();
+        });
+      });
+    });
+
+    it('error as viewer', (done) => {
+      const interaction: InteractionObject = PatchOneTicTacToeGamePact.error_as_viewer;
+      setToken({ user: { id: 'user-c-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+      provider.addInteraction(interaction).then(() => {
+        game.changeStatus(TicTacToeGameStatus.IN_PROGRESS).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('error unauthorized', (done) => {
+      const interaction: InteractionObject = PatchOneTicTacToeGamePact.error_unauthorized;
+      setToken();
+      provider.addInteraction(interaction).then(() => {
+        game.changeStatus(TicTacToeGameStatus.IN_PROGRESS).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error).toBeTruthy();
+            expect(error.status).toBe(interaction.willRespondWith.status);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            done();
+          },
+        });
+      });
+    });
+
+    it('error not found', (done) => {
+      const interaction: InteractionObject = PatchOneTicTacToeGamePact.error_not_found;
+      setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+      provider.addInteraction(interaction).then(() => {
+        new TicTacToeGame({
+          _templates: { status: { method: 'PATCH', target: '/api/tic-tac-toe/game/tic-tac-toe-g0' } },
+        })
+          .changeStatus(TicTacToeGameStatus.IN_PROGRESS)
+          .subscribe({
+            error: (error: HttpErrorResponse) => {
+              expect(error).toBeTruthy();
+              expect(error.status).toBe(interaction.willRespondWith.status);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              done();
+            },
+          });
       });
     });
   });
@@ -373,7 +447,7 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
           _templates: {
             move: {
               method: 'POST',
-              target: '/api/tic-tac-toe/games/tic-tac-toe-g2/move',
+              target: '/api/tic-tac-toe/game/tic-tac-toe-g4/move',
             },
           },
         })
@@ -397,7 +471,7 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
           _templates: {
             move: {
               method: 'POST',
-              target: '/api/tic-tac-toe/games/tic-tac-toe-g0/move',
+              target: '/api/tic-tac-toe/game/tic-tac-toe-g0/move',
             },
           },
         })
