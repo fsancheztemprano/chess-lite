@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TicTacToeGameRepository extends JpaRepository<TicTacToeGame, String> {
 
-  boolean existsTicTacToeGameByPlayerOIdInAndPlayerXIdInAndStatus(Collection<String> playerO,
-                                                                  Collection<String> playerX,
+  boolean existsTicTacToeGameByPlayerXIdInAndPlayerOIdInAndStatus(Collection<String> playerX,
+                                                                  Collection<String> playerO,
                                                                   @NonNull TicTacToeGame.Status status);
 
-  Page<TicTacToeGame> findAllByPlayerXIdOrPlayerOIdOOrPrivate(String currentUserId,
-                                                              String currentUserId1,
-                                                              boolean isPrivate,
-                                                              Pageable pageable);
+  Page<TicTacToeGame> findAllByPlayerXIdOrPlayerOIdOrPrivate(String currentUserId,
+                                                             String currentUserId1,
+                                                             Boolean isPrivate,
+                                                             Pageable pageable);
 }

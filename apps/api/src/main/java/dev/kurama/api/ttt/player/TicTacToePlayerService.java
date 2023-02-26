@@ -1,6 +1,8 @@
 package dev.kurama.api.ttt.player;
 
 import dev.kurama.api.core.domain.User;
+import dev.kurama.api.ttt.player.TicTacToePlayer.Token;
+import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,9 @@ public class TicTacToePlayerService {
     return repository.existsById(userId);
   }
 
+  public Optional<TicTacToePlayer> getPlayerById(String playerId) {
+    return repository.findById(playerId);
+  }
 
   public TicTacToePlayer create(String userId) {
     var ticTacToePlayer = TicTacToePlayer.builder()
@@ -29,7 +34,21 @@ public class TicTacToePlayerService {
     return repository.save(ticTacToePlayer);
   }
 
-  public Optional<TicTacToePlayer> getPlayerById(String playerId) {
-    return repository.findById(playerId);
+  public void registerGameResult(TicTacToePlayer playerX, TicTacToePlayer playerO, Token turn) {
+    switch (turn) {
+      case X -> {
+        playerX.setWins(playerX.getWins() + 1);
+        playerO.setLosses(playerO.getLosses() + 1);
+      }
+      case O -> {
+        playerX.setLosses(playerX.getLosses() + 1);
+        playerO.setWins(playerO.getWins() + 1);
+      }
+      case NONE -> {
+        playerX.setDraws(playerX.getDraws() + 1);
+        playerO.setDraws(playerO.getDraws() + 1);
+      }
+    }
+    repository.saveAll(List.of(playerX, playerO));
   }
 }

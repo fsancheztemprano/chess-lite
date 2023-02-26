@@ -55,7 +55,7 @@ public class TicTacToeGameService {
       .orElseThrow(() -> new EntityNotFoundException(ticTacToeGameInput.getOId(), TicTacToePlayer.class));
 
     List<String> playerIds = Lists.newArrayList(xPlayer.getId(), oPlayer.getId());
-    if (repository.existsTicTacToeGameByPlayerOIdInAndPlayerXIdInAndStatus(playerIds, playerIds, Status.PENDING)) {
+    if (repository.existsTicTacToeGameByPlayerXIdInAndPlayerOIdInAndStatus(playerIds, playerIds, Status.PENDING)) {
       throw new IllegalArgumentException("Pending Game already exists");
     }
 
@@ -119,8 +119,7 @@ public class TicTacToeGameService {
     if (hasAuthority(TicTacToeAuthority.TIC_TAC_TOE_GAME_READ)) {
       return repository.findAll(pageable);
     } else {
-      return repository.findAllByPlayerXIdOrPlayerOIdOOrPrivate(getCurrentUserId(), getCurrentUserId(), false,
-        pageable);
+      return repository.findAllByPlayerXIdOrPlayerOIdOrPrivate(getCurrentUserId(), getCurrentUserId(), false, pageable);
     }
   }
 }
