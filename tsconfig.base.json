@@ -21,6 +21,7 @@
       "@app/ui/feature/administration": ["libs/ui/feature/administration/src/index.ts"],
       "@app/ui/feature/authentication": ["libs/ui/feature/authentication/src/index.ts"],
       "@app/ui/feature/home": ["libs/ui/feature/home/src/index.ts"],
+      "@app/ui/feature/tic-tac-toe": ["libs/ui/feature/tic-tac-toe/src/index.ts"],
       "@app/ui/feature/user": ["libs/ui/feature/user/src/index.ts"],
       "@app/ui/shared/app": ["libs/ui/shared/app/src/index.ts"],
       "@app/ui/shared/common": ["libs/ui/shared/common/src/index.ts"],

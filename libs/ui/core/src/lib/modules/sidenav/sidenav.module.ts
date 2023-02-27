@@ -13,6 +13,7 @@ import { AdministrationSidenavItemComponent } from './components/sidenav-items/a
 import { AuthenticationSidenavItemComponent } from './components/sidenav-items/authentication/authentication-sidenav-item.component';
 import { BuildInfoSidenavItemComponent } from './components/sidenav-items/build-info/home-sidenav-item.component';
 import { HomeSidenavItemComponent } from './components/sidenav-items/home/home-sidenav-item.component';
+import { TicTacToeSidenavItemComponent } from './components/sidenav-items/tic-tac-toe/tic-tac-toe-sidenav-item.component';
 import { UserSettingsSidenavItemComponent } from './components/sidenav-items/user-settings/user-settings-sidenav-item.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 
@@ -25,6 +26,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
     HomeSidenavItemComponent,
     UserSettingsSidenavItemComponent,
     BuildInfoSidenavItemComponent,
+    TicTacToeSidenavItemComponent,
   ],
   imports: [
     CommonModule,

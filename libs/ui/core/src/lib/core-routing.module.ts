@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/ui/feature/authentication';
 import { UserSettingsGuard } from '@app/ui/feature/user';
 import { AdministrationGuard } from '@app/ui/shared/feature/administration';
+import { TicTacToeGuard } from '@app/ui/shared/feature/tic-tac-toe';
 import { CoreComponent } from './components/core/core.component';
 
 const loadUserModule = () => import('@app/ui/feature/user').then((m) => m.UserModule);
@@ -12,6 +13,8 @@ const loadAdministrationModule = () => import('@app/ui/feature/administration').
 const loadAuthModule = () => import('@app/ui/feature/authentication').then((m) => m.AuthenticationModule);
 
 const loadHomeModule = () => import('@app/ui/feature/home').then((m) => m.HomeModule);
+
+const loadTicTacToeModule = () => import('@app/ui/feature/tic-tac-toe').then((m) => m.TicTacToeModule);
 
 const routes: Routes = [
   {
@@ -45,6 +48,12 @@ const routes: Routes = [
         loadChildren: loadAdministrationModule,
         canMatch: [AdministrationGuard],
         data: { breadcrumb: { label: 'administration.title', i18n: true } },
+      },
+      {
+        path: 'tic-tac-toe',
+        loadChildren: loadTicTacToeModule,
+        canMatch: [TicTacToeGuard],
+        data: { breadcrumb: { label: 'tic-tac-toe.title', i18n: true } },
       },
       { path: '**', redirectTo: 'home' },
     ],

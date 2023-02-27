@@ -1,7 +1,9 @@
 <a [routerLink]="tileData.route" class="tiled-menu-tile mat-raised-button" [@hover]="isMouseOver">
   <mat-icon>{{ tileData.icon }}</mat-icon>
   <div class="tiled-menu-tile-text-container">
-    <span class="tiled-menu-tile-title mat-headline-6" *ngIf="tileData.title$ | async as title">{{ title }}</span>
+    <span class="tiled-menu-tile-title mat-headline-6 ellipsis-overflow" *ngIf="tileData.title$ | async as title">{{
+      title
+    }}</span>
     <span class="tiled-menu-tile-subtitle mat-subtitle-1" *ngIf="tileData.subtitle$ | async as subtitle">{{
       subtitle
     }}</span>
