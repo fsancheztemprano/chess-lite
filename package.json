@@ -145,7 +145,7 @@
     "jsonwebtoken": "9.0.0",
     "junit-report-merger": "4.0.0",
     "ng-packagr": "15.1.2",
-    "npm-check-updates": "16.7.4",
+    "npm-check-updates": "16.7.10",
     "nx": "15.7.1",
     "prettier": "2.8.4",
     "rimraf": "4.1.2",
