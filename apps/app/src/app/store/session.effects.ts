@@ -28,10 +28,10 @@ export class SessionEffects {
     ),
   );
 
-  updateSession$ = createEffect((actions) => {
-    return actions.pipe(
+  updateSession$ = createEffect((actions) =>
+    actions.pipe(
       ofType(updateSession),
       tap((session: SessionProps) => this.sessionRepository.updateSession(session)),
-    );
-  });
+    ),
+  );
 }

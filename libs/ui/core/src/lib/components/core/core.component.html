@@ -1,6 +1,11 @@
 <app-toolbar></app-toolbar>
-<app-sidenav>
-  <main isMobileClass>
-    <router-outlet></router-outlet>
-  </main>
+<app-sidenav *isMobile="let isMobile" [ngClass]="{ mobile: isMobile }">
+  <ng-container *ngLet="sidebarRepository.showSidebar$ | async as showSidebar">
+    <main [ngClass]="{ 'sidebar-open': showSidebar }">
+      <router-outlet></router-outlet>
+    </main>
+    <aside [ngClass]="{ 'sidebar-open': showSidebar }" *ngIf="sidebarRepository.isActive$ | async">
+      <router-outlet name="sidebar"></router-outlet>
+    </aside>
+  </ng-container>
 </app-sidenav>

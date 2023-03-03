@@ -1,5 +1,5 @@
 <a [routerLink]="tileData.route" class="tiled-menu-tile mat-raised-button" [@hover]="isMouseOver">
-  <mat-icon>{{ tileData.icon }}</mat-icon>
+  <mat-icon [ngClass]="{ 'material-icons-outlined': tileData.iconOutline }">{{ tileData.icon }}</mat-icon>
   <div class="tiled-menu-tile-text-container">
     <span class="tiled-menu-tile-title mat-headline-6 ellipsis-overflow" *ngIf="tileData.title$ | async as title">{{
       title

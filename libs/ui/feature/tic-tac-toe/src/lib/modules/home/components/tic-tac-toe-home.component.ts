@@ -22,6 +22,7 @@ export class TicTacToeHomeComponent {
     {
       id: 'tic-tac-toe-new-game-tile',
       icon: 'not_started',
+      iconOutline: true,
       title$: this.translocoService.selectTranslate('tic-tac-toe.home.new-game.title'),
       subtitle$: this.translocoService.selectTranslate('tic-tac-toe.home.new-game.description'),
       route: 'create',

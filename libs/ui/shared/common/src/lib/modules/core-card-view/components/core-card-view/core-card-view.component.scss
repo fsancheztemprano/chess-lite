@@ -4,18 +4,15 @@
 
   mat-card {
     mat-card-header {
-      max-height: 50px;
+      max-height: 56px;
       border-bottom: solid 1px;
-      height: 50px;
-      padding: 0 5px;
+      height: 56px;
+      padding: 0 4px;
       width: 100%;
       display: flex;
       align-items: center;
       box-sizing: border-box;
-
-      mat-icon {
-        padding-top: 8px;
-      }
+      overflow: hidden;
 
       .header-title {
         margin-left: 8px;
@@ -23,12 +20,16 @@
         font-size: 18px;
       }
 
-      .tabs-container {
-        flex-grow: 1;
-      }
-
       nav {
-        height: 50px;
+        height: 56px;
+
+        a {
+          height: 56px;
+
+          span {
+            margin-left: 8px;
+          }
+        }
       }
     }
 
@@ -36,21 +37,30 @@
       padding: 16px;
       box-sizing: border-box;
       overflow: auto;
-      min-height: calc(100vh - 152px);
-      max-height: calc(100vh - 152px);
-      // min-height: calc(100vh - 64px - 50px - 32px - 6px);
+      min-height: calc(100vh - 158px);
+      max-height: calc(100vh - 158px);
+      // min-height: calc(100vh - 64px - 56px - 32px - 6px);
       // 100% - toolbar - header - content v-paddings - card bottom padding
     }
 
     &.isMobile {
       border-radius: 0;
 
-      mat-card-content {
+      mat-card-header {
         padding: 0;
-        min-height: calc(100vh - 59px);
-        max-height: calc(100vh - 59px);
-        // min-height: calc(100vh - 56px - 3px);
+      }
+
+      mat-card-content {
+        padding: 8px 0 0 0;
+        min-height: calc(100vh - 58px);
+        max-height: calc(100vh - 58px);
+        // min-height: calc(100vh - 56px - 2px);
         // 100% - toolbar - both vertical paddings
+
+        &.tabs-active {
+          min-height: calc(100vh - 58px - 56px);
+          max-height: calc(100vh - 58px - 56px);
+        }
       }
     }
   }

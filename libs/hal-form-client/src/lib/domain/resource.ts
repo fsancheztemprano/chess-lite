@@ -182,7 +182,7 @@ export class Resource implements IResource {
     return this.getTemplate(options?.template)?.canAffordProperty(options?.name, options?.value) || false;
   }
 
-  public toJson(): IResource {
+  public toJson<T = IResource>(): T {
     return JSON.parse(
       JSON.stringify({
         ...this,

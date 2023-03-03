@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 export interface MenuData {
   id?: string;
   icon?: string;
+  iconOutline?: true;
   title$?: Observable<string>;
   subtitle$?: Observable<string>;
   disabled$?: Observable<boolean>;

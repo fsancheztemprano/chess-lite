@@ -1,0 +1,7 @@
+<ng-container *ngIf="sidebarRepository.isActive$ | async">
+  <button mat-icon-button aria-label="Toggle Side Bar" (click)="toggleSidebar()">
+    <mat-icon>{{
+      (sidebarRepository.isOpen$ | async) ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left'
+    }}</mat-icon>
+  </button>
+</ng-container>

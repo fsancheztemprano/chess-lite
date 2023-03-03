@@ -1,37 +1,38 @@
 <mat-card appearance="outlined" *isMobile="let isMobile" [ngClass]="{ isMobile }">
-  <mat-card-header *ngIf="!isMobile">
-    <app-route-up-button></app-route-up-button>
-    <div class="header-title" [ngStyle]="{ 'flex-grow': titleRatio }">
+  <mat-card-header *ngIf="!isMobile || tabs?.length">
+    <app-route-up-button *ngIf="!isMobile"></app-route-up-button>
+    <div *ngIf="!isMobile" class="header-title" [ngStyle]="{ 'flex-grow': titleRatio }">
       {{ title }}
     </div>
-    <ng-container *ngIf="tabs">
-      <nav
-        *ngIf="tabs.length"
-        mat-tab-nav-bar
-        mat-align-tabs="end"
-        mat-stretch-tabs
-        [tabPanel]="tabPanel"
-        [ngStyle]="{ 'flex-grow': tabsRatio }"
-      >
-        <ng-container *ngFor="let tab of tabs">
-          <a
-            *ngIf="tab.title$ | async as title"
-            mat-tab-link
-            [routerLink]="tab.route"
-            routerLinkActive="active-link"
-            #rla="routerLinkActive"
-            [active]="rla.isActive"
-            [attr.data-cy]="tab.id"
-          >
-            {{ title }}
-          </a>
-        </ng-container>
-      </nav>
-      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
-    </ng-container>
-    <app-core-context-menu></app-core-context-menu>
+    <nav
+      *ngIf="tabs?.length"
+      mat-tab-nav-bar
+      mat-align-tabs="end"
+      mat-stretch-tabs
+      [tabPanel]="tabPanel"
+      [ngStyle]="{ 'flex-grow': tabsRatio }"
+    >
+      <ng-container *ngFor="let tab of tabs">
+        <a
+          *ngIf="tab.title$ | async as title"
+          mat-tab-link
+          [routerLink]="tab.route"
+          routerLinkActive="active-link"
+          #rla="routerLinkActive"
+          [active]="rla.isActive"
+          [attr.data-cy]="tab.id"
+        >
+          <mat-icon *ngIf="tab.icon" [ngClass]="{ 'material-icons-outlined': tab.iconOutline }">{{
+            tab.icon
+          }}</mat-icon>
+          <span *ngIf="!isMobile" class="tab-title"> {{ title }}</span>
+        </a>
+      </ng-container>
+    </nav>
+    <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+    <app-core-context-menu *ngIf="!isMobile"></app-core-context-menu>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content [ngClass]="{ 'tabs-active': !!tabs.length }">
     <ng-content></ng-content>
   </mat-card-content>
 </mat-card>
