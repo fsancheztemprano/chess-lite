@@ -3,7 +3,7 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/ui/feature/tic-tac-toe/src",
-  "prefix": "tic-tac-toe",
+  "prefix": "app",
   "targets": {
     "clean": {
       "executor": "nx:run-commands",

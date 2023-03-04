@@ -56,7 +56,7 @@ const routes: Routes = [
         path: 'tic-tac-toe',
         loadChildren: loadTicTacToeModule,
         canMatch: [TicTacToeGuard],
-        data: { breadcrumb: { label: 'tic-tac-toe.title', i18n: true } },
+        data: { breadcrumb: { label: 'Tic Tac Toe', i18n: false } },
       },
       { path: '**', redirectTo: 'home' },
     ],
