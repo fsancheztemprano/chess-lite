@@ -4,11 +4,12 @@ import static com.google.common.collect.Sets.newHashSet;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.Authority;
@@ -120,7 +121,9 @@ class JWTTokenProviderTest {
       .getCurrentTimeMillis();
     token = jwtTokenProvider.generateToken(userPrincipal);
 
-    assertFalse(jwtTokenProvider.isTokenValid(jwtTokenProvider.getDecodedJWT(token)));
+    String finalToken = token;
+    assertThrows(TokenExpiredException.class,
+      () -> jwtTokenProvider.isTokenValid(jwtTokenProvider.getDecodedJWT(finalToken)));
   }
 
   @Test
