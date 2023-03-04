@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StubCoreCardViewComponent, StubFormErrorComponent } from '@app/ui/shared/common';
 import { getTranslocoModule } from '@app/ui/testing';
-import { HalFormClientModule } from '@hal-form-client';
+import { HalFormClientTestingModule } from '@hal-form-client';
 import { stubAuthServiceProvider } from '../../../../services/auth.service.stub';
 import { LoginComponent } from './login.component';
 
@@ -25,7 +25,7 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         ...MaterialModules,
         NoopAnimationsModule,
-        HalFormClientModule,
+        HalFormClientTestingModule,
         getTranslocoModule(),
       ],
       declarations: [LoginComponent, StubFormErrorComponent, StubCoreCardViewComponent],

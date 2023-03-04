@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { IsMobileModule, NgLetModule } from '@app/ui/shared/core';
-import { provideEffects } from '@ngneat/effects-ng';
+import { EffectsNgModule } from '@ngneat/effects-ng';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 import { scopeLoader } from '../../../../../tools/transloco/transloco.scope';
 import { CoreComponent } from './components/core/core.component';
@@ -14,7 +14,15 @@ import { ThemeEffects } from './store/effects/theme.effects';
 
 @NgModule({
   declarations: [CoreComponent],
-  imports: [CommonModule, CoreRoutingModule, IsMobileModule, ToolbarModule, SidenavModule, NgLetModule],
+  imports: [
+    CommonModule,
+    CoreRoutingModule,
+    IsMobileModule,
+    ToolbarModule,
+    SidenavModule,
+    NgLetModule,
+    EffectsNgModule.forFeature([LocalizationEffects, ThemeEffects, SidebarEffects]),
+  ],
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
@@ -23,7 +31,6 @@ import { ThemeEffects } from './store/effects/theme.effects';
         loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),
       },
     },
-    provideEffects(LocalizationEffects, ThemeEffects, SidebarEffects),
   ],
 })
 export class CoreModule {}
