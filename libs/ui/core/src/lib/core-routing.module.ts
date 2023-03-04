@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@app/ui/feature/authentication';
-import { UserSettingsGuard } from '@app/ui/feature/user';
+import { inject, NgModule } from '@angular/core';
+import { Router, RouterModule, Routes } from '@angular/router';
+import { isValidToken } from '@app/ui/shared/app';
+import { CurrentUserRelations, TokenKeys } from '@app/ui/shared/domain';
 import { AdministrationGuard } from '@app/ui/shared/feature/administration';
 import { TicTacToeGuard } from '@app/ui/shared/feature/tic-tac-toe';
+import { HalFormService } from '@hal-form-client';
 import { CoreComponent } from './components/core/core.component';
 
 const loadUserModule = () => import('@app/ui/feature/user').then((m) => m.UserModule);
@@ -34,13 +35,15 @@ const routes: Routes = [
       {
         path: 'auth',
         loadChildren: loadAuthModule,
-        canMatch: [AuthGuard],
+        canMatch: [
+          () => !isValidToken(localStorage.getItem(TokenKeys.TOKEN) || '') || inject(Router).createUrlTree(['']),
+        ],
         data: { breadcrumb: { label: 'authentication.title', i18n: true } },
       },
       {
         path: 'user',
         loadChildren: loadUserModule,
-        canMatch: [UserSettingsGuard],
+        canMatch: [() => inject(HalFormService).hasLink(CurrentUserRelations.CURRENT_USER_REL)],
         data: { breadcrumb: { label: 'user-settings.title', i18n: true } },
       },
       {

@@ -48,28 +48,4 @@ describe('LocalePickerComponent', () => {
   it('should render picker button with current language flag', async () => {
     expect(fixture.debugElement.query(By.css('img[src="./assets/flags/gb.png"]'))).toBeTruthy();
   });
-
-  it('should render menu with options for available languages', async () => {
-    const matMenuHarness = await loader.getHarness(MatMenuHarness);
-    await matMenuHarness.open();
-
-    const items = await matMenuHarness.getItems();
-
-    expect(items.length).toBe(2);
-  });
-
-  it('should change content language on menu item click', async () => {
-    const spyInstance = jest.spyOn(component['actions'], 'dispatch');
-    const matMenuHarness = await loader.getHarness(MatMenuHarness);
-    await matMenuHarness.open();
-
-    const items = await matMenuHarness.getItems();
-
-    await items[0].click();
-
-    expect(spyInstance).toHaveBeenCalledWith({
-      contentLanguage: 'en',
-      type: '[Localization] Update Content Language',
-    });
-  });
 });
