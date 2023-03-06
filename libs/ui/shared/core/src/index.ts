@@ -15,6 +15,7 @@ export * from './lib/services/toolbar/search.service';
 export * from './lib/services/toolbar/toolbar.service';
 
 export * from './lib/modules/is-mobile';
+export * from './lib/modules/breakpoint';
 export * from './lib/modules/ng-let';
 export * from './lib/modules/context-menu';
 export * from './lib/modules/core-context-menu';
