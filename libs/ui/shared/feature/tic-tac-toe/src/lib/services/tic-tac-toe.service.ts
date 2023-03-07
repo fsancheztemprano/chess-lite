@@ -25,7 +25,7 @@ export class TicTacToeService extends HalFormService {
 
   public getAllGames(parameters?: Pageable): Observable<TicTacToeGame[]> {
     return this.followLink({ link: 'games', parameters: parameters }).pipe(
-      map((resource) => resource.getEmbeddedCollection('ticTacToeGameModelList')),
+      map((resource) => resource.getEmbeddedCollection('ticTacToeGameModels')),
     );
   }
 

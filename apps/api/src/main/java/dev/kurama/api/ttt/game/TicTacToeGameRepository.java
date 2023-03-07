@@ -14,8 +14,8 @@ public interface TicTacToeGameRepository extends JpaRepository<TicTacToeGame, St
                                                                   Collection<String> playerO,
                                                                   @NonNull TicTacToeGame.Status status);
 
-  Page<TicTacToeGame> findAllByPlayerXIdOrPlayerOIdOrPrivate(String currentUserId,
-                                                             String currentUserId1,
-                                                             Boolean isPrivate,
-                                                             Pageable pageable);
+  Page<TicTacToeGame> findAllByPlayerXIdOrPlayerOIdOrIsPrivate(String currentUserId,
+                                                               String currentUserId1,
+                                                               Boolean isPrivate,
+                                                               Pageable pageable);
 }

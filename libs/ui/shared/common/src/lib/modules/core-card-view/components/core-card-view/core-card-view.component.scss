@@ -34,13 +34,17 @@
     }
 
     mat-card-content {
-      padding: 16px;
+      padding: 0;
       box-sizing: border-box;
       overflow: auto;
-      min-height: calc(100vh - 158px);
-      max-height: calc(100vh - 158px);
+      min-height: calc(100vh - 146px);
+      max-height: calc(100vh - 146px);
       // min-height: calc(100vh - 64px - 56px - 32px - 6px);
       // 100% - toolbar - header - content v-paddings - card bottom padding
+
+      &.padded {
+        padding: 16px;
+      }
     }
 
     &.isMobile {

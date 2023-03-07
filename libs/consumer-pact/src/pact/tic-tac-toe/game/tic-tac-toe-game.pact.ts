@@ -149,7 +149,7 @@ export namespace GetAllTicTacToeGamesPact {
         },
         page: { size: 20, totalElements: 30, totalPages: 2, number: 0 },
         _embedded: {
-          ticTacToeGameModelList: [pendingGame, inProgressGame, rejectedGame, finishedGame],
+          ticTacToeGameModels: [pendingGame, inProgressGame, rejectedGame, finishedGame],
         },
         _templates: {
           ...defaultTemplate,
@@ -187,7 +187,7 @@ export namespace GetAllTicTacToeGamesPact {
         },
         page: { size: 20, totalElements: 30, totalPages: 2, number: 0 },
         _embedded: {
-          ticTacToeGameModelList: [pendingGame, inProgressGame, finishedGame],
+          ticTacToeGameModels: [pendingGame, inProgressGame, finishedGame],
         },
         _templates: { ...defaultTemplate },
       },

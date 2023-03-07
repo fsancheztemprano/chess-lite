@@ -119,7 +119,8 @@ public class TicTacToeGameService {
     if (hasAuthority(TicTacToeAuthority.TIC_TAC_TOE_GAME_READ)) {
       return repository.findAll(pageable);
     } else {
-      return repository.findAllByPlayerXIdOrPlayerOIdOrPrivate(getCurrentUserId(), getCurrentUserId(), false, pageable);
+      return repository.findAllByPlayerXIdOrPlayerOIdOrIsPrivate(getCurrentUserId(), getCurrentUserId(), false,
+        pageable);
     }
   }
 }

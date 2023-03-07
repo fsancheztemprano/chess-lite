@@ -32,7 +32,7 @@
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
     <app-core-context-menu *ngIf="!isMobile"></app-core-context-menu>
   </mat-card-header>
-  <mat-card-content [ngClass]="{ 'tabs-active': !!tabs.length }">
+  <mat-card-content [ngClass]="{ 'tabs-active': !!tabs.length, padded: paddedContent }">
     <ng-content></ng-content>
   </mat-card-content>
 </mat-card>

@@ -1,0 +1,13 @@
+app-tic-tac-toe-game-list-sidebar {
+  mat-tab-group {
+    .mat-mdc-tab-labels .mat-mdc-tab {
+      height: 56px;
+    }
+
+    &.mobile {
+      .mat-mdc-tab-labels .mat-mdc-tab {
+        height: 48px;
+      }
+    }
+  }
+}

@@ -7,12 +7,19 @@
   app-sidenav {
     height: 100%;
 
+    main,
+    aside {
+      box-sizing: border-box;
+      transition: width 0.3s ease-in-out;
+      opacity: 1;
+    }
+
     main {
-      padding: 24px 12px 12px 24px;
+      margin: 0;
+      padding: 12px;
       height: 100%;
       min-height: 100%;
       width: 100%;
-      box-sizing: border-box;
 
       &.sidebar-open {
         width: 70%;
@@ -20,32 +27,46 @@
     }
 
     aside {
-      padding: 24px 12px 12px 12px;
-      height: 100%;
-      min-height: 100%;
-      width: 30%;
-      display: none;
-      box-sizing: border-box;
+      margin: 12px 0;
+      padding: 0;
+      height: calc(100% - 24px);
+      min-height: calc(100% - 24px);
+      width: 0;
       background: white;
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
       border-left: 1px solid rgba(0, 0, 0, 0.12);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
 
       &.sidebar-open {
-        display: block;
+        width: 30%;
       }
     }
 
     &.mobile {
       main,
       aside {
+        height: 100%;
         padding: 0;
+        border-radius: 0;
+        border: none;
+        margin: 0;
+        transition: opacity 0.3s ease-in-out;
       }
 
       main.sidebar-open {
-        display: none;
+        width: 0;
+        opacity: 0;
       }
 
-      aside.sidebar-open {
-        width: 100%;
+      aside {
+        opacity: 0;
+
+        &.sidebar-open {
+          width: 100%;
+          opacity: 1;
+        }
       }
     }
   }
@@ -53,7 +74,9 @@
   &.dark-mode {
     app-sidenav aside {
       background: #424242;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
       border-left: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     }
   }
 }

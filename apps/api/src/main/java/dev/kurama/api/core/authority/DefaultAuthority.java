@@ -47,11 +47,15 @@ public class DefaultAuthority {
 
     ThemeAuthority.THEME_UPDATE,
 
-    TicTacToeAuthority.TIC_TAC_TOE_ROOT);
+    TicTacToeAuthority.TIC_TAC_TOE_ROOT, TicTacToeAuthority.TIC_TAC_TOE_GAME_READ,
+    TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE, TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE
+
+                                                                   );
 
 
   protected static final List<String> USER_AUTHORITIES = Lists.newArrayList(TokenAuthority.TOKEN_REFRESH,
-    ProfileAuthority.PROFILE_UPDATE, ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE);
+    ProfileAuthority.PROFILE_UPDATE, ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE,
+    TicTacToeAuthority.TIC_TAC_TOE_ROOT);
 
   protected static final List<String> MOD_AUTHORITIES = Stream.of(USER_AUTHORITIES,
       Lists.newArrayList(UserAuthority.USER_READ, UserAuthority.USER_UPDATE))
