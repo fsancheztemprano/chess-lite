@@ -39,8 +39,6 @@
       overflow: auto;
       min-height: calc(100vh - 146px);
       max-height: calc(100vh - 146px);
-      // min-height: calc(100vh - 64px - 56px - 32px - 6px);
-      // 100% - toolbar - header - content v-paddings - card bottom padding
 
       &.padded {
         padding: 16px;
@@ -49,6 +47,7 @@
 
     &.isMobile {
       border-radius: 0;
+      border: 0;
 
       mat-card-header {
         padding: 0;
@@ -56,10 +55,8 @@
 
       mat-card-content {
         padding: 8px 0 0 0;
-        min-height: calc(100vh - 58px);
-        max-height: calc(100vh - 58px);
-        // min-height: calc(100vh - 56px - 2px);
-        // 100% - toolbar - both vertical paddings
+        min-height: calc(100vh - 56px);
+        max-height: calc(100vh - 56px);
 
         &.tabs-active {
           min-height: calc(100vh - 58px - 56px);

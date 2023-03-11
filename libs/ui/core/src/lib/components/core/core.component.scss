@@ -12,6 +12,7 @@
       box-sizing: border-box;
       transition: width 0.3s ease-in-out;
       opacity: 1;
+      overflow: hidden;
     }
 
     main {
@@ -32,7 +33,7 @@
       height: calc(100% - 24px);
       min-height: calc(100% - 24px);
       width: 0;
-      background: white;
+      background-color: white;
       border-top: 1px solid rgba(0, 0, 0, 0.12);
       border-left: 1px solid rgba(0, 0, 0, 0.12);
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);

@@ -1,7 +1,7 @@
 import { Directive, EmbeddedViewRef, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Breakpoint } from '../breakpoint.model';
-import { BreakpointService } from '../breakpoint.service';
+import { BreakpointService } from '../services/breakpoint.service';
 
 interface BreakpointContext {
   breakpoint: Breakpoint;

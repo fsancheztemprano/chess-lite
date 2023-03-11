@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { Breakpoint } from '../breakpoint.model';
-import { BreakpointService } from '../breakpoint.service';
-import { StubBreakpointService, stubBreakpointServiceProvider } from '../breakpoint.service.stub';
+import { BreakpointService } from '../services/breakpoint.service';
+import { StubBreakpointService, stubBreakpointServiceProvider } from '../services/breakpoint.service.stub';
 import { BreakpointFilter, BreakpointFilterPipe } from './breakpoint-filter.pipe';
 
 describe('BreakpointFilterPipe', () => {

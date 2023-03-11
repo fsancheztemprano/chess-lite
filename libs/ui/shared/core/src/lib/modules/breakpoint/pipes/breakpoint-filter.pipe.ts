@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Breakpoint } from '../breakpoint.model';
-import { BreakpointService } from '../breakpoint.service';
+import { BreakpointService } from '../services/breakpoint.service';
 
 @UntilDestroy()
 @Pipe({
@@ -16,22 +16,22 @@ export class BreakpointFilterPipe implements PipeTransform {
   transform<T>(toFilter: Array<BreakpointFilter<T>>): Observable<T[]> {
     return this.service.breakpoint$.pipe(
       untilDestroyed(this),
-      map((breakpoint) => {
-        return toFilter
-          .filter((filter) =>
-            filter.strategy === 'is' ? filter.breakpoint === breakpoint : filter.breakpoint <= breakpoint,
+      map((breakpoint) =>
+        toFilter
+          .filter(
+            (filter) =>
+              filter?.breakpoint === null ||
+              filter?.breakpoint === undefined ||
+              (filter.strategy === 'is' ? filter.breakpoint === breakpoint : filter.breakpoint <= breakpoint),
           )
-          .map((filter) => filter.value);
-      }),
-      tap((filtered) => {
-        console.log('filtered', filtered);
-      }),
+          .map((filter) => filter.value),
+      ),
     );
   }
 }
 
 export interface BreakpointFilter<T = string> {
-  breakpoint: Breakpoint;
+  breakpoint?: Breakpoint;
   strategy?: 'is' | 'over';
   value: T;
 }

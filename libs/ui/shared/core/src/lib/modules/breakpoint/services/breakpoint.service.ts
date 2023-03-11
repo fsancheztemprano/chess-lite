@@ -2,7 +2,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { Injectable } from '@angular/core';
 import { distinctUntilChanged, Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Breakpoint } from './breakpoint.model';
+import { Breakpoint } from '../breakpoint.model';
 
 @Injectable({
   providedIn: 'root',

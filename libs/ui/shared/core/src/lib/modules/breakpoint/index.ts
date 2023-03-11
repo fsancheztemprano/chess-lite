@@ -1,6 +1,6 @@
 export { Breakpoint } from './breakpoint.model';
 
-export { BreakpointService } from './breakpoint.service';
+export { BreakpointService } from './services/breakpoint.service';
 
 export { BreakpointDirective } from './directives/breakpoint.directive';
 export { IfIsXsDirective } from './directives/if-is-xs.directive';

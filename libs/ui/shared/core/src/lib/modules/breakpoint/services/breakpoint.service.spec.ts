@@ -2,7 +2,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { TestBed } from '@angular/core/testing';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Breakpoint } from './breakpoint.model';
+import { Breakpoint } from '../breakpoint.model';
 import { BreakpointService } from './breakpoint.service';
 
 class StubBreakpointObserver {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Breakpoint } from './breakpoint.model';
+import { Breakpoint } from '../breakpoint.model';
 import { BreakpointService } from './breakpoint.service';
 
 @Injectable({

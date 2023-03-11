@@ -54,7 +54,8 @@ public class TicTacToeRootResourceAssembler implements RootAssembler<RootResourc
   }
 
   private @NonNull Link getAllGamesLink() {
-    return getExpandedLink(linkTo(methodOn(TicTacToeGameController.class).getAll(null)).withRel(TIC_TAC_TOE_GAMES_REL));
+    return getExpandedLink(
+      linkTo(methodOn(TicTacToeGameController.class).getAll(null, null, null, null)).withRel(TIC_TAC_TOE_GAMES_REL));
   }
 
   private @NonNull Link getOneGameLink() {

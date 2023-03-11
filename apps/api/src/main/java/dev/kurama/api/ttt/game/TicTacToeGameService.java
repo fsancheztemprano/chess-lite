@@ -66,6 +66,7 @@ public class TicTacToeGameService {
       .isPrivate(ticTacToeGameInput.getIsPrivate())
       .status(Status.PENDING)
       .requestedAt(LocalDateTime.now())
+      .lastActivityAt(LocalDateTime.now())
       .build();
     return repository.save(game);
   }

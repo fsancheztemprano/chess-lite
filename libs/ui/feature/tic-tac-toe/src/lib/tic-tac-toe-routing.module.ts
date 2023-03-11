@@ -5,10 +5,10 @@ const loadTicTacToeHomeModule = () =>
   import('./modules/home/tic-tac-toe-home.module').then((m) => m.TicTacToeHomeModule);
 
 const loadTicTacToeGameListModule = () =>
-  import('./modules/games/game-list/tic-tac-toe-game-list.module').then((m) => m.TicTacToeGameListModule);
+  import('./modules/games/modules/game-list/tic-tac-toe-game-list.module').then((m) => m.TicTacToeGameListModule);
 
 const loadTicTacToeGameListSidebarModule = () =>
-  import('./modules/games/game-list-sidebar/tic-tac-toe-game-list-sidebar.module').then(
+  import('./modules/games/modules/game-list-sidebar/tic-tac-toe-game-list-sidebar.module').then(
     (m) => m.TicTacToeGameListSidebarModule,
   );
 

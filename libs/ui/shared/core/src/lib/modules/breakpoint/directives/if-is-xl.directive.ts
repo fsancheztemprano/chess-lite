@@ -1,6 +1,6 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BreakpointService } from '../breakpoint.service';
+import { BreakpointService } from '../services/breakpoint.service';
 
 @UntilDestroy()
 @Directive({

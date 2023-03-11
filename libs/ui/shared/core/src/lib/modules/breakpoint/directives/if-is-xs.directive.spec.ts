@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Breakpoint } from '../breakpoint.model';
-import { BreakpointService } from '../breakpoint.service';
-import { StubBreakpointService, stubBreakpointServiceProvider } from '../breakpoint.service.stub';
+import { BreakpointService } from '../services/breakpoint.service';
+import { StubBreakpointService, stubBreakpointServiceProvider } from '../services/breakpoint.service.stub';
 import { IfIsXsDirective } from './if-is-xs.directive';
 
 @Component({

@@ -17,16 +17,16 @@ import { UserManagementTableDatasource } from './user-management-table.datasourc
 export class UserManagementTableComponent implements OnDestroy {
   public readonly TRANSLOCO_SCOPE = 'administration.user-management.table';
   public readonly reactiveColumns: BreakpointFilter[] = [
-    { breakpoint: Breakpoint.XS, value: 'username' },
-    { breakpoint: Breakpoint.XS, value: 'email' },
-    { breakpoint: Breakpoint.XL, value: 'firstname' },
-    { breakpoint: Breakpoint.XL, value: 'lastname' },
-    { breakpoint: Breakpoint.M, value: 'lastLoginDateDisplay' },
-    { breakpoint: Breakpoint.M, value: 'joinDate' },
-    { breakpoint: Breakpoint.XS, value: 'role' },
-    { breakpoint: Breakpoint.L, value: 'active' },
-    { breakpoint: Breakpoint.L, value: 'locked' },
-    { breakpoint: Breakpoint.XS, value: 'edit' },
+    { value: 'username' },
+    { value: 'email' },
+    { value: 'firstname', breakpoint: Breakpoint.XL },
+    { value: 'lastname', breakpoint: Breakpoint.XL },
+    { value: 'lastLoginDateDisplay', breakpoint: Breakpoint.M },
+    { value: 'joinDate', breakpoint: Breakpoint.M },
+    { value: 'role' },
+    { value: 'active', breakpoint: Breakpoint.L },
+    { value: 'locked', breakpoint: Breakpoint.L },
+    { value: 'edit' },
   ];
 
   constructor(

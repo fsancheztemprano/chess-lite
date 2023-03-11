@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BreakpointService } from './breakpoint.service';
 import { BreakpointDirective } from './directives/breakpoint.directive';
 import { IfIsLDirective } from './directives/if-is-l.directive';
 import { IfIsMDirective } from './directives/if-is-m.directive';
@@ -9,6 +8,7 @@ import { IfIsXsDirective } from './directives/if-is-xs.directive';
 import { IfOverLDirective } from './directives/if-over-l.directive';
 import { IfOverMDirective } from './directives/if-over-m.directive';
 import { IfOverSDirective } from './directives/if-over-s.directive';
+import { BreakpointService } from './services/breakpoint.service';
 
 @NgModule({
   imports: [

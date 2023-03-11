@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,7 +40,10 @@ public class TicTacToeGameController {
   }
 
   @GetMapping()
-  public ResponseEntity<PagedModel<TicTacToeGameModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable) {
+  public ResponseEntity<PagedModel<TicTacToeGameModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
+                                                               @RequestParam(value = "myGames", required = false) Boolean myGames,
+                                                               @RequestParam(value = "player", required = false) String player,
+                                                               @RequestParam(value = "status", required = false) String status) {
     return ok().body(ticTacToeGameFacade.getAll(pageable));
   }
 
