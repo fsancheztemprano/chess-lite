@@ -81,7 +81,7 @@ public class TicTacToeGameService {
       throw new IllegalArgumentException("Invalid status " + input.getStatus());
     }
     TicTacToeGame game = repository.findById(gameId).orElseThrow();
-    if (!game.getPlayerO().getId().equals(getCurrentUserId()) || !hasAuthority(
+    if (!game.getPlayerO().getId().equals(getCurrentUserId()) && !hasAuthority(
       TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE)) {
       throw new ForbiddenException("Not pending for your update");
     }

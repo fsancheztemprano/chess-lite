@@ -13,10 +13,12 @@ const loadTicTacToeGameListSidebarModule = () =>
   );
 
 const loadTicTacToeGameModule = () =>
-  import('./modules/game/game/tic-tac-toe-game.module').then((m) => m.TicTacToeGameModule);
+  import('./modules/game/modules/game/tic-tac-toe-game.module').then((m) => m.TicTacToeGameModule);
 
 const loadTicTacToeGameSidebarModule = () =>
-  import('./modules/game/game-sidebar/tic-tac-toe-game-sidebar.module').then((m) => m.TicTacToeGameSidebarModule);
+  import('./modules/game/modules/game-sidebar/tic-tac-toe-game-sidebar.module').then(
+    (m) => m.TicTacToeGameSidebarModule,
+  );
 
 const loadTicTacToeNewGameModule = () =>
   import('./modules/new-game/tic-tac-toe-new-game.module').then((m) => m.TicTacToeNewGameModule);

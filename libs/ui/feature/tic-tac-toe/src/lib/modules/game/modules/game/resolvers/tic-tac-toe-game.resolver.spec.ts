@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { ticTacToeGameListResolver } from './tic-tac-toe-game-list.resolver';
+import { ticTacToeGameResolver } from './tic-tac-toe-game.resolver';
 
-describe('ticTacToeGameListResolver', () => {
+describe('ticTacToeGameResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) =>
-    TestBed.runInInjectionContext(() => ticTacToeGameListResolver(...resolverParameters));
+    TestBed.runInInjectionContext(() => ticTacToeGameResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

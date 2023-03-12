@@ -3,7 +3,7 @@ import { ResolveFn } from '@angular/router';
 import { TicTacToeGame } from '@app/ui/shared/domain';
 import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
 
-export const ticTacToeGameListResolver: ResolveFn<TicTacToeGame[]> = (route) => {
+export const ticTacToeGameResolver: ResolveFn<TicTacToeGame> = (route) => {
   const service = inject(TicTacToeService);
-  return service.getAllGames(route.queryParams);
+  return service.getGame(route.params.gameId);
 };

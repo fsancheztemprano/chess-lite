@@ -30,7 +30,10 @@ export class TicTacToeService extends HalFormService {
   }
 
   public getGame(gameId: string): Observable<TicTacToeGame> {
-    return this.followLink({ link: `game`, parameters: { gameId } });
+    return this.followLink({
+      link: `game`,
+      parameters: { gameId },
+    }).pipe(map((resource) => new TicTacToeGame(resource)));
   }
 
   public findPlayers(username?: string): Observable<TicTacToePlayer[]> {

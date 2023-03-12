@@ -1,0 +1,44 @@
+<app-core-card-view>
+  <div class="card-content" *ngIf="game$ | async as game">
+    <div class="board" isMobileClass *ngIf="board$ | async as cells">
+      <div
+        *ngFor="let cell of cells"
+        class="cell cell-{{ cell.cell }}"
+        [class.winner]="game.status === TicTacToeGameStatus.FINISHED && cell.value === game.turn"
+        [class.looser]="game.status === TicTacToeGameStatus.FINISHED && cell.value !== game.turn"
+      >
+        <mat-icon *ngIf="cell.value !== '_'" class="material-icons-outlined">{{
+          cell.value === 'X' ? 'close' : 'circle'
+        }}</mat-icon>
+        <button
+          *ngIf="game.status === TicTacToeGameStatus.IN_PROGRESS && cell.value === '_' && cell.canMove"
+          mat-icon-button
+          (click)="cell.move()"
+        >
+          <mat-icon class="material-icons-outlined">{{ game.turn === 'X' ? 'close' : 'circle' }}</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <ng-container [ngSwitch]="game.status">
+      <ng-container *ngSwitchCase="'PENDING'">
+        <app-core-info-message
+          icon="question_mark"
+          headline="Pending"
+          subtitle="Waiting for opponent to accept"
+          [leftButton]="game.canChangeStatus(TicTacToeGameStatus.REJECTED)"
+          leftButtonLabel="Reject"
+          leftButtonIcon="close"
+          (leftButtonClick)="setStatus(game, TicTacToeGameStatus.REJECTED)"
+          [rightButton]="game.canChangeStatus(TicTacToeGameStatus.IN_PROGRESS)"
+          rightButtonLabel="Accept"
+          rightButtonIcon="check"
+          (rightButtonClick)="setStatus(game, TicTacToeGameStatus.IN_PROGRESS)"
+        ></app-core-info-message>
+      </ng-container>
+      <div *ngSwitchCase="'REJECTED'">
+        <app-core-info-message icon="cancel" headline="Rejected"></app-core-info-message>
+      </div>
+    </ng-container>
+  </div>
+</app-core-card-view>

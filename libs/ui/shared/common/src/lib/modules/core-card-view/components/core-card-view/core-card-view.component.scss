@@ -38,6 +38,7 @@
       box-sizing: border-box;
       overflow: auto;
       min-height: calc(100vh - 146px);
+      height: calc(100vh - 146px);
       max-height: calc(100vh - 146px);
 
       &.padded {

@@ -5,31 +5,43 @@ export interface ITicTacToeGame extends IResource {
   id: string;
   status: TicTacToeGameStatus;
   private: boolean;
-  players: {
-    x: ITicTacToePlayer;
-    o: ITicTacToePlayer;
-  };
+  playersX: ITicTacToePlayer;
+  playersO: ITicTacToePlayer;
   board?: string;
-  result?: TicTacToeGamePlayer;
+  turn?: TicTacToeGamePlayer;
+  lastActivityAt: number;
+  requestedAt: number;
+  startedAt?: number;
+  finishedAt?: number;
 }
 
 export class TicTacToeGame extends Resource implements IResource {
-  id?: string;
-  status?: TicTacToeGameStatus;
-  private?: boolean;
-  players?: {
-    x: ITicTacToePlayer;
-    o: ITicTacToePlayer;
-  };
+  id!: string;
+  status!: TicTacToeGameStatus;
+  private!: boolean;
+  playerX!: ITicTacToePlayer;
+  playerO!: ITicTacToePlayer;
   board?: string;
-  result?: TicTacToeGamePlayer;
+  turn?: TicTacToeGamePlayer;
+  lastActivityAt!: number;
+  requestedAt!: number;
+  startedAt?: number;
+  finishedAt?: number;
 
   move(cell: string): Observable<unknown> {
     return this.affordTemplate({ template: 'move', body: { cell } });
   }
 
+  canMove(cell: string): boolean {
+    return !!this.getTemplate('move')?.canAffordProperty('cell', cell);
+  }
+
   changeStatus(status: TicTacToeGameStatus.REJECTED | TicTacToeGameStatus.IN_PROGRESS): Observable<Resource> {
     return this.affordTemplate({ template: 'status', body: { status } });
+  }
+
+  canChangeStatus(status: TicTacToeGameStatus.REJECTED | TicTacToeGameStatus.IN_PROGRESS): boolean {
+    return !!this.getTemplate('status')?.canAffordProperty('status', status);
   }
 }
 
