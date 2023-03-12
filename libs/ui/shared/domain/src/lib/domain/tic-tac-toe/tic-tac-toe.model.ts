@@ -53,3 +53,11 @@ export interface ITicTacToePlayer {
   losses: number;
   draws: number;
 }
+
+export class TicTacToePlayer extends Resource implements ITicTacToePlayer {
+  id!: string;
+  username!: string;
+  wins!: number;
+  losses!: number;
+  draws!: number;
+}

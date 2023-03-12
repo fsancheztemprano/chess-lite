@@ -12,11 +12,9 @@ public class TicTacToeGameInput {
 
   @NonNull
   @NotNull
-  private String oId;
+  private String playerOUsername;
 
-  @NonNull
-  @NotNull
-  private String xId;
+  private String playerXUsername;
 
   @InputType("boolean")
   private Boolean isPrivate;

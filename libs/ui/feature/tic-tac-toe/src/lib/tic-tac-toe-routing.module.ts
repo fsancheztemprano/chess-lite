@@ -18,6 +18,9 @@ const loadTicTacToeGameModule = () =>
 const loadTicTacToeGameSidebarModule = () =>
   import('./modules/game/game-sidebar/tic-tac-toe-game-sidebar.module').then((m) => m.TicTacToeGameSidebarModule);
 
+const loadTicTacToeNewGameModule = () =>
+  import('./modules/new-game/tic-tac-toe-new-game.module').then((m) => m.TicTacToeNewGameModule);
+
 const routes: Routes = [
   {
     path: '',
@@ -61,6 +64,11 @@ const routes: Routes = [
         ],
       },
     ],
+  },
+  {
+    path: 'new-game',
+    loadChildren: loadTicTacToeNewGameModule,
+    data: { breadcrumb: { label: 'New Game' } },
   },
   { path: '**', redirectTo: '' },
 ];

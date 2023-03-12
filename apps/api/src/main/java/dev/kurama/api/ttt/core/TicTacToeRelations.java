@@ -14,4 +14,5 @@ public class TicTacToeRelations {
   public static final String TIC_TAC_TOE_GAMES_REL = "games";
   public static final String TIC_TAC_TOE_MOVE_REL = "move";
   public static final String TIC_TAC_TOE_MOVES_REL = "moves";
+  public static final String TIC_TAC_TOE_PLAYERS_REL = "players";
 }

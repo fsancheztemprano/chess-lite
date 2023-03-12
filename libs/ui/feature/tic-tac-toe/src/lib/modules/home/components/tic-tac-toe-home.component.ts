@@ -25,7 +25,7 @@ export class TicTacToeHomeComponent {
       iconOutline: true,
       title$: this.translocoService.selectTranslate('tic-tac-toe.home.new-game.title'),
       subtitle$: this.translocoService.selectTranslate('tic-tac-toe.home.new-game.description'),
-      route: 'create',
+      route: 'new-game',
       visible$: this.ticTacToeService.hasCreateGameTemplate(),
     },
   ];

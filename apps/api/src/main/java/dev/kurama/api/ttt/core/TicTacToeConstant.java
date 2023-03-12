@@ -12,4 +12,5 @@ public class TicTacToeConstant {
   public static final String TIC_TAC_TOE_GAMES_PATH = TIC_TAC_TOE_BASE_PATH + "/game";
   public static final String TIC_TAC_TOE_GAME_PATH = TIC_TAC_TOE_GAMES_PATH + "/{gameId}";
   public static final String TIC_TAC_TOE_GAME_MOVE_PATH = TIC_TAC_TOE_GAME_PATH + "/move";
+  public static final String TIC_TAC_TOE_PLAYER_PATH = TIC_TAC_TOE_BASE_PATH + "/player";
 }

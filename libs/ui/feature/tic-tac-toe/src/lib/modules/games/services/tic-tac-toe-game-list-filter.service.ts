@@ -5,19 +5,30 @@ import { BehaviorSubject, map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TicTacToeGameListFilterService {
-  private readonly _filter$: BehaviorSubject<Filters> = new BehaviorSubject<Filters>({});
+  private readonly _filters$: BehaviorSubject<Filters> = new BehaviorSubject<Filters>({});
 
-  get filter$(): Observable<Filters> {
-    return this._filter$
-      .asObservable()
-      .pipe(map((filter: Filters) => ({ ...filter, status: filter.status ? Object.keys(filter.status) : undefined })));
+  get filters$(): Observable<TicTacToeGameListFilters> {
+    return this._filters$.asObservable().pipe(
+      map((filters: Filters) => {
+        const status: string[] = Object.entries(filters.status || {})
+          .filter(([, value]) => value)
+          .map(([key]) => key);
+        return { ...filters, status: status.length ? status : undefined };
+      }),
+    );
   }
 
-  setFilter(filter: Filters = {}) {
-    this._filter$.next(filter);
+  setFilters(filter: Filters = {}) {
+    this._filters$.next(filter);
   }
 }
 
 export interface Filters {
   [key: string]: unknown | undefined;
+}
+
+export interface TicTacToeGameListFilters extends Filters {
+  myGames?: boolean;
+  player?: string;
+  status?: string[];
 }

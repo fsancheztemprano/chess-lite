@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@app/consumer-pact": ["libs/consumer-pact/src/index.ts"],
-      "@app/domain/mocks": ["libs/domain/src/index.mocks.ts"],
       "@app/ui/core": ["libs/ui/core/src/index.ts"],
       "@app/ui/feature/administration": ["libs/ui/feature/administration/src/index.ts"],
       "@app/ui/feature/authentication": ["libs/ui/feature/authentication/src/index.ts"],
@@ -26,6 +25,7 @@
       "@app/ui/shared/app": ["libs/ui/shared/app/src/index.ts"],
       "@app/ui/shared/common": ["libs/ui/shared/common/src/index.ts"],
       "@app/ui/shared/core": ["libs/ui/shared/core/src/index.ts"],
+      "@app/ui/shared/custom-forms": ["libs/ui/shared/custom-forms/src/index.ts"],
       "@app/ui/shared/domain": ["libs/ui/shared/domain/src/index.ts"],
       "@app/ui/shared/feature/administration": ["libs/ui/shared/feature/administration/src/index.ts"],
       "@app/ui/shared/feature/tic-tac-toe": ["libs/ui/shared/feature/tic-tac-toe/src/index.ts"],

@@ -36,6 +36,6 @@ export class TicTacToeGameListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filterService.filter$.pipe(untilDestroyed(this)).subscribe((filters) => (this.datasource.filters = filters));
+    this.filterService.filters$.pipe(untilDestroyed(this)).subscribe((filters) => (this.datasource.filters = filters));
   }
 }

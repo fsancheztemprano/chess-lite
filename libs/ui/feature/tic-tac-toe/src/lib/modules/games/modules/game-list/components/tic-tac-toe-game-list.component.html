@@ -27,7 +27,9 @@
       </ng-container>
       <ng-container matColumnDef="lastActivityAt">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="lastActivityAt">Activity</th>
-        <td mat-cell *matCellDef="let element">{{ element.lastActivityAt | date }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.lastActivityAt && (element.lastActivityAt * 1000 | date) }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="edit">

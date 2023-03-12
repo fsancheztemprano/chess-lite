@@ -19,8 +19,12 @@ public class TicTacToePlayerService {
     return repository.existsById(userId);
   }
 
-  public Optional<TicTacToePlayer> getPlayerById(String playerId) {
-    return repository.findById(playerId);
+  public Optional<TicTacToePlayer> getPlayerByUsername(String username) {
+    return repository.findByUserUsername(username);
+  }
+
+  public List<TicTacToePlayer> findPlayers(String username) {
+    return repository.findAllByUser_UsernameLike("%" + username + "%");
   }
 
   public TicTacToePlayer create(String userId) {

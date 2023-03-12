@@ -6,8 +6,10 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
+import dev.kurama.api.ttt.game.input.TicTacToeGameFilter;
 import dev.kurama.api.ttt.game.input.TicTacToeGameInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameStatusInput;
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -42,9 +44,11 @@ public class TicTacToeGameController {
   @GetMapping()
   public ResponseEntity<PagedModel<TicTacToeGameModel>> getAll(@PageableDefault(page = 0, size = DEFAULT_PAGE_SIZE) Pageable pageable,
                                                                @RequestParam(value = "myGames", required = false) Boolean myGames,
+                                                               @RequestParam(value = "isPrivate", required = false) Boolean isPrivate,
                                                                @RequestParam(value = "player", required = false) String player,
-                                                               @RequestParam(value = "status", required = false) String status) {
-    return ok().body(ticTacToeGameFacade.getAll(pageable));
+                                                               @RequestParam(value = "status", required = false) List<String> status) {
+    return ok().body(ticTacToeGameFacade.getAll(pageable,
+      TicTacToeGameFilter.builder().myGames(myGames).isPrivate(isPrivate).player(player).status(status).build()));
   }
 
   @GetMapping("/{gameId}")

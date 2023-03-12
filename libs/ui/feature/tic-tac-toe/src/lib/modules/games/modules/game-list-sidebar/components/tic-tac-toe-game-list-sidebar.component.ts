@@ -19,7 +19,7 @@ export class TicTacToeGameListSidebarComponent implements OnDestroy {
       key: 'myGames',
       type: 'toggle',
       props: {
-        label: 'My Games',
+        label: 'Only My Games',
         appearance: 'outline',
       },
     },
@@ -50,6 +50,6 @@ export class TicTacToeGameListSidebarComponent implements OnDestroy {
   ];
 
   ngOnDestroy(): void {
-    this.service.setFilter();
+    this.service.setFilters();
   }
 }

@@ -1,0 +1,6 @@
+<app-core-card-view>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+    <formly-form [fields]="fields" [model]="model"></formly-form>
+    <button mat-raised-button>Create</button>
+  </form>
+</app-core-card-view>

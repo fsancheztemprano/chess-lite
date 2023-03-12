@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Pageable, TicTacToeGame } from '@app/ui/shared/domain';
+import { Pageable, TicTacToeGame, TicTacToePlayer } from '@app/ui/shared/domain';
 import { HalFormService, Resource } from '@hal-form-client';
 import { map, Observable, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -33,8 +33,19 @@ export class TicTacToeService extends HalFormService {
     return this.followLink({ link: `game`, parameters: { gameId } });
   }
 
-  public createGame(xId: string, oId: string, pri?: boolean): Observable<unknown> {
-    return this.affordTemplate({ template: 'create', body: { xId, oId, private: !!pri } });
+  public findPlayers(username?: string): Observable<TicTacToePlayer[]> {
+    return this.followLink({
+      link: `players`,
+      parameters: { username },
+    }).pipe(map((resource) => resource.getEmbeddedCollection('ticTacToePlayerModels')));
+  }
+
+  public createGame(input?: {
+    playerXUsername?: string;
+    playerOUsername?: string;
+    isPrivate?: boolean;
+  }): Observable<unknown> {
+    return this.affordTemplate({ template: 'create', body: { ...input } });
   }
 
   public hasGamesLink(): Observable<boolean> {
