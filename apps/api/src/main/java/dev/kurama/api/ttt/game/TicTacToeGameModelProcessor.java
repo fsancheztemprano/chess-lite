@@ -1,12 +1,15 @@
 package dev.kurama.api.ttt.game;
 
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
+import static dev.kurama.api.core.hateoas.relations.HateoasRelations.WEBSOCKET_REL;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.core.utility.AuthorityUtils.isCurrentUserId;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static dev.kurama.api.ttt.core.TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE;
 import static dev.kurama.api.ttt.core.TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE;
 import static dev.kurama.api.ttt.core.TicTacToeUtils.getPossibleMoves;
+import static dev.kurama.api.ttt.game.TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAME_CHANGED_CHANNEL;
+import static java.lang.String.format;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.afford;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -24,6 +27,7 @@ import lombok.NonNull;
 import org.springframework.hateoas.Affordance;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -42,7 +46,8 @@ public class TicTacToeGameModelProcessor implements RepresentationModelProcessor
         link -> link.andAffordance(getUpdateAffordance(entity.getId())))
       .add(getMovesLink(entity.getId()))
       .mapLinkIf(canMove, LinkRelation.of(TicTacToeRelations.TIC_TAC_TOE_MOVES_REL),
-        (link) -> getMoveAffordance(entity));
+        (link) -> getMoveAffordance(entity))
+      .add(getGameWebsocketLink(entity.getId()));
   }
 
   private Link getSelfLink(String id) {
@@ -74,4 +79,10 @@ public class TicTacToeGameModelProcessor implements RepresentationModelProcessor
       TicTacToeRelations.TIC_TAC_TOE_MOVES_REL);
     return of(link).afford(HttpMethod.POST).withName("move").withTarget(link).withInput(metadata).build().toLink();
   }
+
+
+  public @NonNull Link getGameWebsocketLink(String gameId) {
+    return Link.of(UriTemplate.of(format(TIC_TAC_TOE_GAME_CHANGED_CHANNEL, gameId)), WEBSOCKET_REL);
+  }
+
 }

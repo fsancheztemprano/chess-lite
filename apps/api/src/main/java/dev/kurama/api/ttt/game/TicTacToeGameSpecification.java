@@ -2,7 +2,7 @@ package dev.kurama.api.ttt.game;
 
 import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUserId;
 
-import dev.kurama.api.ttt.game.input.TicTacToeGameFilter;
+import dev.kurama.api.ttt.game.input.TicTacToeGameFilterInput;
 import java.util.ArrayList;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -12,7 +12,7 @@ import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 
-public record TicTacToeGameSpecification(TicTacToeGameFilter filter) implements Specification<TicTacToeGame> {
+public record TicTacToeGameSpecification(TicTacToeGameFilterInput filter) implements Specification<TicTacToeGame> {
 
   @Nullable
   @Override
@@ -37,10 +37,6 @@ public record TicTacToeGameSpecification(TicTacToeGameFilter filter) implements 
     if (filter.getStatus() != null && !filter.getStatus().isEmpty()) {
       predicates.add(criteriaBuilder.and(
         root.get("status").in(filter.getStatus().stream().map(TicTacToeGame.Status::valueOf).toList())));
-    }
-
-    if (filter.getIsPrivate() != null) {
-      predicates.add(criteriaBuilder.equal(root.get("isPrivate"), filter.getIsPrivate()));
     }
 
     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

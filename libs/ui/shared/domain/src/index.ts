@@ -24,3 +24,4 @@ export * from './lib/domain/ui/preferences.model';
 export * from './lib/domain/ui/session.model';
 
 export * from './lib/domain/tic-tac-toe/tic-tac-toe.model';
+export * from './lib/domain/tic-tac-toe/tic-tac-toe-game-changed.message.model';

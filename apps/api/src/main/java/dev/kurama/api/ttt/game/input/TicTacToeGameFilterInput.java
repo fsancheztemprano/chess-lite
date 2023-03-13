@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 
 @Data
 @Builder
-public class TicTacToeGameFilter {
+public class TicTacToeGameFilterInput {
 
   @Nullable
   private Boolean myGames;

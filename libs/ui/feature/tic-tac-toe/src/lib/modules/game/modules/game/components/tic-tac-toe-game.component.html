@@ -29,11 +29,11 @@
           [leftButton]="game.canChangeStatus(TicTacToeGameStatus.REJECTED)"
           leftButtonLabel="Reject"
           leftButtonIcon="close"
-          (leftButtonClick)="setStatus(game, TicTacToeGameStatus.REJECTED)"
+          (leftButtonClick)="game.changeStatus(TicTacToeGameStatus.REJECTED).subscribe()"
           [rightButton]="game.canChangeStatus(TicTacToeGameStatus.IN_PROGRESS)"
           rightButtonLabel="Accept"
           rightButtonIcon="check"
-          (rightButtonClick)="setStatus(game, TicTacToeGameStatus.IN_PROGRESS)"
+          (rightButtonClick)="game.changeStatus(TicTacToeGameStatus.IN_PROGRESS).subscribe()"
         ></app-core-info-message>
       </ng-container>
       <div *ngSwitchCase="'REJECTED'">

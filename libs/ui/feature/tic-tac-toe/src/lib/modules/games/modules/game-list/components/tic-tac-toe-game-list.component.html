@@ -51,7 +51,7 @@
     <mat-paginator
       #paginator
       [pageIndex]="0"
-      [length]="(datasource.length$ | async) || 0"
+      [length]="(datasource.totalLength$ | async) || 0"
       [pageSize]="10"
       [pageSizeOptions]="[5, 10, 20]"
       aria-label="Select page"

@@ -6,6 +6,11 @@ import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
 import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_GAMES_REL;
 import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_GAME_REL;
 import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_PLAYERS_REL;
+import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_WS_GAMES;
+import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_WS_GAME_PLAYER;
+import static dev.kurama.api.ttt.game.TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAMES_CHANGED_CHANNEL;
+import static dev.kurama.api.ttt.game.TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL;
+import static java.lang.String.format;
 import static org.springframework.hateoas.mediatype.Affordances.of;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -46,7 +51,9 @@ public class TicTacToeRootResourceAssembler implements RootAssembler<RootResourc
       .link(getAllGamesLink())
       .link(getOneGameLink())
       .link(getFindPlayersLink())
-      .link(getCreateAffordance());
+      .link(getCreateAffordance())
+      .link(getGamesWebsocketLink())
+      .link(getGamePlayerWebsocketLink());
 
     return rootModel.build();
   }
@@ -98,5 +105,14 @@ public class TicTacToeRootResourceAssembler implements RootAssembler<RootResourc
       .withInput(metadata)
       .build()
       .toLink();
+  }
+
+  private @NonNull Link getGamesWebsocketLink() {
+    return Link.of(TIC_TAC_TOE_GAMES_CHANGED_CHANNEL, TIC_TAC_TOE_WS_GAMES);
+  }
+
+  private @NonNull Link getGamePlayerWebsocketLink() {
+    return Link.of(UriTemplate.of(format(TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL, "{playerId}")),
+      TIC_TAC_TOE_WS_GAME_PLAYER);
   }
 }

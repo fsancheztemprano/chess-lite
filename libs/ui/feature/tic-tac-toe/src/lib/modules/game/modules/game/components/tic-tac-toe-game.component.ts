@@ -1,16 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TicTacToeGame, TicTacToeGameStatus } from '@app/ui/shared/domain';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { MessageService } from '@app/ui/shared/app';
+import { TicTacToeGame, TicTacToeGameChangedMessage, TicTacToeGameStatus } from '@app/ui/shared/domain';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-tic-tac-toe-game',
   templateUrl: './tic-tac-toe-game.component.html',
   styleUrls: ['./tic-tac-toe-game.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TicTacToeGameComponent {
+export class TicTacToeGameComponent implements OnInit {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly message = inject(MessageService);
   protected TicTacToeGameStatus = TicTacToeGameStatus;
   protected game$: BehaviorSubject<TicTacToeGame> = new BehaviorSubject<TicTacToeGame>(this.route.snapshot.data.game);
   protected board$: Observable<Cell[] | undefined> = this.game$.pipe(
@@ -26,11 +30,17 @@ export class TicTacToeGameComponent {
         };
       }),
     ),
-    tap(console.log),
   );
 
-  setStatus(game: TicTacToeGame, status: TicTacToeGameStatus.IN_PROGRESS | TicTacToeGameStatus.REJECTED): void {
-    game.changeStatus(status).subscribe();
+  ngOnInit(): void {
+    this.message
+      .multicast<TicTacToeGameChangedMessage>(this.route.snapshot.data.game.getLink('ws').getParsedUrl())
+      .pipe(
+        untilDestroyed(this),
+        switchMap(() => this.game$.value.getLinkOrThrow().follow()),
+        map((game) => new TicTacToeGame(game)),
+      )
+      .subscribe((game) => this.game$.next(game));
   }
 }
 

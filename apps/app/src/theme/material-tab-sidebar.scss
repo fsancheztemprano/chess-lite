@@ -1,0 +1,29 @@
+@mixin mat-tab-sidebar {
+  mat-tab-group {
+    .mat-mdc-tab-labels .mat-mdc-tab {
+      height: 56px;
+    }
+
+    &.mobile {
+      .mat-mdc-tab-labels .mat-mdc-tab {
+        height: 48px;
+      }
+
+      .mat-mdc-tab-body-wrapper {
+        height: calc(100vh - 136px);
+      }
+    }
+
+    .mat-mdc-tab-body-wrapper {
+      padding: 16px;
+      height: calc(100vh - 177px);
+      overflow-y: auto;
+      transition: unset;
+
+      .mat-mdc-tab-body.mat-mdc-tab-body.mat-mdc-tab-body,
+      .mat-mdc-tab-body-content {
+        overflow: unset;
+      }
+    }
+  }
+}

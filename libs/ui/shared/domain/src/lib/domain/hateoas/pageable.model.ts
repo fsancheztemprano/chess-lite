@@ -11,3 +11,8 @@ export interface Page {
   totalPages: number;
   number: number;
 }
+
+export interface PagedList<T> {
+  list?: T[];
+  page?: Page;
+}

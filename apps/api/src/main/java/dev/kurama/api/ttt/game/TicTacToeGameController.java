@@ -6,7 +6,7 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
-import dev.kurama.api.ttt.game.input.TicTacToeGameFilter;
+import dev.kurama.api.ttt.game.input.TicTacToeGameFilterInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameStatusInput;
 import java.util.List;
@@ -48,7 +48,7 @@ public class TicTacToeGameController {
                                                                @RequestParam(value = "player", required = false) String player,
                                                                @RequestParam(value = "status", required = false) List<String> status) {
     return ok().body(ticTacToeGameFacade.getAll(pageable,
-      TicTacToeGameFilter.builder().myGames(myGames).isPrivate(isPrivate).player(player).status(status).build()));
+      TicTacToeGameFilterInput.builder().myGames(myGames).isPrivate(isPrivate).player(player).status(status).build()));
   }
 
   @GetMapping("/{gameId}")

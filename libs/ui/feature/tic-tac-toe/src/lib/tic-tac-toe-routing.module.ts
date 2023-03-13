@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const loadTicTacToeHomeModule = () =>
-  import('./modules/home/tic-tac-toe-home.module').then((m) => m.TicTacToeHomeModule);
+  import('./modules/home/home/tic-tac-toe-home.module').then((m) => m.TicTacToeHomeModule);
+
+const loadTicTacToeHomeSidebarModule = () =>
+  import('./modules/home/home-sidebar/home-sidebar.module').then((m) => m.HomeSidebarModule);
 
 const loadTicTacToeGameListModule = () =>
   import('./modules/games/modules/game-list/tic-tac-toe-game-list.module').then((m) => m.TicTacToeGameListModule);
@@ -26,8 +29,20 @@ const loadTicTacToeNewGameModule = () =>
 const routes: Routes = [
   {
     path: '',
-    loadChildren: loadTicTacToeHomeModule,
     pathMatch: 'full',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadChildren: loadTicTacToeHomeModule,
+      },
+      {
+        path: '',
+        loadChildren: loadTicTacToeHomeSidebarModule,
+        pathMatch: 'full',
+        outlet: 'sidebar',
+      },
+    ],
   },
   {
     path: 'games',

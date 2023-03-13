@@ -1,14 +1,16 @@
 import { DataSource } from '@angular/cdk/collections';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
-import { TicTacToeGame } from '@app/ui/shared/domain';
+import { Page, PagedList, TicTacToeGame } from '@app/ui/shared/domain';
 import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
 import { untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, combineLatestWith, filter, map, Observable, Subject, switchMap } from 'rxjs';
 import { Filters } from '../../../services/tic-tac-toe-game-list-filter.service';
 
 export class TicTacToeGameListDatasource implements DataSource<TicTacToeGame> {
-  private readonly _games$: BehaviorSubject<TicTacToeGame[]> = new BehaviorSubject<TicTacToeGame[]>([]);
+  private readonly _games$: BehaviorSubject<PagedList<TicTacToeGame>> = new BehaviorSubject<PagedList<TicTacToeGame>>(
+    {},
+  );
   private readonly _page$: BehaviorSubject<PageEvent | null> = new BehaviorSubject<PageEvent | null>(null);
   private readonly _sort$: BehaviorSubject<Sort | null> = new BehaviorSubject<Sort | null>(null);
   private readonly _filters$: BehaviorSubject<Filters> = new BehaviorSubject<Filters>({});
@@ -20,7 +22,7 @@ export class TicTacToeGameListDatasource implements DataSource<TicTacToeGame> {
   connect(): Observable<TicTacToeGame[]> {
     this._updatePage();
     this._refreshById();
-    return this._games$.asObservable();
+    return this.items$;
   }
 
   private _updatePage() {
@@ -44,13 +46,13 @@ export class TicTacToeGameListDatasource implements DataSource<TicTacToeGame> {
     this._refreshById$
       .pipe(
         untilDestroyed(this, 'disconnect'),
-        filter((id) => this._games$.value.some((game) => game.id === id)),
+        filter((id) => !!this._games$.value.list?.some((game) => game.id === id)),
         switchMap((id) => this.service.getGame(id)),
       )
       .subscribe((game) => {
-        const index = this._games$.value.findIndex((g) => g.id === game.id);
-        if (index >= 0 && this._games$.value[index].id === game.id) {
-          this._games$.value[index] = game;
+        const index = this._games$.value.list?.findIndex((g) => g.id === game.id) || -1;
+        if (index >= 0 && this._games$.value.list?.[index].id === game.id) {
+          this._games$.value.list[index] = game;
           this._games$.next(this._games$.value);
         }
       });
@@ -65,12 +67,20 @@ export class TicTacToeGameListDatasource implements DataSource<TicTacToeGame> {
     this._refreshById$.complete();
   }
 
-  get items$(): BehaviorSubject<TicTacToeGame[]> {
-    return this._games$;
+  get items$(): Observable<TicTacToeGame[]> {
+    return this._games$.pipe(map((pagedList) => pagedList.list || []));
   }
 
   get length$(): Observable<number> {
-    return this._games$.pipe(map((items) => items.length));
+    return this._games$.pipe(map((pagedList) => pagedList.list?.length || 0));
+  }
+
+  get page$(): Observable<Page | undefined> {
+    return this._games$.pipe(map((pagedList) => pagedList.page));
+  }
+
+  get totalLength$(): Observable<number> {
+    return this.page$.pipe(map((page) => page?.totalElements || 0));
   }
 
   set page(page: PageEvent) {

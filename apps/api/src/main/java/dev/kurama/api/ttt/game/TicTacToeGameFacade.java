@@ -1,6 +1,6 @@
 package dev.kurama.api.ttt.game;
 
-import dev.kurama.api.ttt.game.input.TicTacToeGameFilter;
+import dev.kurama.api.ttt.game.input.TicTacToeGameFilterInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameStatusInput;
 import lombok.NonNull;
@@ -34,7 +34,7 @@ public class TicTacToeGameFacade {
     return mapper.ticTacToeGameToTicTacToeGameModel(service.updateStatus(gameId, input));
   }
 
-  public PagedModel<TicTacToeGameModel> getAll(Pageable pageable, TicTacToeGameFilter filter) {
+  public PagedModel<TicTacToeGameModel> getAll(Pageable pageable, TicTacToeGameFilterInput filter) {
     return assembler.toPagedModel(mapper.ticTacToeGamePageToTicTacToeGameModelPage(service.getAll(pageable, filter)));
   }
 }

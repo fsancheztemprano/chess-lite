@@ -7,6 +7,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { CoreCardViewModule } from '@app/ui/shared/common';
 import { BreakpointFilterPipe } from '@app/ui/shared/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { TicTacToeGameListComponent } from './components/tic-tac-toe-game-list.component';
 import { TicTacToeGameListRoutingModule } from './tic-tac-toe-game-list-routing.module';
 
@@ -22,6 +23,7 @@ import { TicTacToeGameListRoutingModule } from './tic-tac-toe-game-list-routing.
     MatIconModule,
     MatSortModule,
     BreakpointFilterPipe,
+    TranslocoModule,
   ],
 })
 export class TicTacToeGameListModule {}

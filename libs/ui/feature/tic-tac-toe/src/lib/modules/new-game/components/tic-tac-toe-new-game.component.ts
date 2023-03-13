@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { map } from 'rxjs';
@@ -12,6 +13,7 @@ import { map } from 'rxjs';
 })
 export class TicTacToeNewGameComponent {
   public readonly service = inject(TicTacToeService);
+  public readonly router = inject(Router);
   form = new FormGroup({});
   model: { playerOUsername?: string; isPrivate?: boolean; playerXUsername?: string } = {};
   fields: FormlyFieldConfig[] = [
@@ -49,6 +51,6 @@ export class TicTacToeNewGameComponent {
   ];
 
   onSubmit(model: { playerOUsername?: string; isPrivate?: boolean; playerXUsername?: string }) {
-    this.service.createGame(model).subscribe();
+    this.service.createGame(model).subscribe((game) => this.router.navigate(['tic-tac-toe', 'games', game.id]));
   }
 }

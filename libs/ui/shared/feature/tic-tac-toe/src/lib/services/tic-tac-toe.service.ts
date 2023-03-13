@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Pageable, TicTacToeGame, TicTacToePlayer } from '@app/ui/shared/domain';
+import { MessageService } from '@app/ui/shared/app';
+import {
+  Pageable,
+  PagedList,
+  TicTacToeGame,
+  TicTacToeGameChangedMessage,
+  TicTacToePlayer,
+} from '@app/ui/shared/domain';
 import { HalFormService, Resource } from '@hal-form-client';
 import { map, Observable, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -8,7 +15,7 @@ import { switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TicTacToeService extends HalFormService {
-  constructor(private readonly halFormService: HalFormService) {
+  constructor(private readonly halFormService: HalFormService, private readonly messageService: MessageService) {
     super();
   }
 
@@ -23,9 +30,9 @@ export class TicTacToeService extends HalFormService {
     );
   }
 
-  public getAllGames(parameters?: Pageable): Observable<TicTacToeGame[]> {
+  public getAllGames(parameters?: Pageable): Observable<PagedList<TicTacToeGame>> {
     return this.followLink({ link: 'games', parameters: parameters }).pipe(
-      map((resource) => resource.getEmbeddedCollection('ticTacToeGameModels')),
+      map((resource) => ({ list: resource.getEmbeddedCollection('ticTacToeGameModels'), page: resource.page })),
     );
   }
 
@@ -47,8 +54,8 @@ export class TicTacToeService extends HalFormService {
     playerXUsername?: string;
     playerOUsername?: string;
     isPrivate?: boolean;
-  }): Observable<unknown> {
-    return this.affordTemplate({ template: 'create', body: { ...input } });
+  }): Observable<TicTacToeGame> {
+    return this.affordTemplate<TicTacToeGame>({ template: 'create', body: { ...input } });
   }
 
   public hasGamesLink(): Observable<boolean> {
@@ -57,5 +64,17 @@ export class TicTacToeService extends HalFormService {
 
   public hasCreateGameTemplate(): Observable<boolean> {
     return this.hasTemplate('create');
+  }
+
+  public gamesChangedEvents(): Observable<TicTacToeGameChangedMessage> {
+    return this.getLinkOrThrow('ws:games').pipe(
+      switchMap((link) => this.messageService.multicast<TicTacToeGameChangedMessage>(link.getParsedUrl())),
+    );
+  }
+
+  public gamesPlayerChangedEvents(playerId: string): Observable<TicTacToeGameChangedMessage> {
+    return this.getLinkOrThrow('ws:game:player').pipe(
+      switchMap((link) => this.messageService.multicast<TicTacToeGameChangedMessage>(link.getParsedUrl({ playerId }))),
+    );
   }
 }

@@ -14,7 +14,7 @@ import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.ttt.core.TicTacToeAuthority;
 import dev.kurama.api.ttt.game.TicTacToeGame.Status;
 import dev.kurama.api.ttt.game.TicTacToeGameSpecification.MyGamesOrPublic;
-import dev.kurama.api.ttt.game.input.TicTacToeGameFilter;
+import dev.kurama.api.ttt.game.input.TicTacToeGameFilterInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameStatusInput;
 import dev.kurama.api.ttt.move.TicTacToeGameMove;
@@ -40,6 +40,9 @@ public class TicTacToeGameService {
 
   @NonNull
   private final TicTacToePlayerService ticTacToePlayerService;
+
+  @NonNull
+  private final TicTacToeGameChangedEventEmitter eventEmitter;
 
   public static final String CHANGE_STATUS_REGEX = "^(REJECTED|IN_PROGRESS)$";
 
@@ -73,7 +76,10 @@ public class TicTacToeGameService {
       .requestedAt(LocalDateTime.now())
       .lastActivityAt(LocalDateTime.now())
       .build();
-    return repository.save(game);
+
+    TicTacToeGame save = repository.save(game);
+    eventEmitter.emitTicTacToeGameCreatedEvent(save);
+    return save;
   }
 
   public TicTacToeGame updateStatus(String gameId, TicTacToeGameStatusInput input) {
@@ -95,7 +101,9 @@ public class TicTacToeGameService {
       game.setBoard("_________");
       game.setTurn(Token.X);
     }
-    return repository.save(game);
+    TicTacToeGame save = repository.save(game);
+    eventEmitter.emitTicTacToeGameUpdatedEvent(save);
+    return save;
   }
 
   public TicTacToeGame applyMove(TicTacToeGame game, TicTacToeGameMove move) {
@@ -118,10 +126,12 @@ public class TicTacToeGameService {
       }
     }
 
-    return repository.save(game);
+    TicTacToeGame save = repository.save(game);
+    eventEmitter.emitTicTacToeGameUpdatedEvent(save);
+    return save;
   }
 
-  public Page<TicTacToeGame> getAll(Pageable pageable, TicTacToeGameFilter filter) {
+  public Page<TicTacToeGame> getAll(Pageable pageable, TicTacToeGameFilterInput filter) {
     if (hasAuthority(TicTacToeAuthority.TIC_TAC_TOE_GAME_READ)) {
       return repository.findAll(new TicTacToeGameSpecification(filter), pageable);
     } else {
