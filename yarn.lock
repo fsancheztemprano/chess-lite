@@ -10969,10 +10969,10 @@ ng-packagr@15.2.2:
   optionalDependencies:
     esbuild "^0.17.0"
 
-ngx-colors@3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/ngx-colors/-/ngx-colors-3.5.0.tgz#6ffcc1edb3969329b4c4fff055f57a9d1a37c1ba"
-  integrity sha512-8aOpSuTCvxOe2sJiDLeiUgJgw5jrzI7D+4XZ88QeKK/+fAM1QHji+C8Zg8n3QH6SG4IdlZufE3tOC0VaKlMMvQ==
+ngx-colors@3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/ngx-colors/-/ngx-colors-3.5.2.tgz#19a6ed8cbe9663e9b3c8c523e4ed81d52a7e2470"
+  integrity sha512-X9eOnZ+RGD6Rpu+6J6vMt27ZuLLb2pUxFgE9+5hQO6dmB1woOUm99j2Lj0AhK4WLrBF2RiVDlj7tj2YeqzxY1g==
   dependencies:
     tslib "^2.0.0"
 
