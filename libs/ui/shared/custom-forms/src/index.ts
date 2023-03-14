@@ -1,1 +1,2 @@
-export * from './lib/modules/autocomplete/index';
+export * from './lib/extensions/transloco/transloco.extension';
+export * from './lib/types/autocomplete/index';

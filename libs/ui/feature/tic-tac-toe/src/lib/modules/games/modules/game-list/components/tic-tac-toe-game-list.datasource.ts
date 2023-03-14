@@ -12,7 +12,10 @@ export class TicTacToeGameListDatasource implements DataSource<TicTacToeGame> {
     {},
   );
   private readonly _page$: BehaviorSubject<PageEvent | null> = new BehaviorSubject<PageEvent | null>(null);
-  private readonly _sort$: BehaviorSubject<Sort | null> = new BehaviorSubject<Sort | null>(null);
+  private readonly _sort$: BehaviorSubject<Sort | null> = new BehaviorSubject<Sort | null>({
+    active: 'lastActivityAt',
+    direction: 'desc',
+  });
   private readonly _filters$: BehaviorSubject<Filters> = new BehaviorSubject<Filters>({});
   private readonly _refresh$: BehaviorSubject<void> = new BehaviorSubject<void>(void 0);
   private readonly _refreshById$: Subject<string> = new Subject<string>();

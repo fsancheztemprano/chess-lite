@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createStore, select, withProps } from '@ngneat/elf';
+import { excludeKeys, localStorageStrategy, persistState } from '@ngneat/elf-persist-state';
 
 export interface SidebarProps {
   isActive?: boolean;
@@ -7,6 +8,12 @@ export interface SidebarProps {
 }
 
 const store = createStore({ name: 'sidebar' }, withProps<SidebarProps>({ isActive: true }));
+
+persistState(store, {
+  key: 'todos',
+  storage: localStorageStrategy,
+  source: () => store.pipe(excludeKeys(['isActive'])),
+});
 
 @Injectable({ providedIn: 'root' })
 export class SidebarRepository {

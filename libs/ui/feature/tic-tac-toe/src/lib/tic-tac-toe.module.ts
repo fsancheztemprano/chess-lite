@@ -13,6 +13,7 @@ import { TicTacToeRoutingModule } from './tic-tac-toe-routing.module';
       provide: TRANSLOCO_SCOPE,
       useValue: {
         scope: 'tic-tac-toe',
+        alias: 'tic-tac-toe',
         loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),
       },
     },

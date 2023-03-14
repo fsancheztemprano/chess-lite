@@ -1,7 +1,55 @@
 {
+  "home": {
+    "new-game": {
+      "title": "New Game",
+      "description": "Create a new game"
+    },
+    "games-list": {
+      "title": "Game List",
+      "description": "List of games"
+    },
+    "sidebar": {
+      "label": "Filters",
+      "new-games": {
+        "label": "My Games"
+      },
+      "my-turns": {
+        "label": "Players"
+      }
+    }
+  },
   "game-list": {
     "context": {
       "create": "New Game"
+    },
+    "header": {
+      "player": "Player {{player}}",
+      "last-activity": "Last activity"
+    },
+    "sidebar": {
+      "label": "Filters",
+      "my-games": {
+        "label": "My Games"
+      },
+      "player-filter": {
+        "label": "Players"
+      },
+      "status-filter": {
+        "label": "Status"
+      }
+    }
+  },
+  "new-game": {
+    "title": "New Game",
+    "create": "Create",
+    "player-x": {
+      "label": "Player X"
+    },
+    "player-o": {
+      "label": "Player O"
+    },
+    "is-private": {
+      "label": "Private"
     }
   }
 }

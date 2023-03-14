@@ -1,5 +1,5 @@
 <mat-tab-group [disablePagination]="true" [disableRipple]="true" isMobileClass dynamicHeight>
-  <mat-tab label="Filters">
+  <mat-tab *transloco="let t" [label]="t('tic-tac-toe.game-list.sidebar.label')">
     <ng-template matTabContent>
       <formly-form [fields]="fields" [model]="model" (modelChange)="service.setFilters($event)"></formly-form>
     </ng-template>

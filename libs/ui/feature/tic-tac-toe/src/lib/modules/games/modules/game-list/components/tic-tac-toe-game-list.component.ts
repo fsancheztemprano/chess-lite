@@ -30,7 +30,7 @@ export class TicTacToeGameListComponent implements OnInit, OnDestroy {
     { value: 'lastActivityAt', breakpoint: Breakpoint.S },
     { value: 'edit' },
   ];
-  private TRANSLOCO_SCOPE = 'ticTacToe.game-list';
+  protected TRANSLOCO_SCOPE = 'tic-tac-toe.game-list';
 
   @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
     paginator.page.pipe(untilDestroyed(this)).subscribe((page) => (this.datasource.page = page));

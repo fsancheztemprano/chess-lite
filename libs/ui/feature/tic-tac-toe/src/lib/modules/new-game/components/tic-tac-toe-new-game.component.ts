@@ -18,23 +18,25 @@ export class TicTacToeNewGameComponent {
   model: { playerOUsername?: string; isPrivate?: boolean; playerXUsername?: string } = {};
   fields: FormlyFieldConfig[] = [
     {
-      key: 'playerOUsername',
+      key: 'playerXUsername',
       type: 'autocomplete',
+      hide: !this.service.resource.getTemplate('create')?.canAffordProperty('playerXUsername'),
       props: {
-        required: this.service.resource.getTemplate('create')?.getProperty('playerOUsername')?.required,
-        label: 'Player O',
+        required: this.service.resource.getTemplate('create')?.getProperty('playerXUsername')?.required,
+        label: 'tic-tac-toe.new-game.player-x.label',
+        translate: true,
         appearance: 'outline',
         filter: (value: string) =>
           this.service.findPlayers(value).pipe(map((players) => players.map((player) => player.username))),
       },
     },
     {
-      key: 'playerXUsername',
+      key: 'playerOUsername',
       type: 'autocomplete',
-      hide: !this.service.resource.getTemplate('create')?.canAffordProperty('playerXUsername'),
       props: {
-        required: this.service.resource.getTemplate('create')?.getProperty('playerXUsername')?.required,
-        label: 'Player X',
+        required: this.service.resource.getTemplate('create')?.getProperty('playerOUsername')?.required,
+        label: 'tic-tac-toe.new-game.player-o.label',
+        translate: true,
         appearance: 'outline',
         filter: (value: string) =>
           this.service.findPlayers(value).pipe(map((players) => players.map((player) => player.username))),
@@ -44,7 +46,8 @@ export class TicTacToeNewGameComponent {
       key: 'isPrivate',
       type: 'toggle',
       props: {
-        label: 'Private',
+        label: 'tic-tac-toe.new-game.is-private.label',
+        translate: true,
         appearance: 'outline',
       },
     },

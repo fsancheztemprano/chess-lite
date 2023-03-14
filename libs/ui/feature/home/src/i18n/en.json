@@ -17,6 +17,10 @@
       "administration": {
         "title": "Administration",
         "description": "Application settings"
+      },
+      "tic-tac-toe": {
+        "title": "Tic Tac Toe",
+        "description": "Play Tic Tac Toe"
       }
     }
   },

@@ -11,15 +11,15 @@ import { TicTacToeGameListFilterService } from '../../../services/tic-tac-toe-ga
   encapsulation: ViewEncapsulation.None,
 })
 export class TicTacToeGameListSidebarComponent implements OnDestroy {
-  protected readonly service = inject(TicTacToeGameListFilterService);
-
+  protected readonly service: TicTacToeGameListFilterService = inject(TicTacToeGameListFilterService);
   model = {};
   fields: FormlyFieldConfig[] = [
     {
       key: 'myGames',
       type: 'toggle',
       props: {
-        label: 'Only My Games',
+        label: 'tic-tac-toe.game-list.sidebar.my-games.label',
+        translate: true,
         appearance: 'outline',
       },
     },
@@ -27,7 +27,8 @@ export class TicTacToeGameListSidebarComponent implements OnDestroy {
       key: 'player',
       type: 'input',
       props: {
-        label: 'Player Name',
+        label: 'tic-tac-toe.game-list.sidebar.player-filter.label',
+        translate: true,
         appearance: 'outline',
       },
     },
@@ -35,7 +36,8 @@ export class TicTacToeGameListSidebarComponent implements OnDestroy {
       key: 'status',
       type: 'multicheckbox',
       props: {
-        label: 'Status',
+        label: 'tic-tac-toe.game-list.sidebar.status-filter.label',
+        translate: true,
         multiple: true,
         selectAllOption: 'Select All',
         appearance: 'outline',
