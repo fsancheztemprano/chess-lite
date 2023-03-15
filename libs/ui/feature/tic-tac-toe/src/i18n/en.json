@@ -39,6 +39,37 @@
       }
     }
   },
+  "game": {
+    "status": {
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "message": {
+      "pending": {
+        "subtitle": "Waiting for {{opponent}} to accept the game",
+        "button": {
+          "accept": "Accept",
+          "reject": "Reject"
+        }
+      }
+    },
+    "sidebar": {
+      "info": {
+        "label": "Game Info",
+        "player": "Player {{player}}",
+        "is-private": "Private",
+        "status": "Status",
+        "turn": "Turn",
+        "last-activity-at": "Last activity",
+        "requested-at": "Requested",
+        "started-at": "Started",
+        "finished-at": "Finished"
+      },
+      "moves": {
+        "label": "Moves"
+      }
+    }
+  },
   "new-game": {
     "title": "New Game",
     "create": "Create",

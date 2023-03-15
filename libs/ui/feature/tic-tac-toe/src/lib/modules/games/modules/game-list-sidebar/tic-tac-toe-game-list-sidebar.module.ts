@@ -19,11 +19,11 @@ import { TicTacToeGameListSidebarRoutingModule } from './tic-tac-toe-game-list-s
     MatTabsModule,
     IsMobileModule,
     ReactiveFormsModule,
+    TranslocoModule,
     FormlyModule.forRoot(),
     FormlyMaterialModule,
     FormlyMatToggleModule,
     FormlyTranslocoModule,
-    TranslocoModule,
   ],
 })
 export class TicTacToeGameListSidebarModule {}

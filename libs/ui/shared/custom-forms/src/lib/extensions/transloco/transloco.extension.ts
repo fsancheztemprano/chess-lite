@@ -14,7 +14,7 @@ export class TranslocoExtension implements FormlyExtension {
     props._translated = true;
     field.expressions = {
       ...(field.expressions || {}),
-      'props.label': this.transloco.selectTranslate(props.label || ''),
+      'props.label': this.transloco.selectTranslate(props.label || '', props.translateParams),
     };
   }
 }

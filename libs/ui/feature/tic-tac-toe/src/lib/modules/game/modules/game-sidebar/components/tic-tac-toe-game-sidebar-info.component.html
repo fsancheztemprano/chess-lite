@@ -1,0 +1,44 @@
+<ng-container *ngIf="model">
+  <formly-form [fields]="fields" [model]="model"></formly-form>
+  <ng-container
+    [ngTemplateOutlet]="labeledDate"
+    [ngTemplateOutletContext]="{
+      $implicit: model.lastActivityAt,
+      label: 'tic-tac-toe.game.sidebar.info.last-activity-at'
+    }"
+  >
+  </ng-container>
+  <ng-container
+    [ngTemplateOutlet]="labeledDate"
+    [ngTemplateOutletContext]="{
+      $implicit: model.requestedAt,
+      label: 'tic-tac-toe.game.sidebar.info.requested-at'
+    }"
+  >
+  </ng-container>
+  <ng-container
+    *ngIf="model.status === TicTacToeGameStatus.IN_PROGRESS || model.status === TicTacToeGameStatus.FINISHED"
+    [ngTemplateOutlet]="labeledDate"
+    [ngTemplateOutletContext]="{
+      $implicit: model.startedAt,
+      label: 'tic-tac-toe.game.sidebar.info.started-at'
+    }"
+  >
+  </ng-container>
+  <ng-container
+    *ngIf="model.status === TicTacToeGameStatus.FINISHED"
+    [ngTemplateOutlet]="labeledDate"
+    [ngTemplateOutletContext]="{
+      $implicit: model.finishedAt,
+      label: 'tic-tac-toe.game.sidebar.info.finished-at'
+    }"
+  >
+  </ng-container>
+  <ng-template #labeledDate let-date let-label="label">
+    <div class="game-date" *transloco="let t">
+      <span class="ellipsis-overflow game-date-label mat-h4">{{ t(label) }}</span
+      ><br />
+      <span class="ellipsis-overflow game-date-value mat-h5">{{ date * 1000 | date : 'medium' }}</span>
+    </div>
+  </ng-template>
+</ng-container>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ticTacToeGameResolver } from './modules/game/modules/game/resolvers/tic-tac-toe-game.resolver';
 
 const loadTicTacToeHomeModule = () =>
   import('./modules/home/home/tic-tac-toe-home.module').then((m) => m.TicTacToeHomeModule);
@@ -68,6 +69,7 @@ const routes: Routes = [
       {
         path: ':gameId',
         data: { breadcrumb: { label: 'Game X1' } },
+        resolve: { game: ticTacToeGameResolver },
         children: [
           {
             path: '',
