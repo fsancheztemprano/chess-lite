@@ -118,7 +118,7 @@
     "@nrwl/workspace": "15.8.5",
     "@nxrocks/nx-spring-boot": "6.3.0",
     "@pact-foundation/pact": "9.17.3",
-    "@schematics/angular": "15.2.1",
+    "@schematics/angular": "15.2.3",
     "@schematics/schematics": "0.1102.12",
     "@types/jest": "29.4.0",
     "@types/jsonwebtoken": "9.0.1",
