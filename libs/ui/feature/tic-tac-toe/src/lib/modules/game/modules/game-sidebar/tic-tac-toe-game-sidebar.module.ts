@@ -8,10 +8,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FormlyMatToggleModule } from '@ngx-formly/material/toggle';
-import { TicTacToeGameSidebarComponent } from './components/tic-tac-toe-game-sidebar.component';
-import { TicTacToeGameSidebarRoutingModule } from './tic-tac-toe-game-sidebar-routing.module';
 import { TicTacToeGameSidebarInfoComponent } from './components/tic-tac-toe-game-sidebar-info.component';
 import { TicTacToeGameSidebarMovesComponent } from './components/tic-tac-toe-game-sidebar-moves.component';
+import { TicTacToeGameSidebarComponent } from './components/tic-tac-toe-game-sidebar.component';
+import { TicTacToeGameSidebarRoutingModule } from './tic-tac-toe-game-sidebar-routing.module';
 
 @NgModule({
   declarations: [TicTacToeGameSidebarComponent, TicTacToeGameSidebarInfoComponent, TicTacToeGameSidebarMovesComponent],

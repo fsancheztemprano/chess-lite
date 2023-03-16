@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanMatch, Router, UrlTree } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { TicTacToeService } from '../services/tic-tac-toe.service';
@@ -7,7 +7,7 @@ import { TicTacToeService } from '../services/tic-tac-toe.service';
 @Injectable({
   providedIn: 'root',
 })
-export class TicTacToeGuard implements CanMatch {
+export class TicTacToeGuard {
   private initialization?: Observable<boolean | UrlTree>;
 
   constructor(private readonly ticTacToeService: TicTacToeService, private readonly router: Router) {}

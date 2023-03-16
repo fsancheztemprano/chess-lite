@@ -8,6 +8,7 @@ import { IfIsXsDirective } from './directives/if-is-xs.directive';
 import { IfOverLDirective } from './directives/if-over-l.directive';
 import { IfOverMDirective } from './directives/if-over-m.directive';
 import { IfOverSDirective } from './directives/if-over-s.directive';
+import { BreakpointFilterPipe } from './pipes/breakpoint-filter.pipe';
 import { BreakpointService } from './services/breakpoint.service';
 
 @NgModule({
@@ -22,7 +23,19 @@ import { BreakpointService } from './services/breakpoint.service';
     IfOverSDirective,
     IfOverMDirective,
     IfOverLDirective,
+    BreakpointFilterPipe,
   ],
   providers: [BreakpointService],
+  exports: [
+    IfIsLDirective,
+    IfIsMDirective,
+    IfIsXlDirective,
+    IfIsXsDirective,
+    IfIsXsDirective,
+    IfOverSDirective,
+    IfOverMDirective,
+    IfOverLDirective,
+    BreakpointFilterPipe,
+  ],
 })
 export class BreakpointModule {}

@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-
-import { TicTacToeEffects } from './tic-tac-toe.effects.service';
+import { HalFormClientTestingModule } from '@hal-form-client';
+import { TicTacToeEffects } from './tic-tac-toe.effects';
 
 describe('TicTacToeEffectsService', () => {
   let service: TicTacToeEffects;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HalFormClientTestingModule],
+    });
     service = TestBed.inject(TicTacToeEffects);
   });
 

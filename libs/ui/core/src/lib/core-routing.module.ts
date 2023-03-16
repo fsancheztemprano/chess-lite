@@ -49,13 +49,13 @@ const routes: Routes = [
       {
         path: 'administration',
         loadChildren: loadAdministrationModule,
-        canMatch: [AdministrationGuard],
+        canMatch: [() => inject(AdministrationGuard).canMatch()],
         data: { breadcrumb: { label: 'administration.title', i18n: true } },
       },
       {
         path: 'tic-tac-toe',
         loadChildren: loadTicTacToeModule,
-        canMatch: [TicTacToeGuard],
+        canMatch: [() => inject(TicTacToeGuard).canMatch()],
         data: { breadcrumb: { label: 'Tic Tac Toe', i18n: false } },
       },
       { path: '**', redirectTo: 'home' },

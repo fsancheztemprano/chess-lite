@@ -33,14 +33,17 @@ export class TicTacToeGameComponent implements OnInit {
   );
 
   ngOnInit(): void {
-    this.message
-      .multicast<TicTacToeGameChangedMessage>(this.route.snapshot.data.game.getLink('ws').getParsedUrl())
-      .pipe(
-        untilDestroyed(this),
-        switchMap(() => this.game$.value.getLinkOrThrow().follow()),
-        map((game) => new TicTacToeGame(game)),
-      )
-      .subscribe((game) => this.game$.next(game));
+    const wsUrl = this.route.snapshot.data.game?.getLink('ws').getParsedUrl();
+    if (wsUrl) {
+      this.message
+        .multicast<TicTacToeGameChangedMessage>(wsUrl)
+        .pipe(
+          untilDestroyed(this),
+          switchMap(() => this.game$.value.getLinkOrThrow().follow()),
+          map((game) => new TicTacToeGame(game)),
+        )
+        .subscribe((game) => this.game$.next(game));
+    }
   }
 }
 

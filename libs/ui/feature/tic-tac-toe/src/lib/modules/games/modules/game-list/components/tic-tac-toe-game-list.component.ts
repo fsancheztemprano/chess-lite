@@ -33,11 +33,11 @@ export class TicTacToeGameListComponent implements OnInit, OnDestroy {
   protected TRANSLOCO_SCOPE = 'tic-tac-toe.game-list';
 
   @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
-    paginator.page.pipe(untilDestroyed(this)).subscribe((page) => (this.datasource.page = page));
+    paginator?.page.pipe(untilDestroyed(this)).subscribe((page) => (this.datasource.page = page));
   }
 
   @ViewChild(MatSort) set sort(matSort: MatSort) {
-    matSort.sortChange.pipe(untilDestroyed(this)).subscribe((sort) => (this.datasource.sort = sort));
+    matSort?.sortChange.pipe(untilDestroyed(this)).subscribe((sort) => (this.datasource.sort = sort));
   }
 
   ngOnInit(): void {

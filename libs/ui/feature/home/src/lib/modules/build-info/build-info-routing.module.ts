@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BuildInfoComponent } from './components/build-info.component';
-import { BuildInfoResolver } from './resolvers/build-info.resolver';
+import { BuildInfoService } from './services/build-info.service';
 
 const routes: Routes = [
   {
     path: '',
     component: BuildInfoComponent,
-    resolve: { buildInfo: BuildInfoResolver },
+    resolve: { buildInfo: () => inject(BuildInfoService).getBuildInfo() },
   },
   {
     path: '**',

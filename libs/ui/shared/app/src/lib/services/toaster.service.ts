@@ -29,10 +29,9 @@ export class ToasterService {
     switch (toast?.type) {
       case ToastType.LINK:
         return this.toastrService.show(
-          `${toast.message}<br><br>
-          <a [download]='${toast.linkDownload}' href='${toast.link}' target='${toast.linkSelf ? '_self' : '_blank'}'>${
-            toast.linkCaption || 'Link'
-          }</a>`,
+          `${toast.message}<br><br><a [download]='${toast.linkDownload}' href='${toast.link}' target='${
+            toast.linkSelf ? '_self' : '_blank'
+          }'>${toast.linkCaption || 'Link'}</a>`,
           toast.title,
           { ...this.toastrConfig, ...toast.override, enableHtml: true },
           toast.type,
