@@ -1,22 +1,27 @@
 <app-core-card-view>
-  <div class="card-content" *ngIf="game$ | async as game">
-    <div class="board" isMobileClass *ngIf="board$ | async as cells">
+  <div class="card-content" *ngIf="service.game$ | async as game">
+    <div class="board" isMobileClass *ngIf="game.board$ as cells">
       <div
         *ngFor="let cell of cells"
         class="cell cell-{{ cell.cell }}"
         [class.winner]="game.status === TicTacToeGameStatus.FINISHED && cell.value === game.turn"
         [class.looser]="game.status === TicTacToeGameStatus.FINISHED && cell.value !== game.turn"
       >
-        <mat-icon *ngIf="cell.value !== '_'" class="material-icons-outlined">{{
-          cell.value === 'X' ? 'close' : 'circle'
-        }}</mat-icon>
-        <button
-          *ngIf="game.status === TicTacToeGameStatus.IN_PROGRESS && cell.value === '_' && cell.canMove"
-          mat-icon-button
-          (click)="cell.move()"
+        <mat-icon
+          resizableMatIcon
+          class="material-icons-outlined old-move-icon"
+          *ngIf="cell.value !== '_'; else newMoveIcon"
+          >{{ cell.value === 'X' ? 'close' : 'circle' }}</mat-icon
         >
-          <mat-icon class="material-icons-outlined">{{ game.turn === 'X' ? 'close' : 'circle' }}</mat-icon>
-        </button>
+        <ng-template #newMoveIcon>
+          <mat-icon
+            resizableMatIcon
+            class="material-icons-outlined new-move-icon"
+            *ngIf="game.status === TicTacToeGameStatus.IN_PROGRESS && cell.value === '_' && cell.canMove"
+            (click)="cell.move()"
+            >{{ game.turn === 'X' ? 'close' : 'circle' }}</mat-icon
+          >
+        </ng-template>
       </div>
     </div>
 

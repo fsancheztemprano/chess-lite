@@ -3,7 +3,6 @@ package dev.kurama.api.ttt.game;
 import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUserId;
 import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUsername;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
-import static dev.kurama.api.ttt.core.TicTacToeUtils.getIndexInBoard;
 import static dev.kurama.api.ttt.core.TicTacToeUtils.isGameOver;
 import static dev.kurama.api.ttt.core.TicTacToeUtils.isGameTied;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -25,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -107,10 +105,7 @@ public class TicTacToeGameService {
   }
 
   public TicTacToeGame applyMove(TicTacToeGame game, TicTacToeGameMove move) {
-    int indexInBoard = getIndexInBoard(move.getCell());
-    String newBoard = StringUtils.overlay(game.getBoard(), String.valueOf(game.getTurn()), indexInBoard,
-      indexInBoard + 1);
-    game.setBoard(newBoard);
+    game.setBoard(move.getBoard());
     game.setLastActivityAt(LocalDateTime.now());
     game.getMoves().add(move);
 

@@ -1,44 +1,50 @@
-<ng-container *ngIf="model">
-  <formly-form [fields]="fields" [model]="model"></formly-form>
-  <ng-container
-    [ngTemplateOutlet]="labeledDate"
-    [ngTemplateOutletContext]="{
-      $implicit: model.lastActivityAt,
-      label: 'tic-tac-toe.game.sidebar.info.last-activity-at'
-    }"
-  >
-  </ng-container>
-  <ng-container
-    [ngTemplateOutlet]="labeledDate"
-    [ngTemplateOutletContext]="{
-      $implicit: model.requestedAt,
-      label: 'tic-tac-toe.game.sidebar.info.requested-at'
-    }"
-  >
-  </ng-container>
-  <ng-container
-    *ngIf="model.status === TicTacToeGameStatus.IN_PROGRESS || model.status === TicTacToeGameStatus.FINISHED"
-    [ngTemplateOutlet]="labeledDate"
-    [ngTemplateOutletContext]="{
-      $implicit: model.startedAt,
-      label: 'tic-tac-toe.game.sidebar.info.started-at'
-    }"
-  >
-  </ng-container>
-  <ng-container
-    *ngIf="model.status === TicTacToeGameStatus.FINISHED"
-    [ngTemplateOutlet]="labeledDate"
-    [ngTemplateOutletContext]="{
-      $implicit: model.finishedAt,
-      label: 'tic-tac-toe.game.sidebar.info.finished-at'
-    }"
-  >
-  </ng-container>
-  <ng-template #labeledDate let-date let-label="label">
-    <div class="game-date" *transloco="let t">
-      <span class="ellipsis-overflow game-date-label mat-h4">{{ t(label) }}</span
-      ><br />
-      <span class="ellipsis-overflow game-date-value mat-h5">{{ date * 1000 | date : 'medium' }}</span>
-    </div>
-  </ng-template>
+<ng-container *ngIf="service.game$ | async as game">
+  <mat-list role="list" *transloco="let t">
+    <mat-list-item role="listitem">
+      <span matListItemTitle>{{ t('tic-tac-toe.game.sidebar.info.player', { player: TicTacToeGamePlayer.X }) }}</span>
+      <span matListItemLine>{{ game.playerX.username }}</span>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <span matListItemTitle>{{ t('tic-tac-toe.game.sidebar.info.player', { player: TicTacToeGamePlayer.O }) }}</span>
+      <span matListItemLine>{{ game.playerO.username }}</span>
+    </mat-list-item>
+    <mat-list-item role="listitem" *ngIf="!!game.turn">
+      <span matListItemTitle>{{
+        t('tic-tac-toe.game.sidebar.info.' + (game.status === TicTacToeGameStatus.FINISHED ? 'winner' : 'turn'))
+      }}</span>
+      <span matListItemLine *ngIf="game.turn === TicTacToeGamePlayer.X">{{ game.playerX.username }}</span>
+      <span matListItemLine *ngIf="game.turn === TicTacToeGamePlayer.O">{{ game.playerO.username }}</span>
+      <span matListItemLine *ngIf="game.turn === TicTacToeGamePlayer.DRAW">{{
+        t('tic-tac-toe.game.sidebar.info.draw')
+      }}</span>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <span matListItemTitle>{{ t('tic-tac-toe.game.sidebar.info.status') }}</span>
+      <span matListItemLine>{{ game.status }}</span>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <span matListItemTitle>{{ t('tic-tac-toe.game.sidebar.info.last-activity-at') }}</span>
+      <span matListItemLine>{{ game.lastActivityAt | date : 'medium' }}</span>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <span matListItemTitle>{{ t('tic-tac-toe.game.sidebar.info.requested-at') }}</span>
+      <span matListItemLine>{{ game.requestedAt | date : 'medium' }}</span>
+    </mat-list-item>
+    <mat-list-item
+      *ngIf="game.status === TicTacToeGameStatus.IN_PROGRESS || game.status === TicTacToeGameStatus.FINISHED"
+    >
+      <span matListItemTitle>{{ t('tic-tac-toe.game.sidebar.info.started-at') }}</span>
+      <span matListItemLine>{{ game.startedAt | date : 'medium' }}</span>
+    </mat-list-item>
+    <mat-list-item role="listitem" *ngIf="game.status === TicTacToeGameStatus.FINISHED">
+      <span matListItemTitle>{{ t('tic-tac-toe.game.sidebar.info.finished-at') }}</span>
+      <span matListItemLine>{{ game.finishedAt | date : 'medium' }}</span>
+    </mat-list-item>
+    <mat-list-item role="listitem">
+      <mat-icon matListItemIcon>{{ game.isPrivate ? 'lock' : 'public' }}</mat-icon>
+      <span matListItemTitle>{{
+        t('tic-tac-toe.game.sidebar.info.is-' + (game.isPrivate ? 'private' : 'public'))
+      }}</span>
+    </mat-list-item>
+  </mat-list>
 </ng-container>

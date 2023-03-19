@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { TicTacToeGameService } from '../../../services/tic-tac-toe-game.service';
 
 @Component({
   selector: 'app-tic-tac-toe-game-sidebar-moves',
@@ -6,4 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./tic-tac-toe-game-sidebar-moves.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TicTacToeGameSidebarMovesComponent {}
+export class TicTacToeGameSidebarMovesComponent {
+  protected readonly service: TicTacToeGameService = inject(TicTacToeGameService);
+}

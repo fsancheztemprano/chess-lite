@@ -1,5 +1,5 @@
 import { IResource, Resource } from '@hal-form-client';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export interface ITicTacToeGame extends IResource {
   id: string;
@@ -43,6 +43,12 @@ export class TicTacToeGame extends Resource implements IResource {
   canChangeStatus(status: TicTacToeGameStatus.REJECTED | TicTacToeGameStatus.IN_PROGRESS): boolean {
     return !!this.getTemplate('status')?.canAffordProperty('status', status);
   }
+
+  getMoves(): Observable<ITicTacToeGameMove[]> {
+    return this.getLinkOrThrow('moves')
+      .follow()
+      .pipe(map((resource) => resource.getEmbeddedCollection('ticTacToeGameMoveModels')));
+  }
 }
 
 export enum TicTacToeGameStatus {
@@ -72,4 +78,16 @@ export class TicTacToePlayer extends Resource implements ITicTacToePlayer {
   wins!: number;
   losses!: number;
   draws!: number;
+}
+
+export interface ITicTacToeGameMove {
+  id: string;
+  gameId: string;
+  number: number;
+  cell: string;
+  token: TicTacToeGamePlayer;
+  board: string;
+  player: ITicTacToePlayer;
+  movedAt: number;
+  moveTime: number;
 }

@@ -14,7 +14,7 @@ public interface TicTacToeGameMapper {
   TicTacToeGameModel ticTacToeGameToTicTacToeGameModel(TicTacToeGame ticTacToeGame);
 
   default Long map(LocalDateTime value) {
-    return value == null ? null : value.toEpochSecond(ZoneOffset.UTC);
+    return value == null ? null : value.toInstant(ZoneOffset.UTC).toEpochMilli();
   }
 
   default Page<TicTacToeGameModel> ticTacToeGamePageToTicTacToeGameModelPage(Page<TicTacToeGame> roles) {

@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 
 @import 'material-theme';
+@import 'material-tab-sidebar';
 
 @include mat.all-component-typographies();
 @include mat.core();
@@ -43,3 +44,5 @@ $dynamic-dark-theme: mat.define-dark-theme(
 .dark-mode {
   @include mat.all-component-colors($dynamic-dark-theme);
 }
+
+@include mat-tab-sidebar-layout;

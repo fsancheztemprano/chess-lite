@@ -25,11 +25,23 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class TicTacToeGameMove extends AbstractEntity implements Serializable {
 
+  @NonNull
   private String cell;
-  private TicTacToePlayer.Token token;
-  private String board;
-  private int number;
 
+  @NonNull
+  private TicTacToePlayer.Token token;
+
+  @NonNull
+  private String board;
+
+  @NonNull
+  private Integer number;
+
+  @NonNull
+  private LocalDateTime movedAt;
+
+  @NonNull
+  private Long moveTime;
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
@@ -39,8 +51,5 @@ public class TicTacToeGameMove extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @OneToOne(fetch = FetchType.LAZY)
   private TicTacToePlayer player;
-
-  @NonNull
-  private LocalDateTime movedAt;
 
 }

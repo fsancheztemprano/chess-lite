@@ -47,7 +47,7 @@ export class TicTacToeGameListComponent implements OnInit, OnDestroy {
         id: 'create-new-game-option',
         icon: 'not_started',
         title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.context.create`, {}),
-        route: '../new-game',
+        route: '/tic-tac-toe/new-game',
       },
     ]);
 

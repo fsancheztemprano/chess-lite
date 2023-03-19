@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
+import { DurationPipe } from '@app/ui/shared/common';
 import { IsMobileModule } from '@app/ui/shared/core';
-import { FormlyTranslocoModule } from '@app/ui/shared/custom-forms';
 import { TranslocoModule } from '@ngneat/transloco';
-import { FormlyModule } from '@ngx-formly/core';
-import { FormlyMaterialModule } from '@ngx-formly/material';
-import { FormlyMatToggleModule } from '@ngx-formly/material/toggle';
 import { TicTacToeGameSidebarInfoComponent } from './components/tic-tac-toe-game-sidebar-info.component';
 import { TicTacToeGameSidebarMovesComponent } from './components/tic-tac-toe-game-sidebar-moves.component';
 import { TicTacToeGameSidebarComponent } from './components/tic-tac-toe-game-sidebar.component';
@@ -18,14 +17,13 @@ import { TicTacToeGameSidebarRoutingModule } from './tic-tac-toe-game-sidebar-ro
   imports: [
     CommonModule,
     TicTacToeGameSidebarRoutingModule,
-    MatTabsModule,
-    IsMobileModule,
     ReactiveFormsModule,
+    MatTabsModule,
+    MatListModule,
+    MatIconModule,
+    IsMobileModule,
     TranslocoModule,
-    FormlyModule.forRoot(),
-    FormlyMaterialModule,
-    FormlyMatToggleModule,
-    FormlyTranslocoModule,
+    DurationPipe,
   ],
 })
 export class TicTacToeGameSidebarModule {}

@@ -13,6 +13,7 @@ import dev.kurama.api.ttt.game.TicTacToeGameService;
 import dev.kurama.api.ttt.player.TicTacToePlayer;
 import dev.kurama.api.ttt.player.TicTacToePlayerService;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import javax.transaction.Transactional;
 import lombok.NonNull;
@@ -66,6 +67,6 @@ public class TicTacToeGameMoveFacility {
       throw new ForbiddenException("You are not allowed to view this game's moves");
     }
 
-    return game.getMoves();
+    return game.getMoves().stream().sorted(Comparator.comparingInt(TicTacToeGameMove::getNumber)).toList();
   }
 }

@@ -1,6 +1,5 @@
 package dev.kurama.api.ttt.move;
 
-import dev.kurama.api.ttt.game.TicTacToeGameModel;
 import dev.kurama.api.ttt.player.TicTacToePlayer;
 import dev.kurama.api.ttt.player.TicTacToePlayerModel;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,10 @@ public class TicTacToeGameMoveModel extends RepresentationModel<TicTacToeGameMov
   private String cell;
   private TicTacToePlayer.Token token;
   private String board;
-  private int number;
+  private Integer number;
   private TicTacToePlayerModel player;
   private Long movedAt;
-  private TicTacToeGameModel game;
+  private Long moveTime;
+  private String gameId;
+
 }

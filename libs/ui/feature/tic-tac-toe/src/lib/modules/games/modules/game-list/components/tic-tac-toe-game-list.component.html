@@ -22,7 +22,7 @@
           <mat-icon>public</mat-icon>
         </th>
         <td mat-cell *matCellDef="let element">
-          <mat-icon>{{ element.isPrivate ? 'public_off' : 'public' }}</mat-icon>
+          <mat-icon>{{ element.isPrivate ? 'lock' : 'public' }}</mat-icon>
         </td>
       </ng-container>
       <ng-container matColumnDef="playerX">
@@ -42,7 +42,7 @@
           {{ TRANSLOCO_SCOPE + '.header.last-activity' | transloco }}
         </th>
         <td mat-cell *matCellDef="let element">
-          {{ element.lastActivityAt && (element.lastActivityAt * 1000 | date) }}
+          {{ element.lastActivityAt && (element.lastActivityAt | date) }}
         </td>
       </ng-container>
 

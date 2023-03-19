@@ -1,13 +1,5 @@
 @import 'material-tab-sidebar';
 
 app-tic-tac-toe-game-sidebar {
-  @include mat-tab-sidebar();
-
-  .game-date {
-    margin-bottom: 16px;
-
-    .game-date-label {
-      padding-left: 16px;
-    }
-  }
+  @include mat-tab-sidebar;
 }

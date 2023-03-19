@@ -1,1 +1,15 @@
-<p>tic-tac-toe-game-sidebar-moves works!</p>
+<mat-list>
+  <ng-container *ngFor="let move of service.moves$ | async">
+    <mat-list-item>
+      <mat-icon matListItemIcon class="material-icons-outlined">{{ move.token === 'X' ? 'close' : 'circle' }}</mat-icon>
+      <div matListItemTitle>{{ move.player.username }}</div>
+      <div matListItemLine class="mat-caption">
+        {{ move.movedAt | date : 'medium' }} ({{ move.moveTime | duration }})
+      </div>
+      <div matListItemMeta>
+        <mat-icon>folder</mat-icon>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </ng-container>
+</mat-list>

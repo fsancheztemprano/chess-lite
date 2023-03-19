@@ -29,6 +29,6 @@ public class TicTacToeGameMoveFacade {
 
   public CollectionModel<TicTacToeGameMoveModel> getAllGameMoves(String gameId) {
     return assembler.toCollectionModel(
-      mapper.ticTacToeGameMoveCollectionToTicTacToeGameMoveCollectionModel(facility.getAllGameMoves(gameId)));
+      mapper.ticTacToeGameMoveCollectionToTicTacToeGameMoveCollectionModel(facility.getAllGameMoves(gameId)), gameId);
   }
 }

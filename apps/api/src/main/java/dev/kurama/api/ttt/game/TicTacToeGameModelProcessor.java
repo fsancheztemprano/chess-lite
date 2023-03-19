@@ -38,13 +38,14 @@ public class TicTacToeGameModelProcessor implements RepresentationModelProcessor
   public @NonNull TicTacToeGameModel process(@NonNull TicTacToeGameModel entity) {
     boolean canUpdateStatus = entity.getStatus() == Status.PENDING && (hasAuthority(TIC_TAC_TOE_GAME_CREATE)
       || isCurrentUserId(entity.getPlayerO().getId()));
+    boolean hasStarted = entity.getStatus() == Status.IN_PROGRESS || entity.getStatus() == Status.FINISHED;
     boolean canMove = entity.getStatus() == Status.IN_PROGRESS && (hasAuthority(TIC_TAC_TOE_GAME_MOVE)
       || isCurrentUserId(
       entity.getTurn().equals(TicTacToePlayer.Token.X) ? entity.getPlayerX().getId() : entity.getPlayerO().getId()));
     return entity.add(getSelfLink(entity.getId()))
       .mapLinkIf(canUpdateStatus, LinkRelation.of(SELF),
         link -> link.andAffordance(getUpdateAffordance(entity.getId())))
-      .add(getMovesLink(entity.getId()))
+      .addIf(hasStarted, () -> getMovesLink(entity.getId()))
       .mapLinkIf(canMove, LinkRelation.of(TicTacToeRelations.TIC_TAC_TOE_MOVES_REL),
         (link) -> getMoveAffordance(entity))
       .add(getGameWebsocketLink(entity.getId()));

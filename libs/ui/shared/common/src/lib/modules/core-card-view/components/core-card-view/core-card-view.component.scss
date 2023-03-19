@@ -6,6 +6,7 @@
     mat-card-header {
       max-height: 56px;
       border-bottom: solid 1px;
+      border-color: rgba(0, 0, 0, 0.12);
       height: 56px;
       padding: 0 4px;
       width: 100%;
@@ -64,6 +65,14 @@
           max-height: calc(100vh - 58px - 56px);
         }
       }
+    }
+  }
+}
+
+.dark-mode :host {
+  mat-card {
+    mat-card-header {
+      border-color: rgba(255, 255, 255, 0.12);
     }
   }
 }

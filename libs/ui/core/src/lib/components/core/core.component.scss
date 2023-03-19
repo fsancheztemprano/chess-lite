@@ -13,6 +13,7 @@
       transition: width 0.3s ease-in-out;
       opacity: 1;
       overflow: hidden;
+      border: none;
     }
 
     main {
@@ -28,20 +29,19 @@
     }
 
     aside {
+      background-color: white;
+      min-height: calc(100% - 24px);
+      height: calc(100% - 24px);
       margin: 12px 0;
       padding: 0;
-      height: calc(100% - 24px);
-      min-height: calc(100% - 24px);
       width: 0;
-      background-color: white;
-      border-top: 1px solid rgba(0, 0, 0, 0.12);
-      border-left: 1px solid rgba(0, 0, 0, 0.12);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px;
 
       &.sidebar-open {
         width: 30%;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-right-width: 0;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
       }
     }
 
@@ -51,7 +51,6 @@
         height: 100%;
         padding: 0;
         border-radius: 0;
-        border: none;
         margin: 0;
         transition: opacity 0.3s ease-in-out;
       }
@@ -59,6 +58,7 @@
       main.sidebar-open {
         width: 0;
         opacity: 0;
+        border: none;
       }
 
       aside {
@@ -75,9 +75,7 @@
   &.dark-mode {
     app-sidenav aside {
       background: #424242;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-left: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.12);
     }
   }
 }
