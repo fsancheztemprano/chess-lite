@@ -20,7 +20,7 @@ export class TicTacToeGameService {
     switchMap((game) => game?.getMoves() || []),
     shareReplay(1),
   );
-  private readonly _gameUi$: Observable<TicTacToeUiGame | null> = this._game$.pipe(
+  private readonly _gameUi$: Observable<TicTacToeGame | null> = this._game$.pipe(
     tap((game) => {
       if (game) {
         game.board$ = game.board?.split('').map((value, index) => {
@@ -61,12 +61,12 @@ export class TicTacToeGameService {
       .subscribe();
   }
 
-  public init(game: TicTacToeGame): Observable<TicTacToeUiGame | null> {
+  public init(game: TicTacToeGame): Observable<TicTacToeGame | null> {
     this._game$.next(game);
     return this.game$;
   }
 
-  get game$(): Observable<TicTacToeUiGame | null> {
+  get game$(): Observable<TicTacToeGame | null> {
     return this._gameUi$;
   }
 
@@ -78,12 +78,3 @@ export class TicTacToeGameService {
     this._game$.next(null);
   }
 }
-
-export interface Cell {
-  value: string;
-  cell: string;
-  canMove: boolean;
-  move: () => void;
-}
-
-export type TicTacToeUiGame = TicTacToeGame & { board$?: Cell[] };

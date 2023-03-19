@@ -1,0 +1,25 @@
+<div class="board" isMobileClass *ngIf="cells.length">
+  <div
+    *ngFor="let cell of cells"
+    class="cell cell-{{ cell.id }}"
+    [class.winner]="cell.winner"
+    [class.looser]="cell.looser"
+    [class.highlight]="cell.id === highlight"
+  >
+    <mat-icon
+      resizableMatIcon
+      class="material-icons-outlined old-move-icon"
+      *ngIf="cell.value !== '_'; else newMoveIcon"
+      >{{ cell.value === 'X' ? 'close' : 'circle' }}</mat-icon
+    >
+    <ng-template #newMoveIcon>
+      <mat-icon
+        resizableMatIcon
+        class="material-icons-outlined new-move-icon"
+        *ngIf="cell.canMove"
+        (click)="cell.move && cell.move()"
+        >{{ game?.turn === 'X' ? 'close' : 'circle' }}</mat-icon
+      >
+    </ng-template>
+  </div>
+</div>

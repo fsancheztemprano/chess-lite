@@ -4,50 +4,11 @@
   display: flex;
   flex-direction: column;
 
-  .card-content {
+  .message-container {
     display: flex;
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     justify-content: center;
     align-items: center;
-    aspect-ratio: 1/1;
-    margin: auto;
-
-    .board {
-      height: 100%;
-      width: 100%;
-      min-height: 80px;
-      min-width: 80px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      grid-gap: 2%;
-      background-color: black;
-      box-sizing: border-box;
-    }
-  }
-
-  .cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    min-width: 10px;
-    min-height: 10px;
-
-    .new-move-icon {
-      display: none;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    &:hover .new-move-icon {
-      display: inline-block;
-      background-color: rgba(0, 0, 0, 0.12);
-    }
-
-    &.looser mat-icon {
-      opacity: 0.5;
-    }
   }
 }

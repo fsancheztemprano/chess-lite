@@ -1,33 +1,14 @@
 <app-core-card-view>
-  <div class="card-content" *ngIf="service.game$ | async as game">
-    <div class="board" isMobileClass *ngIf="game.board$ as cells">
-      <div
-        *ngFor="let cell of cells"
-        class="cell cell-{{ cell.cell }}"
-        [class.winner]="game.status === TicTacToeGameStatus.FINISHED && cell.value === game.turn"
-        [class.looser]="game.status === TicTacToeGameStatus.FINISHED && cell.value !== game.turn"
-      >
-        <mat-icon
-          resizableMatIcon
-          class="material-icons-outlined old-move-icon"
-          *ngIf="cell.value !== '_'; else newMoveIcon"
-          >{{ cell.value === 'X' ? 'close' : 'circle' }}</mat-icon
-        >
-        <ng-template #newMoveIcon>
-          <mat-icon
-            resizableMatIcon
-            class="material-icons-outlined new-move-icon"
-            *ngIf="game.status === TicTacToeGameStatus.IN_PROGRESS && cell.value === '_' && cell.canMove"
-            (click)="cell.move()"
-            >{{ game.turn === 'X' ? 'close' : 'circle' }}</mat-icon
-          >
-        </ng-template>
-      </div>
-    </div>
-
-    <ng-container [ngSwitch]="game.status" *transloco="let t">
-      <ng-container *ngSwitchCase="TicTacToeGameStatus.PENDING">
+  <ng-container *ngIf="service.game$ | async as game">
+    <app-tic-tac-toe-game-board
+      *ngIf="game.board; else noGame"
+      [board]="game.board"
+      [game]="game"
+    ></app-tic-tac-toe-game-board>
+    <ng-template #noGame>
+      <div class="message-container" [ngSwitch]="game.status" *transloco="let t">
         <app-core-info-message
+          *ngSwitchCase="TicTacToeGameStatus.PENDING"
           icon="question_mark"
           [headline]="t('tic-tac-toe.game.status.pending')"
           [subtitle]="t('tic-tac-toe.game.message.pending.subtitle', { opponent: game.playerO.username })"
@@ -40,10 +21,12 @@
           rightButtonIcon="check"
           (rightButtonClick)="game.changeStatus(TicTacToeGameStatus.IN_PROGRESS).subscribe()"
         ></app-core-info-message>
-      </ng-container>
-      <div *ngSwitchCase="TicTacToeGameStatus.REJECTED">
-        <app-core-info-message icon="cancel" [headline]="t('tic-tac-toe.game.status.rejected')"></app-core-info-message>
+        <app-core-info-message
+          *ngSwitchCase="TicTacToeGameStatus.REJECTED"
+          icon="cancel"
+          [headline]="t('tic-tac-toe.game.status.rejected')"
+        ></app-core-info-message>
       </div>
-    </ng-container>
-  </div>
+    </ng-template>
+  </ng-container>
 </app-core-card-view>
