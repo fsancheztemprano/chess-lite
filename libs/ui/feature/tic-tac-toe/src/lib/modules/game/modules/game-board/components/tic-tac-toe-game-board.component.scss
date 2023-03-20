@@ -16,7 +16,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 2%;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.87);
     box-sizing: border-box;
   }
 
@@ -46,5 +46,15 @@
     &.highlight {
       color: green;
     }
+  }
+}
+
+.dark-mode :host {
+  .board {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .cell {
+    background-color: #424242;
   }
 }
