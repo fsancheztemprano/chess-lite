@@ -142,7 +142,7 @@
     "junit-report-merger": "5.0.0",
     "ng-packagr": "15.2.2",
     "npm-check-updates": "16.7.10",
-    "nx": "15.8.5",
+    "nx": "15.8.7",
     "prettier": "2.8.4",
     "rimraf": "4.3.0",
     "sonarqube-scanner": "3.0.1",
