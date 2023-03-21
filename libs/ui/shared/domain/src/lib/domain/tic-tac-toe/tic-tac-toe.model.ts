@@ -59,7 +59,7 @@ export enum TicTacToeGameStatus {
 }
 
 export enum TicTacToeGamePlayer {
-  DRAW = 'DRAW',
+  NONE = 'NONE',
   X = 'X',
   O = 'O',
 }

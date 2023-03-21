@@ -35,8 +35,6 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
 
   private boolean isPrivate;
 
-  private TicTacToePlayer.Token result;
-
   private TicTacToePlayer.Token turn;
 
   private String board;
@@ -51,11 +49,13 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
   @OneToOne(fetch = FetchType.LAZY)
   private TicTacToePlayer playerO;
 
+  @NonNull
+  private LocalDateTime lastActivityAt;
+
+  @NonNull
   private LocalDateTime requestedAt;
 
   private LocalDateTime startedAt;
-
-  private LocalDateTime lastActivityAt;
 
   private LocalDateTime finishedAt;
 

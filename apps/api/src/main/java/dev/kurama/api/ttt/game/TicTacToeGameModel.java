@@ -20,7 +20,6 @@ public class TicTacToeGameModel extends RepresentationModel<TicTacToeGameModel> 
   private String id;
   private Status status;
   private Boolean isPrivate;
-  private Token result;
   private Token turn;
   private String board;
   private TicTacToePlayerModel playerX;

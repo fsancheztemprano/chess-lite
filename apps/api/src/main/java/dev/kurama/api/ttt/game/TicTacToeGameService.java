@@ -111,14 +111,12 @@ public class TicTacToeGameService {
 
     if (isGameOver(game.getBoard())) {
       game.setStatus(Status.FINISHED);
-      game.setResult(isGameTied(game.getBoard()) ? Token.NONE : game.getTurn());
       game.setFinishedAt(LocalDateTime.now());
-    } else {
-      if (game.getTurn() == Token.X) {
-        game.setTurn(Token.O);
-      } else {
-        game.setTurn(Token.X);
+      if (isGameTied(game.getBoard())) {
+        game.setTurn(Token.NONE);
       }
+    } else {
+      game.setTurn(game.getTurn() == Token.X ? Token.O : Token.X);
     }
 
     TicTacToeGame save = repository.save(game);

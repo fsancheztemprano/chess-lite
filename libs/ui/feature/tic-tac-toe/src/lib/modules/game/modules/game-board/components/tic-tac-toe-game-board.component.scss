@@ -39,6 +39,10 @@
       background-color: rgba(0, 0, 0, 0.12);
     }
 
+    &.winner mat-icon {
+      color: green;
+    }
+
     &.looser mat-icon {
       opacity: 0.5;
     }

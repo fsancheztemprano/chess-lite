@@ -14,7 +14,7 @@
       }}</span>
       <span matListItemLine *ngIf="game.turn === TicTacToeGamePlayer.X">{{ game.playerX.username }}</span>
       <span matListItemLine *ngIf="game.turn === TicTacToeGamePlayer.O">{{ game.playerO.username }}</span>
-      <span matListItemLine *ngIf="game.turn === TicTacToeGamePlayer.DRAW">{{
+      <span matListItemLine *ngIf="game.turn === TicTacToeGamePlayer.NONE">{{
         t('tic-tac-toe.game.sidebar.info.draw')
       }}</span>
     </mat-list-item>
