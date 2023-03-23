@@ -5,7 +5,7 @@ import { TicTacToeGame } from '@app/ui/shared/domain';
 import { ticTacToeGameResolver } from './tic-tac-toe-game.resolver';
 
 describe('ticTacToeGameResolver', () => {
-  const executeResolver: ResolveFn<TicTacToeGame> = (...resolverParameters) =>
+  const executeResolver: ResolveFn<TicTacToeGame | null> = (...resolverParameters) =>
     TestBed.runInInjectionContext(() => ticTacToeGameResolver(...resolverParameters));
 
   beforeEach(() => {

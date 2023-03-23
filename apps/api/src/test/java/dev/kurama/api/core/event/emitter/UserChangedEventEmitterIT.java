@@ -10,6 +10,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.UserChangedEvent;
 import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
+import dev.kurama.api.ttt.player.TicTacToePlayerEventListener;
 import dev.kurama.support.TestChannelInterceptor;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.AbstractSubscribableChannel;
@@ -32,6 +34,9 @@ class UserChangedEventEmitterIT {
   @Autowired
   @Qualifier("brokerChannel")
   private AbstractSubscribableChannel abstractSubscribableChannel;
+
+  @MockBean
+  private TicTacToePlayerEventListener ticTacToePlayerEventListener;
 
   private TestChannelInterceptor testChannelInterceptor;
 

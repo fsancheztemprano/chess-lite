@@ -45,12 +45,29 @@ export namespace GetTicTacToeRootResource {
       body: {
         _links: {
           self: { href: 'http://localhost/api/tic-tac-toe' },
+          root: {
+            href: 'http://localhost/api',
+          },
           game: {
             href: 'http://localhost/api/tic-tac-toe/game/{gameId}',
             templated: true,
           },
           games: {
-            href: 'http://localhost/api/tic-tac-toe/game{?page,size,sort}',
+            href: 'http://localhost/api/tic-tac-toe/game{?myGames,isPrivate,player,status,page,size,sort}',
+            templated: true,
+          },
+          players: {
+            href: 'http://localhost/api/tic-tac-toe/player{?username}',
+            templated: true,
+          },
+          create: {
+            href: 'http://localhost/api/tic-tac-toe/game',
+          },
+          'ws:games': {
+            href: '/ami/tic-tac-toe/game',
+          },
+          'ws:game:player': {
+            href: '/ami/tic-tac-toe/game/player/{playerId}',
             templated: true,
           },
         },

@@ -25,7 +25,7 @@ export function registerTranslocoExtension(transloco: TranslocoService) {
       {
         name: 'required',
         message() {
-          return transloco.selectTranslate('FORM.VALIDATION.REQUIRED');
+          return transloco.selectTranslate('form.validation.required');
         },
       },
     ],

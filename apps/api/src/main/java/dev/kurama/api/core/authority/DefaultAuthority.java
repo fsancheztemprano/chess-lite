@@ -67,9 +67,8 @@ public class DefaultAuthority {
 
 
   protected static final List<String> ADMIN_AUTHORITIES = Stream.of(MOD_AUTHORITIES,
-    TicTacToeAuthority.TIC_TAC_TOE_AUTHORITIES,
     Lists.newArrayList(UserAuthority.USER_CREATE, ServiceLogsAuthority.SERVICE_LOGS_READ,
-      ServiceLogsAuthority.SERVICE_LOGS_DELETE)).flatMap(Collection::stream).toList();
+      ServiceLogsAuthority.SERVICE_LOGS_DELETE)).flatMap(Collection::stream).toList().stream().distinct().toList();
 
   public static final Map<String, List<String>> ROLE_AUTHORITIES = ImmutableMap.<String, List<String>>builder()
     .put(DefaultAuthority.USER_ROLE, DefaultAuthority.USER_AUTHORITIES)

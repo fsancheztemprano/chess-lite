@@ -12,10 +12,16 @@ export const createGameTemplate: { create: ITemplate } = {
     method: 'POST',
     target: '/api/tic-tac-toe/game',
     properties: [
-      { name: 'oId', type: 'text', required: true },
-      { name: 'xId', type: 'text', required: true },
+      { name: 'playerOUsername', type: 'text', required: true },
       { name: 'isPrivate', type: 'boolean' },
     ],
+  },
+};
+
+export const adminCreateGameTemplate: { create: ITemplate } = {
+  create: {
+    ...createGameTemplate.create,
+    properties: [...(createGameTemplate.create.properties || []), { name: 'playerXUsername', type: 'text' }],
   },
 };
 
@@ -23,9 +29,11 @@ function gameWitId(gameId: string) {
   return {
     _links: {
       self: { href: `http://localhost/api/tic-tac-toe/game/${gameId}` },
-      // ws: { href: `ws://localhost/api/tic-tac-toe/game/${gameId}` },
+      ws: { href: `ws://localhost/api/tic-tac-toe/game/${gameId}` },
+      moves: { href: `http://localhost/api/tic-tac-toe/game/${gameId}/move` },
     },
     id: `${gameId}`,
+    _templates: { ...defaultTemplate },
   };
 }
 
@@ -57,6 +65,7 @@ const inProgressGame = {
   status: 'IN_PROGRESS',
   isPrivate: false,
   startedAt: 2000000,
+  lastActivityAt: 2000000,
   turn: TicTacToeGamePlayer.O,
   board: 'XXOOO_X__',
 };
@@ -100,11 +109,9 @@ export const moveTemplate: { move: ITemplate } = {
     properties: [
       {
         name: 'cell',
-        type: 'string',
+        regex: '^(B1|C1|C2)$',
         required: true,
-        options: {
-          inline: ['B1', 'C1', 'B2'],
-        },
+        type: 'string',
       },
     ],
   },
@@ -233,8 +240,8 @@ export namespace CreateTicTacToeGamePact {
         ),
       },
       body: {
-        xId: 'user-a-id',
-        oId: 'user-b-id',
+        playerXUsername: 'user-a-id',
+        playerOUsername: 'user-b-id',
         private: boolean(),
       },
     },
@@ -264,8 +271,8 @@ export namespace CreateTicTacToeGamePact {
         ),
       },
       body: {
-        xId: 'user-a-id',
-        oId: 'user-b-id',
+        playerXUsername: 'user-a-id',
+        playerOUsername: 'user-b-id',
         private: boolean(),
       },
     },
@@ -290,8 +297,8 @@ export namespace CreateTicTacToeGamePact {
         Authorization: bearer(jwtToken()),
       },
       body: {
-        xId: 'user-a-id',
-        oId: 'user-b-id',
+        playerXUsername: 'user-a-id',
+        playerOUsername: 'user-b-id',
         private: boolean(),
       },
     },
@@ -321,8 +328,8 @@ export namespace CreateTicTacToeGamePact {
         ),
       },
       body: {
-        xId: 'user-a-id',
-        oId: 'user-a-id',
+        playerXUsername: 'user-a-id',
+        playerOUsername: 'user-a-id',
         private: boolean(),
       },
     },
@@ -353,8 +360,7 @@ export namespace CreateTicTacToeGamePact {
         ),
       },
       body: {
-        xId: 'user-z-id',
-        oId: 'user-z-id',
+        playerOUsername: 'user-x-id',
         private: boolean(),
       },
     },

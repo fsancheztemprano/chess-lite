@@ -40,7 +40,6 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -540,7 +539,7 @@ class UserServiceTest {
     String email = randomAlphanumeric(8);
     when(userRepository.findUserByUsername(username)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
-    assertThrows(UndeclaredThrowableException.class,
+    assertThrows(UserExistsException.class,
       () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));
   }
 
@@ -550,7 +549,7 @@ class UserServiceTest {
     String email = randomAlphanumeric(8);
     when(userRepository.findUserByEmail(email)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
-    assertThrows(UndeclaredThrowableException.class,
+    assertThrows(UserExistsException.class,
       () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));
   }
 }

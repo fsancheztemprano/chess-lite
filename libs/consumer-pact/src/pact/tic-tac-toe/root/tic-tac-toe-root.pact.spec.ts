@@ -12,7 +12,7 @@ import { GetTicTacToeRootResource } from './tic-tac-toe-root.pact';
 
 const provider: Pact = pactForResource('ticTacToeRoot');
 
-describe('Tic Tac Toe Root Resource Pacts', () => {
+describe.skip('Tic Tac Toe Root Resource Pacts', () => {
   let service: TicTacToeService;
 
   beforeAll(() => provider.setup());

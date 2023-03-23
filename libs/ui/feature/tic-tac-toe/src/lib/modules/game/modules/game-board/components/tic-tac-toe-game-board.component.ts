@@ -39,12 +39,15 @@ export class TicTacToeGameBoardComponent implements OnChanges {
         cell.value = value;
         switch (this.game?.status) {
           case TicTacToeGameStatus.IN_PROGRESS:
-            cell.canMove = value === '_' && this.game.canMove(cell.id);
-            cell.move = () => this.game!.move(cell.id).subscribe();
+            {
+              const canMove = value === '_' && this.game.canMove(cell.id);
+              cell.canMove = canMove;
+              cell.move = canMove ? () => this.game!.move(cell.id).subscribe() : undefined;
+            }
             break;
           case TicTacToeGameStatus.FINISHED:
             cell.looser = cell.value !== this.game.turn;
-            cell.winner = this.isWinnerCell(column, row);
+            cell.winner = cell.value === this.game.turn && this.isWinnerCell(column, row);
             break;
         }
         return cell;
@@ -63,16 +66,14 @@ export class TicTacToeGameBoardComponent implements OnChanges {
       return true;
     }
     if ((column === 'A' && row === 3) || (column === 'B' && row == 2) || (column === 'C' && row === 1)) {
-      const diagonal: string[] =
-        splitBoard?.filter((value, index) => index % 2 === 0 && index !== 0 && index !== 8) || [];
-      if (diagonal.length === 3 && new Set(diagonal).size === 1) {
+      const diagonal = splitBoard?.filter((value, index) => index === 2 || index == 4 || index === 6);
+      if (diagonal?.length === 3 && new Set(diagonal).size === 1) {
         return true;
       }
     }
     if ((column === 'A' && row === 1) || (column === 'B' && row == 2) || (column === 'C' && row === 3)) {
-      const diagonal: string[] =
-        splitBoard?.filter((value, index) => index % 2 === 0 && index !== 2 && index !== 6) || [];
-      if (diagonal.length === 3 && new Set(diagonal).size === 1) {
+      const diagonal = splitBoard?.filter((value, index) => index === 0 || index == 4 || index === 8);
+      if (diagonal?.length === 3 && new Set(diagonal).size === 1) {
         return true;
       }
     }
