@@ -2936,10 +2936,10 @@
     "@material/theme" "15.0.0-canary.684e33d25.0"
     tslib "^2.1.0"
 
-"@ngneat/effects-ng@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@ngneat/effects-ng/-/effects-ng-2.0.0.tgz#6e99330d85e213dfec89cfa8c387a0715fbd5487"
-  integrity sha512-u9ZwCUyjFEHbP7Kh7RPj4eQSj44gwnb66cxsH6uLpGl645w3zes0b+iAZORYhN/xXQC2JtGous5cDBUcc+elqQ==
+"@ngneat/effects-ng@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/effects-ng/-/effects-ng-3.0.0.tgz#303fec8e32b25b56250615731bf10b6f1507ca98"
+  integrity sha512-o6s7OZx9feWurLP1ZTRHYq9PMQ7w5+krLEpSmjLY/0ixMVx+HLBvyIWPbC5aJjncKKEQZ/+S8qVSzAwPgLaX7g==
   dependencies:
     "@ngneat/effects" "*"
     rxjs "*"
