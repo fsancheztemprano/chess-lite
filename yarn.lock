@@ -2947,10 +2947,10 @@
     ts-action-operators "9.1.2"
     tslib "^2.3.0"
 
-"@ngneat/effects@*", "@ngneat/effects@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@ngneat/effects/-/effects-1.1.1.tgz#889993f12fd1185730b57c5a9b4b112097d39c8a"
-  integrity sha512-otGhdLA25BBkNzTFfmGppi07ai79h3tkLSdE/uZz7jWVMqZ+isPI1INI7tzH8Oe93W8PIbjgnJGYCDusz8OsRg==
+"@ngneat/effects@*", "@ngneat/effects@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@ngneat/effects/-/effects-2.1.1.tgz#fe62446c407bf199586cdaa6c7ae5433d852d359"
+  integrity sha512-A7H0qrUIeVKAjSvfbnXWkcOgikBptGAfbf8tVn04jJJlcF6zNu+AOR0h+g/RViIrDoHs8cMW43xaDrIEF2yk3w==
   dependencies:
     rxjs "*"
     ts-action "11.0.0"
