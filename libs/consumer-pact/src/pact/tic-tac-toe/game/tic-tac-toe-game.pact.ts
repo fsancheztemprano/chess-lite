@@ -3,7 +3,7 @@ import { defaultTemplate } from '@app/ui/testing';
 import { ContentType, ITemplate } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
-import { boolean, string } from '@pact-foundation/pact/src/dsl/matchers';
+import { boolean } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer } from '../../../utils/pact.utils';
 import { jwtToken } from '../../../utils/token.utils';
 
@@ -25,12 +25,12 @@ export const adminCreateGameTemplate: { create: ITemplate } = {
   },
 };
 
-function gameWitId(gameId: string) {
+function gameWitId(gameId: string, movesLink = false) {
   return {
     _links: {
       self: { href: `http://localhost/api/tic-tac-toe/game/${gameId}` },
-      ws: { href: `ws://localhost/api/tic-tac-toe/game/${gameId}` },
-      moves: { href: `http://localhost/api/tic-tac-toe/game/${gameId}/move` },
+      ws: { href: `/ami/tic-tac-toe/game/${gameId}` },
+      ...(movesLink ? { moves: { href: `http://localhost/api/tic-tac-toe/game/${gameId}/move` } } : {}),
     },
     id: `${gameId}`,
     _templates: { ...defaultTemplate },
@@ -42,16 +42,17 @@ const pendingGame = {
   status: 'PENDING',
   isPrivate: true,
   requestedAt: 1000000,
+  lastActivityAt: 1000000,
   playerX: {
-    id: 'user-a-id',
-    username: string(),
+    id: 'tic-tac-toe-p1',
+    username: 'tic-tac-toe-p1',
     wins: 0,
     losses: 0,
     draws: 0,
   },
   playerO: {
-    id: 'user-b-id',
-    username: string(),
+    id: 'tic-tac-toe-p2',
+    username: 'tic-tac-toe-p2',
     wins: 0,
     losses: 0,
     draws: 0,
@@ -61,12 +62,12 @@ const pendingGame = {
 
 const inProgressGame = {
   ...pendingGame,
-  ...gameWitId('tic-tac-toe-g2'),
+  ...gameWitId('tic-tac-toe-g2', true),
   status: 'IN_PROGRESS',
   isPrivate: false,
   startedAt: 2000000,
   lastActivityAt: 2000000,
-  turn: TicTacToeGamePlayer.O,
+  turn: TicTacToeGamePlayer.X,
   board: 'XXOOO_X__',
 };
 
@@ -75,43 +76,29 @@ const rejectedGame = {
   ...gameWitId('tic-tac-toe-g3'),
   status: 'REJECTED',
   isPrivate: true,
-  playerX: {
-    id: 'user-c-id',
-    username: string(),
-    wins: 0,
-    losses: 0,
-    draws: 0,
-  },
   lastActivityAt: 3000000,
 };
 
 const finishedGame = {
   ...inProgressGame,
-  ...gameWitId('tic-tac-toe-g4'),
+  ...gameWitId('tic-tac-toe-g4', true),
   status: 'FINISHED',
   finishedAt: 4000000,
-  turn: undefined,
+  lastActivityAt: 4000000,
   board: 'XXOOOOX_X',
-  playerX: {
-    id: 'user-c-id',
-    username: string(),
-    wins: 0,
-    losses: 0,
-    draws: 0,
-  },
-  result: TicTacToeGamePlayer.O,
+  turn: TicTacToeGamePlayer.O,
 };
 
 export const moveTemplate: { move: ITemplate } = {
   move: {
     method: 'POST',
-    target: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
+    target: 'http://localhost/api/tic-tac-toe/game/tic-tac-toe-g2/move',
     properties: [
       {
         name: 'cell',
-        regex: '^(B1|C1|C2)$',
+        regex: '^(B3|C2|C3)$',
         required: true,
-        type: 'string',
+        type: 'text',
       },
     ],
   },
@@ -120,7 +107,6 @@ export const moveTemplate: { move: ITemplate } = {
 export const statusTemplate: { status: ITemplate } = {
   status: {
     method: 'PATCH',
-    target: '/api/tic-tac-toe/game/tic-tac-toe-g1',
     properties: [
       {
         name: 'status',
@@ -175,7 +161,7 @@ export namespace GetAllTicTacToeGamesPact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
+            user: { id: 'tic-tac-toe-p1' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -234,14 +220,14 @@ export namespace CreateTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
+            user: { id: 'tic-tac-toe-p1' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
       },
       body: {
-        playerXUsername: 'user-a-id',
-        playerOUsername: 'user-b-id',
+        playerXUsername: 'tic-tac-toe-p1',
+        playerOUsername: 'tic-tac-toe-p2',
         private: boolean(),
       },
     },
@@ -271,8 +257,8 @@ export namespace CreateTicTacToeGamePact {
         ),
       },
       body: {
-        playerXUsername: 'user-a-id',
-        playerOUsername: 'user-b-id',
+        playerXUsername: 'tic-tac-toe-p1',
+        playerOUsername: 'tic-tac-toe-p2',
         private: boolean(),
       },
     },
@@ -297,8 +283,8 @@ export namespace CreateTicTacToeGamePact {
         Authorization: bearer(jwtToken()),
       },
       body: {
-        playerXUsername: 'user-a-id',
-        playerOUsername: 'user-b-id',
+        playerXUsername: 'tic-tac-toe-p1',
+        playerOUsername: 'tic-tac-toe-p2',
         private: boolean(),
       },
     },
@@ -328,8 +314,8 @@ export namespace CreateTicTacToeGamePact {
         ),
       },
       body: {
-        playerXUsername: 'user-a-id',
-        playerOUsername: 'user-a-id',
+        playerXUsername: 'tic-tac-toe-p1',
+        playerOUsername: 'tic-tac-toe-p1',
         private: boolean(),
       },
     },
@@ -376,15 +362,19 @@ export namespace CreateTicTacToeGamePact {
 }
 
 export namespace GetOneTicTacToeGamePact {
-  export const private_as_admin: InteractionObject = {
+  export const pending: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'get one private tic tac toe game with tic-tac-toe:game:read as admin',
+    uponReceiving: 'get one tic tac toe pending',
     withRequest: {
       method: HTTPMethod.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_READ] })),
+        Authorization: bearer(
+          jwtToken({
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+          }),
+        ),
       },
     },
     willRespondWith: {
@@ -394,15 +384,14 @@ export namespace GetOneTicTacToeGamePact {
         ...pendingGame,
         _templates: {
           ...defaultTemplate,
-          ...statusTemplate,
         },
       },
     },
   };
 
-  export const private_as_player: InteractionObject = {
+  export const pending_with_user_status: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'get one private tic tac toe game with as player',
+    uponReceiving: 'get one tic tac toe pending with status template',
     withRequest: {
       method: HTTPMethod.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
@@ -410,7 +399,7 @@ export namespace GetOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
+            user: { id: 'tic-tac-toe-p2' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -429,9 +418,9 @@ export namespace GetOneTicTacToeGamePact {
     },
   };
 
-  export const private_as_viewer: InteractionObject = {
+  export const pending_with_admin_status: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'get one private tic tac toe game as viewer',
+    uponReceiving: 'get one tic tac toe pending with admin status template',
     withRequest: {
       method: HTTPMethod.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
@@ -439,24 +428,27 @@ export namespace GetOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-c-id' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
+            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT, TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE],
           }),
         ),
       },
     },
     willRespondWith: {
-      status: 403,
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
-        reason: 'Forbidden',
-        title: 'Sorry, you do not have permission to access this resource.',
+        ...pendingGame,
+        _templates: {
+          ...defaultTemplate,
+          ...statusTemplate,
+        },
       },
     },
   };
 
-  export const public_as_viewer: InteractionObject = {
+  export const in_progress_inactive: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'get one public tic tac toe game as viewer',
+    uponReceiving: 'get one tic tac toe game in progress',
     withRequest: {
       method: HTTPMethod.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2',
@@ -464,7 +456,7 @@ export namespace GetOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-c-id' },
+            user: { id: 'tic-tac-toe-p2' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -474,31 +466,6 @@ export namespace GetOneTicTacToeGamePact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: { ...inProgressGame },
-    },
-  };
-
-  export const in_progress_inactive_player: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'get one tic tac toe game in progress inactive player',
-    withRequest: {
-      method: HTTPMethod.GET,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g2',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'user-b-id' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
-          }),
-        ),
-      },
-    },
-    willRespondWith: {
-      status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
-      body: {
-        ...inProgressGame,
-      },
     },
   };
 
@@ -512,7 +479,7 @@ export namespace GetOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
+            user: { id: 'tic-tac-toe-p1' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -541,7 +508,6 @@ export namespace GetOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-c-id' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -566,7 +532,6 @@ export namespace GetOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -596,7 +561,6 @@ export namespace GetOneTicTacToeGamePact {
       status: 404,
       body: {
         reason: 'Not Found',
-        title: 'Game not found',
       },
     },
   };
@@ -613,10 +577,10 @@ export namespace GetOneTicTacToeGamePact {
       },
     },
     willRespondWith: {
-      status: 403,
+      status: 401,
       body: {
-        reason: 'Forbidden',
-        title: 'Sorry, you do not have permission to access this resource.',
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
       },
     },
   };
@@ -655,7 +619,7 @@ export namespace PatchOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
-          jwtToken({ user: { id: 'user-b-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }),
+          jwtToken({ user: { id: 'tic-tac-toe-p2' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }),
         ),
       },
       body: {
@@ -679,7 +643,7 @@ export namespace PatchOneTicTacToeGamePact {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
-          jwtToken({ user: { id: 'user-c-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }),
+          jwtToken({ user: { id: 'tic-tac-toe-p3' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }),
         ),
       },
       body: {
@@ -776,7 +740,7 @@ export namespace MoveTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
+            user: { id: 'tic-tac-toe-p1' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -801,7 +765,7 @@ export namespace MoveTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-b-id' },
+            user: { id: 'tic-tac-toe-p2' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -830,7 +794,7 @@ export namespace MoveTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-c-id' },
+            user: { id: 'tic-tac-toe-p3' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -859,7 +823,7 @@ export namespace MoveTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
+            user: { id: 'tic-tac-toe-p1' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -888,7 +852,7 @@ export namespace MoveTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-c-id' },
+            user: { id: 'tic-tac-toe-p3' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
@@ -917,7 +881,7 @@ export namespace MoveTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'user-a-id' },
+            user: { id: 'tic-tac-toe-p1' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),

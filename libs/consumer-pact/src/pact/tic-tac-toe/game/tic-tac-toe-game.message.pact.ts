@@ -14,8 +14,8 @@ export namespace TicTacToeGameMessages {
 
   export const ticTacToeGameCreatedMessage: TicTacToeGameChangedMessage = {
     gameId: 'tic-tac-toe-g1',
-    playerX: { id: 'user-a-id', username: 'user-a' },
-    playerO: { id: 'user-b-id', username: 'user-b' },
+    playerX: { id: 'tic-tac-toe-p1', username: 'user-a' },
+    playerO: { id: 'tic-tac-toe-p2', username: 'user-b' },
     turn: TicTacToeGamePlayer.O,
     status: TicTacToeGameStatus.PENDING,
     action: TicTacToeGameChangedMessageAction.CREATED,
@@ -23,8 +23,8 @@ export namespace TicTacToeGameMessages {
 
   export const ticTacToeGameUpdatedMessage: TicTacToeGameChangedMessage = {
     gameId: 'tic-tac-toe-g1',
-    playerX: { id: 'user-a-id', username: 'user-a' },
-    playerO: { id: 'user-b-id', username: 'user-b' },
+    playerX: { id: 'tic-tac-toe-p1', username: 'user-a' },
+    playerO: { id: 'tic-tac-toe-p2', username: 'user-b' },
     turn: TicTacToeGamePlayer.X,
     status: TicTacToeGameStatus.IN_PROGRESS,
     action: TicTacToeGameChangedMessageAction.UPDATED,
