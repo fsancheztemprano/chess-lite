@@ -10,7 +10,7 @@ import { jwtToken } from '../../../utils/token.utils';
 export const createGameTemplate: { create: ITemplate } = {
   create: {
     method: 'POST',
-    target: '/api/tic-tac-toe/game',
+    target: 'http://localhost/api/tic-tac-toe/game',
     properties: [
       { name: 'playerOUsername', type: 'text', required: true },
       { name: 'isPrivate', type: 'boolean' },

@@ -12,7 +12,7 @@ import { GetTicTacToeRootResource } from './tic-tac-toe-root.pact';
 
 const provider: Pact = pactForResource('ticTacToeRoot');
 
-describe.skip('Tic Tac Toe Root Resource Pacts', () => {
+describe('Tic Tac Toe Root Resource Pacts', () => {
   let service: TicTacToeService;
 
   beforeAll(() => provider.setup());
@@ -45,10 +45,22 @@ describe.skip('Tic Tac Toe Root Resource Pacts', () => {
       });
     });
 
-    it('authorized', (done) => {
-      const interaction: InteractionObject = GetTicTacToeRootResource.successfull;
+    it('root', (done) => {
+      const interaction: InteractionObject = GetTicTacToeRootResource.successful_root;
       provider.addInteraction(interaction).then(() => {
         setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+        service.initialize().subscribe((resource) => {
+          expect(resource).toBeTruthy();
+          expect(resource).toMatchObject(interaction.willRespondWith.body);
+          done();
+        });
+      });
+    });
+
+    it('admin_create', (done) => {
+      const interaction: InteractionObject = GetTicTacToeRootResource.successful_admin_create;
+      provider.addInteraction(interaction).then(() => {
+        setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT, TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
           expect(resource).toMatchObject(interaction.willRespondWith.body);
