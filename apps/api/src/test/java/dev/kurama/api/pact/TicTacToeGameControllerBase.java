@@ -1,5 +1,6 @@
 package dev.kurama.api.pact;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -23,6 +24,7 @@ import java.time.ZoneOffset;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageImpl;
 
 @WebMvcTest(controllers = TicTacToeGameController.class)
 @Import({TicTacToeGameFacade.class, TicTacToeGameModelProcessor.class, TicTacToeGameModelAssembler.class})
@@ -90,6 +92,8 @@ public abstract class TicTacToeGameControllerBase extends PactBase {
       .board("XXOOOOX_X")
       .build();
 
+    PageImpl<TicTacToeGame> page = new PageImpl<>(newArrayList(game1, game2, game3, game4));
+
     doThrow(EntityNotFoundException.class).when(service).findById(anyString());
     doReturn(game1).when(service).findById(game1.getId());
     doReturn(game2).when(service).findById(game2.getId());
@@ -101,5 +105,7 @@ public abstract class TicTacToeGameControllerBase extends PactBase {
     doThrow(EntityNotFoundException.class).when(service).updateStatus(anyString(), any());
     doReturn(game2).when(service).updateStatus(eq(game2.getId()), any());
     doReturn(game3).when(service).updateStatus(eq(game3.getId()), any());
+
+    doReturn(page).when(service).getAll(any(), any());
   }
 }

@@ -5,7 +5,7 @@ import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../../utils/pact.utils';
 import { jwtToken } from '../../../utils/token.utils';
-import { adminCreateGameTemplate, createGameTemplate } from '../game/tic-tac-toe-game.pact';
+import { adminCreateGameTemplate, createGameTemplate } from '../tic-tac-toe.mock';
 
 const rootLinks: { [key: string]: ILink } = {
   self: { href: 'http://localhost/api/tic-tac-toe' },
