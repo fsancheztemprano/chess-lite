@@ -76,32 +76,18 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
     });
   });
 
-  describe.skip('create tic-tac-toe game with authority', () => {
+  describe('create tic-tac-toe game', () => {
     beforeEach(() => service.setResource({ _templates: { ...createGameTemplate } }));
 
-    it('create as player', (done) => {
-      const interaction: InteractionObject = CreateTicTacToeGamePact.successful_as_player;
-      setToken({ user: { id: 'tic-tac-toe-p1' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
+    it('successful', (done) => {
+      const interaction: InteractionObject = CreateTicTacToeGamePact.successful;
+      setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
       provider.addInteraction(interaction).then(() => {
-        service
-          .createGame({
-            playerOUsername: 'tic-tac-toe-p1',
-            playerXUsername: 'tic-tac-toe-p2',
-          })
-          .subscribe(() => done());
-      });
-    });
-
-    it('create as admin', (done) => {
-      const interaction: InteractionObject = CreateTicTacToeGamePact.successful_as_admin;
-      setToken({ user: { id: 'admin-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
-      provider.addInteraction(interaction).then(() => {
-        service
-          .createGame({
-            playerOUsername: 'tic-tac-toe-p1',
-            playerXUsername: 'tic-tac-toe-p2',
-          })
-          .subscribe(() => done());
+        service.createGame({ playerOUsername: 'tic-tac-toe-p2', isPrivate: true }).subscribe((game) => {
+          expect(game).toBeTruthy();
+          expect(game._links).toMatchObject(interaction.willRespondWith.body._links);
+          done();
+        });
       });
     });
 
@@ -109,37 +95,7 @@ describe('Tic Tac Toe Game Resource Pacts', () => {
       const interaction: InteractionObject = CreateTicTacToeGamePact.error_unauthorized;
       setToken();
       provider.addInteraction(interaction).then(() => {
-        service.createGame({ playerOUsername: 'tic-tac-toe-p1', playerXUsername: 'tic-tac-toe-p2' }).subscribe({
-          error: (error: HttpErrorResponse) => {
-            expect(error).toBeTruthy();
-            expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
-            done();
-          },
-        });
-      });
-    });
-
-    it('error no opponent', (done) => {
-      const interaction: InteractionObject = CreateTicTacToeGamePact.error_no_opponent;
-      setToken({ user: { id: 'admin-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
-      provider.addInteraction(interaction).then(() => {
-        service.createGame({ playerOUsername: 'tic-tac-toe-p1', playerXUsername: 'tic-tac-toe-p1' }).subscribe({
-          error: (error: HttpErrorResponse) => {
-            expect(error).toBeTruthy();
-            expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
-            done();
-          },
-        });
-      });
-    });
-
-    it('error not found', (done) => {
-      const interaction: InteractionObject = CreateTicTacToeGamePact.error_not_found;
-      setToken({ user: { id: 'admin-id' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
-      provider.addInteraction(interaction).then(() => {
-        service.createGame({ playerOUsername: 'user-z-id', playerXUsername: 'user-z-id' }).subscribe({
+        service.createGame({ playerOUsername: 'tic-tac-toe-p2', isPrivate: true }).subscribe({
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);

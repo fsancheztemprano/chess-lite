@@ -209,7 +209,7 @@ export namespace GetAllTicTacToeGamesPact {
 }
 
 export namespace CreateTicTacToeGamePact {
-  export const successful_as_player: InteractionObject = {
+  export const successful: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'create a tic tac toe game as player',
     withRequest: {
@@ -220,50 +220,17 @@ export namespace CreateTicTacToeGamePact {
         'Content-Type': ContentType.APPLICATION_JSON,
         Authorization: bearer(
           jwtToken({
-            user: { id: 'tic-tac-toe-p1' },
             authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
           }),
         ),
       },
       body: {
-        playerXUsername: 'tic-tac-toe-p1',
         playerOUsername: 'tic-tac-toe-p2',
-        private: boolean(),
+        isPrivate: boolean(),
       },
     },
     willRespondWith: {
-      status: 204,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
-      body: {
-        ...pendingGame,
-      },
-    },
-  };
-
-  export const successful_as_admin: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'create a tic tac toe game as admin',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'admin-id' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE],
-          }),
-        ),
-      },
-      body: {
-        playerXUsername: 'tic-tac-toe-p1',
-        playerOUsername: 'tic-tac-toe-p2',
-        private: boolean(),
-      },
-    },
-    willRespondWith: {
-      status: 204,
+      status: 201,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...pendingGame,
@@ -283,79 +250,15 @@ export namespace CreateTicTacToeGamePact {
         Authorization: bearer(jwtToken()),
       },
       body: {
-        playerXUsername: 'tic-tac-toe-p1',
         playerOUsername: 'tic-tac-toe-p2',
-        private: boolean(),
+        isPrivate: boolean(),
       },
     },
     willRespondWith: {
-      status: 403,
+      status: 401,
       body: {
-        reason: 'Forbidden',
-        title: 'Sorry, you do not have permission to access this resource.',
-      },
-    },
-  };
-
-  export const error_no_opponent: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'create a tic tac toe game when rival is same as initiator',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'admin-id' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE],
-          }),
-        ),
-      },
-      body: {
-        playerXUsername: 'tic-tac-toe-p1',
-        playerOUsername: 'tic-tac-toe-p1',
-        private: boolean(),
-      },
-    },
-    willRespondWith: {
-      status: 400,
-      body: {
-        reason: 'Bad Request',
-        title: 'An error has occurred',
-        message: 'X and O cannot be the same player',
-      },
-    },
-  };
-
-  export const error_not_found: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'create a tic tac toe game when player is not found',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'admin-id' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE],
-          }),
-        ),
-      },
-      body: {
-        playerOUsername: 'user-x-id',
-        private: boolean(),
-      },
-    },
-    willRespondWith: {
-      status: 404,
-      body: {
-        reason: 'Not Found',
-        title: 'TicTacToePlayer with id: user-z-id not found',
-        message: 'user-z-id',
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
       },
     },
   };
