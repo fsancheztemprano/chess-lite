@@ -2,6 +2,7 @@ package dev.kurama.api.pact;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
@@ -83,7 +84,11 @@ public abstract class TicTacToeGameControllerBase extends PactBase {
       .requestedAt(LocalDateTime.ofEpochSecond(1000000 / 1000, 0, ZoneOffset.UTC))
       .startedAt(LocalDateTime.ofEpochSecond(2000000 / 1000, 0, ZoneOffset.UTC))
       .finishedAt(LocalDateTime.ofEpochSecond(4000000 / 1000, 0, ZoneOffset.UTC))
-      .playerX(playerA).playerO(playerB).turn(Token.O).board("XXOOOOX_X").build();
+      .playerX(playerA)
+      .playerO(playerB)
+      .turn(Token.O)
+      .board("XXOOOOX_X")
+      .build();
 
     doThrow(EntityNotFoundException.class).when(service).findById(anyString());
     doReturn(game1).when(service).findById(game1.getId());
@@ -92,5 +97,9 @@ public abstract class TicTacToeGameControllerBase extends PactBase {
     doReturn(game4).when(service).findById(game4.getId());
 
     doReturn(game1).when(service).create(any());
+
+    doThrow(EntityNotFoundException.class).when(service).updateStatus(anyString(), any());
+    doReturn(game2).when(service).updateStatus(eq(game2.getId()), any());
+    doReturn(game3).when(service).updateStatus(eq(game3.getId()), any());
   }
 }

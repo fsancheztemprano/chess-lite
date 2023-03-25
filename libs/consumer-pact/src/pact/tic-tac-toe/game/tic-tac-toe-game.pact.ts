@@ -25,7 +25,7 @@ export const adminCreateGameTemplate: { create: ITemplate } = {
   },
 };
 
-function gameWitId(gameId: string, movesLink = false) {
+export function gameWitId(gameId: string, movesLink = false) {
   return {
     _links: {
       self: { href: `http://localhost/api/tic-tac-toe/game/${gameId}` },
@@ -490,40 +490,16 @@ export namespace GetOneTicTacToeGamePact {
 }
 
 export namespace PatchOneTicTacToeGamePact {
-  export const as_admin: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'successfully reject one tic tac toe game as admin',
-    withRequest: {
-      method: HTTPMethod.PATCH,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] })),
-      },
-      body: {
-        status: TicTacToeGameStatus.REJECTED,
-      },
-    },
-    willRespondWith: {
-      status: 200,
-      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
-      body: { ...rejectedGame },
-    },
-  };
-
-  export const as_opponent_player: InteractionObject = {
+  export const accept: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'accept one tic tac toe game as opponent player',
     withRequest: {
       method: HTTPMethod.PATCH,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
+      path: '/api/tic-tac-toe/game/tic-tac-toe-g2',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({ user: { id: 'tic-tac-toe-p2' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }),
-        ),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
       },
       body: {
         status: TicTacToeGameStatus.IN_PROGRESS,
@@ -536,29 +512,25 @@ export namespace PatchOneTicTacToeGamePact {
     },
   };
 
-  export const error_as_viewer: InteractionObject = {
+  export const reject: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'accept one tic tac toe game as viewer',
+    uponReceiving: 'successfully reject one tic tac toe game',
     withRequest: {
       method: HTTPMethod.PATCH,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
+      path: '/api/tic-tac-toe/game/tic-tac-toe-g3',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({ user: { id: 'tic-tac-toe-p3' }, authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] }),
-        ),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
       },
       body: {
-        status: TicTacToeGameStatus.IN_PROGRESS,
+        status: TicTacToeGameStatus.REJECTED,
       },
     },
     willRespondWith: {
-      status: 403,
-      body: {
-        reason: 'Forbidden',
-        title: 'Insufficient permissions',
-      },
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
+      body: { ...rejectedGame },
     },
   };
 
@@ -578,9 +550,9 @@ export namespace PatchOneTicTacToeGamePact {
       },
     },
     willRespondWith: {
-      status: 403,
+      status: 401,
       body: {
-        reason: 'Forbidden',
+        reason: 'Unauthorized',
         title: 'Insufficient permissions',
       },
     },
@@ -605,7 +577,6 @@ export namespace PatchOneTicTacToeGamePact {
       status: 404,
       body: {
         reason: 'Not Found',
-        title: 'Game not found',
       },
     },
   };

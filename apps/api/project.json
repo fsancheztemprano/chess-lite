@@ -107,26 +107,18 @@
         "commands": [
           "mvn verify -B -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
         ]
-      }
-    },
-    "pacts": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": [
-          "-B",
-          "verify",
-          "-P pact-consumer",
-          "-P pact-producer",
-          "-D it.test=\"**/*PactIT.java\"",
-          "-Dtest=\"dev.kurama.api.null.**\"",
-          "-Dsurefire.failIfNoSpecifiedTests=false",
-          "-DskipUTs"
-        ]
+      },
+      "configurations": {
+        "generate": {
+          "commands": [
+            "mvn org.springframework.cloud:spring-cloud-contract-maven-plugin:generateTests -P pact-producer"
+          ]
+        },
+        "complete": {
+          "commands": [
+            "mvn clean verify -B -P pact-consumer -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
+          ]
+        }
       }
     },
     "e2e": {
