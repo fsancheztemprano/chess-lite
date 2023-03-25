@@ -1,5 +1,6 @@
 package dev.kurama.api.pact;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -54,10 +55,7 @@ public abstract class TicTacToeMoveControllerBase extends PactBase {
       .player(TicTacToePlayer.builder()
         .id("tic-tac-toe-p1")
         .user(User.builder().id("tic-tac-toe-p1").username("tic-tac-toe-p1").build())
-        .wins(5)
-        .losses(3)
-        .draws(1)
-        .build())
+        .wins(5).losses(3).draws(1).build())
       .movedAt(LocalDateTime.ofEpochSecond(6000000 / 1000, 0, ZoneOffset.UTC))
       .moveTime(5000L)
       .game(game2)
@@ -65,5 +63,8 @@ public abstract class TicTacToeMoveControllerBase extends PactBase {
 
     doThrow(EntityNotFoundException.class).when(facility).move(anyString(), any());
     doReturn(move).when(facility).move(eq(move.getGame().getId()), any());
+
+    doThrow(EntityNotFoundException.class).when(facility).getAllGameMoves(anyString());
+    doReturn(newArrayList(move)).when(facility).getAllGameMoves(move.getGame().getId());
   }
 }

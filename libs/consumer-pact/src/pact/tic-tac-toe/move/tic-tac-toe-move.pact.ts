@@ -94,3 +94,70 @@ export namespace MoveTicTacToeGamePact {
     },
   };
 }
+
+export namespace AllTicTacToeGameMoves {
+  export const successful: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get all tic tac toe game moves',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      body: {
+        _embedded: {
+          ticTacToeGameMoveModels: [move1],
+        },
+        _links: {
+          self: {
+            href: 'http://localhost/api/tic-tac-toe/game/tic-tac-toe-g2/move',
+          },
+        },
+      },
+    },
+  };
+
+  export const error_not_found: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get all tic tac toe game moves not found',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/tic-tac-toe/game/tic-tac-toe-g0/move',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
+      },
+    },
+    willRespondWith: {
+      status: 404,
+      body: {
+        reason: 'Not Found',
+      },
+    },
+  };
+
+  export const error_unauthorized: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get all tic tac toe game moves unauthorized',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken()),
+      },
+    },
+    willRespondWith: {
+      status: 401,
+      body: {
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
+      },
+    },
+  };
+}
