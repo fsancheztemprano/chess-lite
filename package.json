@@ -32,7 +32,7 @@
     "package": "nx run api:package",
     "pact": "nx run api:pact:complete",
     "pact:consumer": "nx run consumer-pact:pact",
-    "pact:producer": "nx api:pact",
+    "pact:producer": "nx run api:pact",
     "pact:producer:generate": "nx run api:pact:generate",
     "test": "nx run-many --target=test --all",
     "test:frontend": "nx run-many --target=test --all --exclude=api",

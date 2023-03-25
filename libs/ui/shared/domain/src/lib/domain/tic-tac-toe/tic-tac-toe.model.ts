@@ -28,8 +28,8 @@ export class TicTacToeGame extends Resource implements IResource {
   startedAt?: number;
   finishedAt?: number;
 
-  move(cell: string): Observable<unknown> {
-    return this.affordTemplate({ template: 'move', body: { cell } });
+  move(cell: string): Observable<TicTacToeGameMove> {
+    return this.affordTemplate<TicTacToeGameMove>({ template: 'move', body: { cell } });
   }
 
   canMove(cell: string): boolean {
@@ -90,4 +90,16 @@ export interface ITicTacToeGameMove {
   player: ITicTacToePlayer;
   movedAt: number;
   moveTime: number;
+}
+
+export class TicTacToeGameMove extends Resource implements ITicTacToeGameMove {
+  id!: string;
+  gameId!: string;
+  number!: number;
+  cell!: string;
+  token!: TicTacToeGamePlayer;
+  board!: string;
+  player!: ITicTacToePlayer;
+  movedAt!: number;
+  moveTime!: number;
 }

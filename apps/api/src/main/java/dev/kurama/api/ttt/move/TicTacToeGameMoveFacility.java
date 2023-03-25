@@ -34,7 +34,7 @@ public class TicTacToeGameMoveFacility {
   private final TicTacToePlayerService ticTacToePlayerService;
 
   @Transactional
-  public TicTacToeGame move(String gameId, TicTacToeGameMoveInput input) {
+  public TicTacToeGameMove move(String gameId, TicTacToeGameMoveInput input) {
     TicTacToeGame game = ticTacToeGameService.findById(gameId);
 
     if (game.getStatus() != TicTacToeGame.Status.IN_PROGRESS) {
@@ -56,7 +56,7 @@ public class TicTacToeGameMoveFacility {
       ticTacToePlayerService.registerGameResult(game.getPlayerX(), game.getPlayerO(), game.getTurn());
     }
 
-    return game;
+    return move;
   }
 
   public Collection<TicTacToeGameMove> getAllGameMoves(String gameId) {

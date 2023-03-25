@@ -5,7 +5,6 @@ import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 
-import dev.kurama.api.ttt.game.TicTacToeGameModel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -33,10 +32,9 @@ public class TicTacToeGameMoveController {
   }
 
   @PostMapping()
-  public ResponseEntity<TicTacToeGameModel> move(@PathVariable String gameId,
-                                                 @NonNull @RequestBody TicTacToeGameMoveInput input) {
-    TicTacToeGameModel gameMoveModel = facade.move(gameId, input);
-    return created(fromCurrentRequestUri().path("/{moveId}").buildAndExpand(gameMoveModel.getId()).toUri()).body(
-      gameMoveModel);
+  public ResponseEntity<TicTacToeGameMoveModel> move(@PathVariable String gameId,
+                                                     @NonNull @RequestBody TicTacToeGameMoveInput input) {
+    TicTacToeGameMoveModel move = facade.move(gameId, input);
+    return created(fromCurrentRequestUri().path("/{moveId}").buildAndExpand(move.getId()).toUri()).body(move);
   }
 }

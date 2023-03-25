@@ -1,203 +1,78 @@
-import { TicTacToeAuthority } from '@app/ui/shared/domain';
+import { TicTacToeAuthority, TicTacToeGamePlayer } from '@app/ui/shared/domain';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
 import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../../utils/pact.utils';
 import { jwtToken } from '../../../utils/token.utils';
 
+const move1 = {
+  id: 'tic-tac-toe-gm1',
+  cell: 'B3',
+  token: TicTacToeGamePlayer.X,
+  board: 'X________',
+  number: 1,
+  player: {
+    id: 'tic-tac-toe-p1',
+    username: 'tic-tac-toe-p1',
+    wins: 5,
+    losses: 3,
+    draws: 1,
+  },
+  movedAt: 6000000,
+  moveTime: 5000,
+  gameId: 'tic-tac-toe-g2',
+};
+
 export namespace MoveTicTacToeGamePact {
-  export const successful_as_admin: InteractionObject = {
+  export const successful: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe game as admin',
+    uponReceiving: 'make a tic tac toe game move',
     withRequest: {
       method: HTTPMethod.POST,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE] })),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
       },
       body: {
-        cell: 'A2',
+        cell: 'B3',
       },
     },
     willRespondWith: {
-      status: 202,
-    },
-  };
-
-  export const successful_as_player: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe game as active player',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'tic-tac-toe-p1' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
-          }),
-        ),
-      },
+      status: 201,
       body: {
-        cell: 'A2',
-      },
-    },
-    willRespondWith: {
-      status: 202,
-    },
-  };
-
-  export const error_as_inactive_player: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe game as inactive player',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'tic-tac-toe-p2' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
-          }),
-        ),
-      },
-      body: {
-        cell: 'A2',
-      },
-    },
-    willRespondWith: {
-      status: 400,
-      body: {
-        title: 'Bad Request',
-        reason: 'Not your turn',
-      },
-    },
-  };
-
-  export const error_as_viewer: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe game as viewer',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'tic-tac-toe-p3' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
-          }),
-        ),
-      },
-      body: {
-        cell: 'A2',
-      },
-    },
-    willRespondWith: {
-      status: 403,
-      body: {
-        reason: 'Forbidden',
-        title: 'Insufficient permissions',
-      },
-    },
-  };
-
-  export const error_cell_is_occupied: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe game cell is occupied',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'tic-tac-toe-p1' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
-          }),
-        ),
-      },
-      body: {
-        cell: 'A1',
-      },
-    },
-    willRespondWith: {
-      status: 400,
-      body: {
-        title: 'Bad Request',
-        reason: 'Cell is occupied',
-      },
-    },
-  };
-
-  export const error_game_finished: InteractionObject = {
-    state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe game finished',
-    withRequest: {
-      method: HTTPMethod.POST,
-      path: '/api/tic-tac-toe/game/tic-tac-toe-g4/move',
-      headers: {
-        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
-        'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'tic-tac-toe-p3' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
-          }),
-        ),
-      },
-      body: {
-        cell: 'A1',
-      },
-    },
-    willRespondWith: {
-      status: 400,
-      body: {
-        title: 'Bad Request',
-        reason: 'Game is Over',
+        ...move1,
       },
     },
   };
 
   export const error_not_found: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe game not found',
+    uponReceiving: 'make a tic tac toe game move not found',
     withRequest: {
       method: HTTPMethod.POST,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g0/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
         'Content-Type': ContentType.APPLICATION_JSON,
-        Authorization: bearer(
-          jwtToken({
-            user: { id: 'tic-tac-toe-p1' },
-            authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT],
-          }),
-        ),
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
       },
       body: {
-        cell: 'A1',
+        cell: 'B3',
       },
     },
     willRespondWith: {
       status: 404,
       body: {
-        title: 'Not Found',
+        reason: 'Not Found',
       },
     },
   };
 
   export const error_unauthorized: InteractionObject = {
     state: 'stateless',
-    uponReceiving: 'make a move a tic tac toe unauthorized',
+    uponReceiving: 'make a tic tac toe move unauthorized',
     withRequest: {
       method: HTTPMethod.POST,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
@@ -207,13 +82,14 @@ export namespace MoveTicTacToeGamePact {
         Authorization: bearer(jwtToken()),
       },
       body: {
-        cell: 'A1',
+        cell: 'B3',
       },
     },
     willRespondWith: {
       status: 401,
       body: {
-        title: 'Unauthorized',
+        reason: 'Unauthorized',
+        title: 'Insufficient permissions',
       },
     },
   };

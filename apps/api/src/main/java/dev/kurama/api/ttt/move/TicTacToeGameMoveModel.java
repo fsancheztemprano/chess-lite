@@ -16,6 +16,7 @@ import org.springframework.hateoas.RepresentationModel;
 @Builder
 public class TicTacToeGameMoveModel extends RepresentationModel<TicTacToeGameMoveModel> {
 
+  private String id;
   private String cell;
   private TicTacToePlayer.Token token;
   private String board;
