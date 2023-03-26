@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.event.domain.UserChangedEvent;
 import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
 import dev.kurama.api.ttt.player.TicTacToePlayerEventListener;
@@ -48,19 +49,20 @@ class UserChangedEventEmitterIT {
 
   @Test
   void should_send_user_created_message() throws InterruptedException, IOException {
-    String userId = randomUUID();
-    userChangedEventEmitter.emitUserCreatedEvent(userId);
+    User user = User.builder().setRandomUUID().username(randomUUID()).build();
+    userChangedEventEmitter.emitUserCreatedEvent(user);
 
     Message<?> message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
 
     StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
     assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
-    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, userId));
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, user.getId()));
 
     UserChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("userId", user.getId())
+      .hasFieldOrPropertyWithValue("username", user.getUsername())
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
 
     message = testChannelInterceptor.awaitMessage(2);
@@ -72,7 +74,8 @@ class UserChangedEventEmitterIT {
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("userId", user.getId())
+      .hasFieldOrPropertyWithValue("username", user.getUsername())
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.CREATED);
 
     message = testChannelInterceptor.awaitMessage(1);
@@ -81,19 +84,20 @@ class UserChangedEventEmitterIT {
 
   @Test
   void should_send_user_updated_message() throws InterruptedException, IOException {
-    String userId = randomUUID();
-    userChangedEventEmitter.emitUserUpdatedEvent(userId);
+    User user = User.builder().setRandomUUID().username(randomUUID()).build();
+    userChangedEventEmitter.emitUserUpdatedEvent(user);
 
     Message<?> message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
 
     StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
     assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
-    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, userId));
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, user.getId()));
 
     UserChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("userId", user.getId())
+      .hasFieldOrPropertyWithValue("username", user.getUsername())
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.UPDATED);
 
     message = testChannelInterceptor.awaitMessage(2);
@@ -105,7 +109,8 @@ class UserChangedEventEmitterIT {
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("userId", user.getId())
+      .hasFieldOrPropertyWithValue("username", user.getUsername())
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.UPDATED);
 
     message = testChannelInterceptor.awaitMessage(1);
@@ -114,19 +119,20 @@ class UserChangedEventEmitterIT {
 
   @Test
   void should_send_user_deleted_message() throws InterruptedException, IOException {
-    String userId = randomUUID();
-    userChangedEventEmitter.emitUserDeletedEvent(userId);
+    User user = User.builder().setRandomUUID().username(randomUUID()).build();
+    userChangedEventEmitter.emitUserDeletedEvent(user);
 
     Message<?> message = testChannelInterceptor.awaitMessage(2);
     assertThat(message).isNotNull();
 
     StompHeaderAccessor messageHeaders = StompHeaderAccessor.wrap(message);
     assertThat(messageHeaders.getContentType()).isEqualTo(APPLICATION_JSON);
-    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, userId));
+    assertThat(messageHeaders.getDestination()).isEqualTo(format(USER_CHANGED_CHANNEL, user.getId()));
 
     UserChangedEvent payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("userId", user.getId())
+      .hasFieldOrPropertyWithValue("username", user.getUsername())
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.DELETED);
 
     message = testChannelInterceptor.awaitMessage(2);
@@ -138,7 +144,8 @@ class UserChangedEventEmitterIT {
 
     payload = new ObjectMapper().readValue((byte[]) message.getPayload(), UserChangedEvent.class);
     assertThat(payload).isNotNull()
-      .hasFieldOrPropertyWithValue("userId", userId)
+      .hasFieldOrPropertyWithValue("userId", user.getId())
+      .hasFieldOrPropertyWithValue("username", user.getUsername())
       .hasFieldOrPropertyWithValue("action", UserChangedEventAction.DELETED);
 
     message = testChannelInterceptor.awaitMessage(1);

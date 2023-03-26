@@ -596,6 +596,7 @@ describe('SessionService', () => {
 
       messageService.userChangedMessageSubject.next({
         userId: 'u1',
+        username: 'u1',
         action: UserChangedMessageAction.UPDATED,
       });
 
@@ -627,6 +628,7 @@ describe('SessionService', () => {
 
       messageService.userChangedMessageSubject.next({
         userId: 'u1',
+        username: 'u1',
         action: UserChangedMessageAction.DELETED,
       });
 

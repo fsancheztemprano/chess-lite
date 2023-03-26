@@ -162,7 +162,7 @@ class UserServiceTest {
     userService.deleteUserById(expected.getId());
 
     verify(userRepository).delete(expected);
-    verify(userChangedEventEmitter).emitUserDeletedEvent(expected.getId());
+    verify(userChangedEventEmitter).emitUserDeletedEvent(expected);
   }
 
   @Nested
@@ -246,7 +246,7 @@ class UserServiceTest {
         && user.getPassword().equals(encodedPassword)
         && user.getRole().equals(role)
         && user.getAuthorities().equals(role.getAuthorities())));
-      verify(userChangedEventEmitter).emitUserCreatedEvent(anyString());
+      verify(userChangedEventEmitter).emitUserCreatedEvent(any());
       assertEquals(expected, actual);
     }
 
@@ -285,7 +285,7 @@ class UserServiceTest {
       verify(userRepository).save(any(User.class));
       verify(userRepository).save(argThat((User user) -> user.getRole().equals(defaultRole) && user.getAuthorities()
         .equals(defaultRole.getAuthorities())));
-      verify(userChangedEventEmitter).emitUserCreatedEvent(anyString());
+      verify(userChangedEventEmitter).emitUserCreatedEvent(any());
       assertEquals(expected, actual);
     }
   }
@@ -331,7 +331,7 @@ class UserServiceTest {
       verify(passwordEncode).encode(input.getPassword());
       verifyNoInteractions(roleService, authorityService);
       verify(userRepository).save(expected);
-      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected.getId());
+      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected);
       assertEquals(expected, actual);
       assertEquals(input.getFirstname(), actual.getFirstname());
       assertEquals(input.getEmail(), actual.getEmail());
@@ -365,7 +365,7 @@ class UserServiceTest {
       verify(userRepository).findById(expected.getId());
       verify(roleService).findRoleById(targetRole.getId());
       verify(userRepository).save(expected);
-      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected.getId());
+      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected);
       assertEquals(targetRole, actual.getRole());
       assertEquals(targetRole.getAuthorities(), actual.getAuthorities());
     }
@@ -393,7 +393,7 @@ class UserServiceTest {
       verifyNoInteractions(passwordEncode, roleService);
       verify(userRepository).findById(expected.getId());
       verify(userRepository).save(expected);
-      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected.getId());
+      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected);
       assertEquals(authorities, actual.getAuthorities());
     }
 
@@ -515,9 +515,7 @@ class UserServiceTest {
       .build();
     Role targetRole = Role.builder()
       .setRandomUUID()
-      .authorities(newHashSet(authority2))
-      .name(randomAlphanumeric(8))
-      .build();
+      .authorities(newHashSet(authority2)).name(randomAlphanumeric(8)).build();
     User user1 = User.builder().setRandomUUID().username(randomAlphanumeric(8)).role(currentRole).build();
     User user2 = User.builder().setRandomUUID().username(randomAlphanumeric(8)).role(currentRole).build();
     ArrayList<User> users = newArrayList(user1, user2);
@@ -526,8 +524,8 @@ class UserServiceTest {
     userService.reassignToRole(users, targetRole);
 
     verify(userRepository).saveAllAndFlush(users);
-    verify(userChangedEventEmitter).emitUserUpdatedEvent(user1.getId());
-    verify(userChangedEventEmitter).emitUserUpdatedEvent(user2.getId());
+    verify(userChangedEventEmitter).emitUserUpdatedEvent(user1);
+    verify(userChangedEventEmitter).emitUserUpdatedEvent(user2);
     verifyNoMoreInteractions(userChangedEventEmitter);
     assertThat(users.get(0).getRole()).isEqualTo(targetRole);
     assertThat(users.get(0).getAuthorities()).isEqualTo(targetRole.getAuthorities());

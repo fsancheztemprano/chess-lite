@@ -34,17 +34,20 @@ public class UserChangedMessagePactIT {
 
   @PactVerifyProvider("a user created message")
   public String verifyUserCreatedMessage() {
-    return JsonOutput.toJson(UserChangedEvent.builder().userId("u1").action(UserChangedEventAction.CREATED).build());
+    return JsonOutput.toJson(
+      UserChangedEvent.builder().userId("u1").username("u1").action(UserChangedEventAction.CREATED).build());
   }
 
   @PactVerifyProvider("a user updated message")
   public String verifyUserUpdatedMessage() {
-    return JsonOutput.toJson(UserChangedEvent.builder().userId("u2").action(UserChangedEventAction.UPDATED).build());
+    return JsonOutput.toJson(
+      UserChangedEvent.builder().userId("u2").username("u2").action(UserChangedEventAction.UPDATED).build());
   }
 
   @PactVerifyProvider("a user deleted message")
   public String verifyUserDeletedMessage() {
-    return JsonOutput.toJson(UserChangedEvent.builder().userId("u3").action(UserChangedEventAction.DELETED).build());
+    return JsonOutput.toJson(
+      UserChangedEvent.builder().userId("u3").username("u3").action(UserChangedEventAction.DELETED).build());
   }
 
 }

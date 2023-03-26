@@ -41,10 +41,12 @@ public abstract class TicTacToeGameControllerBase extends PactBase {
     TicTacToePlayer playerA = TicTacToePlayer.builder()
       .id("tic-tac-toe-p1")
       .user(User.builder().id("tic-tac-toe-p1").username("tic-tac-toe-p1").build())
+      .username("tic-tac-toe-p1")
       .build();
     TicTacToePlayer playerB = TicTacToePlayer.builder()
       .id("tic-tac-toe-p2")
       .user(User.builder().id("tic-tac-toe-p2").username("tic-tac-toe-p2").build())
+      .username("tic-tac-toe-p2")
       .build();
     TicTacToeGame game1 = TicTacToeGame.builder()
       .id("tic-tac-toe-g1")

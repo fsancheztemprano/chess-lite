@@ -32,9 +32,11 @@ public class TicTacToePlayer extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @NonNull
-  @OneToOne(fetch = FetchType.EAGER, optional = false)
+  @OneToOne(fetch = FetchType.LAZY, optional = true)
   private User user;
+
+  @NonNull
+  private String username;
 
   public enum Token {
     X, O, NONE

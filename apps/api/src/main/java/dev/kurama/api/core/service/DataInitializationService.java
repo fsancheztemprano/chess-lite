@@ -168,7 +168,7 @@ public class DataInitializationService {
         .userPreferences(UserPreferences.builder().setRandomUUID().build())
         .build());
       ticTacToePlayerRepository.saveAndFlush(
-        TicTacToePlayer.builder().setIdOrRandomUUID(admin.getId()).user(admin).build());
+        TicTacToePlayer.builder().setIdOrRandomUUID(admin.getId()).user(admin).username(admin.getUsername()).build());
       log(log.atInfo(), "Admin User Initialized");
     }
   }

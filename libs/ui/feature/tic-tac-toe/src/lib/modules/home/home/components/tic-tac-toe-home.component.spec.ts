@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { StubTiledMenuModule } from '@app/ui/shared/common';
 import { stubTicTacToeServiceProvider } from '@app/ui/shared/feature/tic-tac-toe';
 import { getTranslocoModule } from '@app/ui/testing';
 import { TicTacToeHomeComponent } from './tic-tac-toe-home.component';
@@ -9,7 +10,7 @@ describe('TicTacToeHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [getTranslocoModule()],
+      imports: [getTranslocoModule(), StubTiledMenuModule],
       declarations: [TicTacToeHomeComponent],
       providers: [stubTicTacToeServiceProvider],
     }).compileComponents();

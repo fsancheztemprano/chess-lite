@@ -27,10 +27,11 @@ public class TicTacToePlayerService {
     return repository.findAllByUser_UsernameLike("%" + username + "%");
   }
 
-  public TicTacToePlayer create(String userId) {
+  public TicTacToePlayer create(String userId, String username) {
     var ticTacToePlayer = TicTacToePlayer.builder()
       .id(userId)
       .user(User.builder().id(userId).build())
+      .username(username)
       .draws(0)
       .losses(0)
       .wins(0)

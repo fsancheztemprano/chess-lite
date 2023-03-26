@@ -25,7 +25,7 @@ public class TicTacToePlayerEventListener {
     if (ticTacToePlayerService.existsById(event.getUserId())) {
       return;
     }
-    ticTacToePlayerService.create(event.getUserId());
+    ticTacToePlayerService.create(event.getUserId(), event.getUsername());
   }
 
 }

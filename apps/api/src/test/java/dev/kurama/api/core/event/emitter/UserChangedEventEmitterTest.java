@@ -3,6 +3,7 @@ package dev.kurama.api.core.event.emitter;
 import static dev.kurama.api.core.utility.UuidUtils.randomUUID;
 import static org.mockito.Mockito.verify;
 
+import dev.kurama.api.core.domain.User;
 import dev.kurama.api.core.event.domain.UserChangedEvent;
 import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
 import org.junit.jupiter.api.Test;
@@ -23,37 +24,40 @@ class UserChangedEventEmitterTest {
 
   @Test
   void should_emit_user_created_event() {
-    UserChangedEvent event = UserChangedEvent.builder()
-      .userId(randomUUID())
+    User user = User.builder().setRandomUUID().username(randomUUID()).build();
+
+    userChangedEventEmitter.emitUserCreatedEvent(user);
+
+    verify(applicationEventPublisher).publishEvent(UserChangedEvent.builder()
+      .userId(user.getId())
+      .username(user.getUsername())
       .action(UserChangedEventAction.CREATED)
-      .build();
-
-    userChangedEventEmitter.emitUserCreatedEvent(event.getUserId());
-
-    verify(applicationEventPublisher).publishEvent(event);
+      .build());
   }
 
   @Test
   void should_emit_user_updated_event() {
-    UserChangedEvent event = UserChangedEvent.builder()
-      .userId(randomUUID())
+    User user = User.builder().setRandomUUID().username(randomUUID()).build();
+
+    userChangedEventEmitter.emitUserUpdatedEvent(user);
+
+    verify(applicationEventPublisher).publishEvent(UserChangedEvent.builder()
+      .userId(user.getId())
+      .username(user.getUsername())
       .action(UserChangedEventAction.UPDATED)
-      .build();
-
-    userChangedEventEmitter.emitUserUpdatedEvent(event.getUserId());
-
-    verify(applicationEventPublisher).publishEvent(event);
+      .build());
   }
 
   @Test
   void should_emit_user_deleted_event() {
-    UserChangedEvent event = UserChangedEvent.builder()
-      .userId(randomUUID())
+    User user = User.builder().setRandomUUID().username(randomUUID()).build();
+
+    userChangedEventEmitter.emitUserDeletedEvent(user);
+
+    verify(applicationEventPublisher).publishEvent(UserChangedEvent.builder()
+      .userId(user.getId())
+      .username(user.getUsername())
       .action(UserChangedEventAction.DELETED)
-      .build();
-
-    userChangedEventEmitter.emitUserDeletedEvent(event.getUserId());
-
-    verify(applicationEventPublisher).publishEvent(event);
+      .build());
   }
 }
