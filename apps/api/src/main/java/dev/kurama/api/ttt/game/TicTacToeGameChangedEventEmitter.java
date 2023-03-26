@@ -1,5 +1,6 @@
 package dev.kurama.api.ttt.game;
 
+import dev.kurama.api.ttt.game.TicTacToeGameChangedEvent.TicTacToeGameChangedEventPlayer;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -15,10 +16,8 @@ public class TicTacToeGameChangedEventEmitter {
   public void emitTicTacToeGameChangedEvent(TicTacToeGame game, TicTacToeGameChangedEvent.Action action) {
     applicationEventPublisher.publishEvent(TicTacToeGameChangedEvent.builder()
       .gameId(game.getId())
-      .playerO(new TicTacToeGameChangedEvent.TicTacToeMessagePlayer(game.getPlayerO().getId(),
-        game.getPlayerO().getUser().getUsername()))
-      .playerX(new TicTacToeGameChangedEvent.TicTacToeMessagePlayer(game.getPlayerX().getId(),
-        game.getPlayerX().getUser().getUsername()))
+      .playerX(TicTacToeGameChangedEventPlayer.builder().id("tic-tac-toe-p1").username("tic-tac-toe-p1").build())
+      .playerO(TicTacToeGameChangedEventPlayer.builder().id("tic-tac-toe-p2").username("tic-tac-toe-p2").build())
       .turn(game.getTurn())
       .status(game.getStatus())
       .action(action)

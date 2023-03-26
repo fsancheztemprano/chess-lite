@@ -10,8 +10,8 @@ import lombok.Data;
 public class TicTacToeGameChangedEvent implements ApplicationEvent {
 
   private String gameId;
-  private TicTacToeMessagePlayer playerX;
-  private TicTacToeMessagePlayer playerO;
+  private TicTacToeGameChangedEventPlayer playerX;
+  private TicTacToeGameChangedEventPlayer playerO;
   private TicTacToePlayer.Token turn;
   private TicTacToeGame.Status status;
   private Action action;
@@ -21,7 +21,11 @@ public class TicTacToeGameChangedEvent implements ApplicationEvent {
   }
 
 
-  public record TicTacToeMessagePlayer(String id, String username) {
+  @Data
+  @Builder
+  public static class TicTacToeGameChangedEventPlayer {
 
+    private String id;
+    private String username;
   }
 }

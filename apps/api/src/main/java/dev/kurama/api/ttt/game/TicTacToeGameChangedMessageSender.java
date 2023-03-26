@@ -23,12 +23,10 @@ public class TicTacToeGameChangedMessageSender {
     template.convertAndSend(TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAMES_CHANGED_CHANNEL, event);
     template.convertAndSend(
       String.format(TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAME_CHANGED_CHANNEL, event.getGameId()), event);
-    template.convertAndSend(
-      String.format(TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL, event.getPlayerX().id()),
-      event);
-    template.convertAndSend(
-      String.format(TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL, event.getPlayerO().id()),
-      event);
+    template.convertAndSend(String.format(TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL,
+      event.getPlayerX().getId()), event);
+    template.convertAndSend(String.format(TicTacToeGameChangedMessageSender.TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL,
+      event.getPlayerO().getId()), event);
   }
 
 }

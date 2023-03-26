@@ -515,7 +515,9 @@ class UserServiceTest {
       .build();
     Role targetRole = Role.builder()
       .setRandomUUID()
-      .authorities(newHashSet(authority2)).name(randomAlphanumeric(8)).build();
+      .authorities(newHashSet(authority2))
+      .name(randomAlphanumeric(8))
+      .build();
     User user1 = User.builder().setRandomUUID().username(randomAlphanumeric(8)).role(currentRole).build();
     User user2 = User.builder().setRandomUUID().username(randomAlphanumeric(8)).role(currentRole).build();
     ArrayList<User> users = newArrayList(user1, user2);
