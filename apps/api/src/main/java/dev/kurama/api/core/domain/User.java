@@ -72,6 +72,6 @@ public class User extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @OneToOne(mappedBy = "user", orphanRemoval = false, optional = true)
+  @OneToOne(mappedBy = "user", orphanRemoval = false, optional = true, cascade = CascadeType.REMOVE)
   private TicTacToePlayer ticTacToePlayer;
 }

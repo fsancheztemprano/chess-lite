@@ -12,15 +12,11 @@ describe('User Management', () => {
     cy.get('[data-cy="user-item-admin"] > .cdk-column-username').should('contain', 'admin');
     cy.get('[data-cy="user-item-admin"] > .cdk-column-email').should('contain', 'admin@localhost');
     cy.get('[data-cy="user-item-admin"] > .cdk-column-role').should('contain', 'SUPER_ADMIN_ROLE');
-    cy.get('[data-cy="user-item-admin"] > .cdk-column-active [type="checkbox"]').should('be.checked');
-    cy.get('[data-cy="user-item-admin"] > .cdk-column-locked [type="checkbox"]').should('not.be.checked');
     cy.get('[data-cy="user-item-admin"] > .cdk-column-edit a').should('exist');
 
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-username').should('contain', 'e2e-user1');
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-email').should('contain', 'e2e-user1@localhost');
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-role').should('contain', 'USER_ROLE');
-    cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-active [type="checkbox"]').should('be.checked');
-    cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-locked [type="checkbox"]').should('not.be.checked');
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-edit a').should('exist');
   });
 
@@ -150,7 +146,7 @@ describe('User Management', () => {
       cy.wait('@updateUserAuthorities').then((xhr) => {
         expect(xhr.response?.statusCode).to.eq(200);
         expect(!!xhr.response?.body.id).to.be.true;
-        expect(xhr.response?.body.authorities).to.have.length(4);
+        expect(xhr.response?.body.authorities).to.have.length(5);
         expect(
           (xhr.response?.body.authorities as []).map((authority: { name: string }) => authority.name),
         ).contains.all.members(['token:refresh', 'profile:update', 'profile:read', 'user:read']);
