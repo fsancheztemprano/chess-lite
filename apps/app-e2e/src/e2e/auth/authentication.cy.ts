@@ -59,7 +59,7 @@ describe('authentication', () => {
     });
     cy.logout();
 
-    cy.get('[data-cy="signup-menu-option"]');
+    cy.get('[data-cy="login-menu-option"]').click();
     cy.get('app-login [formControlName="username"]').type('e2e-user4');
     cy.get('app-login [formControlName="password"]').type('e2e-user4-password');
     cy.get('[data-cy="login-button"]').click();
