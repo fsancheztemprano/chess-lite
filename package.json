@@ -107,7 +107,7 @@
     "@lensesio/cypress-websocket-testing": "1.0.1",
     "@ngneat/elf-cli": "3.0.1",
     "@ngneat/elf-cli-ng": "1.0.0",
-    "@ngneat/transloco-keys-manager": "3.5.0",
+    "@ngneat/transloco-keys-manager": "3.7.0",
     "@nrwl/cli": "15.8.8",
     "@nrwl/cypress": "15.8.8",
     "@nrwl/devkit": "15.8.8",
