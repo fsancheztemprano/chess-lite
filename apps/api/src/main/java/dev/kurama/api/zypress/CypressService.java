@@ -15,6 +15,7 @@ import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.api.core.service.ThemeService;
 import dev.kurama.api.core.service.UserService;
+import dev.kurama.api.ttt.game.TicTacToeGameService;
 import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,8 @@ public class CypressService {
   private final ThemeService themeService;
   @NonNull
   private final ThemeRepository themeRepository;
+  @NonNull
+  private final TicTacToeGameService ticTacToeGameService;
 
   @NonNull
   private final DataInitializationService initializationService;
@@ -93,12 +96,8 @@ public class CypressService {
 
   private void setState1() throws UserExistsException, RoleNotFoundException {
     initializationService.initialize();
-    userService.createUser(UserInput.builder()
-      .username("e2e-user1")
-      .password("e2e-user1")
-      .email("e2e-user1@localhost")
-      .locked(false)
-      .build());
+    createUser("e2e-user1");
+    createUser("e2e-user2");
     roleService.findByName("USER_ROLE").ifPresent(role -> {
       role.setCanLogin(true);
       roleRepository.save(role);
@@ -106,5 +105,10 @@ public class CypressService {
     globalSettingsService.updateGlobalSettings(GlobalSettingsUpdateInput.builder().signupOpen(true).build());
     themeService.updateTheme(
       ThemeUpdateInput.builder().primaryColor("#303f9f").accentColor("#f9a825").warnColor("#c2185b").build());
+  }
+
+  private void createUser(String username) {
+    userService.createUser(
+      UserInput.builder().username(username).password(username).email(username + "@localhost").locked(false).build());
   }
 }

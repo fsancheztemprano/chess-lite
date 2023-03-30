@@ -9,12 +9,12 @@
       "description": "List of games"
     },
     "sidebar": {
-      "label": "Filters",
+      "label": "Notifications",
       "new-games": {
-        "label": "My Games"
+        "label": "New Games"
       },
       "my-turns": {
-        "label": "Players"
+        "label": "My Turns"
       }
     }
   },

@@ -4,6 +4,12 @@ on:
   push:
   pull_request:
   workflow_call:
+    inputs:
+      save-video:
+        description: 'Save Video'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   e2e:
@@ -68,6 +74,7 @@ jobs:
         uses: MansaGroup/nrwl-nx-action@v3
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_SAVE_VIDEO: ${{ inputs.save-video }}
         with:
           targets: e2e
           projects: api
@@ -88,9 +95,9 @@ jobs:
           reporter: java-junit
           fail-on-error: false
 
-      - name: Upload E2E Screenshots
-        if: failure()
+      - name: Upload E2E Output
+        if: failure() || inputs.save-video == 'true'
         uses: actions/upload-artifact@v3
         with:
-          name: e2e-errors
+          name: e2e-output
           path: coverage/apps/app-e2e

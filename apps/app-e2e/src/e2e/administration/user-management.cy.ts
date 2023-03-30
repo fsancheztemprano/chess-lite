@@ -25,17 +25,17 @@ describe('User Management', () => {
 
     cy.get('[data-cy="new-user-tile"]').click();
 
-    cy.get('app-user-management-create [formControlName="username"]').type('e2e-user2');
-    cy.get('app-user-management-create [formControlName="email"]').type('e2e-user2@localhost');
-    cy.get('app-user-management-create [formControlName="firstname"]').type('e2e-user2-firstname');
-    cy.get('app-user-management-create [formControlName="lastname"]').type('e2e-user2-lastname');
-    cy.get('app-user-management-create [formControlName="profileImageUrl"]').type('e2e-user2-avatar');
+    cy.get('app-user-management-create [formControlName="username"]').type('e2e-new-user-1');
+    cy.get('app-user-management-create [formControlName="email"]').type('e2e-new-user-1@localhost');
+    cy.get('app-user-management-create [formControlName="firstname"]').type('e2e-new-user-1-firstname');
+    cy.get('app-user-management-create [formControlName="lastname"]').type('e2e-new-user-1-lastname');
+    cy.get('app-user-management-create [formControlName="profileImageUrl"]').type('e2e-new-user-1-avatar');
 
     cy.get('app-user-management-create [formControlName="roleId"]').click();
     cy.get('[data-cy="USER_ROLE-option"]').click();
 
-    cy.get('app-user-management-create [formControlName="password"]').type('e2e-user2-password');
-    cy.get('app-user-management-create [formControlName="password2"]').type('e2e-user2-password');
+    cy.get('app-user-management-create [formControlName="password"]').type('e2e-new-user-1-password');
+    cy.get('app-user-management-create [formControlName="password2"]').type('e2e-new-user-1-password');
     cy.get('app-user-management-create [formControlName="active"] [type="checkbox"]').check({ force: true });
     cy.get('app-user-management-create [formControlName="locked"] [type="checkbox"]').should('be.enabled');
     cy.get('app-user-management-create [formControlName="expired"] [type="checkbox"]').should('be.enabled');
@@ -52,9 +52,9 @@ describe('User Management', () => {
     });
 
     cy.logout();
-    cy.login('e2e-user2', 'e2e-user2-password');
+    cy.login('e2e-new-user-1', 'e2e-new-user-1-password');
     cy.reload();
-    cy.get('[data-cy="nav-username"]').should('contain', 'e2e-user2');
+    cy.get('[data-cy="nav-username"]').should('contain', 'e2e-new-user-1');
   });
 
   describe('edit user', () => {

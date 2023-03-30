@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { ToasterService } from '@app/ui/shared/app';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TicTacToeRepository } from '../../../../store/tic-tac-toe.repository';
 
+@UntilDestroy()
 @Component({
   selector: 'app-tic-tac-toe-home-sidebar',
   templateUrl: './tic-tac-toe-home-sidebar.component.html',
@@ -11,7 +12,6 @@ import { TicTacToeRepository } from '../../../../store/tic-tac-toe.repository';
   encapsulation: ViewEncapsulation.None,
 })
 export class TicTacToeHomeSidebarComponent implements OnInit {
-  private readonly toastService: ToasterService = inject(ToasterService);
   protected readonly repository = inject(TicTacToeRepository);
   model = {};
   fields: FormlyFieldConfig[] = [
@@ -36,15 +36,8 @@ export class TicTacToeHomeSidebarComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.repository.notifications$.subscribe((notifications) => (this.model = { ...notifications }));
-  }
-
-  test() {
-    this.toastService.showLinkToast({
-      title: 'Game Request',
-      message: `You have a new game request from {{playerX}}`,
-      link: './tic-tac-toe/game/{{id}}',
-      linkSelf: true,
-    });
+    this.repository.notifications$
+      .pipe(untilDestroyed(this))
+      .subscribe((notifications) => (this.model = { ...notifications }));
   }
 }

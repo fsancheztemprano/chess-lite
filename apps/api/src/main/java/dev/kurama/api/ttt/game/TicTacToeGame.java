@@ -7,10 +7,11 @@ import dev.kurama.api.ttt.player.TicTacToePlayer;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,12 +42,12 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @OneToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private TicTacToePlayer playerX;
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @OneToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private TicTacToePlayer playerO;
 
   @NonNull
@@ -62,7 +63,7 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Set<TicTacToeGameMove> moves = Sets.newHashSet();
 
 
