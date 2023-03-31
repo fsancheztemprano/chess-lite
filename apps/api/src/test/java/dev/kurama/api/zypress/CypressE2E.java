@@ -1,6 +1,6 @@
 package dev.kurama.api.zypress;
 
-
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -139,7 +139,7 @@ class CypressE2E {
   }
 
   private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser, String specPattern) {
-    GenericContainer genericContainer = new GenericContainer<>("cypress/included:12.8.1")
+    GenericContainer genericContainer = new GenericContainer<>("cypress/included:12.9.0")
       //
       .withCommand("--browser", !isEmpty(browser) ? browser : "electron")
       .withAccessToHost(true)
@@ -174,7 +174,7 @@ class CypressE2E {
     if (!isEmpty(CYPRESS_RECORD_KEY)) {
       genericContainer.withCommand("--record").withEnv("CYPRESS_RECORD_KEY", CYPRESS_RECORD_KEY);
     }
-    if (CYPRESS_SAVE_VIDEO) {
+    if (isTrue(CYPRESS_SAVE_VIDEO)) {
       genericContainer.withEnv("CYPRESS_video", "true");
     }
     return genericContainer;
