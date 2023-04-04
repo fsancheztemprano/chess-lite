@@ -148,7 +148,7 @@ public class DataInitializationService {
   }
 
   @Transactional
-  void initializeAdminUser() throws RoleNotFoundException {
+  public void initializeAdminUser() throws RoleNotFoundException {
     if (userRepository.count() < 1) {
       var superAdminRole = roleRepository.findByName(DefaultAuthority.SUPER_ADMIN_ROLE)
         .orElseThrow(() -> new RoleNotFoundException(DefaultAuthority.SUPER_ADMIN_ROLE));

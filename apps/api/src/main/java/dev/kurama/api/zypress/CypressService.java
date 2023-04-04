@@ -15,7 +15,6 @@ import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.api.core.service.ThemeService;
 import dev.kurama.api.core.service.UserService;
-import dev.kurama.api.ttt.game.TicTacToeGameService;
 import javax.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +49,7 @@ public class CypressService {
   @NonNull
   private final ThemeRepository themeRepository;
   @NonNull
-  private final TicTacToeGameService ticTacToeGameService;
+  private final CypressTicTacToeService ticTacToeService;
 
   @NonNull
   private final DataInitializationService initializationService;
@@ -69,15 +68,16 @@ public class CypressService {
   public void setState(CypressState state) {
     try {
       switch (state) {
-        case STATE_0:
-          setState0();
-          break;
-        case STATE_1:
+        case STATE_0 -> setState0();
+        case STATE_1 -> {
           setState0();
           setState1();
-          break;
-        default:
-          break;
+        }
+        case STATE_2 -> {
+          setState0();
+          setState1();
+          ticTacToeService.setStateTicTacToe();
+        }
       }
       this.state = state;
       log.atFine().log("Cypress State: %s", this.state);
@@ -98,6 +98,8 @@ public class CypressService {
     initializationService.initialize();
     createUser("e2e-user1");
     createUser("e2e-user2");
+    createUser("e2e-user3");
+    createUser("e2e-user4");
     roleService.findByName("USER_ROLE").ifPresent(role -> {
       role.setCanLogin(true);
       roleRepository.save(role);

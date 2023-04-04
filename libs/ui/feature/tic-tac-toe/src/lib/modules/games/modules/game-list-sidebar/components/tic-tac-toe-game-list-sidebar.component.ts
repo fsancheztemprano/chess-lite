@@ -47,6 +47,7 @@ export class TicTacToeGameListSidebarComponent implements OnDestroy {
           { value: TicTacToeGameStatus.REJECTED, label: TicTacToeGameStatus.REJECTED },
           { value: TicTacToeGameStatus.FINISHED, label: TicTacToeGameStatus.FINISHED },
         ],
+        translateOptions: 'tic-tac-toe.game-list.sidebar.status-filter.options',
       },
     },
   ];

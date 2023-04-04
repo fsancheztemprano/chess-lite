@@ -35,7 +35,13 @@
         "label": "Players"
       },
       "status-filter": {
-        "label": "Status"
+        "label": "Status",
+        "options": {
+          "PENDING": "Pending",
+          "IN_PROGRESS": "In Progress",
+          "REJECTED": "Rejected",
+          "FINISHED": "Finished"
+        }
       }
     }
   },

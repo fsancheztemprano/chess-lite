@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
 import { FORMLY_CONFIG, FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
+import { map } from 'rxjs';
 
 export class TranslocoExtension implements FormlyExtension {
   constructor(private readonly transloco: TranslocoService) {}
@@ -16,6 +17,21 @@ export class TranslocoExtension implements FormlyExtension {
       ...(field.expressions || {}),
       'props.label': this.transloco.selectTranslate(props.label || '', props.translateParams),
     };
+    if (props.translateOptions) {
+      field.expressions = {
+        ...(field.expressions || {}),
+        'props.options': this.transloco.selectTranslateObject(props.translateOptions).pipe(
+          map((translations) =>
+            Array.isArray(props.options)
+              ? props.options?.map((option) => ({
+                  ...option,
+                  label: translations[option.label] || option.label,
+                }))
+              : undefined,
+          ),
+        ),
+      };
+    }
   }
 }
 

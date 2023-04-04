@@ -59,11 +59,6 @@ describe('User Management', () => {
 
   describe('edit user', () => {
     beforeEach(() => {
-      cy.request({
-        method: 'POST',
-        url: Cypress.env('apiUrl') + '/auth/signup',
-        body: { username: 'e2e-user3', email: 'e2e-user3@localhost' },
-      });
       cy.get('[data-cy="user-list-tile"]').click();
       cy.get('[data-cy="user-item-e2e-user3"] > .cdk-column-edit a').click();
     });

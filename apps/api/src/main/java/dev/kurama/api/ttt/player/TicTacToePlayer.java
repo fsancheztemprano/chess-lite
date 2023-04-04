@@ -24,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @Entity
 public class TicTacToePlayer extends AbstractEntity implements Serializable {
 
@@ -43,14 +43,14 @@ public class TicTacToePlayer extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "playerX", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-  private Set<TicTacToeGame> gamesO = Sets.newHashSet();
+  @OneToMany(mappedBy = "playerO", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private Set<TicTacToeGame> gamesAsO = Sets.newHashSet();
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
   @OneToMany(mappedBy = "playerX", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-  private Set<TicTacToeGame> gamesX = Sets.newHashSet();
+  private Set<TicTacToeGame> gamesAsX = Sets.newHashSet();
 
   @NonNull
   private String username;
