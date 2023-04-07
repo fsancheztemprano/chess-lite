@@ -20,11 +20,13 @@
           [rightButtonLabel]="t('tic-tac-toe.game.message.pending.button.accept')"
           rightButtonIcon="check"
           (rightButtonClick)="game.changeStatus(TicTacToeGameStatus.IN_PROGRESS).subscribe()"
+          data-cy="game-pending"
         ></app-core-info-message>
         <app-core-info-message
           *ngSwitchCase="TicTacToeGameStatus.REJECTED"
           icon="cancel"
           [headline]="t('tic-tac-toe.game.status.rejected')"
+          data-cy="game-rejected"
         ></app-core-info-message>
       </div>
     </ng-template>

@@ -18,6 +18,7 @@
         class="material-icons-outlined new-move-icon"
         *ngIf="cell.canMove"
         (click)="cell.move && cell.move()"
+        [attr.data-cy]="'cell-' + cell.id"
         >{{ game?.turn === 'X' ? 'close' : 'circle' }}</mat-icon
       >
     </ng-template>
