@@ -6,6 +6,7 @@ import { TicTacToeGameChangedMessageAction } from '@app/ui/shared/domain';
 import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
 import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { throttleTime } from 'rxjs';
 import { TicTacToeGameListFilterService } from '../../../services/tic-tac-toe-game-list-filter.service';
 import { TicTacToeGameListDatasource } from './tic-tac-toe-game-list.datasource';
 
@@ -41,7 +42,9 @@ export class TicTacToeGameListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.filterService.filters$.pipe(untilDestroyed(this)).subscribe((filters) => (this.datasource.filters = filters));
+    this.filterService.filters$
+      .pipe(untilDestroyed(this), throttleTime(300, undefined, { leading: true, trailing: true }))
+      .subscribe((filters) => (this.datasource.filters = filters));
     this.contextMenuService.show([
       {
         id: 'create-new-game-option',

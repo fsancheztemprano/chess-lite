@@ -100,6 +100,7 @@ public class CypressService {
     createUser("e2e-user2");
     createUser("e2e-user3");
     createUser("e2e-user4");
+    createUser("e2e-user5");
     roleService.findByName("USER_ROLE").ifPresent(role -> {
       role.setCanLogin(true);
       roleRepository.save(role);

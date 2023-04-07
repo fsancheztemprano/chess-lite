@@ -3,7 +3,7 @@ export * from './lib/domain/administration/user-management-model';
 export * from './lib/domain/administration/global-settings.model';
 
 export * from './lib/domain/application/build-info.model';
-export * from './lib/domain/application/IThemeModel';
+export * from './lib/domain/application/theme.model';
 
 export * from './lib/domain/auth/auth.model';
 export * from './lib/domain/auth/role.model';

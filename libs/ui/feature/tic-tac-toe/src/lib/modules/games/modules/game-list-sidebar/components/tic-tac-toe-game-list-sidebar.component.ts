@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TicTacToeGameStatus } from '@app/ui/shared/domain';
+import { TicTacToeService } from '@app/ui/shared/feature/tic-tac-toe';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { map } from 'rxjs';
 import { TicTacToeGameListFilterService } from '../../../services/tic-tac-toe-game-list-filter.service';
 
 @Component({
@@ -11,7 +13,8 @@ import { TicTacToeGameListFilterService } from '../../../services/tic-tac-toe-ga
   encapsulation: ViewEncapsulation.None,
 })
 export class TicTacToeGameListSidebarComponent implements OnDestroy {
-  protected readonly service: TicTacToeGameListFilterService = inject(TicTacToeGameListFilterService);
+  protected readonly filterService: TicTacToeGameListFilterService = inject(TicTacToeGameListFilterService);
+  public readonly service = inject(TicTacToeService);
   model = {};
   fields: FormlyFieldConfig[] = [
     {
@@ -25,11 +28,13 @@ export class TicTacToeGameListSidebarComponent implements OnDestroy {
     },
     {
       key: 'player',
-      type: 'input',
+      type: 'autocomplete',
       props: {
         label: 'tic-tac-toe.game-list.sidebar.player-filter.label',
         translate: true,
         appearance: 'outline',
+        filter: (value: string) =>
+          this.service.findPlayers(value).pipe(map((players) => players.map((player) => player.username))),
       },
     },
     {
@@ -53,6 +58,6 @@ export class TicTacToeGameListSidebarComponent implements OnDestroy {
   ];
 
   ngOnDestroy(): void {
-    this.service.setFilters();
+    this.filterService.setFilters();
   }
 }

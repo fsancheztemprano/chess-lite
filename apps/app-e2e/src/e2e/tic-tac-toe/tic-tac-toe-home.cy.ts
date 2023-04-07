@@ -22,7 +22,7 @@ describe('Tic Tac Toe Home Component', () => {
   });
 
   it('should show notifications sidebar', () => {
-    cy.get('app-sidebar-button > button').click();
+    cy.get('[data-cy="toggle-sidebar-button"]').click();
     cy.get('#formly_2_toggle_myTurns_0').should('contain', 'My Turns');
     cy.get('#formly_2_toggle_newGames_1').should('contain', 'New Games');
   });

@@ -7,7 +7,7 @@ export interface SidebarProps {
   isOpen?: boolean;
 }
 
-const store = createStore({ name: 'sidebar' }, withProps<SidebarProps>({ isActive: true }));
+const store = createStore({ name: 'sidebar' }, withProps<SidebarProps>({ isActive: false, isOpen: false }));
 
 persistState(store, {
   key: 'todos',
