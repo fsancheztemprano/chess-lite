@@ -123,7 +123,8 @@ public class DataInitializationService {
         } else {
           return false;
         }
-      }).toList();
+      })
+      .toList();
     if (!updatableRoles.isEmpty()) {
       int updates = roleRepository.saveAllAndFlush(updatableRoles).size();
       if (updates > 0) {
