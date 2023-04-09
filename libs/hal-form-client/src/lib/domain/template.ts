@@ -186,9 +186,6 @@ export class Template implements ITemplate {
     if (property.step && value % property.step !== 0) {
       return false;
     }
-    if (property.options && !property.options.inline?.some((option) => option === value)) {
-      return false;
-    }
     if (property.regex && !value.match(property.regex)) {
       return false;
     }

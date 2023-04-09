@@ -1,6 +1,43 @@
-import { bearer, BEARER_TOKEN_REGEX, jwt, JWT_TOKEN_REGEX, withUuid } from './pact.utils';
+import { resolve } from 'path';
+import {
+  bearer,
+  BEARER_TOKEN_REGEX,
+  jwt,
+  JWT_TOKEN_REGEX,
+  pactForMessages,
+  pactForResource,
+  withUuid,
+} from './pact.utils';
 
 describe('Pact Utils Tests', () => {
+  it('should return a pact provider', () => {
+    const actual = pactForResource('test');
+    expect(actual.opts.consumer).toBe('app-test');
+    expect(actual.opts.provider).toBe('api');
+    expect(actual.opts.log).toBe(resolve(process.cwd(), 'coverage', 'pact', 'logs', 'api.log'));
+    expect(actual.opts.logLevel).toBe('warn');
+    expect(actual.opts.dir).toBe(
+      resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact', 'testController'),
+    );
+    expect(actual.opts.cors).toBe(true);
+    expect(actual.opts.timeout).toBe(10000);
+    expect(actual.opts.spec).toBe(2);
+    expect(actual.opts.pactfileWriteMode).toBe('overwrite');
+  });
+
+  it('should return a pact message provider', () => {
+    const actual = pactForMessages('test');
+    expect(actual['config'].consumer).toBe('app-test');
+    expect(actual['config'].provider).toBe('ami');
+    expect(actual['config'].log).toBe(resolve(process.cwd(), 'coverage', 'pact', 'logs', 'ami.log'));
+    expect(actual['config'].logLevel).toBe('warn');
+    expect(actual['config'].dir).toBe(
+      resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact-messages', 'testMessages'),
+    );
+    expect(actual['config'].spec).toBe(2);
+    expect(actual['config'].pactfileWriteMode).toBe('update');
+  });
+
   it('should replace uuid with regex and uuid', () => {
     const actual = withUuid('/api/{uuid}');
     expect(actual.data.generate).toBe('/api/ce118b6e-d8e1-11e7-9296-cec278b6b50a');
