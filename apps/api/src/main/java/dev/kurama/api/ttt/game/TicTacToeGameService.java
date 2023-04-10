@@ -5,6 +5,7 @@ import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUsername;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.ttt.core.TicTacToeUtils.isGameOver;
 import static dev.kurama.api.ttt.core.TicTacToeUtils.isGameTied;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import com.google.common.collect.Lists;
@@ -69,7 +70,7 @@ public class TicTacToeGameService {
       .setRandomUUID()
       .playerX(xPlayer)
       .playerO(oPlayer)
-      .isPrivate(ticTacToeGameInput.getIsPrivate() != null && ticTacToeGameInput.getIsPrivate())
+      .isPrivate(isTrue(ticTacToeGameInput.getIsPrivate()))
       .status(Status.PENDING)
       .requestedAt(LocalDateTime.now())
       .lastActivityAt(LocalDateTime.now())
@@ -125,11 +126,9 @@ public class TicTacToeGameService {
   }
 
   public Page<TicTacToeGame> getAll(Pageable pageable, TicTacToeGameFilterInput filter) {
-    if (hasAuthority(TicTacToeAuthority.TIC_TAC_TOE_GAME_READ)) {
-      return repository.findAll(new TicTacToeGameSpecification(filter), pageable);
-    } else {
-      return repository.findAll(Specification.where(new TicTacToeGameSpecification(filter).and(new MyGamesOrPublic())),
-        pageable);
-    }
+    Specification<TicTacToeGame> spec =
+      hasAuthority(TicTacToeAuthority.TIC_TAC_TOE_GAME_READ) ? new TicTacToeGameSpecification(filter)
+        : Specification.where(new TicTacToeGameSpecification(filter).and(new MyGamesOrPublic()));
+    return repository.findAll(spec, pageable);
   }
 }

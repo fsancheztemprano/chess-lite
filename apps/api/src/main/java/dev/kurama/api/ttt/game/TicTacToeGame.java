@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @RequiredArgsConstructor
 @Entity
 public class TicTacToeGame extends AbstractEntity implements Serializable {
