@@ -125,7 +125,7 @@
     "@types/node": "18.15.5",
     "@types/sockjs-client": "1.5.1",
     "@types/url-template": "2.0.28",
-    "@typescript-eslint/eslint-plugin": "5.56.0",
+    "@typescript-eslint/eslint-plugin": "5.58.0",
     "@typescript-eslint/parser": "5.56.0",
     "cypress": "12.8.1",
     "dotenv": "16.0.3",
