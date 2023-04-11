@@ -22,7 +22,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 class GlobalSettingsMapperTest {
 
-  @SuppressWarnings("SpringJavaAutowiredMembersInspection")
   @Autowired
   private GlobalSettingsMapper mapper;
 
