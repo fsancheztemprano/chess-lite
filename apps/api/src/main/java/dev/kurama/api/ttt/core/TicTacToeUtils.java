@@ -33,6 +33,9 @@ public class TicTacToeUtils {
     try {
       int x = cell.charAt(0) - 'A';
       int y = cell.charAt(1) - '1';
+      if (x < 0 || x > 2 || y < 0 || y > 2) {
+        return -1;
+      }
       return x * 3 + y;
     } catch (IndexOutOfBoundsException e) {
       return -1;
