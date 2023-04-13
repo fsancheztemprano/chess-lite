@@ -11,18 +11,16 @@ class TicTacToeUtilsTest {
 
   @Test
   void should_return_true_when_legal_move() {
-    String board = "XOXO_OXOX";
-    String cell = "B2";
-
-    assertTrue(TicTacToeUtils.isLegalMove(board, cell));
+    assertTrue(TicTacToeUtils.isLegalMove("XOXO_OXOX", "B2"));
   }
 
   @Test
   void should_return_false_when_ilegal_move() {
-    String board = "XOXO_OXOX";
-    String cell = "B1";
-
-    assertFalse(TicTacToeUtils.isLegalMove(board, cell));
+    assertFalse(TicTacToeUtils.isLegalMove("", "B1"));
+    assertFalse(TicTacToeUtils.isLegalMove(null, "B1"));
+    assertFalse(TicTacToeUtils.isLegalMove("XOXO_OXOX", ""));
+    assertFalse(TicTacToeUtils.isLegalMove("XOXO_OXOX", null));
+    assertFalse(TicTacToeUtils.isLegalMove("XOXO_OXOX", "B1"));
   }
 
   @Test
@@ -70,9 +68,10 @@ class TicTacToeUtilsTest {
   @Test
   void should_return_true_if_there_is_a_winner() {
     assertTrue(TicTacToeUtils.isGameWon("XO_XO_X__"));
+    assertTrue(TicTacToeUtils.isGameWon("OO____XXX"));
     assertTrue(TicTacToeUtils.isGameWon("XO_OX___X"));
+    assertTrue(TicTacToeUtils.isGameWon("__XOXOX__"));
     assertTrue(TicTacToeUtils.isGameWon("XOXOXOXOX"));
-
   }
 
   @Test
