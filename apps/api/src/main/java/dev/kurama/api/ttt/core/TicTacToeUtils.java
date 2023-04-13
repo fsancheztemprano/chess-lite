@@ -18,10 +18,7 @@ public class TicTacToeUtils {
     return getCharAtCell(board, cell).orElse('#') == '_';
   }
 
-  public static Optional<Character> getCharAtCell(String board, String cell) {
-    if (isEmpty(board) || isEmpty(cell)) {
-      return Optional.empty();
-    }
+  private static Optional<Character> getCharAtCell(String board, String cell) {
     try {
       return Optional.of(board.charAt(getIndexInBoard(cell)));
     } catch (IndexOutOfBoundsException e) {
