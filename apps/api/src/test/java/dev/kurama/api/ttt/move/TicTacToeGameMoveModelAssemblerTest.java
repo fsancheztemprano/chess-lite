@@ -39,7 +39,5 @@ class TicTacToeGameMoveModelAssemblerTest {
         link -> assertThat(link.getHref()).isEqualTo(TIC_TAC_TOE_GAME_MOVE_PATH.replace("{gameId}", "game-id")));
     assertThat(actual.getLink(TIC_TAC_TOE_GAME_REL)).isPresent()
       .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(TIC_TAC_TOE_GAMES_PATH + "/game-id"));
-
-
   }
 }
