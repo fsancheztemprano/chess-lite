@@ -52,7 +52,7 @@ class TicTacToeGameMapperTest {
 
 
   @TestConfiguration
-  protected static class TicTacToePlayerMapperTestConfiguration {
+  protected static class TicTacToeGameMapperTestConfiguration {
 
     @Bean
     public TicTacToeGameMapper TicTacToeGameMapper() {
