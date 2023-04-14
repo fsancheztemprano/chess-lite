@@ -22,14 +22,14 @@ import org.springframework.web.util.UriComponents;
 
 class TicTacToeGameModelAssemblerTest {
 
-  private TicTacToeGameModelAssembler ticTacToeGameModelAssembler;
+  private TicTacToeGameModelAssembler assembler;
 
   private static final UriComponents baseUri = fromUriString(TIC_TAC_TOE_BASE_PATH).build();
 
   @BeforeEach
   void setUp() {
-    ticTacToeGameModelAssembler = new TicTacToeGameModelAssembler();
-    ticTacToeGameModelAssembler.setPagedResourcesAssembler(
+    assembler = new TicTacToeGameModelAssembler();
+    assembler.setPagedResourcesAssembler(
       new PagedResourcesAssembler<>(new HateoasPageableHandlerMethodArgumentResolver(), baseUri));
   }
 
@@ -38,7 +38,7 @@ class TicTacToeGameModelAssemblerTest {
     TicTacToeGameModel game = TicTacToeGameModel.builder().id(randomUUID()).status(Status.PENDING).build();
     PageImpl<TicTacToeGameModel> pagedGames = new PageImpl<>(newArrayList(game), of(2, 2), 10);
 
-    PagedModel<TicTacToeGameModel> actual = ticTacToeGameModelAssembler.toPagedModel(pagedGames);
+    PagedModel<TicTacToeGameModel> actual = assembler.toPagedModel(pagedGames);
 
     assertThat(actual.getContent()).hasSize(1)
       .extracting("id")
@@ -59,7 +59,7 @@ class TicTacToeGameModelAssemblerTest {
     TicTacToeGameModel game = TicTacToeGameModel.builder().id(randomUUID()).status(Status.PENDING).build();
     PageImpl<TicTacToeGameModel> pagedGames = new PageImpl<>(newArrayList(game), of(2, 2), 10);
 
-    PagedModel<TicTacToeGameModel> actual = ticTacToeGameModelAssembler.toPagedModel(pagedGames);
+    PagedModel<TicTacToeGameModel> actual = assembler.toPagedModel(pagedGames);
 
     assertThat(actual.getRequiredLink(SELF).getAffordances()).hasSize(1)
       .extracting(affordance -> affordance.getAffordanceModel(HAL_FORMS_JSON))
