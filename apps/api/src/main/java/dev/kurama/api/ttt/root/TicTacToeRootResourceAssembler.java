@@ -79,7 +79,7 @@ public class TicTacToeRootResourceAssembler implements RootAssembler<RootResourc
     return linkTo(methodOn(TicTacToePlayerController.class).findPlayers(null)).withRel(TIC_TAC_TOE_PLAYERS_REL);
   }
 
-  private Link getExpandedLink(Link link) {
+  private @NonNull Link getExpandedLink(Link link) {
     UriComponentsBuilder builder = fromUri(link.getTemplate().expand());
     TemplateVariables templateVariables = pageableResolver.getPaginationTemplateVariables(null, builder.build());
     UriTemplate template = UriTemplate.of(link.getHref()).with(templateVariables);

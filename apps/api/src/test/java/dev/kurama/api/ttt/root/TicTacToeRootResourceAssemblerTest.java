@@ -4,6 +4,7 @@ import static dev.kurama.api.core.constant.RestPathConstant.BASE_PATH;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.ROOT_REL;
 import static dev.kurama.api.core.hateoas.relations.HateoasRelations.SELF;
 import static dev.kurama.api.ttt.core.TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE;
+import static dev.kurama.api.ttt.core.TicTacToeConstant.TIC_TAC_TOE_BASE_PATH;
 import static dev.kurama.api.ttt.core.TicTacToeConstant.TIC_TAC_TOE_GAMES_PATH;
 import static dev.kurama.api.ttt.core.TicTacToeConstant.TIC_TAC_TOE_PLAYER_PATH;
 import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_CREATE_REL;
@@ -44,7 +45,8 @@ class TicTacToeRootResourceAssemblerTest {
   void should_have_self_link() {
     RepresentationModel<?> actual = ticTacToeRootResourceAssembler.assemble();
     assertThat(actual.getLinks()).hasSize(8);
-    assertThat(actual.getLink(SELF)).isPresent();
+    assertThat(actual.getLink(SELF)).isPresent()
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(TIC_TAC_TOE_BASE_PATH));
   }
 
   @Test
@@ -74,6 +76,21 @@ class TicTacToeRootResourceAssemblerTest {
     RepresentationModel<?> actual = ticTacToeRootResourceAssembler.assemble();
     assertThat(actual.getLink(TIC_TAC_TOE_PLAYERS_REL)).isPresent()
       .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(TIC_TAC_TOE_PLAYER_PATH + "{?username}"));
+  }
+
+  @Test
+  void should_have_games_changed_channel_link() {
+    RepresentationModel<?> actual = ticTacToeRootResourceAssembler.assemble();
+    assertThat(actual.getLink(TIC_TAC_TOE_WS_GAMES)).isPresent()
+      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(TIC_TAC_TOE_GAMES_CHANGED_CHANNEL));
+  }
+
+  @Test
+  void should_have_game_player_changed_channel_link() {
+    RepresentationModel<?> actual = ticTacToeRootResourceAssembler.assemble();
+    assertThat(actual.getLink(TIC_TAC_TOE_WS_GAME_PLAYER)).isPresent()
+      .hasValueSatisfying(
+        link -> assertThat(link.getHref()).isEqualTo(format(TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL, "{playerId}")));
   }
 
   @Test
@@ -124,20 +141,5 @@ class TicTacToeRootResourceAssemblerTest {
     assertThat(input.get(1).isRequired()).isFalse();
     assertThat(input.get(2).getName()).isEqualTo("playerXUsername");
     assertThat(input.get(2).isRequired()).isFalse();
-  }
-
-  @Test
-  void should_have_games_changed_channel_link() {
-    RepresentationModel<?> actual = ticTacToeRootResourceAssembler.assemble();
-    assertThat(actual.getLink(TIC_TAC_TOE_WS_GAMES)).isPresent()
-      .hasValueSatisfying(link -> assertThat(link.getHref()).isEqualTo(TIC_TAC_TOE_GAMES_CHANGED_CHANNEL));
-  }
-
-  @Test
-  void should_have_game_player_changed_channel_link() {
-    RepresentationModel<?> actual = ticTacToeRootResourceAssembler.assemble();
-    assertThat(actual.getLink(TIC_TAC_TOE_WS_GAME_PLAYER)).isPresent()
-      .hasValueSatisfying(
-        link -> assertThat(link.getHref()).isEqualTo(format(TIC_TAC_TOE_GAME_PLAYER_CHANGED_CHANNEL, "{playerId}")));
   }
 }
