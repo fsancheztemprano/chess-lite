@@ -50,10 +50,8 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private TicTacToePlayer playerO;
 
-  @NonNull
   private LocalDateTime lastActivityAt;
 
-  @NonNull
   private LocalDateTime requestedAt;
 
   private LocalDateTime startedAt;

@@ -1,6 +1,7 @@
 package dev.kurama.api.ttt.game;
 
 import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUserId;
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 import dev.kurama.api.ttt.game.input.TicTacToeGameFilterInput;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public record TicTacToeGameSpecification(TicTacToeGameFilterInput filter) implem
                                @NonNull CriteriaBuilder criteriaBuilder) {
     ArrayList<Predicate> predicates = new ArrayList<>();
 
-    if (filter.getMyGames() != null && filter.getMyGames()) {
+    if (isTrue(filter.getMyGames())) {
       predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("playerX").get("id"), getCurrentUserId()),
         criteriaBuilder.equal(root.get("playerO").get("id"), getCurrentUserId())));
     }
