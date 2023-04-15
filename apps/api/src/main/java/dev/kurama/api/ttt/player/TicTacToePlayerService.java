@@ -24,7 +24,7 @@ public class TicTacToePlayerService {
   }
 
   public List<TicTacToePlayer> findPlayers(String username) {
-    return repository.findAllByUser_UsernameLike("%" + username + "%");
+    return repository.findAllByUserUsernameLike("%" + username + "%");
   }
 
   public TicTacToePlayer create(String userId, String username) {

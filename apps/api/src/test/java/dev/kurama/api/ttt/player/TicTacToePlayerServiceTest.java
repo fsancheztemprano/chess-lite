@@ -66,8 +66,8 @@ class TicTacToePlayerServiceTest {
 
   @Test
   void test_find_players() {
-    when(repository.findAllByUser_UsernameLike(any())).thenReturn(List.of());
-    when(repository.findAllByUser_UsernameLike("%" + playerX.getUsername() + "%")).thenReturn(List.of(playerX));
+    when(repository.findAllByUserUsernameLike(any())).thenReturn(List.of());
+    when(repository.findAllByUserUsernameLike("%" + playerX.getUsername() + "%")).thenReturn(List.of(playerX));
 
     assertThat(service.findPlayers(playerX.getUsername()), hasSize(1));
     assertThat(service.findPlayers(playerX.getUsername()), hasItem(playerX));

@@ -10,5 +10,5 @@ public interface TicTacToePlayerRepository extends JpaRepository<TicTacToePlayer
 
   Optional<TicTacToePlayer> findByUserUsername(String username);
 
-  List<TicTacToePlayer> findAllByUser_UsernameLike(String search);
+  List<TicTacToePlayer> findAllByUserUsernameLike(String like);
 }
