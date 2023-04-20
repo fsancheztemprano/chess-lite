@@ -25,17 +25,17 @@ import org.springframework.stereotype.Service;
 public class TicTacToeGameMoveFacility {
 
   @NonNull
-  private final TicTacToeGameService ticTacToeGameService;
+  private final TicTacToeGameService gameService;
 
   @NonNull
-  private final TicTacToeGameMoveService ticTacToeGameMoveService;
+  private final TicTacToeGameMoveService gameMoveService;
 
   @NonNull
-  private final TicTacToePlayerService ticTacToePlayerService;
+  private final TicTacToePlayerService playerService;
 
   @Transactional
   public TicTacToeGameMove move(String gameId, TicTacToeGameMoveInput input) {
-    TicTacToeGame game = ticTacToeGameService.findById(gameId);
+    TicTacToeGame game = gameService.findById(gameId);
 
     if (game.getStatus() != TicTacToeGame.Status.IN_PROGRESS) {
       throw new ForbiddenException("Game is not in progress");
@@ -48,19 +48,19 @@ public class TicTacToeGameMoveFacility {
       throw new IllegalArgumentException("Illegal move " + input.getCell());
     }
 
-    TicTacToeGameMove move = ticTacToeGameMoveService.createMove(game, input.getCell());
+    TicTacToeGameMove move = gameMoveService.createMove(game, input.getCell());
 
-    game = ticTacToeGameService.applyMove(game, move);
+    game = gameService.applyMove(game, move);
 
     if (game.getStatus() == Status.FINISHED) {
-      ticTacToePlayerService.registerGameResult(game.getPlayerX(), game.getPlayerO(), game.getTurn());
+      playerService.registerGameResult(game.getPlayerX(), game.getPlayerO(), game.getTurn());
     }
 
     return move;
   }
 
   public Collection<TicTacToeGameMove> getAllGameMoves(String gameId) {
-    TicTacToeGame game = ticTacToeGameService.findById(gameId);
+    TicTacToeGame game = gameService.findById(gameId);
     List<String> players = Lists.newArrayList(game.getPlayerX().getId(), game.getPlayerO().getId());
     if (game.isPrivate() && (!hasAuthority(TicTacToeAuthority.TIC_TAC_TOE_GAME_READ) && !players.contains(
       getCurrentUserId()))) {
