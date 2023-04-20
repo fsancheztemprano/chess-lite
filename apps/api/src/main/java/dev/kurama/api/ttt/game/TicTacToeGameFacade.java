@@ -17,13 +17,16 @@ public class TicTacToeGameFacade {
   private final TicTacToeGameService service;
 
   @NonNull
+  private final TicTacToeGameFacility facility;
+
+  @NonNull
   private final TicTacToeGameMapper mapper;
 
   @NonNull
   private final TicTacToeGameModelAssembler assembler;
 
   public TicTacToeGameModel create(TicTacToeGameInput input) {
-    return mapper.ticTacToeGameToTicTacToeGameModel(service.create(input));
+    return mapper.ticTacToeGameToTicTacToeGameModel(facility.create(input));
   }
 
   public TicTacToeGameModel findById(String gameId) {

@@ -13,6 +13,7 @@ import dev.kurama.api.ttt.game.TicTacToeGame;
 import dev.kurama.api.ttt.game.TicTacToeGame.Status;
 import dev.kurama.api.ttt.game.TicTacToeGameController;
 import dev.kurama.api.ttt.game.TicTacToeGameFacade;
+import dev.kurama.api.ttt.game.TicTacToeGameFacility;
 import dev.kurama.api.ttt.game.TicTacToeGameModelAssembler;
 import dev.kurama.api.ttt.game.TicTacToeGameModelProcessor;
 import dev.kurama.api.ttt.game.TicTacToeGameService;
@@ -34,6 +35,9 @@ public abstract class TicTacToeGameControllerBase extends PactBase {
 
   @MockBean
   private TicTacToeGameService service;
+
+  @MockBean
+  private TicTacToeGameFacility facility;
 
 
   @Override
@@ -102,7 +106,7 @@ public abstract class TicTacToeGameControllerBase extends PactBase {
     doReturn(game3).when(service).findById(game3.getId());
     doReturn(game4).when(service).findById(game4.getId());
 
-    doReturn(game1).when(service).create(any());
+    doReturn(game1).when(facility).create(any());
 
     doThrow(EntityNotFoundException.class).when(service).updateStatus(anyString(), any());
     doReturn(game2).when(service).updateStatus(eq(game2.getId()), any());

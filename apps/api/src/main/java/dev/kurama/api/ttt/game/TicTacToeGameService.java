@@ -1,16 +1,13 @@
 package dev.kurama.api.ttt.game;
 
 import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUserId;
-import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUsername;
 import static dev.kurama.api.core.utility.AuthorityUtils.hasAuthority;
 import static dev.kurama.api.ttt.core.TicTacToeUtils.isGameOver;
 import static dev.kurama.api.ttt.core.TicTacToeUtils.isGameTied;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import com.google.common.collect.Lists;
 import dev.kurama.api.core.exception.domain.ForbiddenException;
-import dev.kurama.api.core.exception.domain.not.found.EntityNotFoundException;
 import dev.kurama.api.ttt.core.TicTacToeAuthority;
 import dev.kurama.api.ttt.game.TicTacToeGame.Status;
 import dev.kurama.api.ttt.game.TicTacToeGameSpecification.MyGamesOrPublic;
@@ -20,7 +17,6 @@ import dev.kurama.api.ttt.game.input.TicTacToeGameStatusInput;
 import dev.kurama.api.ttt.move.TicTacToeGameMove;
 import dev.kurama.api.ttt.player.TicTacToePlayer;
 import dev.kurama.api.ttt.player.TicTacToePlayer.Token;
-import dev.kurama.api.ttt.player.TicTacToePlayerService;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.NonNull;
@@ -38,9 +34,6 @@ public class TicTacToeGameService {
   private final TicTacToeGameRepository repository;
 
   @NonNull
-  private final TicTacToePlayerService ticTacToePlayerService;
-
-  @NonNull
   private final TicTacToeGameChangedEventEmitter eventEmitter;
 
   public static final String CHANGE_STATUS_REGEX = "^(REJECTED|IN_PROGRESS)$";
@@ -49,23 +42,11 @@ public class TicTacToeGameService {
     return repository.findById(gameId).orElseThrow();
   }
 
-  public TicTacToeGame create(TicTacToeGameInput ticTacToeGameInput) {
-    if (isEmpty(ticTacToeGameInput.getPlayerXUsername()) || !hasAuthority(TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE)) {
-      ticTacToeGameInput.setPlayerXUsername(getCurrentUsername());
-    }
-    if (ticTacToeGameInput.getPlayerXUsername().equals(ticTacToeGameInput.getPlayerOUsername())) {
-      throw new IllegalArgumentException("X and O cannot be the same player");
-    }
-    TicTacToePlayer xPlayer = ticTacToePlayerService.getPlayerByUsername(ticTacToeGameInput.getPlayerXUsername())
-      .orElseThrow(() -> new EntityNotFoundException(ticTacToeGameInput.getPlayerXUsername(), TicTacToePlayer.class));
-    TicTacToePlayer oPlayer = ticTacToePlayerService.getPlayerByUsername(ticTacToeGameInput.getPlayerOUsername())
-      .orElseThrow(() -> new EntityNotFoundException(ticTacToeGameInput.getPlayerOUsername(), TicTacToePlayer.class));
-
+  public TicTacToeGame create(TicTacToeGameInput ticTacToeGameInput, TicTacToePlayer xPlayer, TicTacToePlayer oPlayer) {
     List<String> playerIds = Lists.newArrayList(xPlayer.getId(), oPlayer.getId());
     if (repository.existsTicTacToeGameByPlayerXIdInAndPlayerOIdInAndStatus(playerIds, playerIds, Status.PENDING)) {
       throw new IllegalArgumentException("Pending Game already exists");
     }
-
     TicTacToeGame game = TicTacToeGame.builder()
       .setRandomUUID()
       .playerX(xPlayer)

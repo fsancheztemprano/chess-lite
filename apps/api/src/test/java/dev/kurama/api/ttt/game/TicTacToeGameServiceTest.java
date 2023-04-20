@@ -3,7 +3,6 @@ package dev.kurama.api.ttt.game;
 import static dev.kurama.api.core.utility.AuthorityUtils.setContextUser;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,7 +19,6 @@ import dev.kurama.api.ttt.game.input.TicTacToeGameStatusInput;
 import dev.kurama.api.ttt.move.TicTacToeGameMove;
 import dev.kurama.api.ttt.player.TicTacToePlayer;
 import dev.kurama.api.ttt.player.TicTacToePlayer.Token;
-import dev.kurama.api.ttt.player.TicTacToePlayerService;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -49,22 +47,14 @@ class TicTacToeGameServiceTest {
   private TicTacToeGameRepository repository;
 
   @Mock
-  private TicTacToePlayerService playerService;
-
-  @Mock
   private TicTacToeGameChangedEventEmitter eventEmitter;
 
-  TicTacToeGame expected;
-
-  @BeforeEach
-  void setUp() {
-    expected = TicTacToeGame.builder()
-      .setRandomUUID()
-      .status(Status.PENDING)
-      .lastActivityAt(LocalDateTime.now())
-      .requestedAt(LocalDateTime.now())
-      .build();
-  }
+  TicTacToeGame expected = TicTacToeGame.builder()
+    .setRandomUUID()
+    .status(Status.PENDING)
+    .lastActivityAt(LocalDateTime.now())
+    .requestedAt(LocalDateTime.now())
+    .build();
 
   @Test
   void should_find_game_by_id() {
@@ -80,9 +70,6 @@ class TicTacToeGameServiceTest {
 
     @Test
     void should_create_game() {
-      setContextUser(ContextUser.builder().id("user-1").username("user-1").build(),
-        TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE, TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE);
-
       TicTacToePlayer playerX = TicTacToePlayer.builder().setRandomUUID().username("user-1").build();
       TicTacToePlayer playerO = TicTacToePlayer.builder().setRandomUUID().username("user-2").build();
       TicTacToeGameInput input = TicTacToeGameInput.builder()
@@ -91,10 +78,8 @@ class TicTacToeGameServiceTest {
         .build();
 
       when(repository.save(any(TicTacToeGame.class))).thenAnswer(invocation -> invocation.getArgument(0));
-      when(playerService.getPlayerByUsername(playerX.getUsername())).thenReturn(Optional.of(playerX));
-      when(playerService.getPlayerByUsername(playerO.getUsername())).thenReturn(Optional.of(playerO));
 
-      TicTacToeGame actual = service.create(input);
+      TicTacToeGame actual = service.create(input, playerX, playerO);
 
       verify(eventEmitter).emitTicTacToeGameCreatedEvent(actual);
       assertEquals(playerX, actual.getPlayerX());
@@ -106,73 +91,7 @@ class TicTacToeGameServiceTest {
     }
 
     @Test
-    void should_create_game_with_game_create_authority_between_different_players() {
-      setContextUser(ContextUser.builder().id("admin").username("admin").build(),
-        TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE);
-
-      TicTacToePlayer playerX = TicTacToePlayer.builder().setRandomUUID().username("user-1").build();
-      TicTacToePlayer playerO = TicTacToePlayer.builder().setRandomUUID().username("user-2").build();
-      TicTacToeGameInput input = TicTacToeGameInput.builder()
-        .playerXUsername(playerX.getUsername())
-        .playerOUsername(playerO.getUsername())
-        .build();
-
-      when(repository.save(any(TicTacToeGame.class))).thenAnswer(invocation -> invocation.getArgument(0));
-      when(playerService.getPlayerByUsername(playerX.getUsername())).thenReturn(Optional.of(playerX));
-      when(playerService.getPlayerByUsername(playerO.getUsername())).thenReturn(Optional.of(playerO));
-
-      TicTacToeGame actual = service.create(input);
-
-      verify(eventEmitter).emitTicTacToeGameCreatedEvent(actual);
-      assertEquals(playerX, actual.getPlayerX());
-      assertEquals(playerO, actual.getPlayerO());
-      assertFalse(actual.isPrivate());
-      assertEquals(Status.PENDING, actual.getStatus());
-      assertNotNull(actual.getLastActivityAt());
-      assertNotNull(actual.getRequestedAt());
-    }
-
-    @Test
-    void should_create_game_with_game_create_authority_between_same_players() {
-      setContextUser(ContextUser.builder().id("user-1").username("user-1").build());
-
-      TicTacToePlayer playerX = TicTacToePlayer.builder().setRandomUUID().username("user-1").build();
-      TicTacToePlayer playerO = TicTacToePlayer.builder().setRandomUUID().username("user-3").build();
-      TicTacToeGameInput input = TicTacToeGameInput.builder()
-        .playerXUsername("user-2")
-        .playerOUsername(playerO.getUsername())
-        .build();
-
-      when(repository.save(any(TicTacToeGame.class))).thenAnswer(invocation -> invocation.getArgument(0));
-      when(playerService.getPlayerByUsername(playerX.getUsername())).thenReturn(Optional.of(playerX));
-      when(playerService.getPlayerByUsername(playerO.getUsername())).thenReturn(Optional.of(playerO));
-
-      TicTacToeGame actual = service.create(input);
-
-      verify(eventEmitter).emitTicTacToeGameCreatedEvent(actual);
-      assertEquals(playerX, actual.getPlayerX());
-      assertEquals(playerO, actual.getPlayerO());
-    }
-
-
-    @Test
-    void should_throw_if_both_users_are_the_same() {
-      setContextUser(ContextUser.builder().id("user-1").username("user-1").build());
-
-      TicTacToeGameInput input = TicTacToeGameInput.builder()
-        .playerXUsername("user-1")
-        .playerOUsername("user-1")
-        .build();
-
-      when(repository.save(any(TicTacToeGame.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-      assertThrows(IllegalArgumentException.class, () -> service.create(input));
-    }
-
-    @Test
     void should_throw_if_game_between_players_already_exists() {
-      setContextUser(ContextUser.builder().id("user-1").username("user-1").build());
-
       TicTacToePlayer playerX = TicTacToePlayer.builder().setRandomUUID().username("user-1").build();
       TicTacToePlayer playerO = TicTacToePlayer.builder().setRandomUUID().username("user-2").build();
       TicTacToeGameInput input = TicTacToeGameInput.builder()
@@ -181,12 +100,10 @@ class TicTacToeGameServiceTest {
         .build();
 
       when(repository.save(any(TicTacToeGame.class))).thenAnswer(invocation -> invocation.getArgument(0));
-      when(playerService.getPlayerByUsername(playerX.getUsername())).thenReturn(Optional.of(playerX));
-      when(playerService.getPlayerByUsername(playerO.getUsername())).thenReturn(Optional.of(playerO));
       when(repository.existsTicTacToeGameByPlayerXIdInAndPlayerOIdInAndStatus(any(), any(),
         eq(Status.PENDING))).thenReturn(true);
 
-      assertThrows(IllegalArgumentException.class, () -> service.create(input));
+      assertThrows(IllegalArgumentException.class, () -> service.create(input, playerX, playerO));
     }
   }
 

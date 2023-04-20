@@ -56,6 +56,9 @@ class TicTacToeGameControllerIT {
   @MockBean
   private TicTacToeGameService service;
 
+  @MockBean
+  private TicTacToeGameFacility facility;
+
   TicTacToePlayer playerX = TicTacToePlayer.builder().setRandomUUID().username("user-1").build();
   TicTacToePlayer playerO = TicTacToePlayer.builder().setRandomUUID().username("user-2").build();
   TicTacToeGame game = TicTacToeGame.builder()
@@ -90,7 +93,7 @@ class TicTacToeGameControllerIT {
 
     @Test
     void should_return_created_when_user_is_authorized() throws Exception {
-      when(service.create(input)).thenReturn(game);
+      when(facility.create(input)).thenReturn(game);
 
       mockMvc.perform(post(TIC_TAC_TOE_GAMES_PATH).contentType(MediaType.APPLICATION_JSON)
           .content(asJsonString(input))

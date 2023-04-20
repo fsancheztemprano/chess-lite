@@ -31,6 +31,9 @@ class TicTacToeGameFacadeTest {
   private TicTacToeGameService service;
 
   @Mock
+  private TicTacToeGameFacility facility;
+
+  @Mock
   private TicTacToeGameMapper mapper;
 
   @Mock
@@ -52,7 +55,7 @@ class TicTacToeGameFacadeTest {
   void should_create_game() {
     TicTacToeGameInput input = TicTacToeGameInput.builder().playerOUsername("user-2").build();
 
-    when(service.create(input)).thenReturn(game);
+    when(facility.create(input)).thenReturn(game);
     when(mapper.ticTacToeGameToTicTacToeGameModel(game)).thenReturn(model);
 
     assertEquals(facade.create(input), model);

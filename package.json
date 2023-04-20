@@ -31,6 +31,7 @@
     "build:backend": "nx run api:build",
     "package": "nx run api:package",
     "pact": "nx run api:pact:complete",
+    "pact:generate": "yarn run pact:consumer && yarn run pact:producer:generate",
     "pact:consumer": "nx run consumer-pact:pact",
     "pact:producer": "nx run api:pact",
     "pact:producer:generate": "nx run api:pact:generate",
