@@ -5,7 +5,6 @@ import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +15,6 @@ public class TicTacToePlayerEventListener {
   @NonNull
   private final TicTacToePlayerService ticTacToePlayerService;
 
-  @Async
   @EventListener
   public void userChangedEvent(@NonNull UserChangedEvent event) {
     if (event.getAction() != UserChangedEventAction.CREATED) {

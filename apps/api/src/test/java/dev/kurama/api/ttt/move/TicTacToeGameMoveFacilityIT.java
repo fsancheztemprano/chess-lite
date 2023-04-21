@@ -9,7 +9,6 @@ import dev.kurama.api.core.exception.domain.ForbiddenException;
 import dev.kurama.api.core.filter.ContextUser;
 import dev.kurama.api.ttt.game.TicTacToeGame;
 import dev.kurama.api.ttt.game.TicTacToeGame.Status;
-import dev.kurama.api.ttt.game.TicTacToeGameChangedEventEmitter;
 import dev.kurama.api.ttt.game.TicTacToeGameService;
 import dev.kurama.api.ttt.player.TicTacToePlayer;
 import dev.kurama.api.ttt.player.TicTacToePlayer.Token;
@@ -23,7 +22,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 
 @ServiceLayerIntegrationTestConfig
@@ -37,9 +35,6 @@ class TicTacToeGameMoveFacilityIT {
   @Autowired
   private TicTacToeGameMoveFacility facility;
 
-  @MockBean
-  private TicTacToeGameChangedEventEmitter emitter;
-
   @Nested
   class CreateTicTacToeGameMoveTests {
 
@@ -50,8 +45,10 @@ class TicTacToeGameMoveFacilityIT {
 
     @BeforeEach
     void setUp() {
-      playerX = entityManager.persist(TicTacToePlayer.builder().setRandomUUID().username("user-1").build());
-      playerO = entityManager.persist(TicTacToePlayer.builder().setRandomUUID().username("user-2").build());
+      playerX = entityManager.persist(
+        TicTacToePlayer.builder().setRandomUUID().username("user-1").wins(0).draws(0).losses(0).build());
+      playerO = entityManager.persist(
+        TicTacToePlayer.builder().setRandomUUID().username("user-2").wins(0).draws(0).losses(0).build());
       game = entityManager.persist(TicTacToeGame.builder()
         .setRandomUUID()
         .playerX(playerX)
@@ -79,6 +76,8 @@ class TicTacToeGameMoveFacilityIT {
       assertThat(move.getMovedAt()).isNotNull();
       assertThat(move.getGame().getBoard()).isEqualTo("OX__X__XO");
       assertThat(move.getGame().getStatus()).isEqualTo(Status.FINISHED);
+      assertThat(move.getGame().getPlayerX().getWins()).isEqualTo(1);
+      assertThat(move.getGame().getPlayerO().getLosses()).isEqualTo(1);
     }
 
 
