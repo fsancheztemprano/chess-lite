@@ -2,6 +2,7 @@ package dev.kurama.api.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Sets;
+import dev.kurama.api.ttt.player.TicTacToePlayer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +12,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import dev.kurama.api.ttt.player.TicTacToePlayer;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
