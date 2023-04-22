@@ -48,8 +48,16 @@
         },
         "role-management": {
           "title": "Role Management"
+        },
+        "theme": {
+          "title": "Theme"
         }
       }
+    }
+  },
+  "form": {
+    "validation": {
+      "required": "This field is required."
     }
   }
 }

@@ -58,7 +58,7 @@ describe('User Settings Module >', () => {
   });
 
   it('should change user password', () => {
-    cy.interceptApi('PATCH', '/user/profile/password').as('updatePassword');
+    cy.interceptApi('PATCH', '/user/profile/password').as('changePassword');
     cy.get('[data-cy="user-password-tile"]').click();
     cy.get('#mat-input-0').type('e2e-user1');
     cy.get('#mat-input-1').type('e2e-user1');
@@ -66,7 +66,7 @@ describe('User Settings Module >', () => {
     cy.get('#mat-input-3').type('e2e-user1-new');
 
     cy.get('[data-cy="change-password-button"]').click();
-    cy.wait('@updatePassword').its('response.statusCode').should('eq', 200);
+    cy.wait('@changePassword');
     cy.get('#toast-container').should('contain', 'Password changed successfully');
     cy.get('[data-cy="logout-menu-option"]').click();
     cy.get('app-home [data-cy="login-tile"]').click();

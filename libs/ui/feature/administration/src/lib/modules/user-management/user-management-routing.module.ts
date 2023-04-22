@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RolesResolver } from '../role-management/resolvers/roles.resolver';
+import { filter, take } from 'rxjs';
+import { RoleManagementService } from '../role-management/services/role-management.service';
 import { UserManagementDetailGuard } from './modules/detail/guards/user-management-detail.guard';
-import { UserManagementDetailResolver } from './modules/detail/resolvers/user-management-detail.resolver';
+import { UserManagementDetailService } from './modules/detail/services/user-management-detail.service';
 
 const loadUserManagementHomeModule = () =>
   import('./modules/home/user-management-home.module').then((m) => m.UserManagementHomeModule);
@@ -23,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'users',
-    data: { breadcrumb: { i18n: 'administration.user-management.users' } },
+    data: { breadcrumb: { label: 'administration.user-management.users', i18n: true } },
     children: [
       {
         path: '',
@@ -35,16 +36,22 @@ const routes: Routes = [
         loadChildren: loadUserManagementDetailModule,
         canActivate: [UserManagementDetailGuard],
         canDeactivate: [UserManagementDetailGuard],
-        resolve: { user: UserManagementDetailResolver },
-        data: { breadcrumb: { title: (data: { user: { username: string } }) => `${data.user.username}` } },
+        resolve: {
+          user: () =>
+            inject(UserManagementDetailService).user$.pipe(
+              take(1),
+              filter((user) => !!user?.username?.length),
+            ),
+        },
+        data: { breadcrumb: { label: (data: { user: { username: string } }) => `${data.user.username}` } },
       },
     ],
   },
   {
     path: 'create',
     loadChildren: loadUserManagementCreateModule,
-    resolve: { roles: RolesResolver },
-    data: { breadcrumb: { i18n: 'administration.user-management.new-user' } },
+    resolve: { roles: () => inject(RoleManagementService).fetchRoles({ size: 1000 }) },
+    data: { breadcrumb: { label: 'administration.user-management.new-user', i18n: true } },
   },
   { path: '**', redirectTo: '' },
 ];

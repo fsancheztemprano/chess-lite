@@ -434,134 +434,135 @@ describe('Template', () => {
     });
 
     it('should return true for readonly property', () => {
-      expect(
-        Template.of({
-          properties: [
-            {
-              name: 'username',
-              readOnly: true,
-            },
-          ],
-        }).canAfford({ name: 'name', username: 'username' }),
-      ).toBeTruthy();
+      const readOnlyTemplate = Template.of({ properties: [{ name: 'username', readOnly: true }] });
+
+      expect(readOnlyTemplate.canAfford({ name: 'name', username: 'username' })).toBeTruthy();
     });
 
-    it('should return true if required property is provided', () => {
-      expect(
-        Template.of({
-          properties: [
-            {
-              name: 'username',
-              required: true,
-            },
-          ],
-        }).canAfford({ username: 'new username' }),
-      ).toBeTruthy();
+    describe('required', () => {
+      const requiredTemplate = Template.of({ properties: [{ name: 'username', required: true }] });
+
+      it('should return true if required property is provided', () => {
+        expect(requiredTemplate.canAfford({ username: 'new username' })).toBeTruthy();
+      });
+
+      it.each(['', ' ', 0, [], ['']])(
+        'should return true if required property is provided and nullish: %p',
+        (nullish) => {
+          expect(requiredTemplate.canAfford({ username: nullish })).toBeTruthy();
+        },
+      );
+
+      it('should return false if required property is undefined', () => {
+        expect(requiredTemplate.canAfford({ username: undefined })).toBeFalsy();
+      });
+
+      it('should return false if required property is not provided', () => {
+        expect(requiredTemplate.canAfford({ lastname: 'new lastname' })).toBeFalsy();
+      });
     });
 
-    it.each(['', ' ', 0, [], ['']])(
-      'should return true if required property is provided and nullish: %p',
-      (nullish) => {
-        expect(
-          Template.of({
-            properties: [
-              {
-                name: 'username',
-                required: true,
-              },
-            ],
-          }).canAfford({ username: nullish }),
-        ).toBeTruthy();
-      },
-    );
+    describe('regex', () => {
+      const regexTemplate = Template.of({ properties: [{ name: 'username', regex: '^[a-zA-Z]+$' }] });
 
-    it('should return false if required property is undefined', () => {
-      expect(
-        Template.of({
-          properties: [
-            {
-              name: 'username',
-              required: true,
-            },
-          ],
-        }).canAfford({ username: undefined }),
-      ).toBeFalsy();
+      it('should return true if provided value matches regex property', () => {
+        expect(regexTemplate.canAfford({ username: 'newusername' })).toBeTruthy();
+      });
+
+      it('should return false if provided value does not match regex property', () => {
+        expect(regexTemplate.canAfford({ username: 'newusername0' })).toBeFalsy();
+      });
+
+      it('should return true if regex property has no provided value', () => {
+        expect(regexTemplate.canAfford({})).toBeTruthy();
+      });
     });
 
-    it('should return false if required property is not provided', () => {
-      expect(
-        Template.of({
-          properties: [
-            {
-              name: 'username',
-              required: true,
-            },
-          ],
-        }).canAfford({ lastname: 'new lastname' }),
-      ).toBeFalsy();
+    describe('value', () => {
+      const valueTemplate = Template.of({ properties: [{ name: 'username' }] });
+
+      it('should return true if provided property is valid', () => {
+        expect(valueTemplate.canAffordProperty('username', 'JohnDoe')).toBeTruthy();
+      });
+
+      it('should return false if provided property is not valid', () => {
+        expect(valueTemplate.canAffordProperty('email', 'JohnDoe@example.com')).toBeFalsy();
+      });
+
+      it('should return false if provided property is null', () => {
+        expect(valueTemplate.canAffordProperty(undefined, 'JohnDoe')).toBeFalsy();
+      });
     });
 
-    it('should return true if provided value matches regex property', () => {
-      expect(
-        Template.of({
-          properties: [
-            {
-              name: 'username',
-              regex: '^[a-zA-Z]+$',
-            },
-          ],
-        }).canAfford({ username: 'newusername' }),
-      ).toBeTruthy();
+    describe('min', () => {
+      const minTemplate = Template.of({ properties: [{ name: 'year', min: 2000 }] });
+
+      it('should return true if provided property is at least equal to min', () => {
+        expect(minTemplate.canAffordProperty('year', 2000)).toBeTruthy();
+        expect(minTemplate.canAffordProperty('year', 2001)).toBeTruthy();
+      });
+
+      it('should return false if provided property less than min', () => {
+        expect(minTemplate.canAffordProperty('year', 1999)).toBeFalsy();
+      });
     });
 
-    it('should return false if provided value does not match regex property', () => {
-      expect(
-        Template.of({
-          properties: [
-            {
-              name: 'username',
-              regex: '^[a-zA-Z]+$',
-            },
-          ],
-        }).canAfford({ username: 'newusername0' }),
-      ).toBeFalsy();
+    describe('max', () => {
+      const maxTemplate = Template.of({ properties: [{ name: 'year', max: 2000 }] });
+
+      it('should return true if provided property is at most equal to max', () => {
+        expect(maxTemplate.canAffordProperty('year', 2000)).toBeTruthy();
+        expect(maxTemplate.canAffordProperty('year', 1999)).toBeTruthy();
+      });
+
+      it('should return false if provided property greater than max', () => {
+        expect(maxTemplate.canAffordProperty('year', 2001)).toBeFalsy();
+      });
     });
 
-    it('should return true if regex property has no provided value', () => {
-      expect(
-        Template.of({
-          properties: [
-            {
-              name: 'username',
-              regex: '^[a-zA-Z]+$',
-            },
-          ],
-        }).canAfford({}),
-      ).toBeTruthy();
+    describe('minLength', () => {
+      const minLengthTemplate = Template.of({ properties: [{ name: 'username', minLength: 3 }] });
+
+      it('should return true if provided property length is at least equal to min length', () => {
+        expect(minLengthTemplate.canAffordProperty('username', 'abc')).toBeTruthy();
+        expect(minLengthTemplate.canAffordProperty('username', 'abcd')).toBeTruthy();
+        expect(minLengthTemplate.canAffordProperty('username', ['a', 'b', 'c'])).toBeTruthy();
+        expect(minLengthTemplate.canAffordProperty('username', ['a', 'b', 'c', 'd'])).toBeTruthy();
+      });
+
+      it('should return false if provided property length is less than min length', () => {
+        expect(minLengthTemplate.canAffordProperty('username', 'ab')).toBeFalsy();
+        expect(minLengthTemplate.canAffordProperty('username', ['a', 'b'])).toBeFalsy();
+      });
     });
 
-    it('should return true if provided property is valid', () => {
-      expect(
-        Template.of({
-          properties: [{ name: 'username' }],
-        }).canAffordProperty('username', 'JohnDoe'),
-      ).toBeTruthy();
+    describe('maxLength', () => {
+      const maxLengthTemplate = Template.of({ properties: [{ name: 'username', maxLength: 3 }] });
+
+      it('should return true if provided property length is at most equal to max length', () => {
+        expect(maxLengthTemplate.canAffordProperty('username', 'abc')).toBeTruthy();
+        expect(maxLengthTemplate.canAffordProperty('username', 'ab')).toBeTruthy();
+        expect(maxLengthTemplate.canAffordProperty('username', ['a', 'b', 'c'])).toBeTruthy();
+        expect(maxLengthTemplate.canAffordProperty('username', ['a', 'b'])).toBeTruthy();
+      });
+
+      it('should return false if provided property length is greater than max length', () => {
+        expect(maxLengthTemplate.canAffordProperty('username', 'abcd')).toBeFalsy();
+        expect(maxLengthTemplate.canAffordProperty('username', ['a', 'b', 'c', 'd'])).toBeFalsy();
+      });
     });
 
-    it('should return false if provided property is not valid', () => {
-      expect(
-        Template.of({
-          properties: [{ name: 'password' }],
-        }).canAffordProperty('username', 'JohnDoe'),
-      ).toBeFalsy();
-    });
+    describe('step', () => {
+      const stepTemplate = Template.of({ properties: [{ name: 'year', step: 2 }] });
 
-    it('should return false if provided property is null', () => {
-      expect(
-        Template.of({
-          properties: [{ name: 'password' }],
-        }).canAffordProperty(undefined, 'JohnDoe'),
-      ).toBeFalsy();
+      it('should return true if provided property is a multiple of step', () => {
+        expect(stepTemplate.canAffordProperty('year', 2000)).toBeTruthy();
+        expect(stepTemplate.canAffordProperty('year', 2002)).toBeTruthy();
+      });
+
+      it('should return false if provided property is not a multiple of step', () => {
+        expect(stepTemplate.canAffordProperty('year', 2001)).toBeFalsy();
+      });
     });
   });
 

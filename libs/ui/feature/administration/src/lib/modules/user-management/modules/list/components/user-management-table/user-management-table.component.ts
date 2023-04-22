@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, ViewChild } from '@angul
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { CoreContextMenuService } from '@app/ui/shared/core';
+import { Breakpoint, BreakpointFilter, CoreContextMenuService } from '@app/ui/shared/core';
 import { User, UserManagementRelations, UserPage } from '@app/ui/shared/domain';
 import { TranslocoService } from '@ngneat/transloco';
 import { map } from 'rxjs/operators';
@@ -16,17 +16,17 @@ import { UserManagementTableDatasource } from './user-management-table.datasourc
 })
 export class UserManagementTableComponent implements OnDestroy {
   public readonly TRANSLOCO_SCOPE = 'administration.user-management.table';
-  public readonly displayedColumns = [
-    'username',
-    'email',
-    'firstname',
-    'lastname',
-    'lastLoginDateDisplay',
-    'joinDate',
-    'role',
-    'active',
-    'locked',
-    'edit',
+  public readonly reactiveColumns: BreakpointFilter[] = [
+    { value: 'username' },
+    { value: 'email' },
+    { value: 'firstname', breakpoint: Breakpoint.XL },
+    { value: 'lastname', breakpoint: Breakpoint.XL },
+    { value: 'lastLoginDateDisplay', breakpoint: Breakpoint.M },
+    { value: 'joinDate', breakpoint: Breakpoint.M },
+    { value: 'role' },
+    { value: 'active', breakpoint: Breakpoint.L },
+    { value: 'locked', breakpoint: Breakpoint.L },
+    { value: 'edit' },
   ];
 
   constructor(

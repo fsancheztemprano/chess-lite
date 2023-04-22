@@ -31,7 +31,7 @@ describe('BreadcrumbService', () => {
   });
 
   it('should get breadcrumbs', () => {
-    const breadcrumbs = [{ title$: of('title') }];
+    const breadcrumbs = [{ label$: of('label') }];
 
     expect(service['_breadcrumbs$'].value).toEqual([]);
 
@@ -41,7 +41,7 @@ describe('BreadcrumbService', () => {
   });
 
   it('should set breadcrumbs', () => {
-    const breadcrumbs: Breadcrumb[] = [{ title$: of('title'), url: '' }];
+    const breadcrumbs: Breadcrumb[] = [{ label$: of('label'), url: '' }];
 
     expect(service['_breadcrumbs$'].value).toEqual([]);
 
@@ -53,9 +53,9 @@ describe('BreadcrumbService', () => {
   describe('parentRoute$', () => {
     it('should get parent route', async () => {
       const breadcrumb = [
-        { title$: of('title'), url: '/url1' },
-        { title$: of('title'), url: '/url2' },
-        { title$: of('title'), url: '/url3' },
+        { label$: of('label'), url: '/url1' },
+        { label$: of('label'), url: '/url2' },
+        { label$: of('label'), url: '/url3' },
       ];
       service['_breadcrumbs$'].next(breadcrumb);
 
@@ -64,9 +64,9 @@ describe('BreadcrumbService', () => {
 
     it('should get parent route with offset', async () => {
       const breadcrumb = [
-        { title$: of('title'), url: '/url1' },
-        { title$: of('title'), url: '/url2' },
-        { title$: of('title'), url: '/url3', parentOffset: 1 },
+        { label$: of('label'), url: '/url1' },
+        { label$: of('label'), url: '/url2' },
+        { label$: of('label'), url: '/url3', parentOffset: 1 },
       ];
       service['_breadcrumbs$'].next(breadcrumb);
 
@@ -106,14 +106,14 @@ describe('BreadcrumbService', () => {
 
       const activatedRouteSnapshot: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       activatedRouteSnapshot.url = [new UrlSegment('', {})];
-      activatedRouteSnapshot.data = { breadcrumb: { title: 'title' } };
+      activatedRouteSnapshot.data = { breadcrumb: { label: 'label' } };
       (activatedRouteSnapshot as any)['_routerState'] = { firstChild: () => null };
 
       const breadcrumbs = service['_buildBreadcrumbs'](activatedRouteSnapshot, [], []);
 
       expect(breadcrumbs).toHaveLength(1);
       expect(breadcrumbs).toPartiallyContain({ url: '/' });
-      await expect(firstValueFrom(breadcrumbs[0].title$!)).resolves.toEqual('title');
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('label');
 
       expect(recursiveSpy).toHaveBeenCalledTimes(2);
     });
@@ -123,21 +123,21 @@ describe('BreadcrumbService', () => {
 
       const childRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       childRoute.url = [new UrlSegment('users', {})];
-      childRoute.data = { breadcrumb: { title: 'users' } };
+      childRoute.data = { breadcrumb: { label: 'users' } };
       (childRoute as any)['_routerState'] = { firstChild: () => null };
 
       const parentRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       parentRoute.url = [new UrlSegment('', {})];
-      parentRoute.data = { breadcrumb: { title: 'home' } };
+      parentRoute.data = { breadcrumb: { label: 'home' } };
       (parentRoute as any)['_routerState'] = { firstChild: () => childRoute };
 
       const breadcrumbs = service['_buildBreadcrumbs'](parentRoute, [], []);
 
       expect(breadcrumbs).toHaveLength(2);
       expect(breadcrumbs[0].url).toEqual('/');
-      await expect(firstValueFrom(breadcrumbs[0].title$!)).resolves.toEqual('home');
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('home');
       expect(breadcrumbs[1].url).toEqual('/users');
-      await expect(firstValueFrom(breadcrumbs[1].title$!)).resolves.toEqual('users');
+      await expect(firstValueFrom(breadcrumbs[1].label$!)).resolves.toEqual('users');
 
       expect(recursiveSpy).toHaveBeenCalledTimes(3);
     });
@@ -147,28 +147,28 @@ describe('BreadcrumbService', () => {
 
       const grandChildRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       grandChildRoute.url = [new UrlSegment('userId', {})];
-      grandChildRoute.data = { breadcrumb: { title: 'user 1' } };
+      grandChildRoute.data = { breadcrumb: { label: 'user 1' } };
       (grandChildRoute as any)['_routerState'] = { firstChild: () => null };
 
       const childRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       childRoute.url = [new UrlSegment('users', {})];
-      childRoute.data = { breadcrumb: { title: 'users' } };
+      childRoute.data = { breadcrumb: { label: 'users' } };
       (childRoute as any)['_routerState'] = { firstChild: () => grandChildRoute };
 
       const parentRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       parentRoute.url = [new UrlSegment('', {})];
-      parentRoute.data = { breadcrumb: { title: 'home' } };
+      parentRoute.data = { breadcrumb: { label: 'home' } };
       (parentRoute as any)['_routerState'] = { firstChild: () => childRoute };
 
       const breadcrumbs = service['_buildBreadcrumbs'](parentRoute, [], []);
 
       expect(breadcrumbs).toHaveLength(3);
       expect(breadcrumbs[0].url).toEqual('/');
-      await expect(firstValueFrom(breadcrumbs[0].title$!)).resolves.toEqual('home');
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('home');
       expect(breadcrumbs[1].url).toEqual('/users');
-      await expect(firstValueFrom(breadcrumbs[1].title$!)).resolves.toEqual('users');
+      await expect(firstValueFrom(breadcrumbs[1].label$!)).resolves.toEqual('users');
       expect(breadcrumbs[2].url).toEqual('/users/userId');
-      await expect(firstValueFrom(breadcrumbs[2].title$!)).resolves.toEqual('user 1');
+      await expect(firstValueFrom(breadcrumbs[2].label$!)).resolves.toEqual('user 1');
 
       expect(recursiveSpy).toHaveBeenCalledTimes(4);
     });
@@ -178,32 +178,32 @@ describe('BreadcrumbService', () => {
 
       const grandChildRoute: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       grandChildRoute.url = [new UrlSegment('users', {})];
-      grandChildRoute.data = { breadcrumb: { title: 'users b' } };
+      grandChildRoute.data = { breadcrumb: { label: 'users b' } };
       (grandChildRoute as any)['_routerState'] = { firstChild: () => null };
 
       const breadcrumbs = service['_buildBreadcrumbs'](
         grandChildRoute,
         [],
         [
-          { url: '/', title$: of('home') },
-          { url: 'users', title$: of('users a') },
+          { url: '/', label$: of('home') },
+          { url: 'users', label$: of('users a') },
         ],
       );
 
       expect(breadcrumbs).toHaveLength(2);
       expect(breadcrumbs[0].url).toEqual('/');
-      await expect(firstValueFrom(breadcrumbs[0].title$!)).resolves.toEqual('home');
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('home');
       expect(breadcrumbs[1].url).toEqual('users');
-      await expect(firstValueFrom(breadcrumbs[1].title$!)).resolves.toEqual('users b');
+      await expect(firstValueFrom(breadcrumbs[1].label$!)).resolves.toEqual('users b');
 
       expect(recursiveSpy).toHaveBeenCalledTimes(2);
     });
 
-    it('should set dynamic breadcrumb title', async () => {
+    it('should set dynamic breadcrumb label', async () => {
       const activatedRouteSnapshot: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       activatedRouteSnapshot.url = [new UrlSegment('', {})];
       activatedRouteSnapshot.data = {
-        breadcrumb: { title: (data: Data) => data.userId },
+        breadcrumb: { label: (data: Data) => data.userId },
         userId: 'userId',
       };
       (activatedRouteSnapshot as any)['_routerState'] = { firstChild: () => null };
@@ -212,34 +212,70 @@ describe('BreadcrumbService', () => {
 
       expect(breadcrumbs).toHaveLength(1);
       expect(breadcrumbs).toPartiallyContain({ url: '/' });
-      await expect(firstValueFrom(breadcrumbs[0].title$!)).resolves.toEqual('userId');
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('userId');
     });
 
-    it('should set static i18n breadcrumb title ', async () => {
+    it('should set static breadcrumb label with static i18n', async () => {
       const activatedRouteSnapshot: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       activatedRouteSnapshot.url = [new UrlSegment('', {})];
       activatedRouteSnapshot.data = {
-        breadcrumb: { i18n: 'home' },
+        breadcrumb: { label: 'home', i18n: true },
       };
       (activatedRouteSnapshot as any)['_routerState'] = { firstChild: () => null };
 
       const breadcrumbs = service['_buildBreadcrumbs'](activatedRouteSnapshot, [], []);
 
-      await expect(firstValueFrom(breadcrumbs[0].title$!)).resolves.toEqual('core.breadcrumb.home');
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('core.breadcrumb.home');
     });
 
-    it('should set dynamic i18n breadcrumb title ', async () => {
+    it('should set dynamic breadcrumb label with static i18n ', async () => {
+      const spy = jest.spyOn(service['translocoService'], 'selectTranslate');
       const activatedRouteSnapshot: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       activatedRouteSnapshot.url = [new UrlSegment('', {})];
       activatedRouteSnapshot.data = {
-        breadcrumb: { i18n: (data: Data) => data.userId },
+        breadcrumb: { label: (data: Data) => data.userId, i18n: true },
         userId: 'userId',
       };
       (activatedRouteSnapshot as any)['_routerState'] = { firstChild: () => null };
 
       const breadcrumbs = service['_buildBreadcrumbs'](activatedRouteSnapshot, [], []);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('core.breadcrumb.userId');
 
-      await expect(firstValueFrom(breadcrumbs[0].title$!)).resolves.toEqual('core.breadcrumb.userId');
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('core.breadcrumb.userId');
+    });
+
+    it('should set dynamic breadcrumb label with dynamic i18n resolving to true', async () => {
+      const spy = jest.spyOn(service['translocoService'], 'selectTranslate');
+      const activatedRouteSnapshot: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
+      activatedRouteSnapshot.url = [new UrlSegment('', {})];
+      activatedRouteSnapshot.data = {
+        breadcrumb: { label: (data: Data) => data.userId, i18n: (data: Data) => data.userId === 'userId' },
+        userId: 'userId',
+      };
+      (activatedRouteSnapshot as any)['_routerState'] = { firstChild: () => null };
+
+      const breadcrumbs = service['_buildBreadcrumbs'](activatedRouteSnapshot, [], []);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('core.breadcrumb.userId');
+
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('core.breadcrumb.userId');
+    });
+
+    it('should set dynamic breadcrumb label with dynamic i18n resolving to false', async () => {
+      const spy = jest.spyOn(service['translocoService'], 'selectTranslate');
+      const activatedRouteSnapshot: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
+      activatedRouteSnapshot.url = [new UrlSegment('', {})];
+      activatedRouteSnapshot.data = {
+        breadcrumb: { label: (data: Data) => data.userId, i18n: (data: Data) => data.userId !== 'userId' },
+        userId: 'userId',
+      };
+      (activatedRouteSnapshot as any)['_routerState'] = { firstChild: () => null };
+
+      const breadcrumbs = service['_buildBreadcrumbs'](activatedRouteSnapshot, [], []);
+      expect(spy).not.toHaveBeenCalled();
+
+      await expect(firstValueFrom(breadcrumbs[0].label$!)).resolves.toEqual('userId');
     });
   });
 
@@ -253,7 +289,7 @@ describe('BreadcrumbService', () => {
 
     expect(breadcrumbs[0].icon).toEqual('home');
     expect(breadcrumbs[0].parentOffset).toEqual(3);
-    expect(breadcrumbs[0].title$).toBeFalsy();
+    expect(breadcrumbs[0].label$).toBeFalsy();
   });
 
   describe('Hook on Navigation End Events', () => {
@@ -262,7 +298,7 @@ describe('BreadcrumbService', () => {
 
       const root: ActivatedRouteSnapshot = new ActivatedRouteSnapshot();
       root.url = [new UrlSegment('home', {})];
-      root.data = { breadcrumb: { title: 'title' } };
+      root.data = { breadcrumb: { label: 'label' } };
       (root as any)['_routerState'] = { firstChild: () => null };
 
       stubRouter.routerState = { snapshot: { root } } as any;

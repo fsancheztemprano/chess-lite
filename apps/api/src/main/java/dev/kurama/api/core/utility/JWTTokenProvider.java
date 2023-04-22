@@ -1,12 +1,11 @@
 package dev.kurama.api.core.utility;
 
-import static io.micrometer.core.instrument.util.StringUtils.isNotBlank;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.common.base.Strings;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.UserPrincipal;
 import dev.kurama.api.core.filter.ContextUser;
@@ -28,18 +27,24 @@ import org.springframework.stereotype.Component;
 public class JWTTokenProvider {
 
   @Value("${application.jwt.secret}")
-  private String secret;
+  private String SECRET;
+
+  @Value("${application.jwt.token_life}")
+  private long TOKEN_LIFE_SPAN;
+
+  @Value("${application.jwt.refresh_life}")
+  private long REFRESH_TOKEN_LIFE_SPAN;
 
   public String generateToken(UserPrincipal userPrincipal) {
-    return generateJwtToken(userPrincipal, SecurityConstant.TOKEN_LIFE_SPAN);
+    return generateJwtToken(userPrincipal, TOKEN_LIFE_SPAN);
   }
 
   public String generateRefreshToken(UserPrincipal userPrincipal) {
-    return generateJwtToken(userPrincipal, SecurityConstant.REFRESH_TOKEN_LIFE_SPAN);
+    return generateJwtToken(userPrincipal, REFRESH_TOKEN_LIFE_SPAN);
   }
 
   public boolean isTokenValid(DecodedJWT token) {
-    return isNotBlank(token.getSubject()) && !isTokenExpired(token);
+    return !Strings.isNullOrEmpty(token.getSubject()) && !isTokenExpired(token);
   }
 
   public DecodedJWT getDecodedJWT(String token) {
@@ -106,7 +111,7 @@ public class JWTTokenProvider {
   }
 
   private Algorithm getAlgorithm() {
-    return Algorithm.HMAC512(secret);
+    return Algorithm.HMAC512(SECRET);
   }
 
   private String[] getAuthoritiesFromUser(UserPrincipal userPrincipal) {

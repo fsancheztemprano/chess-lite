@@ -15,6 +15,10 @@
     "global-settings": {
       "title": "Global Settings",
       "description": "Global Settings"
+    },
+    "theme": {
+      "title": "Theme",
+      "description": "Change the theme colors"
     }
   },
   "service-logs": {

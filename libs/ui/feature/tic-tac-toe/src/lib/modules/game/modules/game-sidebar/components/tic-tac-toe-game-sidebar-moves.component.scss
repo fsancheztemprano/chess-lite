@@ -1,0 +1,25 @@
+:host {
+  .mat-mdc-list {
+    .mat-mdc-list-item {
+      height: 114px;
+
+      .mat-mdc-list-item-avatar {
+        height: unset;
+        width: unset;
+      }
+    }
+
+    .mat-mdc-list-item-icon,
+    .mat-mdc-list-item-meta {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+
+  .message-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

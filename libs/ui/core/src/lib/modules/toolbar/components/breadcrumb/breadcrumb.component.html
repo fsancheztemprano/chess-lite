@@ -1,12 +1,12 @@
 <ng-container *isMobile="let isMobile">
   <app-route-up-button *ngIf="isMobile" class="breadcrumb-item"></app-route-up-button>
   <ng-container *ngFor="let breadcrumb of breadcrumbService.breadcrumbs$ | async; index as index; last as last">
-    <div *ngIf="(breadcrumb.icon || breadcrumb.title$) && (!isMobile || last)">
+    <div *ngIf="(breadcrumb.icon || breadcrumb.label$) && (!isMobile || last)">
       <a mat-button [routerLink]="breadcrumb.url" [class]="'breadcrumb-item breadcrumb-item-' + index">
         <mat-icon *ngIf="breadcrumb.icon" aria-hidden="false" [attr.aria-label]="breadcrumb.url">{{
           breadcrumb.icon
         }}</mat-icon>
-        <ng-container *ngIf="breadcrumb.title$ | async as title">{{ title }}</ng-container>
+        <ng-container *ngIf="breadcrumb.label$ | async as label">{{ label }}</ng-container>
       </a>
       <mat-icon *ngIf="!last && !isMobile" aria-hidden="false" aria-label="Next">navigate_next</mat-icon>
     </div>

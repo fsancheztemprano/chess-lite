@@ -1,4 +1,5 @@
 {
+  "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/api/src",
   "projectType": "application",
@@ -14,6 +15,10 @@
     },
     "build": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/main/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -28,6 +33,10 @@
     },
     "test": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -37,12 +46,17 @@
         "args": [
           "-B",
           "verify",
-          "-P pact"
+          "-P pact-consumer",
+          "-P pact-producer"
         ]
       }
     },
     "ut": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -57,6 +71,10 @@
     },
     "it": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -73,26 +91,43 @@
       }
     },
     "pact": {
-      "executor": "@nxrocks/nx-spring-boot:clean",
+      "executor": "nx:run-commands",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{projectRoot}/src/**/*",
+        "{projectRoot}/target/test-classes/pact/**/*",
+        "{projectRoot}/target/test-classes/pact-messages/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
       "options": {
         "outputPath": "apps/api/target",
-        "root": "apps/api",
-        "args": [
-          "-B",
-          "verify",
-          "-P pact",
-          "-D it.test=\"**/*PactIT.java\"",
-          "-Dtest=\"dev.kurama.api.null.**\"",
-          "-Dsurefire.failIfNoSpecifiedTests=false",
-          "-DskipUTs"
+        "cwd": "apps/api",
+        "commands": [
+          "mvn verify -B -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
         ]
+      },
+      "configurations": {
+        "generate": {
+          "commands": [
+            "mvn org.springframework.cloud:spring-cloud-contract-maven-plugin:generateTests -P pact-producer"
+          ]
+        },
+        "complete": {
+          "commands": [
+            "mvn clean verify -B -P pact-consumer -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
+          ]
+        }
       }
     },
     "e2e": {
       "executor": "@nxrocks/nx-spring-boot:clean",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{workspaceRoot}/apps/**/*",
+        "{workspaceRoot}/libs/ui/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -111,6 +146,11 @@
     },
     "package": {
       "executor": "nx:run-commands",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{workspaceRoot}/apps/**/*",
+        "{workspaceRoot}/libs/ui/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -124,6 +164,11 @@
     },
     "deploy": {
       "executor": "nx:run-commands",
+      "inputs": [
+        "{projectRoot}/pom.xml",
+        "{workspaceRoot}/apps/**/*",
+        "{workspaceRoot}/libs/ui/**/*"
+      ],
       "outputs": [
         "{options.outputPath}"
       ],
@@ -164,6 +209,5 @@
   "implicitDependencies": [
     "consumer-pact",
     "app"
-  ],
-  "name": "api"
+  ]
 }

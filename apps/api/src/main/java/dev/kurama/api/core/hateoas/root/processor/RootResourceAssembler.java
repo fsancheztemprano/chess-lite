@@ -5,6 +5,7 @@ import static dev.kurama.api.core.authority.ProfileAuthority.PROFILE_READ;
 import static dev.kurama.api.core.authority.TokenAuthority.TOKEN_REFRESH;
 import static dev.kurama.api.core.hateoas.relations.AdministrationRelations.ADMINISTRATION_REL;
 import static dev.kurama.api.core.hateoas.relations.ApplicationRelations.BUILD_INFO_REL;
+import static dev.kurama.api.core.hateoas.relations.ApplicationRelations.THEME_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATE_ACCOUNT_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.ACTIVATION_TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.LOGIN_REL;
@@ -12,6 +13,8 @@ import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.SIGN
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
+import static dev.kurama.api.ttt.core.TicTacToeAuthority.TIC_TAC_TOE_ROOT;
+import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_REL;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -20,8 +23,10 @@ import dev.kurama.api.core.hateoas.root.rest.AdministrationRootController;
 import dev.kurama.api.core.hateoas.root.rest.RootController;
 import dev.kurama.api.core.rest.AuthenticationController;
 import dev.kurama.api.core.rest.BuildInfoController;
+import dev.kurama.api.core.rest.ThemeController;
 import dev.kurama.api.core.rest.UserProfileController;
 import dev.kurama.api.core.utility.AuthorityUtils;
+import dev.kurama.api.ttt.root.TicTacToeRootController;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.hateoas.Link;
@@ -35,7 +40,7 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
   public @NonNull RepresentationModel<RootResource> assemble() {
     HalModelBuilder rootModel = HalModelBuilder.halModelOf(new RootResource());
 
-    rootModel.link(getSelfLink()).link(getBuildInfoLink());
+    rootModel.link(getSelfLink()).link(getBuildInfoLink()).link(getThemeLink());
 
     if (AuthorityUtils.isAuthenticated()) {
       if (AuthorityUtils.hasAuthority(TOKEN_REFRESH)) {
@@ -46,6 +51,9 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
       }
       if (AuthorityUtils.hasAuthority(PROFILE_READ)) {
         rootModel.link(getCurrentUserLink());
+      }
+      if (AuthorityUtils.hasAuthority(TIC_TAC_TOE_ROOT)) {
+        rootModel.link(getRootTicTacToeLink());
       }
     } else {
       rootModel.link(getLoginLink())
@@ -96,5 +104,13 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
 
   private @NonNull Link getBuildInfoLink() {
     return linkTo(methodOn(BuildInfoController.class).get()).withRel(BUILD_INFO_REL);
+  }
+
+  private @NonNull Link getRootTicTacToeLink() {
+    return linkTo(methodOn(TicTacToeRootController.class).root()).withRel(TIC_TAC_TOE_REL);
+  }
+
+  private @NonNull Link getThemeLink() {
+    return linkTo(methodOn(ThemeController.class).get()).withRel(THEME_REL);
   }
 }

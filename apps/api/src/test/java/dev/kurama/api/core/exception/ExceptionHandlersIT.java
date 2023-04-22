@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.api.core.domain.User;
+import dev.kurama.api.core.exception.domain.ForbiddenException;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
@@ -193,6 +194,12 @@ class ExceptionHandlersIT {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/forbiddenException")
+    public void forbiddenException() throws ForbiddenException {
+      throw new ForbiddenException("id");
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/entityExistsException")
     public void entityExistsException() throws EntityExistsException {
       throw new EntityExistsException("id", User.class);
@@ -207,7 +214,7 @@ class ExceptionHandlersIT {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/notFoundException")
     public void notFoundException() {
-      throw new NoSuchElementException(null);
+      throw new NoSuchElementException();
     }
 
     @ResponseStatus(HttpStatus.OK)

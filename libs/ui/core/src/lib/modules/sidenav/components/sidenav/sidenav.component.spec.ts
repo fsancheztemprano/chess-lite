@@ -26,6 +26,9 @@ class StubAuthenticationSidenavItemComponent {}
 @Component({ selector: 'app-build-info-sidenav-item', template: '' })
 class StubBuildInfoSidenavItemComponent {}
 
+@Component({ selector: 'app-tic-tac-toe-sidenav-item', template: '' })
+class StubTicTacToeSidenavItemComponent {}
+
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
@@ -41,6 +44,7 @@ describe('SidenavComponent', () => {
         StubAdministrationSidenavItemComponent,
         StubAuthenticationSidenavItemComponent,
         StubBuildInfoSidenavItemComponent,
+        StubTicTacToeSidenavItemComponent,
       ],
       imports: [
         LayoutModule,

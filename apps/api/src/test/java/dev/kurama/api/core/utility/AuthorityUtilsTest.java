@@ -42,6 +42,23 @@ class AuthorityUtilsTest {
   }
 
   @Test
+  void setAuthenticationContext() {
+    AuthorityUtils.setAuthenticationContext(authentication);
+    assertEquals(authentication, AuthorityUtils.getAuthentication());
+  }
+
+  @Test
+  void setContextUser() {
+    AuthorityUtils.setContextUser(contextUser);
+    assertEquals(contextUser, AuthorityUtils.getContextUser());
+  }
+
+  @Test
+  void getContext() {
+    assertEquals(securityContext, AuthorityUtils.getContext());
+  }
+
+  @Test
   void getAuthentication() {
     assertEquals(authentication, AuthorityUtils.getAuthentication());
   }

@@ -63,3 +63,21 @@ export enum GlobalSettingsRelations {
   GLOBAL_SETTINGS_REL = 'global-settings',
   GLOBAL_SETTINGS_UPDATE_REL = 'update',
 }
+
+export enum BuildInfoRelations {
+  BUILD_INFO_REL = 'build-info',
+}
+
+export enum ThemeRelations {
+  THEME_REL = 'theme',
+}
+
+export enum TicTacToeRelations {
+  TIC_TAC_TOE_REL = 'tic-tac-toe',
+  TIC_TAC_TOE_GAME_REL = 'game',
+  TIC_TAC_TOE_GAMES_REL = 'games',
+  TIC_TAC_TOE_MOVE_REL = 'move',
+  TIC_TAC_TOE_MOVES_REL = 'moves',
+  TIC_TAC_TOE_GAME_CREATE_REL = 'create',
+  TIC_TAC_TOE_GAME_STATUS_REL = 'status',
+}

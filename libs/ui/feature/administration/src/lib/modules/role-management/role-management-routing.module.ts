@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthoritiesResolver } from './resolvers/authorities.resolver';
-import { RoleResolver } from './resolvers/role.resolver';
+import { roleResolver } from './resolvers/role.resolver';
+import { AuthorityManagementService } from './services/authority-management.service';
 
 const loadRoleManagementListModule = () =>
   import('./modules/list/role-management-list.module').then((m) => m.RoleManagementListModule);
@@ -17,8 +17,8 @@ const routes: Routes = [
   {
     path: ':roleId',
     loadChildren: loadRoleManagementDetailModule,
-    resolve: { role: RoleResolver, authorities: AuthoritiesResolver },
-    data: { breadcrumb: { title: (data: { role: { name: string } }) => `${data.role.name}` } },
+    resolve: { role: roleResolver, authorities: () => inject(AuthorityManagementService).getAllAuthorities() },
+    data: { breadcrumb: { label: (data: { role: { name: string } }) => `${data.role.name}` } },
   },
 ];
 

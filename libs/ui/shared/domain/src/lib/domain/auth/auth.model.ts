@@ -94,3 +94,10 @@ export enum AdminAuthority {
   ADMIN_USER_MANAGEMENT_ROOT = 'admin:user-management:root',
   ADMIN_ROLE_MANAGEMENT_ROOT = 'admin:role-management:root',
 }
+
+export enum TicTacToeAuthority {
+  TIC_TAC_TOE_ROOT = 'tic-tac-toe:root',
+  TIC_TAC_TOE_GAME_READ = 'tic-tac-toe:game:read',
+  TIC_TAC_TOE_GAME_CREATE = 'tic-tac-toe:game:create',
+  TIC_TAC_TOE_GAME_MOVE = 'tic-tac-toe:game:move',
+}

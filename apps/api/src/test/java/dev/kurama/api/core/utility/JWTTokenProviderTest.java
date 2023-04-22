@@ -4,11 +4,12 @@ import static com.google.common.collect.Sets.newHashSet;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.kurama.api.core.constant.SecurityConstant;
 import dev.kurama.api.core.domain.Authority;
@@ -34,13 +35,19 @@ import org.springframework.test.util.ReflectionTestUtils;
 @ExtendWith(SpringExtension.class)
 class JWTTokenProviderTest {
 
+  private final long TOKEN_LIFE_SPAN = 300_000;
+
+  private final long REFRESH_TOKEN_LIFE_SPAN = 3_600_000;
+
   @Spy
   @InjectMocks
   private JWTTokenProvider jwtTokenProvider;
 
   @BeforeEach
   void setUp() {
-    ReflectionTestUtils.setField(jwtTokenProvider, "secret", "secret");
+    ReflectionTestUtils.setField(jwtTokenProvider, "SECRET", "secret");
+    ReflectionTestUtils.setField(jwtTokenProvider, "TOKEN_LIFE_SPAN", TOKEN_LIFE_SPAN);
+    ReflectionTestUtils.setField(jwtTokenProvider, "REFRESH_TOKEN_LIFE_SPAN", REFRESH_TOKEN_LIFE_SPAN);
   }
 
   @Test
@@ -72,7 +79,7 @@ class JWTTokenProviderTest {
     Map<String, Object> userMap = decoded.getClaim("user").asMap();
     assertEquals(userMap.get("id"), user.getId());
     assertEquals(userMap.get("username"), user.getUsername());
-    assertThat(decoded.getExpiresAt()).hasSameTimeAs(new Date(8_000_000_000_000L + SecurityConstant.TOKEN_LIFE_SPAN));
+    assertThat(decoded.getExpiresAt()).hasSameTimeAs(new Date(8_000_000_000_000L + TOKEN_LIFE_SPAN));
   }
 
   @Test
@@ -104,8 +111,7 @@ class JWTTokenProviderTest {
     Map<String, Object> userMap = decoded.getClaim("user").asMap();
     assertEquals(userMap.get("id"), user.getId());
     assertEquals(userMap.get("username"), user.getUsername());
-    assertThat(decoded.getExpiresAt()).hasSameTimeAs(
-      new Date(8_000_000_000_000L + SecurityConstant.REFRESH_TOKEN_LIFE_SPAN));
+    assertThat(decoded.getExpiresAt()).hasSameTimeAs(new Date(8_000_000_000_000L + REFRESH_TOKEN_LIFE_SPAN));
   }
 
   @Test
@@ -116,11 +122,12 @@ class JWTTokenProviderTest {
 
     assertTrue(jwtTokenProvider.isTokenValid(jwtTokenProvider.getDecodedJWT(token)));
 
-    doReturn(System.currentTimeMillis() - SecurityConstant.TOKEN_LIFE_SPAN).when(jwtTokenProvider)
-      .getCurrentTimeMillis();
+    doReturn(System.currentTimeMillis() - TOKEN_LIFE_SPAN).when(jwtTokenProvider).getCurrentTimeMillis();
     token = jwtTokenProvider.generateToken(userPrincipal);
 
-    assertFalse(jwtTokenProvider.isTokenValid(jwtTokenProvider.getDecodedJWT(token)));
+    String finalToken = token;
+    assertThrows(TokenExpiredException.class,
+      () -> jwtTokenProvider.isTokenValid(jwtTokenProvider.getDecodedJWT(finalToken)));
   }
 
   @Test

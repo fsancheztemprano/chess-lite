@@ -52,7 +52,7 @@ export class BreadcrumbService {
       const routeUrl = parentUrl.concat(route.url.map((url) => url.path));
       if (route.data.breadcrumb) {
         const breadcrumb: Breadcrumb = {
-          title$: this._getBreadcrumbLabel(route.data as BreadcrumbRouteData),
+          label$: this._getBreadcrumbLabel(route.data as BreadcrumbRouteData),
           url: routeUrl.join('/') || '/',
           icon: route.data.breadcrumb.icon,
           parentOffset: route.data.breadcrumb.parentOffset,
@@ -69,14 +69,13 @@ export class BreadcrumbService {
   }
 
   private _getBreadcrumbLabel(data: BreadcrumbRouteData): Observable<string> | null {
-    if (data.breadcrumb.i18n) {
-      return this.translocoService.selectTranslate(
-        'core.breadcrumb.' +
-          (typeof data.breadcrumb.i18n === 'function' ? data.breadcrumb.i18n(data) : data.breadcrumb.i18n),
-      );
-    }
-    if (data.breadcrumb.title) {
-      return of(typeof data.breadcrumb.title === 'function' ? data.breadcrumb.title(data) : data.breadcrumb.title);
+    if (data.breadcrumb.label) {
+      const label: string =
+        typeof data.breadcrumb.label === 'function' ? data.breadcrumb.label(data) : data.breadcrumb.label;
+
+      const i18n = typeof data.breadcrumb.i18n === 'function' ? data.breadcrumb.i18n(data) : data.breadcrumb.i18n;
+
+      return i18n ? this.translocoService.selectTranslate(`core.breadcrumb.${label}`) : of(label);
     }
     return null;
   }
@@ -84,7 +83,7 @@ export class BreadcrumbService {
 
 export interface Breadcrumb {
   url: string;
-  title$?: Observable<string> | null;
+  label$?: Observable<string> | null;
   icon?: string;
   parentOffset?: number;
 }
@@ -92,8 +91,8 @@ export interface Breadcrumb {
 export interface BreadcrumbRouteData extends Data {
   breadcrumb: {
     icon?: string;
-    title?: string | ((data: Data) => string);
-    i18n?: string | ((data: Data) => string);
+    label?: string | ((data: Data) => string);
+    i18n?: boolean | ((data: Data) => boolean);
     parentOffset?: number;
   };
 }

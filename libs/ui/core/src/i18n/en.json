@@ -7,6 +7,9 @@
         "title": "Build Info"
       }
     },
+    "tic-tac-toe": {
+      "title": "Tic Tac Toe"
+    },
     "user-settings": {
       "title": "User Settings",
       "subtitle": {
@@ -32,7 +35,8 @@
         "user-management": "User Management",
         "role-management": "Role Management",
         "service-logs": "Service Logs",
-        "global-settings": "Global Settings"
+        "global-settings": "Global Settings",
+        "theme": "Theme"
       }
     }
   }

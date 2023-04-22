@@ -10,11 +10,6 @@ import { Actions } from '@ngneat/effects-ng';
   encapsulation: ViewEncapsulation.None,
 })
 export class LocalePickerComponent {
-  public readonly pickerFlagWidth = 35;
-  public readonly pickerFlagHeight = 23;
-  public readonly menuFlagWidth = 30;
-  public readonly menuFlagHeight = 20;
-
   constructor(public readonly localizationRepository: LocalizationRepository, private readonly actions: Actions) {}
 
   updateContentLanguage(contentLanguage: string) {

@@ -15,6 +15,10 @@
     "global-settings": {
       "title": "Configuraciones Globales",
       "description": "Configuraciones Globales"
+    },
+    "theme": {
+      "title": "Tema",
+      "description": "Cambiar los colores de la aplicación"
     }
   },
   "service-logs": {

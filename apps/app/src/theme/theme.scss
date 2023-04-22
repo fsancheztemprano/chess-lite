@@ -1,0 +1,48 @@
+@use '@angular/material' as mat;
+
+@import 'material-theme';
+@import 'material-tab-sidebar';
+
+@include mat.all-component-typographies();
+@include mat.core();
+
+$primary-palette: mat.$blue-palette;
+$accent-palette: mat.$light-green-palette;
+$warn-palette: mat.$red-palette;
+
+@include set-root-variables($primary-palette, $accent-palette, $warn-palette);
+
+$dynamic-primary-palette: define-dynamic-palette('primary');
+$dynamic-accent-palette: define-dynamic-palette('accent');
+$dynamic-warn-palette: define-dynamic-palette('warn');
+
+// @formatter:off
+$dynamic-light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette($dynamic-primary-palette),
+      accent: mat.define-palette($dynamic-accent-palette),
+      warn: mat.define-palette($dynamic-warn-palette),
+    ),
+    typography: mat.define-typography-config(),
+  )
+);
+
+$dynamic-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: mat.define-palette($dynamic-primary-palette),
+      accent: mat.define-palette($dynamic-accent-palette),
+      warn: mat.define-palette($dynamic-warn-palette),
+    ),
+  )
+);
+// @formatter:on
+
+@include mat.all-component-themes($dynamic-light-theme);
+
+.dark-mode {
+  @include mat.all-component-colors($dynamic-dark-theme);
+}
+
+@include mat-tab-sidebar-layout;

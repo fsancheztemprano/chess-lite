@@ -1,0 +1,34 @@
+<app-core-card-view>
+  <ng-container *ngIf="service.game$ | async as game">
+    <app-tic-tac-toe-game-board
+      *ngIf="game.board; else noGame"
+      [board]="game.board"
+      [game]="game"
+    ></app-tic-tac-toe-game-board>
+    <ng-template #noGame>
+      <div class="message-container" [ngSwitch]="game.status" *transloco="let t">
+        <app-core-info-message
+          *ngSwitchCase="TicTacToeGameStatus.PENDING"
+          icon="question_mark"
+          [headline]="t('tic-tac-toe.game.status.pending')"
+          [subtitle]="t('tic-tac-toe.game.message.pending.subtitle', { opponent: game.playerO.username })"
+          [leftButton]="game.canChangeStatus(TicTacToeGameStatus.REJECTED)"
+          [leftButtonLabel]="t('tic-tac-toe.game.message.pending.button.reject')"
+          leftButtonIcon="close"
+          (leftButtonClick)="game.changeStatus(TicTacToeGameStatus.REJECTED).subscribe()"
+          [rightButton]="game.canChangeStatus(TicTacToeGameStatus.IN_PROGRESS)"
+          [rightButtonLabel]="t('tic-tac-toe.game.message.pending.button.accept')"
+          rightButtonIcon="check"
+          (rightButtonClick)="game.changeStatus(TicTacToeGameStatus.IN_PROGRESS).subscribe()"
+          data-cy="game-pending"
+        ></app-core-info-message>
+        <app-core-info-message
+          *ngSwitchCase="TicTacToeGameStatus.REJECTED"
+          icon="cancel"
+          [headline]="t('tic-tac-toe.game.status.rejected')"
+          data-cy="game-rejected"
+        ></app-core-info-message>
+      </div>
+    </ng-template>
+  </ng-container>
+</app-core-card-view>

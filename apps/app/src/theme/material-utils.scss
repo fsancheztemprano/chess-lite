@@ -1,0 +1,25 @@
+@mixin mat-icon-size($size: 24px) {
+  width: $size;
+  height: $size;
+  font-size: $size;
+  line-height: $size;
+  min-width: $size;
+  max-width: $size;
+  min-height: $size;
+  max-height: $size;
+}
+
+@mixin mat-icon-button-size($button-size: 40px, $touch-target-size: 48px, $mat-icon-size: 24px) {
+  width: $button-size;
+  height: $button-size;
+  padding: ($button-size - $mat-icon-size) / 2;
+
+  .mat-mdc-button-touch-target {
+    width: $touch-target-size;
+    height: $touch-target-size;
+  }
+
+  mat-icon {
+    @include mat-icon-size($mat-icon-size);
+  }
+}

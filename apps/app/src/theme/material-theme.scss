@@ -1,0 +1,78 @@
+@use '@angular/material' as mat;
+
+@mixin private-set-palette-variables($palette, $key: 'primary') {
+  --#{$key}-50: #{mat.get-color-from-palette($palette, 50)};
+  --#{$key}-100: #{mat.get-color-from-palette($palette, 100)};
+  --#{$key}-200: #{mat.get-color-from-palette($palette, 200)};
+  --#{$key}-300: #{mat.get-color-from-palette($palette, 300)};
+  --#{$key}-400: #{mat.get-color-from-palette($palette, 400)};
+  --#{$key}-500: #{mat.get-color-from-palette($palette, 500)};
+  --#{$key}-600: #{mat.get-color-from-palette($palette, 600)};
+  --#{$key}-700: #{mat.get-color-from-palette($palette, 700)};
+  --#{$key}-800: #{mat.get-color-from-palette($palette, 800)};
+  --#{$key}-900: #{mat.get-color-from-palette($palette, 900)};
+  --#{$key}-A100: #{mat.get-color-from-palette($palette, A100)};
+  --#{$key}-A200: #{mat.get-color-from-palette($palette, A200)};
+  --#{$key}-A400: #{mat.get-color-from-palette($palette, A400)};
+  --#{$key}-A700: #{mat.get-color-from-palette($palette, A700)};
+
+  --#{$key}-contrast-50: #{mat.get-contrast-color-from-palette($palette, 50)};
+  --#{$key}-contrast-100: #{mat.get-contrast-color-from-palette($palette, 100)};
+  --#{$key}-contrast-200: #{mat.get-contrast-color-from-palette($palette, 200)};
+  --#{$key}-contrast-300: #{mat.get-contrast-color-from-palette($palette, 300)};
+  --#{$key}-contrast-400: #{mat.get-contrast-color-from-palette($palette, 400)};
+  --#{$key}-contrast-500: #{mat.get-contrast-color-from-palette($palette, 500)};
+  --#{$key}-contrast-600: #{mat.get-contrast-color-from-palette($palette, 600)};
+  --#{$key}-contrast-700: #{mat.get-contrast-color-from-palette($palette, 700)};
+  --#{$key}-contrast-800: #{mat.get-contrast-color-from-palette($palette, 800)};
+  --#{$key}-contrast-900: #{mat.get-contrast-color-from-palette($palette, 900)};
+  --#{$key}-contrast-A100: #{mat.get-contrast-color-from-palette($palette, A100)};
+  --#{$key}-contrast-A200: #{mat.get-contrast-color-from-palette($palette, A200)};
+  --#{$key}-contrast-A400: #{mat.get-contrast-color-from-palette($palette, A400)};
+  --#{$key}-contrast-A700: #{mat.get-contrast-color-from-palette($palette, A700)};
+}
+
+@mixin set-root-variables($primary-palette, $accent-pallete, $warn-palette: mat.$red-palette) {
+  :root {
+    @include private-set-palette-variables($primary-palette, 'primary');
+    @include private-set-palette-variables($accent-pallete, 'accent');
+    @include private-set-palette-variables($warn-palette, 'warn');
+  }
+}
+
+@function define-dynamic-palette($key) {
+  @return mat.define-palette(
+    (
+      50: var(--#{$key}-50),
+      100: var(--#{$key}-100),
+      200: var(--#{$key}-200),
+      300: var(--#{$key}-300),
+      400: var(--#{$key}-400),
+      500: var(--#{$key}-500),
+      600: var(--#{$key}-600),
+      700: var(--#{$key}-700),
+      800: var(--#{$key}-800),
+      900: var(--#{$key}-900),
+      A100: var(--#{$key}-A100),
+      A200: var(--#{$key}-A200),
+      A400: var(--#{$key}-A400),
+      A700: var(--#{$key}-A700),
+      contrast: (
+        50: var(--#{$key}-contrast-50),
+        100: var(--#{$key}-contrast-100),
+        200: var(--#{$key}-contrast-200),
+        300: var(--#{$key}-contrast-300),
+        400: var(--#{$key}-contrast-400),
+        500: var(--#{$key}-contrast-500),
+        600: var(--#{$key}-contrast-600),
+        700: var(--#{$key}-contrast-700),
+        800: var(--#{$key}-contrast-800),
+        900: var(--#{$key}-contrast-900),
+        A100: var(--#{$key}-contrast-A100),
+        A200: var(--#{$key}-contrast-A200),
+        A400: var(--#{$key}-contrast-A400),
+        A700: var(--#{$key}-contrast-A700),
+      ),
+    )
+  );
+}

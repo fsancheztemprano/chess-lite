@@ -64,8 +64,8 @@ class ApplicationForwardControllerIT {
 
   @DisplayName("Route endpoint should forward")
   @ParameterizedTest(name = "if someone requests \"{0}\"")
-  @ValueSource(strings = {"/", "/app/", "/app/some.html", "/app/some.css", "/app/test.js", "/app/a/b/c/d/",
-    "/app/a/b/c/d/index.html", "/app/a/b/c/d/some.css", "/app/a/b/c/d/some.js"
+  @ValueSource(strings = {"/", "/app", "/app/", "/app/some", "/app/some.html", "/app/some.css", "/app/test.js",
+    "/app/a/b/c/d/", "/app/a/b/c/d/index.html", "/app/a/b/c/d/some.css", "/app/a/b/c/d/some.js"
 
   })
   void route_should_forward_if_someone_requests(String path) throws Exception {

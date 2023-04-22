@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthoritiesResolver } from '../../../../../role-management/resolvers/authorities.resolver';
-import { RolesResolver } from '../../../../../role-management/resolvers/roles.resolver';
+import { AuthorityManagementService } from '../../../../../role-management/services/authority-management.service';
+import { RoleManagementService } from '../../../../../role-management/services/role-management.service';
 import { UserManagementAuthorityComponent } from './components/user-management-authority/user-management-authority.component';
 
 const routes: Routes = [
@@ -9,8 +9,8 @@ const routes: Routes = [
     path: '',
     component: UserManagementAuthorityComponent,
     resolve: {
-      roles: RolesResolver,
-      authorities: AuthoritiesResolver,
+      roles: () => inject(RoleManagementService).fetchRoles({ size: 1000 }),
+      authorities: () => inject(AuthorityManagementService).getAllAuthorities(),
     },
   },
   { path: '**', redirectTo: '' },

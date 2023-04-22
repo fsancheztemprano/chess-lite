@@ -15,4 +15,6 @@ export interface IToastModel {
   type?: ToastType;
   link?: string;
   linkCaption?: string;
+  linkDownload?: boolean;
+  linkSelf?: boolean;
 }

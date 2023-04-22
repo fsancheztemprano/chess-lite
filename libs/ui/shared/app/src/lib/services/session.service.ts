@@ -81,7 +81,7 @@ export class SessionService {
       ),
       tap((user) => {
         this._subscribeToUserChanges(user);
-        this._subscribeToUserPreferencesChanges(new UserPreferences(user.userPreferences!));
+        this._subscribeToUserPreferencesChanges(new UserPreferences(user.userPreferences));
         this._tokenWatchdog();
       }),
       catchError(() => this.clearSession()),

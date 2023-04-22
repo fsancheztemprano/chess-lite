@@ -1,0 +1,25 @@
+<mat-icon class="info-icon" color="primary">{{ icon }}</mat-icon>
+<div class="mat-h2">{{ headline }}</div>
+<div class="mat-h3">{{ subtitle }}</div>
+<div class="buttons">
+  <button
+    *ngIf="leftButton"
+    mat-stroked-button
+    [disabled]="leftButtonDisabled"
+    (click)="leftButtonClick.emit()"
+    class="left-button"
+  >
+    <mat-icon *ngIf="leftButtonIcon">{{ leftButtonIcon }}</mat-icon>
+    {{ leftButtonLabel }}
+  </button>
+  <button
+    *ngIf="rightButton"
+    mat-stroked-button
+    [disabled]="rightButtonDisabled"
+    (click)="rightButtonClick.emit()"
+    class="right-button"
+  >
+    <mat-icon *ngIf="rightButtonIcon">{{ rightButtonIcon }}</mat-icon>
+    {{ rightButtonLabel }}
+  </button>
+</div>

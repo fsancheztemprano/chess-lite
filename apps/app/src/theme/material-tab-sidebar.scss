@@ -1,0 +1,52 @@
+@mixin mat-tab-sidebar-layout {
+  mat-tab-group {
+    .mat-mdc-tab-labels .mat-mdc-tab {
+      height: 56px;
+      border-bottom: solid 1px #e0e0e0;
+    }
+
+    .mat-mdc-tab-body-wrapper {
+      height: calc(100vh - 145px);
+      overflow-y: auto;
+      transition: unset;
+
+      .mat-mdc-tab-body.mat-mdc-tab-body.mat-mdc-tab-body,
+      .mat-mdc-tab-body-content {
+        overflow: unset;
+      }
+    }
+
+    &.mobile {
+      .mat-mdc-tab-labels .mat-mdc-tab {
+        height: 48px;
+      }
+
+      .mat-mdc-tab-body-wrapper {
+        height: calc(100vh - 104px);
+      }
+    }
+  }
+
+  .dark-mode {
+    mat-tab-group {
+      .mat-mdc-tab-labels .mat-mdc-tab {
+        border-bottom: solid 1px #595959;
+      }
+    }
+  }
+}
+
+@mixin mat-tab-sidebar($wrapper-padding: 0px) {
+  mat-tab-group {
+    .mat-mdc-tab-body-wrapper {
+      padding: $wrapper-padding;
+      height: calc(100vh - 145px - (2 * $wrapper-padding));
+    }
+
+    &.mobile {
+      .mat-mdc-tab-body-wrapper {
+        height: calc(100vh - 104px - (2 * $wrapper-padding));
+      }
+    }
+  }
+}

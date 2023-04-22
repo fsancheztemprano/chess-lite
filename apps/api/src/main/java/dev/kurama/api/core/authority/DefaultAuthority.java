@@ -1,11 +1,11 @@
 package dev.kurama.api.core.authority;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import dev.kurama.api.ttt.core.TicTacToeAuthority;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -43,28 +43,37 @@ public class DefaultAuthority {
 
     ServiceLogsAuthority.SERVICE_LOGS_READ, ServiceLogsAuthority.SERVICE_LOGS_DELETE,
 
-    GlobalSettingsAuthority.GLOBAL_SETTINGS_READ, GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE);
+    GlobalSettingsAuthority.GLOBAL_SETTINGS_READ, GlobalSettingsAuthority.GLOBAL_SETTINGS_UPDATE,
+
+    ThemeAuthority.THEME_UPDATE,
+
+    TicTacToeAuthority.TIC_TAC_TOE_ROOT, TicTacToeAuthority.TIC_TAC_TOE_GAME_READ,
+    TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE, TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE
+
+                                                                   );
 
 
-  public static final List<String> USER_AUTHORITIES = Lists.newArrayList(TokenAuthority.TOKEN_REFRESH,
-    ProfileAuthority.PROFILE_UPDATE, ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE);
+  protected static final List<String> USER_AUTHORITIES = Lists.newArrayList(TokenAuthority.TOKEN_REFRESH,
+    ProfileAuthority.PROFILE_UPDATE, ProfileAuthority.PROFILE_READ, ProfileAuthority.PROFILE_DELETE,
+    TicTacToeAuthority.TIC_TAC_TOE_ROOT);
 
-  public static final List<String> MOD_AUTHORITIES = Stream.of(USER_AUTHORITIES,
+  protected static final List<String> MOD_AUTHORITIES = Stream.of(USER_AUTHORITIES,
       Lists.newArrayList(UserAuthority.USER_READ, UserAuthority.USER_UPDATE))
     .flatMap(Collection::stream)
-    .collect(Collectors.toList());
+    .toList()
+    .stream()
+    .distinct()
+    .toList();
 
 
-  public static final List<String> ADMIN_AUTHORITIES = Stream.of(MOD_AUTHORITIES,
+  protected static final List<String> ADMIN_AUTHORITIES = Stream.of(MOD_AUTHORITIES,
     Lists.newArrayList(UserAuthority.USER_CREATE, ServiceLogsAuthority.SERVICE_LOGS_READ,
-      ServiceLogsAuthority.SERVICE_LOGS_DELETE)).flatMap(Collection::stream).collect(Collectors.toList());
+      ServiceLogsAuthority.SERVICE_LOGS_DELETE)).flatMap(Collection::stream).toList().stream().distinct().toList();
 
-  public static final Map<String, List<String>> ROLE_AUTHORITIES = new HashMap<>() {
-    {
-      put(DefaultAuthority.USER_ROLE, DefaultAuthority.USER_AUTHORITIES);
-      put(DefaultAuthority.MOD_ROLE, DefaultAuthority.MOD_AUTHORITIES);
-      put(DefaultAuthority.ADMIN_ROLE, DefaultAuthority.ADMIN_AUTHORITIES);
-      put(DefaultAuthority.SUPER_ADMIN_ROLE, DefaultAuthority.AUTHORITIES);
-    }
-  };
+  public static final Map<String, List<String>> ROLE_AUTHORITIES = ImmutableMap.<String, List<String>>builder()
+    .put(DefaultAuthority.USER_ROLE, DefaultAuthority.USER_AUTHORITIES)
+    .put(DefaultAuthority.MOD_ROLE, DefaultAuthority.MOD_AUTHORITIES)
+    .put(DefaultAuthority.ADMIN_ROLE, DefaultAuthority.ADMIN_AUTHORITIES)
+    .put(DefaultAuthority.SUPER_ADMIN_ROLE, DefaultAuthority.AUTHORITIES)
+    .build();
 }

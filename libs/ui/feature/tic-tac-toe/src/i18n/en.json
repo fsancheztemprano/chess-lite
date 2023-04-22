@@ -1,0 +1,95 @@
+{
+  "home": {
+    "new-game": {
+      "title": "New Game",
+      "description": "Create a new game"
+    },
+    "games-list": {
+      "title": "Game List",
+      "description": "List of games"
+    },
+    "sidebar": {
+      "label": "Notifications",
+      "new-games": {
+        "label": "New Games"
+      },
+      "my-turns": {
+        "label": "My Turns"
+      }
+    }
+  },
+  "game-list": {
+    "context": {
+      "create": "New Game"
+    },
+    "header": {
+      "player": "Player {{player}}",
+      "last-activity": "Last activity"
+    },
+    "sidebar": {
+      "label": "Filters",
+      "my-games": {
+        "label": "My Games"
+      },
+      "player-filter": {
+        "label": "Players"
+      },
+      "status-filter": {
+        "label": "Status",
+        "options": {
+          "PENDING": "Pending",
+          "IN_PROGRESS": "In Progress",
+          "REJECTED": "Rejected",
+          "FINISHED": "Finished"
+        }
+      }
+    }
+  },
+  "game": {
+    "status": {
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "message": {
+      "pending": {
+        "subtitle": "Waiting for {{opponent}} to accept the game",
+        "button": {
+          "accept": "Accept",
+          "reject": "Reject"
+        }
+      }
+    },
+    "sidebar": {
+      "info": {
+        "label": "Game Info",
+        "player": "Player {{player}}",
+        "is-private": "Private",
+        "is-public": "Public",
+        "status": "Status",
+        "turn": "Turn",
+        "winner": "Winner",
+        "draw": "Draw",
+        "last-activity-at": "Last activity",
+        "requested-at": "Requested",
+        "started-at": "Started",
+        "finished-at": "Finished"
+      },
+      "moves": {
+        "label": "Moves"
+      }
+    }
+  },
+  "new-game": {
+    "title": "New Game",
+    "create": "Create",
+    "player-x": {
+      "label": "Player X"
+    },
+    "player-o": {
+      "label": "Player O"
+    },
+    "is-private": {
+      "label": "Private"
+    }
+  }
+}

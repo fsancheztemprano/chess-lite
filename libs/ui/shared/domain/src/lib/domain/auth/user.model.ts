@@ -18,7 +18,25 @@ export interface UserInput {
   credentialsExpired?: boolean;
 }
 
-export class User extends Resource implements IResource {
+export interface IUser extends IResource {
+  id?: string;
+  email?: string;
+  firstname?: string;
+  lastname?: string;
+  username?: string;
+  profileImageUrl?: string;
+  userPreferences?: IUserPreferences;
+  lastLoginDateDisplay?: Date;
+  joinDate?: Date;
+  role?: Role;
+  authorities?: Authority[];
+  active?: boolean;
+  locked?: boolean;
+  expired?: boolean;
+  credentialsExpired?: boolean;
+}
+
+export class User extends Resource implements IUser {
   id?: string;
   email?: string;
   firstname?: string;

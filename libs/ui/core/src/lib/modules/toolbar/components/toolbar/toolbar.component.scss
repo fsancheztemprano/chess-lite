@@ -1,8 +1,14 @@
 mat-toolbar {
+  height: 64px;
   display: flex;
   align-items: center;
-  padding-right: 8px;
+  padding: 0 8px;
   width: 100%;
+
+  &.mobile {
+    height: 56px;
+    padding: 0 4px;
+  }
 
   app-breadcrumb {
     overflow: hidden;

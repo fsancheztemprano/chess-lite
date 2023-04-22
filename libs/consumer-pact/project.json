@@ -1,4 +1,5 @@
 {
+  "name": "consumer-pact",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/consumer-pact/src",
@@ -8,16 +9,17 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "rimraf ./apps/api/target/test-classes/pact ./apps/api/target/test-classes/pact-messages ./coverage/pact"
+          "rimraf ./apps/api/target/test-classes/pact ./apps/api/target/test-classes/pact-messages ./coverage/libs/consumer-pact"
         ]
       }
     },
     "pact": {
       "executor": "@nrwl/jest:jest",
+      "inputs": ["{workspaceRoot}/apps/**/*", "{workspaceRoot}/libs/ui/**/*"],
       "outputs": [
         "{workspaceRoot}/apps/api/target/test-classes/pact",
         "{workspaceRoot}/apps/api/target/test-classes/pact-messages",
-        "{workspaceRoot}/coverage/pact"
+        "{workspaceRoot}/coverage/libs/consumer-pact"
       ],
       "options": {
         "jestConfig": "libs/consumer-pact/jest.config.ts",
@@ -31,6 +33,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "consumer-pact"
+  "tags": []
 }

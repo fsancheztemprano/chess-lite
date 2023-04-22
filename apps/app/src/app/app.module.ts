@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptorProvider } from '@app/ui/shared/app';
 import { HalFormClientModule } from '@hal-form-client';
-import { EffectsNgModule } from '@ngneat/effects-ng';
+import { provideEffects, provideEffectsManager } from '@ngneat/effects-ng';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app.component';
@@ -24,13 +24,14 @@ import { TranslocoRootModule } from './transloco-root.module';
     HalFormClientModule.forRoot('/api'),
     ToastrModule.forRoot(),
     TranslocoRootModule,
-    EffectsNgModule.forRoot([SessionEffects]),
   ],
   providers: [
     GlobalErrorHandlerProvider,
     HttpErrorInterceptorProvider,
     AuthInterceptorProvider,
     AppInitializationProvider,
+    provideEffectsManager(),
+    provideEffects(SessionEffects),
   ],
   bootstrap: [AppComponent],
 })

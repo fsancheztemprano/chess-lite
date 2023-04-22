@@ -1,0 +1,5 @@
+@import 'material-tab-sidebar';
+
+app-tic-tac-toe-home-sidebar {
+  @include mat-tab-sidebar(16px);
+}

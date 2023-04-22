@@ -1,6 +1,6 @@
 FROM postgres:latest
 
-ENV JAVA_VERSION=11
+ENV JAVA_VERSION=17
 
 RUN apt-get update && \
     apt-get install -y wget apt-transport-https && \

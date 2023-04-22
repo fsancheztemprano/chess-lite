@@ -3,6 +3,7 @@ export * from './lib/domain/administration/user-management-model';
 export * from './lib/domain/administration/global-settings.model';
 
 export * from './lib/domain/application/build-info.model';
+export * from './lib/domain/application/theme.model';
 
 export * from './lib/domain/auth/auth.model';
 export * from './lib/domain/auth/role.model';
@@ -21,3 +22,6 @@ export * from './lib/domain/message/global-settings-changed.message.model';
 export * from './lib/domain/ui/menu.model';
 export * from './lib/domain/ui/preferences.model';
 export * from './lib/domain/ui/session.model';
+
+export * from './lib/domain/tic-tac-toe/tic-tac-toe.model';
+export * from './lib/domain/tic-tac-toe/tic-tac-toe-game-changed.message.model';

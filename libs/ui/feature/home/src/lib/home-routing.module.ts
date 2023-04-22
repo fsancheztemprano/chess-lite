@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: 'build-info',
     loadChildren: loadBuildInfoModule,
-    data: { breadcrumb: { i18n: 'build-info.title' } },
+    data: { breadcrumb: { label: 'build-info.title', i18n: true } },
   },
   {
     path: '**',

@@ -30,9 +30,13 @@ interface AuthUser {
 Cypress.Commands.add('login', (username: string, password: string) =>
   cy
     .clearLocalStorage()
-    .request('POST', Cypress.env('apiUrl') + '/auth/login', {
-      username,
-      password,
+    .requestApi({
+      method: 'POST',
+      url: '/auth/login',
+      body: {
+        username,
+        password,
+      },
     })
     .then((response) => {
       const token = response.headers['jwt-token'];
@@ -71,13 +75,14 @@ Cypress.Commands.add('fakeLogin', (authUser: AuthUser = {}) => {
   return cy;
 });
 
-Cypress.Commands.add('requestApi', (options?: Partial<RequestOptions>) =>
-  cy.request({
+Cypress.Commands.add('requestApi', (options?: Partial<RequestOptions>) => {
+  const token = localStorage.getItem('token');
+  return cy.request({
     ...options,
     url: Cypress.env('apiUrl') + options?.url || '',
-    headers: { ...options?.headers, Authorization: 'Bearer ' + localStorage.getItem('token') },
-  }),
-);
+    headers: { ...options?.headers, Authorization: token ? `Bearer ${token}` : undefined },
+  });
+});
 
 Cypress.Commands.add('interceptApi', (method = 'GET', url = '') => cy.intercept(method, Cypress.env('apiUrl') + url));
 

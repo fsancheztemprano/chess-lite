@@ -3,6 +3,7 @@ package dev.kurama.support;
 import dev.kurama.api.core.mapper.AuthorityMapperImpl;
 import dev.kurama.api.core.mapper.GlobalSettingsMapperImpl;
 import dev.kurama.api.core.mapper.RoleMapperImpl;
+import dev.kurama.api.core.mapper.ThemeMapperImpl;
 import dev.kurama.api.core.mapper.UserMapperImpl;
 import dev.kurama.api.core.mapper.UserPreferencesMapperImpl;
 import java.lang.annotation.Documented;
@@ -18,7 +19,7 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Inherited
 @Import({AuthorityMapperImpl.class, GlobalSettingsMapperImpl.class, RoleMapperImpl.class,
-  UserPreferencesMapperImpl.class, UserMapperImpl.class})
+  UserPreferencesMapperImpl.class, UserMapperImpl.class, ThemeMapperImpl.class})
 public @interface ImportMappers {
 
 }

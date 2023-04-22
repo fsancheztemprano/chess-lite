@@ -1,6 +1,6 @@
 package dev.kurama.api.zypress;
 
-
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +37,7 @@ import org.testcontainers.utility.DockerImageName;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles({"integration-test", "e2e"})
 @Flogger
-public class CypressE2E {
+class CypressE2E {
 
   @LocalServerPort
   private int port;
@@ -47,6 +47,9 @@ public class CypressE2E {
 
   @Value("${CYPRESS_RECORD_KEY:#{null}}")
   private String CYPRESS_RECORD_KEY;
+
+  @Value("${CYPRESS_SAVE_VIDEO:#{false}}")
+  private Boolean CYPRESS_SAVE_VIDEO;
 
   private static final int MAX_TOTAL_TEST_TIME_IN_MINUTES = 15;
 
@@ -79,7 +82,7 @@ public class CypressE2E {
 
       assertThat(container.getLogs()).contains("(Run Finished)");
       String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
-      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput).hasSize(2);
       assertThat(formattedOutput[1]).contains("All specs passed!");
     }
   }
@@ -96,7 +99,7 @@ public class CypressE2E {
 
       assertThat(container.getLogs()).contains("(Run Finished)");
       String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
-      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput).hasSize(2);
       assertThat(formattedOutput[1]).contains("All specs passed!");
     }
   }
@@ -113,7 +116,7 @@ public class CypressE2E {
 
       assertThat(container.getLogs()).contains("(Run Finished)");
       String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
-      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput).hasSize(2);
       assertThat(formattedOutput[1]).contains("All specs passed!");
     }
   }
@@ -130,13 +133,13 @@ public class CypressE2E {
 
       assertThat(container.getLogs()).contains("(Run Finished)");
       String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
-      assertThat(formattedOutput.length).isEqualTo(2);
+      assertThat(formattedOutput).hasSize(2);
       assertThat(formattedOutput[1]).contains("All specs passed!");
     }
   }
 
   private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser, String specPattern) {
-    GenericContainer genericContainer = new GenericContainer<>("cypress/included:12.5.1")
+    GenericContainer genericContainer = new GenericContainer<>("cypress/included:12.10.0")
       //
       .withCommand("--browser", !isEmpty(browser) ? browser : "electron")
       .withAccessToHost(true)
@@ -149,21 +152,19 @@ public class CypressE2E {
       .withLogConsumer(outputFrame -> {
         String output = outputFrame.getUtf8String().replace("\n", "").replace("?", "-");
         switch (outputFrame.getType()) {
-          case STDOUT:
+          case STDOUT -> {
             ArrayList<String> skippedLines = Lists.newArrayList("┐", "┘", "┤", "39m─────────────────────");
             if (!isEmpty(output) //
               && skippedLines.stream().noneMatch(output::contains)//
               && (!output.contains("-----------------") || output.contains("----------------------------------"))) {
               log.at(Level.INFO).log(output);
             }
-            break;
-          case STDERR:
-            log.at(Level.WARNING).log(output);
-            break;
-          case END:
+          }
+          case STDERR -> log.at(Level.WARNING).log(output);
+          case END -> {
             log.at(Level.INFO).log(outputFrame.getType().name());
             countDownLatch.countDown();
-            break;
+          }
         }
       });
 
@@ -172,6 +173,9 @@ public class CypressE2E {
     }
     if (!isEmpty(CYPRESS_RECORD_KEY)) {
       genericContainer.withCommand("--record").withEnv("CYPRESS_RECORD_KEY", CYPRESS_RECORD_KEY);
+    }
+    if (isTrue(CYPRESS_SAVE_VIDEO)) {
+      genericContainer.withEnv("CYPRESS_video", "true");
     }
     return genericContainer;
   }

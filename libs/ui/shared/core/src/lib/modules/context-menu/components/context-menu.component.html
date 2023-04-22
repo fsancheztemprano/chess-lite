@@ -28,7 +28,9 @@
       (click)="optionClick(option, $event)"
       [attr.data-cy]="option.id"
     >
-      <mat-icon *ngIf="option.icon">{{ option.icon }}</mat-icon>
+      <mat-icon *ngIf="option.icon" [ngClass]="{ 'material-icons-outlined': option.iconOutline }">{{
+        option.icon
+      }}</mat-icon>
       <span>{{ title }}</span>
     </a>
   </ng-container>

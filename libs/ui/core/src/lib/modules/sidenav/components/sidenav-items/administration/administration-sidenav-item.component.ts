@@ -50,6 +50,12 @@ export class AdministrationSidenavItemComponent {
       route: ['/administration', 'global-settings'],
       visible$: this.administrationService.hasGlobalSettingsLink(),
     },
+    {
+      id: 'theme-menu-item',
+      icon: 'palette',
+      title$: this.translocoService.selectTranslate('core.sidenav.administration.subtitle.theme'),
+      route: ['/administration', 'theme'],
+    },
   ];
 
   constructor(
