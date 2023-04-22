@@ -1,4 +1,10 @@
-import { AdminAuthority, HttpHeaderKey, ProfileAuthority, TokenAuthority } from '@app/ui/shared/domain';
+import {
+  AdminAuthority,
+  HttpHeaderKey,
+  ProfileAuthority,
+  TicTacToeAuthority,
+  TokenAuthority,
+} from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
@@ -172,6 +178,32 @@ export namespace GetRootResource {
           theme: { href: 'http://localhost/api/theme' },
         },
         _templates: { ...defaultTemplate },
+      },
+    },
+  };
+
+  export const with_tic_tac_toe_root: InteractionObject = {
+    state: 'stateless',
+    uponReceiving: 'get root resource with authority tic-tac-toe:game',
+    withRequest: {
+      method: HTTPMethod.GET,
+      path: '/api',
+      headers: {
+        Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
+        Authorization: bearer(jwtToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] })),
+      },
+    },
+    willRespondWith: {
+      status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
+      body: {
+        _links: {
+          self: { href: 'http://localhost/api' },
+          'tic-tac-toe': { href: 'http://localhost/api/tic-tac-toe' },
+        },
+        _templates: {
+          ...defaultTemplate,
+        },
       },
     },
   };

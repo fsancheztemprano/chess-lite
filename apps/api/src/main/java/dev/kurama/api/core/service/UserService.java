@@ -102,8 +102,13 @@ public class UserService {
 
   public void deleteUserById(String id) throws UserNotFoundException {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    if (user.getTicTacToePlayer() != null) {
+      user.getTicTacToePlayer().setUser(null);
+      user.setTicTacToePlayer(null);
+      user = userRepository.saveAndFlush(user);
+    }
     userRepository.delete(user);
-    userChangedEventEmitter.emitUserDeletedEvent(user.getId());
+    userChangedEventEmitter.emitUserDeletedEvent(user);
   }
 
   public void signup(SignupInput signupInput) throws UserExistsException, SignupClosedException {
@@ -155,7 +160,7 @@ public class UserService {
       .userPreferences(UserPreferences.builder().setRandomUUID().build())
       .build();
     user = userRepository.save(user);
-    userChangedEventEmitter.emitUserCreatedEvent(user.getId());
+    userChangedEventEmitter.emitUserCreatedEvent(user);
 
     return user;
   }
@@ -227,7 +232,7 @@ public class UserService {
     }
     if (changed) {
       user = userRepository.save(user);
-      userChangedEventEmitter.emitUserUpdatedEvent(user.getId());
+      userChangedEventEmitter.emitUserUpdatedEvent(user);
     }
     return user;
   }
@@ -271,7 +276,7 @@ public class UserService {
   void reassignToRole(@NonNull Collection<User> users, Role role) {
     users.forEach(user -> setRoleAndAuthorities(user, role));
     users = this.userRepository.saveAllAndFlush(users);
-    users.forEach(user -> this.userChangedEventEmitter.emitUserUpdatedEvent(user.getId()));
+    users.forEach(this.userChangedEventEmitter::emitUserUpdatedEvent);
   }
 
   private void validateNewUsernameAndEmail(String newUsername, String email) throws UserExistsException {

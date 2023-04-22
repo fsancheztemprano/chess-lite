@@ -4,18 +4,16 @@
 
   mat-card {
     mat-card-header {
-      max-height: 50px;
+      max-height: 56px;
       border-bottom: solid 1px;
-      height: 50px;
-      padding: 0 5px;
+      border-color: rgba(0, 0, 0, 0.12);
+      height: 56px;
+      padding: 0 4px;
       width: 100%;
       display: flex;
       align-items: center;
       box-sizing: border-box;
-
-      mat-icon {
-        padding-top: 8px;
-      }
+      overflow: hidden;
 
       .header-title {
         margin-left: 8px;
@@ -23,35 +21,58 @@
         font-size: 18px;
       }
 
-      .tabs-container {
-        flex-grow: 1;
-      }
-
       nav {
-        height: 50px;
+        height: 56px;
+
+        a {
+          height: 56px;
+
+          span {
+            margin-left: 8px;
+          }
+        }
       }
     }
 
     mat-card-content {
-      padding: 16px;
+      padding: 0;
       box-sizing: border-box;
       overflow: auto;
-      min-height: calc(100vh - 152px);
-      max-height: calc(100vh - 152px);
-      // min-height: calc(100vh - 64px - 50px - 32px - 6px);
-      // 100% - toolbar - header - content v-paddings - card bottom padding
+      min-height: calc(100vh - 146px);
+      height: calc(100vh - 146px);
+      max-height: calc(100vh - 146px);
+
+      &.padded {
+        padding: 16px;
+      }
     }
 
     &.isMobile {
       border-radius: 0;
+      border: 0;
+
+      mat-card-header {
+        padding: 0;
+      }
 
       mat-card-content {
-        padding: 0;
-        min-height: calc(100vh - 59px);
-        max-height: calc(100vh - 59px);
-        // min-height: calc(100vh - 56px - 3px);
-        // 100% - toolbar - both vertical paddings
+        padding: 8px 0 0 0;
+        min-height: calc(100vh - 56px);
+        max-height: calc(100vh - 56px);
+
+        &.tabs-active {
+          min-height: calc(100vh - 58px - 56px);
+          max-height: calc(100vh - 58px - 56px);
+        }
       }
+    }
+  }
+}
+
+.dark-mode :host {
+  mat-card {
+    mat-card-header {
+      border-color: rgba(255, 255, 255, 0.12);
     }
   }
 }

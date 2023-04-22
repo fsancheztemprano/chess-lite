@@ -1,5 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AdministrationRelations, AuthRelations, CurrentUserRelations, MenuData } from '@app/ui/shared/domain';
+import {
+  AdministrationRelations,
+  AuthRelations,
+  CurrentUserRelations,
+  MenuData,
+  TicTacToeRelations,
+} from '@app/ui/shared/domain';
 import { HalFormService } from '@hal-form-client';
 import { TranslocoService } from '@ngneat/transloco';
 
@@ -11,6 +17,14 @@ import { TranslocoService } from '@ngneat/transloco';
 })
 export class HomeComponent {
   public readonly tiles: MenuData[] = [
+    {
+      id: 'tic-tac-toe-tile',
+      icon: 'tag',
+      title$: this.translocoService.selectTranslate('home.main.tiles.tic-tac-toe.title'),
+      subtitle$: this.translocoService.selectTranslate('home.main.tiles.tic-tac-toe.description'),
+      route: '/tic-tac-toe',
+      visible$: this.halFormService.hasLink(TicTacToeRelations.TIC_TAC_TOE_REL),
+    },
     {
       id: 'user-settings-tile',
       icon: 'person',

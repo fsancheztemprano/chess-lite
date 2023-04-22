@@ -1,0 +1,12 @@
+<mat-tab-group [disablePagination]="true" [disableRipple]="true" isMobileClass dynamicHeight *transloco="let t">
+  <mat-tab [label]="t('tic-tac-toe.game.sidebar.info.label')">
+    <ng-template matTabContent>
+      <app-tic-tac-toe-game-sidebar-info></app-tic-tac-toe-game-sidebar-info>
+    </ng-template>
+  </mat-tab>
+  <mat-tab [label]="t('tic-tac-toe.game.sidebar.moves.label')" *ngIf="(service.game$ | async)?.hasLink('moves')">
+    <ng-template matTabContent>
+      <app-tic-tac-toe-game-sidebar-moves></app-tic-tac-toe-game-sidebar-moves>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

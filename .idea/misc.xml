@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <writeAnnotations>
+      <writeAnnotation name="Getter" />
+    </writeAnnotations>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -9,11 +14,11 @@
     </option>
   </component>
   <component name="NullableNotNullManager">
-    <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
+    <option name="myDefaultNullable" value="org.springframework.lang.Nullable" />
     <option name="myDefaultNotNull" value="lombok.NonNull" />
     <option name="myNullables">
       <value>
-        <list size="15">
+        <list size="16">
           <item index="0" class="java.lang.String" itemvalue="com.android.annotations.Nullable" />
           <item index="1" class="java.lang.String" itemvalue="org.jspecify.nullness.Nullable" />
           <item index="2" class="java.lang.String" itemvalue="io.reactivex.rxjava3.annotations.Nullable" />
@@ -29,6 +34,7 @@
           <item index="12" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.qual.Nullable" />
           <item index="13" class="java.lang.String" itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
           <item index="14" class="java.lang.String" itemvalue="io.reactivex.annotations.Nullable" />
+          <item index="15" class="java.lang.String" itemvalue="org.springframework.lang.Nullable" />
         </list>
       </value>
     </option>

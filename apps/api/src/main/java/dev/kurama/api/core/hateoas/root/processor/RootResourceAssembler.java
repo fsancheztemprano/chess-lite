@@ -13,6 +13,8 @@ import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.SIGN
 import static dev.kurama.api.core.hateoas.relations.AuthenticationRelations.TOKEN_REL;
 import static dev.kurama.api.core.hateoas.relations.UserRelations.CURRENT_USER_REL;
 import static dev.kurama.api.core.utility.HateoasUtils.withDefaultAffordance;
+import static dev.kurama.api.ttt.core.TicTacToeAuthority.TIC_TAC_TOE_ROOT;
+import static dev.kurama.api.ttt.core.TicTacToeRelations.TIC_TAC_TOE_REL;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -24,6 +26,7 @@ import dev.kurama.api.core.rest.BuildInfoController;
 import dev.kurama.api.core.rest.ThemeController;
 import dev.kurama.api.core.rest.UserProfileController;
 import dev.kurama.api.core.utility.AuthorityUtils;
+import dev.kurama.api.ttt.root.TicTacToeRootController;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.springframework.hateoas.Link;
@@ -48,6 +51,9 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
       }
       if (AuthorityUtils.hasAuthority(PROFILE_READ)) {
         rootModel.link(getCurrentUserLink());
+      }
+      if (AuthorityUtils.hasAuthority(TIC_TAC_TOE_ROOT)) {
+        rootModel.link(getRootTicTacToeLink());
       }
     } else {
       rootModel.link(getLoginLink())
@@ -98,6 +104,10 @@ public class RootResourceAssembler implements RootAssembler<RootResource> {
 
   private @NonNull Link getBuildInfoLink() {
     return linkTo(methodOn(BuildInfoController.class).get()).withRel(BUILD_INFO_REL);
+  }
+
+  private @NonNull Link getRootTicTacToeLink() {
+    return linkTo(methodOn(TicTacToeRootController.class).root()).withRel(TIC_TAC_TOE_REL);
   }
 
   private @NonNull Link getThemeLink() {

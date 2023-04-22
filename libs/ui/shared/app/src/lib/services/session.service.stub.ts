@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Session, User } from '@app/ui/shared/domain';
+import { Session } from '@app/ui/shared/domain';
+import { Resource } from '@hal-form-client';
 import { of } from 'rxjs';
 import { SessionService } from './session.service';
 
@@ -7,8 +8,8 @@ import { SessionService } from './session.service';
   providedIn: 'root',
 })
 export class StubSessionService implements Partial<SessionService> {
-  initialize = (session: Session) => of(new User(session));
-  clearSession = () => of(new User());
+  initialize = (session: Session) => of(new Resource(session));
+  clearSession = () => of(new Resource());
 }
 
 export const stubSessionServiceProvider = {

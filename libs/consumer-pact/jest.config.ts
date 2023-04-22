@@ -4,13 +4,13 @@ export default {
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {},
-  coverageDirectory: '../../coverage/pact',
+  coverageDirectory: '../../coverage/libs/consumer-pact',
   reporters: [
     'default',
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage/pact',
+        outputDirectory: 'coverage/libs/consumer-pact',
         outputName: 'jest-junit.xml',
       },
     ],
@@ -24,7 +24,7 @@ export default {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@ngneat/effects|@ngneat/effects-ng)'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" *isMobile="let isMobile">
+<mat-toolbar color="primary" *isMobile="let isMobile" isMobileClass>
   <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="sidenavService.toggle()">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
@@ -12,4 +12,5 @@
   <app-locale-picker *ngIf="toolbarService.showLocalePicker$ | async"></app-locale-picker>
   <app-theme-picker *ngIf="toolbarService.showThemePicker$ | async"></app-theme-picker>
   <app-core-context-menu *ngIf="isMobile"></app-core-context-menu>
+  <app-sidebar-button></app-sidebar-button>
 </mat-toolbar>

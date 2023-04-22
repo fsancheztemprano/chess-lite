@@ -7,6 +7,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { CoreCardViewModule } from '@app/ui/shared/common';
+import { BreakpointFilterPipe, IfIsXlDirective } from '@app/ui/shared/core';
 import { TranslocoModule } from '@ngneat/transloco';
 import { UserManagementTableComponent } from './components/user-management-table/user-management-table.component';
 import { UserManagementListRoutingModule } from './user-management-list-routing.module';
@@ -24,6 +25,8 @@ import { UserManagementListRoutingModule } from './user-management-list-routing.
     MatCheckboxModule,
     TranslocoModule,
     CoreCardViewModule,
+    IfIsXlDirective,
+    BreakpointFilterPipe,
   ],
 })
 export class UserManagementListModule {}

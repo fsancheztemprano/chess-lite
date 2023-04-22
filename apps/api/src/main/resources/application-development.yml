@@ -16,6 +16,8 @@ application:
     - /v*/api-docs/**
   jwt:
     secret: 'secret'
+    token_life: 300000000
+    refresh_life: 3600000000
   host_url: 'http://localhost:4200'
   run_data_init: true
 spring:
@@ -29,6 +31,8 @@ spring:
   devtools:
     livereload:
       enabled: true
+  mvc:
+    log-resolved-exception: false
 springdoc:
   show-actuator: true
   api-docs:

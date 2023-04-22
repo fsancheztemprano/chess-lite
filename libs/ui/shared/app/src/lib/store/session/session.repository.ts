@@ -12,7 +12,7 @@ export class SessionRepository {
     select((core) => core.userPreferences),
   );
 
-  public updateSession(session: SessionProps) {
+  public updateSession(session: SessionProps): void {
     sessionStore.update(
       session.userPreferences ? this._updateUserPreferences(session.userPreferences) : this._updateUser(session.user),
     );

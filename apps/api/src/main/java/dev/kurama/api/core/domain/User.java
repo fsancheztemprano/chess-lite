@@ -2,6 +2,7 @@ package dev.kurama.api.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Sets;
+import dev.kurama.api.ttt.player.TicTacToePlayer;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -68,4 +69,9 @@ public class User extends AbstractEntity implements Serializable {
   @EqualsAndHashCode.Exclude
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private ActivationToken activationToken;
+
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @OneToOne(mappedBy = "user", orphanRemoval = false, optional = true, cascade = CascadeType.REMOVE)
+  private TicTacToePlayer ticTacToePlayer;
 }

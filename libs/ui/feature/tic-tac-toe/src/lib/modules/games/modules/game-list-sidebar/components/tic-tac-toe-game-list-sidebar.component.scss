@@ -1,0 +1,11 @@
+@import 'material-tab-sidebar';
+
+app-tic-tac-toe-game-list-sidebar {
+  @include mat-tab-sidebar(16px);
+
+  mat-tab-group {
+    .mat-mdc-checkbox {
+      display: block;
+    }
+  }
+}

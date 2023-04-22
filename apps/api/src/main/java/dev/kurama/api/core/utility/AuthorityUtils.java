@@ -6,16 +6,31 @@ import java.util.Arrays;
 import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthorityUtils {
 
+  public static SecurityContext getContext() {
+    return SecurityContextHolder.getContext();
+  }
+
+  public static void setAuthenticationContext(Authentication authentication) {
+    getContext().setAuthentication(authentication);
+  }
+
+  public static void setContextUser(ContextUser contextUser, String... authorities) {
+    setAuthenticationContext(new UsernamePasswordAuthenticationToken(contextUser, null,
+      Arrays.stream(authorities).map(SimpleGrantedAuthority::new).toList()));
+  }
+
   public static Authentication getAuthentication() {
-    return SecurityContextHolder.getContext().getAuthentication();
+    return getContext().getAuthentication();
   }
 
   public static ContextUser getContextUser() {

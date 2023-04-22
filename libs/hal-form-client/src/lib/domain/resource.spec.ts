@@ -144,7 +144,7 @@ describe('Resource', () => {
       expect(Resource.of(iResource).getEmbeddedCollection('roles')).toBeInstanceOf(Array);
       expect(Resource.of(iResource).getEmbeddedCollection('roles')[0]).toBeInstanceOf(Resource);
       expect(Resource.of(iResource).getEmbeddedCollection('roles')[1]).toBeInstanceOf(Resource);
-      expect(() => Resource.of(iResource).getEmbeddedCollection('missing')).toThrow();
+      expect(Resource.of(iResource).getEmbeddedCollection('missing')).toEqual([]);
     });
 
     it('should should return if resource has embedded collection', () => {
@@ -158,7 +158,7 @@ describe('Resource', () => {
       expect(Resource.of(iResource).getEmbeddedObject('preferences').locale).toBeTruthy();
       expect(Resource.of(iResource).getEmbeddedObject('preferences')).toBeInstanceOf(Resource);
       expect(Resource.of(iResource).getEmbeddedObject('preferences').getLink()).toBeTruthy();
-      expect(() => Resource.of(iResource).getEmbeddedCollection('missing')).toThrow();
+      expect(Resource.of(iResource).getEmbeddedCollection('missing')).toEqual([]);
     });
 
     it('should should return if resource has embedded object', () => {

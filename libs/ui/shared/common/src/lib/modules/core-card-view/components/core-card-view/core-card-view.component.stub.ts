@@ -9,4 +9,5 @@ export class StubCoreCardViewComponent implements Partial<CoreCardViewComponent>
   @Input() tabs: MenuData[] = [];
   @Input() tabsRatio = 1;
   @Input() showContextMenu = false;
+  @Input() paddedContent = true;
 }

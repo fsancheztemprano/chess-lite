@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.api.core.domain.User;
+import dev.kurama.api.core.exception.domain.ForbiddenException;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
@@ -190,6 +191,12 @@ class ExceptionHandlersIT {
     @GetMapping(path = "/signupClosedException")
     public void signupClosedException() throws SignupClosedException {
       throw new SignupClosedException();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/forbiddenException")
+    public void forbiddenException() throws ForbiddenException {
+      throw new ForbiddenException("id");
     }
 
     @ResponseStatus(HttpStatus.OK)

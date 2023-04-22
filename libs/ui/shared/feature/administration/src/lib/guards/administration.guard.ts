@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanMatch, Router, UrlTree } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AdministrationService } from '../services/administration.service';
@@ -7,7 +7,7 @@ import { AdministrationService } from '../services/administration.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AdministrationGuard implements CanMatch {
+export class AdministrationGuard {
   private initialization?: Observable<boolean | UrlTree>;
 
   constructor(private readonly administrationService: AdministrationService, private readonly router: Router) {}

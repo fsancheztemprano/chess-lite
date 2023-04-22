@@ -26,7 +26,7 @@ import { Observable, skip } from 'rxjs';
 })
 export class ThemeColorPickerComponent implements OnChanges {
   public readonly palettes = ['primary', 'accent', 'warn'];
-  public form = new FormGroup({
+  public readonly form = new FormGroup({
     primaryColor: new FormControl<string | null>(null),
     accentColor: new FormControl<string | null>(null),
     warnColor: new FormControl<string | null>(null),

@@ -1,0 +1,11 @@
+<mat-tab-group [disablePagination]="true" [disableRipple]="true" isMobileClass dynamicHeight>
+  <mat-tab *transloco="let t" [label]="t('tic-tac-toe.home.sidebar.label')">
+    <ng-template matTabContent>
+      <formly-form
+        [fields]="fields"
+        [model]="model"
+        (modelChange)="repository.updateNotifications($event)"
+      ></formly-form>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,40 @@
+{
+  "name": "ui-shared-feature-tic-tac-toe",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/ui/shared/feature/tic-tac-toe/src",
+  "prefix": "app",
+  "targets": {
+    "clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["rimraf ./coverage/libs/ui/shared/feature/tic-tac-toe"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/ui/shared/feature/tic-tac-toe/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/ui/shared/feature/tic-tac-toe/**/*.ts",
+          "libs/ui/shared/feature/tic-tac-toe/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

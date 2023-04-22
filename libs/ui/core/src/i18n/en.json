@@ -7,6 +7,9 @@
         "title": "Build Info"
       }
     },
+    "tic-tac-toe": {
+      "title": "Tic Tac Toe"
+    },
     "user-settings": {
       "title": "User Settings",
       "subtitle": {

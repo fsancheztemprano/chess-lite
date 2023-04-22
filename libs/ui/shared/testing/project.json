@@ -1,4 +1,5 @@
 {
+  "name": "ui-shared-testing",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/ui/shared/testing/src",
@@ -25,6 +26,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "ui-shared-testing"
+  "tags": []
 }

@@ -11,6 +11,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import dev.kurama.api.core.domain.DomainResponse;
+import dev.kurama.api.core.exception.domain.ForbiddenException;
 import dev.kurama.api.core.exception.domain.ImmutableRoleException;
 import dev.kurama.api.core.exception.domain.RoleCanNotLoginException;
 import dev.kurama.api.core.exception.domain.SignupClosedException;
@@ -55,6 +56,7 @@ public class ExceptionHandlers {
   private static final String EXISTS_MESSAGE = "Id %s already exists";
   private static final String IMMUTABLE_ROLE = "Role %s is immutable";
   private static final String SIGN_UP_CLOSED = "Sign Up is closed, try again later.";
+  private static final String FORBIDDEN_REQUEST = "Sorry, you do not have permission to access this resource.";
   private static final String NO_MAPPING_ERROR = "There is no mapping for this URL";
 
   @ResponseStatus(code = BAD_REQUEST)
@@ -105,6 +107,12 @@ public class ExceptionHandlers {
   @ExceptionHandler(SignupClosedException.class)
   public ResponseEntity<DomainResponse> signupClosedException(SignupClosedException exception) {
     return createDomainResponse(FORBIDDEN, SIGN_UP_CLOSED, exception.getMessage());
+  }
+
+  @ResponseStatus(code = FORBIDDEN)
+  @ExceptionHandler(ForbiddenException.class)
+  public ResponseEntity<DomainResponse> forbiddenException(ForbiddenException exception) {
+    return createDomainResponse(FORBIDDEN, FORBIDDEN_REQUEST, exception.getMessage());
   }
 
   @ResponseStatus(code = CONFLICT)

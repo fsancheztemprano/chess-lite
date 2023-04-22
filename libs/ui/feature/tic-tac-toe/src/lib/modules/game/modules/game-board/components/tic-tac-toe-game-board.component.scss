@@ -1,0 +1,61 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+
+  .board {
+    height: 100%;
+    width: 100%;
+    min-height: 82px;
+    min-width: 82px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 2%;
+    background-color: rgba(0, 0, 0, 0.87);
+    box-sizing: border-box;
+  }
+
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    min-width: 10px;
+    min-height: 10px;
+
+    .new-move-icon {
+      display: none;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    &:hover .new-move-icon {
+      display: inline-block;
+      background-color: rgba(0, 0, 0, 0.12);
+    }
+
+    &.highlight mat-icon,
+    &.winner mat-icon {
+      color: green;
+    }
+
+    &.looser mat-icon {
+      opacity: 0.5;
+    }
+  }
+}
+
+.dark-mode :host {
+  .board {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .cell {
+    background-color: #424242;
+  }
+}

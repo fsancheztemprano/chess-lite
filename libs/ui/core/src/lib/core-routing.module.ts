@@ -3,6 +3,7 @@ import { Router, RouterModule, Routes } from '@angular/router';
 import { isValidToken } from '@app/ui/shared/app';
 import { CurrentUserRelations, TokenKeys } from '@app/ui/shared/domain';
 import { AdministrationGuard } from '@app/ui/shared/feature/administration';
+import { TicTacToeGuard } from '@app/ui/shared/feature/tic-tac-toe';
 import { HalFormService } from '@hal-form-client';
 import { CoreComponent } from './components/core/core.component';
 
@@ -13,6 +14,8 @@ const loadAdministrationModule = () => import('@app/ui/feature/administration').
 const loadAuthModule = () => import('@app/ui/feature/authentication').then((m) => m.AuthenticationModule);
 
 const loadHomeModule = () => import('@app/ui/feature/home').then((m) => m.HomeModule);
+
+const loadTicTacToeModule = () => import('@app/ui/feature/tic-tac-toe').then((m) => m.TicTacToeModule);
 
 const routes: Routes = [
   {
@@ -46,8 +49,14 @@ const routes: Routes = [
       {
         path: 'administration',
         loadChildren: loadAdministrationModule,
-        canMatch: [AdministrationGuard],
+        canMatch: [() => inject(AdministrationGuard).canMatch()],
         data: { breadcrumb: { label: 'administration.title', i18n: true } },
+      },
+      {
+        path: 'tic-tac-toe',
+        loadChildren: loadTicTacToeModule,
+        canMatch: [() => inject(TicTacToeGuard).canMatch()],
+        data: { breadcrumb: { label: 'Tic Tac Toe', i18n: false } },
       },
       { path: '**', redirectTo: 'home' },
     ],

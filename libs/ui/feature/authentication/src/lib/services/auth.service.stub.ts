@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 export class StubAuthService implements Partial<AuthService> {
   getLoginTemplate = () => of(null);
   getSignupTemplate = () => of(null);
+  hasTemplateToLogin = () => of(true);
 }
 
 export const stubAuthServiceProvider = {

@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecurityConstant {
 
-  public static final long TOKEN_LIFE_SPAN = 300_000; // 5 minutes in milliseconds
-  public static final long REFRESH_TOKEN_LIFE_SPAN = 3_600_000; // 60 minutes in milliseconds
   public static final String TOKEN_PREFIX = "Bearer ";
   public static final String JWT_TOKEN_HEADER = "Jwt-Token";
   public static final String JWT_REFRESH_TOKEN_HEADER = "Jwt-Refresh-Token";

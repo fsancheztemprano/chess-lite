@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class EntityException extends Exception {
+public class EntityException extends RuntimeException {
 
   private Class<?> entityClass = AbstractEntity.class;
 

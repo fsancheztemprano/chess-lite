@@ -54,5 +54,10 @@
         }
       }
     }
+  },
+  "form": {
+    "validation": {
+      "required": "This field is required."
+    }
   }
 }
