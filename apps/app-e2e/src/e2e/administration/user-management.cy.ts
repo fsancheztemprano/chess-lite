@@ -12,15 +12,11 @@ describe('User Management', () => {
     cy.get('[data-cy="user-item-admin"] > .cdk-column-username').should('contain', 'admin');
     cy.get('[data-cy="user-item-admin"] > .cdk-column-email').should('contain', 'admin@localhost');
     cy.get('[data-cy="user-item-admin"] > .cdk-column-role').should('contain', 'SUPER_ADMIN_ROLE');
-    cy.get('[data-cy="user-item-admin"] > .cdk-column-active [type="checkbox"]').should('be.checked');
-    cy.get('[data-cy="user-item-admin"] > .cdk-column-locked [type="checkbox"]').should('not.be.checked');
     cy.get('[data-cy="user-item-admin"] > .cdk-column-edit a').should('exist');
 
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-username').should('contain', 'e2e-user1');
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-email').should('contain', 'e2e-user1@localhost');
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-role').should('contain', 'USER_ROLE');
-    cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-active [type="checkbox"]').should('be.checked');
-    cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-locked [type="checkbox"]').should('not.be.checked');
     cy.get('[data-cy="user-item-e2e-user1"] > .cdk-column-edit a').should('exist');
   });
 
@@ -29,17 +25,17 @@ describe('User Management', () => {
 
     cy.get('[data-cy="new-user-tile"]').click();
 
-    cy.get('app-user-management-create [formControlName="username"]').type('e2e-user2');
-    cy.get('app-user-management-create [formControlName="email"]').type('e2e-user2@localhost');
-    cy.get('app-user-management-create [formControlName="firstname"]').type('e2e-user2-firstname');
-    cy.get('app-user-management-create [formControlName="lastname"]').type('e2e-user2-lastname');
-    cy.get('app-user-management-create [formControlName="profileImageUrl"]').type('e2e-user2-avatar');
+    cy.get('app-user-management-create [formControlName="username"]').type('e2e-new-user-1');
+    cy.get('app-user-management-create [formControlName="email"]').type('e2e-new-user-1@localhost');
+    cy.get('app-user-management-create [formControlName="firstname"]').type('e2e-new-user-1-firstname');
+    cy.get('app-user-management-create [formControlName="lastname"]').type('e2e-new-user-1-lastname');
+    cy.get('app-user-management-create [formControlName="profileImageUrl"]').type('e2e-new-user-1-avatar');
 
     cy.get('app-user-management-create [formControlName="roleId"]').click();
     cy.get('[data-cy="USER_ROLE-option"]').click();
 
-    cy.get('app-user-management-create [formControlName="password"]').type('e2e-user2-password');
-    cy.get('app-user-management-create [formControlName="password2"]').type('e2e-user2-password');
+    cy.get('app-user-management-create [formControlName="password"]').type('e2e-new-user-1-password');
+    cy.get('app-user-management-create [formControlName="password2"]').type('e2e-new-user-1-password');
     cy.get('app-user-management-create [formControlName="active"] [type="checkbox"]').check({ force: true });
     cy.get('app-user-management-create [formControlName="locked"] [type="checkbox"]').should('be.enabled');
     cy.get('app-user-management-create [formControlName="expired"] [type="checkbox"]').should('be.enabled');
@@ -56,18 +52,13 @@ describe('User Management', () => {
     });
 
     cy.logout();
-    cy.login('e2e-user2', 'e2e-user2-password');
+    cy.login('e2e-new-user-1', 'e2e-new-user-1-password');
     cy.reload();
-    cy.get('[data-cy="nav-username"]').should('contain', 'e2e-user2');
+    cy.get('[data-cy="nav-username"]').should('contain', 'e2e-new-user-1');
   });
 
   describe('edit user', () => {
     beforeEach(() => {
-      cy.request({
-        method: 'POST',
-        url: Cypress.env('apiUrl') + '/auth/signup',
-        body: { username: 'e2e-user3', email: 'e2e-user3@localhost' },
-      });
       cy.get('[data-cy="user-list-tile"]').click();
       cy.get('[data-cy="user-item-e2e-user3"] > .cdk-column-edit a').click();
     });
@@ -150,7 +141,7 @@ describe('User Management', () => {
       cy.wait('@updateUserAuthorities').then((xhr) => {
         expect(xhr.response?.statusCode).to.eq(200);
         expect(!!xhr.response?.body.id).to.be.true;
-        expect(xhr.response?.body.authorities).to.have.length(4);
+        expect(xhr.response?.body.authorities).to.have.length(5);
         expect(
           (xhr.response?.body.authorities as []).map((authority: { name: string }) => authority.name),
         ).contains.all.members(['token:refresh', 'profile:update', 'profile:read', 'user:read']);

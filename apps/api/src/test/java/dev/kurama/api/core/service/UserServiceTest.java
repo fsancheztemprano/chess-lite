@@ -40,7 +40,6 @@ import dev.kurama.api.core.hateoas.input.AccountActivationInput;
 import dev.kurama.api.core.hateoas.input.SignupInput;
 import dev.kurama.api.core.hateoas.input.UserInput;
 import dev.kurama.api.core.repository.UserRepository;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -163,7 +162,7 @@ class UserServiceTest {
     userService.deleteUserById(expected.getId());
 
     verify(userRepository).delete(expected);
-    verify(userChangedEventEmitter).emitUserDeletedEvent(expected.getId());
+    verify(userChangedEventEmitter).emitUserDeletedEvent(expected);
   }
 
   @Nested
@@ -247,7 +246,7 @@ class UserServiceTest {
         && user.getPassword().equals(encodedPassword)
         && user.getRole().equals(role)
         && user.getAuthorities().equals(role.getAuthorities())));
-      verify(userChangedEventEmitter).emitUserCreatedEvent(anyString());
+      verify(userChangedEventEmitter).emitUserCreatedEvent(any());
       assertEquals(expected, actual);
     }
 
@@ -286,7 +285,7 @@ class UserServiceTest {
       verify(userRepository).save(any(User.class));
       verify(userRepository).save(argThat((User user) -> user.getRole().equals(defaultRole) && user.getAuthorities()
         .equals(defaultRole.getAuthorities())));
-      verify(userChangedEventEmitter).emitUserCreatedEvent(anyString());
+      verify(userChangedEventEmitter).emitUserCreatedEvent(any());
       assertEquals(expected, actual);
     }
   }
@@ -332,7 +331,7 @@ class UserServiceTest {
       verify(passwordEncode).encode(input.getPassword());
       verifyNoInteractions(roleService, authorityService);
       verify(userRepository).save(expected);
-      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected.getId());
+      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected);
       assertEquals(expected, actual);
       assertEquals(input.getFirstname(), actual.getFirstname());
       assertEquals(input.getEmail(), actual.getEmail());
@@ -366,7 +365,7 @@ class UserServiceTest {
       verify(userRepository).findById(expected.getId());
       verify(roleService).findRoleById(targetRole.getId());
       verify(userRepository).save(expected);
-      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected.getId());
+      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected);
       assertEquals(targetRole, actual.getRole());
       assertEquals(targetRole.getAuthorities(), actual.getAuthorities());
     }
@@ -394,7 +393,7 @@ class UserServiceTest {
       verifyNoInteractions(passwordEncode, roleService);
       verify(userRepository).findById(expected.getId());
       verify(userRepository).save(expected);
-      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected.getId());
+      verify(userChangedEventEmitter).emitUserUpdatedEvent(expected);
       assertEquals(authorities, actual.getAuthorities());
     }
 
@@ -527,8 +526,8 @@ class UserServiceTest {
     userService.reassignToRole(users, targetRole);
 
     verify(userRepository).saveAllAndFlush(users);
-    verify(userChangedEventEmitter).emitUserUpdatedEvent(user1.getId());
-    verify(userChangedEventEmitter).emitUserUpdatedEvent(user2.getId());
+    verify(userChangedEventEmitter).emitUserUpdatedEvent(user1);
+    verify(userChangedEventEmitter).emitUserUpdatedEvent(user2);
     verifyNoMoreInteractions(userChangedEventEmitter);
     assertThat(users.get(0).getRole()).isEqualTo(targetRole);
     assertThat(users.get(0).getAuthorities()).isEqualTo(targetRole.getAuthorities());
@@ -540,7 +539,7 @@ class UserServiceTest {
     String email = randomAlphanumeric(8);
     when(userRepository.findUserByUsername(username)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
-    assertThrows(UndeclaredThrowableException.class,
+    assertThrows(UserExistsException.class,
       () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));
   }
 
@@ -550,7 +549,7 @@ class UserServiceTest {
     String email = randomAlphanumeric(8);
     when(userRepository.findUserByEmail(email)).thenReturn(Optional.of(User.builder().setRandomUUID().build()));
 
-    assertThrows(UndeclaredThrowableException.class,
+    assertThrows(UserExistsException.class,
       () -> ReflectionTestUtils.invokeMethod(userService, "validateNewUsernameAndEmail", username, email));
   }
 }

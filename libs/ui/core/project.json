@@ -1,4 +1,5 @@
 {
+  "name": "ui-core",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/ui/core/src",
@@ -25,6 +26,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "ui-core"
+  "tags": []
 }

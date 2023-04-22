@@ -1,0 +1,6 @@
+<app-core-card-view *transloco="let t" [title]="t('tic-tac-toe.new-game.title')">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+    <formly-form [fields]="fields" [model]="model"></formly-form>
+    <button mat-raised-button data-cy="new-game-button">{{ t('tic-tac-toe.new-game.create') }}</button>
+  </form>
+</app-core-card-view>

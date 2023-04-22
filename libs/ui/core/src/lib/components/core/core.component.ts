@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
-import { ThemeRepository } from '@app/ui/shared/core';
+import { SidebarRepository, ThemeRepository } from '@app/ui/shared/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -13,7 +13,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class CoreComponent implements OnInit {
   @HostBinding('class.dark-mode') darkModeClass = false;
 
-  constructor(private readonly overlay: OverlayContainer, private readonly themeRepository: ThemeRepository) {}
+  constructor(
+    private readonly overlay: OverlayContainer,
+    private readonly themeRepository: ThemeRepository,
+    public readonly sidebarRepository: SidebarRepository,
+  ) {}
 
   ngOnInit(): void {
     this._subscribeToThemeChanges();

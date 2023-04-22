@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { HTTP_CLIENT } from '../hal-form-client.module';
 import { parseHeaders } from '../utils/headers.utils';
 import { parseUrl } from '../utils/url-template.utils';
-import { ContentType, LinkOptions } from './domain';
+import { ContentType, HalParameters, LinkOptions } from './domain';
 import { Resource } from './resource';
 
 export interface ILink {
@@ -43,12 +43,16 @@ export class Link implements ILink {
   }
 
   public get<T>(options?: LinkOptions): Observable<HttpResponse<T>> {
-    return HTTP_CLIENT.get<T>(parseUrl(this.href, options?.parameters), {
+    return HTTP_CLIENT.get<T>(this.getParsedUrl(options?.parameters), {
       headers: { Accept: ContentType.APPLICATION_JSON_HAL_FORMS, ...parseHeaders(options?.headers) },
       context: options?.context,
       observe: 'response',
       responseType: 'json',
     });
+  }
+
+  public getParsedUrl(parameters?: HalParameters): string {
+    return parseUrl(this.href, parameters);
   }
 
   public toJson(): ILink {

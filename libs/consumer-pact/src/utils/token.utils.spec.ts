@@ -5,13 +5,14 @@ import {
   ProfileAuthority,
   RoleAuthority,
   ServiceLogsAuthority,
+  TicTacToeAuthority,
   TokenAuthority,
   UserAuthority,
   UserPreferencesAuthority,
 } from '@app/ui/shared/domain';
 import * as jwt from 'jsonwebtoken';
 import { JwtPayload } from 'jsonwebtoken';
-import { jwtToken } from './token.utils';
+import { jwtToken, setToken } from './token.utils';
 
 describe('Token Utils', () => {
   it('should create jwt token', () => {
@@ -46,6 +47,10 @@ describe('Token Utils', () => {
         AdminAuthority.ADMIN_ROOT,
         AdminAuthority.ADMIN_ROLE_MANAGEMENT_ROOT,
         AdminAuthority.ADMIN_USER_MANAGEMENT_ROOT,
+        TicTacToeAuthority.TIC_TAC_TOE_ROOT,
+        TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE,
+        TicTacToeAuthority.TIC_TAC_TOE_GAME_READ,
+        TicTacToeAuthority.TIC_TAC_TOE_GAME_MOVE,
       ],
     };
     const token = jwtToken(authenticatedUser);
@@ -56,5 +61,14 @@ describe('Token Utils', () => {
     expect(decodedToken).toBeTruthy();
     expect(decodedToken.user).toStrictEqual(authenticatedUser.user);
     expect(decodedToken.authorities).toStrictEqual(authenticatedUser.authorities);
+  });
+
+  it('should set token in local storage', () => {
+    const authenticatedUser = {
+      user: { id: '51236253-7c7c-45e4-b7f5-304b3b66a43d', username: 'admin' },
+    };
+    setToken(authenticatedUser);
+    expect(localStorage.getItem('token')).toBeTruthy();
+    expect(localStorage.getItem('token')).toBe(jwtToken(authenticatedUser));
   });
 });

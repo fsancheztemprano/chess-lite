@@ -1,0 +1,22 @@
+<ng-container *ngIf="service.moves$ | async as moves">
+  <ng-container *ngIf="moves.length; else noMoves">
+    <mat-list>
+      <ng-container *ngFor="let move of service.moves$ | async">
+        <mat-list-item>
+          <div matListItemAvatar>
+            <app-tic-tac-toe-game-board [board]="move.board" [highlight]="move.cell"></app-tic-tac-toe-game-board>
+          </div>
+          <div matListItemTitle>{{ move.player.username }}</div>
+          <div matListItemLine class="mat-caption">{{ move.movedAt | date : 'medium' }}</div>
+          <div matListItemLine class="mat-caption">{{ move.moveTime | duration }}</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </ng-container>
+    </mat-list>
+  </ng-container>
+  <ng-template #noMoves>
+    <div class="message-container">
+      <app-core-info-message icon="not_started"></app-core-info-message>
+    </div>
+  </ng-template>
+</ng-container>

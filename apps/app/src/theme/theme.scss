@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 
 @import 'material-theme';
+@import 'material-tab-sidebar';
 
 @include mat.all-component-typographies();
 @include mat.core();
@@ -36,38 +37,12 @@ $dynamic-dark-theme: mat.define-dark-theme(
     ),
   )
 );
-
-$static-light-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: mat.define-palette($primary-palette),
-      accent: mat.define-palette($accent-palette),
-      warn: mat.define-palette($warn-palette),
-    ),
-    typography: mat.define-typography-config(),
-  )
-);
-$static-dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: mat.define-palette($primary-palette),
-      accent: mat.define-palette($accent-palette),
-      warn: mat.define-palette($warn-palette),
-    ),
-  )
-);
 // @formatter:on
 
-//@include mat.all-component-themes($dynamic-light-theme);
-@include all-dynamic-component-themes($dynamic-light-theme);
-@include all-static-component-themes($static-light-theme);
+@include mat.all-component-themes($dynamic-light-theme);
 
 .dark-mode {
-  //@include mat.all-component-colors($dynamic-dark-theme);
-  @include all-dynamic-component-colors($dynamic-dark-theme);
-  @include all-static-component-colors($static-dark-theme);
+  @include mat.all-component-colors($dynamic-dark-theme);
 }
 
-.mat-mdc-form-field-error.mat-mdc-form-field-error {
-  display: flex;
-}
+@include mat-tab-sidebar-layout;

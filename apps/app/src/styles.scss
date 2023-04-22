@@ -15,3 +15,7 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.mat-mdc-form-field-error.mat-mdc-form-field-error {
+  display: flex;
+}

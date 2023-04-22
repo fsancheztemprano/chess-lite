@@ -1,4 +1,5 @@
 {
+  "name": "ui-feature-home",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/ui/feature/home/src",
@@ -25,6 +26,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "ui-feature-home"
+  "tags": []
 }

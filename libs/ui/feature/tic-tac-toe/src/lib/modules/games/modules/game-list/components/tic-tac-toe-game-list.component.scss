@@ -1,0 +1,62 @@
+@use 'node_modules/@angular/material/index' as mat;
+
+:host {
+  height: 100%;
+
+  .games-table {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+
+    th > *,
+    td > * {
+      vertical-align: middle;
+    }
+
+    .mat-column-status,
+    .mat-column-isPrivate,
+    .mat-column-edit {
+      width: 48px;
+    }
+
+    .mat-column-edit {
+      padding-right: 2px;
+    }
+
+    .status-icon {
+      background: rgba(0, 0, 0, 0.87);
+      cursor: pointer;
+      width: 22px;
+      height: 22px;
+      padding: 3px;
+      background-clip: content-box;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 0, 0, 0.87);
+      box-sizing: border-box;
+
+      &.in_progress {
+        background-color: rgb(38, 136, 27);
+      }
+
+      &.pending {
+        background-color: rgb(255, 193, 7);
+      }
+
+      &.finished {
+        background-color: rgb(79, 79, 79);
+      }
+
+      &.rejected {
+        background-color: rgb(77, 47, 47);
+      }
+    }
+  }
+}
+
+.dark-mode :host {
+  .games-table .status-icon {
+    border-color: rgba(255, 255, 255, 0.87);
+  }
+}

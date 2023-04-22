@@ -42,6 +42,7 @@ Thumbs.db
 
 .scannerwork
 .jpb
+migrations.json
 
 apps/api/src/main/resources/application-gb.yml
 

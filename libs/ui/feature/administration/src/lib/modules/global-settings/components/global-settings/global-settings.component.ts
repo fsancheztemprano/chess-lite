@@ -15,11 +15,13 @@ export class GlobalSettingsComponent {
       id: 'global-settings-general-tab',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.general-settings`),
       route: ['/administration', 'global-settings', 'general'],
+      icon: 'settings_suggest',
     },
     {
       id: 'global-settings-access-restrictions-tab',
       title$: this.translocoService.selectTranslate(`${this.TRANSLOCO_SCOPE}.tabs.access-restrictions`),
       route: ['/administration', 'global-settings', 'access-restrictions'],
+      icon: 'do_not_disturb_on',
     },
   ];
 

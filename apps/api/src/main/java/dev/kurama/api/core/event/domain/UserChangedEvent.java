@@ -8,6 +8,7 @@ import lombok.Data;
 public class UserChangedEvent implements ApplicationEvent {
 
   private String userId;
+  private String username;
 
   private UserChangedEventAction action;
 

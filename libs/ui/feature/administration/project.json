@@ -1,8 +1,9 @@
 {
+  "name": "ui-feature-administration",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/ui/feature/administration/src",
-  "prefix": "lib",
+  "prefix": "app",
   "targets": {
     "clean": {
       "executor": "nx:run-commands",
@@ -28,6 +29,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "ui-feature-administration"
+  "tags": []
 }

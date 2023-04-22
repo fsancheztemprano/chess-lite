@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ThemeService } from '@app/ui/shared/app';
 import { AdministrationThemeComponent } from './components/administration-theme.component';
-import { ThemeResolver } from './resolvers/theme.resolver';
 
 const routes: Routes = [
   {
     path: '',
     component: AdministrationThemeComponent,
-    resolve: { theme: ThemeResolver },
+    resolve: { theme: () => inject(ThemeService).getTheme() },
   },
   { path: '**', redirectTo: '' },
 ];

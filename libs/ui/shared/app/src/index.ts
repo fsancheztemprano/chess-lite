@@ -1,5 +1,5 @@
 export { ToasterService } from './lib/services/toaster.service';
-export { ToastType } from './lib/services/toaster.service.model';
+export { ToastType, IToastModel } from './lib/services/toaster.service.model';
 export { SessionService } from './lib/services/session.service';
 export { MessageService } from './lib/services/message.service';
 export { HotSocket } from './lib/utils/hot-socket.model';

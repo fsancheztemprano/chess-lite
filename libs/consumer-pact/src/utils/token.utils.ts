@@ -1,3 +1,4 @@
+import { TokenKeys } from '@app/ui/shared/domain';
 import { randomUUID } from 'crypto';
 import { sign } from 'jsonwebtoken';
 
@@ -25,4 +26,8 @@ export function jwtToken(authUser: AuthUser = {}): string {
     expiresIn: '2y',
     subject: payload.user.username,
   });
+}
+
+export function setToken(authUser: AuthUser = {}): void {
+  localStorage.setItem(TokenKeys.TOKEN, !authUser ? '' : jwtToken(authUser));
 }

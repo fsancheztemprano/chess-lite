@@ -19,6 +19,7 @@ import {
 import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
 import { LocalePickerComponent } from '../locale-picker/locale-picker.component';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { SidebarButtonComponent } from '../sidebar-button/sidebar-button.component';
 import { ThemePickerComponent } from '../theme-picker/theme-picker.component';
 import { ToolbarComponent } from './toolbar.component';
 
@@ -34,6 +35,9 @@ class StubSearchBarComponent implements Partial<SearchBarComponent> {}
 @Component({ selector: 'app-breadcrumb', template: '' })
 class StubBreadcrumbComponent implements Partial<BreadcrumbComponent> {}
 
+@Component({ selector: 'app-sidebar-button', template: '' })
+class StubSidebarButtonComponent implements Partial<SidebarButtonComponent> {}
+
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
@@ -48,6 +52,7 @@ describe('ToolbarComponent', () => {
         StubLocalePickerComponent,
         StubThemePickerComponent,
         StubCoreContextMenuComponent,
+        StubSidebarButtonComponent,
       ],
       imports: [NoopAnimationsModule, MatButtonModule, MatIconModule, MatToolbarModule, IsMobileModule, NgLetModule],
       providers: [stubSidenavServiceProvider, stubIsMobileServiceProvider, stubBreadcrumbServiceProvider],

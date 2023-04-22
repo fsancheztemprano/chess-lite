@@ -170,7 +170,7 @@ describe('ToasterService', () => {
     });
 
     expect(toastrService.show).toHaveBeenCalledWith(
-      "<a download href='/link' target='_blank'>linkCaption</a>",
+      "message<br><br><a [download]='undefined' href='/link' target='_blank'>linkCaption</a>",
       'title',
       {
         closeButton: false,

@@ -12,4 +12,5 @@ export class CoreCardViewComponent {
   @Input() titleRatio = 1;
   @Input() tabs: MenuData[] = [];
   @Input() tabsRatio = 1;
+  @Input() paddedContent = true;
 }

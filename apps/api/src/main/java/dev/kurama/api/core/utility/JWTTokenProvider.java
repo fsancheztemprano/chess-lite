@@ -27,14 +27,20 @@ import org.springframework.stereotype.Component;
 public class JWTTokenProvider {
 
   @Value("${application.jwt.secret}")
-  private String secret;
+  private String SECRET;
+
+  @Value("${application.jwt.token_life}")
+  private long TOKEN_LIFE_SPAN;
+
+  @Value("${application.jwt.refresh_life}")
+  private long REFRESH_TOKEN_LIFE_SPAN;
 
   public String generateToken(UserPrincipal userPrincipal) {
-    return generateJwtToken(userPrincipal, SecurityConstant.TOKEN_LIFE_SPAN);
+    return generateJwtToken(userPrincipal, TOKEN_LIFE_SPAN);
   }
 
   public String generateRefreshToken(UserPrincipal userPrincipal) {
-    return generateJwtToken(userPrincipal, SecurityConstant.REFRESH_TOKEN_LIFE_SPAN);
+    return generateJwtToken(userPrincipal, REFRESH_TOKEN_LIFE_SPAN);
   }
 
   public boolean isTokenValid(DecodedJWT token) {
@@ -105,7 +111,7 @@ public class JWTTokenProvider {
   }
 
   private Algorithm getAlgorithm() {
-    return Algorithm.HMAC512(secret);
+    return Algorithm.HMAC512(SECRET);
   }
 
   private String[] getAuthoritiesFromUser(UserPrincipal userPrincipal) {

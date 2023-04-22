@@ -25,6 +25,7 @@ import dev.kurama.api.core.repository.AuthorityRepository;
 import dev.kurama.api.core.repository.GlobalSettingsRepository;
 import dev.kurama.api.core.repository.RoleRepository;
 import dev.kurama.api.core.repository.UserRepository;
+import dev.kurama.api.ttt.player.TicTacToePlayerRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +63,9 @@ class DataInitializationServiceTest {
 
   @Mock
   private BCryptPasswordEncoder passwordEncoder;
+
+  @Mock
+  private TicTacToePlayerRepository ticTacToePlayerRepository;
 
   @BeforeEach
   void setUp() {
@@ -318,6 +322,8 @@ class DataInitializationServiceTest {
         .build();
       doReturn(0L).when(userRepository).count();
       doReturn(Optional.of(superAdminRole)).when(roleRepository).findByName(DefaultAuthority.SUPER_ADMIN_ROLE);
+      User admin = User.builder().setRandomUUID().username("admin").role(superAdminRole).build();
+      doReturn(admin).when(userRepository).saveAndFlush(any(User.class));
       String encodedPassword = randomAlphanumeric(8);
       doReturn(encodedPassword).when(passwordEncoder).encode("123456");
 

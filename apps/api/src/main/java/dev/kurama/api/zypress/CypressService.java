@@ -48,6 +48,8 @@ public class CypressService {
   private final ThemeService themeService;
   @NonNull
   private final ThemeRepository themeRepository;
+  @NonNull
+  private final CypressTicTacToeService ticTacToeService;
 
   @NonNull
   private final DataInitializationService initializationService;
@@ -71,6 +73,11 @@ public class CypressService {
           setState0();
           setState1();
         }
+        case STATE_2 -> {
+          setState0();
+          setState1();
+          ticTacToeService.setStateTicTacToe();
+        }
       }
       this.state = state;
       log.atFine().log("Cypress State: %s", this.state);
@@ -89,12 +96,11 @@ public class CypressService {
 
   private void setState1() throws UserExistsException, RoleNotFoundException {
     initializationService.initialize();
-    userService.createUser(UserInput.builder()
-      .username("e2e-user1")
-      .password("e2e-user1")
-      .email("e2e-user1@localhost")
-      .locked(false)
-      .build());
+    createUser("e2e-user1");
+    createUser("e2e-user2");
+    createUser("e2e-user3");
+    createUser("e2e-user4");
+    createUser("e2e-user5");
     roleService.findByName("USER_ROLE").ifPresent(role -> {
       role.setCanLogin(true);
       roleRepository.save(role);
@@ -102,5 +108,10 @@ public class CypressService {
     globalSettingsService.updateGlobalSettings(GlobalSettingsUpdateInput.builder().signupOpen(true).build());
     themeService.updateTheme(
       ThemeUpdateInput.builder().primaryColor("#303f9f").accentColor("#f9a825").warnColor("#c2185b").build());
+  }
+
+  private void createUser(String username) {
+    userService.createUser(
+      UserInput.builder().username(username).password(username).email(username + "@localhost").locked(false).build());
   }
 }

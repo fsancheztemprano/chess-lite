@@ -10,6 +10,7 @@ import dev.kurama.api.core.authority.ThemeAuthority;
 import dev.kurama.api.core.authority.TokenAuthority;
 import dev.kurama.api.core.authority.UserAuthority;
 import dev.kurama.api.core.authority.UserPreferencesAuthority;
+import dev.kurama.api.ttt.core.TicTacToeAuthority;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -24,7 +25,7 @@ import org.springframework.context.annotation.Import;
 @Inherited
 @Import({TokenAuthority.class, AdminAuthority.class, AuthorityAuthority.class, GlobalSettingsAuthority.class,
   UserAuthority.class, RoleAuthority.class, ProfileAuthority.class, ServiceLogsAuthority.class,
-  UserPreferencesAuthority.class, ThemeAuthority.class})
+  UserPreferencesAuthority.class, ThemeAuthority.class, TicTacToeAuthority.class})
 public @interface ImportAuthorities {
 
 }

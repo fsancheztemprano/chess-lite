@@ -57,16 +57,16 @@ export class Resource implements IResource {
 
     if (iResource._links) {
       this._links = Object.keys(iResource._links)
-        .map((key) => ({ [key]: Link.of(iResource!._links![key]) }))
+        .map((key) => ({ [key]: Link.of(iResource._links![key]) }))
         .reduce((previous, current) => ({ ...previous, ...current }), {});
     }
 
     if (iResource._embedded) {
       this._embedded = Object.keys(iResource._embedded as any)
         .map((key) => ({
-          [key]: Array.isArray(iResource!._embedded![key])
-            ? iResource!._embedded![key].map((res: IResource) => Resource.of(res))
-            : Resource.of(iResource!._embedded![key]),
+          [key]: Array.isArray(iResource._embedded![key])
+            ? iResource._embedded![key].map((res: IResource) => Resource.of(res))
+            : Resource.of(iResource._embedded![key]),
         }))
         .reduce((previous, current) => ({ ...previous, ...current }), {});
     }
@@ -76,7 +76,7 @@ export class Resource implements IResource {
         .map((key) => ({
           [key]: Template.of({
             target: this._links?.self?.href,
-            ...iResource!._templates![key],
+            ...iResource._templates![key],
           }),
         }))
         .reduce((previous, current) => ({ ...previous, ...current }), {});
@@ -136,7 +136,7 @@ export class Resource implements IResource {
   }
 
   public getEmbeddedCollection<T = Resource>(key: string): T[] {
-    return this.getEmbeddedOrThrow<T>(key) as T[];
+    return (this.getEmbedded<T>(key) as T[]) || [];
   }
 
   public hasEmbeddedObject(key: string): boolean {
@@ -182,7 +182,7 @@ export class Resource implements IResource {
     return this.getTemplate(options?.template)?.canAffordProperty(options?.name, options?.value) || false;
   }
 
-  public toJson(): IResource {
+  public toJson<T = IResource>(): T {
     return JSON.parse(
       JSON.stringify({
         ...this,

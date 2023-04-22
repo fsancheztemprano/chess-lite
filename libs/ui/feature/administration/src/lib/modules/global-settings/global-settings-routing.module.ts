@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RolesResolver } from '../role-management/resolvers/roles.resolver';
+import { RoleManagementService } from '../role-management/services/role-management.service';
 import { GlobalSettingsComponent } from './components/global-settings/global-settings.component';
 import { GlobalSettingsGuard } from './guards/global-settings.guard';
 
@@ -18,7 +18,7 @@ const routes: Routes = [
     component: GlobalSettingsComponent,
     canActivate: [GlobalSettingsGuard],
     canDeactivate: [GlobalSettingsGuard],
-    resolve: { roles: RolesResolver },
+    resolve: { roles: () => inject(RoleManagementService).fetchRoles({ size: 1000 }) },
     children: [
       {
         path: 'general',
