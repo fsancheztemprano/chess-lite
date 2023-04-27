@@ -126,7 +126,7 @@
     "@schematics/angular": "15.2.6",
     "@schematics/schematics": "0.1102.12",
     "@types/jest": "29.5.1",
-    "@types/jsonwebtoken": "9.0.1",
+    "@types/jsonwebtoken": "9.0.2",
     "@types/node": "18.15.13",
     "@types/sockjs-client": "1.5.1",
     "@types/url-template": "2.0.28",
