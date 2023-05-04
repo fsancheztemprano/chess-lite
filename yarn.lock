@@ -11129,10 +11129,10 @@ ngx-colors@3.5.2:
   dependencies:
     tslib "^2.0.0"
 
-ngx-toastr@16.1.1:
-  version "16.1.1"
-  resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-16.1.1.tgz#ef7907db71523126b7d10b32dff3e142bb650ac4"
-  integrity sha512-obUGE5RYC/62/AYiZvZcVw/mMBSI0KGJH7VhdiQQ2jsysp05m8nndI1shGhm6X1t/6/z/qj7NFpvSuUyhdweNg==
+ngx-toastr@16.2.0:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-16.2.0.tgz#f138c31c3b6960a1059aeea7133a44e4db95db79"
+  integrity sha512-7X6UhOKiaUeC2eTOsUqctZH0ZWKG8VlzDxWJhdEF1N3kPod46SU/Vn2l0hbt8EDwTjxHKfKyevU2idkYDoZYog==
   dependencies:
     tslib "^2.3.0"
 
