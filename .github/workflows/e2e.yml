@@ -51,15 +51,14 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-${{ github.run_id }}
+          key: ${{ runner.os }}-deps-e2e-${{ github.run_id }}
           restore-keys: |
-            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-
-            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
-            v4-${{ runner.os }}-
+            ${{ runner.os }}-deps-e2e-
+            ${{ runner.os }}-deps-
 
       - name: Java Dependencies
         working-directory: apps/api
-        run: mvn -B dependency:resolve dependency:resolve-plugins
+        run: mvn -B dependency:go-offline dependency:resolve-plugins
 
       - name: Node Dependencies
         run: yarn install
