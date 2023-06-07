@@ -51,7 +51,7 @@ jobs:
 
       - name: Java Dependencies
         working-directory: apps/api
-        run: mvn -B dependency:go-offline dependency:resolve-plugins
+        run: mvn -B dependency:resolve dependency:resolve-plugins
 
       - name: Node Dependencies
         run: yarn install
