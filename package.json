@@ -75,7 +75,7 @@
     "@angular/platform-browser-dynamic": "15.2.8",
     "@angular/router": "15.2.8",
     "@ctrl/tinycolor": "3.6.0",
-    "@ngneat/effects": "2.1.1",
+    "@ngneat/effects": "2.1.2",
     "@ngneat/effects-ng": "3.1.2",
     "@ngneat/elf": "2.3.1",
     "@ngneat/elf-devtools": "1.2.1",
