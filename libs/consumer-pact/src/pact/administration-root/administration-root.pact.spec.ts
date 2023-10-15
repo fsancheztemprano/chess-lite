@@ -56,7 +56,7 @@ describe('Administration Root Resource Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -72,7 +72,7 @@ describe('Administration Root Resource Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -85,7 +85,7 @@ describe('Administration Root Resource Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [AdminAuthority.ADMIN_ROOT] }));
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(interaction.willRespondWith.body);
+          expect(resource).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });
@@ -102,7 +102,7 @@ describe('Administration Root Resource Pacts', () => {
           service.initialize().subscribe({
             next: (resource) => {
               expect(resource).toBeTruthy();
-              expect(resource).toMatchObject(interaction.willRespondWith.body);
+              expect(resource).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -120,7 +120,7 @@ describe('Administration Root Resource Pacts', () => {
           );
           service.initialize().subscribe((resource) => {
             expect(resource).toBeTruthy();
-            expect(resource).toMatchObject(interaction.willRespondWith.body);
+            expect(resource).toMatchObject(interaction.willRespondWith.body!);
             done();
           });
         });
@@ -142,7 +142,7 @@ describe('Administration Root Resource Pacts', () => {
           );
           service.initialize().subscribe((resource) => {
             expect(resource).toBeTruthy();
-            expect(resource).toMatchObject(interaction.willRespondWith.body);
+            expect(resource).toMatchObject(interaction.willRespondWith.body!);
             done();
           });
         });
@@ -165,7 +165,7 @@ describe('Administration Root Resource Pacts', () => {
           );
           service.initialize().subscribe((resource) => {
             expect(resource).toBeTruthy();
-            expect(resource).toMatchObject(interaction.willRespondWith.body);
+            expect(resource).toMatchObject(interaction.willRespondWith.body!);
             done();
           });
         });

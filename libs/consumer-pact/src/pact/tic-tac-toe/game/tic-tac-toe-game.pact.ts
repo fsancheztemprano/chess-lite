@@ -2,7 +2,8 @@ import { HttpHeaderKey, TicTacToeAuthority, TicTacToeGameStatus } from '@app/ui/
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { boolean } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer } from '../../../utils/pact.utils';
 import { jwtToken } from '../../../utils/token.utils';
@@ -20,7 +21,7 @@ export namespace GetAllTicTacToeGamesPact {
     state: 'stateless',
     uponReceiving: 'get my tic tac toe games and public games',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -51,7 +52,7 @@ export namespace GetAllTicTacToeGamesPact {
     state: 'stateless',
     uponReceiving: 'get all tic tac toe games unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -73,7 +74,7 @@ export namespace CreateTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'create a tic tac toe game as player',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/tic-tac-toe/game',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -102,7 +103,7 @@ export namespace CreateTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'create a tic tac toe game unauthorized',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/tic-tac-toe/game',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -129,7 +130,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe pending',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -156,7 +157,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe pending with status template',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -175,7 +176,7 @@ export namespace GetOneTicTacToeGamePact {
         ...pendingGame,
         _templates: {
           ...defaultTemplate,
-          ...statusTemplate,
+          ...(statusTemplate as JsonMap),
         },
       },
     },
@@ -185,7 +186,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe pending with admin status template',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -213,7 +214,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe game in progress',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -236,7 +237,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe game in progress active player',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -255,7 +256,7 @@ export namespace GetOneTicTacToeGamePact {
         ...inProgressGame,
         _templates: {
           ...defaultTemplate,
-          ...moveTemplate,
+          ...(moveTemplate as JsonMap),
         },
       },
     },
@@ -265,7 +266,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe game rejected',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g3',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -289,7 +290,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe game finished',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g4',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -313,7 +314,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe game not found',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g0',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -322,6 +323,7 @@ export namespace GetOneTicTacToeGamePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
       },
@@ -332,7 +334,7 @@ export namespace GetOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'get one tic tac toe game unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -354,7 +356,7 @@ export namespace PatchOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'accept one tic tac toe game as opponent player',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -376,7 +378,7 @@ export namespace PatchOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'successfully reject one tic tac toe game',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g3',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -398,7 +400,7 @@ export namespace PatchOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'accept one tic tac toe game unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g1',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -422,7 +424,7 @@ export namespace PatchOneTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'accept one tic tac toe game not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g0',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -435,6 +437,7 @@ export namespace PatchOneTicTacToeGamePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
       },

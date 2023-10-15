@@ -1,4 +1,3 @@
-import { TicTacToeGameChangedMessage } from '@app/ui/shared/domain';
 import { ContentType } from '@hal-form-client';
 import { MessageConsumerPact, synchronousBodyHandler } from '@pact-foundation/pact';
 import { pactForMessages } from '../../../utils/pact.utils';
@@ -13,7 +12,7 @@ describe('Tic Tac Toe Game Messages Pacts', () => {
       .withContent(TicTacToeGameMessages.ticTacToeGameCreatedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: TicTacToeGameChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(TicTacToeGameMessages.ticTacToeGameCreatedMessage);
         }),
@@ -26,7 +25,7 @@ describe('Tic Tac Toe Game Messages Pacts', () => {
       .withContent(TicTacToeGameMessages.ticTacToeGameUpdatedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: TicTacToeGameChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(TicTacToeGameMessages.ticTacToeGameUpdatedMessage);
         }),

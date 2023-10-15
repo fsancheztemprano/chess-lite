@@ -1,7 +1,7 @@
-import { TicTacToeAuthority, TicTacToeGamePlayer } from '@app/ui/shared/domain';
+import { HttpHeaderKey, TicTacToeAuthority, TicTacToeGamePlayer } from '@app/ui/shared/domain';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../../utils/pact.utils';
 import { jwtToken } from '../../../utils/token.utils';
 
@@ -28,7 +28,7 @@ export namespace MoveTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'make a tic tac toe game move',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -41,6 +41,7 @@ export namespace MoveTicTacToeGamePact {
     },
     willRespondWith: {
       status: 201,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         ...move1,
       },
@@ -51,7 +52,7 @@ export namespace MoveTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'make a tic tac toe game move not found',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g0/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -64,6 +65,7 @@ export namespace MoveTicTacToeGamePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
       },
@@ -74,7 +76,7 @@ export namespace MoveTicTacToeGamePact {
     state: 'stateless',
     uponReceiving: 'make a tic tac toe move unauthorized',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -100,7 +102,7 @@ export namespace AllTicTacToeGameMoves {
     state: 'stateless',
     uponReceiving: 'get all tic tac toe game moves',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -109,6 +111,7 @@ export namespace AllTicTacToeGameMoves {
     },
     willRespondWith: {
       status: 200,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         _embedded: {
           ticTacToeGameMoveModels: [move1],
@@ -126,7 +129,7 @@ export namespace AllTicTacToeGameMoves {
     state: 'stateless',
     uponReceiving: 'get all tic tac toe game moves not found',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g0/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -135,6 +138,7 @@ export namespace AllTicTacToeGameMoves {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
       },
@@ -145,7 +149,7 @@ export namespace AllTicTacToeGameMoves {
     state: 'stateless',
     uponReceiving: 'get all tic tac toe game moves unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/tic-tac-toe/game/tic-tac-toe-g2/move',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,

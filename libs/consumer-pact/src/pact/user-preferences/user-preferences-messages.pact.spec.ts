@@ -1,4 +1,3 @@
-import { UserPreferencesChangedMessage } from '@app/ui/shared/domain';
 import { ContentType } from '@hal-form-client';
 import { MessageConsumerPact, synchronousBodyHandler } from '@pact-foundation/pact';
 import { pactForMessages } from '../../utils/pact.utils';
@@ -13,7 +12,7 @@ describe('User Preferences Messages Pacts', () => {
       .withContent(UserPreferencesChangedMessages.userPreferencesUpdatedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: UserPreferencesChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(UserPreferencesChangedMessages.userPreferencesUpdatedMessage);
         }),

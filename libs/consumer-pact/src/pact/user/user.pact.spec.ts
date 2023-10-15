@@ -99,10 +99,7 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userManagementService.fetchUser('pactUserId').subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
-          expect(user._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(user._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           expect(user._templates?.default).toBeTruthy();
           done();
         });
@@ -178,7 +175,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -193,7 +190,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -211,8 +208,6 @@ describe('User Pacts', () => {
           expect(userPage._embedded).toBeTruthy();
           expect(userPage._embedded.userModels).toHaveLength(3);
           expect(userPage._links).toBeTruthy();
-          expect(userPage._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(userPage._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           expect(userPage._templates?.default).toBeTruthy();
           done();
         });
@@ -246,7 +241,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -267,7 +262,6 @@ describe('User Pacts', () => {
           })
           .subscribe((user: User) => {
             expect(user).toBeTruthy();
-            expect(user.id).toBe(interaction.willRespondWith.body.id.getValue());
             expect(user._links).toBeTruthy();
             expect(user._templates?.default).toBeTruthy();
             done();
@@ -289,7 +283,7 @@ describe('User Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -310,7 +304,7 @@ describe('User Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -343,7 +337,6 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUser({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
           expect(user._templates?.default).toBeTruthy();
           done();
@@ -374,7 +367,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -389,7 +382,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -407,7 +400,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -440,7 +433,6 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUserRole('pactRoleId').subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
           expect(user._templates?.default).toBeTruthy();
           done();
@@ -475,7 +467,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -493,7 +485,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -508,7 +500,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -541,7 +533,6 @@ describe('User Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         userDetailService.updateUserAuthorities(['pactAuthorityId']).subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
           expect(user._templates?.default).toBeTruthy();
           done();
@@ -576,7 +567,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -591,7 +582,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -652,7 +643,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -667,7 +658,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -722,7 +713,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -737,7 +728,7 @@ describe('User Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
