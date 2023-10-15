@@ -14,7 +14,7 @@
       }
     },
     "pact": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "inputs": ["{workspaceRoot}/apps/**/*", "{workspaceRoot}/libs/ui/**/*"],
       "outputs": [
         "{workspaceRoot}/apps/api/target/test-classes/pact",
@@ -28,7 +28,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/consumer-pact/src/**/*.ts"]
       }
