@@ -142,7 +142,7 @@
     "jest-environment-jsdom": "29.5.0",
     "jest-extended": "3.2.4",
     "jest-junit": "16.0.0",
-    "jest-preset-angular": "13.0.1",
+    "jest-preset-angular": "13.1.2",
     "jsonwebtoken": "9.0.0",
     "junit-report-merger": "6.0.1",
     "ng-packagr": "15.2.2",
