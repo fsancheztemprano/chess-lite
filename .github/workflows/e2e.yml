@@ -38,10 +38,10 @@ jobs:
           java-version: '17'
           check-latest: true
 
-      - name: Use Node 16
+      - name: Use Node 18
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Cache
         uses: actions/cache@v3

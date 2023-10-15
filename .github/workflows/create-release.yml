@@ -23,10 +23,10 @@ jobs:
         with:
           ref: ${{ inputs.type == 'patch' && 'master' || 'development' }}
 
-      - name: Use Node 16
+      - name: Use Node 18
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Create RC branch
         if: inputs.type != 'patch'
