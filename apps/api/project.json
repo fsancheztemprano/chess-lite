@@ -45,9 +45,7 @@
         "root": "apps/api",
         "args": [
           "-B",
-          "verify",
-          "-P pact-consumer",
-          "-P pact-producer"
+          "verify"
         ]
       }
     },
