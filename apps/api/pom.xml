@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -24,8 +23,8 @@
   </ciManagement>
   <properties>
     <java.version>17</java.version>
-    <org.projectlombok.version>1.18.26</org.projectlombok.version>
-    <org.mapstruct.version>1.5.4.Final</org.mapstruct.version>
+    <org.projectlombok.version>1.18.30</org.projectlombok.version>
+    <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
     <skipUTs>${skipTests}</skipUTs>
@@ -275,6 +274,12 @@
           <groupId>com.github.eirslett</groupId>
           <artifactId>frontend-maven-plugin</artifactId>
           <version>1.12.1</version>
+          <configuration>
+            <workingDirectory>../../</workingDirectory>
+            <nodeVersion>${node.version}</nodeVersion>
+            <npmVersion>${npm.version}</npmVersion>
+            <yarnVersion>${yarn.version}</yarnVersion>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -514,9 +519,6 @@
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
             <configuration>
-              <workingDirectory>../../</workingDirectory>
-              <nodeVersion>${node.version}</nodeVersion>
-              <yarnVersion>${yarn.version}</yarnVersion>
               <skip>${skipITs}</skip>
             </configuration>
             <executions>
@@ -526,10 +528,6 @@
                 <goals>
                   <goal>install-node-and-yarn</goal>
                 </goals>
-                <configuration>
-                  <nodeVersion>${node.version}</nodeVersion>
-                  <yarnVersion>${yarn.version}</yarnVersion>
-                </configuration>
               </execution>
               <execution>
                 <id>yarn install</id>
@@ -633,11 +631,6 @@
           <plugin><!-- https://github.com/eirslett/frontend-maven-plugin-->
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
-            <configuration>
-              <workingDirectory>../../</workingDirectory>
-              <nodeVersion>${node.version}</nodeVersion>
-              <yarnVersion>${yarn.version}</yarnVersion>
-            </configuration>
             <executions>
               <execution>
                 <id>install node and yarn</id>
@@ -645,10 +638,6 @@
                 <goals>
                   <goal>install-node-and-yarn</goal>
                 </goals>
-                <configuration>
-                  <nodeVersion>${node.version}</nodeVersion>
-                  <yarnVersion>${yarn.version}</yarnVersion>
-                </configuration>
               </execution>
               <execution>
                 <id>yarn install</id>

@@ -21,6 +21,7 @@
         "{workspaceRoot}/apps/api/target/test-classes/pact-messages",
         "{workspaceRoot}/coverage/libs/consumer-pact"
       ],
+      "dependsOn": ["clean"],
       "options": {
         "jestConfig": "libs/consumer-pact/jest.config.ts",
         "passWithNoTests": true
