@@ -97,10 +97,9 @@
         "{projectRoot}/target/test-classes/pact-messages/**/*"
       ],
       "outputs": [
-        "{options.outputPath}"
+        "{workspaceRoot}/apps/api/target"
       ],
       "options": {
-        "outputPath": "apps/api/target",
         "cwd": "apps/api",
         "commands": [
           "mvn verify -B -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
