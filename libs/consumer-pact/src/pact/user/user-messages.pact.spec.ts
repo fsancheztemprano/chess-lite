@@ -1,4 +1,3 @@
-import { UserChangedMessage } from '@app/ui/shared/domain';
 import { ContentType } from '@hal-form-client';
 import { MessageConsumerPact, synchronousBodyHandler } from '@pact-foundation/pact';
 import { pactForMessages } from '../../utils/pact.utils';
@@ -13,7 +12,7 @@ describe('User Messages Pacts', () => {
       .withContent(UserChangedMessages.userCreatedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: UserChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(UserChangedMessages.userCreatedMessage);
         }),
@@ -26,7 +25,7 @@ describe('User Messages Pacts', () => {
       .withContent(UserChangedMessages.userUpdatedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: UserChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(UserChangedMessages.userUpdatedMessage);
         }),
@@ -39,7 +38,7 @@ describe('User Messages Pacts', () => {
       .withContent(UserChangedMessages.userDeletedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: UserChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(UserChangedMessages.userDeletedMessage);
         }),

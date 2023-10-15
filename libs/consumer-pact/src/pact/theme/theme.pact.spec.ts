@@ -45,7 +45,7 @@ describe('Theme Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.getTheme().subscribe((theme: IThemeModel) => {
           expect(theme).toBeTruthy();
-          expect(theme).toMatchObject(interaction.willRespondWith.body);
+          expect(theme).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });
@@ -57,7 +57,7 @@ describe('Theme Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['theme:update'] }));
         service.getTheme().subscribe((theme: IThemeModel) => {
           expect(theme).toBeTruthy();
-          expect(theme).toMatchObject(interaction.willRespondWith.body);
+          expect(theme).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });
@@ -86,7 +86,7 @@ describe('Theme Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['theme:update'] }));
         service.updateTheme(Resource.of(colorResource), newColors).subscribe((theme: IThemeModel) => {
           expect(theme).toBeTruthy();
-          expect(theme).toMatchObject(interaction.willRespondWith.body);
+          expect(theme).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });
@@ -100,7 +100,7 @@ describe('Theme Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });

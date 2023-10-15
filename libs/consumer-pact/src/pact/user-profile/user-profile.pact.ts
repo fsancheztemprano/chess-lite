@@ -9,7 +9,8 @@ import {
 } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject, Matchers } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
@@ -19,7 +20,7 @@ export namespace GetUserProfilePact {
     state: 'stateless',
     uponReceiving: 'get user profile',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -42,7 +43,7 @@ export namespace GetUserProfilePact {
     state: 'stateless',
     uponReceiving: 'get user profile with update',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -63,7 +64,7 @@ export namespace GetUserProfilePact {
           ...pactCurrentUser.userPreferences,
           _templates: {
             ...defaultTemplate,
-            ...updateProfilePreferencesTemplate,
+            ...(updateProfilePreferencesTemplate as JsonMap),
           },
         },
         _templates: {
@@ -80,7 +81,7 @@ export namespace GetUserProfilePact {
     state: 'stateless',
     uponReceiving: 'get user profile with delete',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -109,7 +110,7 @@ export namespace GetUserProfilePact {
     state: 'stateless',
     uponReceiving: 'get user profile unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -129,7 +130,7 @@ export namespace GetUserProfilePact {
     state: 'stateless',
     uponReceiving: 'get user profile not found',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -138,6 +139,7 @@ export namespace GetUserProfilePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -151,7 +153,7 @@ export namespace UpdateUserProfilePact {
     state: 'stateless',
     uponReceiving: 'update user profile',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -176,7 +178,7 @@ export namespace UpdateUserProfilePact {
     state: 'stateless',
     uponReceiving: 'update user profile unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -198,7 +200,7 @@ export namespace UpdateUserProfilePact {
     state: 'stateless',
     uponReceiving: 'update user profile not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -214,6 +216,7 @@ export namespace UpdateUserProfilePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -227,7 +230,7 @@ export namespace UpdateUserProfilePasswordPact {
     state: 'stateless',
     uponReceiving: 'update user profile password',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile/password',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -252,7 +255,7 @@ export namespace UpdateUserProfilePasswordPact {
     state: 'stateless',
     uponReceiving: 'update user profile password unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile/password',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -274,7 +277,7 @@ export namespace UpdateUserProfilePasswordPact {
     state: 'stateless',
     uponReceiving: 'update user profile password not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile/password',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -290,6 +293,7 @@ export namespace UpdateUserProfilePasswordPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -303,7 +307,7 @@ export namespace DeleteUserProfilePact {
     state: 'stateless',
     uponReceiving: 'delete user profile',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -324,7 +328,7 @@ export namespace DeleteUserProfilePact {
     state: 'stateless',
     uponReceiving: 'delete user profile unauthorized',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -344,7 +348,7 @@ export namespace DeleteUserProfilePact {
     state: 'stateless',
     uponReceiving: 'delete user profile not found',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/user/profile',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -358,6 +362,7 @@ export namespace DeleteUserProfilePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -371,7 +376,7 @@ export namespace GetUserProfilePreferencesPact {
     state: 'stateless',
     uponReceiving: 'get user profile preferences',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile/preferences',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -394,7 +399,7 @@ export namespace GetUserProfilePreferencesPact {
     state: 'stateless',
     uponReceiving: 'get user profile preferences unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile/preferences',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -414,7 +419,7 @@ export namespace GetUserProfilePreferencesPact {
     state: 'stateless',
     uponReceiving: 'get user profile preferences not found',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/profile/preferences',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -428,6 +433,7 @@ export namespace GetUserProfilePreferencesPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -441,7 +447,7 @@ export namespace UpdateUserProfilePreferencesPact {
     state: 'stateless',
     uponReceiving: 'update user profile preferences',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile/preferences',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -466,7 +472,7 @@ export namespace UpdateUserProfilePreferencesPact {
     state: 'stateless',
     uponReceiving: 'update user profile preferences unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile/preferences',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -488,7 +494,7 @@ export namespace UpdateUserProfilePreferencesPact {
     state: 'stateless',
     uponReceiving: 'update user profile preferences not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile/preferences',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -504,6 +510,7 @@ export namespace UpdateUserProfilePreferencesPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -517,7 +524,7 @@ export namespace UploadAvatarProfilePact {
     state: 'stateless',
     uponReceiving: 'update user profile avatar',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/profile/avatar',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,

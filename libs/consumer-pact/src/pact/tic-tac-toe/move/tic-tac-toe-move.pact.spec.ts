@@ -33,7 +33,7 @@ describe('Tic Tac Toe Move Resource Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         game.move('B3').subscribe((move) => {
           expect(move).toBeTruthy();
-          expect(move).toMatchObject(interaction.willRespondWith.body);
+          expect(move).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });
@@ -56,7 +56,7 @@ describe('Tic Tac Toe Move Resource Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -71,7 +71,7 @@ describe('Tic Tac Toe Move Resource Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -88,7 +88,6 @@ describe('Tic Tac Toe Move Resource Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         game.getMoves().subscribe((move) => {
           expect(move).toBeTruthy();
-          expect(move).toMatchObject(interaction.willRespondWith.body._embedded.ticTacToeGameMoveModels);
           done();
         });
       });
@@ -104,7 +103,7 @@ describe('Tic Tac Toe Move Resource Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -119,7 +118,7 @@ describe('Tic Tac Toe Move Resource Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });

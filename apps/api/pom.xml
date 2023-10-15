@@ -28,8 +28,8 @@
     <skipTests>false</skipTests>
     <skipITs>${skipTests}</skipITs>
     <skipUTs>${skipTests}</skipUTs>
-    <node.version>v16.19.0
-    </node.version><!-- See https://nodejs.org/en/download/ for latest node and yarn (lts) versions -->
+    <node.version>v18.18.1</node.version><!-- See https://nodejs.org/en/download/ for latest node and yarn (lts) versions -->
+    <npm.version>9.8.1</npm.version><!-- See https://nodejs.org/en/download/ for latest node and yarn (lts) versions -->
     <yarn.version>v1.22.19</yarn.version><!-- https://www.npmjs.com/package/yarn -->
     <spring-cloud-contract.version>3.1.4</spring-cloud-contract.version>
   </properties>

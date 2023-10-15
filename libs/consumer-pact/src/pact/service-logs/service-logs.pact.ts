@@ -2,7 +2,7 @@ import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { iso8601DateTimeWithMillis, string } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
@@ -19,7 +19,7 @@ export namespace GetServiceLogsPact {
     state: 'stateless',
     uponReceiving: 'get service logs',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration/service-logs',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -37,7 +37,7 @@ export namespace GetServiceLogsPact {
     state: 'stateless',
     uponReceiving: 'get service logs with delete',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration/service-logs',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -64,7 +64,7 @@ export namespace GetServiceLogsPact {
     state: 'stateless',
     uponReceiving: 'get service logs unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration/service-logs',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -86,7 +86,7 @@ export namespace DeleteServiceLogsPact {
     state: 'stateless',
     uponReceiving: 'delete',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/administration/service-logs',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -104,7 +104,7 @@ export namespace DeleteServiceLogsPact {
     state: 'stateless',
     uponReceiving: 'delete service logs unauthorized',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/administration/service-logs',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
