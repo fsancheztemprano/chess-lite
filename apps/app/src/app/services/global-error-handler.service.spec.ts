@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { stubToasterServiceProvider } from '@app/ui/shared/app';
-import { environment } from '../../environments/environment';
 import { GlobalErrorHandler, GlobalErrorHandlerProvider } from './global-error-handler.service';
 
 describe('GlobalErrorHandlerService', () => {
@@ -27,7 +26,6 @@ describe('GlobalErrorHandlerService', () => {
   });
 
   it('should not warn on production', () => {
-    environment.production = true;
     const spy = jest.spyOn(console, 'warn');
 
     service.handleError(new Error('test'));

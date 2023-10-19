@@ -9,6 +9,7 @@ import { HomeRoutingModule } from './home-routing.module';
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
+      multi: true,
       useValue: {
         scope: 'home',
         loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),
