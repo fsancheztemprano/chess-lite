@@ -119,25 +119,10 @@ class CypressE2E {
   @Test
   void runEdgeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
-    try (GenericContainer container = createCypressContainer(countDownLatch, "edge")) {
+    try (GenericContainer container = createCypressContainer(countDownLatch, "edge"
+      // , "src/e2e/**/role-management.cy.ts"
+                                                            )) {
 
-      container.start();
-      countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
-
-      assertThat(container.getLogs()).contains("(Run Finished)");
-      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
-      assertThat(formattedOutput).hasSize(2);
-      assertThat(formattedOutput[1]).contains("All specs passed!");
-    }
-  }
-
-  @Disabled
-  @Test
-  void runFirefoxTests() throws InterruptedException {
-    CountDownLatch countDownLatch = new CountDownLatch(1);
-//  try (GenericContainer container =
-//            createCypressContainer(countDownLatch, "firefox", "src/e2e/**/role-management.cy.ts")) {
-    try (GenericContainer container = createCypressContainer(countDownLatch, "firefox")) {
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
 
@@ -211,7 +196,7 @@ class CypressE2E {
         }
       }
     } catch (IOException e) {
-      log.at(Level.SEVERE).withCause(e).log("Error reading package.json");
+      log.at(Level.WARNING).withCause(e).log("Error reading package.json");
     }
     return version;
   }

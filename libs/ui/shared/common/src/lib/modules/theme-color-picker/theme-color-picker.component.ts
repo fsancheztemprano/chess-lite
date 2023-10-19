@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +34,7 @@ import { Observable, skip } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeColorPickerComponent implements OnChanges {
+  private readonly cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   public readonly palettes = ['primary', 'accent', 'warn'];
   public readonly form = new FormGroup({
     primaryColor: new FormControl<string | null>(null),
@@ -38,7 +48,7 @@ export class ThemeColorPickerComponent implements OnChanges {
   @Output() colorChanges = (<Observable<IThemeModel>>this.form.valueChanges).pipe(skip(1));
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.colors.currentValue) {
+    if (changes.colors.isFirstChange()) {
       this.form.patchValue(changes.colors.currentValue, { emitEvent: false });
     }
     if (this.disable) {
@@ -46,5 +56,6 @@ export class ThemeColorPickerComponent implements OnChanges {
     } else {
       this.form.enable();
     }
+    setTimeout(() => this.cdr.detectChanges(), 100);
   }
 }
