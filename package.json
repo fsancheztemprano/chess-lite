@@ -118,7 +118,7 @@
     "@nx/js": "16.10.0",
     "@nx/linter": "16.10.0",
     "@nx/node": "16.10.0",
-    "@nx/workspace": "16.10.0",
+    "@nx/workspace": "17.0.1",
     "@nxrocks/nx-spring-boot": "8.1.0",
     "@pact-foundation/pact": "12.1.0",
     "@schematics/angular": "16.2.6",
