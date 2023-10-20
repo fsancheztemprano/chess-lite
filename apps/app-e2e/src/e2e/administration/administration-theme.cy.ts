@@ -1,11 +1,13 @@
 describe('Theme Administration', () => {
   beforeEach(() => {
+    cy.interceptApi('GET', '/theme').as('getTheme');
     cy.interceptApi('PATCH', '/theme').as('updateTheme');
     cy.setState(1);
     cy.login('admin', '123456');
     cy.visit('/');
     cy.get('[data-cy="administration-tile"]').click();
     cy.get('[data-cy="theme-tile"]').click();
+    cy.wait('@getTheme');
   });
 
   it('should load theme pickers', () => {

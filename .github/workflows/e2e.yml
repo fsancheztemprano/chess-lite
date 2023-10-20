@@ -19,7 +19,7 @@ jobs:
       dependabot-run: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -29,7 +29,7 @@ jobs:
 
       - name: Get branch names
         id: branch-name
-        uses: tj-actions/branch-names@v6
+        uses: tj-actions/branch-names@v7
 
       - name: Use Java 17
         uses: actions/setup-java@v3
@@ -38,10 +38,10 @@ jobs:
           java-version: '17'
           check-latest: true
 
-      - name: Use Node 16
+      - name: Use Node 18
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Cache
         uses: actions/cache@v3
@@ -51,11 +51,10 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-${{ github.run_id }}
+          key: ${{ runner.os }}-deps-e2e-${{ github.run_id }}
           restore-keys: |
-            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-e2e-
-            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
-            v4-${{ runner.os }}-
+            ${{ runner.os }}-deps-e2e-
+            ${{ runner.os }}-deps-
 
       - name: Java Dependencies
         working-directory: apps/api

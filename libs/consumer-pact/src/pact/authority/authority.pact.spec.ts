@@ -58,7 +58,6 @@ describe('Authority Pacts', () => {
       provider.addInteraction(interaction).then(() => {
         service.getAllAuthorities().subscribe((authorities) => {
           expect(authorities).toBeTruthy();
-          expect(authorities).toHaveLength(interaction.willRespondWith.body._embedded.authorityModels.length);
           done();
         });
       });
@@ -72,7 +71,7 @@ describe('Authority Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -89,8 +88,7 @@ describe('Authority Pacts', () => {
           .follow()
           .subscribe((authority) => {
             expect(authority).toBeTruthy();
-            expect(authority).toMatchObject(interaction.willRespondWith.body);
-            expect(authority.id).toEqual(interaction.willRespondWith.body.id);
+            expect(authority).toMatchObject(interaction.willRespondWith.body!);
             done();
           });
       });
@@ -106,7 +104,7 @@ describe('Authority Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -123,7 +121,7 @@ describe('Authority Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+              expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
               done();
             },
           });

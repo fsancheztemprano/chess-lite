@@ -38,7 +38,7 @@ describe('Tic Tac Toe Root Resource Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toMatchObject(interaction.willRespondWith.body);
+            expect(error.error).toMatchObject(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -51,7 +51,7 @@ describe('Tic Tac Toe Root Resource Pacts', () => {
         setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(interaction.willRespondWith.body);
+          expect(resource).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });
@@ -63,7 +63,7 @@ describe('Tic Tac Toe Root Resource Pacts', () => {
         setToken({ authorities: [TicTacToeAuthority.TIC_TAC_TOE_ROOT, TicTacToeAuthority.TIC_TAC_TOE_GAME_CREATE] });
         service.initialize().subscribe((resource) => {
           expect(resource).toBeTruthy();
-          expect(resource).toMatchObject(interaction.willRespondWith.body);
+          expect(resource).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });

@@ -6,10 +6,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Lists;
 import dev.kurama.api.core.service.UserService;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
 import lombok.extern.flogger.Flogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -52,6 +59,9 @@ class CypressE2E {
   private Boolean CYPRESS_SAVE_VIDEO;
 
   private static final int MAX_TOTAL_TEST_TIME_IN_MINUTES = 15;
+
+  private final String cypressVersion = getNodeDependencyVersion("cypress");
+
 
   @Container
   static GenericContainer mailHogContainer = new GenericContainer<>(
@@ -109,25 +119,10 @@ class CypressE2E {
   @Test
   void runEdgeTests() throws InterruptedException {
     CountDownLatch countDownLatch = new CountDownLatch(1);
-    try (GenericContainer container = createCypressContainer(countDownLatch, "edge")) {
+    try (GenericContainer container = createCypressContainer(countDownLatch, "edge"
+      // , "src/e2e/**/role-management.cy.ts"
+                                                            )) {
 
-      container.start();
-      countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
-
-      assertThat(container.getLogs()).contains("(Run Finished)");
-      String[] formattedOutput = container.getLogs().replace("?", "-").split("\\(Run Finished\\)\n\n");
-      assertThat(formattedOutput).hasSize(2);
-      assertThat(formattedOutput[1]).contains("All specs passed!");
-    }
-  }
-
-  @Disabled
-  @Test
-  void runFirefoxTests() throws InterruptedException {
-    CountDownLatch countDownLatch = new CountDownLatch(1);
-//  try (GenericContainer container =
-//            createCypressContainer(countDownLatch, "firefox", "src/e2e/**/role-management.cy.ts")) {
-    try (GenericContainer container = createCypressContainer(countDownLatch, "firefox")) {
       container.start();
       countDownLatch.await(MAX_TOTAL_TEST_TIME_IN_MINUTES, TimeUnit.MINUTES);
 
@@ -139,7 +134,7 @@ class CypressE2E {
   }
 
   private GenericContainer createCypressContainer(CountDownLatch countDownLatch, String browser, String specPattern) {
-    GenericContainer genericContainer = new GenericContainer<>("cypress/included:12.10.0")
+    GenericContainer genericContainer = new GenericContainer<>("cypress/included:%s".formatted(cypressVersion))
       //
       .withCommand("--browser", !isEmpty(browser) ? browser : "electron")
       .withAccessToHost(true)
@@ -186,5 +181,23 @@ class CypressE2E {
 
   private GenericContainer createCypressContainer(CountDownLatch countDownLatch) {
     return createCypressContainer(countDownLatch, null, null);
+  }
+
+
+  public String getNodeDependencyVersion(String devDependency) {
+    String filePath = "../../package.json";
+    String version = "latest";
+    try (FileReader reader = new FileReader(filePath); JsonReader jsonReader = Json.createReader(reader)) {
+      JsonObject jsonObject = jsonReader.readObject();
+      JsonObject dependencies = jsonObject.getJsonObject("devDependencies");
+      for (Map.Entry<String, JsonValue> entry : dependencies.entrySet()) {
+        if (entry.getKey().equals(devDependency)) {
+          version = entry.getValue().toString().replaceAll("[^\\d.]", "");
+        }
+      }
+    } catch (IOException e) {
+      log.at(Level.WARNING).withCause(e).log("Error reading package.json");
+    }
+    return version;
   }
 }

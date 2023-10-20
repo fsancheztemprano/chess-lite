@@ -24,7 +24,7 @@ export class BreakpointService {
           case breakpointState.breakpoints[Breakpoints.XLarge]:
             return Breakpoint.XL;
           default:
-            return -1;
+            return Breakpoint.M;
         }
       }),
       distinctUntilChanged(),

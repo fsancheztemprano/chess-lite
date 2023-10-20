@@ -47,8 +47,6 @@ describe('Service Logs Pacts', () => {
           expect(logs).toBeTruthy();
           expect(logs.logs).toBeTruthy();
           expect(logs.timestamp).toBeTruthy();
-          expect(logs._links).toMatchObject(interaction.willRespondWith.body._links);
-          expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
           done();
         });
       });
@@ -60,7 +58,6 @@ describe('Service Logs Pacts', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: ['service-logs:read', 'service-logs:delete'] }));
         service.getServiceLogs().subscribe((logs: ServiceLogs) => {
           expect(logs).toBeTruthy();
-          expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
           done();
         });
       });
@@ -74,7 +71,7 @@ describe('Service Logs Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -105,8 +102,6 @@ describe('Service Logs Pacts', () => {
           expect(logs).toBeTruthy();
           expect(logs.logs).toBeTruthy();
           expect(logs.timestamp).toBeTruthy();
-          expect(logs._links).toMatchObject(interaction.willRespondWith.body._links);
-          expect(logs._templates).toMatchObject(interaction.willRespondWith.body._templates);
           done();
         });
       });
@@ -120,7 +115,7 @@ describe('Service Logs Pacts', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });

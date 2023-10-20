@@ -1,8 +1,7 @@
 import { TicTacToeGamePlayer } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
-import { ITemplate } from '@hal-form-client';
 
-export const createGameTemplate: { create: ITemplate } = {
+export const createGameTemplate = {
   create: {
     method: 'POST',
     target: 'http://localhost/api/tic-tac-toe/game',
@@ -12,7 +11,7 @@ export const createGameTemplate: { create: ITemplate } = {
     ],
   },
 };
-export const adminCreateGameTemplate: { create: ITemplate } = {
+export const adminCreateGameTemplate = {
   create: {
     ...createGameTemplate.create,
     properties: [...(createGameTemplate.create.properties || []), { name: 'playerXUsername', type: 'text' }],
@@ -79,7 +78,7 @@ export const finishedGame = {
   board: 'XXOOOOX_X',
   turn: TicTacToeGamePlayer.O,
 };
-export const moveTemplate: { move: ITemplate } = {
+export const moveTemplate = {
   move: {
     method: 'POST',
     target: 'http://localhost/api/tic-tac-toe/game/tic-tac-toe-g2/move',
@@ -93,7 +92,7 @@ export const moveTemplate: { move: ITemplate } = {
     ],
   },
 };
-export const statusTemplate: { status: ITemplate } = {
+export const statusTemplate = {
   status: {
     method: 'PATCH',
     properties: [

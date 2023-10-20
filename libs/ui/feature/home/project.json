@@ -12,7 +12,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ui/feature/home"],
       "options": {
         "jestConfig": "libs/ui/feature/home/jest.config.ts",
@@ -20,7 +20,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/ui/feature/home/src/**/*.ts", "libs/ui/feature/home/src/**/*.html"]
       }

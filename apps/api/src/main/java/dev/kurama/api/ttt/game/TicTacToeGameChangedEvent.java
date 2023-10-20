@@ -9,12 +9,12 @@ import lombok.Data;
 @Builder
 public class TicTacToeGameChangedEvent implements ApplicationEvent {
 
-  private String gameId;
-  private TicTacToeGameChangedEventPlayer playerX;
-  private TicTacToeGameChangedEventPlayer playerO;
-  private TicTacToePlayer.Token turn;
-  private TicTacToeGame.Status status;
   private Action action;
+  private String gameId;
+  private TicTacToeGameChangedEventPlayer playerO;
+  private TicTacToeGameChangedEventPlayer playerX;
+  private TicTacToeGame.Status status;
+  private TicTacToePlayer.Token turn;
 
   public enum Action {
     CREATED, UPDATED

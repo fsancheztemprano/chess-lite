@@ -19,6 +19,7 @@ import { ThemeEffects } from './store/effects/theme.effects';
     provideEffects(LocalizationEffects, ThemeEffects, SidebarEffects),
     {
       provide: TRANSLOCO_SCOPE,
+      multi: true,
       useValue: {
         scope: 'core',
         loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),

@@ -1,14 +1,14 @@
 import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 
 export namespace GetBuildInfoPact {
   export const successful: InteractionObject = {
     state: 'stateless',
     uponReceiving: 'get build info',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/build-info',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,

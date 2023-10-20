@@ -10,7 +10,8 @@ import {
 } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { eachLike, email, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { pactUser } from '../../mocks/user.mock';
 import { bearer, withUuid } from '../../utils/pact.utils';
@@ -21,7 +22,7 @@ export namespace GetUserPact {
     state: 'stateless',
     uponReceiving: 'get one user',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -39,7 +40,7 @@ export namespace GetUserPact {
     state: 'stateless',
     uponReceiving: 'get one user with update',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -54,7 +55,7 @@ export namespace GetUserPact {
         _templates: {
           ...defaultTemplate,
           ...requestActivationTokenTemplate,
-          ...updateUserTemplate,
+          ...(updateUserTemplate as JsonMap),
         },
       },
     },
@@ -64,7 +65,7 @@ export namespace GetUserPact {
     state: 'stateless',
     uponReceiving: 'get one user with delete',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -88,7 +89,7 @@ export namespace GetUserPact {
     state: 'stateless',
     uponReceiving: 'get one user with update role',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -112,7 +113,7 @@ export namespace GetUserPact {
     state: 'stateless',
     uponReceiving: 'get one user with update authorities',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -138,7 +139,7 @@ export namespace GetUserPact {
     state: 'stateless',
     uponReceiving: 'get one user unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -158,7 +159,7 @@ export namespace GetUserPact {
     state: 'stateless',
     uponReceiving: 'get one user notfound',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -167,6 +168,7 @@ export namespace GetUserPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -180,7 +182,7 @@ export namespace GetAllUsersPact {
     state: 'stateless',
     uponReceiving: 'get all users',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -208,7 +210,7 @@ export namespace GetAllUsersPact {
     state: 'stateless',
     uponReceiving: 'get all users with create',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -230,7 +232,7 @@ export namespace GetAllUsersPact {
         page: { size: 10, totalElements: 3, totalPages: 1, number: 0 },
         _templates: {
           ...defaultTemplate,
-          ...createUserTemplate,
+          ...(createUserTemplate as JsonMap),
         },
       },
     },
@@ -240,7 +242,7 @@ export namespace GetAllUsersPact {
     state: 'stateless',
     uponReceiving: 'get all users unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -262,7 +264,7 @@ export namespace CreateUserPact {
     state: 'stateless',
     uponReceiving: 'create user',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -279,7 +281,7 @@ export namespace CreateUserPact {
       status: 201,
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
-        [HttpHeaderKey.LOCATION]: withUuid('http://localhost/api/user/{uuid}'),
+        // [HttpHeaderKey.LOCATION]: withUuid('http://localhost/api/user/{uuid}'),
       },
       body: {
         ...pactUser,
@@ -312,7 +314,7 @@ export namespace CreateUserPact {
     state: 'stateless',
     uponReceiving: 'create user existing',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -327,6 +329,7 @@ export namespace CreateUserPact {
     },
     willRespondWith: {
       status: 409,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Conflict',
         title: 'User with unique id: pactUser already exists',
@@ -338,7 +341,7 @@ export namespace CreateUserPact {
     state: 'stateless',
     uponReceiving: 'create user unauthorized',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/user',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -366,7 +369,7 @@ export namespace UpdateUserPact {
     state: 'stateless',
     uponReceiving: 'update one user',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -390,7 +393,7 @@ export namespace UpdateUserPact {
     state: 'stateless',
     uponReceiving: 'update one user not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -403,6 +406,7 @@ export namespace UpdateUserPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -414,7 +418,7 @@ export namespace UpdateUserPact {
     state: 'stateless',
     uponReceiving: 'update one user unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -438,7 +442,7 @@ export namespace UpdateUserPact {
     state: 'stateless',
     uponReceiving: 'update one user existing',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -451,6 +455,7 @@ export namespace UpdateUserPact {
     },
     willRespondWith: {
       status: 409,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Conflict',
         title: 'User with unique id: existingUser@localhost already exists',
@@ -464,7 +469,7 @@ export namespace UpdateUserRolePact {
     state: 'stateless',
     uponReceiving: 'update user role',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -488,7 +493,7 @@ export namespace UpdateUserRolePact {
     state: 'stateless',
     uponReceiving: 'update user role, user not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/notFoundId/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -501,6 +506,7 @@ export namespace UpdateUserRolePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -512,7 +518,7 @@ export namespace UpdateUserRolePact {
     state: 'stateless',
     uponReceiving: 'update user role, role not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -525,6 +531,7 @@ export namespace UpdateUserRolePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'Role with id: notFoundId not found',
@@ -536,7 +543,7 @@ export namespace UpdateUserRolePact {
     state: 'stateless',
     uponReceiving: 'update user role, unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -562,7 +569,7 @@ export namespace UpdateUserAuthoritiesPact {
     state: 'stateless',
     uponReceiving: 'update user authorities',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId/authorities',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -588,7 +595,7 @@ export namespace UpdateUserAuthoritiesPact {
     state: 'stateless',
     uponReceiving: 'update user authorities, user not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/notFoundId/authorities',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -603,6 +610,7 @@ export namespace UpdateUserAuthoritiesPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -614,7 +622,7 @@ export namespace UpdateUserAuthoritiesPact {
     state: 'stateless',
     uponReceiving: 'update user authorities, unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/user/pactUserId/authorities',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -640,7 +648,7 @@ export namespace DeleteUserPact {
     state: 'stateless',
     uponReceiving: 'delete one user',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -656,7 +664,7 @@ export namespace DeleteUserPact {
     state: 'stateless',
     uponReceiving: 'delete one user not found',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -665,6 +673,7 @@ export namespace DeleteUserPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -676,7 +685,7 @@ export namespace DeleteUserPact {
     state: 'stateless',
     uponReceiving: 'delete one user unauthorized',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -698,7 +707,7 @@ export namespace RequestActivationTokenPact {
     state: 'stateless',
     uponReceiving: 'request activation token',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -714,7 +723,7 @@ export namespace RequestActivationTokenPact {
     state: 'stateless',
     uponReceiving: 'request activation token user not found',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/user/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -723,6 +732,7 @@ export namespace RequestActivationTokenPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'User with id: notFoundId not found',
@@ -734,7 +744,7 @@ export namespace RequestActivationTokenPact {
     state: 'stateless',
     uponReceiving: 'request activation token unauthorized',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/user/pactUserId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,

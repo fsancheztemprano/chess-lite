@@ -9,6 +9,7 @@ import { UserRoutingModule } from './user-routing.module';
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
+      multi: true,
       useValue: {
         scope: 'user',
         loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),

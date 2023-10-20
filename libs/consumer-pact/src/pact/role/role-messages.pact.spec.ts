@@ -1,4 +1,3 @@
-import { RoleChangedMessage } from '@app/ui/shared/domain';
 import { ContentType } from '@hal-form-client';
 import { MessageConsumerPact, synchronousBodyHandler } from '@pact-foundation/pact';
 import { pactForMessages } from '../../utils/pact.utils';
@@ -13,7 +12,7 @@ describe('Role Messages Pacts', () => {
       .withContent(RoleChangedMessages.roleCreatedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: RoleChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(RoleChangedMessages.roleCreatedMessage);
         }),
@@ -26,7 +25,7 @@ describe('Role Messages Pacts', () => {
       .withContent(RoleChangedMessages.roleUpdatedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: RoleChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(RoleChangedMessages.roleUpdatedMessage);
         }),
@@ -39,7 +38,7 @@ describe('Role Messages Pacts', () => {
       .withContent(RoleChangedMessages.roleDeletedMessage)
       .withMetadata({ ['Content-Type']: ContentType.APPLICATION_JSON })
       .verify(
-        synchronousBodyHandler((message: RoleChangedMessage) => {
+        synchronousBodyHandler((message) => {
           expect(message).toBeTruthy();
           expect(message).toEqual(RoleChangedMessages.roleDeletedMessage);
         }),
