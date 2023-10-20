@@ -99,22 +99,25 @@
         "{projectRoot}/target/test-classes/pact-messages/**/*"
       ],
       "outputs": [
-        "{options.outputPath}"
+        "{workspaceRoot}/apps/api/target"
       ],
       "options": {
-        "outputPath": "apps/api/target",
         "cwd": "apps/api",
-        "commands": [
-          "mvn verify -B -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
-        ]
+        "parallel": false
       },
+      "defaultConfiguration": "producer",
       "configurations": {
+        "producer": {
+          "commands": [
+            "mvn verify -B -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
+          ]
+        },
         "generate": {
           "commands": [
             "mvn org.springframework.cloud:spring-cloud-contract-maven-plugin:generateTests -P pact-producer"
           ]
         },
-        "complete": {
+        "full": {
           "commands": [
             "mvn clean verify -B -P pact-consumer -P pact-producer -D it.test=\"**/*PactIT.java\" -Dtest=\"dev.kurama.api.null.**\" -Dsurefire.failIfNoSpecifiedTests=false -DskipUTs"
           ]

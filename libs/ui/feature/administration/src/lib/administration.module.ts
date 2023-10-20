@@ -9,6 +9,7 @@ import { AdministrationRoutingModule } from './administration-routing.module';
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
+      multi: true,
       useValue: {
         scope: 'administration',
         loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),

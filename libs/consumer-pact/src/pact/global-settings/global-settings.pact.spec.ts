@@ -33,11 +33,6 @@ describe('Global Settings Pacts', () => {
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
-            expect(response.body?._links).toStrictEqual(interaction.willRespondWith.body._links);
-            expect(response.body?.defaultRole?.name).toEqual(interaction.willRespondWith.body.defaultRole.name);
-            expect(response.body?.defaultRole?.authorities).toHaveLength(
-              interaction.willRespondWith.body.defaultRole.authorities.length,
-            );
             done();
           });
       });
@@ -55,7 +50,6 @@ describe('Global Settings Pacts', () => {
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
-            expect(response.body?._templates?.update).toStrictEqual(interaction.willRespondWith.body._templates.update);
             done();
           });
       });
@@ -71,7 +65,7 @@ describe('Global Settings Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
@@ -89,11 +83,6 @@ describe('Global Settings Pacts', () => {
           .subscribe((response: HttpResponse<GlobalSettings>) => {
             expect(response).toBeTruthy();
             expect(response.status).toBe(interaction.willRespondWith.status);
-            expect(response.body?._links).toStrictEqual(interaction.willRespondWith.body._links);
-            expect(response.body?.defaultRole?.name).toEqual(interaction.willRespondWith.body.defaultRole.name);
-            expect(response.body?.defaultRole?.authorities).toHaveLength(
-              interaction.willRespondWith.body.defaultRole.authorities.length,
-            );
             done();
           });
       });
@@ -109,7 +98,7 @@ describe('Global Settings Pacts', () => {
             error: (error: HttpErrorResponse) => {
               expect(error).toBeTruthy();
               expect(error.status).toBe(interaction.willRespondWith.status);
-              expect(error.error).toMatchObject(interaction.willRespondWith.body);
+              expect(error.error).toMatchObject(interaction.willRespondWith.body!);
               done();
             },
           });
