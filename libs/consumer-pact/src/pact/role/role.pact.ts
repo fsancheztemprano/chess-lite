@@ -2,7 +2,7 @@ import { HttpHeaderKey, RoleAuthority } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { eachLike, string, uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer, withUuid } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
@@ -39,7 +39,7 @@ export namespace GetAllRolesPact {
     state: 'stateless',
     uponReceiving: 'get all roles',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -118,7 +118,7 @@ export namespace GetAllRolesPact {
     state: 'stateless',
     uponReceiving: 'get create role template',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -167,7 +167,7 @@ export namespace GetAllRolesPact {
     state: 'stateless',
     uponReceiving: 'get all roles unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -189,7 +189,7 @@ export namespace GetOneRolePact {
     state: 'stateless',
     uponReceiving: 'get one role',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -213,7 +213,7 @@ export namespace GetOneRolePact {
     state: 'stateless',
     uponReceiving: 'get one role with update',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -253,7 +253,7 @@ export namespace GetOneRolePact {
     state: 'stateless',
     uponReceiving: 'get one role with delete',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -280,7 +280,7 @@ export namespace GetOneRolePact {
     state: 'stateless',
     uponReceiving: 'get one role not found',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -289,6 +289,7 @@ export namespace GetOneRolePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'Role with id: notFoundId not found',
@@ -300,7 +301,7 @@ export namespace GetOneRolePact {
     state: 'stateless',
     uponReceiving: 'get one role unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -322,7 +323,7 @@ export namespace CreateRolePact {
     state: 'stateless',
     uponReceiving: 'create role',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -360,7 +361,7 @@ export namespace CreateRolePact {
     state: 'stateless',
     uponReceiving: 'create one role existing',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -373,6 +374,7 @@ export namespace CreateRolePact {
     },
     willRespondWith: {
       status: 409,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Conflict',
         title: 'Role with unique id: pactRole already exists',
@@ -384,7 +386,7 @@ export namespace CreateRolePact {
     state: 'stateless',
     uponReceiving: 'create role unauthorized',
     withRequest: {
-      method: HTTPMethod.POST,
+      method: HTTPMethods.POST,
       path: '/api/role',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -410,7 +412,7 @@ export namespace UpdateRolePact {
     state: 'stateless',
     uponReceiving: 'update role',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -432,7 +434,7 @@ export namespace UpdateRolePact {
     state: 'stateless',
     uponReceiving: 'update role core role',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/role/coreRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -445,6 +447,7 @@ export namespace UpdateRolePact {
     },
     willRespondWith: {
       status: 403,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Forbidden',
         title: 'Role coreRoleId is immutable',
@@ -456,7 +459,7 @@ export namespace UpdateRolePact {
     state: 'stateless',
     uponReceiving: 'update role unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -480,7 +483,7 @@ export namespace UpdateRolePact {
     state: 'stateless',
     uponReceiving: 'update role not found',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/role/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -493,6 +496,7 @@ export namespace UpdateRolePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'Role with id: notFoundId not found',
@@ -506,7 +510,7 @@ export namespace DeleteRolePact {
     state: 'stateless',
     uponReceiving: 'delete role',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -522,7 +526,7 @@ export namespace DeleteRolePact {
     state: 'stateless',
     uponReceiving: 'delete role core role',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/role/coreRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -531,6 +535,7 @@ export namespace DeleteRolePact {
     },
     willRespondWith: {
       status: 403,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Forbidden',
         title: 'Role coreRoleId is immutable',
@@ -542,7 +547,7 @@ export namespace DeleteRolePact {
     state: 'stateless',
     uponReceiving: 'delete role unauthorized',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/role/pactRoleId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -562,7 +567,7 @@ export namespace DeleteRolePact {
     state: 'stateless',
     uponReceiving: 'delete role not found',
     withRequest: {
-      method: HTTPMethod.DELETE,
+      method: HTTPMethods.DELETE,
       path: '/api/role/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -571,6 +576,7 @@ export namespace DeleteRolePact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'Role with id: notFoundId not found',

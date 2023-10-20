@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Java 17
         uses: actions/setup-java@v3
@@ -28,10 +28,10 @@ jobs:
           java-version: '17'
           check-latest: true
 
-      - name: Use Node 16
+      - name: Use Node 18
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Get branch names
         id: branch-name
@@ -45,10 +45,9 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: ${{ runner.os }}-deps-${{ github.run_id }}
           restore-keys: |
-            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
-            v4-${{ runner.os }}-
+            ${{ runner.os }}-deps-
 
       - name: Java Dependencies
         working-directory: apps/api

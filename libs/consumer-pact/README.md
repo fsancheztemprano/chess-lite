@@ -10,7 +10,7 @@ Run `nx test consumer-pact` to execute the unit tests.
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { firstValueFrom } from 'rxjs';
 import { avengersAssemble } from '../../interceptor/pact.interceptor';
 import { pactForResource } from '../../utils/pact.utils';
@@ -38,7 +38,7 @@ describe('Test Resource Pacts', () => {
         state: 'stateless',
         uponReceiving: 'sync request',
         withRequest: {
-          method: HTTPMethod.GET,
+          method: HTTPMethods.GET,
           path: '/api/sync',
         },
         willRespondWith: {
@@ -62,7 +62,7 @@ describe('Test Resource Pacts', () => {
         state: 'async stateless',
         uponReceiving: 'request',
         withRequest: {
-          method: HTTPMethod.GET,
+          method: HTTPMethods.GET,
           path: '/api/async',
         },
         willRespondWith: {

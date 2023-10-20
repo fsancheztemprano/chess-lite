@@ -12,7 +12,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ui/shared/common"],
       "options": {
         "jestConfig": "libs/ui/shared/common/jest.config.ts",
@@ -20,7 +20,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/ui/shared/common/src/**/*.ts", "libs/ui/shared/common/src/**/*.html"]
       }

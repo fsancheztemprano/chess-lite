@@ -13,7 +13,7 @@ export class HalFormClientModule {
     HTTP_CLIENT = this.http;
   }
 
-  static forRoot(rootResourceUrl: string = ''): ModuleWithProviders<HalFormClientModule> {
+  static forRoot(rootResourceUrl = ''): ModuleWithProviders<HalFormClientModule> {
     return {
       providers: [{ provide: ROOT_RESOURCE_URL, useValue: rootResourceUrl }],
       ngModule: HalFormClientModule,

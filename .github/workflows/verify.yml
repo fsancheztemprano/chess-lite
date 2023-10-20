@@ -16,7 +16,7 @@ jobs:
       upload-dev-artifacts: ${{ github.ref != 'refs/heads/development' || github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -35,10 +35,10 @@ jobs:
           java-version: '17'
           check-latest: true
 
-      - name: Use Node 16
+      - name: Use Node 18
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Cache
         uses: actions/cache@v3
@@ -48,10 +48,10 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
-          key: v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-${{ github.run_id }}
+          key: ${{ runner.os }}-deps-${{ github.run_id }}
           restore-keys: |
-            v4-${{ runner.os }}-${{ steps.branch-name.outputs.current_branch }}-
-            v4-${{ runner.os }}-
+            ${{ runner.os }}-deps-
+            ${{ runner.os }}-
 
       - name: Java Dependencies
         working-directory: apps/api
@@ -135,7 +135,7 @@ jobs:
           verbose: true
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1.8
+        uses: SonarSource/sonarcloud-github-action@v2.0.2
         if: env.dependabot-run == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

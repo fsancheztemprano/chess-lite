@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { getTranslocoModule } from '@app/ui/testing';
 import { AppModule } from './app.module';
 
 describe(`AppModule`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppModule, RouterTestingModule],
+      imports: [AppModule, RouterTestingModule, getTranslocoModule()],
     });
   });
 
