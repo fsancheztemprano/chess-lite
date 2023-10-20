@@ -2,7 +2,7 @@ import { AuthorityAuthority, HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer, withUuid } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
@@ -12,7 +12,7 @@ export namespace GetAllAuthoritiesPact {
     state: 'stateless',
     uponReceiving: 'get all authorities',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/authority',
       query: {
         size: '1000',
@@ -79,7 +79,7 @@ export namespace GetAllAuthoritiesPact {
     state: 'stateless',
     uponReceiving: 'get all authorities unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/authority',
       query: {
         size: '1000',
@@ -104,7 +104,7 @@ export namespace GetOneAuthorityPact {
     state: 'stateless',
     uponReceiving: 'get one authority',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/authority/pactUpdateAuthorityId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -130,7 +130,7 @@ export namespace GetOneAuthorityPact {
     state: 'stateless',
     uponReceiving: 'get one authority unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/authority/pactUpdateAuthorityId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -150,7 +150,7 @@ export namespace GetOneAuthorityPact {
     state: 'stateless',
     uponReceiving: 'get one authority not found ',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/authority/notFoundId',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -159,6 +159,7 @@ export namespace GetOneAuthorityPact {
     },
     willRespondWith: {
       status: 404,
+      headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
         reason: 'Not Found',
         title: 'Authority with id: notFoundId not found',

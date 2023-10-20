@@ -2,7 +2,7 @@ import { AdminAuthority, AuthorityAuthority, HttpHeaderKey, RoleAuthority, UserA
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 
@@ -11,7 +11,7 @@ export namespace GetAdministrationRootResource {
     state: 'stateless',
     uponReceiving: 'get administration root resource as unauthorized user',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -30,7 +30,7 @@ export namespace GetAdministrationRootResource {
     state: 'stateless',
     uponReceiving: 'get administration root resource as authorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -50,7 +50,7 @@ export namespace GetAdministrationRootResource {
     state: 'stateless',
     uponReceiving: 'get administration root resource as admin:root',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -75,7 +75,7 @@ export namespace GetAdministrationRootResource {
     state: 'stateless',
     uponReceiving: 'get administration root resource as admin:root service-logs:read',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -103,7 +103,7 @@ export namespace GetAdministrationRootResource {
     state: 'stateless',
     uponReceiving: 'get administration root resource as admin:root global-settings:read',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -132,7 +132,7 @@ export namespace GetAdministrationRootResource {
     uponReceiving:
       'get administration root resource with user management embedded as admin:root admin:user-management:root user:create',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -243,7 +243,7 @@ export namespace GetAdministrationRootResource {
     uponReceiving:
       'get administration root resource with role management embedded as admin:root admin:role-management:root role:create',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/administration',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,

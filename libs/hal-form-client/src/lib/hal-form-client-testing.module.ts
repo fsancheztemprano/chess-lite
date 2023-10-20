@@ -7,7 +7,7 @@ import { HalFormClientModule, ROOT_RESOURCE_URL } from './hal-form-client.module
   providers: [{ provide: ROOT_RESOURCE_URL, useValue: '' }],
 })
 export class HalFormClientTestingModule {
-  static forRoot(rootResourceUrl: string = ''): ModuleWithProviders<HalFormClientModule> {
+  static forRoot(rootResourceUrl = ''): ModuleWithProviders<HalFormClientModule> {
     return {
       providers: [{ provide: ROOT_RESOURCE_URL, useValue: rootResourceUrl }],
       ngModule: HalFormClientModule,

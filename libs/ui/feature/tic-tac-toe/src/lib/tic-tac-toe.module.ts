@@ -11,6 +11,7 @@ import { TicTacToeRoutingModule } from './tic-tac-toe-routing.module';
     TicTacToeEffects,
     {
       provide: TRANSLOCO_SCOPE,
+      multi: true,
       useValue: {
         scope: 'tic-tac-toe',
         alias: 'tic-tac-toe',

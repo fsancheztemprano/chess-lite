@@ -1,14 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, NgModule } from '@angular/core';
-import {
-  Translation,
-  TRANSLOCO_CONFIG,
-  TRANSLOCO_LOADER,
-  translocoConfig,
-  TranslocoLoader,
-  TranslocoModule,
-} from '@ngneat/transloco';
-import { environment } from '../environments/environment';
+import { Injectable, isDevMode, NgModule } from '@angular/core';
+import { provideTransloco, Translation, TranslocoLoader, TranslocoModule } from '@ngneat/transloco';
 
 @Injectable({ providedIn: 'root' })
 export class TranslocoHttpLoader implements TranslocoLoader {
@@ -22,9 +14,8 @@ export class TranslocoHttpLoader implements TranslocoLoader {
 @NgModule({
   exports: [TranslocoModule],
   providers: [
-    {
-      provide: TRANSLOCO_CONFIG,
-      useValue: translocoConfig({
+    provideTransloco({
+      config: {
         availableLangs: ['en', 'es'],
         defaultLang: 'en',
         fallbackLang: 'en',
@@ -32,10 +23,10 @@ export class TranslocoHttpLoader implements TranslocoLoader {
         missingHandler: {
           useFallbackTranslation: true,
         },
-        prodMode: environment.production,
-      }),
-    },
-    { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader },
+        prodMode: !isDevMode(),
+      },
+      loader: TranslocoHttpLoader,
+    }),
   ],
 })
 export class TranslocoRootModule {}

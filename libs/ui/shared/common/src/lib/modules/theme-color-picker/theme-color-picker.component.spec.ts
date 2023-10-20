@@ -30,7 +30,16 @@ describe('ThemeColorPickerComponent', () => {
   });
 
   it('should render 3 color pickers with input colors', () => {
-    component.ngOnChanges({ colors: { currentValue: colors } as SimpleChange });
+    component.ngOnChanges({
+      colors: {
+        currentValue: colors,
+        isFirstChange(): boolean {
+          return true;
+        },
+        previousValue: undefined,
+        firstChange: true,
+      } as SimpleChange,
+    });
     fixture.detectChanges();
     const inputs = fixture.debugElement.queryAll(By.css('ngx-colors'));
     expect(inputs.length).toEqual(3);

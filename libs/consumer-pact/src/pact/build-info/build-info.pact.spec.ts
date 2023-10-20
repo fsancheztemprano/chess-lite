@@ -42,7 +42,7 @@ describe('Build Info Pacts', () => {
       const interaction: InteractionObject = GetBuildInfoPact.successful;
       provider.addInteraction(interaction).then(() => {
         service.getBuildInfo().subscribe((response) => {
-          expect(response).toMatchObject(interaction.willRespondWith.body);
+          expect(response).toMatchObject(interaction.willRespondWith.body!);
           done();
         });
       });

@@ -9,6 +9,7 @@ import { AuthenticationRoutingModule } from './authentication-routing.module';
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
+      multi: true,
       useValue: {
         scope: 'authentication',
         loader: scopeLoader((lang: string, root: string) => import(`../${root}/${lang}.json`)),

@@ -4,11 +4,11 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "extends": ["plugin:github/typescript", "plugin:@nrwl/nx/angular"],
+      "extends": ["plugin:github/typescript", "plugin:@nx/angular"],
       "rules": {
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@nrwl/nx/enforce-module-boundaries": "off"
+        "@nx/enforce-module-boundaries": "off"
       }
     }
   ]

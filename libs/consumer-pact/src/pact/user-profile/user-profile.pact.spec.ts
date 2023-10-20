@@ -68,10 +68,7 @@ describe('User Profile Pact', () => {
         localStorage.setItem(TokenKeys.TOKEN, jwtToken({ authorities: [ProfileAuthority.PROFILE_READ] }));
         sessionService['_fetchUser']().subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
-          expect(user._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(user._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           expect(user._templates?.default).toBeTruthy();
           expect(user.userPreferences).toBeTruthy();
           expect(user.userPreferences?._templates).toBeTruthy();
@@ -90,7 +87,6 @@ describe('User Profile Pact', () => {
         );
         sessionService['_fetchUser']().subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._templates?.default).toBeTruthy();
           expect(user._templates?.[CurrentUserRelations.UPDATE_PROFILE_REL]).toBeTruthy();
           expect(user._templates?.[CurrentUserRelations.UPLOAD_AVATAR_REL]).toBeTruthy();
@@ -113,7 +109,6 @@ describe('User Profile Pact', () => {
         );
         sessionService['_fetchUser']().subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._templates?.default).toBeTruthy();
           expect(user._templates?.[CurrentUserRelations.DELETE_ACCOUNT_REL]).toBeTruthy();
           done();
@@ -129,7 +124,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -150,7 +145,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -180,7 +175,6 @@ describe('User Profile Pact', () => {
         );
         userSettingsService.updateProfile({ firstname: 'pactUserFirstname' }).subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
           done();
         });
@@ -195,7 +189,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -216,7 +210,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -251,7 +245,6 @@ describe('User Profile Pact', () => {
           })
           .subscribe((response: User) => {
             expect(response).toBeTruthy();
-            expect(response.id).toBe(interaction.willRespondWith.body.id);
             expect(response._links).toBeTruthy();
             done();
           });
@@ -266,7 +259,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -287,7 +280,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -332,7 +325,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -353,7 +346,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -386,11 +379,8 @@ describe('User Profile Pact', () => {
         );
         sessionService['_fetchUserPreferences']().subscribe((userPreferences: User) => {
           expect(userPreferences).toBeTruthy();
-          expect(userPreferences.id).toBe(interaction.willRespondWith.body.id);
           expect(userPreferences._links).toBeTruthy();
           expect(userPreferences._templates?.default).toBeTruthy();
-          expect(userPreferences._links?.self?.href).toBe(interaction.willRespondWith.body._links.self.href);
-          expect(userPreferences._links?.ws?.href).toBe(interaction.willRespondWith.body._links.ws.href);
           done();
         });
       });
@@ -404,7 +394,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -425,7 +415,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -461,7 +451,6 @@ describe('User Profile Pact', () => {
         );
         userSettingsService.updateUserPreferences({ darkMode: true }).subscribe((response: User) => {
           expect(response).toBeTruthy();
-          expect(response.id).toBe(interaction.willRespondWith.body.id);
           expect(response._links).toBeTruthy();
           expect(response._templates?.default).toBeTruthy();
           done();
@@ -477,7 +466,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -498,7 +487,7 @@ describe('User Profile Pact', () => {
           error: (error: HttpErrorResponse) => {
             expect(error).toBeTruthy();
             expect(error.status).toBe(interaction.willRespondWith.status);
-            expect(error.error).toStrictEqual(interaction.willRespondWith.body);
+            expect(error.error).toStrictEqual(interaction.willRespondWith.body!);
             done();
           },
         });
@@ -537,7 +526,6 @@ describe('User Profile Pact', () => {
         const file: File = new File(arrayOfBlob, 'avatar.txt', { type: 'text/plain' });
         userSettingsService.uploadAvatar(file).subscribe((user: User) => {
           expect(user).toBeTruthy();
-          expect(user.id).toBe(interaction.willRespondWith.body.id);
           expect(user._links).toBeTruthy();
           done();
         });

@@ -2,7 +2,8 @@ import { HttpHeaderKey } from '@app/ui/shared/domain';
 import { defaultTemplate } from '@app/ui/testing';
 import { ContentType, IResource } from '@hal-form-client';
 import { InteractionObject } from '@pact-foundation/pact';
-import { HTTPMethod } from '@pact-foundation/pact/src/common/request';
+import { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes';
+import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { uuid } from '@pact-foundation/pact/src/dsl/matchers';
 import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
@@ -31,7 +32,7 @@ export namespace GetGlobalSettingPact {
     state: 'stateless',
     uponReceiving: 'get global settings',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/global-settings',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -42,9 +43,9 @@ export namespace GetGlobalSettingPact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
-        ...globalSettings,
+        ...(globalSettings as JsonMap),
         _links: {
-          ...globalSettings._links,
+          ...(globalSettings._links as JsonMap),
           ws: { href: '/ami/global-settings' },
         },
       },
@@ -55,7 +56,7 @@ export namespace GetGlobalSettingPact {
     state: 'stateless',
     uponReceiving: 'get global settings with update',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/global-settings',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -66,7 +67,7 @@ export namespace GetGlobalSettingPact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
-        ...globalSettings,
+        ...(globalSettings as JsonMap),
         _templates: {
           ...defaultTemplate,
           update: { method: 'PATCH', properties: [{ name: 'defaultRoleId', type: 'text' }, { name: 'signupOpen' }] },
@@ -79,7 +80,7 @@ export namespace GetGlobalSettingPact {
     state: 'stateless',
     uponReceiving: 'get global settings unauthorized',
     withRequest: {
-      method: HTTPMethod.GET,
+      method: HTTPMethods.GET,
       path: '/api/global-settings',
       headers: {
         Accept: ContentType.APPLICATION_JSON_HAL_FORMS,
@@ -101,7 +102,7 @@ export namespace UpdateGlobalSettingPact {
     state: 'stateless',
     uponReceiving: 'update global settings',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/global-settings',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
@@ -116,7 +117,7 @@ export namespace UpdateGlobalSettingPact {
       status: 200,
       headers: { [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS },
       body: {
-        ...globalSettings,
+        ...(globalSettings as JsonMap),
         _templates: {
           ...defaultTemplate,
           update: { method: 'PATCH', properties: [{ name: 'defaultRoleId', type: 'text' }, { name: 'signupOpen' }] },
@@ -129,7 +130,7 @@ export namespace UpdateGlobalSettingPact {
     state: 'stateless',
     uponReceiving: 'update global settings unauthorized',
     withRequest: {
-      method: HTTPMethod.PATCH,
+      method: HTTPMethods.PATCH,
       path: '/api/global-settings',
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON,
