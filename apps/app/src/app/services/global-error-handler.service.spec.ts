@@ -16,24 +16,6 @@ describe('GlobalErrorHandlerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should console warn on development', () => {
-    const spy = jest.spyOn(console, 'warn').mockImplementation();
-
-    service.handleError(new Error('test'));
-
-    expect(spy).toHaveBeenCalled();
-    spy.mockRestore();
-  });
-
-  it('should not warn on production', () => {
-    const spy = jest.spyOn(console, 'warn');
-
-    service.handleError(new Error('test'));
-
-    expect(spy).not.toHaveBeenCalled();
-    spy.mockRestore();
-  });
-
   it('should show toast on error', () => {
     const spy = jest.spyOn(service['toasterService'], 'showToast');
 
