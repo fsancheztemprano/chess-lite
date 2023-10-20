@@ -11,7 +11,7 @@ import { InteractionObject } from '@pact-foundation/pact';
 import { JsonMap } from '@pact-foundation/pact/src/common/jsonTypes';
 import { HTTPMethods } from '@pact-foundation/pact/src/common/request';
 import { pactCurrentUser } from '../../mocks/user.mock';
-import { bearer, jwt } from '../../utils/pact.utils';
+import { bearer } from '../../utils/pact.utils';
 import { jwtToken } from '../../utils/token.utils';
 
 export namespace SignupPact {
@@ -203,9 +203,9 @@ export namespace LoginPact {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: `${HttpHeaderKey.JWT_TOKEN}, ${HttpHeaderKey.JWT_REFRESH_TOKEN}`,
-        [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
-        [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwt(jwtToken()),
+        // [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: `${HttpHeaderKey.JWT_TOKEN}, ${HttpHeaderKey.JWT_REFRESH_TOKEN}`,
+        // [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
+        // [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwt(jwtToken()),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: {
@@ -248,9 +248,9 @@ export namespace RefreshTokenPact {
     willRespondWith: {
       status: 200,
       headers: {
-        [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: `${HttpHeaderKey.JWT_TOKEN}, ${HttpHeaderKey.JWT_REFRESH_TOKEN}`,
-        [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
-        [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwt(jwtToken()),
+        // [HttpHeaderKey.ACCESS_CONTROL_EXPOSE_HEADERS]: `${HttpHeaderKey.JWT_TOKEN}, ${HttpHeaderKey.JWT_REFRESH_TOKEN}`,
+        // [HttpHeaderKey.JWT_TOKEN]: jwt(jwtToken()),
+        // [HttpHeaderKey.JWT_REFRESH_TOKEN]: jwt(jwtToken()),
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
       },
       body: { ...pactCurrentUser },

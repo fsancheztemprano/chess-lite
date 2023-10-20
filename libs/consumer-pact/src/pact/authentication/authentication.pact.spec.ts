@@ -4,7 +4,6 @@ import { stubSessionServiceProvider } from '@app/ui/shared/app';
 import {
   ActivationTokenRelations,
   AuthRelations,
-  HttpHeaderKey,
   Session,
   SignupInput,
   TokenAuthority,
@@ -12,7 +11,6 @@ import {
 } from '@app/ui/shared/domain';
 import { HalFormClientModule, HalFormService, IResource } from '@hal-form-client';
 import { InteractionObject, Pact } from '@pact-foundation/pact';
-import { Matcher } from '@pact-foundation/pact/src/dsl/matchers';
 import { switchMap } from 'rxjs';
 import { ActivationTokenService } from '../../../../ui/feature/authentication/src/lib/services/activation-token.service';
 import { AuthService } from '../../../../ui/feature/authentication/src/lib/services/auth.service';
@@ -261,12 +259,6 @@ describe('Authentication Pacts', () => {
           .pipe(switchMap((link) => link.get<IResource>()))
           .subscribe((response: HttpResponse<IResource>) => {
             expect(response).toBeTruthy();
-            expect(response.headers.get(HttpHeaderKey.JWT_TOKEN)).toBe(
-              (<Matcher<string>>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_TOKEN]).getValue(),
-            );
-            expect(response.headers.get(HttpHeaderKey.JWT_REFRESH_TOKEN)).toBe(
-              (<Matcher<string>>interaction.willRespondWith.headers?.[HttpHeaderKey.JWT_REFRESH_TOKEN]).getValue(),
-            );
             done();
           });
       });

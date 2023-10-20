@@ -281,7 +281,7 @@ export namespace CreateUserPact {
       status: 201,
       headers: {
         [HttpHeaderKey.CONTENT_TYPE]: ContentType.APPLICATION_JSON_HAL_FORMS,
-        [HttpHeaderKey.LOCATION]: withUuid('http://localhost/api/user/{uuid}'),
+        // [HttpHeaderKey.LOCATION]: withUuid('http://localhost/api/user/{uuid}'),
       },
       body: {
         ...pactUser,

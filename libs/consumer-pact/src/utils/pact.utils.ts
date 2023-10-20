@@ -7,11 +7,11 @@ export function pactForResource(resource: string): Pact {
     consumer: `app-${resource}`,
     provider: 'api',
     log: resolve(process.cwd(), 'coverage', 'pact', 'logs', 'api.log'),
-    logLevel: 'warn',
+    logLevel: 'error',
     dir: resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact', resource + 'Controller'),
     cors: true,
     timeout: 10000,
-    spec: 2,
+    spec: 3,
     pactfileWriteMode: 'merge',
   });
 }
@@ -21,7 +21,7 @@ export function pactForMessages(resource: string): MessageConsumerPact {
     consumer: `app-${resource}`,
     provider: 'ami',
     log: resolve(process.cwd(), 'coverage', 'pact', 'logs', 'ami.log'),
-    logLevel: 'warn',
+    logLevel: 'error',
     dir: resolve(process.cwd(), 'apps', 'api', 'target', 'test-classes', 'pact-messages', resource + 'Messages'),
     spec: 3,
     pactfileWriteMode: 'merge',

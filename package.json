@@ -29,7 +29,7 @@
     "build:frontend:analyze": "yarn run build:frontend:stats && webpack-bundle-analyzer dist/apps/app/stats.json",
     "build:backend": "nx run api:build",
     "package": "nx run api:package",
-    "pact": "nx run api:pact:complete",
+    "pact": "nx run api:pact:full",
     "pact:generate": "yarn run pact:consumer && yarn run pact:producer:generate",
     "pact:consumer": "nx run consumer-pact:pact",
     "pact:producer": "nx run api:pact",
