@@ -6,9 +6,10 @@ import au.com.dius.pact.provider.junit.loader.PactFolder;
 import au.com.dius.pact.provider.junit5.AmpqTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.GlobalSettingsChangedEvent;
 import dev.kurama.api.core.event.domain.GlobalSettingsChangedEvent.GlobalSettingsChangedEventAction;
-import groovy.json.JsonOutput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,8 +34,8 @@ public class GlobalSettingsChangedMessagePactIT {
   }
 
   @PactVerifyProvider("a global settings updated message")
-  public String verifyGlobalSettingsUpdatedMessage() {
-    return JsonOutput.toJson(
+  public String verifyGlobalSettingsUpdatedMessage() throws JsonProcessingException {
+    return new ObjectMapper().writeValueAsString(
       GlobalSettingsChangedEvent.builder().action(GlobalSettingsChangedEventAction.UPDATED).build());
   }
 

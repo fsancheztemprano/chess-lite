@@ -7,10 +7,9 @@ import lombok.Data;
 @Builder
 public class UserPreferencesChangedEvent implements ApplicationEvent {
 
-  private String userPreferencesId;
-
   @Builder.Default
   private UserPreferencesChangedEventAction action = UserPreferencesChangedEventAction.UPDATED;
+  private String userPreferencesId;
 
   public enum UserPreferencesChangedEventAction {
     UPDATED,

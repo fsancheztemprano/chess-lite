@@ -7,10 +7,10 @@ import lombok.Data;
 @Builder
 public class UserChangedEvent implements ApplicationEvent {
 
+  private UserChangedEventAction action;
   private String userId;
   private String username;
 
-  private UserChangedEventAction action;
 
   public enum UserChangedEventAction {
     CREATED, UPDATED, DELETED,

@@ -38,6 +38,8 @@
     "test:frontend": "nx run-many --target=test --all --exclude=api",
     "test:frontend:coverage": "yarn run test:frontend --codeCoverage",
     "test:backend": "nx run api:test",
+    "test:backend:ut": "nx run api:ut",
+    "test:backend:it": "nx run api:it",
     "test:merge": "yarn run test:merge:ut && yarn run test:merge:it",
     "test:merge:ut": "jrm ./apps/api/target/surefire-reports/merged-uts.xml \"./apps/api/target/surefire-reports/TEST*.xml\"",
     "test:merge:it": "jrm ./apps/api/target/failsafe-reports/merged-its.xml \"./apps/api/target/failsafe-reports/TEST*.xml\"",
