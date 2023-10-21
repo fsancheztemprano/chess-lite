@@ -1,7 +1,7 @@
 package dev.kurama.api.core.hateoas.input;
 
+import jakarta.validation.constraints.Email;
 import java.util.Set;
-import javax.validation.constraints.Email;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

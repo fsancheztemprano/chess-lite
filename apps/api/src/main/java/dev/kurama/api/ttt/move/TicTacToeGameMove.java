@@ -3,13 +3,12 @@ package dev.kurama.api.ttt.move;
 import dev.kurama.api.core.domain.AbstractEntity;
 import dev.kurama.api.ttt.game.TicTacToeGame;
 import dev.kurama.api.ttt.player.TicTacToePlayer;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,11 +45,11 @@ public class TicTacToeGameMove extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REMOVE)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToeGame game;
 
   @ToString.Exclude
-  @OneToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToePlayer player;
 
 }

@@ -5,9 +5,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import dev.kurama.api.core.domain.EmailTemplate;
+import jakarta.mail.Session;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Properties;
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

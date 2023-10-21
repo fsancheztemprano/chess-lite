@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:14.2:////testdb
+    url: jdbc:tc:postgresql:16.0:////testdb
     hikari:
       maximum-pool-size: 2
   jpa:

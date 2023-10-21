@@ -7,9 +7,8 @@ import lombok.Data;
 @Builder
 public class RoleChangedEvent implements ApplicationEvent {
 
-  private String roleId;
-
   private RoleChangedEventAction action;
+  private String roleId;
 
   public enum RoleChangedEventAction {
     CREATED, UPDATED, DELETED,

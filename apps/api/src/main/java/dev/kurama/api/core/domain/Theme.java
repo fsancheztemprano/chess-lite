@@ -1,8 +1,8 @@
 package dev.kurama.api.core.domain;
 
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
 import java.io.Serializable;
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

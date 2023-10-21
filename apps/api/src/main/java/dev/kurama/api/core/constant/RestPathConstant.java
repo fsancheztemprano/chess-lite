@@ -23,5 +23,6 @@ public class RestPathConstant {
 
   public static final String ADMINISTRATION_ROOT_PATH = BASE_PATH + "/administration";
   public static final String APP_URL = "/app";
+  public static final String APP_URL_TRAILING = "/app/";
   public static final String INDEX_URL = "/app/index.html";
 }
