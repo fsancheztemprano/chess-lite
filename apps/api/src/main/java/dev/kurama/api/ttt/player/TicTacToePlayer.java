@@ -4,13 +4,13 @@ import com.google.common.collect.Sets;
 import dev.kurama.api.core.domain.AbstractEntity;
 import dev.kurama.api.core.domain.User;
 import dev.kurama.api.ttt.game.TicTacToeGame;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,13 +43,13 @@ public class TicTacToePlayer extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "playerO", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(mappedBy = "playerO", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<TicTacToeGame> gamesAsO = Sets.newHashSet();
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "playerX", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(mappedBy = "playerX", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<TicTacToeGame> gamesAsX = Sets.newHashSet();
 
   @NonNull

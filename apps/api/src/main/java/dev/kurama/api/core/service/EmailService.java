@@ -1,7 +1,7 @@
 package dev.kurama.api.core.service;
 
 import dev.kurama.api.core.domain.EmailTemplate;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
