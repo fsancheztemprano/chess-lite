@@ -4,11 +4,11 @@ import static dev.kurama.api.core.utility.AuthorityUtils.getCurrentUserId;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 import dev.kurama.api.ttt.game.input.TicTacToeGameFilterInput;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;

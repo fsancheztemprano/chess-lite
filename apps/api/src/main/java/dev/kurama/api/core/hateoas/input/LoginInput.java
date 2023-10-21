@@ -1,13 +1,15 @@
 package dev.kurama.api.core.hateoas.input;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.annotation.Validated;
 
 @Data
 @Builder
+@Validated
 public class LoginInput {
 
   @NonNull

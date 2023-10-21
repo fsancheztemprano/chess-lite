@@ -1,6 +1,7 @@
 package dev.kurama.api.core.rest;
 
 import static dev.kurama.api.core.constant.RestPathConstant.APP_URL;
+import static dev.kurama.api.core.constant.RestPathConstant.APP_URL_TRAILING;
 import static dev.kurama.api.core.constant.RestPathConstant.INDEX_URL;
 import static dev.kurama.api.core.constant.RestPathConstant.ROOT_URL;
 
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class ApplicationForwardController {
 
-  @RequestMapping(path = {ROOT_URL, APP_URL,
+  @RequestMapping(path = {ROOT_URL, APP_URL, APP_URL_TRAILING,
     "/app/{path:(?!index\\.html$|favicon\\.ico$|main\\..+\\.js$|polyfills\\..+\\.js$|runtime\\..+\\.js$|styles\\..+\\"
       + ".css$|common\\..+\\.js$|[0-9]{1,4}\\..+\\.js$|assets).*}/**"})
   public ModelAndView forwardApp() {

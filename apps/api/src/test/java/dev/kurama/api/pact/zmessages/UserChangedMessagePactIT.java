@@ -6,9 +6,10 @@ import au.com.dius.pact.provider.junit.loader.PactFolder;
 import au.com.dius.pact.provider.junit5.AmpqTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.UserChangedEvent;
 import dev.kurama.api.core.event.domain.UserChangedEvent.UserChangedEventAction;
-import groovy.json.JsonOutput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,20 +34,20 @@ public class UserChangedMessagePactIT {
   }
 
   @PactVerifyProvider("a user created message")
-  public String verifyUserCreatedMessage() {
-    return JsonOutput.toJson(
+  public String verifyUserCreatedMessage() throws JsonProcessingException {
+    return new ObjectMapper().writeValueAsString(
       UserChangedEvent.builder().userId("u1").username("u1").action(UserChangedEventAction.CREATED).build());
   }
 
   @PactVerifyProvider("a user updated message")
-  public String verifyUserUpdatedMessage() {
-    return JsonOutput.toJson(
+  public String verifyUserUpdatedMessage() throws JsonProcessingException {
+    return new ObjectMapper().writeValueAsString(
       UserChangedEvent.builder().userId("u2").username("u2").action(UserChangedEventAction.UPDATED).build());
   }
 
   @PactVerifyProvider("a user deleted message")
-  public String verifyUserDeletedMessage() {
-    return JsonOutput.toJson(
+  public String verifyUserDeletedMessage() throws JsonProcessingException {
+    return new ObjectMapper().writeValueAsString(
       UserChangedEvent.builder().userId("u3").username("u3").action(UserChangedEventAction.DELETED).build());
   }
 

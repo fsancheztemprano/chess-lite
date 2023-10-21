@@ -4,14 +4,14 @@ import com.google.common.collect.Sets;
 import dev.kurama.api.core.domain.AbstractEntity;
 import dev.kurama.api.ttt.move.TicTacToeGameMove;
 import dev.kurama.api.ttt.player.TicTacToePlayer;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,12 +42,12 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToePlayer playerX;
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToePlayer playerO;
 
   private LocalDateTime lastActivityAt;
@@ -61,7 +61,7 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<TicTacToeGameMove> moves = Sets.newHashSet();
 
 

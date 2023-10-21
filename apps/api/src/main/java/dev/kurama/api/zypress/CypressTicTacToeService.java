@@ -7,11 +7,14 @@ import dev.kurama.api.ttt.core.TicTacToeAuthority;
 import dev.kurama.api.ttt.game.TicTacToeGame;
 import dev.kurama.api.ttt.game.TicTacToeGame.Status;
 import dev.kurama.api.ttt.game.TicTacToeGameFacility;
+import dev.kurama.api.ttt.game.TicTacToeGameRepository;
 import dev.kurama.api.ttt.game.TicTacToeGameService;
 import dev.kurama.api.ttt.game.input.TicTacToeGameInput;
 import dev.kurama.api.ttt.game.input.TicTacToeGameStatusInput;
 import dev.kurama.api.ttt.move.TicTacToeGameMoveFacility;
 import dev.kurama.api.ttt.move.TicTacToeGameMoveInput;
+import dev.kurama.api.ttt.move.TicTacToeGameMoveRepository;
+import dev.kurama.api.ttt.player.TicTacToePlayerRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -30,6 +33,21 @@ public class CypressTicTacToeService {
 
   @NonNull
   private final TicTacToeGameMoveFacility moveFacility;
+
+  @NonNull
+  private final TicTacToeGameRepository gameRepository;
+
+  @NonNull
+  private final TicTacToeGameMoveRepository gameMoveRepository;
+
+  @NonNull
+  private final TicTacToePlayerRepository playerRepository;
+
+  public void clearStateTicTacToe() {
+    gameMoveRepository.deleteAll();
+    gameRepository.deleteAll();
+    playerRepository.deleteAll();
+  }
 
   public void setStateTicTacToe() {
     setContextUser(ContextUser.builder().id("admin").username("admin").build(),

@@ -15,7 +15,7 @@ import dev.kurama.api.core.service.GlobalSettingsService;
 import dev.kurama.api.core.service.RoleService;
 import dev.kurama.api.core.service.ThemeService;
 import dev.kurama.api.core.service.UserService;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.flogger.Flogger;
@@ -92,6 +92,7 @@ public class CypressService {
     userRepository.deleteAll();
     roleRepository.deleteAll();
     authorityRepository.deleteAll();
+    ticTacToeService.clearStateTicTacToe();
   }
 
   private void setState1() throws UserExistsException, RoleNotFoundException {
