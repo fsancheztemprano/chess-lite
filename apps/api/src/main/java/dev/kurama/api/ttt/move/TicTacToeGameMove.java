@@ -7,7 +7,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
@@ -46,11 +45,11 @@ public class TicTacToeGameMove extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.REMOVE)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToeGame game;
 
   @ToString.Exclude
-  @OneToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToePlayer player;
 
 }

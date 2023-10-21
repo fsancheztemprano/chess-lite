@@ -43,13 +43,13 @@ public class TicTacToePlayer extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "playerO", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(mappedBy = "playerO", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<TicTacToeGame> gamesAsO = Sets.newHashSet();
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "playerX", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(mappedBy = "playerX", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<TicTacToeGame> gamesAsX = Sets.newHashSet();
 
   @NonNull

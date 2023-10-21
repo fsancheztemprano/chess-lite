@@ -42,12 +42,12 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToePlayer playerX;
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private TicTacToePlayer playerO;
 
   private LocalDateTime lastActivityAt;
@@ -61,7 +61,7 @@ public class TicTacToeGame extends AbstractEntity implements Serializable {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
-  @OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<TicTacToeGameMove> moves = Sets.newHashSet();
 
 

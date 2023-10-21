@@ -92,6 +92,7 @@ public class CypressService {
     userRepository.deleteAll();
     roleRepository.deleteAll();
     authorityRepository.deleteAll();
+    ticTacToeService.clearStateTicTacToe();
   }
 
   private void setState1() throws UserExistsException, RoleNotFoundException {
