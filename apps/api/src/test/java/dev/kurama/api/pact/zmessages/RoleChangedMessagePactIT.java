@@ -6,9 +6,10 @@ import au.com.dius.pact.provider.junit.loader.PactFolder;
 import au.com.dius.pact.provider.junit5.AmpqTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.kurama.api.core.event.domain.RoleChangedEvent;
 import dev.kurama.api.core.event.domain.RoleChangedEvent.RoleChangedEventAction;
-import groovy.json.JsonOutput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,18 +34,21 @@ public class RoleChangedMessagePactIT {
   }
 
   @PactVerifyProvider("a role created message")
-  public String verifyRoleCreatedMessage() {
-    return JsonOutput.toJson(RoleChangedEvent.builder().roleId("r1").action(RoleChangedEventAction.CREATED).build());
+  public String verifyRoleCreatedMessage() throws JsonProcessingException {
+    return new ObjectMapper().writeValueAsString(
+      RoleChangedEvent.builder().roleId("r1").action(RoleChangedEventAction.CREATED).build());
   }
 
   @PactVerifyProvider("a role updated message")
-  public String verifyRoleUpdatedMessage() {
-    return JsonOutput.toJson(RoleChangedEvent.builder().roleId("r2").action(RoleChangedEventAction.UPDATED).build());
+  public String verifyRoleUpdatedMessage() throws JsonProcessingException {
+    return new ObjectMapper().writeValueAsString(
+      RoleChangedEvent.builder().roleId("r2").action(RoleChangedEventAction.UPDATED).build());
   }
 
   @PactVerifyProvider("a role deleted message")
-  public String verifyRoleDeletedMessage() {
-    return JsonOutput.toJson(RoleChangedEvent.builder().roleId("r3").action(RoleChangedEventAction.DELETED).build());
+  public String verifyRoleDeletedMessage() throws JsonProcessingException {
+    return new ObjectMapper().writeValueAsString(
+      RoleChangedEvent.builder().roleId("r3").action(RoleChangedEventAction.DELETED).build());
   }
 
 }
