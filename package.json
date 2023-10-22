@@ -94,7 +94,7 @@
     "ngx-toastr": "17.0.2",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
-    "url-template": "2.0.8",
+    "url-template": "3.1.0",
     "zone.js": "0.13.3"
   },
   "devDependencies": {
@@ -128,7 +128,6 @@
     "@types/jsonwebtoken": "9.0.4",
     "@types/node": "18.18.6",
     "@types/sockjs-client": "1.5.3",
-    "@types/url-template": "2.0.30",
     "@typescript-eslint/eslint-plugin": "6.8.0",
     "@typescript-eslint/parser": "6.8.0",
     "cypress": "13.3.2",
