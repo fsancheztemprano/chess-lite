@@ -4,7 +4,10 @@ import { Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AppInitializationService {
-  constructor(private readonly sessionService: SessionService, private readonly themeService: ThemeService) {}
+  constructor(
+    private readonly sessionService: SessionService,
+    private readonly themeService: ThemeService,
+  ) {}
 
   initialize(): Observable<unknown> {
     return this.sessionService.initialize().pipe(switchMap(() => this.themeService.initializeTheme()));

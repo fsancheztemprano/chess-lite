@@ -5,7 +5,7 @@
     floatLabel="always"
     *ngIf="getServiceLogs$() | async as serviceLog"
   >
-    <mat-label>{{ serviceLog?.timestamp | date : 'short' }}</mat-label>
+    <mat-label>{{ serviceLog?.timestamp | date: 'short' }}</mat-label>
     <textarea [value]="serviceLog?.logs" readonly matInput [placeholder]="t('logs')" cdkTextareaAutosize></textarea>
   </mat-form-field>
 </app-core-card-view>

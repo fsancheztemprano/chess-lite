@@ -27,13 +27,13 @@
       </ng-container>
       <ng-container matColumnDef="playerX">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="playerX.user.username">
-          {{ TRANSLOCO_SCOPE + '.header.player' | transloco : { player: 'X' } }}
+          {{ TRANSLOCO_SCOPE + '.header.player' | transloco: { player: 'X' } }}
         </th>
         <td mat-cell *matCellDef="let element">{{ element.playerX.username }}</td>
       </ng-container>
       <ng-container matColumnDef="playerO">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="playerO.user.username">
-          {{ TRANSLOCO_SCOPE + '.header.player' | transloco : { player: 'O' } }}
+          {{ TRANSLOCO_SCOPE + '.header.player' | transloco: { player: 'O' } }}
         </th>
         <td mat-cell *matCellDef="let element">{{ element.playerO.username }}</td>
       </ng-container>

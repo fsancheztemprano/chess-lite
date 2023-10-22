@@ -8,7 +8,10 @@ import { UserManagementDetailService } from '../services/user-management-detail.
   providedIn: 'root',
 })
 export class UserManagementDetailGuard {
-  constructor(private readonly userManagementDetailService: UserManagementDetailService, private router: Router) {}
+  constructor(
+    private readonly userManagementDetailService: UserManagementDetailService,
+    private router: Router,
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
     return this.userManagementDetailService.initialize(route.params.userId).pipe(

@@ -59,5 +59,8 @@ export class HomeComponent {
     },
   ];
 
-  constructor(private readonly halFormService: HalFormService, private readonly translocoService: TranslocoService) {}
+  constructor(
+    private readonly halFormService: HalFormService,
+    private readonly translocoService: TranslocoService,
+  ) {}
 }

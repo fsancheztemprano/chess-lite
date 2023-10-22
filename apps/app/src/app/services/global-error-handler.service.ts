@@ -3,7 +3,10 @@ import { ToasterService, ToastType } from '@app/ui/shared/app';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalErrorHandler implements ErrorHandler {
-  constructor(private readonly ngZone: NgZone, private readonly toasterService: ToasterService) {}
+  constructor(
+    private readonly ngZone: NgZone,
+    private readonly toasterService: ToasterService,
+  ) {}
 
   handleError(error: Error): void {
     if (!isDevMode()) {

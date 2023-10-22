@@ -14,7 +14,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class SidenavComponent {
   @ViewChild('sidenav') sidenav: MatSidenav | undefined;
 
-  constructor(public readonly sidenavService: SidenavService, public readonly sessionRepository: SessionRepository) {
+  constructor(
+    public readonly sidenavService: SidenavService,
+    public readonly sessionRepository: SessionRepository,
+  ) {
     this._subscribeToSidenavOpenEvent();
   }
 

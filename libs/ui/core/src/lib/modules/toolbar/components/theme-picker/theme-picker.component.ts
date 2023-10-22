@@ -11,7 +11,10 @@ import { UntilDestroy } from '@ngneat/until-destroy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemePickerComponent {
-  constructor(public readonly themeRepository: ThemeRepository, private readonly actions: Actions) {}
+  constructor(
+    public readonly themeRepository: ThemeRepository,
+    private readonly actions: Actions,
+  ) {}
 
   setDarkMode(darkMode: boolean) {
     this.actions.dispatch(updateDarkMode({ darkMode }));

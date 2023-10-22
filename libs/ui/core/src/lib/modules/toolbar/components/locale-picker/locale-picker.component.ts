@@ -10,7 +10,10 @@ import { Actions } from '@ngneat/effects-ng';
   encapsulation: ViewEncapsulation.None,
 })
 export class LocalePickerComponent {
-  constructor(public readonly localizationRepository: LocalizationRepository, private readonly actions: Actions) {}
+  constructor(
+    public readonly localizationRepository: LocalizationRepository,
+    private readonly actions: Actions,
+  ) {}
 
   updateContentLanguage(contentLanguage: string) {
     this.actions.dispatch(updateContentLanguage({ contentLanguage }));

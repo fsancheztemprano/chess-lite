@@ -2,7 +2,7 @@
   <ng-container *ngFor="let palette of palettes">
     <ng-container
       [ngTemplateOutlet]="colorPicker"
-      [ngTemplateOutletContext]="{ palette, control: $any(form.controls)[palette +'Color'] }"
+      [ngTemplateOutletContext]="{ palette, control: $any(form.controls)[palette + 'Color'] }"
     ></ng-container>
   </ng-container>
 </form>

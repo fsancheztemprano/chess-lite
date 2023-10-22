@@ -9,7 +9,10 @@ import { Actions } from '@ngneat/effects-ng';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarButtonComponent {
-  constructor(public readonly sidebarRepository: SidebarRepository, public readonly actions: Actions) {}
+  constructor(
+    public readonly sidebarRepository: SidebarRepository,
+    public readonly actions: Actions,
+  ) {}
 
   public toggleSidebar(): void {
     this.actions.dispatch(sidebarToggleOpen());

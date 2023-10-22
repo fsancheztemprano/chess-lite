@@ -12,7 +12,10 @@ import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private readonly ngZone: NgZone, private readonly toasterService: ToasterService) {}
+  constructor(
+    private readonly ngZone: NgZone,
+    private readonly toasterService: ToasterService,
+  ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
