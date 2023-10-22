@@ -8,7 +8,10 @@ import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, OnDestroy } fr
 export class ResizableMatIconDirective implements AfterViewInit, OnDestroy {
   private resizeObserver?: ResizeObserver;
 
-  constructor(private readonly host: ElementRef, private readonly cdr: ChangeDetectorRef) {}
+  constructor(
+    private readonly host: ElementRef,
+    private readonly cdr: ChangeDetectorRef,
+  ) {}
 
   ngAfterViewInit() {
     const parent = this.host.nativeElement.parentNode;

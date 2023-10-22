@@ -18,7 +18,10 @@ export class LoginComponent {
     password: new FormControl(''),
   });
 
-  constructor(public readonly authService: AuthService, private readonly router: Router) {
+  constructor(
+    public readonly authService: AuthService,
+    private readonly router: Router,
+  ) {
     this.authService.getLoginTemplate().pipe(first(), setTemplateValidatorsPipe(this.loginForm)).subscribe();
   }
 

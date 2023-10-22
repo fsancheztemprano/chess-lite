@@ -7,7 +7,7 @@
             <app-tic-tac-toe-game-board [board]="move.board" [highlight]="move.cell"></app-tic-tac-toe-game-board>
           </div>
           <div matListItemTitle>{{ move.player.username }}</div>
-          <div matListItemLine class="mat-caption">{{ move.movedAt | date : 'medium' }}</div>
+          <div matListItemLine class="mat-caption">{{ move.movedAt | date: 'medium' }}</div>
           <div matListItemLine class="mat-caption">{{ move.moveTime | duration }}</div>
         </mat-list-item>
         <mat-divider></mat-divider>

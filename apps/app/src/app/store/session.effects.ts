@@ -12,7 +12,10 @@ import { switchMap, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SessionEffects {
-  constructor(private readonly sessionRepository: SessionRepository, private readonly sessionService: SessionService) {}
+  constructor(
+    private readonly sessionRepository: SessionRepository,
+    private readonly sessionService: SessionService,
+  ) {}
 
   clearSession$ = createEffect((actions) =>
     actions.pipe(

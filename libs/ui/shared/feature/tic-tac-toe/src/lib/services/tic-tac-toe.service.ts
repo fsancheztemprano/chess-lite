@@ -15,7 +15,10 @@ import { switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TicTacToeService extends HalFormService {
-  constructor(private readonly halFormService: HalFormService, private readonly messageService: MessageService) {
+  constructor(
+    private readonly halFormService: HalFormService,
+    private readonly messageService: MessageService,
+  ) {
     super();
   }
 

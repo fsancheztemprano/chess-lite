@@ -8,7 +8,10 @@ import { map, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeEffects {
-  constructor(private readonly themeRepository: ThemeRepository, private readonly themeService: ThemeService) {}
+  constructor(
+    private readonly themeRepository: ThemeRepository,
+    private readonly themeService: ThemeService,
+  ) {}
 
   updateDarkMode$ = createEffect((actions) =>
     actions.pipe(

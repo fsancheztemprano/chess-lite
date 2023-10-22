@@ -4,7 +4,7 @@ import { ToasterService } from './toaster.service';
 
 @Injectable({ providedIn: 'root' })
 export class StubToasterService implements Partial<ToasterService> {
-  showToast = () => ({} as ActiveToast<unknown>);
+  showToast = () => ({}) as ActiveToast<unknown>;
 }
 
 export const stubToasterServiceProvider = {

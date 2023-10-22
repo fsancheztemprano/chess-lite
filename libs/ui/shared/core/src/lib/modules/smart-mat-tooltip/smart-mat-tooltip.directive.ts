@@ -16,7 +16,10 @@ export class SmartMatTooltipDirective {
   @Input() matTooltipClass: string | string[] | Set<string> | { [p: string]: never } = '';
   @Input() matTooltipDisabled: BooleanInput = false;
 
-  constructor(private readonly elementRef: ElementRef, private readonly tooltip: MatTooltip) {}
+  constructor(
+    private readonly elementRef: ElementRef,
+    private readonly tooltip: MatTooltip,
+  ) {}
 
   @HostListener('mouseover') mouseover(): void {
     const element: HTMLElement = this.smartMatTooltipTarget || this.elementRef.nativeElement;

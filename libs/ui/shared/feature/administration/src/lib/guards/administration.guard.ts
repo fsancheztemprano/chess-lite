@@ -10,7 +10,10 @@ import { AdministrationService } from '../services/administration.service';
 export class AdministrationGuard {
   private initialization?: Observable<boolean | UrlTree>;
 
-  constructor(private readonly administrationService: AdministrationService, private readonly router: Router) {}
+  constructor(
+    private readonly administrationService: AdministrationService,
+    private readonly router: Router,
+  ) {}
 
   canMatch(): Observable<boolean | UrlTree> {
     return this._guard();

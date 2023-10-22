@@ -39,5 +39,8 @@ export class UserManagementDetailComponent {
     },
   ];
 
-  constructor(private readonly route: ActivatedRoute, private readonly translocoService: TranslocoService) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly translocoService: TranslocoService,
+  ) {}
 }

@@ -9,7 +9,10 @@ export class BreadcrumbService {
   private readonly _showBreadcrumbs$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private readonly _breadcrumbs$: BehaviorSubject<Breadcrumb[]> = new BehaviorSubject<Breadcrumb[]>([]);
 
-  constructor(private readonly router: Router, private readonly translocoService: TranslocoService) {
+  constructor(
+    private readonly router: Router,
+    private readonly translocoService: TranslocoService,
+  ) {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

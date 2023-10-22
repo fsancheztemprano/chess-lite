@@ -133,7 +133,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>4.8.1</version>
+      <version>5.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -156,7 +156,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-jcache</artifactId>
-      <version>5.6.15.Final</version>
+      <version>6.3.1.Final</version>
     </dependency>
     <dependency>
       <groupId>jakarta.validation</groupId>
@@ -320,6 +320,11 @@
           <groupId>io.github.git-commit-id</groupId>
           <artifactId>git-commit-id-maven-plugin</artifactId>
           <version>6.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>2.16.1</version>
         </plugin>
       </plugins>
     </pluginManagement>

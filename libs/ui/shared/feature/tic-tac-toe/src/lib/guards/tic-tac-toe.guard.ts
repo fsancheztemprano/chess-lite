@@ -10,7 +10,10 @@ import { TicTacToeService } from '../services/tic-tac-toe.service';
 export class TicTacToeGuard {
   private initialization?: Observable<boolean | UrlTree>;
 
-  constructor(private readonly ticTacToeService: TicTacToeService, private readonly router: Router) {}
+  constructor(
+    private readonly ticTacToeService: TicTacToeService,
+    private readonly router: Router,
+  ) {}
 
   canMatch(): Observable<boolean | UrlTree> {
     return this._guard();

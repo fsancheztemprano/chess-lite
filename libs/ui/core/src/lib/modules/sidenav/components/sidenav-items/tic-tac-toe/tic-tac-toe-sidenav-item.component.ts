@@ -12,7 +12,10 @@ import { TranslocoService } from '@ngneat/transloco';
 export class TicTacToeSidenavItemComponent {
   @Output() toggleSidenav = new EventEmitter();
 
-  constructor(private readonly halFormService: HalFormService, private readonly translocoService: TranslocoService) {}
+  constructor(
+    private readonly halFormService: HalFormService,
+    private readonly translocoService: TranslocoService,
+  ) {}
 
   items: MenuData[] = [
     {

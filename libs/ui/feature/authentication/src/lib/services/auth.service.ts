@@ -10,7 +10,10 @@ import { first, map, switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private readonly halFormService: HalFormService, private readonly actions: Actions) {}
+  constructor(
+    private readonly halFormService: HalFormService,
+    private readonly actions: Actions,
+  ) {}
 
   public getLoginTemplate(): Observable<Template | null> {
     return this.halFormService.getTemplate(AuthRelations.LOGIN_RELATION);
