@@ -3083,10 +3083,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@ngx-formly/schematics@6.2.1":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@ngx-formly/schematics/-/schematics-6.2.1.tgz#b98c5d7a334b14a79cd31f6a35af1c4d0bad089b"
-  integrity sha512-YPcr8JnOrMXLVEm6VQ8ElHN3GQNx8BHCR9nt4dXXSprxZ/R4DIKnQ2qnBHji2YwL1LhZqhvmky76JtdS70ddYg==
+"@ngx-formly/schematics@6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@ngx-formly/schematics/-/schematics-6.2.2.tgz#dd9bef268977c85b20b07b992dfc2e096557fa06"
+  integrity sha512-L0w5vhh9K3EMxX1Cukrvgc7HJNXRQhyhSHwJTNghj1oUURncoMSIKaqGvRIPmLvck7sh5yVBX3rSWi11A3tq+g==
   dependencies:
     "@angular-devkit/core" "^13.0.3"
     "@angular-devkit/schematics" "^13.0.3"

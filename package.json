@@ -112,7 +112,7 @@
     "@lensesio/cypress-websocket-testing": "1.0.1",
     "@ngneat/elf-cli": "3.1.0",
     "@ngneat/elf-cli-ng": "1.0.0",
-    "@ngx-formly/schematics": "6.2.1",
+    "@ngx-formly/schematics": "6.2.2",
     "@nx/cypress": "16.10.0",
     "@nx/devkit": "16.10.0",
     "@nx/eslint-plugin": "16.10.0",
