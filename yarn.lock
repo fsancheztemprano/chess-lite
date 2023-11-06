@@ -9523,6 +9523,13 @@ jest-snapshot@^29.7.0:
     pretty-format "^29.7.0"
     semver "^7.5.3"
 
+jest-sonar-reporter@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/jest-sonar-reporter/-/jest-sonar-reporter-2.0.0.tgz#faa54a7d2af7198767ee246a82b78c576789cf08"
+  integrity sha512-ZervDCgEX5gdUbdtWsjdipLN3bKJwpxbvhkYNXTAYvAckCihobSLr9OT/IuyNIRT1EZMDDwR6DroWtrq+IL64w==
+  dependencies:
+    xml "^1.0.1"
+
 jest-util@^29.0.0, jest-util@^29.4.1, jest-util@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/jest-util/-/jest-util-29.7.0.tgz#23c2b62bfb22be82b44de98055802ff3710fc0bc"
@@ -12959,14 +12966,15 @@ socks@^2.6.2:
     ip "^2.0.0"
     smart-buffer "^4.2.0"
 
-sonarqube-scanner@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/sonarqube-scanner/-/sonarqube-scanner-3.1.0.tgz#160605685d09a12d3124db2ac9c62954750bbd0a"
-  integrity sha512-7CspErch2pVwFrC9aM7NminyI0+OQmFz0V5IHJtC7FLM0cbKA2MnlsvfGfqZekqxMmxbWcybZ/izou4nQh9nMQ==
+sonarqube-scanner@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/sonarqube-scanner/-/sonarqube-scanner-3.2.0.tgz#92568e6f7f2198d9b14bd6213d03c7a4e78f479b"
+  integrity sha512-AgIK4huBlqbwVF2q+D5+fZdUt9n2irRN44bbYfQER7zL+mPATgJMF/OfdrBdKz4iG2DsBzfdgtgNNLkRDRjrZw==
   dependencies:
     adm-zip "^0.5.10"
     fancy-log "^2.0.0"
     https-proxy-agent "^7.0.1"
+    jest-sonar-reporter "^2.0.0"
     mkdirp "^3.0.1"
     node-downloader-helper "^2.1.9"
     progress "^2.0.3"
