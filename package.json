@@ -142,7 +142,7 @@
     "jest-junit": "16.0.0",
     "jest-preset-angular": "13.1.4",
     "jsonwebtoken": "9.0.2",
-    "junit-report-merger": "6.0.2",
+    "junit-report-merger": "6.0.3",
     "ng-packagr": "17.0.2",
     "npm-check-updates": "16.14.6",
     "nx": "17.1.3",
