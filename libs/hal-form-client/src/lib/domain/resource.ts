@@ -216,8 +216,8 @@ export class Resource implements IResource {
             [key]: Array.isArray(this._embedded![key])
               ? this._embedded![key].map((resource: Resource) => resource.toJson())
               : this._embedded![key] instanceof Resource
-              ? (this._embedded![key] as Resource).toJson()
-              : JSON.parse(JSON.stringify(this._embedded![key])),
+                ? (this._embedded![key] as Resource).toJson()
+                : JSON.parse(JSON.stringify(this._embedded![key])),
           }))
           .reduce((previous, current) => ({ ...previous, ...current }), {})
       : undefined;
