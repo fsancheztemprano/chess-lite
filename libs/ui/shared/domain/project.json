@@ -15,12 +15,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ui/shared/domain"],
       "options": {
-        "jestConfig": "libs/ui/shared/domain/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/ui/shared/domain/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["libs/ui/shared/domain/src/**/*.ts", "libs/ui/shared/domain/src/**/*.html"]
       }

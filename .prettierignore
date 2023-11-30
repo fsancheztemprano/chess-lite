@@ -13,3 +13,5 @@
 /.angular/cache
 README.md
 nx.json
+
+/.nx/cache

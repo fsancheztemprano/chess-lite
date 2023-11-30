@@ -48,3 +48,5 @@ migrations.json
 apps/api/src/main/resources/application-gb.yml
 
 libs/consumer-pact/logs
+
+.nx/cache

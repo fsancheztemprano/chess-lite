@@ -45,6 +45,7 @@ jobs:
             ~/.npm
             ./node_modules
             ./node
+            ./nx
           key: ${{ runner.os }}-deps-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-deps-

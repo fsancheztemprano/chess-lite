@@ -15,12 +15,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ui/feature/authentication"],
       "options": {
-        "jestConfig": "libs/ui/feature/authentication/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/ui/feature/authentication/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": [
           "libs/ui/feature/authentication/src/**/*.ts",

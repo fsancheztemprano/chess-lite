@@ -15,12 +15,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ui/feature/home"],
       "options": {
-        "jestConfig": "libs/ui/feature/home/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/ui/feature/home/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["libs/ui/feature/home/src/**/*.ts", "libs/ui/feature/home/src/**/*.html"]
       }

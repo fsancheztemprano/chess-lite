@@ -23,12 +23,11 @@
       ],
       "dependsOn": ["clean"],
       "options": {
-        "jestConfig": "libs/consumer-pact/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/consumer-pact/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["libs/consumer-pact/src/**/*.ts"]
       }
