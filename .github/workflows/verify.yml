@@ -64,9 +64,6 @@ jobs:
       - name: Format Check
         run: npx nx format:check --all
 
-      - name: Workspace Lint
-        run: npx nx workspace-lint
-
       - name: Lint
         uses: MansaGroup/nrwl-nx-action@v3
         with:
