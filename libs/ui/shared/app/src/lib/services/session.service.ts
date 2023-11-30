@@ -15,7 +15,7 @@ import {
 } from '@app/ui/shared/domain';
 import { HalFormService, Resource } from '@hal-form-client';
 import { Actions } from '@ngneat/effects-ng';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { catchError, EMPTY, filter, Observable, of, Subscription, tap, timer } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { updateSession } from '../store/session/session.action';
@@ -127,7 +127,7 @@ export class SessionService {
       this._validateToken(TokenKeys.REFRESH_TOKEN) &&
       this.halFormService.resource.hasLink(AuthRelations.TOKEN_RELATION)
     ) {
-      const decoded: Token = jwt_decode<Token>(token);
+      const decoded: Token = jwtDecode<Token>(token);
       const minNextUpdate: number = Date.now() + 2000;
       const threshold: number = (decoded.exp - (decoded.exp - decoded.iat) * 0.1) * 1000;
 

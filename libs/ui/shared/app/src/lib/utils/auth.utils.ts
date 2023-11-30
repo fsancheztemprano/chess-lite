@@ -1,4 +1,4 @@
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 export function isValidToken(token?: string | null): boolean {
   if (!token?.length) {
@@ -8,7 +8,7 @@ export function isValidToken(token?: string | null): boolean {
 }
 
 export function getTokenExpiration(token: string): Date {
-  return new Date(jwt_decode<Token>(token).exp);
+  return new Date(jwtDecode<Token>(token).exp);
 }
 
 export interface Token {
