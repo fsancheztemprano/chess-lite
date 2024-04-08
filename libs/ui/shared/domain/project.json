@@ -4,26 +4,14 @@
   "projectType": "library",
   "sourceRoot": "libs/ui/shared/domain/src",
   "prefix": "app",
+  "tags": [],
   "targets": {
-    "clean": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["rimraf ./coverage/libs/ui/shared/domain"]
-      }
-    },
+    "clean": {},
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/ui/shared/domain"],
-      "options": {
-        "jestConfig": "libs/ui/shared/domain/jest.config.ts"
-      }
+      "executor": "@nx/jest:jest"
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["libs/ui/shared/domain/src/**/*.ts", "libs/ui/shared/domain/src/**/*.html"]
-      }
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": []
+  }
 }

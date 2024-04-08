@@ -4,27 +4,14 @@
   "projectType": "library",
   "sourceRoot": "libs/ui/feature/tic-tac-toe/src",
   "prefix": "app",
+  "tags": [],
   "targets": {
-    "clean": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["rimraf ./coverage/{projectRoot}"]
-      }
-    },
+    "clean": {},
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/ui/feature/tic-tac-toe/jest.config.ts"
-      }
+      "executor": "@nx/jest:jest"
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/ui/feature/tic-tac-toe/**/*.ts", "libs/ui/feature/tic-tac-toe/**/*.html"]
-      }
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": []
+  }
 }

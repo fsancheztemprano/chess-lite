@@ -4,29 +4,14 @@
   "projectType": "library",
   "sourceRoot": "libs/ui/shared/feature/administration/src",
   "prefix": "app",
+  "tags": [],
   "targets": {
-    "clean": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["rimraf ./coverage/libs/ui/shared/feature/administration"]
-      }
-    },
+    "clean": {},
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/ui/shared/feature/administration"],
-      "options": {
-        "jestConfig": "libs/ui/shared/feature/administration/jest.config.ts"
-      }
+      "executor": "@nx/jest:jest"
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/ui/shared/feature/administration/**/*.ts",
-          "libs/ui/shared/feature/administration/**/*.html"
-        ]
-      }
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": []
+  }
 }

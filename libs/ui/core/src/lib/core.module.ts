@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { scopeLoader } from '@app/transloco-scope';
 import { IsMobileModule, NgLetModule } from '@app/ui/shared/core';
 import { provideEffects } from '@ngneat/effects-ng';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
-import { scopeLoader } from '../../../../../tools/transloco/transloco.scope';
 import { CoreComponent } from './components/core/core.component';
 import { CoreRoutingModule } from './core-routing.module';
 import { SidenavModule } from './modules/sidenav/sidenav.module';

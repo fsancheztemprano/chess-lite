@@ -4,29 +4,14 @@
   "projectType": "library",
   "sourceRoot": "libs/ui/feature/authentication/src",
   "prefix": "app",
+  "tags": [],
   "targets": {
-    "clean": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["rimraf ./coverage/libs/ui/feature/authentication"]
-      }
-    },
+    "clean": {},
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/ui/feature/authentication"],
-      "options": {
-        "jestConfig": "libs/ui/feature/authentication/jest.config.ts"
-      }
+      "executor": "@nx/jest:jest"
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/ui/feature/authentication/src/**/*.ts",
-          "libs/ui/feature/authentication/src/**/*.html"
-        ]
-      }
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": []
+  }
 }

@@ -4,6 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/consumer-pact/src",
   "prefix": "pact",
+  "tags": [],
   "targets": {
     "clean": {
       "executor": "nx:run-commands",
@@ -21,17 +22,10 @@
         "{workspaceRoot}/apps/api/target/test-classes/pact-messages",
         "{workspaceRoot}/coverage/libs/consumer-pact"
       ],
-      "dependsOn": ["clean"],
-      "options": {
-        "jestConfig": "libs/consumer-pact/jest.config.ts"
-      }
+      "dependsOn": ["clean"]
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["libs/consumer-pact/src/**/*.ts"]
-      }
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": []
+  }
 }
