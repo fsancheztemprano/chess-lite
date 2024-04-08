@@ -7,4 +7,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['/node_modules/', '^.*\\.(stub|mock|model|module)\\.ts$'],
   snapshotFormat: { escapeString: true, printBasicPrototype: true },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|@ngneat/effects|@ngneat/effects-ng|url-template)'],
+  moduleNameMapper: {
+    '^flat': 'node_modules/flat/index.js',
+  },
 };
