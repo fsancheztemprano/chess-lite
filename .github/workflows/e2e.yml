@@ -25,7 +25,7 @@ jobs:
 
       - name: Sync PR with target
         if: github.event_name == 'pull_request'
-        run: git merge ${{ github.event.pull_request.head.sha }}
+        run: git merge origin/${{ github.event.pull_request.base.ref }}
 
       - name: Get branch names
         id: branch-name
@@ -52,9 +52,8 @@ jobs:
             ./node_modules
             ./node
             ./nx
-          key: ${{ runner.os }}-deps-e2e-${{ github.run_id }}
+          key: ${{ runner.os }}-deps-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-deps-e2e-
             ${{ runner.os }}-deps-
 
       - name: Java Dependencies

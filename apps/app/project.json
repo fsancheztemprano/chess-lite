@@ -4,11 +4,12 @@
   "projectType": "application",
   "sourceRoot": "apps/app/src",
   "prefix": "app",
+  "tags": [],
   "targets": {
     "clean": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["rimraf ./coverage/apps/app ./dist/apps/app"]
+        "commands": ["rimraf ./coverage/{projectRoot} ./dist/{projectRoot}"]
       }
     },
     "build": {
@@ -73,19 +74,10 @@
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "options": {
-        "lintFilePatterns": ["apps/app/src/**/*.ts", "apps/app/src/**/*.html"]
-      },
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/app"],
-      "options": {
-        "jestConfig": "apps/app/jest.config.ts"
-      }
+      "executor": "@nx/jest:jest"
     }
-  },
-  "tags": []
+  }
 }

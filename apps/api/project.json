@@ -3,6 +3,11 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/api/src",
   "projectType": "application",
+  "tags": [],
+  "implicitDependencies": [
+    "consumer-pact",
+    "app"
+  ],
   "targets": {
     "clean": {
       "executor": "@nxrocks/nx-spring-boot:clean",
@@ -207,10 +212,5 @@
         "root": "apps/api"
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": [
-    "consumer-pact",
-    "app"
-  ]
+  }
 }

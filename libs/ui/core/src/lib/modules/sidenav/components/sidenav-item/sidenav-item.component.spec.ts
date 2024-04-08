@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { RouterModule } from '@angular/router';
 import { NgLetModule } from '@app/ui/shared/core';
 import { of } from 'rxjs';
 import { SidenavItemComponent } from './sidenav-item.component';
@@ -22,11 +22,16 @@ describe('SidenavItemComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         NgLetModule,
-        RouterTestingModule,
         MatExpansionModule,
         MatListModule,
         MatIconModule,
         NoopAnimationsModule,
+        RouterModule.forRoot([
+          {
+            path: 'item/:id',
+            component: SidenavItemComponent,
+          },
+        ]),
       ],
       declarations: [SidenavItemComponent],
     }).compileComponents();

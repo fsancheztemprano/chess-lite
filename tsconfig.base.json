@@ -30,7 +30,8 @@
       "@app/ui/shared/feature/administration": ["libs/ui/shared/feature/administration/src/index.ts"],
       "@app/ui/shared/feature/tic-tac-toe": ["libs/ui/shared/feature/tic-tac-toe/src/index.ts"],
       "@app/ui/testing": ["libs/ui/shared/testing/src/index.ts"],
-      "@hal-form-client": ["libs/hal-form-client/src/index.ts"]
+      "@hal-form-client": ["libs/hal-form-client/src/index.ts"],
+      "@app/transloco-scope": ["tools/transloco/transloco.scope.ts"]
     }
   },
   "exclude": ["node_modules", "node", "tmp", ".github", ".run", ".idea", ".angular", "apps/api"]

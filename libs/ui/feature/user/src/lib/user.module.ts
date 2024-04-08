@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { scopeLoader } from '@app/transloco-scope';
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
-import { scopeLoader } from '../../../../../../tools/transloco/transloco.scope';
 import { UserRoutingModule } from './user-routing.module';
 
 @NgModule({
