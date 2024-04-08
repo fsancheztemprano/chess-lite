@@ -25,7 +25,7 @@ jobs:
 
       - name: Sync PR with target
         if: github.event_name == 'pull_request'
-        run: git merge ${{ github.event.pull_request.base.ref }}
+        run: git merge origin/${{ github.event.pull_request.base.ref }}
 
       - name: Get branch names
         id: branch-name
