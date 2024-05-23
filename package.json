@@ -124,7 +124,7 @@
     "@nx/workspace": "18.2.3",
     "@nxrocks/nx-spring-boot": "10.0.1",
     "@pact-foundation/pact": "12.4.0",
-    "@schematics/angular": "17.3.3",
+    "@schematics/angular": "17.3.8",
     "@types/jest": "29.5.12",
     "@types/jsonwebtoken": "9.0.6",
     "@types/node": "^20.12.6",
